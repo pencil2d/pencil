@@ -43,6 +43,10 @@ class ScribbleArea;
 class TimeLine;
 class BackupElement;
 class ActiveFramePool;
+class Layer;
+class CanvasManager;
+class BackupManager;
+class LegacyBackupElement;
 
 enum class SETTING;
 
@@ -58,6 +62,8 @@ class Editor : public QObject
         Q_PROPERTY(PreferenceManager* preference READ preference)
         Q_PROPERTY(SoundManager*    sound    READ sound)
         Q_PROPERTY(SelectionManager* select READ select)
+        Q_PROPERTY(CanvasManager* canvas READ canvas)
+        Q_PROPERTY(BackupManager* backups READ backups)
 
 public:
     explicit Editor(QObject* parent = nullptr);
@@ -76,6 +82,8 @@ public:
     PreferenceManager* preference() const { return mPreferenceManager; }
     SoundManager*      sound() const { return mSoundManager; }
     SelectionManager*  select() const { return mSelectionManager; }
+    CanvasManager* canvas() const { return mCanvasManager; }
+    BackupManager* backups() const { return mBackupManager; }
 
     Object* object() const { return mObject.get(); }
     Status openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged);
@@ -93,7 +101,11 @@ public:
     int  currentLayerIndex() const { return mCurrentLayerIndex; }
     void setCurrentLayerIndex(int i);
 
+    void scrubTo(const int layerId, const int frameIndex);
+    void scrubTo(Layer* layer, const int frameIndex);
     void scrubTo(int frameNumber);
+
+    void updateView();
 
     /**
      * @brief The visibility value should match any of the VISIBILITY enum values
@@ -106,8 +118,8 @@ public:
 
     // backup
     int mBackupIndex;
-    BackupElement* currentBackup();
-    QList<BackupElement*> mBackupList;
+    LegacyBackupElement* currentBackup();
+    QList<LegacyBackupElement*> mBackupList;
 
 signals:
 
@@ -131,6 +143,8 @@ signals:
     void needSave();
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
+
+    void needPaint();
 
 public: //slots
 
@@ -158,7 +172,11 @@ public: //slots
     void scrubForward();
     void scrubBackward();
 
+    KeyFrame* addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists);
+    KeyFrame* addKeyFrameToLayer(Layer* layer, int frameIndex, const bool ignoreKeyExists);
     KeyFrame* addNewKey();
+    void removeKeyAtLayerId(int layerId, int frameIndex);
+    void removeKeyAtLayer(Layer* layer, int frameIndex, bool shouldBackup = false);
     void removeKey();
 
     void switchVisibilityOfLayer(int layerNumber);
@@ -216,6 +234,8 @@ private:
     PreferenceManager* mPreferenceManager = nullptr;
     SoundManager*      mSoundManager = nullptr;
     SelectionManager* mSelectionManager = nullptr;
+    CanvasManager* mCanvasManager = nullptr;
+    BackupManager* mBackupManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 

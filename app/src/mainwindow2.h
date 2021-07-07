@@ -41,6 +41,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class LegacyBackupElement;
 class LayerOpacityDialog;
 class QLabel;
 class PegBarAlignmentDialog;
@@ -163,7 +164,7 @@ private:
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
-    BackupElement* mBackupAtSave = nullptr;
+    LegacyBackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;

@@ -27,6 +27,7 @@ class LayerBitmap : public Layer
     Q_OBJECT
 
 public:
+    LayerBitmap(int id, Object* object);
     LayerBitmap(Object* object);
     ~LayerBitmap() override;
 
@@ -36,6 +37,8 @@ public:
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
+    void replaceLastBitmapAtFrame(const BitmapImage* replaceWithImage);
+    void putBitmapIntoFrame(KeyFrame* keyframe, const int& frameIndex);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;

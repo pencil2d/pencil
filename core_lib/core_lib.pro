@@ -43,6 +43,7 @@ HEADERS +=  \
     src/interface/camerapropertiesdialog.h \
     src/interface/editor.h \
     src/interface/flowlayout.h \
+    src/interface/legacybackupelement.h \
     src/interface/recentfilemenu.h \
     src/interface/scribblearea.h \
     src/interface/timecontrols.h \
@@ -50,7 +51,9 @@ HEADERS +=  \
     src/interface/timelinecells.h \
     src/interface/basedockwidget.h \
     src/interface/backgroundwidget.h \
+    src/managers/backupmanager.h \
     src/managers/basemanager.h \
+    src/managers/canvasmanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -90,6 +93,7 @@ HEADERS +=  \
     src/util/cameraeasingtype.h \
     src/util/camerafieldoption.h \
     src/util/colordictionary.h \
+    src/util/direction.h \
     src/util/fileformat.h \
     src/util/filetype.h \
     src/util/mathutils.h \
@@ -121,6 +125,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/camerapropertiesdialog.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
+    src/interface/legacybackupelement.cpp \
     src/interface/recentfilemenu.cpp \
     src/interface/scribblearea.cpp \
     src/interface/timecontrols.cpp \
@@ -128,7 +133,9 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/timelinecells.cpp \
     src/interface/basedockwidget.cpp \
     src/interface/backgroundwidget.cpp \
+    src/managers/backupmanager.cpp \
     src/managers/basemanager.cpp \
+    src/managers/canvasmanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \

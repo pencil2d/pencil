@@ -29,12 +29,15 @@ class LayerCamera : public Layer
 
 public:
     explicit LayerCamera(Object* object);
+    explicit LayerCamera(int layerId, Object* object);
     ~LayerCamera() override;
 
     void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType type);
 
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
+
+    void putCameraIntoFrame(KeyFrame *keyframe, int frameIndex);
 
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);

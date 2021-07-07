@@ -50,6 +50,7 @@ GNU General Public License for more details.
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
 #include "backupelement.h"
+#include "legacybackupelement.h"
 
 // app headers
 #include "colorbox.h"

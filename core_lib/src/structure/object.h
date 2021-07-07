@@ -99,15 +99,24 @@ public:
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
 
+    LayerBitmap* addBitmapLayerAt(const int layerId, const int layerIndex);
+    LayerVector* addVectorLayerAt(const int layerId, const int layerIndex);
+    LayerSound* addSoundLayerAt(const int layerId, const int layerIndex);
+    LayerCamera* addCameraLayerAt(const int layerId, const int layerIndex);
+
     int  getLayerCount() const;
+    int  getLastLayerIndex() const;
     Layer* getLayer(int i) const;
-    Layer* findLayerByName(const QString& strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
     Layer* takeLayer(int layerId); // Note: transfer ownership of the layer
 
     bool swapLayers(int i, int j);
     void deleteLayer(int i);
     void deleteLayer(Layer*);
+    void deleteLayerWithId(int layerId);
     bool addLayer(Layer* layer);
+
+    Layer* findLayerByName(QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
+    Layer* findLayerById(int layerId) const;
 
     template<typename T>
     std::vector<T*> getLayersByType() const

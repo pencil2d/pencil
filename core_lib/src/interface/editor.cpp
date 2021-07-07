@@ -33,6 +33,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 #include "backupelement.h"
+#include "legacybackupelement.h"
 
 #include "colormanager.h"
 #include "filemanager.h"
@@ -43,6 +44,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "soundmanager.h"
 #include "selectionmanager.h"
+#include "canvasmanager.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -154,7 +156,7 @@ void Editor::settingUpdated(SETTING setting)
     }
 }
 
-BackupElement* Editor::currentBackup()
+LegacyBackupElement* Editor::currentBackup()
 {
     if (mBackupIndex >= 0)
     {
@@ -201,6 +203,7 @@ void Editor::backup(const QString& undoText)
 
 bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
 {
+    // TODO: remove me after integrating new backupmanager
     while (mBackupList.size() - 1 > mBackupIndex && !mBackupList.empty())
     {
         delete mBackupList.takeLast();
@@ -304,15 +307,16 @@ bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
 
 void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
 {
+    // TODO: to be removed when integrating new backupmanager
     for (int i = 0; i < mBackupList.size(); i++)
     {
-        BackupElement *backupElement = mBackupList[i];
+        LegacyBackupElement *backupElement = mBackupList[i];
         BackupBitmapElement *bitmapElement;
         BackupVectorElement *vectorElement;
         BackupSoundElement *soundElement;
         switch (backupElement->type())
         {
-        case BackupElement::BITMAP_MODIF:
+        case LegacyBackupElement::BITMAP_MODIF:
             bitmapElement = qobject_cast<BackupBitmapElement*>(backupElement);
             Q_ASSERT(bitmapElement);
             if (bitmapElement->layer > layerIndex)
@@ -325,7 +329,7 @@ void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
                 continue;
             }
             break;
-        case BackupElement::VECTOR_MODIF:
+        case LegacyBackupElement::VECTOR_MODIF:
             vectorElement = qobject_cast<BackupVectorElement*>(backupElement);
             Q_ASSERT(vectorElement);
             if (vectorElement->layer > layerIndex)
@@ -338,7 +342,7 @@ void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
                 continue;
             }
             break;
-        case BackupElement::SOUND_MODIF:
+        case LegacyBackupElement::SOUND_MODIF:
             soundElement = qobject_cast<BackupSoundElement*>(backupElement);
             Q_ASSERT(soundElement);
             if (soundElement->layer > layerIndex)
@@ -365,12 +369,13 @@ void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
 
 void Editor::restoreKey()
 {
-    BackupElement* lastBackupElement = mBackupList[mBackupIndex];
+    // TODO: to be removed when integrating new backupmanager
+    LegacyBackupElement* lastBackupElement = mBackupList[mBackupIndex];
 
     Layer* layer = nullptr;
     int frame = 0;
     int layerIndex = 0;
-    if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
+    if (lastBackupElement->type() == LegacyBackupElement::BITMAP_MODIF)
     {
         BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
         layerIndex = lastBackupBitmapElement->layer;
@@ -380,7 +385,7 @@ void Editor::restoreKey()
         dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(&lastBackupBitmapElement->bitmapImage);
         emit frameModified(frame);
     }
-    if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
+    if (lastBackupElement->type() == LegacyBackupElement::VECTOR_MODIF)
     {
         BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
         layerIndex = lastBackupVectorElement->layer;
@@ -390,7 +395,7 @@ void Editor::restoreKey()
         dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(lastBackupVectorElement->vectorImage);
         emit frameModified(frame);
     }
-    if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
+    if (lastBackupElement->type() == LegacyBackupElement::SOUND_MODIF)
     {
         QString strSoundFile;
         BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
@@ -416,12 +421,13 @@ void Editor::restoreKey()
 
 void Editor::undo()
 {
+    // TODO: to be removed when integrating new backupmanager
     if (!mBackupList.empty() && mBackupIndex > -1)
     {
         if (mBackupIndex == mBackupList.size() - 1)
         {
-            BackupElement* lastBackupElement = mBackupList[mBackupIndex];
-            if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
+            LegacyBackupElement* lastBackupElement = mBackupList[mBackupIndex];
+            if (lastBackupElement->type() == LegacyBackupElement::BITMAP_MODIF)
             {
                 BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
                 if (backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp"))
@@ -429,7 +435,7 @@ void Editor::undo()
                     mBackupIndex--;
                 }
             }
-            if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
+            if (lastBackupElement->type() == LegacyBackupElement::VECTOR_MODIF)
             {
                 BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
                 if (backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp"))
@@ -437,7 +443,7 @@ void Editor::undo()
                     mBackupIndex--;
                 }
             }
-            if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
+            if (lastBackupElement->type() == LegacyBackupElement::SOUND_MODIF)
             {
                 BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
                 if (backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp"))
@@ -468,6 +474,7 @@ void Editor::undo()
 
 void Editor::redo()
 {
+    // TODO: to be removed when integrating new backupmanager
     if (!mBackupList.empty() && mBackupIndex < mBackupList.size() - 2)
     {
         mBackupIndex++;
@@ -880,6 +887,12 @@ bool Editor::importGIF(const QString& filePath, int numOfImages)
     return false;
 }
 
+void Editor::updateView()
+{
+    view()->updateViewTransforms();
+    emit needPaint();
+}
+
 void Editor::selectAll() const
 {
     Layer* layer = layers()->currentLayer();
@@ -944,6 +957,18 @@ void Editor::setCurrentLayerIndex(int i)
     }
 }
 
+void Editor::scrubTo(const int layerId, const int frameIndex)
+{
+    layers()->setCurrentLayerFromId(layerId);
+    scrubTo(frameIndex);
+}
+
+void Editor::scrubTo(Layer* layer, const int frameIndex)
+{
+    layers()->setCurrentLayer(layer);
+    scrubTo(frameIndex);
+}
+
 void Editor::scrubTo(int frame)
 {
     if (frame < 1) { frame = 1; }
@@ -982,6 +1007,49 @@ void Editor::scrubBackward()
     }
 }
 
+KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists)
+{
+    Layer* layer = layers()->findLayerById(layerId);
+    return addKeyFrameToLayer(layer, frameIndex, ignoreKeyExists);
+}
+
+KeyFrame* Editor::addKeyFrameToLayer(Layer* layer, int frameIndex, const bool ignoreKeyExists)
+{
+    if (layer == nullptr)
+    {
+        Q_ASSERT(false);
+        return nullptr;
+    }
+
+    if (!ignoreKeyExists)
+    {
+        // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
+        while (layer->keyExists(frameIndex))
+        {
+            if (layer->type() == Layer::SOUND
+                && layer->getKeyFrameAt(frameIndex)->fileName().isEmpty()
+                && layer->removeKeyFrame(frameIndex))
+            {
+                break;
+            }
+            else
+            {
+                frameIndex += 1;
+            }
+        }
+    }
+
+    bool ok = layer->addNewKeyFrameAt(frameIndex);
+    if (ok)
+    {
+        scrubTo(layer, frameIndex); // currentFrameChanged() and currentLayerChanged() emitted inside.
+        emit frameModified(frameIndex);
+        layers()->notifyAnimationLengthChanged();
+    }
+
+    return layer->getKeyFrameAt(frameIndex);
+}
+
 KeyFrame* Editor::addNewKey()
 {
     return addKeyFrame(layers()->currentLayerIndex(), currentFrame());
@@ -990,63 +1058,60 @@ KeyFrame* Editor::addNewKey()
 KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
 {
     Layer* layer = mObject->getLayer(layerNumber);
-    Q_ASSERT(layer);
-
     if (!layer->visible())
     {
         mScribbleArea->showLayerNotVisibleWarning();
         return nullptr;
     }
+    return addKeyFrameToLayer(layer, frameIndex, false);
+}
 
-    // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
-    while (layer->keyExists(frameIndex))
+void Editor::removeKeyAtLayerId(int layerId, int frameIndex)
+{
+    Layer* layer = layers()->findLayerById(layerId);
+    removeKeyAtLayer(layer, frameIndex);
+}
+
+void Editor::removeKeyAtLayer(Layer *layer, int frameIndex, bool shouldBackup)
+{
+    if (layer == nullptr)
     {
-        if (layer->type() == Layer::SOUND
-            && layer->getKeyFrameAt(frameIndex)->fileName().isEmpty()
-            && layer->removeKeyFrame(frameIndex))
-        {
-            break;
-        }
-        else
-        {
-            frameIndex += 1;
-        }
+        Q_ASSERT(false);
+        return;
     }
 
-    bool ok = layer->addNewKeyFrameAt(frameIndex);
-    if (ok)
+    if (!layer->keyExistsWhichCovers(frameIndex))
     {
-        scrubTo(frameIndex); // currentFrameChanged() emit inside.
-        emit frameModified(frameIndex);
-        layers()->notifyAnimationLengthChanged();
+        return;
     }
-    return layer->getKeyFrameAt(frameIndex);
+
+    if (shouldBackup)
+    {
+        backup(tr("Remove frame"));
+    }
+
+    deselectAll();
+    layer->removeKeyFrame(frameIndex);
+
+    while (!layer->keyExists(frameIndex) && frameIndex > 1)
+    {
+        frameIndex -= 1;
+    }
+
+    scrubTo(layer, frameIndex);
+    emit frameModified(frameIndex);
+    layers()->notifyAnimationLengthChanged();
 }
 
 void Editor::removeKey()
 {
     Layer* layer = layers()->currentLayer();
-    Q_ASSERT(layer != nullptr);
-
     if (!layer->visible())
     {
         mScribbleArea->showLayerNotVisibleWarning();
         return;
     }
-
-    if (!layer->keyExistsWhichCovers(currentFrame()))
-    {
-        return;
-    }
-
-    backup(tr("Remove frame"));
-
-    deselectAll();
-    layer->removeKeyFrame(currentFrame());
-
-    scrubBackward();
-    layers()->notifyAnimationLengthChanged();
-    emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+    removeKeyAtLayer(layer, currentFrame(), true);
 }
 
 void Editor::scrubNextKeyFrame()

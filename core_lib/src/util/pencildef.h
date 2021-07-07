@@ -73,6 +73,11 @@ enum StabilizationLevel
     STRONG
 };
 
+enum SelectionType {
+    SELECTION,
+    DESELECT
+};
+
 enum TimecodeTextLevel
 {
     NOTEXT,
