@@ -1010,36 +1010,10 @@ void Editor::scrubBackward()
 KeyFrame* Editor::addKeyFrameToLayerId(int layerId, int frameIndex, bool ignoreKeyExists)
 {
     Layer* layer = layers()->findLayerById(layerId);
-    int layerIndex = layers()->getLayerIndex(layer);
-    if (layer == nullptr)
-    {
-        Q_ASSERT(false);
-        return nullptr;
-    }
-
-    if (!ignoreKeyExists)
-    {
-        while (layer->keyExists(frameIndex) && frameIndex > 1)
-        {
-            frameIndex += 1;
-        }
-    }
-
-    bool ok = layer->addNewKeyFrameAt(frameIndex);
-    if (ok)
-    {
-        scrubTo(frameIndex); // currentFrameChanged() emit inside.
-    }
-
-    if (layerIndex != currentLayerIndex())
-    {
-        setCurrentLayerIndex(layerIndex);
-    }
-
-    return layer->getKeyFrameAt(frameIndex);
+    return addKeyFrameToLayer(layer, frameIndex, ignoreKeyExists);
 }
 
-KeyFrame* Editor::addKeyFrameToLayer(Layer* layer, const int layerIndex, int frameIndex, const bool ignoreKeyExists)
+KeyFrame* Editor::addKeyFrameToLayer(Layer* layer, int frameIndex, const bool ignoreKeyExists)
 {
     if (layer == nullptr)
     {
@@ -1049,21 +1023,28 @@ KeyFrame* Editor::addKeyFrameToLayer(Layer* layer, const int layerIndex, int fra
 
     if (!ignoreKeyExists)
     {
-        while (layer->keyExists(frameIndex) && frameIndex > 1)
+        // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
+        while (layer->keyExists(frameIndex))
         {
-            frameIndex += 1;
+            if (layer->type() == Layer::SOUND
+                && layer->getKeyFrameAt(frameIndex)->fileName().isEmpty()
+                && layer->removeKeyFrame(frameIndex))
+            {
+                break;
+            }
+            else
+            {
+                frameIndex += 1;
+            }
         }
     }
 
     bool ok = layer->addNewKeyFrameAt(frameIndex);
     if (ok)
     {
-        scrubTo(frameIndex); // currentFrameChanged() emit inside.
-    }
-
-    if (layerIndex != currentLayerIndex())
-    {
-        setCurrentLayerIndex(layerIndex);
+        scrubTo(layer, frameIndex); // currentFrameChanged() and currentLayerChanged() emitted inside.
+        emit frameModified(frameIndex);
+        layers()->notifyAnimationLengthChanged();
     }
 
     return layer->getKeyFrameAt(frameIndex);
@@ -1077,48 +1058,39 @@ KeyFrame* Editor::addNewKey()
 KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
 {
     Layer* layer = mObject->getLayer(layerNumber);
-    Q_ASSERT(layer);
-
     if (!layer->visible())
     {
         mScribbleArea->showLayerNotVisibleWarning();
         return nullptr;
     }
-
-    // Find next available space for a keyframe (where either no key exists or there is an empty sound key)
-    while (layer->keyExists(frameIndex))
-    {
-        if (layer->type() == Layer::SOUND
-            && layer->getKeyFrameAt(frameIndex)->fileName().isEmpty()
-            && layer->removeKeyFrame(frameIndex))
-        {
-            break;
-        }
-        else
-        {
-            frameIndex += 1;
-        }
-    }
-
-    bool ok = layer->addNewKeyFrameAt(frameIndex);
-    if (ok)
-    {
-        scrubTo(frameIndex); // currentFrameChanged() emit inside.
-        emit frameModified(frameIndex);
-        layers()->notifyAnimationLengthChanged();
-    }
-    return layer->getKeyFrameAt(frameIndex);
+    return addKeyFrameToLayer(layer, frameIndex, false);
 }
 
 void Editor::removeKeyAtLayerId(int layerId, int frameIndex)
 {
     Layer* layer = layers()->findLayerById(layerId);
-    int layerIndex = layers()->getLayerIndex(layer);
+    removeKeyAtLayer(layer, frameIndex);
+}
+
+void Editor::removeKeyAtLayer(Layer *layer, int frameIndex, bool shouldBackup)
+{
+    if (layer == nullptr)
+    {
+        Q_ASSERT(false);
+        return;
+    }
+
     if (!layer->keyExistsWhichCovers(frameIndex))
     {
         return;
     }
 
+    if (shouldBackup)
+    {
+        backup(tr("Remove frame"));
+    }
+
+    deselectAll();
     layer->removeKeyFrame(frameIndex);
 
     while (!layer->keyExists(frameIndex) && frameIndex > 1)
@@ -1126,37 +1098,20 @@ void Editor::removeKeyAtLayerId(int layerId, int frameIndex)
         frameIndex -= 1;
     }
 
-    scrubTo(frameIndex);
-    if (layerIndex != currentLayerIndex())
-    {
-        setCurrentLayerIndex(layerIndex);
-    }
+    scrubTo(layer, frameIndex);
+    emit frameModified(frameIndex);
+    layers()->notifyAnimationLengthChanged();
 }
 
 void Editor::removeKey()
 {
     Layer* layer = layers()->currentLayer();
-    Q_ASSERT(layer != nullptr);
-
     if (!layer->visible())
     {
         mScribbleArea->showLayerNotVisibleWarning();
         return;
     }
-
-    if (!layer->keyExistsWhichCovers(currentFrame()))
-    {
-        return;
-    }
-
-    backup(tr("Remove frame"));
-
-    deselectAll();
-    layer->removeKeyFrame(currentFrame());
-
-    scrubBackward();
-    layers()->notifyAnimationLengthChanged();
-    emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+    removeKeyAtLayer(layer, currentFrame(), true);
 }
 
 void Editor::scrubNextKeyFrame()

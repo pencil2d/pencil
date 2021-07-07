@@ -27,8 +27,8 @@ class LayerVector : public Layer
     Q_OBJECT
 
 public:
-    LayerVector(int id, Object* object);
     LayerVector(Object* object);
+    LayerVector(int id, Object* object);
     ~LayerVector();
 
     // method from layerImage

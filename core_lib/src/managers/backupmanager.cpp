@@ -112,6 +112,7 @@ void BackupManager::keyAdded(const QString& description)
 void BackupManager::importBitmap(const std::map<int, KeyFrame*, std::greater<int>>& canvasKeys,
                                  const std::map<int, KeyFrame*, std::less<int>>& importedKeys)
 {
+    if (mLayer == nullptr) { return; }
     if (mLayer->type() != Layer::BITMAP) { return; }
 
     ImportBitmapElement* element = new ImportBitmapElement(canvasKeys,
@@ -138,7 +139,7 @@ void BackupManager::keyRemoved()
 
 void BackupManager::bitmap(const QString& description)
 {
-    if (!mBitmap) { return; }
+    if (mBitmap == nullptr) { return; }
     AddBitmapElement* element = new AddBitmapElement(mBitmap,
                                                      mLayerId,
                                                      mEmptyFrameSettingVal,
@@ -167,7 +168,7 @@ void BackupManager::bitmap(const QString& description)
 
 void BackupManager::vector(const QString& description)
 {
-    if (!mVector) { return; }
+    if (mVector == nullptr) { return; }
     AddVectorElement* element = new AddVectorElement(mVector,
                                                      mLayerId,
                                                      mEmptyFrameSettingVal,
@@ -280,7 +281,7 @@ void BackupManager::restoreLayerKeys(const BackupElement* backupElement)
         }
         case Layer::SOUND:
         {
-            layer = layerMgr->createSoundLayerContaining(layerId,
+            layer = layerMgr->createSoundLayerAt(layerId,
                                                          layerIndex,
                                                           layerName);
             for (auto map : lastBackupLayerElem->oldLayerKeys)
@@ -377,7 +378,7 @@ void BackupManager::restoreKey(const int& layerId, const int& frame, KeyFrame *k
 
 void BackupManager::cameraMotion(const QString& description)
 {
-    if (mLayer == NULL) { return; }
+    if (mLayer == nullptr) { return; }
 
     CameraMotionElement* element = new CameraMotionElement(mFrameIndex,
                                                            mLayerId,
@@ -493,7 +494,7 @@ void BackupManager::framesMoved(const int offset,
     emit updateBackup();
 }
 
-void BackupManager::flipView(const bool& backupIsFlipped, const DIRECTION& backupFlipDirection)
+void BackupManager::flipView(const bool& backupIsFlipped, const Direction& backupFlipDirection)
 {
     FlipViewElement* element = new FlipViewElement(backupIsFlipped,
                                                    backupFlipDirection,

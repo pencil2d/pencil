@@ -120,7 +120,7 @@ bool Object::loadXML(const QDomElement& docElem, ProgressCallback progressForwar
     return true;
 }
 
-LayerBitmap* Object::bitmapLayerContaining(const int layerId, const int layerIndex)
+LayerBitmap* Object::addBitmapLayerAt(const int layerId, const int layerIndex)
 {
     LayerBitmap* layerBitmap = new LayerBitmap(layerId, this);
     mLayers.insert(layerIndex, layerBitmap);
@@ -129,7 +129,7 @@ LayerBitmap* Object::bitmapLayerContaining(const int layerId, const int layerInd
     return layerBitmap;
 }
 
-LayerVector* Object::vectorLayerContaining(const int layerId, const int layerIndex)
+LayerVector* Object::addVectorLayerAt(const int layerId, const int layerIndex)
 {
     LayerVector* layerVector = new LayerVector(layerId, this);
     mLayers.insert(layerIndex, layerVector);
@@ -138,7 +138,7 @@ LayerVector* Object::vectorLayerContaining(const int layerId, const int layerInd
     return layerVector;
 }
 
-LayerSound* Object::addSoundLayerContaining(const int layerId, const int layerIndex)
+LayerSound* Object::addSoundLayerAt(const int layerId, const int layerIndex)
 {
     LayerSound* layerSound = new LayerSound(layerId, this);
     mLayers.insert(layerIndex, layerSound);
@@ -146,7 +146,7 @@ LayerSound* Object::addSoundLayerContaining(const int layerId, const int layerIn
     return layerSound;
 }
 
-LayerCamera* Object::addCameraLayerContaining(const int layerId, const int layerIndex)
+LayerCamera* Object::addCameraLayerAt(const int layerId, const int layerIndex)
 {
     LayerCamera* layerCamera = new LayerCamera(layerId, this);
     mLayers.insert(layerIndex, layerCamera);
@@ -371,7 +371,6 @@ void Object::deleteLayerWithId(int layerId)
     {
         if (mLayers.at(index)->id() == layerId)
         {
-            disconnect(mLayers[index], nullptr, nullptr, nullptr);
             delete mLayers.takeAt(index);
             break;
         }

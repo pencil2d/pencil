@@ -16,7 +16,8 @@ GNU General Public License for more details.
 #ifndef DIRECTION_H
 #define DIRECTION_H
 
-enum class DIRECTION {
+enum class Direction
+{
     HORIZONTAL,
     VERTICAL
 };

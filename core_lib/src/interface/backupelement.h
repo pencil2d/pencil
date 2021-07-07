@@ -561,13 +561,13 @@ class FlipViewElement : public BackupElement
 {
 public:
     FlipViewElement(const bool& backupFlipEnabled,
-                    const DIRECTION& backupFlipDirection,
+                    const Direction& backupFlipDirection,
                     Editor* editor,
                     QUndoCommand* parent = nullptr);
 
     bool isFlipped = false;
 
-    DIRECTION direction;
+    Direction direction;
 
     bool isFirstRedo = true;
 

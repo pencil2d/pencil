@@ -54,7 +54,6 @@ HEADERS +=  \
     src/managers/backupmanager.h \
     src/managers/basemanager.h \
     src/managers/canvasmanager.h \
-    src/managers/keyframemanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -137,7 +136,6 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/backupmanager.cpp \
     src/managers/basemanager.cpp \
     src/managers/canvasmanager.cpp \
-    src/managers/keyframemanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \

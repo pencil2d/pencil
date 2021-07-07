@@ -57,7 +57,7 @@ public:
     void frameSelected(const QList<int> newSelectedIndexes, const int frameIndex, const bool isSelected);
     void frameDeselected(const QList<int> newDeselectedIndexes, const int frameIndex);
     void frameDeselected(const int frameIndex);
-    void flipView(const bool& backupIsFlipped, const DIRECTION& backupFlipDirection);
+    void flipView(const bool& backupIsFlipped, const Direction& backupFlipDirection);
     void toggleSetting(bool backupToggleState, const SETTING& backupType);
     void saveStates();
 

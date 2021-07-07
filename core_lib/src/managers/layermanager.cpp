@@ -190,14 +190,14 @@ void LayerManager::createBitmapLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const QString& strLayerName)
 {
     KeyFrame* keyframe = nullptr;
-    Layer* layer = createBitmapLayerContaining(layerId, layerIndex, strLayerName);
+    LayerBitmap* layer = createBitmapLayerAt(layerId, layerIndex, strLayerName);
     for(auto& map : keyFrames)
     {
         keyframe = map.second;
         int frameIndex = keyframe->pos();
 
         editor()->addKeyFrameToLayerId(layerId, frameIndex, true);
-        static_cast<LayerBitmap*>(layer)->putBitmapIntoFrame(keyframe, frameIndex);
+        layer->putBitmapIntoFrame(keyframe, frameIndex);
     }
 }
 
@@ -207,14 +207,14 @@ void LayerManager::createVectorLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const QString& strLayerName)
 {
     KeyFrame* keyframe = nullptr;
-    Layer* layer = createVectorLayerContaining(layerId, layerIndex, strLayerName);
+    LayerVector* layer = createVectorLayerAt(layerId, layerIndex, strLayerName);
     for(auto& map : keyFrames)
     {
         keyframe = map.second;
         int frameIndex = keyframe->pos();
 
         editor()->addKeyFrameToLayerId(layerId, frameIndex, true);
-        static_cast<LayerVector*>(layer)->putVectorImageIntoFrame(keyframe, frameIndex);
+        layer->putVectorImageIntoFrame(keyframe, frameIndex);
     }
 }
 
@@ -223,7 +223,7 @@ void LayerManager::createCameraLayerContainingKeyFrames(const std::map<int, KeyF
                                                         const int layerIndex,
                                                         const QString& strLayerName)
 {
-    Layer* layer = createCameraLayerContaining(layerId, layerIndex, strLayerName);
+    LayerCamera* layer = createCameraLayerAt(layerId, layerIndex, strLayerName);
 
     KeyFrame* keyframe = nullptr;
     for (auto map : keyFrames)
@@ -231,15 +231,15 @@ void LayerManager::createCameraLayerContainingKeyFrames(const std::map<int, KeyF
         keyframe = map.second;
         int frameIndex = map.second->pos();
         editor()->addKeyFrameToLayerId(layerId, frameIndex, true);
-        static_cast<LayerCamera*>(layer)->putCameraIntoFrame(keyframe, frameIndex);
+        layer->putCameraIntoFrame(keyframe, frameIndex);
     }
 }
 
-LayerBitmap* LayerManager::createBitmapLayerContaining(const int layerId,
-                                                       const int layerIndex,
-                                                       const QString& strLayerName)
+LayerBitmap* LayerManager::createBitmapLayerAt(const int layerId,
+                                               const int layerIndex,
+                                               const QString& strLayerName)
 {
-    LayerBitmap* newLayer = object()->bitmapLayerContaining(layerId, layerIndex);
+    LayerBitmap* newLayer = object()->addBitmapLayerAt(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
     Q_EMIT layerCountChanged(count());
@@ -253,11 +253,11 @@ LayerBitmap* LayerManager::createBitmapLayerContaining(const int layerId,
     return newLayer;
 }
 
-LayerVector* LayerManager::createVectorLayerContaining(const int layerId,
-                                                       const int layerIndex,
-                                                       const QString& strLayerName)
+LayerVector* LayerManager::createVectorLayerAt(const int layerId,
+                                               const int layerIndex,
+                                               const QString& strLayerName)
 {
-    LayerVector* newLayer = object()->vectorLayerContaining(layerId, layerIndex);
+    LayerVector* newLayer = object()->addVectorLayerAt(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
     Q_EMIT layerCountChanged(count());
@@ -271,9 +271,11 @@ LayerVector* LayerManager::createVectorLayerContaining(const int layerId,
     return newLayer;
 }
 
-LayerSound* LayerManager::createSoundLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName)
+LayerSound* LayerManager::createSoundLayerAt(const int layerId,
+                                             const int layerIndex,
+                                             const QString& strLayerName)
 {
-    LayerSound* newLayer = object()->addSoundLayerContaining(layerId, layerIndex);
+    LayerSound* newLayer = object()->addSoundLayerAt(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
     if (currentLayerIndex() != editor()->object()->getLastLayerIndex())
@@ -286,9 +288,11 @@ LayerSound* LayerManager::createSoundLayerContaining(const int layerId, const in
     return newLayer;
 }
 
-LayerCamera* LayerManager::createCameraLayerContaining(const int layerId, const int layerIndex, const QString& strLayerName)
+LayerCamera* LayerManager::createCameraLayerAt(const int layerId,
+                                               const int layerIndex,
+                                               const QString& strLayerName)
 {
-    LayerCamera* newLayer = object()->addCameraLayerContaining(layerId, layerIndex);
+    LayerCamera* newLayer = object()->addCameraLayerAt(layerId, layerIndex);
     newLayer->setName( strLayerName );
 
     if (currentLayerIndex() != editor()->object()->getLastLayerIndex())
@@ -432,8 +436,12 @@ Status LayerManager::deleteLayer(int index)
     return Status::OK;
 }
 
-Status LayerManager::deleteLayerWithId(int layerId, Layer::LAYER_TYPE layerType)
+Status LayerManager::deleteLayerWithId(int layerId)
 {
+    Layer* layer = object()->findLayerById(layerId);
+    if (layer == nullptr) return Status::SAFE;
+    Layer::LAYER_TYPE layerType = layer->type();
+
     if (layerType == Layer::CAMERA)
     {
         std::vector<LayerCamera*> camLayers = object()->getLayersByType<LayerCamera>();
@@ -510,7 +518,7 @@ void LayerManager::notifyAnimationLengthChanged()
     emit animationLengthChanged(animationLength(true));
 }
 
-int LayerManager::getIndex(Layer* layer) const
+int LayerManager::getIndex(const Layer* layer) const
 {
     const Object* o = object();
     for (int i = 0; i < o->getLayerCount(); ++i)

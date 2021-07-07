@@ -99,10 +99,10 @@ public:
     LayerSound* addNewSoundLayer();
     LayerCamera* addNewCameraLayer();
 
-    LayerBitmap* bitmapLayerContaining(const int layerId, const int layerIndex);
-    LayerVector* vectorLayerContaining(const int layerId, const int layerIndex);
-    LayerSound* addSoundLayerContaining(const int layerId, const int layerIndex);
-    LayerCamera* addCameraLayerContaining(const int layerId, const int layerIndex);
+    LayerBitmap* addBitmapLayerAt(const int layerId, const int layerIndex);
+    LayerVector* addVectorLayerAt(const int layerId, const int layerIndex);
+    LayerSound* addSoundLayerAt(const int layerId, const int layerIndex);
+    LayerCamera* addCameraLayerAt(const int layerId, const int layerIndex);
 
     int  getLayerCount() const;
     int  getLastLayerIndex() const;

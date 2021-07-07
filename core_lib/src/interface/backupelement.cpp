@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include "backupmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
-#include "keyframemanager.h"
 #include "canvasmanager.h"
 
 #include "layersound.h"
@@ -242,7 +241,7 @@ AddKeyFrameElement::AddKeyFrameElement(const int backupFrameIndex,
     newKey = layer->getLastKeyFrameAtPosition(oldFrameIndex)->clone();
     oldKeyFrames.insert(std::make_pair(oldFrameIndex, newKey));
 
-    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    bool isSequence = oldKeySpacing > 1;
 
     if (description.isEmpty() && !isSequence)
     {
@@ -273,7 +272,7 @@ void AddKeyFrameElement::undoSequence()
 void AddKeyFrameElement::undo()
 {
     qDebug() << "key remove triggered";
-    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    bool isSequence = oldKeySpacing > 1;
     if (isSequence)
     {
         undoSequence();
@@ -302,7 +301,7 @@ void AddKeyFrameElement::redo()
     qDebug() << "undo: newLayer" << newLayerIndex;
 
     if (isFirstRedo) { isFirstRedo = false; return; }
-    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    bool isSequence = oldKeySpacing > 1;
 
     if (newFrameIndex > 0)
     {
@@ -328,7 +327,7 @@ bool AddKeyFrameElement::mergeWith(const QUndoCommand *other)
     qDebug() << "state of frames:: new" << newKeyFrames;
     qDebug() << newKeyFrames;
 
-    bool isSequence = (oldKeySpacing > 1) ? true : false;
+    bool isSequence = oldKeySpacing > 1;
 
     if (newKeyFrames.empty())
     {
@@ -482,7 +481,7 @@ void SelectionElement::undoSelection()
         selectMan->vectorSelection = oldVectorSelection;
     }
 
-    KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
+    KeyFrame* cKeyFrame = layer->getLastKeyFrameAtPosition(editor()->currentFrame());
     editor()->canvas()->applyTransformedSelection(layer,
                                                   cKeyFrame,
                                                   selectMan->selectionTransform(),
@@ -541,7 +540,7 @@ void SelectionElement::redoDeselection()
     auto selectMan = editor()->select();
 
     Layer* layer = editor()->layers()->findLayerById(layerId);
-    KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
+    KeyFrame* cKeyFrame = layer->getLastKeyFrameAtPosition(editor()->currentFrame());
     editor()->canvas()->applyTransformedSelection(layer,
                                                   cKeyFrame,
                                                   selectMan->selectionTransform(),
@@ -723,7 +722,7 @@ void TransformElement::apply(const BitmapImage* bitmapImage,
         {
             if (bitmapImage->isMinimallyBounded()) {
                 static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(bitmapImage);
-                KeyFrame* cKeyFrame = editor()->keyframes()->currentKeyFrame(layer);
+                KeyFrame* cKeyFrame = layer->getLastKeyFrameAtPosition(editor()->currentFrame());
                 editor()->canvas()->paintTransformedSelection(layer,
                                                               cKeyFrame,
                                                               transform,
@@ -733,8 +732,9 @@ void TransformElement::apply(const BitmapImage* bitmapImage,
         }
         case Layer::VECTOR:
         {
-            static_cast<LayerVector*>(layer)->replaceLastVectorAtFrame(vectorImage);
-            VectorImage* vecImage = editor()->keyframes()->currentVectorImage(layer);
+            LayerVector* vlayer = static_cast<LayerVector*>(layer);
+            vlayer->replaceLastVectorAtFrame(vectorImage);
+            VectorImage* vecImage = vlayer->getLastVectorImageAtFrame(editor()->currentFrame(), 0);
             vecImage->setSelectionTransformation(transform);
             editor()->updateCurrentFrame();
             break;
@@ -769,14 +769,13 @@ void ImportBitmapElement::undo()
     }
 
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
-    int layerIndex = editor()->layers()->getLayerIndex(layer);
 
     // we've removed all keyframes + those that were overwritten
     // now re-add the old ones
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
     for (auto key : oldKeyFrames)
     {
-        editor()->addKeyFrameToLayer(layer, layerIndex, key.first, true);
+        editor()->addKeyFrameToLayer(layer, key.first, true);
         layerBitmap->putBitmapIntoFrame(key.second, key.second->pos());
     }
     editor()->updateCurrentFrame();
@@ -791,12 +790,11 @@ void ImportBitmapElement::redo()
     }
 
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
-    int layerIndex = editor()->layers()->getLayerIndex(layer);
 
     LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
     for (auto key : importedKeyFrames)
     {
-        editor()->addKeyFrameToLayer(layer, layerIndex, key.first, true);
+        editor()->addKeyFrameToLayer(layer, key.first, true);
         layerBitmap->putBitmapIntoFrame(key.second, key.second->pos());
     }
     editor()->updateCurrentFrame();
@@ -939,7 +937,7 @@ void AddLayerElement::undo()
     qDebug() << "undo";
     qDebug() << "oldLayerId:" << oldLayerId;
     qDebug() << "newLayerId:" << newLayerId;
-    editor()->layers()->deleteLayerWithId(newLayerId, newLayerType);
+    editor()->layers()->deleteLayerWithId(newLayerId);
 
 }
 
@@ -1029,7 +1027,7 @@ void DeleteLayerElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    editor()->layers()->deleteLayerWithId(oldLayerId, oldLayerType);
+    editor()->layers()->deleteLayerWithId(oldLayerId);
 
 }
 
@@ -1365,7 +1363,7 @@ void MoveFramesElement::applyToMulti(Layer* layer, const int offset, const QList
 //}
 
 FlipViewElement::FlipViewElement(const bool& backupFlipState,
-                                 const DIRECTION& backupFlipDirection,
+                                 const Direction& backupFlipDirection,
                                  Editor *editor,
                                  QUndoCommand *parent) : BackupElement(editor, parent)
 {
@@ -1374,7 +1372,7 @@ FlipViewElement::FlipViewElement(const bool& backupFlipState,
     isFlipped = backupFlipState;
     direction = backupFlipDirection;
 
-    if (direction == DIRECTION::HORIZONTAL)
+    if (direction == Direction::HORIZONTAL)
     {
         setText(QObject::tr("Flip View X"));
     }
@@ -1386,7 +1384,7 @@ FlipViewElement::FlipViewElement(const bool& backupFlipState,
 
 void FlipViewElement::undo()
 {
-    if (direction == DIRECTION::VERTICAL)
+    if (direction == Direction::VERTICAL)
     {
         editor()->view()->flipVertical(!isFlipped);
     }
@@ -1401,7 +1399,7 @@ void FlipViewElement::redo()
 
     if (isFirstRedo) { isFirstRedo = false; return; }
 
-    if (direction == DIRECTION::VERTICAL)
+    if (direction == Direction::VERTICAL)
     {
         editor()->view()->flipVertical(isFlipped);
     }
