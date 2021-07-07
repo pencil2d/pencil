@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QResizeEvent>
 #include <QInputDialog>
+#include <QMessageBox>
 #include <QPainter>
 #include <QSettings>
 #include <QMenu>

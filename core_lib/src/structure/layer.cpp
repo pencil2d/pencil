@@ -326,6 +326,21 @@ void Layer::setModified(int position, bool modified)
     }
 }
 
+void Layer::copyFrame(Layer *fromLayer, Layer *toLayer, int frame)
+{
+    if (fromLayer->keyExists(frame))
+    {
+        mObject->updateActiveFrames(frame);
+        KeyFrame* keyframe = fromLayer->getKeyFrameAt(frame);
+        KeyFrame* dupKey = keyframe->clone();
+        if (toLayer->keyExists(frame))
+            toLayer->removeKeyFrame(frame);
+        toLayer->addKeyFrame(frame, dupKey);
+        toLayer->setModified(frame, true);
+        toLayer->getKeyFrameAt(frame)->modification();
+    }
+}
+
 bool Layer::isFrameSelected(int position) const
 {
     KeyFrame* keyFrame = getKeyFrameWhichCovers(position);

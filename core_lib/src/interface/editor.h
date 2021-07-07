@@ -127,10 +127,16 @@ signals:
     void objectLoaded();
 
     void fpsChanged(int fps);
+    void changeThinLinesButton(bool);
+    void currentFrameChanged(int n);
+    void scrubbedTo(int frame);
 
     void needSave();
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
+
+    // Something was updated on the current frame, notify receivers
+    void currentFrameUpdated();
 
 public: //slots
 
@@ -161,6 +167,8 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
+    void notifyCurrentFrameUpdated();
+    void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
 
@@ -195,6 +203,11 @@ public: //slots
     void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
     bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
+    int getAutoSaveCounter() { return mAutosaveCounter; }
+    void setAutoSaveCounter(int count) { mAutosaveCounter = count; }
+    bool getIsDoingRepeatColoring() { return mIsDoingRepeatInColoring; }
+    void setIsDoingRepeatColoring(bool b) { mIsDoingRepeatInColoring = b; }
+
 
 private:
     bool importBitmapImage(const QString&, int space = 0);
@@ -223,6 +236,7 @@ private:
     int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
     bool mAutosaveNeverAskAgain = false;
+    bool mIsDoingRepeatInColoring = false;
 
     void makeConnections();
     KeyFrame* addKeyFrame(int layerNumber, int frameNumber);

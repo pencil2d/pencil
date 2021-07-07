@@ -19,6 +19,9 @@ GNU General Public License for more details.
 #define MAINWINDOW2_H
 
 #include <QMainWindow>
+#include "preferencemanager.h"
+#include "pegbaralignmentdialog.h"
+#include "addtransparencytopaperdialog.h"
 
 template<typename T> class QList;
 class QActionGroup;
@@ -27,6 +30,7 @@ class Editor;
 class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
+class BitmapColoring;
 class DisplayOptionWidget;
 class OnionSkinWidget;
 class ToolOptionWidget;
@@ -69,6 +73,7 @@ public slots:
     void clearRecentFilesList();
     void openPegAlignDialog();
     void openLayerOpacityDialog();
+    void openAddTranspToPaperDialog();
     void currentLayerChanged();
     void selectionChanged();
     void viewFlipped();
@@ -160,6 +165,7 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr;
     ColorInspector*       mColorInspector = nullptr;
+    BitmapColoring*       mBitmapColoring = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
 
     // backup
@@ -167,6 +173,7 @@ private:
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;
+    AddTransparencyToPaperDialog* mAddTranspToPaper = nullptr;
 
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;
