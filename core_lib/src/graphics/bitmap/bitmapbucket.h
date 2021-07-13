@@ -25,9 +25,10 @@ GNU General Public License for more details.
 class Layer;
 class Editor;
 
-enum class BucketState {
+enum class BucketState
+{
     WillFillTarget, // Before applying to target image
-    DidFillTarget, // After calling floddfill and applied to target
+    DidFillTarget, // After calling floodfill and applied to target
 };
 
 class BitmapBucket
@@ -58,16 +59,16 @@ private:
      */
     bool shouldFill(QPointF checkPoint) const;
 
-    std::pair<Layer*, int> findBitmapLayerBelow(Layer* layer, int layerIndex) const;
+    std::pair<Layer*, int> findBitmapLayerBelow(Layer* targetLayer, int layerIndex) const;
     BitmapImage flattenBitmapLayersToImage();
 
     Editor* mEditor = nullptr;
     Layer* mTargetFillToLayer = nullptr;
 
     BitmapImage mReferenceImage;
-    QRgb mBucketColor;
-    QRgb mReferenceColor;
-    QRgb mAppliedColor;
+    QRgb mBucketColor = 0;
+    QRgb mReferenceColor = 0;
+    QRgb mAppliedColor = 0;
 
     QPointF mBucketStartPoint;
     QRectF mMaxFillRegion;

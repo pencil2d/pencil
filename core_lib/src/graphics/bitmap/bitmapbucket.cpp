@@ -48,19 +48,16 @@ BitmapBucket::BitmapBucket(Editor* editor,
     mTargetFillToLayer = initialLayer;
     mTargetFillToLayerIndex = initialLayerIndex;
 
-    if (properties.bucketFillToLayerMode == 1) {
-
+    if (properties.bucketFillToLayerMode == 1)
+    {
         auto result = findBitmapLayerBelow(initialLayer, initialLayerIndex);
         mTargetFillToLayer = result.first;
         mTargetFillToLayerIndex = result.second;
     }
+    Q_ASSERT(mTargetFillToLayer);
 
-    if (mTargetFillToLayer == nullptr) {
-        Q_ASSERT(true);
-        return;
-    }
-
-    mReferenceImage = static_cast<LayerBitmap*>(initialLayer)->getLastBitmapImageAtFrame(frameIndex, 0)->copy();
+    mReferenceImage = *static_cast<BitmapImage*>(initialLayer->getLastKeyFrameAtPosition(frameIndex));
+    mReferenceImage.setFileName("Ref Image");
     if (properties.bucketFillReferenceMode == 1) // All layers
     {
         mReferenceImage = flattenBitmapLayersToImage();
@@ -82,11 +79,7 @@ bool BitmapBucket::shouldFill(QPointF checkPoint) const
         // effect, so we can skip it in this case
         return false;
     }
-
-    if (mTargetFillToLayer == nullptr) {
-        Q_ASSERT(true);
-        return false;
-    }
+    Q_ASSERT(mTargetFillToLayer);
 
     BitmapImage targetImage = *static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
 
@@ -104,20 +97,22 @@ bool BitmapBucket::shouldFill(QPointF checkPoint) const
     }
 
     // First paint is allowed with no rules applied
-    if (mFirstPaint) {
+    if (mFirstPaint)
+    {
         return true;
     }
 
-
     // Ensure that when dragging that we're only filling on either transparent or same color
-    if ((mReferenceColor == targetPixelColor && targetPixelColor == pixelColor) || (pixelColor == 0 && targetPixelColor == 0)) {
+    if ((mReferenceColor == targetPixelColor && targetPixelColor == pixelColor) || (pixelColor == 0 && targetPixelColor == 0))
+    {
         return true;
     }
 
     // When filling with various blending modes we need to verify that the applied color
     // doesn't match the target color, otherwise it will fill the same color for no reason.
     // We still expect to only fill on either transparent or same color.
-    if (mAppliedColor != targetPixelColor && pixelColor == 0) {
+    if (mAppliedColor != targetPixelColor && pixelColor == 0)
+    {
         return true;
     }
 
@@ -126,7 +121,7 @@ bool BitmapBucket::shouldFill(QPointF checkPoint) const
 
 void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketState, int, int)> state)
 {
-    Layer* targetLayer = mTargetFillToLayer;
+    const Layer* targetLayer = mTargetFillToLayer;
     int targetLayerIndex = mTargetFillToLayerIndex;
     QRgb fillColor = mBucketColor;
 
@@ -138,7 +133,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
 
     if (!shouldFill(updatedPoint)) { return; }
 
-    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
+    BitmapImage* targetImage = static_cast<BitmapImage*>(targetLayer->getLastKeyFrameAtPosition(currentFrameIndex));
 
     if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
 
@@ -181,7 +176,8 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
     {
         targetImage->paste(&replaceImage);
     }
-    else if (mProperties.fillMode == 2) {
+    else if (mProperties.fillMode == 2)
+    {
         targetImage->paste(&replaceImage, QPainter::CompositionMode_DestinationOver);
     }
     else
@@ -208,10 +204,12 @@ BitmapImage BitmapBucket::flattenBitmapLayersToImage()
     BitmapImage flattenImage = BitmapImage();
     int currentFrame = mEditor->currentFrame();
     auto layerMan = mEditor->layers();
-    for (int i = 0; i < layerMan->count(); i++) {
+    for (int i = 0; i < layerMan->count(); i++)
+    {
         Layer* layer = layerMan->getLayer(i);
-
-        if (layer && layer->type() == Layer::BITMAP && layer->visible()) {
+        Q_ASSERT(layer);
+        if (layer->type() == Layer::BITMAP && layer->visible())
+        {
             BitmapImage* image = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(currentFrame);
             flattenImage.paste(image);
         }
@@ -219,17 +217,17 @@ BitmapImage BitmapBucket::flattenBitmapLayersToImage()
     return flattenImage;
 }
 
-std::pair<Layer*, int> BitmapBucket::findBitmapLayerBelow(Layer* layer, int layerIndex) const
+std::pair<Layer*, int> BitmapBucket::findBitmapLayerBelow(Layer* targetLayer, int layerIndex) const
 {
-    Layer* targetLayer = layer;
     bool foundLayerBelow = false;
     int layerBelowIndex = layerIndex;
-    for (int i = layerIndex-1; i >= 0; i--) {
+    for (int i = layerIndex - 1; i >= 0; i--)
+    {
         Layer* searchlayer = mEditor->layers()->getLayer(i);
+        Q_ASSERT(searchlayer);
 
-        if (searchlayer == nullptr) { Q_ASSERT(true); }
-
-        if (searchlayer->type() == Layer::BITMAP && searchlayer->visible()) {
+        if (searchlayer->type() == Layer::BITMAP && searchlayer->visible())
+        {
             targetLayer = searchlayer;
             foundLayerBelow = true;
             layerBelowIndex = i;
@@ -237,7 +235,8 @@ std::pair<Layer*, int> BitmapBucket::findBitmapLayerBelow(Layer* layer, int laye
         }
     }
 
-    if (foundLayerBelow && !targetLayer->keyExists(mEditor->currentFrame())) {
+    if (foundLayerBelow && !targetLayer->keyExists(mEditor->currentFrame()))
+    {
         targetLayer->addNewKeyFrameAt(mEditor->currentFrame());
         emit mEditor->updateTimeLine();
     }

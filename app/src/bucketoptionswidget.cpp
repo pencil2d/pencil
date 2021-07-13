@@ -28,7 +28,7 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 #include "util.h"
 
-BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget *parent) :
+BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     QWidget(parent),
     ui(new Ui::BucketOptionsWidget),
     mEditor(editor)
@@ -180,7 +180,7 @@ void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyT
     case ToolPropertyType::FILL_MODE:
         setFillMode(p.fillMode); break;
     default:
-        Q_ASSERT(true);
+        Q_ASSERT(false);
         break;
     }
 }

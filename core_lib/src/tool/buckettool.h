@@ -51,7 +51,7 @@ public:
     void setFillReferenceMode(int referenceMode) override;
     void setFillMode(int mode) override;
 
-    void paintBitmap(Layer* layer);
+    void paintBitmap();
     void paintVector(Layer* layer);
     void drawStroke();
 

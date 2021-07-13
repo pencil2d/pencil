@@ -32,7 +32,7 @@ class BucketOptionsWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit BucketOptionsWidget(Editor* editor, QWidget *parent = nullptr);
+    explicit BucketOptionsWidget(Editor* editor, QWidget* parent);
     ~BucketOptionsWidget();
 
     void setStrokeWidth(qreal value);

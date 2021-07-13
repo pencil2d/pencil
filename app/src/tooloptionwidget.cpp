@@ -45,6 +45,9 @@ ToolOptionWidget::~ToolOptionWidget()
 
 void ToolOptionWidget::initUI()
 {
+	mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
+	ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
+
     QSettings settings(PENCIL2D, PENCIL2D);
 
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, SpinSlider::INTEGER, 1, 200);
@@ -147,15 +150,15 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
 
 void ToolOptionWidget::setVisibility(BaseTool* tool)
 {
-    if (tool->type() == BUCKET) {
+    Q_ASSERT(mBucketOptionsWidget);
+    if (tool->type() == BUCKET)
+    {
         disableAllOptions();
-        if (mBucketOptionsWidget == nullptr) {
-            mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
-            ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
-        }
         mBucketOptionsWidget->setHidden(false);
         return;
-    } else if (mBucketOptionsWidget) {
+    }
+    else
+    {
         mBucketOptionsWidget->setHidden(true);
     }
 

@@ -211,9 +211,9 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
         {
             drawStroke();
         }
-
-        if (layer->type() == Layer::BITMAP) {
-            paintBitmap(layer);
+        else if (layer->type() == Layer::BITMAP)
+        {
+            paintBitmap();
             mFilledOnMove = true;
         }
     }
@@ -232,8 +232,10 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
         if (layer->type() == Layer::VECTOR) {
             mEditor->backup(typeName());
             paintVector(layer);
-        } else if (layer->type() == Layer::BITMAP && !mFilledOnMove) {
-            paintBitmap(layer);
+        }
+        else if (layer->type() == Layer::BITMAP && !mFilledOnMove)
+        {
+            paintBitmap();
         }
     }
     mFilledOnMove = false;
@@ -255,18 +257,22 @@ bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
     return BaseTool::startAdjusting(modifiers, argStep);
 }
 
-void BucketTool::paintBitmap(Layer*)
+void BucketTool::paintBitmap()
 {
     mBitmapBucket.paint(getCurrentPoint(), [this](BucketState progress, int layerIndex, int frameIndex)
     {
-        if (progress == BucketState::WillFillTarget) {
+        if (progress == BucketState::WillFillTarget)
+        {
             mEditor->backup(layerIndex, frameIndex, typeName());
-        } else if (progress == BucketState::DidFillTarget) {
+        }
+        else if (progress == BucketState::DidFillTarget)
+        {
             mScribbleArea->setModified(layerIndex, frameIndex);
 
             // Need to invalidate layer pixmap cache when filling anything else but current layer
             // otherwise dragging won't show until release event
-            if (properties.bucketFillToLayerMode == 1) {
+            if (properties.bucketFillToLayerMode == 1)
+            {
                 mScribbleArea->invalidateLayerPixmapCache();
             }
         }
@@ -318,7 +324,6 @@ void BucketTool::drawStroke()
         int rad = qRound((mCurrentWidth / 2 + 2) * mEditor->view()->scaling());
 
         QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
-        //pathColor.setAlpha(255);
 
         QPen pen(pathColor,
                  mCurrentWidth * mEditor->view()->scaling(),
