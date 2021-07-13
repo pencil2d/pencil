@@ -31,7 +31,7 @@ GNU General Public License for more details.
 #include "editor.h"
 
 
-ToolManager::ToolManager(Editor* editor) : BaseManager(editor)
+ToolManager::ToolManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -259,19 +259,15 @@ int ToolManager::propertySwitch(bool condition, int tool)
     int value = 0;
     int newValue = 0;
 
-    if (condition == true) {
+    if (condition == true)
+    {
         value = -1;
         newValue = mOldValue;
         mOldValue = tool;
     }
-
-    if (condition == false) {
-        if (newValue == 1) {
-            value = 1;
-        }
-        else {
-            value = mOldValue;
-        }
+    else if (condition == false)
+    {
+        value = (newValue == 1) ? 1 : mOldValue;
     }
     return value;
 }
