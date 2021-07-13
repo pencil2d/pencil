@@ -50,6 +50,11 @@ public:
     int   fillMode = 0;
     int   stabilizerLevel = 0;
     qreal tolerance = 0;
+    bool toleranceEnabled = false;
+    int bucketFillExpand = 0;
+    bool bucketFillExpandEnabled = 0;
+    int bucketFillToLayerMode = 0;
+    int bucketFillReferenceMode = 0;
     bool  useFillContour = false;
 };
 
@@ -117,6 +122,11 @@ public:
     virtual void setFillMode(const int mode);
     virtual void setStabilizerLevel(const int level);
     virtual void setTolerance(const int tolerance);
+    virtual void setToleranceEnabled(const bool enabled);
+    virtual void setFillExpand(const int fillExpandValue);
+    virtual void setFillExpandEnabled(const bool enabled);
+    virtual void setFillToLayer(int layerMode);
+    virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
 
     virtual bool leavingThisTool() { return true; }

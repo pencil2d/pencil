@@ -96,6 +96,7 @@ HEADERS += \
     src/aboutdialog.h \
     src/toolbox.h \
     src/tooloptionwidget.h \
+    src/bucketoptionswidget.h \
     src/importexportdialog.h \
     src/exportimagedialog.h \
     src/importimageseqdialog.h \
@@ -138,6 +139,7 @@ SOURCES += \
     src/aboutdialog.cpp \
     src/toolbox.cpp \
     src/tooloptionwidget.cpp \
+    src/bucketoptionswidget.cpp \
     src/importexportdialog.cpp \
     src/exportimagedialog.cpp \
     src/importimageseqdialog.cpp \
@@ -169,6 +171,7 @@ FORMS += \
     ui/exportimageoptions.ui \
     ui/importimageseqoptions.ui \
     ui/tooloptions.ui \
+    ui/bucketoptionswidget.ui \
     ui/aboutdialog.ui \
     ui/doubleprogressdialog.ui \
     ui/preferencesdialog.ui \

@@ -317,7 +317,7 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
     return Status::OK;
 }
 
-void Layer::setModified(int position, bool modified)
+void Layer::setModified(int position, bool modified) const
 {
     KeyFrame* key = getKeyFrameAt(position);
     if (key)

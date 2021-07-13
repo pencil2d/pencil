@@ -799,7 +799,8 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
 
 // Flood fill
 // ----- http://lodev.org/cgtutor/floodfill.html
-BitmapImage* BitmapImage::floodFill(BitmapImage* targetImage,
+bool BitmapImage::floodFill(BitmapImage* replaceImage,
+                            BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
                             QRgb fillColor,
@@ -808,7 +809,7 @@ BitmapImage* BitmapImage::floodFill(BitmapImage* targetImage,
     // If the point we are supposed to fill is outside the image and camera bounds, do nothing
     if(!cameraRect.united(targetImage->bounds()).contains(point))
     {
-        return nullptr;
+        return false;
     }
 
     // Square tolerance for use with compareColor
@@ -820,7 +821,6 @@ BitmapImage* BitmapImage::floodFill(BitmapImage* targetImage,
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
 
-    BitmapImage* replaceImage = nullptr;
     QPoint tempPoint;
     QRgb newPlacedColor = 0;
     QScopedPointer< QHash<QRgb, bool> > cache(new QHash<QRgb, bool>());
@@ -831,7 +831,6 @@ BitmapImage* BitmapImage::floodFill(BitmapImage* targetImage,
 
     // Extend to size of Camera
     targetImage->extend(cameraRect);
-    replaceImage = new BitmapImage(targetImage->mBounds, Qt::transparent);
 
     queue.append(point);
     // Preparations END
@@ -885,5 +884,94 @@ BitmapImage* BitmapImage::floodFill(BitmapImage* targetImage,
         }
     }
 
-    return replaceImage;
+    return true;
 }
+
+/** Fills the target image with a given color in a radius of the expansion value
+ *
+ * @param targetImage
+ * @param newColor
+ * @param expand
+ */
+void BitmapImage::expandFill(BitmapImage* targetImage, QRgb newColor, int expand)
+{
+    QList<QPoint> expandPoints;
+
+    QRect expandRect = QRect(targetImage->topLeft() - QPoint(expand, expand), targetImage->bottomRight() + QPoint(expand, expand));
+    targetImage->extend(expandRect);
+
+    auto twoDVectorList = manhattanDistance(targetImage, newColor);
+
+    for (int y = 0; y < expandRect.height(); y++)
+    {
+        for (int x = 0; x < expandRect.width(); x++)
+        {
+            if (twoDVectorList[y][x] <= expand && twoDVectorList[y][x] != 0) {
+                *(reinterpret_cast<QRgb*>(targetImage->image()->scanLine(y)) + x) = newColor;
+            }
+        }
+    }
+}
+
+/** Finds all pixels closest to the input color and returns the result as a 2D array
+ *  matching the size of the image
+ *
+ * An example:
+ *
+ * 0 is where the color was found
+ * 1 is the distance from the nearest pixel of that color
+ *
+ * 211112
+ * 100001
+ * 100001
+ * 211112
+ *
+ * @param bitmapImage: Image to search
+ * @param searchColor: Color to find
+ * @return Return a 2D array of pixels closes to the inputColor
+ */
+QVector<QVector<int>> BitmapImage::manhattanDistance(BitmapImage* bitmapImage, QRgb& searchColor) {
+
+    // Allocate with size of image size
+    QVector<QVector<int>> manhattanPoints(bitmapImage->height(), QVector<int>(bitmapImage->width()));
+
+    // traverse from top left to bottom right
+    for (int y = 0; y < manhattanPoints.length(); y++) {
+        for (int x = 0; x < manhattanPoints[y].length(); x++) {
+
+            const QRgb& colorAtPixel = *(reinterpret_cast<const QRgb*>(bitmapImage->image()->constScanLine(y)) + x);
+            if (colorAtPixel == searchColor) {
+                manhattanPoints[y][x] = 0;
+            } else {
+                manhattanPoints[y][x] = manhattanPoints.length() + manhattanPoints[y].length();
+
+                if (y > 0) {
+                    // the value will be the num of pixels away from y - 1 of the next position
+                    manhattanPoints[y][x] = qMin(manhattanPoints[y][x],
+                                                 manhattanPoints[y - 1][x] + 1);
+                }
+                if (x > 0) {
+                    // the value will be the num of pixels away from x - 1 of the next position
+                    manhattanPoints[y][x] = qMin(manhattanPoints[y][x],
+                                                 manhattanPoints[y][x - 1] + 1);
+                }
+            }
+        }
+    }
+
+    // traverse from bottom right to top left
+    for (int y = manhattanPoints.length() - 1; y >= 0; y--) {
+        for (int x = manhattanPoints[y].length() - 1; x >= 0; x--) {
+
+            if (y + 1 < manhattanPoints.length()) {
+                manhattanPoints[y][x] = qMin(manhattanPoints[y][x], manhattanPoints[y + 1][x] + 1);
+            }
+            if (x + 1 < manhattanPoints[y].length()) {
+                manhattanPoints[y][x] = qMin(manhattanPoints[y][x], manhattanPoints[y][x + 1] + 1);
+            }
+        }
+    }
+
+    return manhattanPoints;
+}
+

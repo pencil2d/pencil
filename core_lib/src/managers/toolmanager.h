@@ -69,6 +69,11 @@ public slots:
     void setFillMode(int);
     void setStabilizerLevel(int);
     void setTolerance(int);
+    void setBucketColorToleranceEnabled(bool enabled);
+    void setBucketFillExpandEnabled(bool enabled);
+    void setBucketFillToLayer(int layerIndex);
+    void setBucketFillReferenceMode(int referenceMode);
+    void setBucketFillExpand(int);
     void setUseFillContour(bool);
 
 private:

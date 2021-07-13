@@ -20,6 +20,9 @@ GNU General Public License for more details.
 
 #include "stroketool.h"
 
+#include "bitmapimage.h"
+#include "bitmapbucket.h"
+
 class Layer;
 class VectorImage;
 
@@ -40,10 +43,15 @@ public:
     bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep) override;
 
     void setTolerance(const int tolerance) override;
+    void setToleranceEnabled(const bool enabled) override;
     void setWidth(const qreal width) override;
+    void setFillExpand(const int fillExpandValue) override;
+    void setFillExpandEnabled(const bool enabled) override;
+    void setFillToLayer(int layerIndex) override;
+    void setFillReferenceMode(int referenceMode) override;
     void setFillMode(int mode) override;
 
-    void paintBitmap(Layer* layer);
+    void paintBitmap();
     void paintVector(Layer* layer);
     void drawStroke();
 
@@ -51,7 +59,10 @@ public:
 
 private:
 
+    BitmapBucket mBitmapBucket;
     VectorImage* vectorImage = nullptr;
+
+    bool mFilledOnMove = false;
 };
 
 #endif // BUCKETTOOL_H

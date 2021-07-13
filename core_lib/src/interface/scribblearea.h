@@ -127,6 +127,7 @@ public:
 
     /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
+    void setModified(const Layer* layer, int frameNumber);
 
     void flipSelection(bool flipVertical);
 

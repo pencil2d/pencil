@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 
-LayerManager::LayerManager(Editor* editor) : BaseManager(editor)
+LayerManager::LayerManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 

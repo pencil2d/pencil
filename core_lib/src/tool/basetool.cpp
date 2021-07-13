@@ -459,6 +459,31 @@ void BaseTool::setTolerance(const int tolerance)
     properties.tolerance = tolerance;
 }
 
+void BaseTool::setToleranceEnabled(const bool enabled)
+{
+    properties.toleranceEnabled = enabled;
+}
+
+void BaseTool::setFillExpand(const int fillExpandValue)
+{
+    properties.bucketFillExpand = fillExpandValue;
+}
+
+void BaseTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+}
+
+void BaseTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+}
+
+void BaseTool::setFillExpandEnabled(const bool enabled)
+{
+    properties.bucketFillExpandEnabled = enabled;
+}
+
 void BaseTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;

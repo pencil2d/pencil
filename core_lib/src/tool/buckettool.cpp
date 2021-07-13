@@ -56,8 +56,14 @@ void BucketTool::loadSettings()
     properties.feather = 10;
     properties.stabilizerLevel = StabilizationLevel::NONE;
     properties.useAA = DISABLED;
-    properties.fillMode = settings.value("fillMode", 0).toInt();
-    properties.tolerance = settings.value("tolerance", 32.0).toDouble();
+    properties.tolerance = settings.value(SETTING_BUCKET_TOLERANCE, 32.0).toDouble();
+    properties.toleranceEnabled = settings.value(SETTING_BUCKET_TOLERANCE_ON, false).toBool();
+
+    properties.bucketFillExpand = settings.value(SETTING_BUCKET_FILL_EXPAND, 2.0).toInt();
+    properties.bucketFillExpandEnabled = settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool();
+    properties.bucketFillToLayerMode = settings.value(SETTING_BUCKET_FILL_TO_LAYER_MODE, 0).toInt();
+    properties.bucketFillReferenceMode = settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt();
+    properties.fillMode = settings.value(SETTING_FILL_MODE, 0).toInt();
 }
 
 void BucketTool::resetToDefault()
@@ -65,6 +71,11 @@ void BucketTool::resetToDefault()
     setWidth(4.0);
     setTolerance(32.0);
     setFillMode(0);
+    setFillExpand(2);
+    setFillExpandEnabled(true);
+    setFillToLayer(0);
+    setToleranceEnabled(false);
+    setFillReferenceMode(0);
 }
 
 QCursor BucketTool::cursor()
@@ -90,7 +101,7 @@ void BucketTool::setTolerance(const int tolerance)
 
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("tolerance", tolerance);
+    settings.setValue(SETTING_BUCKET_TOLERANCE, tolerance);
     settings.sync();
 }
 
@@ -117,13 +128,78 @@ void BucketTool::setFillMode(int mode)
 
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("fillMode", mode);
+    settings.setValue(SETTING_FILL_MODE, mode);
+    settings.sync();
+}
+
+void BucketTool::setToleranceEnabled(const bool enabled)
+{
+    properties.toleranceEnabled = enabled;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_TOLERANCE_ON, enabled);
+    settings.sync();
+}
+
+void BucketTool::setFillExpandEnabled(const bool enabled)
+{
+    properties.bucketFillExpandEnabled = enabled;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_FILL_EXPAND_ON, enabled);
+    settings.sync();
+}
+
+void BucketTool::setFillExpand(const int fillExpandValue)
+{
+    properties.bucketFillExpand = fillExpandValue;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_FILL_EXPAND, fillExpandValue);
+    settings.sync();
+}
+
+void BucketTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_FILL_TO_LAYER_MODE, layerMode);
+    settings.sync();
+}
+
+void BucketTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue(SETTING_BUCKET_FILL_REFERENCE_MODE, referenceMode);
     settings.sync();
 }
 
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
     startStroke(event->inputType());
+
+    Layer* targetLayer = mEditor->layers()->currentLayer();
+
+    if (targetLayer->type() != Layer::BITMAP) { return; }
+
+    mBitmapBucket = BitmapBucket(mEditor,
+                                 mEditor->color()->frontColor(),
+                                 mScribbleArea->getCameraRect(),
+                                 getCurrentPoint(),
+                                 properties);
+
+    // Because we can change layer to on the fly but we do not act reactively on it
+    // it's neccesary to invalidate layer cache on press event, otherwise the cache
+    // will be drawn until a move event has been initiated.
+    mScribbleArea->invalidateLayerPixmapCache();
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
@@ -134,6 +210,11 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
         if (layer->type() == Layer::VECTOR)
         {
             drawStroke();
+        }
+        else if (layer->type() == Layer::BITMAP)
+        {
+            paintBitmap();
+            mFilledOnMove = true;
         }
     }
 }
@@ -147,16 +228,18 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
-        mEditor->backup(typeName());
-
-        switch (layer->type())
+        // Backup of bitmap image is more complicated now and has therefore been moved to bitmap code
+        if (layer->type() == Layer::VECTOR) {
+            mEditor->backup(typeName());
+            paintVector(layer);
+        }
+        else if (layer->type() == Layer::BITMAP && !mFilledOnMove)
         {
-        case Layer::BITMAP: paintBitmap(layer); break;
-        case Layer::VECTOR: paintVector(layer); break;
-        default:
-            break;
+            paintBitmap();
         }
     }
+    mFilledOnMove = false;
+
     endStroke();
 }
 
@@ -174,80 +257,26 @@ bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
     return BaseTool::startAdjusting(modifiers, argStep);
 }
 
-void BucketTool::paintBitmap(Layer* layer)
+void BucketTool::paintBitmap()
 {
-    Layer* targetLayer = layer; // by default
-    int layerNumber = editor()->layers()->currentLayerIndex(); // by default
-
-    BitmapImage* targetImage = static_cast<LayerBitmap*>(targetLayer)->getLastBitmapImageAtFrame(editor()->currentFrame(), 0);
-    if (targetImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
-
-    QPoint point = QPoint(qFloor(getLastPoint().x()), qFloor(getLastPoint().y()));
-    QRect cameraRect = mScribbleArea->getCameraRect().toRect();
-
-    QRgb fillColor = qPremultiply(mEditor->color()->frontColor().rgba());
-    QRgb origColor = fillColor;
-    if (properties.fillMode == 0)
+    mBitmapBucket.paint(getCurrentPoint(), [this](BucketState progress, int layerIndex, int frameIndex)
     {
-        if (qAlpha(fillColor) == 0)
+        if (progress == BucketState::WillFillTarget)
         {
-            // Filling in overlay mode with a fully transparent color has no
-            // effect, so we can skip it in this case
-            return;
+            mEditor->backup(layerIndex, frameIndex, typeName());
         }
-    }
-    else if (properties.fillMode == 1)
-    {
-        // Pass a fully opaque version of the new color to floodFill
-        // This is required so we can fully mask out the existing data before
-        // writing the new color.
-        QColor tempColor;
-        tempColor.setRgba(fillColor);
-        tempColor.setAlphaF(1);
-        fillColor = tempColor.rgba();
-    }
-
-    std::unique_ptr<BitmapImage> fillImage(
-                BitmapImage::floodFill(targetImage,
-                                       cameraRect,
-                                       point,
-                                       fillColor,
-                                       properties.tolerance));
-
-    if (fillImage == nullptr)
-    {
-        // Nothing was filled for whatever reason
-        return;
-    }
-
-    switch(properties.fillMode)
-    {
-    default:
-    case 0: // Overlay mode
-        // Write fill image on top of target image
-        targetImage->paste(fillImage.get());
-        break;
-    case 1: // Replace mode
-        if (qAlpha(origColor) == 0xFF)
+        else if (progress == BucketState::DidFillTarget)
         {
-            // When the new color is fully opaque, replace mode
-            // behaves exactly like overlay mode, and origColor == fillColor
-            targetImage->paste(fillImage.get());
-        }
-        else
-        {
-            // Clearly all pixels in the to-be-filled region from the target image
-            targetImage->paste(fillImage.get(), QPainter::CompositionMode_DestinationOut);
-            // Reduce the opacity of the fill to match the new color
-            BitmapImage properColor(targetImage->bounds(), QColor::fromRgba(origColor));
-            properColor.paste(fillImage.get(), QPainter::CompositionMode_DestinationIn);
-            // Write reduced-opacity fill image on top of target image
-            targetImage->paste(&properColor);
-        }
-        break;
-    }
+            mScribbleArea->setModified(layerIndex, frameIndex);
 
-    mScribbleArea->setModified(layerNumber, mEditor->currentFrame());
+            // Need to invalidate layer pixmap cache when filling anything else but current layer
+            // otherwise dragging won't show until release event
+            if (properties.bucketFillToLayerMode == 1)
+            {
+                mScribbleArea->invalidateLayerPixmapCache();
+            }
+        }
+    });
 }
 
 void BucketTool::paintVector(Layer* layer)
@@ -295,7 +324,6 @@ void BucketTool::drawStroke()
         int rad = qRound((mCurrentWidth / 2 + 2) * mEditor->view()->scaling());
 
         QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
-        //pathColor.setAlpha(255);
 
         QPen pen(pathColor,
                  mCurrentWidth * mEditor->view()->scaling(),

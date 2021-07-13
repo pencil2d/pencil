@@ -50,7 +50,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="SpinSlider" name="sizeSlider">
+          <widget class="SpinSlider" name="sizeSlider" native="true">
            <property name="toolTip">
             <string>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
            </property>
@@ -86,7 +86,7 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="SpinSlider" name="featherSlider">
+          <widget class="SpinSlider" name="featherSlider" native="true">
            <property name="toolTip">
             <string>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
            </property>
@@ -138,33 +138,6 @@
           <string>Fill Contour</string>
          </property>
         </widget>
-       </item>
-       <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
-         <item>
-          <widget class="SpinSlider" name="toleranceSlider">
-           <property name="toolTip">
-            <string>The extent to which the color variation will be treated as being equal</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="toleranceSpinBox">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="maximum">
-            <number>100</number>
-           </property>
-           <property name="value">
-            <number>50</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
        </item>
        <item>
         <widget class="QCheckBox" name="useBezierBox">
@@ -341,7 +314,7 @@
  <customwidgets>
   <customwidget>
    <class>SpinSlider</class>
-   <extends>QSlider</extends>
+   <extends>QWidget</extends>
    <header>spinslider.h</header>
    <container>1</container>
   </customwidget>

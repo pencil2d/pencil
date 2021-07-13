@@ -30,7 +30,7 @@ GNU General Public License for more details.
 //#endif
 
 
-SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor)
+SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
