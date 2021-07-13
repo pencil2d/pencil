@@ -162,7 +162,8 @@ BitmapImage BitmapImage::copy(QRect rectangle)
     // so that the area beyond the image bounds is transparent.
     if (!mBounds.contains(rectangle) && !image()->hasAlphaChannel())
     {
-        image()->convertTo(QImage::Format_ARGB32);
+        QImage* img = image();
+        *mImage = img->convertToFormat(QImage::Format_ARGB32);
     }
 
     BitmapImage result(rectangle.topLeft(), image()->copy(intersection2));
