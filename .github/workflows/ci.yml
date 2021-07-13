@@ -94,6 +94,7 @@ jobs:
       run: test "${{runner.os}}" != "Windows" && make || nmake
 
     - name: Run tests
+      env: { QT_QPA_PLATFORM: minimal }
       run: build/tests/bin/tests
 
     - name: Create package
