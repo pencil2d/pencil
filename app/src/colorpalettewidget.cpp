@@ -179,6 +179,7 @@ void ColorPaletteWidget::setColor(QColor newColor, int colorIndex)
 
     if (colorIndex >= 0)
     {
+        updateItemColor(colorIndex, newColor);
         emit colorChanged(newColor);
     }
 }
@@ -689,6 +690,7 @@ void ColorPaletteWidget::updateItemColor(int itemIndex, QColor newColor)
     swatchIcon.addPixmap(colorSwatch, QIcon::Selected);
 
     ui->colorListWidget->item(itemIndex)->setIcon(swatchIcon);
+    editor()->object()->setColour(itemIndex, newColor);
 
     // Make sure to update grid in grid mode
     if (ui->colorListWidget->viewMode() == QListView::IconMode)
