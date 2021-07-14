@@ -1,7 +1,7 @@
 #ifndef OVERLAYPAINTER_H
 #define OVERLAYPAINTER_H
 
-#include <QObject>
+
 #include <QPainter>
 #include "movemode.h"
 
@@ -21,7 +21,7 @@ struct OverlayPainterOptions
     int   nOverlayAngle = 15; // for perspective overlays
     bool  bShowSafeAreaHelperText = true;
     bool  mIsCamera = false;
-    QRect mRect = QRect();   // camera rect!
+    QRect mRect;   // camera rect!
     QPointF mSinglePerspPoint = QPointF(0.0, 0.0);
     QPointF mLeftPerspPoint = QPointF(mRect.left(), 0.0);// = QPointF(-300, 0);
     QPointF mRightPerspPoint = QPointF(mRect.right(), 0.0);// = QPointF(300, 0);
@@ -30,13 +30,12 @@ struct OverlayPainterOptions
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
 
-class OverlayPainter : public QObject
+class OverlayPainter
 {
-    Q_OBJECT
 public:
-    explicit OverlayPainter(QObject *parent = nullptr);
+    explicit OverlayPainter();
 
-    void setViewTransform(const QTransform view, const QTransform viewInverse);
+    void setViewTransform(const QTransform view);
     void setOptions(const OverlayPainterOptions& p) { mOptions = p; }
     OverlayPainterOptions getOptions() { return mOptions; }
 
@@ -53,33 +52,28 @@ public:
     void setCameraRect(QRect rect) { mOptions.mRect = rect; }
     void setIsCamera(bool isCamera) { mOptions.mIsCamera = isCamera; }
     void setSinglePoint(QPoint point) { mOptions.mSinglePerspPoint = point; }
-    QPoint getSinglePoint() { return mOptions.mSinglePerspPoint.toPoint(); }
+    QPoint getSinglePoint() const { return mOptions.mSinglePerspPoint.toPoint(); }
     void setLeftPoint(QPoint point) { mOptions.mLeftPerspPoint = point; }
-    QPoint getLeftPoint() { return mOptions.mLeftPerspPoint.toPoint(); }
+    QPoint getLeftPoint() const { return mOptions.mLeftPerspPoint.toPoint(); }
     void setRightPoint(QPoint point) { mOptions.mRightPerspPoint = point; }
-    QPoint getRightPoint() { return mOptions.mRightPerspPoint.toPoint(); }
+    QPoint getRightPoint() const { return mOptions.mRightPerspPoint.toPoint(); }
     void setMiddlePoint(QPoint point) { mOptions.mMiddlePerspPoint = point; }
-    QPoint getMiddlePoint() { return mOptions.mMiddlePerspPoint.toPoint(); }
+    QPoint getMiddlePoint() const { return mOptions.mMiddlePerspPoint.toPoint(); }
     void setMoveMode(MoveMode mode) { mMoveMode = mode; }
-    MoveMode getMoveMode() { return mMoveMode; }
+    MoveMode getMoveMode() const { return mMoveMode; }
 
 private:
-    void initPerspectivePainter(QPainter& painter);
-
     OverlayPainterOptions mOptions;
-    const int LINELENGTHFACTOR = 2;
-    const int LR_DIFF = 10;         // minimum difference for Left and Right point
-    const int MID_DIFF = 2;         // minimum difference for Middle point
-    const int LEFTANGLEOFFSET = 90;
-    const int RIGHTANGLEOFFSET = -90;
-    int MIDDLEANGLEOFFSET;
-    MoveMode mMoveMode;
+    MoveMode mMoveMode = MoveMode::NONE;
 
     QTransform mViewTransform;
-    QTransform mViewInverse;
 
-
-    constexpr static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
+    Q_CONSTEXPR static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
+    Q_CONSTEXPR static qreal LINELENGTHFACTOR = 2.0;
+    Q_CONSTEXPR static int LR_DIFF = 10;         // minimum difference for Left and Right point
+    Q_CONSTEXPR static int MID_DIFF = 2;         // minimum difference for Middle point
+    Q_CONSTEXPR static int LEFTANGLEOFFSET = 90;
+    Q_CONSTEXPR static int RIGHTANGLEOFFSET = -90;
 };
 
 #endif // OVERLAYPAINTER_H

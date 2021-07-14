@@ -32,7 +32,7 @@ void OverlayManager::workingLayerChanged(Layer *)
 {
 }
 
-MoveMode OverlayManager::getMoveModeForOverlayAnchor(QPointF pos)
+MoveMode OverlayManager::getMoveModeForOverlayAnchor(const QPointF& pos)
 {
     const double calculatedSelectionTol = selectionTolerance();
     MoveMode mode = MoveMode::NONE;
@@ -91,7 +91,7 @@ void OverlayManager::updatePerspOverlay(int persp)
     mEditor->getScribbleArea()->renderOverlays();
 }
 
-void OverlayManager::updatePerspOverlay(QPointF point)
+void OverlayManager::updatePerspOverlay(const QPointF& point)
 {
     MoveMode mode = op.getMoveMode();
 
@@ -168,11 +168,6 @@ void OverlayManager::setOverlayPerspective3(bool b)
     }
 }
 
-MoveMode OverlayManager::getMoveMode()
-{
-    return op.getMoveMode();
-}
-
 void OverlayManager::setMoveMode(MoveMode mode)
 {
     op.setMoveMode(mode);
@@ -200,7 +195,7 @@ void OverlayManager::setSinglePerspPoint(QPointF point)
     op.setSinglePoint(point.toPoint());
 }
 
-QPointF OverlayManager::getSinglePerspPoint()
+QPointF OverlayManager::getSinglePerspPoint() const
 {
     return op.getSinglePoint();
 }
@@ -210,7 +205,7 @@ void OverlayManager::setLeftPerspPoint(QPointF point)
     op.setLeftPoint(point.toPoint());
 }
 
-QPointF OverlayManager::getLeftPerspPoint()
+QPointF OverlayManager::getLeftPerspPoint() const
 {
     return op.getLeftPoint();
 }
@@ -220,7 +215,7 @@ void OverlayManager::setRightPerspPoint(QPointF point)
     op.setRightPoint(point.toPoint());
 }
 
-QPointF OverlayManager::getRightPerspPoint()
+QPointF OverlayManager::getRightPerspPoint() const
 {
     return op.getRightPoint();
 }
@@ -230,7 +225,7 @@ void OverlayManager::setMiddlePerspPoint(QPointF point)
     op.setMiddlePoint(point.toPoint());
 }
 
-QPointF OverlayManager::getMiddlePerspPoint()
+QPointF OverlayManager::getMiddlePerspPoint() const
 {
     return op.getMiddlePoint();
 }

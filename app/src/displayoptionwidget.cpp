@@ -51,8 +51,7 @@ void DisplayOptionWidget::initUI()
     anglePreferences();
     makeConnections();
 
-    FlowLayout *layout = new FlowLayout;
-    layout->setAlignment(Qt::AlignHCenter);
+    FlowLayout* layout = new FlowLayout;
     layout->addWidget(ui->mirrorButton);
     layout->addWidget(ui->mirrorVButton);
     layout->addWidget(ui->thinLinesButton);
@@ -146,10 +145,10 @@ void DisplayOptionWidget::clearPreviousAngle(int angle)
 {
     switch (angle)
     {
-    case  2:  ui->action2_degrees->setChecked(false); break;
-    case  3:  ui->action3_degrees->setChecked(false); break;
-    case  5:  ui->action5_degrees->setChecked(false); break;
-    case  7:  ui->action7_5_degrees->setChecked(false); break;
+    case  2: ui->action2_degrees->setChecked(false); break;
+    case  3: ui->action3_degrees->setChecked(false); break;
+    case  5: ui->action5_degrees->setChecked(false); break;
+    case  7: ui->action7_5_degrees->setChecked(false); break;
     case 10: ui->action10_degrees->setChecked(false); break;
     case 15: ui->action15_degrees->setChecked(false); break;
     case 20: ui->action20_degrees->setChecked(false); break;
@@ -201,12 +200,7 @@ void DisplayOptionWidget::updateUI()
 
     QSignalBlocker b15(ui->overlayPerspective3Button);
     ui->overlayPerspective3Button->setChecked(prefs->isOn(SETTING::OVERLAY_PERSPECTIVE3));
-    if (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON))
-    {
-        ui->overlaySafeAreaButton->setEnabled(true);
-    } else {
-        ui->overlaySafeAreaButton->setEnabled(false);
-    }
+
     bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
     ui->overlaySafeAreaButton->setEnabled(enableSafeArea);
 

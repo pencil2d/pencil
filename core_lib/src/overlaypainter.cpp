@@ -4,14 +4,24 @@
 
 #include "pencildef.h"
 
-OverlayPainter::OverlayPainter(QObject *parent) : QObject(parent)
+
+void initPerspectivePainter(QPainter& painter)
+{
+	painter.setCompositionMode(QPainter::CompositionMode_Difference);
+	QPen pen(QColor(180, 220, 255));
+	pen.setCosmetic(true);
+	painter.setPen(pen);
+	painter.setWorldMatrixEnabled(true);
+	painter.setBrush(Qt::NoBrush);
+}
+
+OverlayPainter::OverlayPainter()
 {
 }
 
-void OverlayPainter::setViewTransform(const QTransform view, const QTransform viewInverse)
+void OverlayPainter::setViewTransform(const QTransform view)
 {
     mViewTransform = view;
-    mViewInverse = viewInverse;
 }
 
 void OverlayPainter::renderOverlays(QPainter &painter, MoveMode mode)
@@ -161,21 +171,29 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter)
     if (mOptions.bActionSafe)
     {
         int action = mOptions.nActionSafe;
-        QRect safeAction = QRect(rect.x() + rect.width()*action/200, rect.y() + rect.height()*action/200, rect.width()*(100-action)/100, rect.height()*(100-action)/100);
+        QRect safeAction(rect.x() + rect.width() * action / 200,
+                         rect.y() + rect.height() * action/200,
+                         rect.width() * (100 - action) / 100,
+                         rect.height() * (100 - action) / 100);
         painter.drawRect(safeAction);
 
-        if (mOptions.bShowSafeAreaHelperText) {
-            painter.drawText(safeAction.x(), safeAction.y()-1, tr("Safe Action area %1 %").arg(action));
+        if (mOptions.bShowSafeAreaHelperText)
+        {
+            painter.drawText(safeAction.x(), safeAction.y() - 1, QObject::tr("Safe Action area %1 %").arg(action));
         }
     }
     if (mOptions.bTitleSafe)
     {
         int title = mOptions.nTitleSafe;
-        QRect safeTitle = QRect(rect.x() + rect.width()*title/200, rect.y() + rect.height()*title/200, rect.width()*(100-title)/100, rect.height()*(100-title)/100);
+        QRect safeTitle(rect.x() + rect.width() * title / 200,
+                        rect.y() + rect.height() * title / 200,
+                        rect.width() * (100 - title) / 100,
+                        rect.height() * (100 - title) / 100);
         painter.drawRect(safeTitle);
 
-        if (mOptions.bShowSafeAreaHelperText) {
-            painter.drawText(safeTitle.x(), safeTitle.y()-1, tr("Safe Title area %1 %").arg(title));
+        if (mOptions.bShowSafeAreaHelperText)
+        {
+            painter.drawText(safeTitle.x(), safeTitle.y()-1, QObject::tr("Safe Title area %1 %").arg(title));
         }
     }
 
@@ -183,7 +201,7 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter)
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspective1(QPainter &painter)
+void OverlayPainter::paintOverlayPerspective1(QPainter& painter)
 {
     QRect rect = mOptions.mRect;
 
@@ -203,7 +221,7 @@ void OverlayPainter::paintOverlayPerspective1(QPainter &painter)
     for (int i = 0; i < repeats; i++)
     {
         angleLine.setAngle(i * degrees);
-        angleLine.setLength(rect.width() * 2);
+        angleLine.setLength(rect.width() * 2.0);
         lines.append(angleLine);
     }
     painter.drawLines(lines);
@@ -212,7 +230,7 @@ void OverlayPainter::paintOverlayPerspective1(QPainter &painter)
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspective2(QPainter &painter)
+void OverlayPainter::paintOverlayPerspective2(QPainter& painter)
 {
     QRect rect = mOptions.mRect;
     painter.save();
@@ -265,7 +283,7 @@ void OverlayPainter::paintOverlayPerspective2(QPainter &painter)
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspective3(QPainter &painter)
+void OverlayPainter::paintOverlayPerspective3(QPainter& painter)
 {
     if (!mOptions.bPerspective2)
         paintOverlayPerspective2(painter);
@@ -283,15 +301,15 @@ void OverlayPainter::paintOverlayPerspective3(QPainter &painter)
     if (mOptions.mMiddlePerspPoint == QPointF(0, 0))    // TODO: bug in QT prevents
         mOptions.mMiddlePerspPoint = QPointF(0.1, 0.1); // point to be (0,0)...
 
-    MIDDLEANGLEOFFSET = mOptions.mLeftPerspPoint.y() < mOptions.mMiddlePerspPoint.y() ? 180 : 0;
+    const int middleAngleOffset = mOptions.mLeftPerspPoint.y() < mOptions.mMiddlePerspPoint.y() ? 180 : 0;
 
     QLineF angleLine;
-    angleLine.setAngle(MIDDLEANGLEOFFSET);
+    angleLine.setAngle(middleAngleOffset);
     angleLine.setP1(mOptions.mMiddlePerspPoint);
     QVector<QLineF> lines;
     for (int i = 0; i <= repeats; i++)
     {
-        angleLine.setAngle(MIDDLEANGLEOFFSET - i * degrees);
+        angleLine.setAngle(middleAngleOffset - i * degrees);
         angleLine.setLength(rect.width() * LINELENGTHFACTOR);
         lines.append(angleLine);
     }
@@ -300,14 +318,3 @@ void OverlayPainter::paintOverlayPerspective3(QPainter &painter)
     painter.setRenderHints(previous_renderhints);
     painter.restore();
 }
-
-void OverlayPainter::initPerspectivePainter(QPainter &painter)
-{
-    painter.setCompositionMode(QPainter::CompositionMode_Difference);
-    QPen pen(QColor(180, 220, 255));
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
-    painter.setBrush(Qt::NoBrush);
-}
-

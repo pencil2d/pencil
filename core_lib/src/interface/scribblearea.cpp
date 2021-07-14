@@ -1334,7 +1334,7 @@ void ScribbleArea::prepOverlays()
     mOverlayPainter.setOptions(o);
 
     ViewManager* vm = mEditor->view();
-    mOverlayPainter.setViewTransform(vm->getView(), vm->getViewInverse());
+    mOverlayPainter.setViewTransform(vm->getView());
 }
 
 void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)

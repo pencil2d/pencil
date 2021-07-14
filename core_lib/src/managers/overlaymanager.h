@@ -1,14 +1,12 @@
 #ifndef OVERLAYMANAGER_H
 #define OVERLAYMANAGER_H
 
-//#include <QObject>
 #include "pencildef.h"
 #include "movemode.h"
 #include "basemanager.h"
 #include "overlaypainter.h"
 
 #include <QPointF>
-#include <QTransform>
 #include <QPainter>
 
 class Editor;
@@ -28,12 +26,12 @@ public:
 
     void workingLayerChanged(Layer *) override;
 
-    MoveMode getMoveModeForOverlayAnchor(QPointF pos);
+    MoveMode getMoveModeForOverlayAnchor(const QPointF& pos);
     double selectionTolerance();
 
     void initPerspOverlay();
-    void updatePerspOverlay(int persp);
-    void updatePerspOverlay(QPointF point);
+    void updatePerspOverlay(const int persp);
+    void updatePerspOverlay(const QPointF& point);
 
     void setOverlayCenter(bool b);
     void setOverlayThirds(bool b);
@@ -51,16 +49,16 @@ public:
     bool getOverlayPerspective2() { return mOverlayPerspective2; }
     bool getOverlayPerspective3() { return mOverlayPerspective3; }
 
-    MoveMode getMoveMode();
+	MoveMode getMoveMode() const { return op.getMoveMode(); }
     void setMoveMode(MoveMode mode);
     void setSinglePerspPoint(QPointF point);
-    QPointF getSinglePerspPoint();
+    QPointF getSinglePerspPoint() const;
     void setLeftPerspPoint(QPointF point);
-    QPointF getLeftPerspPoint();
+    QPointF getLeftPerspPoint() const;
     void setRightPerspPoint(QPointF point);
-    QPointF getRightPerspPoint();
+    QPointF getRightPerspPoint() const;
     void setMiddlePerspPoint(QPointF point);
-    QPointF getMiddlePerspPoint();
+    QPointF getMiddlePerspPoint() const;
 
     void setPerpsOverlayActive(int perspType) { mActivePerspOverlays.append(perspType); }
     void removePerspOverlayActive(int perspType) { mActivePerspOverlays.removeOne(perspType); }
