@@ -169,7 +169,7 @@ public: //slots
     void swapLayers(int i, int j);
 
     void backup(const QString& undoText);
-    void backup(int layerNumber, int frameNumber, const QString& undoText);
+    bool backup(int layerNumber, int frameNumber, const QString& undoText);
     /**
      * Restores integrity of the backup elements after a layer has been deleted.
      * Removes backup elements affecting the deleted layer and adjusts the layer

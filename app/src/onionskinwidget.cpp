@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include "preferencemanager.h"
 #include "editor.h"
+#include "flowlayout.h"
 #include "util.h"
 
 OnionSkinWidget::OnionSkinWidget(QWidget *parent) :
@@ -26,6 +27,7 @@ OnionSkinWidget::OnionSkinWidget(QWidget *parent) :
     ui(new Ui::OnionSkin)
 {
     ui->setupUi(this);
+
     clearFocusOnFinished(ui->onionPrevFramesNumBox);
     clearFocusOnFinished(ui->onionNextFramesNumBox);
     clearFocusOnFinished(ui->onionMinOpacityBox);
@@ -41,6 +43,18 @@ void OnionSkinWidget::initUI()
 {
     updateUI();
     makeConnections();
+
+    // Change the horizontal layout in the Distributed Opacity group box to a
+    // flow layout to reduce the minimum width
+    FlowLayout *opacityLayout = new FlowLayout;
+    opacityLayout->setAlignment(Qt::AlignHCenter);
+    opacityLayout->setContentsMargins(0, 6, 0, 6);
+    ui->opacityGroup->layout()->removeWidget(ui->minOpacityGroup);
+    ui->opacityGroup->layout()->removeWidget(ui->maxOpacityGroup);
+    opacityLayout->addWidget(ui->minOpacityGroup);
+    opacityLayout->addWidget(ui->maxOpacityGroup);
+    delete ui->opacityGroup->layout();
+    ui->opacityGroup->setLayout(opacityLayout);
 
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.

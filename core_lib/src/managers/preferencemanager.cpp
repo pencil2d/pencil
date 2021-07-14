@@ -20,7 +20,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QDebug>
 
-PreferenceManager::PreferenceManager(Editor* editor) : BaseManager(editor)
+PreferenceManager::PreferenceManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 

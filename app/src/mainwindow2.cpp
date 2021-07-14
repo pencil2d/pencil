@@ -69,6 +69,7 @@ GNU General Public License for more details.
 #include "importimageseqdialog.h"
 #include "importlayersdialog.h"
 #include "importpositiondialog.h"
+#include "layeropacitydialog.h"
 #include "recentfilemenu.h"
 #include "shortcutfilter.h"
 #include "app_util.h"
@@ -288,6 +289,7 @@ void MainWindow2::createMenus()
     connect(ui->actionDelete_Current_Layer, &QAction::triggered, mCommands, &ActionCommands::deleteCurrentLayer);
     connect(ui->actionChangeLineColorCurrent_keyframe, &QAction::triggered, mCommands, &ActionCommands::changeKeyframeLineColor);
     connect(ui->actionChangeLineColorAll_keyframes_on_layer, &QAction::triggered, mCommands, &ActionCommands::changeallKeyframeLineColor);
+    connect(ui->actionChangeLayerOpacity, &QAction::triggered, this, &MainWindow2::openLayerOpacityDialog);
 
     QList<QAction*> visibilityActions = ui->menuLayer_Visibility->actions();
     auto visibilityGroup = new QActionGroup(this);
@@ -459,6 +461,28 @@ void MainWindow2::openPegAlignDialog()
     connect(mPegAlign, &PegBarAlignmentDialog::finished, [=]
     {
         mPegAlign = nullptr;
+    });
+}
+
+void MainWindow2::openLayerOpacityDialog()
+{
+    if (mLayerOpacityDialog != nullptr)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Dialog is already open!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+    mLayerOpacityDialog = new LayerOpacityDialog(this);
+    mLayerOpacityDialog->setAttribute(Qt::WA_DeleteOnClose);
+    mLayerOpacityDialog->setCore(mEditor);
+    mLayerOpacityDialog->initUI();
+    mLayerOpacityDialog->setWindowFlags(mLayerOpacityDialog->windowFlags() | Qt::WindowStaysOnTopHint);
+    mLayerOpacityDialog->show();
+
+    connect(mLayerOpacityDialog, &LayerOpacityDialog::finished, [=]
+    {
+        mLayerOpacityDialog = nullptr;
     });
 }
 
@@ -1239,7 +1263,7 @@ void MainWindow2::undoActSetText()
     else
     {
         ui->actionUndo->setText(QString("%1   %2 %3").arg(tr("Undo", "Menu item text"))
-                                .arg(QString::number(mEditor->mBackupIndex + 1))
+                                .arg(mEditor->mBackupIndex + 1)
                                 .arg(mEditor->mBackupList.at(mEditor->mBackupIndex)->undoText));
         ui->actionUndo->setEnabled(true);
     }
@@ -1247,7 +1271,7 @@ void MainWindow2::undoActSetText()
     if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
     {
         ui->actionRedo->setText(QString("%1   %2 %3").arg(tr("Redo", "Menu item text"))
-                                .arg(QString::number(mEditor->mBackupIndex + 2))
+                                .arg(mEditor->mBackupIndex + 2)
                                 .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
         ui->actionRedo->setEnabled(true);
     }
@@ -1416,7 +1440,7 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
 void MainWindow2::updateZoomLabel()
 {
     qreal zoom = mEditor->view()->scaling() * 100.f;
-    mZoomLabel->setText(tr("Zoom: %0%").arg(zoom, 0, 'f', 1));
+    mZoomLabel->setText(tr("Zoom: %1%").arg(zoom, 0, 'f', 1));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)
@@ -1474,7 +1498,7 @@ bool MainWindow2::tryRecoverUnsavedProject()
     msgBox->setWindowModality(Qt::ApplicationModal);
     msgBox->setAttribute(Qt::WA_DeleteOnClose);
     msgBox->setIconPixmap(QPixmap(":/icons/logo.png"));
-    msgBox->setText(QString("<h4>%1</h4>%2").arg(caption).arg(text));
+    msgBox->setText(QString("<h4>%1</h4>%2").arg(caption, text));
     msgBox->setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
     msgBox->setStandardButtons(QMessageBox::Open | QMessageBox::Discard);
     msgBox->setProperty("RecoverPath", recoverPath);
@@ -1506,7 +1530,7 @@ void MainWindow2::startProjectRecovery(int result)
         Q_ASSERT(o == nullptr);
         const QString title = tr("Recovery Failed.");
         const QString text = tr("Sorry! Pencil2D is unable to restore your project");
-        QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
+        QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
         return;
     }
 
@@ -1516,5 +1540,5 @@ void MainWindow2::startProjectRecovery(int result)
 
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
-    QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title).arg(text));
+    QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
 }

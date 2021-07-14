@@ -317,7 +317,7 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
     return Status::OK;
 }
 
-void Layer::setModified(int position, bool modified)
+void Layer::setModified(int position, bool modified) const
 {
     KeyFrame* key = getKeyFrameAt(position);
     if (key)
@@ -363,6 +363,7 @@ void Layer::setFrameSelected(int position, bool isSelected)
             mSelectedFrames_byPosition.removeAt(iPos);
         }
         keyFrame->setSelected(isSelected);
+        emit selectedFramesChanged();
     }
 }
 
@@ -428,6 +429,7 @@ void Layer::deselectAll()
 {
     mSelectedFrames_byLast.clear();
     mSelectedFrames_byPosition.clear();
+    emit selectedFramesChanged();
 
     for (auto pair : mKeyFrames)
     {
@@ -501,6 +503,7 @@ bool Layer::moveSelectedFrames(int offset)
             }
             indexInSelection = indexInSelection + step;
         }
+        emit selectedFramesChanged();
 
         // Update selection lists
         for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)

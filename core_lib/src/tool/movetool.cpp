@@ -327,9 +327,7 @@ void MoveTool::setAnchorToLastPoint()
 
 void MoveTool::cancelChanges()
 {
-    auto selectMan = mEditor->select();
     mScribbleArea->cancelTransformedSelection();
-    selectMan->resetSelectionProperties();
     mEditor->deselectAll();
 }
 

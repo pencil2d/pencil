@@ -102,6 +102,7 @@ public:
     int  getLayerCount() const;
     Layer* getLayer(int i) const;
     Layer* findLayerByName(const QString& strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
+    Layer* findLayerById(int layerId) const;
     Layer* takeLayer(int layerId); // Note: transfer ownership of the layer
 
     bool swapLayers(int i, int j);

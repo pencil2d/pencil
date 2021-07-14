@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "editor.h"
 
 
-ColorManager::ColorManager(Editor* editor) : BaseManager(editor)
+ColorManager::ColorManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 

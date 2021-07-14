@@ -19,13 +19,13 @@ GNU General Public License for more details.
 
 #include <QTransform>
 #include "keyframe.h"
-
+#include "cameraeasingtype.h"
 
 class Camera : public KeyFrame
 {
 public:
     explicit Camera();
-    explicit Camera(QPointF translation, qreal rotation, qreal scaling);
+    explicit Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type);
     explicit Camera(const Camera&);
     ~Camera() override;
 
@@ -51,11 +51,16 @@ public:
 
     bool operator==(const Camera& rhs) const;
 
+    void setEasingType(CameraEasingType type) { mEasingType = type; }
+    CameraEasingType getEasingType() const { return mEasingType; }
+
 private:
     QPointF mTranslate;
     qreal mRotate = 0.;
     qreal mScale = 1.;
     bool mNeedUpdateView = true;
+
+    CameraEasingType mEasingType = CameraEasingType::LINEAR;
 };
 
 #endif // CAMERA_H

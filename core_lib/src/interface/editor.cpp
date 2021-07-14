@@ -202,7 +202,7 @@ void Editor::backup(const QString& undoText)
     }
 }
 
-void Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
+bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
 {
     while (mBackupList.size() - 1 > mBackupIndex && !mBackupList.empty())
     {
@@ -228,6 +228,7 @@ void Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
             if (bitmapImage != nullptr)
             {
                 BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
+                element->layerId = layer->id();
                 element->layer = backupLayer;
                 element->frame = bitmapImage->pos();
                 element->undoText = undoText;
@@ -239,6 +240,10 @@ void Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
                 mBackupList.append(element);
                 mBackupIndex++;
             }
+            else
+            {
+                return false;
+            }
         }
         else if (layer->type() == Layer::VECTOR)
         {
@@ -246,6 +251,7 @@ void Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
             if (vectorImage != nullptr)
             {
                 BackupVectorElement* element = new BackupVectorElement(vectorImage);
+                element->layerId = layer->id();
                 element->layer = backupLayer;
                 element->frame = vectorImage->pos();
                 element->undoText = undoText;
@@ -256,6 +262,10 @@ void Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
                 element->rotationAngle = select()->myRotation();
                 mBackupList.append(element);
                 mBackupIndex++;
+            }
+            else
+            {
+                return false;
             }
         }
         else if (layer->type() == Layer::SOUND)
@@ -274,6 +284,7 @@ void Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
                 if (clip)
                 {
                     BackupSoundElement* element = new BackupSoundElement(clip);
+                    element->layerId = layer->id();
                     element->layer = backupLayer;
                     element->frame = backupFrame;
                     element->undoText = undoText;
@@ -283,12 +294,18 @@ void Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
                     mBackupIndex++;
                 }
             }
+            else
+            {
+                return false;
+            }
         }
     }
 
     updateAutoSaveCounter();
 
     emit updateBackup();
+
+    return true;
 }
 
 void Editor::sanitizeBackupElementsAfterLayerDeletion(int layerIndex)
@@ -364,7 +381,7 @@ void Editor::restoreKey()
         BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
         layerIndex = lastBackupBitmapElement->layer;
         frame = lastBackupBitmapElement->frame;
-        layer = object()->getLayer(layerIndex);
+        layer = object()->findLayerById(lastBackupBitmapElement->layerId);
         addKeyFrame(layerIndex, frame);
         dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(&lastBackupBitmapElement->bitmapImage);
         emit frameModified(frame);
@@ -374,7 +391,7 @@ void Editor::restoreKey()
         BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
         layerIndex = lastBackupVectorElement->layer;
         frame = lastBackupVectorElement->frame;
-        layer = object()->getLayer(layerIndex);
+        layer = object()->findLayerById(layerIndex);
         addKeyFrame(layerIndex, frame);
         dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(lastBackupVectorElement->vectorImage);
         emit frameModified(frame);
@@ -413,20 +430,26 @@ void Editor::undo()
             if (lastBackupElement->type() == BackupElement::BITMAP_MODIF)
             {
                 BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
-                backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp");
-                mBackupIndex--;
+                if (backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp"))
+                {
+                    mBackupIndex--;
+                }
             }
             if (lastBackupElement->type() == BackupElement::VECTOR_MODIF)
             {
                 BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
-                backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp");
-                mBackupIndex--;
+                if (backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp"))
+                {
+                    mBackupIndex--;
+                }
             }
             if (lastBackupElement->type() == BackupElement::SOUND_MODIF)
             {
                 BackupSoundElement* lastBackupSoundElement = static_cast<BackupSoundElement*>(lastBackupElement);
-                backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp");
-                mBackupIndex--;
+                if (backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp"))
+                {
+                    mBackupIndex--;
+                }
             }
         }
 
@@ -661,7 +684,7 @@ Status Editor::openObject(const QString& strFilePath, const std::function<void(i
     }
     if (!fileInfo.isReadable())
     {
-        dd << QString("Permissions: 0x%1").arg(QString::number(fileInfo.permissions(), 16));
+        dd << QString("Permissions: 0x%1").arg(fileInfo.permissions(), 0, 16);
         return Status(Status::ERROR_FILE_CANNOT_OPEN,
                       dd,
                       tr("Could not open file"),
@@ -896,6 +919,8 @@ void Editor::selectAll() const
 
 void Editor::deselectAll() const
 {
+    select()->resetSelectionProperties();
+
     Layer* layer = layers()->currentLayer();
     if (layer == nullptr) { return; }
 
@@ -907,8 +932,6 @@ void Editor::deselectAll() const
             vectorImage->deselectAll();
         }
     }
-
-    select()->resetSelectionProperties();
 }
 
 void Editor::updateFrame(int frameNumber)

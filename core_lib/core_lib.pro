@@ -32,6 +32,7 @@ PRECOMPILED_HEADER = src/corelib-pch.h
 
 HEADERS +=  \
     src/corelib-pch.h \
+    src/graphics/bitmap/bitmapbucket.h \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \
@@ -89,6 +90,8 @@ HEADERS +=  \
     src/tool/strokemanager.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
+    src/util/cameraeasingtype.h \
+    src/util/camerafieldoption.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
     src/util/filetype.h \
@@ -111,6 +114,7 @@ HEADERS +=  \
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
+    src/graphics/bitmap/bitmapbucket.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
     src/graphics/vector/colorref.cpp \

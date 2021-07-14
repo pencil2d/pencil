@@ -28,8 +28,8 @@ bool MiniZ::isZip(const QString& sZipFilePath)
     mz_zip_archive* mz = new mz_zip_archive;
     OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
-
-    mz_bool ok = mz_zip_reader_init_file(mz, sZipFilePath.toUtf8().data(), 0);
+    QByteArray utf8Bytes = sZipFilePath.toUtf8();
+    mz_bool ok = mz_zip_reader_init_file(mz, utf8Bytes.constData(), 0);
     if (!ok) return false;
 
     int num = mz_zip_reader_get_num_files(mz);
@@ -42,7 +42,7 @@ bool MiniZ::isZip(const QString& sZipFilePath)
 Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList)
 {
     DebugDetails dd;
-    dd << QString("Creating Zip %1 from folder %2").arg(zipFilePath).arg(srcFolderPath);
+    dd << QString("Creating Zip %1 from folder %2").arg(zipFilePath, srcFolderPath);
 
     if (!srcFolderPath.endsWith("/"))
     {
@@ -69,7 +69,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     for (const QString& filePath : fileList)
     {
         QString sRelativePath = filePath;
-        sRelativePath.replace(srcFolderPath, "");
+        sRelativePath.remove(srcFolderPath);
 
         dd << QString("Add file to zip: ").append(sRelativePath);
 
@@ -80,7 +80,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("Cannot add %1: error %2, %3").arg(sRelativePath).arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+            dd << QString("Cannot add %3: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err), sRelativePath);
         }
     }
     ok &= mz_zip_writer_finalize_archive(mz);
@@ -109,7 +109,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
 Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
 {
     DebugDetails dd;
-    dd << QString("Unzip file %1 to folder %2").arg(zipFilePath).arg(destPath);
+    dd << QString("Unzip file %1 to folder %2").arg(zipFilePath, destPath);
 
     if (!QFile::exists(zipFilePath))
     {

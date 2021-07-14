@@ -334,14 +334,21 @@ void ScribbleArea::onObjectLoaded()
     invalidateAllCache();
 }
 
-void ScribbleArea::setModified(int layerNumber, int frameNumber)
+void ScribbleArea::setModified(const Layer* layer, int frameNumber)
 {
-    Layer* layer = mEditor->object()->getLayer(layerNumber);
     if (layer == nullptr) { return; }
 
     layer->setModified(frameNumber, true);
 
     onFrameModified(frameNumber);
+}
+
+void ScribbleArea::setModified(int layerNumber, int frameNumber)
+{
+    Layer* layer = mEditor->object()->getLayer(layerNumber);
+    if (layer == nullptr) { return; }
+
+    setModified(layer, frameNumber);
 }
 
 bool ScribbleArea::event(QEvent *event)
@@ -415,8 +422,8 @@ void ScribbleArea::keyEventForSelection(QKeyEvent* event)
         mEditor->deselectAll();
         break;
     case Qt::Key_Escape:
-        mEditor->deselectAll();
         cancelTransformedSelection();
+        mEditor->deselectAll();
         break;
     case Qt::Key_Backspace:
         deleteSelection();
@@ -673,7 +680,6 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
 
     if (event->buttons() & (Qt::RightButton | Qt::MiddleButton))
     {
-        getTool(HAND)->pointerReleaseEvent(event);
         mMouseRightButtonInUse = false;
         return;
     }
@@ -964,44 +970,42 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
     }
 
     int frameNumber = mEditor->currentFrame();
+    if (layer->getKeyFrameAt(frameNumber)) { return; }
+
+    // Drawing on an empty frame; take action based on preference.
+    int action = mPrefs->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
     auto previousKeyFrame = layer->getLastKeyFrameAtPosition(frameNumber);
-
-    if (layer->getKeyFrameAt(frameNumber) == nullptr)
+    switch (action)
     {
-        // Drawing on an empty frame; take action based on preference.
-        int action = mPrefs->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION);
-
-        switch (action)
-        {
-        case KEEP_DRAWING_ON_PREVIOUS_KEY:
-        {
-            if (previousKeyFrame == nullptr) {
-                mEditor->addNewKey();
-            }
-            break;
-        }
-        case DUPLICATE_PREVIOUS_KEY:
-        {
-            if (previousKeyFrame)
-            {
-                KeyFrame* dupKey = previousKeyFrame->clone();
-                layer->addKeyFrame(frameNumber, dupKey);
-                mEditor->scrubTo(frameNumber);
-                break;
-            }
-        }
-        // if the previous keyframe doesn't exist,
-        // an empty keyframe needs to be created, so
-        // fallthrough
-        case CREATE_NEW_KEY:
+    case KEEP_DRAWING_ON_PREVIOUS_KEY:
+    {
+        if (previousKeyFrame == nullptr) {
             mEditor->addNewKey();
-
-            // Refresh canvas
-            drawCanvas(frameNumber, mCanvas.rect());
-            break;
-        default:
+        } else {
+            onFrameModified(previousKeyFrame->pos());
+        }
+        break;
+    }
+    case DUPLICATE_PREVIOUS_KEY:
+    {
+        if (previousKeyFrame != nullptr) {
+            KeyFrame* dupKey = previousKeyFrame->clone();
+            layer->addKeyFrame(frameNumber, dupKey);
+            mEditor->scrubTo(frameNumber);
             break;
         }
+    }
+    // if the previous keyframe doesn't exist,
+    // an empty keyframe needs to be created, so
+    // fallthrough
+    case CREATE_NEW_KEY:
+        mEditor->addNewKey();
+
+        // Refresh canvas
+        drawCanvas(frameNumber, mCanvas.rect());
+        break;
+    default:
+        break;
     }
 }
 
@@ -1537,6 +1541,9 @@ void ScribbleArea::cancelTransformedSelection()
         mEditor->select()->setSelection(selectMan->mySelectionRect(), false);
 
         selectMan->resetSelectionProperties();
+
+        setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+        updateCurrentFrame();
     }
 }
 
@@ -1767,6 +1774,6 @@ void ScribbleArea::floodFillError(int errorType)
     if (errorType == 1) { error = tr("Out of bound.", "Bucket tool fill error message"); }
     if (errorType == 2) { error = tr("Could not find a closed path.", "Bucket tool fill error message"); }
     if (errorType == 3) { error = tr("Could not find the root index.", "Bucket tool fill error message"); }
-    QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok);
+    QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message, error), QMessageBox::Ok, QMessageBox::Ok);
     mEditor->deselectAll();
 }

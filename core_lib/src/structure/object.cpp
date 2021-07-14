@@ -179,11 +179,10 @@ void Object::createWorkingDir()
     QString strWorkingDir;
     do
     {
-        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/")
-            .arg(QDir::tempPath())
-            .arg(projectName)
-            .arg(PFF_TMP_DECOMPRESS_EXT)
-            .arg(uniqueString(8));
+        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/").arg(QDir::tempPath(),
+                                                             projectName,
+                                                             PFF_TMP_DECOMPRESS_EXT,
+                                                             uniqueString(8));
     }
     while(dir.exists(strWorkingDir));
 
@@ -247,6 +246,18 @@ Layer* Object::getLayer(int i) const
     }
 
     return mLayers.at(i);
+}
+
+Layer* Object::findLayerById(int layerId) const
+{
+    for(Layer* layer : mLayers)
+    {
+        if (layer->id() == layerId)
+        {
+            return layer;
+        }
+    }
+    return nullptr;
 }
 
 Layer* Object::findLayerByName(const QString& strName, Layer::LAYER_TYPE type) const
@@ -685,14 +696,14 @@ void Object::paintImage(QPainter& painter,int frameNumber,
 
         painter.setOpacity(1.0);
 
-        // paints the bitmap images
         if (layer->type() == Layer::BITMAP)
         {
-            LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
 
+            LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
             BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
-            if (bitmap != nullptr)
+            if (bitmap)
             {
+                painter.setOpacity(bitmap->getOpacity());
                 bitmap->paintImage(painter);
             }
 
@@ -702,8 +713,9 @@ void Object::paintImage(QPainter& painter,int frameNumber,
         {
             LayerVector* layerVector = static_cast<LayerVector*>(layer);
             VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
-            if (vec != nullptr)
+            if (vec)
             {
+                painter.setOpacity(vec->getOpacity());
                 vec->paintImage(painter, false, false, antialiasing);
             }
         }

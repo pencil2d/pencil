@@ -26,7 +26,7 @@ GNU General Public License for more details.
 
 void BackupBitmapElement::restore(Editor* editor)
 {
-    Layer* layer = editor->object()->getLayer(this->layer);
+    Layer* layer = editor->object()->findLayerById(this->layerId);
     auto selectMan = editor->select();
     selectMan->setSelection(mySelection, true);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
@@ -58,7 +58,7 @@ void BackupBitmapElement::restore(Editor* editor)
 
 void BackupVectorElement::restore(Editor* editor)
 {
-    Layer* layer = editor->object()->getLayer(this->layer);
+    Layer* layer = editor->object()->findLayerById(this->layerId);
     auto selectMan = editor->select();
     selectMan->setSelection(mySelection, false);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
@@ -102,7 +102,7 @@ void BackupVectorElement::restore(Editor* editor)
 
 void BackupSoundElement::restore(Editor* editor)
 {
-    Layer* layer = editor->object()->getLayer(this->layer);
+    Layer* layer = editor->object()->findLayerById(this->layerId);
     if (editor->currentFrame() != this->frame) {
         editor->scrubTo(this->frame);
     }

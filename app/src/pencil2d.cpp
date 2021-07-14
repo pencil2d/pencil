@@ -47,9 +47,10 @@ Pencil2D::Pencil2D(int& argc, char** argv) :
     // Set application icon
     setWindowIcon(QIcon(":/icons/icon.png"));
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 7, 0)
     // Associate the application with our desktop entry
     setDesktopFileName("org.pencil2d.Pencil2D.desktop");
-
+#endif
     installTranslators();
 }
 

@@ -75,7 +75,9 @@ public:
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
     static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
-    static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb newColor, int tolerance);
+    static bool floodFill(BitmapImage* replaceImage, BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb fillColor, int tolerance);
+    static void expandFill(BitmapImage* targetImage, QRgb fillColor, int expand);
+    static QVector<QVector<int> > manhattanDistance(BitmapImage* image, QRgb& searchColor);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
     void drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
@@ -109,6 +111,8 @@ public:
      */
     bool isMinimallyBounded() const { return mMinBound; }
     void enableAutoCrop(bool b) { mEnableAutoCrop = b; }
+    void setOpacity(qreal opacity) { mOpacity = opacity; }
+    qreal getOpacity() const { return mOpacity; }
 
     Status writeFile(const QString& filename);
 
@@ -127,6 +131,7 @@ private:
     /** @see isMinimallyBounded() */
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
+    qreal mOpacity = 1.0;
 };
 
 #endif

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="es">
+<?xml version="1.0" ?><!DOCTYPE TS><TS language="es" version="2.1">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -111,10 +109,6 @@
         <translation>Está importando muchos fotogramas, se alerta que puede tomar bastante tiempo. ¿Está seguro que quiere continuar?</translation>
     </message>
     <message>
-        <source>Importing movie audio...</source>
-        <translation type="vanished">Importando franja de sonido</translation>
-    </message>
-    <message>
         <location filename="../app/src/actioncommands.cpp" line="198"/>
         <source>Importing sound...</source>
         <translation>Importando sonido </translation>
@@ -127,7 +121,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="350"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
-        <translation>La exportación no produjo ningún error, sin embargo no se pudo encontrar los archivos finales. Pueda que la exportación no haya sido bien sucedida</translation>
+        <translation>La exportación no produjo ninguna falla, sin embargo no se pudo encontrar los archivos finales. Puede que la exportación no haya sido bien sucedida</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="498"/>
@@ -175,11 +169,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="738"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete layer: %1?</source>
-        <translation type="vanished">¿Seguro que deseas eliminar la capa: %1?</translation>
+        <translation>Estás seguro de que quieres eliminar la capa: %1? No podrás volver atrás.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="747"/>
@@ -363,29 +353,29 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="52"/>
         <source>H</source>
-        <translation type="unfinished"></translation>
+        <translation>H</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="59"/>
         <source>S</source>
-        <translation type="unfinished"></translation>
+        <translation>S</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="66"/>
         <source>V</source>
-        <translation type="unfinished"></translation>
+        <translation>V</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="92"/>
         <source>°</source>
-        <translation type="unfinished"></translation>
+        <translation>°</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="102"/>
         <location filename="../app/ui/colorinspector.ui" line="112"/>
         <location filename="../app/ui/colorinspector.ui" line="122"/>
         <source>%</source>
-        <translation type="unfinished"></translation>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="133"/>
@@ -535,7 +525,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="641"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation>El color que está a punto de eliminar está siendo usado en uno o varios trazos.</translation>
+        <translation>El color que está a punto de eliminar está en uso en una o varias pinceladas.</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="642"/>
@@ -563,7 +553,7 @@
     <message>
         <location filename="../app/src/colorwheel.cpp" line="30"/>
         <source>Color Wheel</source>
-        <comment>Color Wheel&apos;s window title</comment>
+        <comment>Color Wheel's window title</comment>
         <translation>Rueda de color</translation>
     </message>
 </context>
@@ -572,55 +562,55 @@
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="54"/>
         <source>Error: No input file specified.</source>
-        <translation type="unfinished">Falla: No se especificó archivo de entrada.</translation>
+        <translation>Falla: archivo no especificado</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="60"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
-        <translation type="unfinished">Falla: archivo de entrada en &apos;%1&apos; no existe</translation>
+        <translation>Falla: El archivo en &apos;%1&apos; no existe</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="65"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation type="unfinished">Falla: la ruta de acceso &apos;%1&apos; no es un archivo</translation>
+        <translation>Error: el camino seleccionado en &apos;%1&apos; no es un archivo</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="78"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation type="unfinished">Advertencia: no se encontró la capa de cámara %1, ignorando.</translation>
+        <translation>Advertencia: no se encontró la capa de cámara %1. Posponer.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="109"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished">Advertencia: formato de salida no es indicado o soportado. Utilizar PNG.</translation>
+        <translation>Advertencia: El formato de salida no es el indicado o soportado. Utilizar PNG.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="134"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished">Advertencia: Transparencia no soportada en archivos de vídeo </translation>
+        <translation>Advertencia: la Transparencia no es soportada actualmente en los archivos de video.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="137"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished">Exportando vídeo...</translation>
+        <translation>Exportando video...</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="149"/>
         <location filename="../app/src/commandlineexporter.cpp" line="173"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
-        <translation type="unfinished">Hecho.</translation>
+        <translation>Terminado.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="160"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
-        <translation type="unfinished">Exportando secuencia de imágenes...</translation>
+        <translation>Exportando secuencia de imágenes...</translation>
     </message>
 </context>
 <context>
@@ -628,101 +618,101 @@
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="24"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation type="unfinished">Pencil2D es un programa de animación/dibujo para Mac OS X, Windows y Linux. Te permite crear animaciones (cartoons) de manera tradicional y cuenta con mapa de bits y gráficos vectoriales.</translation>
+        <translation>Pencil2D es un programa de animación/dibujo para Mac OS X, Windows y Linux. Te permite crear animaciones (cartoons) de manera tradicional y cuenta con mapa de bits y gráficos vectoriales.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="28"/>
         <source>Path to the input pencil file.</source>
-        <translation type="unfinished">Ruta del archivo de entrada pencil</translation>
+        <translation>Ruta del archivo de entrada pencil</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="31"/>
         <location filename="../app/src/commandlineparser.cpp" line="37"/>
         <source>Render the file to &lt;output_path&gt;</source>
-        <translation type="unfinished">Renderizar archivo a&lt;output_path&gt;</translation>
+        <translation>Renderizar el archivo a  &lt;output_path&gt;</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="32"/>
         <location filename="../app/src/commandlineparser.cpp" line="38"/>
         <source>output_path</source>
-        <translation type="unfinished">ruta _de_salida</translation>
+        <translation>ruta _de_salida</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="45"/>
         <source>Name of the camera layer to use</source>
-        <translation type="unfinished">Nombre de la capa de cámara a utilizar</translation>
+        <translation>Nombre de la capa de cámara a utilizar</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="46"/>
         <source>layer_name</source>
-        <translation type="unfinished">nombre_capa</translation>
+        <translation>nombre_de_la_capa</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="50"/>
         <source>Width of the output frames</source>
-        <translation type="unfinished">Ancho de los fotogramas de salida</translation>
+        <translation>Ancho de los fotogramas de salida</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="51"/>
         <location filename="../app/src/commandlineparser.cpp" line="56"/>
         <source>integer</source>
-        <translation type="unfinished">entero</translation>
+        <translation>entero</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="55"/>
         <source>Height of the output frames</source>
-        <translation type="unfinished">Altura de los fotogramas de salida</translation>
+        <translation>Altura de los fotogramas de salida</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="60"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished">Primer fotograma que se desea incluir al exportar el vídeo</translation>
+        <translation>Primer fotograma que desea incluir al exportar el vídeo</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="61"/>
         <location filename="../app/src/commandlineparser.cpp" line="68"/>
         <source>frame</source>
-        <translation type="unfinished">fotograma</translation>
+        <translation>fotograma</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="65"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="unfinished">Último fotograma que se desea incluir al exportar el vídeo. Podrá ser el último fotograma de animación o sonido que venga a utilizar automáticamente el último fotograma</translation>
+        <translation>Último fotograma que desea incluir al exportar el vídeo. Podrá ser el último fotograma de animación o sonido que venga a utilizar automáticamente el último fotograma</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="72"/>
         <source>Render transparency when possible</source>
-        <translation type="unfinished">Renderizar transparencia siempre que sea posible</translation>
+        <translation>Renderizar tansparencia cuando sea posible</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="99"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished">Advertencia: valor de la anchura %1 no es un número entero, ignorando.</translation>
+        <translation>Advertencia: valor de la anchura %1 no es un número entero. Posponer.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="110"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished">Advertencia: valor de la altura %1 no es un número entero, ignorando.</translation>
+        <translation>Advertencia: valor de la altura %1 no es un número entero. Posponer.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="121"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished">Advertencia: valor de inicio %1 no es un número entero, ignorando.</translation>
+        <translation>Advertencia: valor de inicio %1 no es un número entero. Posponer.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="126"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation type="unfinished">Advertencia: valor de inicio debe ser al menos 1, ignorando</translation>
+        <translation>Advertencia: el valor de inicio debe ser por lo menos 1. Posponer</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="147"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="unfinished">Advertencia: valor final %1 no es un número entero, ignorando.</translation>
+        <translation>Advertencia: valor final %1 no es un número entero. Posponer.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="153"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation type="unfinished">Advertencia: valor final %1 es más pequeño que valor de inicio %2, ignorando.</translation>
+        <translation>Advertencia: valor final %1 es más pequeño que valor de inicio %2. Posponer.</translation>
     </message>
 </context>
 <context>
@@ -912,7 +902,7 @@ Por favor confirme la selección y vuelva a intentarlo.</translation>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="149"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation>Último fotograma que se desea incluir al exportar el vídeo</translation>
+        <translation>Último fotograma que desea incluir al exportar el vídeo</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="152"/>
@@ -922,7 +912,7 @@ Por favor confirme la selección y vuelva a intentarlo.</translation>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="215"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation>Primer fotograma que se desea incluir al exportar el vídeo</translation>
+        <translation>Primer fotograma que desea incluir al exportar el vídeo</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="218"/>
@@ -937,7 +927,7 @@ Por favor confirme la selección y vuelva a intentarlo.</translation>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="177"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;El fotograma final está configurado como el último fotograma-clave que se puede pintar (útil cuando solo se desea exportar al último fotograma animado)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;El fotograma final es asignado al último fotograma-clave que se puede pintar (Útil cuando solo desea exportar hasta el último fotograma de la animación)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="183"/>
@@ -988,7 +978,7 @@ Por favor confirme la selección y vuelva a intentarlo.</translation>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="154"/>
         <source>The last frame you want to include in the exported movie</source>
-        <translation>Último fotograma que se desea incluir al exportar el vídeo</translation>
+        <translation>Último fotograma que desea incluir al exportar el vídeo</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="157"/>
@@ -998,7 +988,7 @@ Por favor confirme la selección y vuelva a intentarlo.</translation>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="176"/>
         <source>The first frame you want to include in the exported movie</source>
-        <translation>Primer fotograma que se desea incluir al exportar el vídeo</translation>
+        <translation>Primer fotograma que desea incluir al exportar el vídeo</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="179"/>
@@ -1178,7 +1168,7 @@ Por favor confirme la selección y vuelva a intentarlo.</translation>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="235"/>
         <source>The path is empty.</source>
-        <translation type="unfinished"></translation>
+        <translation>La ruta está vacía.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="250"/>
@@ -1305,13 +1295,9 @@ Por favor confirme la selección y vuelva a intentarlo.</translation>
         <translation>Número de modificaciones antes de grabar automáticamente:</translation>
     </message>
     <message>
-        <source>&lt;br&gt;&lt;br&gt;Error: your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please include the following details in your issue:</source>
-        <translation type="vanished">&lt;br&gt;&lt;br&gt;Error: Pueda que su archivo no se haya grabado correctamente. Caso este error sea un problema asociado a Pencil2D, por favor abra un nuevo post en:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Por favor incluya los siguientes datos en su problema:</translation>
-    </message>
-    <message>
         <location filename="../app/src/filespage.cpp" line="96"/>
         <source>&lt;br&gt;&lt;br&gt;Error: your preset may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please include the following details in your issue:</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;br&gt;&lt;br&gt;Falla: su modelo puede que no se haya grabado correctamente. Si piensa que la falla fue debida a un problema con Pencil2D, por favor haga un informe:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Asegúrese de incluir los siguientes detalles en su reporte:</translation>
     </message>
 </context>
 <context>
@@ -1419,7 +1405,7 @@ Por favor confirme la selección y vuelva a intentarlo.</translation>
     <message>
         <location filename="../app/ui/generalpage.ui" line="180"/>
         <source>Antialiasing</source>
-        <translation>Suavizado</translation>
+        <translation>Alisado</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="120"/>
@@ -2022,7 +2008,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="459"/>
         <source>Reset Windows</source>
-        <translation>Restaurar Ventanas</translation>
+        <translation>Resetear Ventanas</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="468"/>
@@ -2038,10 +2024,6 @@ Lea las instrucciones y vuela a intentarlo</translation>
         <location filename="../app/ui/mainwindow2.ui" line="482"/>
         <source>Rotate Clockwise</source>
         <translation>Rotar Derecha</translation>
-    </message>
-    <message>
-        <source>Reset Zoom/Rotate</source>
-        <translation type="vanished">Restaurar Zoom/Rotación</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="504"/>
@@ -2081,7 +2063,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="562"/>
         <source>Show next onion skin</source>
-        <translation>Mostrar papel cebolla posterior&#xa0;</translation>
+        <translation>Mostrar papel cebolla posterior </translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="571"/>
@@ -2213,7 +2195,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
         <location filename="../app/ui/mainwindow2.ui" line="797"/>
         <location filename="../app/ui/mainwindow2.ui" line="800"/>
         <source>Reset to default</source>
-        <translation>Restaurar Predeterminado</translation>
+        <translation>Resetear valor predeterminado</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="810"/>
@@ -2347,7 +2329,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1039"/>
         <source>Replace Palette...</source>
-        <translation>Substituir Paleta...</translation>
+        <translation>Reemplazar Paleta...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1044"/>
@@ -2388,12 +2370,12 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1112"/>
         <source>Center</source>
-        <translation type="unfinished"></translation>
+        <translation>Centro</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1117"/>
         <source>Reset Rotation</source>
-        <translation type="unfinished"></translation>
+        <translation>Resetear Rotación</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="312"/>
@@ -2418,7 +2400,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="492"/>
         <source>Reset</source>
-        <translation type="unfinished"></translation>
+        <translation>Resetear</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="823"/>
@@ -2542,7 +2524,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="600"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
-        <translation>No tiene permiso para escribir en el archivo que ha seleccionado. Asegúrese de tener permiso de escritura para este archivo antes de intentar guardarlo. Alternativamente, puede usar la opción del menú Guardar Como... para guardarlo en una ubicación donde pueda escribir.</translation>
+        <translation>No tiene permiso para escribir en el archivo que ha seleccionado. Asegúrese de tener permiso de escritura para este archivo antes de intentar guardarlo. Mientras tanto puede usar la opción del menú Guardar Como... para guardarlo en una ubicación donde pueda escribir.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="606"/>
@@ -2559,7 +2541,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="648"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
-        <translation>Se produjo una falla desconocida al intentar cargar el archivo y no podemos cargar su archivo.</translation>
+        <translation>Se produjo una falla desconocida al intentar cargar el archivo y no pudimos cargarlo.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="683"/>
@@ -2569,7 +2551,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="726"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;Ha ocurrido una falla y el archivo puede que no se haya guardado correctamente. Si piensa que este falla es un problema de Pencil2D, por favor haga un informe en:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Asegúrese de incluir los siguientes detalles en su reporte:</translation>
+        <translation>&lt;br&gt;&lt;br&gt;Ha ocurrido una falla y el archivo puede que no se haya grabado correctamente. Si piensa que la falla fue debida a un problema con Pencil2D, por favor haga un informe en:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Asegúrese de incluir los siguientes detalles en su reporte:</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="774"/>
@@ -2599,7 +2581,7 @@ Lea las instrucciones y vuela a intentarlo</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="847"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>No se puede importar imagen&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use una capa Bitmap para importar bitmaps.</translation>
+        <translation>No se puede importar la imagen&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use una capa Bitmap para importar bitmaps.</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="950"/>
@@ -2629,24 +2611,14 @@ Lea las instrucciones y vuela a intentarlo</translation>
         <location filename="../app/src/mainwindow2.cpp" line="1357"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Opening palette, will replace the old palette.
-Color(s) in strokes will be altered by this action!
-</source>
-        <translation type="vanished">Abriendo la paleta se substituirá la paleta antigua.
-El color en los trazos cambiará gracias a esta acción!
+        <translation>Abriendo la paleta se reemplazará la paleta antigua.
+El color en las pinceladas cambiará gracias a esta acción!
 </translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1359"/>
         <source>Open Palette</source>
         <translation>Abrir paleta</translation>
-    </message>
-    <message>
-        <source>Cancel</source>
-        <translation type="vanished">Cancelar</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1477"/>
@@ -2738,26 +2710,22 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="323"/>
         <source>Sound only</source>
-        <translation type="unfinished">Solo sonido</translation>
+        <translation>Solo sonido</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="324"/>
         <source>You need to be on a sound layer to import the audio</source>
-        <translation type="unfinished">Necesita estar en la capa Sonido para importar audio</translation>
+        <translation>Seleccione la capa Sonido para importar audio</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="336"/>
         <source>Move to an empty frame</source>
-        <translation type="unfinished">Mover a un fotograma vacío:</translation>
+        <translation>Mover a un fotograma vacío</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="337"/>
         <source>A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source> Move the scrubber to a empty position on the timeline and try again</source>
-        <translation type="vanished">Mueva el indicador para una posición vacía en la línea-de-tiempo y vuelva a intentarlo</translation>
+        <translation>Ya existe un fotograma en la posición: %1 Mueva el indicador para una posición vacía en la línea-de-tiempo y vuelva a intentarlo</translation>
     </message>
 </context>
 <context>
@@ -3092,7 +3060,7 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../app/ui/presetdialog.ui" line="37"/>
         <source>Always use this preset</source>
-        <translation>Siempre use este modelo</translation>
+        <translation>Siempre utilice este modelo</translation>
     </message>
 </context>
 <context>
@@ -4470,7 +4438,7 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="32"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
-        <translation>Ha ocurrido una falla al procesar su archivo. Esto por lo general quiere decir que su proyecto se encuentra parcialmente inaccesible. Puede intentarlo nuevamente utilizando una versión más reciente de Pencil2D, o puede intentarlo utilizando una copia de seguridad caso la posea. Puede contactarnos a través de los canales oficiales disponibles para que lo podamos ayudar. Para reportar fallas, la mejor manera de hacérnoslas llegar es:</translation>
+        <translation>Ha ocurrido una falla al procesar su archivo. Esto por lo general quiere decir que su proyecto se encuentra parcialmente inaccesible. Puede intentarlo de nuevo utilizando una versión más reciente de Pencil2D, o puede intentarlo utilizando una copia de seguridad caso la posea. Puede contactarnos a través de los canales oficiales disponibles para que lo podamos ayudar. Para reportar fallas, la mejor manera de hacérnoslas llegar es:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="79"/>
@@ -4516,125 +4484,6 @@ El color en los trazos cambiará gracias a esta acción!
         <location filename="../core_lib/src/movieexporter.cpp" line="716"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
         <translation>No se pudo empezar el soporte de vídeo, por favor vuelva a intentarlo.</translation>
-    </message>
-    <message>
-        <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation type="vanished">Pencil2D es un programa de animación/dibujo para Mac OS X, Windows y Linux. Te permite crear animaciones (cartoons) de manera tradicional y cuenta con mapa de bits y gráficos vectoriales.</translation>
-    </message>
-    <message>
-        <source>Path to the input pencil file.</source>
-        <translation type="vanished">Ruta del archivo de entrada pencil</translation>
-    </message>
-    <message>
-        <source>Render the file to &lt;output_path&gt;</source>
-        <translation type="vanished">Renderizar archivo a&lt;output_path&gt;</translation>
-    </message>
-    <message>
-        <source>output_path</source>
-        <translation type="vanished">ruta _de_salida</translation>
-    </message>
-    <message>
-        <source>Name of the camera layer to use</source>
-        <translation type="vanished">Nombre de la capa de cámara a utilizar</translation>
-    </message>
-    <message>
-        <source>layer_name</source>
-        <translation type="vanished">nombre_capa</translation>
-    </message>
-    <message>
-        <source>Width of the output frames</source>
-        <translation type="vanished">Ancho de los fotogramas de salida</translation>
-    </message>
-    <message>
-        <source>integer</source>
-        <translation type="vanished">entero</translation>
-    </message>
-    <message>
-        <source>Height of the output frames</source>
-        <translation type="vanished">Altura de los fotogramas de salida</translation>
-    </message>
-    <message>
-        <source>The first frame you want to include in the exported movie</source>
-        <translation type="vanished">Primer fotograma que se desea incluir al exportar el vídeo</translation>
-    </message>
-    <message>
-        <source>frame</source>
-        <translation type="vanished">fotograma</translation>
-    </message>
-    <message>
-        <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="vanished">Último fotograma que se desea incluir al exportar el vídeo. Podrá ser el último fotograma de animación o sonido que venga a utilizar automáticamente el último fotograma</translation>
-    </message>
-    <message>
-        <source>Render transparency when possible</source>
-        <translation type="vanished">Renderizar transparencia siempre que sea posible</translation>
-    </message>
-    <message>
-        <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation type="vanished">Advertencia: valor de la anchura %1 no es un número entero, ignorando.</translation>
-    </message>
-    <message>
-        <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation type="vanished">Advertencia: valor de la altura %1 no es un número entero, ignorando.</translation>
-    </message>
-    <message>
-        <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation type="vanished">Advertencia: valor de inicio %1 no es un número entero, ignorando.</translation>
-    </message>
-    <message>
-        <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation type="vanished">Advertencia: valor de inicio debe ser al menos 1, ignorando</translation>
-    </message>
-    <message>
-        <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="vanished">Advertencia: valor final %1 no es un número entero, ignorando.</translation>
-    </message>
-    <message>
-        <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation type="vanished">Advertencia: valor final %1 es más pequeño que valor de inicio %2, ignorando.</translation>
-    </message>
-    <message>
-        <source>Error: No input file specified.</source>
-        <translation type="vanished">Falla: No se especificó archivo de entrada.</translation>
-    </message>
-    <message>
-        <source>Error: the input file at &apos;%1&apos; does not exist</source>
-        <comment>Command line error</comment>
-        <translation type="vanished">Falla: archivo de entrada en &apos;%1&apos; no existe</translation>
-    </message>
-    <message>
-        <source>Error: the input path &apos;%1&apos; is not a file</source>
-        <comment>Command line error</comment>
-        <translation type="vanished">Falla: la ruta de acceso &apos;%1&apos; no es un archivo</translation>
-    </message>
-    <message>
-        <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation type="vanished">Advertencia: no se encontró la capa de cámara %1, ignorando.</translation>
-    </message>
-    <message>
-        <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
-        <comment>Command line warning</comment>
-        <translation type="vanished">Advertencia: formato de salida no es indicado o soportado. Utilizar PNG.</translation>
-    </message>
-    <message>
-        <source>Warning: Transparency is not currently supported in movie files</source>
-        <comment>Command line warning</comment>
-        <translation type="vanished">Advertencia: Transparencia no soportada en archivos de vídeo </translation>
-    </message>
-    <message>
-        <source>Exporting movie...</source>
-        <comment>Command line task progress</comment>
-        <translation type="vanished">Exportando vídeo...</translation>
-    </message>
-    <message>
-        <source>Done.</source>
-        <comment>Command line task done</comment>
-        <translation type="vanished">Hecho.</translation>
-    </message>
-    <message>
-        <source>Exporting image sequence...</source>
-        <comment>Command line task progress</comment>
-        <translation type="vanished">Exportando secuencia de imágenes...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="30"/>
@@ -4735,22 +4584,6 @@ El color en los trazos cambiará gracias a esta acción!
         <location filename="../core_lib/src/movieimporter.cpp" line="192"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
         <translation>El clip de vídeo es muy largo. Pencil2D solo soporta %1 fotogramas pero el vídeo va hasta %2 fotogramas. Por favor haga su vídeo más corto y vuelva a intentarlo</translation>
-    </message>
-    <message>
-        <source>Sound only</source>
-        <translation type="vanished">Solo sonido</translation>
-    </message>
-    <message>
-        <source>You need to be on a sound layer to import the audio</source>
-        <translation type="vanished">Necesita estar en la capa Sonido para importar audio</translation>
-    </message>
-    <message>
-        <source>Move to an empty frame</source>
-        <translation type="vanished">Mover a un fotograma vacío:</translation>
-    </message>
-    <message>
-        <source>A frame already exists on frame: </source>
-        <translation type="vanished">Ya existe un fotograma en el fotograma:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="379"/>
@@ -4992,7 +4825,7 @@ El color en los trazos cambiará gracias a esta acción!
         <location filename="../app/src/shortcutspage.cpp" line="338"/>
         <source>Toggle Next Onion Skin</source>
         <comment>Shortcut</comment>
-        <translation>Mostrar papel cebolla posterior&#xa0;</translation>
+        <translation>Mostrar papel cebolla posterior </translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="339"/>
@@ -5046,24 +4879,19 @@ El color en los trazos cambiará gracias a esta acción!
         <location filename="../app/src/shortcutspage.cpp" line="347"/>
         <source>Reset Windows</source>
         <comment>Shortcut</comment>
-        <translation>Restaurar Ventanas</translation>
+        <translation>Resetear Ventanas</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="348"/>
         <source>Reset View</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"></translation>
+        <translation>Resetear Vista</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="349"/>
         <source>Center View</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Reset Zoom/Rotate</source>
-        <comment>Shortcut</comment>
-        <translation type="vanished">Restaurar Zoom/Rotación</translation>
+        <translation>Vista Central</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="350"/>
@@ -5081,7 +4909,7 @@ El color en los trazos cambiará gracias a esta acción!
         <location filename="../app/src/shortcutspage.cpp" line="352"/>
         <source>Reset Rotation</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"></translation>
+        <translation>Resetear Rotación</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="353"/>
@@ -5375,12 +5203,12 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../core_lib/src/managers/selectionmanager.cpp" line="360"/>
         <source>Flip selection vertically</source>
-        <translation type="unfinished"></translation>
+        <translation>Girar selección verticalmente</translation>
     </message>
     <message>
         <location filename="../core_lib/src/managers/selectionmanager.cpp" line="364"/>
         <source>Flip selection horizontally</source>
-        <translation type="unfinished"></translation>
+        <translation>Girar selección horizontalmente</translation>
     </message>
 </context>
 <context>
@@ -5445,7 +5273,7 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="106"/>
         <source>%1 is already used, overwrite?</source>
-        <translation>%1 ya está usada, sobrescribir?</translation>
+        <translation>%1 ya está en uso, sobrescribir?</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="140"/>
@@ -5489,40 +5317,40 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="55"/>
         <source>No text</source>
-        <translation type="unfinished"></translation>
+        <translation>Sin texto</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="56"/>
         <source>Frames</source>
-        <translation type="unfinished"></translation>
+        <translation>Fotogramas</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="57"/>
         <source>SMPTE Timecode</source>
-        <translation type="unfinished"></translation>
+        <translation>Codificación SMPTE</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="58"/>
         <source>SFF Timecode</source>
-        <translation type="unfinished"></translation>
+        <translation>Codificación SFF</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="70"/>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="351"/>
         <source>Actual frame number</source>
-        <translation type="unfinished"></translation>
+        <translation>Número de Fotogramas actual</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="73"/>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="369"/>
         <source>Timecode format MM:SS:FF</source>
-        <translation type="unfinished"></translation>
+        <translation>Codificación formato MM:SS:FF</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="76"/>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="360"/>
         <source>Timecode format S:FF</source>
-        <translation type="unfinished"></translation>
+        <translation>Codificación formato SFF</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
@@ -5580,7 +5408,7 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="398"/>
         <source>%1</source>
-        <translation type="unfinished"></translation>
+        <translation>%1</translation>
     </message>
 </context>
 <context>
@@ -5671,11 +5499,7 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="293"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <source>Are you sure you want to delete layer: %1?</source>
-        <translation type="vanished">¿Seguro que deseas eliminar la capa: %1?</translation>
+        <translation>Estás seguro de que quieres eliminar la capa: %1? No podrás volver atrás.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="302"/>
@@ -5966,10 +5790,6 @@ El color en los trazos cambiará gracias a esta acción!
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <source>Brush</source>
-        <translation type="vanished">Pincel</translation>
-    </message>
-    <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="53"/>
         <source>Feather</source>
         <translation>Desvanecimiento</translation>
@@ -6005,14 +5825,6 @@ El color en los trazos cambiará gracias a esta acción!
         <translation>Forma</translation>
     </message>
     <message>
-        <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="vanished">Ajustar la Anchura del pincel&lt;br&gt;&lt;b&gt;[SHIFT]+arrastrar&lt;/b&gt;&lt;br&gt; para un ajuste rápido</translation>
-    </message>
-    <message>
-        <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="vanished">Ajustar el desvanecimiento del pincel&lt;br&gt;&lt;b&gt;[CTRL]+arrastrar&lt;/b&gt;&lt;br&gt;para un ajuste rápido</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Enable or disable feathering</source>
         <translation>Activar o desactivar desvanecimiento</translation>
@@ -6020,7 +5832,7 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../app/ui/tooloptions.ui" line="143"/>
         <source>Use Feather</source>
-        <translation>Usar desvanecimiento</translation>
+        <translation>Utilizar Desvanecimiento</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="150"/>
@@ -6031,11 +5843,6 @@ El color en los trazos cambiará gracias a esta acción!
         <location filename="../app/ui/tooloptions.ui" line="153"/>
         <source>Fill Contour</source>
         <translation>Rellenar Contorno</translation>
-    </message>
-    <message>
-        <source>Bezier</source>
-        <comment>Tool options</comment>
-        <translation type="vanished">Bézier</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="200"/>
@@ -6058,7 +5865,7 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../app/ui/tooloptions.ui" line="262"/>
         <source>Use stabilizer to interpolate strokes</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizar estabilizador para intercalar pinceladas</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="265"/>
@@ -6070,7 +5877,7 @@ El color en los trazos cambiará gracias a esta acción!
         <location filename="../app/ui/tooloptions.ui" line="210"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
-        <translation>Suavizado</translation>
+        <translation>Alisado</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="269"/>
@@ -6098,12 +5905,12 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../app/ui/tooloptions.ui" line="70"/>
         <source>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustar Anchura de la Pincelada&lt;br&gt;&lt;b&gt;[SHIFT]+arrastrar&lt;/b&gt;&lt;br&gt; para un ajuste rápido</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="106"/>
         <source>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"></translation>
+        <translation>Ajustar Desvanecimiento de la Pincelada&lt;br&gt;&lt;b&gt;[CTRL]+arrastrar&lt;/b&gt;&lt;br&gt;para un ajuste rápido</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="162"/>
@@ -6113,23 +5920,23 @@ El color en los trazos cambiará gracias a esta acción!
     <message>
         <location filename="../app/ui/tooloptions.ui" line="187"/>
         <source>Use Bézier curves to create curved lines</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizar curvas Bézier para crear líneas curvadas</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="190"/>
         <source>Bézier</source>
         <comment>Tool options</comment>
-        <translation type="unfinished"></translation>
+        <translation>Bézier</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="197"/>
         <source>Vary strokes based on pressure when drawing on a tablet</source>
-        <translation type="unfinished"></translation>
+        <translation>Variar trazos de acuerdo con la presión cuando dibuja con tableta</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="207"/>
         <source>Use anti-aliasing to create smooth edges</source>
-        <translation type="unfinished"></translation>
+        <translation>Utilizar alisado para crear bordes suaves</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="227"/>

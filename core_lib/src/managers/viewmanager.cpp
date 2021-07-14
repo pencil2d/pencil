@@ -35,7 +35,7 @@ const std::vector<qreal> gZoomLevels
 };
 
 
-ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
+ViewManager::ViewManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
     mDefaultEditorCamera = new Camera;
     mCurrentCamera = mDefaultEditorCamera;

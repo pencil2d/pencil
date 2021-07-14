@@ -63,6 +63,7 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(PRESERVEALPHA, false);
     mPropertyEnabled.insert(BEZIER, false);
     mPropertyEnabled.insert(ANTI_ALIASING, false);
+    mPropertyEnabled.insert(FILL_MODE, false);
     mPropertyEnabled.insert(STABILIZATION, false);
 }
 
@@ -452,6 +453,11 @@ void BaseTool::setAA(const int useAA)
     properties.useAA = useAA;
 }
 
+void BaseTool::setFillMode(const int mode)
+{
+    properties.fillMode = mode;
+}
+
 void BaseTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
@@ -460,6 +466,31 @@ void BaseTool::setStabilizerLevel(const int level)
 void BaseTool::setTolerance(const int tolerance)
 {
     properties.tolerance = tolerance;
+}
+
+void BaseTool::setToleranceEnabled(const bool enabled)
+{
+    properties.toleranceEnabled = enabled;
+}
+
+void BaseTool::setFillExpand(const int fillExpandValue)
+{
+    properties.bucketFillExpand = fillExpandValue;
+}
+
+void BaseTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+}
+
+void BaseTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+}
+
+void BaseTool::setFillExpandEnabled(const bool enabled)
+{
+    properties.bucketFillExpandEnabled = enabled;
 }
 
 void BaseTool::setUseFillContour(const bool useFillContour)
