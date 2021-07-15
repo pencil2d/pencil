@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -34,7 +34,7 @@ class VectorImage : public KeyFrame
 public:
     VectorImage();
     VectorImage(const VectorImage&);
-    virtual ~VectorImage();
+    ~VectorImage() override;
     VectorImage& operator=(const VectorImage& a);
 
     VectorImage* clone() override;
@@ -148,6 +148,9 @@ public:
 
     QSize getSize() { return mSize; }
 
+    void setOpacity(qreal opacity) { mOpacity = opacity; }
+    qreal getOpacity() const { return mOpacity; }
+
 private:
     void addPoint(int curveNumber, int vertexNumber, qreal fraction);
 
@@ -164,6 +167,7 @@ private:
     QRectF mSelectionRect;
     QTransform mSelectionTransformation;
     QSize mSize;
+    qreal mOpacity = 1.0;
 };
 
 #endif

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -18,9 +18,7 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QPainter>
 #include <QResizeEvent>
-#include <QPixmapCache>
 #include <QStyleOption>
-#include <QStylePainter>
 #include <QRect>
 #include <QDebug>
 #include "pencildef.h"

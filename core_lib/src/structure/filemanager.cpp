@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 #include <ctime>
 #include <QDir>
-#include "pencildef.h"
+#include <QVersionNumber>
 #include "qminiz.h"
 #include "fileformat.h"
 #include "object.h"
@@ -45,7 +45,7 @@ FileManager::FileManager(QObject* parent) : QObject(parent)
     srand(static_cast<uint>(time(nullptr)));
 }
 
-Object* FileManager::load(QString sFileName)
+Object* FileManager::load(const QString& sFileName)
 {
     DebugDetails dd;
     dd << QString("File name: ").append(sFileName);
@@ -72,14 +72,14 @@ Object* FileManager::load(QString sFileName)
 
     if (oldFormat)
     {
-        dd << "Recognized Old Pencil File Format (*.pcl) !";
+        dd << "Recognized Old Pencil2D File Format (*.pcl) !";
 
         strMainXMLFile = sFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dd << "Recognized New zipped Pencil File Format (*.pclx) !";
+        dd << "Recognized New zipped Pencil2D File Format (*.pclx) !";
 
         unzip(sFileName, obj->workingDir());
 
@@ -185,6 +185,19 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
             ObjectData* projectData = loadProjectData(element);
             object->setData(projectData);
         }
+        else if (element.tagName() == "version")
+        {
+            QVersionNumber fileVersion = QVersionNumber::fromString(element.text());
+            QVersionNumber appVersion = QVersionNumber::fromString(APP_VERSION);
+
+            if (!fileVersion.isNull())
+            {
+                if (appVersion < fileVersion)
+                {
+                    qWarning() << "You are opening a newer project file in an older version of Pencil2D!";
+                }
+            }
+        }
         else
         {
             Q_ASSERT(false);
@@ -203,7 +216,7 @@ bool FileManager::isOldForamt(const QString& fileName) const
     return !(MiniZ::isZip(fileName));
 }
 
-Status FileManager::save(const Object* object, QString sFileName)
+Status FileManager::save(const Object* object, const QString& sFileName)
 {
     DebugDetails dd;
     dd << __FUNCTION__;
@@ -211,8 +224,14 @@ Status FileManager::save(const Object* object, QString sFileName)
 
     if (object == nullptr)
     {
-        dd << "object parameter is null";
+        dd << "Object parameter is null";
         return Status(Status::INVALID_ARGUMENT, dd);
+    }
+    if (sFileName.isEmpty()) {
+        dd << "File name is empty";
+        return Status(Status::INVALID_ARGUMENT, dd,
+                      tr("Invalid Save Path"),
+                      tr("The path is empty."));
     }
 
     const int totalCount = object->totalKeyFrameCount();
@@ -252,14 +271,14 @@ Status FileManager::save(const Object* object, QString sFileName)
     const bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
     if (isOldType)
     {
-        dd << "Old Pencil File Format (*.pcl) !";
+        dd << "Old Pencil2D File Format (*.pcl) !";
 
         sMainXMLFile = sFileName;
         sDataFolder = sMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dd << "New zipped Pencil File Format (*.pclx) !";
+        dd << "New zipped Pencil2D File Format (*.pclx) !";
 
         sTempWorkingFolder = object->workingDir();
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
@@ -569,7 +588,7 @@ Status FileManager::writeKeyFrameFiles(const Object* object, const QString& data
     {
         Layer* layer = object->getLayer(i);
 
-        dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
+        dd << QString("Layer[%1] = [id=%2, type=%3, name=%4]").arg(i).arg(layer->id()).arg(layer->type()).arg(layer->name());
 
         Status st = layer->save(dataFolder, filesFlushed, [this] { progressForward(); });
         if (!st.ok())
@@ -613,6 +632,11 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXml, Q
     // save object
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
+
+    // save Pencil2D version
+    QDomElement versionElem = xmlDoc.createElement("version");
+    versionElem.appendChild(xmlDoc.createTextNode(QString(APP_VERSION)));
+    root.appendChild(versionElem);
 
     dd << "Writing main xml file...";
 
@@ -850,9 +874,11 @@ Status FileManager::rebuildMainXML(Object* object)
 }
 /**
  *  Rebuild a layer xml tag. example:
+ *  @code{.xml}
  *    <layer id="2" type="2" visibility="1" name="Vector Layer">
  *      <image src="002.001.vec" frame="1"/>
  *    </layer>
+ *  @endcode
  */
 Status FileManager::rebuildLayerXmlTag(QDomDocument& doc,
                                        QDomElement& elemObject,
@@ -896,11 +922,11 @@ QString FileManager::recoverLayerName(Layer::LAYER_TYPE type, int index)
     switch (type)
     {
     case Layer::BITMAP:
-        return QString("%1 %2").arg(tr("Bitmap Layer")).arg(index);
+        return tr("Bitmap Layer %1").arg(index);
     case Layer::VECTOR:
-        return QString("%1 %2").arg(tr("Vector Layer")).arg(index);
+        return tr("Vector Layer %1").arg(index);
     case Layer::SOUND:
-        return QString("%1 %2").arg(tr("Sound Layer")).arg(index);
+        return tr("Sound Layer %1").arg(index);
     default:
         Q_ASSERT(false);
     }

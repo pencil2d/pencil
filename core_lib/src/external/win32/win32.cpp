@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2009 Mj Mendoza IV
 Copyright (C) 2012-2020 Matthew Chiawen Chang
@@ -16,25 +16,11 @@ GNU General Public License for more details.
 
 */
 
-#include <cstdint>
-#include <QFile>
-#include <QProcess>
-#include <QDir>
-#include <QString>
-#include <QProgressDialog>
-#include <QImageReader>
-#include <QImageWriter>
-#include <QSettings>
-#include <QDebug>
-
-#include "object.h"
-#include "editor.h"
-#include "layersound.h"
 #include "platformhandler.h"
 
 namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
-
+    bool isDarkMode() { return false; };
     void initialise() {};
 }

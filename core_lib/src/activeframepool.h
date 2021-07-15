@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -40,6 +40,7 @@ public:
     void clear();
     void resize(quint64 memoryBudget);
     bool isFrameInPool(KeyFrame*);
+    void setMinFrameCount(size_t frameCount);
 
     void onKeyFrameDestroy(KeyFrame*) override;
 
@@ -54,6 +55,7 @@ private:
     std::unordered_map<KeyFrame*, list_iterator_t> mCacheFramesMap;
     quint64 mMemoryBudgetInBytes = 1024 * 1024 * 1024; // 1GB
     quint64 mTotalUsedMemory = 0;
+    size_t mMinFrameCount = 15;
 };
 
 #endif // ACTIVEFRAMEPOOL_H

@@ -209,7 +209,7 @@ bool PointerEvent::isAccepted()
     return false;
 }
 
-QEvent::Type PointerEvent::type() const
+QEvent::Type PointerEvent::eventType() const
 {
     if (mMouseEvent)
     {
@@ -220,6 +220,18 @@ QEvent::Type PointerEvent::type() const
         return mTabletEvent->type();
     }
     return QEvent::None;
+}
+
+PointerEvent::InputType PointerEvent::inputType() const
+{
+    if (mMouseEvent) {
+        return InputType::Mouse;
+    }
+    else if (mTabletEvent)
+    {
+        return InputType::Tablet;
+    }
+    return InputType::Unknown;
 }
 
 QTabletEvent::TabletDevice PointerEvent::device() const

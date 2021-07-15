@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -39,8 +39,8 @@ class FileManager : public QObject
 public:
     FileManager(QObject* parent = 0);
 
-    Object* load(QString sFilenNme);
-    Status  save(const Object*, QString sFileName);
+    Object* load(const QString& sFilenNme);
+    Status  save(const Object*, const QString& sFileName);
     Status  writeToWorkingFolder(const Object*);
 
     QList<ColorRef> loadPaletteFile(QString strFilename);

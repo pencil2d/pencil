@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -58,8 +58,8 @@ private:
 
     QString mOriginalSoundClipName;
 
-    // Duration in seconds. This is stored to update the length of the
-    // frame when the FPS changes.
+    // Duration in seconds.
+    // This is stored to update the length of the frame when the FPS changes.
     int64_t mDuration = 0;
 };
 

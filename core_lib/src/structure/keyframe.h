@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -32,6 +32,8 @@ public:
     explicit KeyFrame();
     explicit KeyFrame(const KeyFrame& k2);
     virtual ~KeyFrame();
+
+    KeyFrame& operator=(const KeyFrame& k2);
 
     int  pos() const { return mFrame; }
     void setPos(int position) { mFrame = position; }

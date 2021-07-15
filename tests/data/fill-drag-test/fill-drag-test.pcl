@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE PencilDocument>
+<document>
+  <projectdata>
+    <currentFrame value="1"/>
+    <currentColor b="0" a="157" r="0" g="0"/>
+    <currentLayer value="3"/>
+    <currentView m22="1" m12="0" dx="0" dy="0" m11="1" m21="0"/>
+    <fps value="24"/>
+    <isLoop value="false"/>
+    <isRangedPlayback value="false"/>
+    <markInFrame value="1"/>
+    <markOutFrame value="10"/>
+  </projectdata>
+  <object>
+    <layer type="5" height="11" id="1" name="Camera Layer" visibility="1" width="29">
+      <camera dx="135" r="0" dy="51" easing="0" frame="1" s="1"/>
+    </layer>
+    <layer type="2" id="2" name="Vector Layer" visibility="1">
+      <image opacity="1" frame="1" src="002.001.vec"/>
+    </layer>
+    <layer type="1" id="4" name="Fill" visibility="1">
+      <image topLeftY="0" topLeftX="0" opacity="1" frame="1" src="004.001.png"/>
+    </layer>
+    <layer type="1" id="3" name="Stroke" visibility="1">
+      <image topLeftY="-57" topLeftX="-149" opacity="1" frame="1" src="003.001.png"/>
+    </layer>
+  </object>
+  <version>0.6.6</version>
+</document>

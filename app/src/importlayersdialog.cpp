@@ -1,12 +1,27 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #include "importlayersdialog.h"
 #include "ui_importlayersdialog.h"
 
-#include <QFileDialog>
 #include <QProgressDialog>
 
 #include "app_util.h"
 #include "filemanager.h"
-#include "filedialogex.h"
+#include "filedialog.h"
 #include "fileformat.h"
 #include "layermanager.h"
 #include "soundmanager.h"
@@ -44,10 +59,7 @@ void ImportLayersDialog::getFileName()
 {
     mFileName.clear();
     ui->lwLayers->clear();
-    FileDialog fd(this);
-    mFileName = QFileDialog::getOpenFileName(this, tr("Choose file"),
-                                             fd.getLastOpenPath(FileType::ANIMATION),
-                                             PFF_PROJECT_EXT_FILTER);
+    mFileName = FileDialog::getOpenFileName(this, FileType::ANIMATION, tr("Choose file"));
     if (mFileName.isEmpty()) { return; }
     getLayers();
 }
@@ -87,15 +99,12 @@ void ImportLayersDialog::importLayers()
             if (mImportLayer->type() == Layer::SOUND)
             {
                 LayerSound* layerSound = static_cast<LayerSound*>(mImportLayer);
-                int count = 0;
-                while (count < layerSound->getNextKeyFramePosition(count))
+                layerSound->foreachKeyFrame([this](KeyFrame* key)
                 {
-                    int newKeyPos = layerSound->getNextKeyFramePosition(count);
-                    SoundClip* clip = new SoundClip;
-                    clip = layerSound->getSoundClipWhichCovers(newKeyPos);
+                    SoundClip* clip = dynamic_cast<SoundClip*>(key);
                     Status st = mEditor->sound()->loadSound(clip, clip->fileName());
-                    count = newKeyPos;
-                }
+                    Q_ASSERT(st.ok());
+                });
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -63,6 +63,7 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(PRESERVEALPHA, false);
     mPropertyEnabled.insert(BEZIER, false);
     mPropertyEnabled.insert(ANTI_ALIASING, false);
+    mPropertyEnabled.insert(FILL_MODE, false);
     mPropertyEnabled.insert(STABILIZATION, false);
 }
 
@@ -210,30 +211,39 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
 
         switch(mode)
         {
-            case MoveMode::MIDDLE:
-            {
-                if (type == SELECT) {
-                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-                } else {
-                    return Qt::ArrowCursor;
-                }
-                break;
+        case MoveMode::PERSP_LEFT:
+        case MoveMode::PERSP_RIGHT:
+        case MoveMode::PERSP_MIDDLE:
+        case MoveMode::PERSP_SINGLE:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            break;
+        }
+        case MoveMode::MIDDLE:
+        {
+            if (type == SELECT) {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            } else {
+                return Qt::ArrowCursor;
             }
-            case MoveMode::TOPLEFT:
-            case MoveMode::BOTTOMRIGHT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-                break;
-            }
-            case MoveMode::TOPRIGHT:
-            case MoveMode::BOTTOMLEFT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-                break;
-            }
-            default:
-                return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
-                break;
+            break;
+        }
+        case MoveMode::TOPLEFT:
+        case MoveMode::BOTTOMRIGHT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+            break;
+        }
+        case MoveMode::TOPRIGHT:
+        case MoveMode::BOTTOMLEFT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+            break;
+        }
+
+        default:
+            return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
+            break;
         }
         cursorPainter.end();
     }
@@ -443,6 +453,11 @@ void BaseTool::setAA(const int useAA)
     properties.useAA = useAA;
 }
 
+void BaseTool::setFillMode(const int mode)
+{
+    properties.fillMode = mode;
+}
+
 void BaseTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
@@ -451,6 +466,31 @@ void BaseTool::setStabilizerLevel(const int level)
 void BaseTool::setTolerance(const int tolerance)
 {
     properties.tolerance = tolerance;
+}
+
+void BaseTool::setToleranceEnabled(const bool enabled)
+{
+    properties.toleranceEnabled = enabled;
+}
+
+void BaseTool::setFillExpand(const int fillExpandValue)
+{
+    properties.bucketFillExpand = fillExpandValue;
+}
+
+void BaseTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+}
+
+void BaseTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+}
+
+void BaseTool::setFillExpandEnabled(const bool enabled)
+{
+    properties.bucketFillExpandEnabled = enabled;
 }
 
 void BaseTool::setUseFillContour(const bool useFillContour)

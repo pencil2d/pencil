@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -17,21 +17,9 @@ GNU General Public License for more details.
 #include "onionskinwidget.h"
 #include "ui_onionskin.h"
 
-#include <QSettings>
-#include <QDebug>
-#include <QtMath>
-
-#include <QComboBox>
-#include <QMessageBox>
-#include <QToolButton>
-#include <QGridLayout>
-#include <QSlider>
-#include <QGroupBox>
-#include <QLabel>
-
-#include "spinslider.h"
 #include "preferencemanager.h"
 #include "editor.h"
+#include "flowlayout.h"
 #include "util.h"
 
 OnionSkinWidget::OnionSkinWidget(QWidget *parent) :
@@ -39,6 +27,11 @@ OnionSkinWidget::OnionSkinWidget(QWidget *parent) :
     ui(new Ui::OnionSkin)
 {
     ui->setupUi(this);
+
+    clearFocusOnFinished(ui->onionPrevFramesNumBox);
+    clearFocusOnFinished(ui->onionNextFramesNumBox);
+    clearFocusOnFinished(ui->onionMinOpacityBox);
+    clearFocusOnFinished(ui->onionMaxOpacityBox);
 }
 
 OnionSkinWidget::~OnionSkinWidget()
@@ -50,6 +43,18 @@ void OnionSkinWidget::initUI()
 {
     updateUI();
     makeConnections();
+
+    // Change the horizontal layout in the Distributed Opacity group box to a
+    // flow layout to reduce the minimum width
+    FlowLayout *opacityLayout = new FlowLayout;
+    opacityLayout->setAlignment(Qt::AlignHCenter);
+    opacityLayout->setContentsMargins(0, 6, 0, 6);
+    ui->opacityGroup->layout()->removeWidget(ui->minOpacityGroup);
+    ui->opacityGroup->layout()->removeWidget(ui->maxOpacityGroup);
+    opacityLayout->addWidget(ui->minOpacityGroup);
+    opacityLayout->addWidget(ui->maxOpacityGroup);
+    delete ui->opacityGroup->layout();
+    ui->opacityGroup->setLayout(opacityLayout);
 
 #ifdef __APPLE__
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
@@ -94,6 +99,9 @@ void OnionSkinWidget::updateUI()
 
     QSignalBlocker b3(ui->onionBlueButton);
     ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
+
+    ui->onionRedButton->setEnabled(ui->onionPrevButton->isChecked());
+    ui->onionBlueButton->setEnabled(ui->onionNextButton->isChecked());
 
     QSignalBlocker b4(ui->onionRedButton);
     ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));

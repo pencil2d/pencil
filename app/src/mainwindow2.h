@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2008-2009 Mj Mendoza IV
 Copyright (C) 2012-2020 Matthew Chiawen Chang
@@ -42,6 +42,8 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class LayerOpacityDialog;
+class QLabel;
 class PegBarAlignmentDialog;
 enum class SETTING;
 
@@ -67,8 +69,10 @@ public slots:
     void updateSaveState();
     void clearRecentFilesList();
     void openPegAlignDialog();
+    void openLayerOpacityDialog();
     void currentLayerChanged();
     void selectionChanged();
+    void viewFlipped();
 
 public:
     void newDocument();
@@ -82,22 +86,17 @@ public:
     // import
     void importImage();
     void importImageSequence();
-    void importImageSequenceNumbered();
-    void addLayerByFilename(QString strFilePath);
     void importPredefinedImageSet();
     void importLayers();
     void importMovieVideo();
     void importGIF();
-    void importMovieAudio();
 
     void lockWidgets(bool shouldLock);
 
-    void setSoundScrubActive(bool b);
-    void setSoundScrubMsec(int msec);
     void setOpacity(int opacity);
     void preferences();
 
-    void openFile(QString filename);
+    void openFile(const QString& filename);
 
     PreferencesDialog* getPrefDialog() { return mPrefDialog; }
 
@@ -106,7 +105,6 @@ public:
 
 signals:
     void updateRecentFilesList(bool b);
-    void appLostFocus();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
@@ -114,10 +112,11 @@ protected:
     void showEvent(QShowEvent*) override;
 
 private:
-    bool newObject();
+    void newObject();
     bool newObjectFromPresets(int presetIndex);
-    bool openObject(QString strFilename);
+    bool openObject(const QString& strFilename);
     bool saveObject(QString strFileName);
+    void closeDialogs();
 
     void createDockWidgets();
     void createMenus();
@@ -156,7 +155,7 @@ private:
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
     ToolBoxWidget*        mToolBox = nullptr;
-    Timeline2*            mTimeline2 = nullptr;
+    //Timeline2*          mTimeline2 = nullptr;
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;
@@ -171,6 +170,7 @@ private:
     BackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
+    LayerOpacityDialog* mLayerOpacityDialog = nullptr;
 
     void createToolbars();
 private:
@@ -184,8 +184,11 @@ private:
     // a hack for MacOS because closeEvent fires twice
     bool m2ndCloseEvent = false;
 
-    // whether we are currently importing an image sequence.
-    bool mIsImportingImageSequence = false;
+    // statusbar widgets
+    QLabel* mZoomLabel = nullptr;
+
+    // Whether to suppress the auto save dialog due to internal work
+    bool mSuppressAutoSaveDialog = false;
 
     Ui::MainWindow2* ui = nullptr;
 };

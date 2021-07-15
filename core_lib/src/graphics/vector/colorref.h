@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -19,10 +19,12 @@ GNU General Public License for more details.
 #define COLORREF_H
 
 #include <QColor>
+#include <QCoreApplication>
 #include <QString>
 
 class ColorRef
 {
+    Q_DECLARE_TR_FUNCTIONS(ColorRef)
 public:
     ColorRef();
     ColorRef(QColor theColor, QString theName = QString());

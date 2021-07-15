@@ -1,3 +1,19 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 // PredefinedSetModel.cpp
 #include "predefinedsetmodel.h"
 
@@ -34,13 +50,13 @@ QVariant PredefinedSetModel::data(const QModelIndex &index, int role) const
         const int row = index.row();
         const int column = index.column();
 
-        const int& keyFrameIndex = mKeySet.keyFrameIndexAt(row);
-        const QString& filePath = mKeySet.filePathAt(row);
-        if (column == PredefinedKeySet::ColumnType::FILES) {
-            return QString("%1").arg(filePath);
+        if (column == PredefinedKeySet::ColumnType::FILES)
+        {
+            return mKeySet.filePathAt(row);
         }
-        if (column == PredefinedKeySet::ColumnType::KEYFRAMEPOS) {
-            return QString("%1").arg(keyFrameIndex);
+        else if (column == PredefinedKeySet::ColumnType::KEYFRAMEPOS)
+        {
+            return QString::number(mKeySet.keyFrameIndexAt(row));
         }
     }
     return QVariant();

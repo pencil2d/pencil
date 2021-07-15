@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -52,7 +52,7 @@ public:
     };
 
     explicit Layer(Object*, LAYER_TYPE);
-    virtual ~Layer();
+    ~Layer() override;
 
     int id() const { return mId; }
     LAYER_TYPE type() const { return meType; }
@@ -90,18 +90,17 @@ public:
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);
-    bool moveKeyFrameForward(int position);
-    bool moveKeyFrameBackward(int position);
+    bool moveKeyFrame(int position, int offset);
     bool loadKey(KeyFrame*);
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
     KeyFrame *getKeyFrameWhichCovers(int frameNumber) const;
-    bool getVisibility() { return mVisible; }
+    bool getVisibility() const { return mVisible; }
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
 
-    void setModified(int position, bool isModified);
+    void setModified(int position, bool isModified) const;
 
     // Handle selection
     bool isFrameSelected(int position) const;
@@ -112,20 +111,27 @@ public:
     void deselectAll();
 
     bool moveSelectedFrames(int offset);
+    QList<int> getListOfSelectedFrames() { return mSelectedFrames_byPosition; }
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
 
-    // graphic representation -- could be put in another class
-    void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize) const;
-    void paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize) const;
-    void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
-    void paintSelection(QPainter& painter, int x, int y, int height, int width) const;
-    void mouseDoubleClick(QMouseEvent*, int frameNumber);
-
-    virtual void editProperties(); // TODO: it's used by camera layers only, should move somewhere else
-
     bool isPaintable() const;
+
+    /** Returns a list of dirty frame positions */
+    QList<int> dirtyFrames() const { return mDirtyFrames; }
+
+    /** Mark the frame position as dirty.
+     *  Any operation causing the frame to be modified, added, updated or removed, should call this. */
+    void markFrameAsDirty(const int frameNumber) { mDirtyFrames << frameNumber; }
+
+    /** Clear the list of dirty keyframes */
+    void clearDirtyFrames() { mDirtyFrames.clear(); }
+
+    QList<int> getSelectedFrameList() { return mSelectedFrames_byPosition; }
+
+signals:
+    void selectedFramesChanged();
 
 protected:
     void setId(int LayerId) { mId = LayerId; }
@@ -146,6 +152,9 @@ private:
     //
     QList<int> mSelectedFrames_byLast; // Used to handle selection range (based on last selected
     QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
+
+    // Used for clearing cache for modified frames.
+    QList<int> mDirtyFrames;
 };
 
 #endif

@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -55,8 +55,14 @@ enum ToolPropertyType
     USEFEATHER,
     VECTORMERGE,
     ANTI_ALIASING,
+    FILL_MODE,
     STABILIZATION,
     TOLERANCE,
+    USETOLERANCE,
+    BUCKETFILLEXPAND,
+    USEBUCKETFILLEXPAND,
+    BUCKETFILLLAYERMODE,
+    BUCKETFILLLAYERREFERENCEMODE,
     FILLCONTOUR
 };
 
@@ -72,6 +78,13 @@ enum StabilizationLevel
     STRONG
 };
 
+enum TimecodeTextLevel
+{
+    NOTEXT,
+    FRAMES, // FF
+    SMPTE,  // HH:MM:SS:FF
+    SFF     // S:FF
+};
 
 enum class LayerVisibility
 {
@@ -124,7 +137,9 @@ const static int MaxFramesBound = 9999;
 #define CMD_ZOOM_OUT "CmdZoomOut"
 #define CMD_ROTATE_CLOCK "CmdRotateClockwise"
 #define CMD_ROTATE_ANTI_CLOCK "CmdRotateAntiClockwise"
+#define CMD_RESET_ROTATION "CmdResetRotation"
 #define CMD_RESET_ZOOM_ROTATE "CmdResetZoomRotate"
+#define CMD_CENTER_VIEW "CmdCenterView"
 #define CMD_ZOOM_400 "CmdZoom400"
 #define CMD_ZOOM_300 "CmdZoom300"
 #define CMD_ZOOM_200 "CmdZoom200"
@@ -240,11 +255,16 @@ const static int MaxFramesBound = 9999;
 #define SETTING_OVERLAY_THIRDS   "OverlayThirds"
 #define SETTING_OVERLAY_GOLDEN   "OverlayGolden"
 #define SETTING_OVERLAY_SAFE     "OverlaySafe"
+#define SETTING_OVERLAY_PERSPECTIVE1 "OverlayPerspective1"
+#define SETTING_OVERLAY_PERSPECTIVE2 "OverlayPerspective2"
+#define SETTING_OVERLAY_PERSPECTIVE3 "OverlayPerspective3"
+#define SETTING_OVERLAY_ANGLE    "OverlayAngle"
 #define SETTING_TITLE_SAFE_ON    "TitleSafeOn"
 #define SETTING_TITLE_SAFE       "TitleSafe"
 #define SETTING_ACTION_SAFE_ON   "ActionSafeOn"
 #define SETTING_ACTION_SAFE      "ActionSafe"
 #define SETTING_OVERLAY_SAFE_HELPER_TEXT_ON "OverlaySafeHelperTextOn"
+#define SETTING_TIMECODE_TEXT    "TimecodeText"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
@@ -257,6 +277,16 @@ const static int MaxFramesBound = 9999;
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
 #define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
 #define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
+
+// Ideally this should also BucketTolerance eg.. but for compatibility sake, i'm not changing it now
+#define SETTING_BUCKET_TOLERANCE "Tolerance"
+#define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
+#define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"
+#define SETTING_BUCKET_FILL_EXPAND_ON "BucketFillExpandEnabled"
+#define SETTING_BUCKET_FILL_TO_LAYER_MODE "BucketFillToLayerMode"
+#define SETTING_BUCKET_FILL_REFERENCE_MODE "BucketFillReferenceMode"
+
+#define SETTING_FILL_MODE "FillMode"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

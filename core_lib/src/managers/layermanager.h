@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -67,6 +67,8 @@ public:
     int lastKeyFrameIndex();
 
     int animationLength(bool includeSounds = true);
+
+    /** This should be emitted whenever the animation length frames, eg. adding, removing, duplicating */
     void notifyAnimationLengthChanged();
 
     QString nameSuggestLayer(const QString& name);

@@ -10,6 +10,10 @@ enum class MoveMode {
     BOTTOMRIGHT,
     ROTATION,
     SYMMETRY,
+    PERSP_SINGLE,
+    PERSP_LEFT,
+    PERSP_RIGHT,
+    PERSP_MIDDLE,
     NONE
 };
 
