@@ -38,6 +38,7 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+#include "overlaymanager.h"
 
 ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent)
 {
@@ -122,6 +123,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::OVERLAY_THIRDS:
     case SETTING::OVERLAY_GOLDEN:
     case SETTING::OVERLAY_SAFE:
+    case SETTING::OVERLAY_PERSPECTIVE1:
+    case SETTING::OVERLAY_PERSPECTIVE2:
+    case SETTING::OVERLAY_PERSPECTIVE3:
     case SETTING::ACTION_SAFE_ON:
     case SETTING::ACTION_SAFE:
     case SETTING::TITLE_SAFE_ON:
@@ -1036,6 +1040,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     else
     {
         prepCanvas(mEditor->currentFrame(), event->rect());
+        prepOverlays();
         mCanvasPainter.paintCached();
     }
 
@@ -1138,7 +1143,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         paintCanvasCursor(painter);
 
         mCanvasPainter.renderGrid(painter);
-        mCanvasPainter.renderOverlays(painter);
+        mOverlayPainter.renderOverlays(painter, editor()->overlays()->getMoveMode());
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
@@ -1211,15 +1216,6 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.bGrid = mPrefs->isOn(SETTING::GRID);
     o.nGridSizeW = mPrefs->getInt(SETTING::GRID_SIZE_W);
     o.nGridSizeH = mPrefs->getInt(SETTING::GRID_SIZE_H);
-    o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
-    o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
-    o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
-    o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
-    o.bActionSafe = mPrefs->isOn(SETTING::ACTION_SAFE_ON);
-    o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
-    o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
-    o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
-    o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
     o.bAxis = false;
     o.bThinLines = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
@@ -1245,6 +1241,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     mCanvas.fill(Qt::transparent);
     prepCanvas(frame, rect);
     mCanvasPainter.paint();
+    prepOverlays();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset)
@@ -1303,6 +1300,41 @@ void ScribbleArea::flipSelection(bool flipVertical)
 {
     mEditor->select()->flipSelection(flipVertical);
     paintTransformedSelection();
+}
+
+void ScribbleArea::renderOverlays()
+{
+    updateCurrentFrame();
+}
+
+void ScribbleArea::prepOverlays()
+{
+    OverlayPainterOptions o;
+
+    o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
+    o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
+    o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
+    o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
+    o.bPerspective1 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE1);
+    o.bPerspective2 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE2);
+    o.bPerspective3 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE3);
+    o.nOverlayAngle = mPrefs->getInt(SETTING::OVERLAY_ANGLE);
+    o.bActionSafe = mPrefs->isOn(SETTING::ACTION_SAFE_ON);
+    o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
+    o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
+    o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
+    o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
+
+    o.mRect = getCameraRect().toRect();   // camera rect!
+    o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspPoint();
+    o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspPoint();
+    o.mRightPerspPoint = mEditor->overlays()->getRightPerspPoint();
+    o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspPoint();
+
+    mOverlayPainter.setOptions(o);
+
+    ViewManager* vm = mEditor->view();
+    mOverlayPainter.setViewTransform(vm->getView());
 }
 
 void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)

@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "bitmapimage.h"
 #include "canvaspainter.h"
+#include "overlaypainter.h"
 #include "preferencemanager.h"
 #include "strokemanager.h"
 #include "selectionpainter.h"
@@ -130,6 +131,8 @@ public:
     void setModified(const Layer* layer, int frameNumber);
 
     void flipSelection(bool flipVertical);
+    void renderOverlays();
+    void prepOverlays();
 
     BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
@@ -287,6 +290,7 @@ private:
 
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
+    OverlayPainter mOverlayPainter;
     SelectionPainter mSelectionPainter;
 
     // Pixmap Cache keys

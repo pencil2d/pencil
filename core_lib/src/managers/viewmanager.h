@@ -80,6 +80,7 @@ public:
 
     void flipHorizontal(bool b);
     void flipVertical(bool b);
+
     void setOverlayCenter(bool b);
     void setOverlayThirds(bool b);
     void setOverlayGoldenRatio(bool b);
@@ -91,7 +92,6 @@ public:
     bool getOverlayThirds() const { return mOverlayThirds; }
     bool getOverlayGoldenRatio() const { return mOverlayGoldenRatio; }
     bool getOverlaySafeAreas() const { return mOverlaySafeAreas; }
-
 
     void setCanvasSize(QSize size);
     void setCameraLayer(Layer* layer);
@@ -126,12 +126,13 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+
+    bool mImportFollowsCamera = false;
+
     bool mOverlayCenter = false;
     bool mOverlayThirds = false;
     bool mOverlayGoldenRatio = false;
     bool mOverlaySafeAreas = false;
-
-    bool mImportFollowsCamera = false;
 
     LayerCamera* mCameraLayer = nullptr;
 };

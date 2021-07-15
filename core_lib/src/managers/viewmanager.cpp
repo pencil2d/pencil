@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "camera.h"
 #include "layercamera.h"
+#include <QDebug>
 
 const static qreal mMinScale = 0.01;
 const static qreal mMaxScale = 100.0;
