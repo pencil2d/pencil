@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 template<typename T> class QList;
 class QActionGroup;
+class QToolBar;
 class Object;
 class Editor;
 class ScribbleArea;
@@ -158,9 +159,12 @@ private:
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;
-    TimeLine*             mTimeLine = nullptr;
+    TimeLine*             mTimeLine = nullptr; // be public temporarily
     ColorInspector*       mColorInspector = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
+    QToolBar*             mMainToolbar = nullptr;
+    QToolBar*             mViewToolbar = nullptr;
+    QToolBar*             mOverlayToolbar = nullptr;
 
     // backup
     BackupElement* mBackupAtSave = nullptr;
@@ -168,8 +172,11 @@ private:
     PegBarAlignmentDialog* mPegAlign = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;
 
+    void createToolbars();
+private:
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;
+    QList<QToolBar*> mToolbars;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
