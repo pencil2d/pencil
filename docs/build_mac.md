@@ -38,7 +38,7 @@ A dialog should pop up asking if you want to install the command line developer 
 
 - Download the <b>%Qt Online Installer for OS X</b> from [%Qt Downloads](https://www.qt.io/download-open-source/)
 - Opening the file will mount the disk image, and will result in a Finder window appearing with a single file.
-- The file is the %Qt installer application, so go ahead and open it. Click continue. You can skip the the step of creating %Qt account. It's not necessary.
+- The file is the %Qt installer application, so go ahead and open it. Click continue. You can skip the step of creating %Qt account. It's not necessary.
 - Next, specify a location for %Qt, put it somewhere you can find it in case you ever need to navigate to the %Qt files manually.
 - Then choose the %Qt version and components you wish to install.
   - If you have no idea what to do, select `%Qt 5.9.x -> macOS`.
