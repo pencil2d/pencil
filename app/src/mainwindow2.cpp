@@ -29,7 +29,6 @@ GNU General Public License for more details.
 #include <QTabletEvent>
 #include <QStandardPaths>
 #include <QDateTime>
-#include <QLabel>
 
 // core_lib headers
 #include "pencildef.h"
@@ -110,6 +109,10 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->scribbleArea->setEditor(mEditor);
     ui->scribbleArea->init();
 
+    ui->statusBar->setEditor(mEditor);
+    ui->statusBar->updateZoomStatus();
+    ui->statusBar->setVisible(mEditor->preference()->isOn(SETTING::SHOW_STATUS_BAR));
+
     mCommands = new ActionCommands(this);
     mCommands->setCore(mEditor);
 
@@ -119,15 +122,10 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     readSettings();
 
-    mZoomLabel = new QLabel("");
-    ui->statusbar->addWidget(mZoomLabel);
-
-    updateZoomLabel();
     selectionChanged();
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
     connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
-    connect(mEditor->view(), &ViewManager::viewChanged, this, &MainWindow2::updateZoomLabel);
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
@@ -226,6 +224,7 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
     makeConnections(mEditor, mDisplayOptionWidget);
+    makeConnections(mEditor, ui->statusBar);
 
     for (BaseDockWidget* w : mDockWidgets)
     {
@@ -326,6 +325,8 @@ void MainWindow2::createMenus()
     connect(mEditor->view(), &ViewManager::viewFlipped, this, &MainWindow2::viewFlipped);
 
     PreferenceManager* prefs = mEditor->preference();
+    connect(ui->actionStatusBar, &QAction::triggered, ui->statusBar, &QStatusBar::setVisible);
+    bindPreferenceSetting(ui->actionStatusBar, prefs, SETTING::SHOW_STATUS_BAR);
     bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
     bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
     bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
@@ -423,7 +424,9 @@ void MainWindow2::setOpacity(int opacity)
 
 void MainWindow2::updateSaveState()
 {
-    setWindowModified(mEditor->currentBackup() != mBackupAtSave);
+    const bool hasUnsavedChanges = mEditor->currentBackup() != mBackupAtSave;
+    setWindowModified(hasUnsavedChanges);
+    ui->statusBar->updateModifiedStatus(hasUnsavedChanges);
 }
 
 void MainWindow2::clearRecentFilesList()
@@ -617,6 +620,7 @@ bool MainWindow2::openObject(const QString& strFilePath)
 
     setWindowTitle(mEditor->object()->filePath().prepend("[*]"));
     setWindowModified(false);
+    ui->statusBar->updateModifiedStatus(false);
 
     progress.setValue(progress.maximum());
 
@@ -1180,6 +1184,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionGrid->setShortcut(cmdKeySeq(CMD_GRID));
     ui->actionOnionPrev->setShortcut(cmdKeySeq(CMD_ONIONSKIN_PREV));
     ui->actionOnionNext->setShortcut(cmdKeySeq(CMD_ONIONSKIN_NEXT));
+    ui->actionStatusBar->setShortcut(cmdKeySeq(CMD_TOGGLE_STATUS_BAR));
 
     ui->actionPlay->setShortcut(cmdKeySeq(CMD_PLAY));
     ui->actionLoop->setShortcut(cmdKeySeq(CMD_LOOP));
@@ -1437,10 +1442,12 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
-void MainWindow2::updateZoomLabel()
+void MainWindow2::makeConnections(Editor* editor, StatusBar *statusBar)
 {
-    qreal zoom = mEditor->view()->scaling() * 100.f;
-    mZoomLabel->setText(tr("Zoom: %1%").arg(zoom, 0, 'f', 1));
+    connect(editor->tools(), &ToolManager::toolChanged, statusBar, &StatusBar::updateToolStatus);
+    connect(editor->tools()->getTool(POLYLINE), &BaseTool::isActiveChanged, statusBar, &StatusBar::updateToolStatus);
+
+    connect(editor->view(), &ViewManager::viewChanged, statusBar, &StatusBar::updateZoomStatus);
 }
 
 void MainWindow2::changePlayState(bool isPlaying)

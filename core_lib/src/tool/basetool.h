@@ -74,7 +74,7 @@ public:
     QString typeName() { return TypeName(type()); }
 
     void initialize(Editor* editor);
-    
+
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
@@ -145,6 +145,9 @@ public:
 
     bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
+
+signals:
+    bool isActiveChanged(ToolType, bool);
 
 protected:
     StrokeManager* strokeManager() { return mStrokeManager; }
