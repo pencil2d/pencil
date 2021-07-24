@@ -57,7 +57,6 @@ BitmapBucket::BitmapBucket(Editor* editor,
     Q_ASSERT(mTargetFillToLayer);
 
     mReferenceImage = *static_cast<BitmapImage*>(initialLayer->getLastKeyFrameAtPosition(frameIndex));
-    mReferenceImage.setFileName("Ref Image");
     if (properties.bucketFillReferenceMode == 1) // All layers
     {
         mReferenceImage = flattenBitmapLayersToImage();
