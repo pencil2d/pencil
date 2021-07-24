@@ -180,7 +180,6 @@ void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyT
     case ToolPropertyType::FILL_MODE:
         setFillMode(p.fillMode); break;
     default:
-        Q_ASSERT(false);
         break;
     }
 }
