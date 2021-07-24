@@ -1448,6 +1448,7 @@ void MainWindow2::makeConnections(Editor* editor, StatusBar *statusBar)
     connect(editor->tools()->getTool(POLYLINE), &BaseTool::isActiveChanged, statusBar, &StatusBar::updateToolStatus);
 
     connect(editor->view(), &ViewManager::viewChanged, statusBar, &StatusBar::updateZoomStatus);
+    connect(statusBar, &StatusBar::zoomChanged, editor->view(), &ViewManager::scale);
 }
 
 void MainWindow2::changePlayState(bool isPlaying)
