@@ -48,7 +48,7 @@ void LayerOpacityDialog::initUI()
     connect(mEditor, &Editor::scrubbed, this, &LayerOpacityDialog::onCurrentFrameChanged);
     connect(mPlayBack, &PlaybackManager::playStateChanged, this, &LayerOpacityDialog::onPlayStateChanged);
     connect(mLayerManager, &LayerManager::currentLayerChanged, this, &LayerOpacityDialog::onCurrentLayerChanged);
-    connect(mLayerManager->currentLayer(), &Layer::selectedFramesChanged, this, &LayerOpacityDialog::onSelectedFramesChanged);
+    connect(mEditor, &Editor::selectedFramesChanged, this, &LayerOpacityDialog::onSelectedFramesChanged);
 
     onObjectLoaded();
 }

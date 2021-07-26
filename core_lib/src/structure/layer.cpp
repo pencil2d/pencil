@@ -231,10 +231,7 @@ bool Layer::moveKeyFrame(int position, int offset)
     }
 
     setFrameSelected(position, true);
-    bool moved = false;
-    if (moveSelectedFrames(offset)) {
-        moved = true;
-    }
+    bool moved = moveSelectedFrames(offset);
     setFrameSelected(newPos, false);
 
     mSelectedFrames_byLast = listOfFramesLast;
@@ -363,7 +360,6 @@ void Layer::setFrameSelected(int position, bool isSelected)
             mSelectedFrames_byPosition.removeAt(iPos);
         }
         keyFrame->setSelected(isSelected);
-        emit selectedFramesChanged();
     }
 }
 
@@ -429,7 +425,6 @@ void Layer::deselectAll()
 {
     mSelectedFrames_byLast.clear();
     mSelectedFrames_byPosition.clear();
-    emit selectedFramesChanged();
 
     for (auto pair : mKeyFrames)
     {
@@ -503,7 +498,6 @@ bool Layer::moveSelectedFrames(int offset)
             }
             indexInSelection = indexInSelection + step;
         }
-        emit selectedFramesChanged();
 
         // Update selection lists
         for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)

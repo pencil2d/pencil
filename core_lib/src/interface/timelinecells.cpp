@@ -854,10 +854,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                 {
                     int previousLayerNumber = mEditor->layers()->currentLayerIndex();
 
-                    if (previousLayerNumber != layerNumber) {
+                    if (previousLayerNumber != layerNumber)
+                    {
                         Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
                         previousLayer->deselectAll();
-
+                        mEditor->selectedFramesChanged();
                         mEditor->layers()->setCurrentLayer(layerNumber);
                     }
 
@@ -871,6 +872,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         mCanMoveFrame = true;
 
                         currentLayer->selectAllFramesAfter(frameNumber);
+                        mEditor->selectedFramesChanged();
                     }
                     // Check if we are clicking on a non selected frame
                     else if (!currentLayer->isFrameSelected(frameNumber))
@@ -887,15 +889,18 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         {
                             // Add/remove from already selected
                             currentLayer->toggleFrameSelected(frameNumber, true);
+                            mEditor->selectedFramesChanged();
                         }
                         else if (event->modifiers() == Qt::ShiftModifier)
                         {
                             // Select a range from the last selected
                             currentLayer->extendSelectionTo(frameNumber);
+                            mEditor->selectedFramesChanged();
                         }
                         else
                         {
                             currentLayer->toggleFrameSelected(frameNumber, false);
+                            mEditor->selectedFramesChanged();
                         }
                     }
                     else
@@ -993,6 +998,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             currentLayer->deselectAll();
                             currentLayer->setFrameSelected(mStartFrameNumber, true);
                             currentLayer->extendSelectionTo(frameNumber);
+                            mEditor->selectedFramesChanged();
                         }
                         mLastFrameNumber = frameNumber;
                     }
@@ -1024,6 +1030,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
+            mEditor->selectedFramesChanged();
         }
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)

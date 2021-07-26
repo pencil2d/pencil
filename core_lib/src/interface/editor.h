@@ -123,6 +123,7 @@ signals:
 
     /** This should be emitted after modifying multiple frames */
     void framesModified();
+    void selectedFramesChanged();
 
     void updateTimeLine();
     void updateLayerCount();
