@@ -40,7 +40,7 @@ GNU General Public License for more details.
 #include "activeframepool.h"
 
 
-Object::Object(QObject* parent) : QObject(parent)
+Object::Object()
 {
     setData(new ObjectData());
     mActiveFramePool.reset(new ActiveFramePool);
@@ -346,7 +346,7 @@ bool Object::addLayer(Layer* layer)
 
 ColorRef Object::getColor(int index) const
 {
-    ColorRef result(Qt::white, tr("error"));
+    ColorRef result(Qt::white, QObject::tr("error"));
     if (index > -1 && index < mPalette.size())
     {
         result = mPalette.at(index);
@@ -638,30 +638,30 @@ bool Object::importPalette(const QString& filePath)
 void Object::loadDefaultPalette()
 {
     mPalette.clear();
-    addColor(ColorRef(QColor(Qt::black), QString(tr("Black"))));
-    addColor(ColorRef(QColor(Qt::red), QString(tr("Red"))));
-    addColor(ColorRef(QColor(Qt::darkRed), QString(tr("Dark Red"))));
-    addColor(ColorRef(QColor(255, 128, 0), QString(tr("Orange"))));
-    addColor(ColorRef(QColor(128, 64, 0), QString(tr("Dark Orange"))));
-    addColor(ColorRef(QColor(Qt::yellow), QString(tr("Yellow"))));
-    addColor(ColorRef(QColor(Qt::darkYellow), QString(tr("Dark Yellow"))));
-    addColor(ColorRef(QColor(Qt::green), QString(tr("Green"))));
-    addColor(ColorRef(QColor(Qt::darkGreen), QString(tr("Dark Green"))));
-    addColor(ColorRef(QColor(Qt::cyan), QString(tr("Cyan"))));
-    addColor(ColorRef(QColor(Qt::darkCyan), QString(tr("Dark Cyan"))));
-    addColor(ColorRef(QColor(Qt::blue), QString(tr("Blue"))));
-    addColor(ColorRef(QColor(Qt::darkBlue), QString(tr("Dark Blue"))));
-    addColor(ColorRef(QColor(255, 255, 255), QString(tr("White"))));
-    addColor(ColorRef(QColor(220, 220, 229), QString(tr("Very Light Grey"))));
-    addColor(ColorRef(QColor(Qt::lightGray), QString(tr("Light Grey"))));
-    addColor(ColorRef(QColor(Qt::gray), QString(tr("Grey"))));
-    addColor(ColorRef(QColor(Qt::darkGray), QString(tr("Dark Grey"))));
-    addColor(ColorRef(QColor(255, 227, 187), QString(tr("Pale Orange Yellow"))));
-    addColor(ColorRef(QColor(221, 196, 161), QString(tr("Pale Grayish Orange Yellow"))));
-    addColor(ColorRef(QColor(255, 214, 156), QString(tr("Orange Yellow "))));
-    addColor(ColorRef(QColor(207, 174, 127), QString(tr("Grayish Orange Yellow"))));
-    addColor(ColorRef(QColor(255, 198, 116), QString(tr("Light Orange Yellow"))));
-    addColor(ColorRef(QColor(227, 177, 105), QString(tr("Light Grayish Orange Yellow")) ));
+    addColor(ColorRef(QColor(Qt::black), QObject::tr("Black")));
+    addColor(ColorRef(QColor(Qt::red), QObject::tr("Red")));
+    addColor(ColorRef(QColor(Qt::darkRed), QObject::tr("Dark Red")));
+    addColor(ColorRef(QColor(255, 128, 0), QObject::tr("Orange")));
+    addColor(ColorRef(QColor(128, 64, 0), QObject::tr("Dark Orange")));
+    addColor(ColorRef(QColor(Qt::yellow), QObject::tr("Yellow")));
+    addColor(ColorRef(QColor(Qt::darkYellow), QObject::tr("Dark Yellow")));
+    addColor(ColorRef(QColor(Qt::green), QObject::tr("Green")));
+    addColor(ColorRef(QColor(Qt::darkGreen), QObject::tr("Dark Green")));
+    addColor(ColorRef(QColor(Qt::cyan), QObject::tr("Cyan")));
+    addColor(ColorRef(QColor(Qt::darkCyan), QObject::tr("Dark Cyan")));
+    addColor(ColorRef(QColor(Qt::blue), QObject::tr("Blue")));
+    addColor(ColorRef(QColor(Qt::darkBlue), QObject::tr("Dark Blue")));
+    addColor(ColorRef(QColor(255, 255, 255), QObject::tr("White")));
+    addColor(ColorRef(QColor(220, 220, 229), QObject::tr("Very Light Grey")));
+    addColor(ColorRef(QColor(Qt::lightGray), QObject::tr("Light Grey")));
+    addColor(ColorRef(QColor(Qt::gray), QObject::tr("Grey")));
+    addColor(ColorRef(QColor(Qt::darkGray), QObject::tr("Dark Grey")));
+    addColor(ColorRef(QColor(255, 227, 187), QObject::tr("Pale Orange Yellow")));
+    addColor(ColorRef(QColor(221, 196, 161), QObject::tr("Pale Grayish Orange Yellow")));
+    addColor(ColorRef(QColor(255, 214, 156), QObject::tr("Orange Yellow ")));
+    addColor(ColorRef(QColor(207, 174, 127), QObject::tr("Grayish Orange Yellow")));
+    addColor(ColorRef(QColor(255, 198, 116), QObject::tr("Light Orange Yellow")));
+    addColor(ColorRef(QColor(227, 177, 105), QObject::tr("Light Grayish Orange Yellow")));
 }
 
 void Object::paintImage(QPainter& painter,int frameNumber,

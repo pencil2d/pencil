@@ -37,13 +37,16 @@ class ObjectData;
 class ActiveFramePool;
 
 
-class Object : public QObject
+class Object final
 {
-    Q_OBJECT
-
 public:
-    explicit Object(QObject* parent = nullptr);
-    ~Object() override;
+    explicit Object();
+    ~Object();
+
+	Object(Object const&) = delete;
+	Object(Object&&) = delete;
+	Object& operator=(Object const&) = default;
+	Object& operator=(Object&&) = delete;
 
     void init();
     void createWorkingDir();
