@@ -32,13 +32,13 @@ bool sortAsc(int left, int right)
     return left < right;
 }
 
-Layer::Layer(Object* object, LAYER_TYPE eType) : QObject(object)
+Layer::Layer(Object* object, LAYER_TYPE eType)
 {
     Q_ASSERT(eType != UNDEFINED);
 
     mObject = object;
     meType = eType;
-    mName = QString(tr("Undefined Layer"));
+    mName = QString(QObject::tr("Undefined Layer"));
 
     mId = object->getUniqueLayerID();
 }
@@ -57,7 +57,6 @@ void Layer::setObject(Object* obj)
 {
     Q_ASSERT(obj);
     mObject = obj;
-    setParent(mObject);
     mId = mObject->getUniqueLayerID();
 }
 

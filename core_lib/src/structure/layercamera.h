@@ -25,8 +25,6 @@ class Camera;
 
 class LayerCamera : public Layer
 {
-    Q_OBJECT
-
 public:
     explicit LayerCamera(Object* object);
     ~LayerCamera() override;

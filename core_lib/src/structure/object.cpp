@@ -290,7 +290,6 @@ Layer* Object::takeLayer(int layerId)
     if (index == -1) { return nullptr; }
 
     Layer* layer = mLayers.takeAt(index);
-    layer->setParent(nullptr);
     return layer;
 }
 

@@ -1083,7 +1083,7 @@ void TimeLineCells::editLayerProperties(Layer *layer) const
         return;
     }
 
-    auto cameraLayer = qobject_cast<LayerCamera*>(layer);
+    auto cameraLayer = dynamic_cast<LayerCamera*>(layer);
     Q_ASSERT(cameraLayer);
     editLayerProperties(cameraLayer);
 }
