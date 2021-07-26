@@ -29,11 +29,13 @@ GNU General Public License for more details.
 #include "camera.h"
 #include "cameraeasingtype.h"
 #include "layermanager.h"
+#include "viewmanager.h"
 #include "object.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "toolmanager.h"
+
 
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
@@ -1079,11 +1081,11 @@ void TimeLineCells::editLayerProperties(Layer *layer) const
     editLayerProperties(cameraLayer);
 }
 
-void TimeLineCells::editLayerProperties(LayerCamera *layer) const
+void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
 {
     QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
-    CameraPropertiesDialog dialog(layer->name(), layer->getViewRect().width(), layer->getViewRect().height());
+    CameraPropertiesDialog dialog(cameraLayer->name(), cameraLayer->getViewRect().width(), cameraLayer->getViewRect().height());
     if (dialog.exec() != QDialog::Accepted)
     {
         return;
@@ -1092,12 +1094,13 @@ void TimeLineCells::editLayerProperties(LayerCamera *layer) const
 
     if (!name.isEmpty())
     {
-        mEditor->layers()->renameLayer(layer, name);
+        mEditor->layers()->renameLayer(cameraLayer, name);
     }
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_FIELD_W, dialog.getWidth());
     settings.setValue(SETTING_FIELD_H, dialog.getHeight());
-    layer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
+    cameraLayer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
+    mEditor->view()->forceUpdateViewTransform();
 }
 
 void TimeLineCells::editLayerName(Layer* layer) const

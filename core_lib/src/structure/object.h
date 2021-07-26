@@ -142,9 +142,6 @@ public:
     void updateActiveFrames(int frame) const;
     void setActiveFramePoolSize(int sizeInMB);
 
-signals:
-    void layerViewChanged();
-
 private:
     int getMaxLayerID();
 

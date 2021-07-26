@@ -44,11 +44,6 @@ public:
     QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
 
-    void showContextMenu(QPoint point);
-
-signals:
-    void resolutionChanged();
-
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
     KeyFrame* createKeyFrame(int position, Object*) override;

@@ -754,12 +754,6 @@ Status Editor::setObject(Object* newObject)
     {
         m->load(mObject.get());
     }
-
-    if (mViewManager)
-    {
-        connect(newObject, &Object::layerViewChanged, mViewManager, &ViewManager::viewChanged);
-    }
-
     emit objectLoaded();
 
     return Status::OK;

@@ -102,14 +102,14 @@ public:
     void setImportFollowsCamera(bool b) { mImportFollowsCamera = b; }
     bool getImportFollowsCamera() { return mImportFollowsCamera; }
 
-    void updateViewTransforms();
+    void forceUpdateViewTransform();
 
 signals:
     void viewChanged();
     void viewFlipped();
 
 private:
-
+    void updateViewTransforms();
     void onCurrentFrameChanged();
 
     QTransform mView;

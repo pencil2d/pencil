@@ -41,7 +41,8 @@ ViewManager::ViewManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
     mCurrentCamera = mDefaultEditorCamera;
 }
 
-ViewManager::~ViewManager() {
+ViewManager::~ViewManager()
+{
     delete mDefaultEditorCamera;
 }
 
@@ -421,6 +422,12 @@ void ViewManager::setCameraLayer(Layer* layer)
     }
 
     updateViewTransforms();
+}
+
+void ViewManager::forceUpdateViewTransform()
+{
+    updateViewTransforms();
+    emit viewChanged();
 }
 
 void ViewManager::onCurrentFrameChanged()
