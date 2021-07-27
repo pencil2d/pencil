@@ -405,7 +405,7 @@ ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
     return data;
 }
 
-QDomElement FileManager::saveProjectData(ObjectData* data, QDomDocument& xmlDoc)
+QDomElement FileManager::saveProjectData(const ObjectData* data, QDomDocument& xmlDoc)
 {
     QDomElement rootTag = xmlDoc.createElement("projectdata");
 
@@ -606,14 +606,14 @@ Status FileManager::writeKeyFrameFiles(const Object* object, const QString& data
     return Status(errorCode, dd);
 }
 
-Status FileManager::writeMainXml(const Object* object, const QString& mainXml, QStringList& filesWritten)
+Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPath, QStringList& filesWritten)
 {
     DebugDetails dd;
 
-    QFile file(mainXml);
+    QFile file(mainXmlPath);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        dd << "Failed to open Main XML" << mainXml;
+        dd << "Failed to open Main XML" << mainXmlPath;
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
 
@@ -647,9 +647,9 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXml, Q
     out.flush();
     file.close();
 
-    dd << "Done writing main xml file: " << mainXml;
+    dd << "Done writing main xml file: " << mainXmlPath;
 
-    filesWritten.append(mainXml);
+    filesWritten.append(mainXmlPath);
     return Status(Status::OK, dd);
 }
 

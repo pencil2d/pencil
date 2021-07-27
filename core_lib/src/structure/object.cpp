@@ -59,8 +59,6 @@ Object::~Object()
 
 void Object::init()
 {
-    mData.reset(new ObjectData);
-
     createWorkingDir();
 
     // default palette
@@ -863,16 +861,10 @@ int Object::getLayerCount() const
     return mLayers.size();
 }
 
-ObjectData* Object::data() const
-{
-    Q_ASSERT(mData != nullptr);
-    return mData.get();
-}
-
-void Object::setData(ObjectData* d)
+void Object::setData(const ObjectData* d)
 {
     Q_ASSERT(d != nullptr);
-    mData.reset(d);
+    mData = *d;
 }
 
 int Object::totalKeyFrameCount() const

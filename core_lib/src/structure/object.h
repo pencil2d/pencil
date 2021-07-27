@@ -138,8 +138,9 @@ public:
 
     int getUniqueLayerID();
 
-    ObjectData* data() const;
-    void setData(ObjectData*);
+    ObjectData* data() { return &mData; }
+    const ObjectData* data() const { return &mData; }
+    void setData(const ObjectData*);
 
     int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;
@@ -158,7 +159,7 @@ private:
 
     QList<ColorRef> mPalette;
 
-    std::unique_ptr<ObjectData> mData;
+    ObjectData mData;
     mutable std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 
