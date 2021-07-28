@@ -44,6 +44,7 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "selectionmanager.h"
 #include "overlaymanager.h"
+#include "backgroundtasks.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -98,6 +99,8 @@ bool Editor::init()
     {
         pManager->init();
     }
+
+    mBgTasks = new BackgroundTasks(this);
 
     makeConnections();
 
@@ -765,7 +768,6 @@ void Editor::updateObject()
     scrubTo(mObject->data()->getCurrentFrame());
 
     mAutosaveCounter = 0;
-    mAutosaveNeverAskAgain = false;
 
     if (mPreferenceManager)
     {

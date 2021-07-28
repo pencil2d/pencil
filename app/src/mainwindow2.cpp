@@ -74,6 +74,7 @@ GNU General Public License for more details.
 #include "app_util.h"
 #include "presetdialog.h"
 #include "pegbaralignmentdialog.h"
+#include "backgroundtasks.h"
 
 
 #ifdef GIT_TIMESTAMP
@@ -741,36 +742,12 @@ bool MainWindow2::maybeSave()
 
 bool MainWindow2::autoSave()
 {
-    if (!mEditor->object()->filePath().isEmpty())
-    {
-        return saveDocument();
-    }
+	if (mSuppressAutoSaveDialog)
+		return false;
 
-    if (mEditor->autoSaveNeverAskAgain())
-        return false;
-
-    if(mSuppressAutoSaveDialog)
-        return false;
-
-    QMessageBox msgBox(this);
-    msgBox.setIcon(QMessageBox::Question);
-    msgBox.setWindowTitle(tr("AutoSave Reminder"));
-    msgBox.setText(tr("The animation is not saved yet.\n Do you want to save now?"));
-    msgBox.addButton(tr("Never ask again", "AutoSave reminder button"), QMessageBox::RejectRole);
-    msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::Yes);
-
-    int ret = msgBox.exec();
-    if (ret == QMessageBox::Yes)
-    {
-        return saveDocument();
-    }
-    if (ret != QMessageBox::No) // Never ask again
-    {
-        mEditor->dontAskAutoSave(true);
-    }
-
-    return false;
+    BackgroundTasks* bgTasks = mEditor->backgroundTasks();
+    bgTasks->writeMainXmlToWorkingFolder(mEditor->object());
+    return true;
 }
 
 void MainWindow2::emptyDocumentWhenErrorOccurred()

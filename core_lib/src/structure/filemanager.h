@@ -50,6 +50,8 @@ public:
     QStringList searchForUnsavedProjects();
     Object* recoverUnsavedProject(QString projectIntermediatePath);
 
+    QDomDocument generateXMLFromObject(const Object* obj);
+
 signals:
     void progressChanged(int progress);
     void progressRangeChanged(int maxValue);
