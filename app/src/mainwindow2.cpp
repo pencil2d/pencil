@@ -747,6 +747,7 @@ bool MainWindow2::autoSave()
 
     BackgroundTasks* bgTasks = mEditor->backgroundTasks();
     bgTasks->writeMainXmlToWorkingFolder(mEditor->object());
+    bgTasks->writeCurrentFrameToWorkingFolder(mEditor->object(), mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     return true;
 }
 

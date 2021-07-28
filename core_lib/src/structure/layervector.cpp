@@ -78,7 +78,7 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
 {
     QString theFileName = fileName(keyFrame);
-    QString strFilePath = QDir(path).filePath(theFileName);
+    QString strFilePath = keyFrameFilePath(keyFrame, path);
 
     VectorImage* vecImage = static_cast<VectorImage*>(keyFrame);
 
@@ -185,6 +185,11 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
         }
         imageTag = imageTag.nextSibling();
     }
+}
+
+QString LayerVector::keyFrameFilePath(KeyFrame* key, QString dataPath)
+{
+    return QDir(dataPath).filePath(fileName(key));
 }
 
 VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber) const
