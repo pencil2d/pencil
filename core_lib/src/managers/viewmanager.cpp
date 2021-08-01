@@ -32,7 +32,7 @@ const std::vector<qreal> gZoomLevels
 };
 
 
-ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
+ViewManager::ViewManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -349,6 +349,12 @@ void ViewManager::setCanvasSize(QSize size)
     mCanvasSize = size;
     mCentre = QTransform::fromTranslate(mCanvasSize.width() / 2., mCanvasSize.height() / 2.);
 
+    updateViewTransforms();
+    emit viewChanged();
+}
+
+void ViewManager::forceUpdateViewTransform()
+{
     updateViewTransforms();
     emit viewChanged();
 }

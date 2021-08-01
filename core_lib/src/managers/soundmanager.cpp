@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "soundplayer.h"
 #include "layermanager.h"
 
-SoundManager::SoundManager(Editor* editor) : BaseManager(editor)
+SoundManager::SoundManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 

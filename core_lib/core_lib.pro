@@ -31,8 +31,8 @@ INCLUDEPATH += src \
 PRECOMPILED_HEADER = src/corelib-pch.h
 
 HEADERS +=  \
-    src/camerapainter.h \
     src/corelib-pch.h \
+    src/graphics/bitmap/bitmapbucket.h \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \
@@ -52,6 +52,7 @@ HEADERS +=  \
     src/interface/basedockwidget.h \
     src/interface/backgroundwidget.h \
     src/managers/basemanager.h \
+    src/managers/overlaymanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -62,6 +63,8 @@ HEADERS +=  \
     src/managers/soundmanager.h \
     src/movieimporter.h \
     src/onionskinsubpainter.h \
+    src/overlaypainter.h \
+    src/camerapainter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -115,7 +118,7 @@ HEADERS +=  \
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
-    src/camerapainter.cpp \
+    src/graphics/bitmap/bitmapbucket.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
     src/graphics/vector/colorref.cpp \
@@ -134,6 +137,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/basedockwidget.cpp \
     src/interface/backgroundwidget.cpp \
     src/managers/basemanager.cpp \
+    src/managers/overlaymanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \
@@ -143,7 +147,6 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/viewmanager.cpp \
     src/managers/soundmanager.cpp \
     src/movieimporter.cpp \
-    src/onionskinsubpainter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \
@@ -178,6 +181,9 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/util.cpp \
     src/util/pointerevent.cpp \
     src/canvaspainter.cpp \
+    src/overlaypainter.cpp \
+    src/onionskinsubpainter.cpp \
+    src/camerapainter.cpp \
     src/soundplayer.cpp \
     src/movieexporter.cpp \
     src/miniz.cpp \

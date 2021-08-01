@@ -46,6 +46,8 @@ class BackupBitmapElement : public BackupElement
 public:
     explicit BackupBitmapElement(BitmapImage* bi) { bitmapImage = *bi; }
 
+    int layerId = 0;
+
     int layer = 0;
     int frame = 0;
     BitmapImage bitmapImage;
@@ -58,6 +60,8 @@ class BackupVectorElement : public BackupElement
     Q_OBJECT
 public:
     explicit BackupVectorElement(VectorImage* vi) { vectorImage = *vi; }
+    int layerId = 0;
+
     int layer = 0;
     int frame = 0;
     VectorImage vectorImage;
@@ -71,6 +75,8 @@ class BackupSoundElement : public BackupElement
     Q_OBJECT
 public:
     explicit BackupSoundElement(SoundClip* sound) { clip = *sound; }
+    int layerId = 0;
+
     int layer = 0;
     int frame = 0;
     SoundClip clip;

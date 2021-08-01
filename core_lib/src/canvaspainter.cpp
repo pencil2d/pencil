@@ -17,6 +17,9 @@ GNU General Public License for more details.
 #include "canvaspainter.h"
 
 #include <QtMath>
+#include <QSettings>
+#include <QDebug>
+
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -25,7 +28,6 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "util.h"
 #include "camera.h"
-
 
 CanvasPainter::CanvasPainter()
 {
@@ -522,163 +524,6 @@ void CanvasPainter::paintGrid(QPainter& painter) const
     painter.setRenderHints(previous_renderhints);
 }
 
-void CanvasPainter::paintOverlayCenter(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const
-{
-    painter.save();
-    painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-
-    QPen pen(Qt::DashLine);
-    qreal space = 10;
-    QVector<qreal> dashes;
-    dashes << 10 << space << 10 << space << 10 << space;
-    pen.setDashPattern(dashes);
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
-    painter.setBrush(Qt::NoBrush);
-    painter.setRenderHint(QPainter::Antialiasing, false);
-
-    QPolygon poly = cameraTransform.inverted().mapToPolygon(cameraRect);
-    QPoint centerTop = QLineF(poly.at(0), poly.at(1)).pointAt(0.5).toPoint();
-    QPoint centerBottom = QLineF(poly.at(2), poly.at(3)).pointAt(0.5).toPoint();
-    QPoint centerLeft = QLineF(poly.at(0), poly.at(3)).pointAt(0.5).toPoint();
-    QPoint centerRight = QLineF(poly.at(1), poly.at(2)).pointAt(0.5).toPoint();
-    painter.drawLine(QLineF(centerTop, centerBottom).pointAt(0.4).toPoint(),
-                     QLineF(centerTop, centerBottom).pointAt(0.6).toPoint());
-    painter.drawLine(QLineF(centerLeft, centerRight).pointAt(0.4).toPoint(),
-                     QLineF(centerLeft, centerRight).pointAt(0.6).toPoint());
-
-    painter.restore();
-}
-
-void CanvasPainter::paintOverlayThirds(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const
-{
-    painter.save();
-    painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-
-    QPen pen(Qt::DashLine);
-    qreal space = 10;
-    QVector<qreal> dashes;
-    dashes << 10 << space << 10 << space << 10 << space;
-    pen.setDashPattern(dashes);
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
-    painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::Antialiasing, false);
-
-    QPolygon poly = cameraTransform.inverted().mapToPolygon(cameraRect);
-    QLineF topLine(poly.at(0), poly.at(1));
-    QLineF bottomLine(poly.at(3), poly.at(2));
-    QLineF leftLine(poly.at(0), poly.at(3));
-    QLineF rightLine(poly.at(1), poly.at(2));
-    painter.drawLine(topLine.pointAt(0.333).toPoint(), bottomLine.pointAt(0.333));
-    painter.drawLine(topLine.pointAt(0.667).toPoint(), bottomLine.pointAt(0.667));
-    painter.drawLine(leftLine.pointAt(0.333).toPoint(), rightLine.pointAt(0.333));
-    painter.drawLine(leftLine.pointAt(0.667).toPoint(), rightLine.pointAt(0.667));
-
-    painter.setRenderHints(previous_renderhints);
-    painter.restore();
-}
-
-void CanvasPainter::paintOverlayGolden(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const
-{
-    QRect rect = cameraRect;
-    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
-        rect = cameraTransform.inverted().mapRect(cameraRect);
-
-    painter.save();
-    painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-
-    QPen pen(Qt::DashLine);
-    qreal space = 10;
-    QVector<qreal> dashes;
-    dashes << 10 << space << 10 << space << 10 << space;
-    pen.setDashPattern(dashes);
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
-    painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::Antialiasing, false);
-
-    QPolygon poly = cameraTransform.inverted().mapToPolygon(cameraRect);
-    QLineF topLine(poly.at(0), poly.at(1));
-    QLineF bottomLine(poly.at(3), poly.at(2));
-    QLineF leftLine(poly.at(0), poly.at(3));
-    QLineF rightLine(poly.at(1), poly.at(2));
-    painter.drawLine(topLine.pointAt(0.382).toPoint(), bottomLine.pointAt(0.382));
-    painter.drawLine(topLine.pointAt(0.618).toPoint(), bottomLine.pointAt(0.618));
-    painter.drawLine(leftLine.pointAt(0.382).toPoint(), rightLine.pointAt(0.382));
-    painter.drawLine(leftLine.pointAt(0.618).toPoint(), rightLine.pointAt(0.618));
-
-    painter.setRenderHints(previous_renderhints);
-    painter.restore();
-}
-
-void CanvasPainter::paintOverlaySafeAreas(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const
-{
-    QRect rect = cameraRect;
-    if (mObject->getLayer(mCurrentLayerIndex)->type() != Layer::CAMERA)
-        rect = cameraTransform.inverted().mapRect(cameraRect);
-
-    painter.save();
-    painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
-    QPen pen(Qt::DashLine);
-    qreal space = 10;
-    QVector<qreal> dashes;
-    dashes << 10 << space << 10 << space << 10 << space;
-    pen.setDashPattern(dashes);
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
-    painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::TextAntialiasing, true);
-
-    QPolygon poly = cameraTransform.inverted().mapToPolygon(cameraRect);
-    QLineF topLeftCrossLine(poly.at(0), poly.at(2));
-    QLineF bottomLeftCrossLine(poly.at(3), poly.at(1));
-
-    if (mOptions.bActionSafe)
-    {
-        int action = mOptions.nActionSafe;
-        painter.drawLine(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(),
-                         bottomLeftCrossLine.pointAt((100 - (action / 2.0)) / 100).toPoint());
-        painter.drawLine(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(),
-                         bottomLeftCrossLine.pointAt((action / 2.0) / 100).toPoint());
-        painter.drawLine(topLeftCrossLine.pointAt((100 - (action / 2.0)) / 100.0).toPoint(),
-                         bottomLeftCrossLine.pointAt((100 - (action / 2.0)) / 100).toPoint());
-        painter.drawLine(topLeftCrossLine.pointAt((100 - (action / 2.0)) / 100.0).toPoint(),
-                         bottomLeftCrossLine.pointAt((action / 2.0) / 100).toPoint());
-
-        if (mOptions.bShowSafeAreaHelperText)
-        {
-            painter.drawText(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(), tr("Safe Action area %1 %").arg(action));
-        }
-    }
-    if (mOptions.bTitleSafe)
-    {
-        int title = mOptions.nTitleSafe;
-        painter.drawLine(topLeftCrossLine.pointAt((title / 2.0) / 100.0).toPoint(),
-                         bottomLeftCrossLine.pointAt((100 - (title / 2.0)) / 100).toPoint());
-        painter.drawLine(topLeftCrossLine.pointAt((title / 2.0) / 100.0).toPoint(),
-                         bottomLeftCrossLine.pointAt((title / 2.0) / 100).toPoint());
-        painter.drawLine(topLeftCrossLine.pointAt((100 - (title / 2.0)) / 100.0).toPoint(),
-                         bottomLeftCrossLine.pointAt((100 - (title / 2.0)) / 100).toPoint());
-        painter.drawLine(topLeftCrossLine.pointAt((100 - (title / 2.0)) / 100.0).toPoint(),
-                         bottomLeftCrossLine.pointAt((title / 2.0) / 100).toPoint());
-
-        if (mOptions.bShowSafeAreaHelperText)
-        {
-            painter.drawText(bottomLeftCrossLine.pointAt((title / 2.0) / 100), tr("Safe Title area %1 %").arg(title));
-        }
-    }
-
-    painter.setRenderHints(previous_renderhints);
-    painter.restore();
-}
 
 void CanvasPainter::renderGrid(QPainter& painter) const
 {
@@ -689,64 +534,4 @@ void CanvasPainter::renderGrid(QPainter& painter) const
         paintGrid(painter);
         painter.restore();
     }
-}
-
-void CanvasPainter::renderOverlays(QPainter& painter) const
-{
-    QTransform cameraTransform;
-    QRect cameraRect;
-    // Find the first visible camera layers
-    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
-    if (layer->type() == Layer::CAMERA && layer->visible())
-    {
-        LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
-        cameraTransform = cameraLayer->getViewAtFrame(mFrameNumber);
-        cameraRect = cameraLayer->getViewRect();
-    } else {
-        for (int i = 0; i < mObject->getLayerCount(); ++i)
-        {
-            Layer* layer = mObject->getLayer(i);
-            if (layer->type() == Layer::CAMERA && layer->visible())
-            {
-                LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
-                cameraTransform = cameraLayer->getViewAtFrame(mFrameNumber);
-                cameraRect = cameraLayer->getViewRect();
-                break;
-            }
-        }
-    }
-    if (mOptions.bCenter)
-    {
-        painter.save();
-        painter.setWorldTransform(mViewTransform);
-        paintOverlayCenter(painter, cameraTransform, cameraRect);
-        painter.restore();
-    }
-    if (mOptions.bThirds)
-    {
-        painter.save();
-        painter.setWorldTransform(mViewTransform);
-        paintOverlayThirds(painter, cameraTransform, cameraRect);
-        painter.restore();
-    }
-    if (mOptions.bGoldenRatio)
-    {
-        painter.save();
-        painter.setWorldTransform(mViewTransform);
-        paintOverlayGolden(painter, cameraTransform, cameraRect);
-        painter.restore();
-    }
-    if (mOptions.bSafeArea)
-    {
-        painter.save();
-        painter.setWorldTransform(mViewTransform);
-        paintOverlaySafeAreas(painter, cameraTransform, cameraRect);
-        painter.restore();
-    }
-
-}
-
-QRect CanvasPainter::getCameraRect()
-{
-    return mCameraRect;
 }

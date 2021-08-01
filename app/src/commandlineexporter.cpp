@@ -66,7 +66,7 @@ bool CommandLineExporter::process(const QString &inputPath,
     LayerCamera *cameraLayer = nullptr;
     if (!camera.isEmpty())
     {
-        cameraLayer = qobject_cast<LayerCamera*>(layerManager->findLayerByName(camera, Layer::CAMERA));
+        cameraLayer = dynamic_cast<LayerCamera*>(layerManager->findLayerByName(camera, Layer::CAMERA));
         if (cameraLayer == nullptr)
         {
             mErr << tr("Warning: the specified camera layer %1 was not found, ignoring.").arg(camera) << endl;
@@ -74,7 +74,7 @@ bool CommandLineExporter::process(const QString &inputPath,
     }
     if (cameraLayer == nullptr)
     {
-        cameraLayer = qobject_cast<LayerCamera*>(layerManager->getLastCameraLayer());
+        cameraLayer = dynamic_cast<LayerCamera*>(layerManager->getLastCameraLayer());
         Q_ASSERT(cameraLayer);
     }
 

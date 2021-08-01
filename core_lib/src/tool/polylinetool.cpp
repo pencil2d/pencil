@@ -104,6 +104,7 @@ QCursor PolylineTool::cursor()
 void PolylineTool::clearToolData()
 {
     mPoints.clear();
+    emit isActiveChanged(POLYLINE, false);
 }
 
 void PolylineTool::pointerPressEvent(PointerEvent* event)
@@ -127,6 +128,7 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
                 }
             }
             mPoints << getCurrentPoint();
+            emit isActiveChanged(POLYLINE, true);
         }
     }
 }

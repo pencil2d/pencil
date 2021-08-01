@@ -80,6 +80,7 @@ private:
     qreal mRotatedAngle = 0.0;
     int mRotationIncrement = 0;
     int mDragPathFrame = 1;
+    MoveMode mPerspMode;
 };
 
 #endif

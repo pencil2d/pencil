@@ -39,6 +39,7 @@ class ViewManager;
 class PreferenceManager;
 class SelectionManager;
 class SoundManager;
+class OverlayManager;
 class ScribbleArea;
 class TimeLine;
 class BackupElement;
@@ -57,7 +58,8 @@ class Editor : public QObject
         Q_PROPERTY(ViewManager*     view     READ view)
         Q_PROPERTY(PreferenceManager* preference READ preference)
         Q_PROPERTY(SoundManager*    sound    READ sound)
-        Q_PROPERTY(SelectionManager* select READ select)
+        Q_PROPERTY(SelectionManager* select  READ select)
+        Q_PROPERTY(OverlayManager*  overlays READ overlays)
 
 public:
     explicit Editor(QObject* parent = nullptr);
@@ -76,6 +78,7 @@ public:
     PreferenceManager* preference() const { return mPreferenceManager; }
     SoundManager*      sound() const { return mSoundManager; }
     SelectionManager*  select() const { return mSelectionManager; }
+    OverlayManager*    overlays() const { return mOverlayManager; }
 
     Object* object() const { return mObject.get(); }
     Status openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged);
@@ -101,6 +104,7 @@ public:
     void setLayerVisibility(LayerVisibility visibility);
     LayerVisibility layerVisibility();
 
+    qreal viewScaleInversed();
     void deselectAll() const;
     void selectAll() const;
 
@@ -119,6 +123,7 @@ signals:
 
     /** This should be emitted after modifying multiple frames */
     void framesModified();
+    void selectedFramesChanged();
 
     void updateTimeLine();
     void updateLayerCount();
@@ -215,7 +220,8 @@ private:
     ViewManager*       mViewManager = nullptr;
     PreferenceManager* mPreferenceManager = nullptr;
     SoundManager*      mSoundManager = nullptr;
-    SelectionManager* mSelectionManager = nullptr;
+    SelectionManager*  mSelectionManager = nullptr;
+    OverlayManager*    mOverlayManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 

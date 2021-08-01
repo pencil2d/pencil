@@ -62,7 +62,7 @@ Status PegBarAligner::align(const QStringList& layers)
             result = findPoint(*img);
             if (!result.ok())
             {
-                const QString errorDescription = tr("Peg bar not found at %1, %2").arg(layerBitmap->name()).arg(k);
+                const QString errorDescription = tr("Peg bar not found at %2, %1").arg(k).arg(layerBitmap->name());
                 return Status(result.code(), "", errorDescription);
             }
             img->moveTopLeft(QPoint(img->left() + (pegX - result.point.x()), img->top() + (pegY - result.point.y())));

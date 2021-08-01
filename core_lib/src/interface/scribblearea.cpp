@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
+#include "camera.h"
 
 #include "onionskinpainteroptions.h"
 
@@ -40,6 +41,7 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+#include "overlaymanager.h"
 
 ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent)
 {
@@ -138,6 +140,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::OVERLAY_THIRDS:
     case SETTING::OVERLAY_GOLDEN:
     case SETTING::OVERLAY_SAFE:
+    case SETTING::OVERLAY_PERSPECTIVE1:
+    case SETTING::OVERLAY_PERSPECTIVE2:
+    case SETTING::OVERLAY_PERSPECTIVE3:
     case SETTING::ACTION_SAFE_ON:
     case SETTING::ACTION_SAFE:
     case SETTING::TITLE_SAFE_ON:
@@ -347,14 +352,21 @@ void ScribbleArea::onObjectLoaded()
     invalidateAllCache();
 }
 
-void ScribbleArea::setModified(int layerNumber, int frameNumber)
+void ScribbleArea::setModified(const Layer* layer, int frameNumber)
 {
-    Layer* layer = mEditor->object()->getLayer(layerNumber);
     if (layer == nullptr) { return; }
 
     layer->setModified(frameNumber, true);
 
     onFrameModified(frameNumber);
+}
+
+void ScribbleArea::setModified(int layerNumber, int frameNumber)
+{
+    Layer* layer = mEditor->object()->getLayer(layerNumber);
+    if (layer == nullptr) { return; }
+
+    setModified(layer, frameNumber);
 }
 
 bool ScribbleArea::event(QEvent *event)
@@ -428,8 +440,8 @@ void ScribbleArea::keyEventForSelection(QKeyEvent* event)
         mEditor->deselectAll();
         break;
     case Qt::Key_Escape:
-        mEditor->deselectAll();
         cancelTransformedSelection();
+        mEditor->deselectAll();
         break;
     case Qt::Key_Backspace:
         deleteSelection();
@@ -686,7 +698,6 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
 
     if (event->buttons() & (Qt::RightButton | Qt::MiddleButton))
     {
-        getTool(HAND)->pointerReleaseEvent(event);
         mMouseRightButtonInUse = false;
         return;
     }
@@ -1048,6 +1059,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     {
         prepCanvas(currentFrame, event->rect());
         prepCameraPainter(currentFrame);
+        prepOverlays();
         mCanvasPainter.paintCached();
         mCameraPainter.paintCached();
     }
@@ -1151,7 +1163,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         paintCanvasCursor(painter);
 
         mCanvasPainter.renderGrid(painter);
-        mCanvasPainter.renderOverlays(painter);
+        mOverlayPainter.renderOverlays(painter, editor()->overlays()->getMoveMode());
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
@@ -1246,15 +1258,6 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.bGrid = mPrefs->isOn(SETTING::GRID);
     o.nGridSizeW = mPrefs->getInt(SETTING::GRID_SIZE_W);
     o.nGridSizeH = mPrefs->getInt(SETTING::GRID_SIZE_H);
-    o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
-    o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
-    o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
-    o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
-    o.bActionSafe = mPrefs->isOn(SETTING::ACTION_SAFE_ON);
-    o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
-    o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
-    o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
-    o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
     o.bAxis = false;
     o.bThinLines = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
@@ -1294,6 +1297,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     prepCameraPainter(frame);
     mCanvasPainter.paint();
     mCameraPainter.paint();
+    prepOverlays();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset)
@@ -1352,6 +1356,40 @@ void ScribbleArea::flipSelection(bool flipVertical)
 {
     mEditor->select()->flipSelection(flipVertical);
     paintTransformedSelection();
+}
+
+void ScribbleArea::renderOverlays()
+{
+    updateCurrentFrame();
+}
+
+void ScribbleArea::prepOverlays()
+{
+    OverlayPainterOptions o;
+
+    o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
+    o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
+    o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
+    o.bSafeArea = mPrefs->isOn(SETTING::OVERLAY_SAFE);
+    o.bPerspective1 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE1);
+    o.bPerspective2 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE2);
+    o.bPerspective3 = mPrefs->isOn(SETTING::OVERLAY_PERSPECTIVE3);
+    o.nOverlayAngle = mPrefs->getInt(SETTING::OVERLAY_ANGLE);
+    o.bActionSafe = mPrefs->isOn(SETTING::ACTION_SAFE_ON);
+    o.nActionSafe = mPrefs->getInt(SETTING::ACTION_SAFE);
+    o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
+    o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
+    o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
+
+    o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspPoint();
+    o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspPoint();
+    o.mRightPerspPoint = mEditor->overlays()->getRightPerspPoint();
+    o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspPoint();
+
+    mOverlayPainter.setOptions(o);
+
+    ViewManager* vm = mEditor->view();
+    mOverlayPainter.setViewTransform(vm->getView());
 }
 
 void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)
@@ -1437,11 +1475,6 @@ void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
 
 /************************************************************************************/
 // view handling
-
-QRectF ScribbleArea::getCameraRect()
-{
-    return mCanvasPainter.getCameraRect();
-}
 
 QPointF ScribbleArea::getCentralPoint()
 {
@@ -1558,6 +1591,9 @@ void ScribbleArea::cancelTransformedSelection()
         mEditor->select()->setSelection(selectMan->mySelectionRect(), false);
 
         selectMan->resetSelectionProperties();
+
+        setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+        updateCurrentFrame();
     }
 }
 
@@ -1788,6 +1824,6 @@ void ScribbleArea::floodFillError(int errorType)
     if (errorType == 1) { error = tr("Out of bound.", "Bucket tool fill error message"); }
     if (errorType == 2) { error = tr("Could not find a closed path.", "Bucket tool fill error message"); }
     if (errorType == 3) { error = tr("Could not find the root index.", "Bucket tool fill error message"); }
-    QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message).arg(error), QMessageBox::Ok, QMessageBox::Ok);
+    QMessageBox::warning(this, tr("Flood fill error"), tr("%1<br><br>Error: %2").arg(message, error), QMessageBox::Ok, QMessageBox::Ok);
     mEditor->deselectAll();
 }

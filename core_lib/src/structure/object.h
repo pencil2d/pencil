@@ -37,13 +37,16 @@ class ObjectData;
 class ActiveFramePool;
 
 
-class Object : public QObject
+class Object final
 {
-    Q_OBJECT
-
 public:
-    explicit Object(QObject* parent = nullptr);
-    ~Object() override;
+    explicit Object();
+    ~Object();
+
+	Object(Object const&) = delete;
+	Object(Object&&) = delete;
+	Object& operator=(Object const&) = default;
+	Object& operator=(Object&&) = delete;
 
     void init();
     void createWorkingDir();
@@ -102,6 +105,7 @@ public:
     int  getLayerCount() const;
     Layer* getLayer(int i) const;
     Layer* findLayerByName(const QString& strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
+    Layer* findLayerById(int layerId) const;
     Layer* takeLayer(int layerId); // Note: transfer ownership of the layer
 
     bool swapLayers(int i, int j);
@@ -134,15 +138,13 @@ public:
 
     int getUniqueLayerID();
 
-    ObjectData* data() const;
-    void setData(ObjectData*);
+    ObjectData* data() { return &mData; }
+    const ObjectData* data() const { return &mData; }
+    void setData(const ObjectData*);
 
     int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;
     void setActiveFramePoolSize(int sizeInMB);
-
-signals:
-    void layerViewChanged();
 
 private:
     int getMaxLayerID();
@@ -157,7 +159,7 @@ private:
 
     QList<ColorRef> mPalette;
 
-    std::unique_ptr<ObjectData> mData;
+    ObjectData mData;
     mutable std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 

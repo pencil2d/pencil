@@ -211,6 +211,14 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
 
         switch(mode)
         {
+        case MoveMode::PERSP_LEFT:
+        case MoveMode::PERSP_RIGHT:
+        case MoveMode::PERSP_MIDDLE:
+        case MoveMode::PERSP_SINGLE:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            break;
+        }
         case MoveMode::TOPLEFT:
         case MoveMode::BOTTOMRIGHT:
         {
@@ -239,9 +247,9 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
                 return Qt::ArrowCursor;
             }
             break;
-        }
+        }        
         default:
-            return (type == SELECT) ? QCursor(QPixmap(":icons/cross.png"), 10, 10) : Qt::ArrowCursor;
+            return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
             break;
         }
         cursorPainter.end();
@@ -465,6 +473,31 @@ void BaseTool::setStabilizerLevel(const int level)
 void BaseTool::setTolerance(const int tolerance)
 {
     properties.tolerance = tolerance;
+}
+
+void BaseTool::setToleranceEnabled(const bool enabled)
+{
+    properties.toleranceEnabled = enabled;
+}
+
+void BaseTool::setFillExpand(const int fillExpandValue)
+{
+    properties.bucketFillExpand = fillExpandValue;
+}
+
+void BaseTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+}
+
+void BaseTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+}
+
+void BaseTool::setFillExpandEnabled(const bool enabled)
+{
+    properties.bucketFillExpandEnabled = enabled;
 }
 
 void BaseTool::setUseFillContour(const bool useFillContour)

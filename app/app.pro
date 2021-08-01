@@ -21,7 +21,32 @@ UI_DIR = .ui
 
 RESOURCES += data/app.qrc
 
-EXTRA_TRANSLATIONS += $$fromfile(../pencil2d.pro, TRANSLATIONS)
+EXTRA_TRANSLATIONS += \
+	$$PWD/../translations/pencil_ar.ts \
+	$$PWD/../translations/pencil_ca.ts \
+	$$PWD/../translations/pencil_cs.ts \
+	$$PWD/../translations/pencil_da.ts \
+	$$PWD/../translations/pencil_de.ts \
+	$$PWD/../translations/pencil_el.ts \
+	$$PWD/../translations/pencil_es.ts \
+	$$PWD/../translations/pencil_et.ts \
+	$$PWD/../translations/pencil_fr.ts \
+	$$PWD/../translations/pencil_he.ts \
+	$$PWD/../translations/pencil_hu_HU.ts \
+	$$PWD/../translations/pencil_id.ts \
+	$$PWD/../translations/pencil_it.ts \
+	$$PWD/../translations/pencil_ja.ts \
+	$$PWD/../translations/pencil_kab.ts \
+	$$PWD/../translations/pencil_pl.ts \
+	$$PWD/../translations/pencil_pt.ts \
+	$$PWD/../translations/pencil_pt_BR.ts \
+	$$PWD/../translations/pencil_ru.ts \
+	$$PWD/../translations/pencil_sl.ts \
+	$$PWD/../translations/pencil_sv.ts \
+	$$PWD/../translations/pencil_tr.ts \
+	$$PWD/../translations/pencil_vi.ts \
+	$$PWD/../translations/pencil_zh_CN.ts \
+	$$PWD/../translations/pencil_zh_TW.ts
 
 INCLUDEPATH += \
     src \
@@ -32,9 +57,10 @@ INCLUDEPATH += \
     ../core_lib/src/structure \
     ../core_lib/src/tool \
     ../core_lib/src/util \
-    ../core_lib/ui \
     ../core_lib/src/managers \
-    ../core_lib/src/external
+    ../core_lib/src/external \
+    ../core_lib/src \
+    ../core_lib/ui
 
 PRECOMPILED_HEADER = src/app-pch.h
 
@@ -70,6 +96,7 @@ HEADERS += \
     src/aboutdialog.h \
     src/toolbox.h \
     src/tooloptionwidget.h \
+    src/bucketoptionswidget.h \
     src/importexportdialog.h \
     src/exportimagedialog.h \
     src/importimageseqdialog.h \
@@ -79,7 +106,9 @@ HEADERS += \
     src/checkupdatesdialog.h \
     src/presetdialog.h \
     src/commandlineparser.h \
-    src/commandlineexporter.h
+    src/commandlineexporter.h \
+    src/statusbar.h \
+    src/elidedlabel.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -112,6 +141,7 @@ SOURCES += \
     src/aboutdialog.cpp \
     src/toolbox.cpp \
     src/tooloptionwidget.cpp \
+    src/bucketoptionswidget.cpp \
     src/importexportdialog.cpp \
     src/exportimagedialog.cpp \
     src/importimageseqdialog.cpp \
@@ -122,7 +152,9 @@ SOURCES += \
     src/presetdialog.cpp \
     src/app_util.cpp \
     src/commandlineparser.cpp \
-    src/commandlineexporter.cpp
+    src/commandlineexporter.cpp \
+    src/statusbar.cpp \
+    src/elidedlabel.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
@@ -143,6 +175,7 @@ FORMS += \
     ui/exportimageoptions.ui \
     ui/importimageseqoptions.ui \
     ui/tooloptions.ui \
+    ui/bucketoptionswidget.ui \
     ui/aboutdialog.ui \
     ui/doubleprogressdialog.ui \
     ui/preferencesdialog.ui \
@@ -203,7 +236,7 @@ unix:!macx {
 
 # --- core_lib ---
 
-INCLUDEPATH += $$PWD/../core_lib/src
+INCLUDEPATH += ../../core_lib/src
 
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release
