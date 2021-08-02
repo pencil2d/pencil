@@ -176,7 +176,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
 
         if (element.tagName() == "object")
         {
-            ok = object->loadXML(element, [this]{ progressForward(); });
+            ok = object->loadXML(element, [this] { progressForward(); });
             if (!ok) FILEMANAGER_LOG("Failed to Load object");
 
         }
@@ -638,24 +638,24 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPat
 
 QDomDocument FileManager::generateXMLFromObject(const Object* object)
 {
-	QDomDocument xmlDoc("PencilDocument");
-	QDomElement root = xmlDoc.createElement("document");
-	QDomProcessingInstruction encoding = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
-	xmlDoc.appendChild(encoding);
-	xmlDoc.appendChild(root);
+    QDomDocument xmlDoc("PencilDocument");
+    QDomElement root = xmlDoc.createElement("document");
+    QDomProcessingInstruction encoding = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
+    xmlDoc.appendChild(encoding);
+    xmlDoc.appendChild(root);
 
-	// save editor information
-	QDomElement projDataXml = saveProjectData(object->data(), xmlDoc);
-	root.appendChild(projDataXml);
+    // save editor information
+    QDomElement projDataXml = saveProjectData(object->data(), xmlDoc);
+    root.appendChild(projDataXml);
 
-	// save object
-	QDomElement objectElement = object->saveXML(xmlDoc);
-	root.appendChild(objectElement);
+    // save object
+    QDomElement objectElement = object->saveXML(xmlDoc);
+    root.appendChild(objectElement);
 
-	// save Pencil2D version
-	QDomElement versionElem = xmlDoc.createElement("version");
-	versionElem.appendChild(xmlDoc.createTextNode(QString(APP_VERSION)));
-	root.appendChild(versionElem);
+    // save Pencil2D version
+    QDomElement versionElem = xmlDoc.createElement("version");
+    versionElem.appendChild(xmlDoc.createTextNode(QString(APP_VERSION)));
+    root.appendChild(versionElem);
     return xmlDoc;
 }
 

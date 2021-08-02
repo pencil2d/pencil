@@ -30,7 +30,7 @@ public:
     LayerBitmap(Object* object);
     ~LayerBitmap() override;
 
-	Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
+    Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
     QString keyFrameFilePath(KeyFrame*, const QString dataPath) override;
 
     QDomElement createDomElement(QDomDocument& doc) const override;

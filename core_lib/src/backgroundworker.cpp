@@ -52,8 +52,8 @@ void BackgroundWorker::writeKeyFrameAsync(KeyFrame* key, const QString filePath)
         Q_ASSERT(filePath.endsWith(".vec"));
         Status st = vecImg->write(filePath, "VEC");
 
-		QString msg = QString("Done Writing %1").arg(filePath);
-		emit writeKeyFrameDone(st.ok(), msg);
+        QString msg = QString("Done Writing %1").arg(filePath);
+        emit writeKeyFrameDone(st.ok(), msg);
     }
     delete key;
 }
