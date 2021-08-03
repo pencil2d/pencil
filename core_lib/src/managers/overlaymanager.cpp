@@ -6,6 +6,11 @@
 OverlayManager::OverlayManager(Editor *editor): BaseManager(editor, __FUNCTION__)
 {
     mEditor = editor;
+
+    setSinglePerspPoint(QPointF(0.1, 0.1));
+    setLeftPerspPoint(QPointF(-300.0, 0.0));
+    setRightPerspPoint(QPointF(300.0, 0.0));
+    setMiddlePerspPoint(QPointF(0.0, 200.0));
 }
 
 OverlayManager::~OverlayManager()
@@ -32,24 +37,24 @@ void OverlayManager::workingLayerChanged(Layer *)
 {
 }
 
-MoveMode OverlayManager::getMoveModeForOverlayAnchor(const QPointF& pos, QTransform transform)
+MoveMode OverlayManager::getMoveModeForPoint(const QPointF& pos, QTransform transform)
 {
     const double calculatedSelectionTol = selectionTolerance();
     MoveMode mode = MoveMode::NONE;
 
-    if (QLineF(pos, transform.inverted().map(op.getSinglePoint())).length() < calculatedSelectionTol)
+    if (QLineF(pos, transform.inverted().map(mSinglePerspPoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_SINGLE;
     }
-    else if (QLineF(pos, op.getLeftPoint()).length() < calculatedSelectionTol)
+    else if (QLineF(pos, transform.inverted().map(mLeftPerspPoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_LEFT;
     }
-    else if (QLineF(pos, op.getRightPoint()).length() < calculatedSelectionTol)
+    else if (QLineF(pos, transform.inverted().map(mRightPerspPoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_RIGHT;
     }
-    else if (QLineF(pos, op.getMiddlePoint()).length() < calculatedSelectionTol)
+    else if (QLineF(pos, transform.inverted().map(mMiddlePerspPoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_MIDDLE;
     }
@@ -62,16 +67,7 @@ double OverlayManager::selectionTolerance()
     return qAbs(mSelectionTolerance * mEditor->viewScaleInversed());
 }
 
-// Must only be called at startup!
-void OverlayManager::initPerspOverlay()
-{
-    setSinglePerspPoint(QPointF(0.1, 0.1));
-    setLeftPerspPoint(QPointF(-300.0, 0.0));
-    setRightPerspPoint(QPointF(300.0, 0.0));
-    setMiddlePerspPoint(QPointF(0.0, 200.0));
-}
-
-void OverlayManager::updatePerspOverlay(int persp)
+void OverlayManager::updatePerspective(int persp)
 {
     switch (persp) {
     case 1:
@@ -88,21 +84,19 @@ void OverlayManager::updatePerspOverlay(int persp)
     }
 }
 
-void OverlayManager::updatePerspOverlay(const QPointF& point)
+void OverlayManager::updatePerspective(const QPointF& point)
 {
-    MoveMode mode = op.getMoveMode();
-
-    switch (mode) {
+    switch (mMoveMode) {
     case MoveMode::PERSP_SINGLE:
         setSinglePerspPoint(point);
         break;
     case MoveMode::PERSP_LEFT:
         setLeftPerspPoint(point);
-        setRightPerspPoint(QPointF(op.getRightPoint().x(), point.y()));
+        setRightPerspPoint(QPointF(getRightPerspPoint().x(), point.y()));
         break;
     case MoveMode::PERSP_RIGHT:
         setRightPerspPoint(point);
-        setLeftPerspPoint(QPointF(op.getLeftPoint().x(), point.y()));
+        setLeftPerspPoint(QPointF(getLeftPerspPoint().x(), point.y()));
         break;
     case MoveMode::PERSP_MIDDLE:
         setMiddlePerspPoint(point);
@@ -112,117 +106,22 @@ void OverlayManager::updatePerspOverlay(const QPointF& point)
     }
 }
 
-void OverlayManager::setOverlayCenter(bool b)
+void OverlayManager::setOnePointPerspectiveEnabled(bool b)
 {
-    if (b != mOverlayCenter)
-        mOverlayCenter = b;
+    mOverlayPerspective1 = b;
+    updatePerspOverlayActiveList();
 }
 
-void OverlayManager::setOverlayThirds(bool b)
+void OverlayManager::setTwoPointPerspectiveEnabled(bool b)
 {
-    if (b != mOverlayThirds)
-        mOverlayThirds = b;
+    mOverlayPerspective2 = b;
+    updatePerspOverlayActiveList();
 }
 
-void OverlayManager::setOverlayGoldenRatio(bool b)
+void OverlayManager::setThreePointPerspectiveEnabled(bool b)
 {
-    if (b != mOverlayGoldenRatio)
-        mOverlayGoldenRatio = b;
-}
-
-void OverlayManager::setOverlaySafeAreas(bool b)
-{
-    if (b != mOverlaySafeAreas)
-        mOverlaySafeAreas = b;
-}
-
-void OverlayManager::setOverlayPerspective1(bool b)
-{
-    if (b != mOverlayPerspective1)
-    {
-        mOverlayPerspective1 = b;
-        updatePerspOverlayActiveList();
-    }
-}
-
-void OverlayManager::setOverlayPerspective2(bool b)
-{
-    if (b != mOverlayPerspective2)
-    {
-        mOverlayPerspective2 = b;
-        updatePerspOverlayActiveList();
-    }
-}
-
-void OverlayManager::setOverlayPerspective3(bool b)
-{
-    if (b != mOverlayPerspective3)
-    {
-        mOverlayPerspective3 = b;
-        updatePerspOverlayActiveList();
-    }
-}
-
-void OverlayManager::setMoveMode(MoveMode mode)
-{
-    op.setMoveMode(mode);
-
-    switch (mode) {
-    case MoveMode::PERSP_LEFT:
-        mLastRightPoint = op.getRightPoint();
-        mLastMiddlePoint = op.getMiddlePoint();
-        break;
-    case MoveMode::PERSP_RIGHT:
-        mLastLeftPoint = op.getLeftPoint();
-        mLastMiddlePoint = op.getMiddlePoint();
-        break;
-    case MoveMode::PERSP_MIDDLE:
-        mLastRightPoint = op.getRightPoint();
-        mLastLeftPoint = op.getLeftPoint();
-        break;
-    default:
-        break;
-    }
-}
-
-void OverlayManager::setSinglePerspPoint(QPointF point)
-{
-    op.setSinglePoint(point.toPoint());
-}
-
-QPointF OverlayManager::getSinglePerspPoint() const
-{
-    return op.getSinglePoint();
-}
-
-void OverlayManager::setLeftPerspPoint(QPointF point)
-{
-    op.setLeftPoint(point.toPoint());
-}
-
-QPointF OverlayManager::getLeftPerspPoint() const
-{
-    return op.getLeftPoint();
-}
-
-void OverlayManager::setRightPerspPoint(QPointF point)
-{
-    op.setRightPoint(point.toPoint());
-}
-
-QPointF OverlayManager::getRightPerspPoint() const
-{
-    return op.getRightPoint();
-}
-
-void OverlayManager::setMiddlePerspPoint(QPointF point)
-{
-    op.setMiddlePoint(point.toPoint());
-}
-
-QPointF OverlayManager::getMiddlePerspPoint() const
-{
-    return op.getMiddlePoint();
+    mOverlayPerspective3 = b;
+    updatePerspOverlayActiveList();
 }
 
 void OverlayManager::updatePerspOverlayActiveList()

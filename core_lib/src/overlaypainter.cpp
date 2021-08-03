@@ -1,6 +1,5 @@
 #include "overlaypainter.h"
 #include <QDebug>
-#include <QSettings>
 
 #include "layercamera.h"
 #include "layer.h"
@@ -11,8 +10,7 @@ OverlayPainter::OverlayPainter()
 {
 }
 
-
-void OverlayPainter::initPerspectivePainter(QPainter& painter)
+void OverlayPainter::initializePainter(QPainter& painter)
 {
     painter.setCompositionMode(QPainter::CompositionMode_Difference);
     QPen pen(QColor(180, 220, 255));
@@ -32,10 +30,10 @@ void OverlayPainter::setViewTransform(const QTransform view)
     mViewTransform = view;
 }
 
-void OverlayPainter::renderOverlays(QPainter &painter, MoveMode mode)
+void OverlayPainter::renderOverlays(QPainter &painter)
 {
-    mMoveMode = mode;
-
+    painter.save();
+    initializePainter(painter);
     LayerCamera* cameraLayer = mCameraLayer;
 
     if (cameraLayer == nullptr) { return; }
@@ -66,27 +64,26 @@ void OverlayPainter::renderOverlays(QPainter &painter, MoveMode mode)
         paintOverlaySafeAreas(painter, camTransform, cameraRect);
     }
 
-    QSettings settings(PENCIL2D, PENCIL2D);
-    mOptions.nOverlayAngle = settings.value("OverlayAngle").toInt();
-
     if (mOptions.bPerspective1)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlayPerspective1(painter, camTransform, cameraRect);
+        paintOverlayPerspectiveOnePoint(painter, camTransform, cameraRect);
     }
     if (mOptions.bPerspective2)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlayPerspective2(painter, camTransform, cameraRect);
+        paintOverlayPerspectiveTwoPoints(painter, camTransform, cameraRect);
     }
     if (mOptions.bPerspective3)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlayPerspective3(painter, camTransform, cameraRect);
+        paintOverlayPerspectiveThreePoints(painter, camTransform, cameraRect);
     }
+
+    painter.restore();
 }
 
-void OverlayPainter::paintOverlayCenter(QPainter &painter, QTransform& camTransform, QRect& camRect)
+void OverlayPainter::paintOverlayCenter(QPainter &painter, QTransform& camTransform, QRect& camRect) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -115,7 +112,7 @@ void OverlayPainter::paintOverlayCenter(QPainter &painter, QTransform& camTransf
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayThirds(QPainter &painter, QTransform& camTransform, QRect& camRect)
+void OverlayPainter::paintOverlayThirds(QPainter &painter, QTransform& camTransform, QRect& camRect) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -146,7 +143,7 @@ void OverlayPainter::paintOverlayThirds(QPainter &painter, QTransform& camTransf
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransform, QRect& camRect)
+void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransform, QRect& camRect) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -177,7 +174,7 @@ void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransf
     painter.restore();
 }
 
-void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTransform, QRect& camRect)
+void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTransform, QRect& camRect) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -236,10 +233,9 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspective1(QPainter& painter, QTransform& camTransform, QRect& camRect)
+void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, QTransform& camTransform, QRect& camRect) const
 {
     painter.save();
-    initPerspectivePainter(painter);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -268,10 +264,9 @@ void OverlayPainter::paintOverlayPerspective1(QPainter& painter, QTransform& cam
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspective2(QPainter& painter, QTransform& camTransform, QRect& camRect)
+void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const
 {
     painter.save();
-    initPerspectivePainter(painter);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -316,13 +311,12 @@ void OverlayPainter::paintOverlayPerspective2(QPainter& painter, QTransform& cam
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspective3(QPainter& painter, QTransform& camTransform, QRect& camRect)
+void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const
 {
     if (!mOptions.bPerspective2)
-        paintOverlayPerspective2(painter, camTransform, camRect);
+        paintOverlayPerspectiveTwoPoints(painter, camTransform, camRect);
 
     painter.save();
-    initPerspectivePainter(painter);
     QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 

@@ -26,58 +26,43 @@ public:
 
     void workingLayerChanged(Layer *) override;
 
-    MoveMode getMoveModeForOverlayAnchor(const QPointF& pos, QTransform transform);
+    MoveMode getMoveModeForPoint(const QPointF& pos, QTransform transform);
     double selectionTolerance();
 
-    void initPerspOverlay();
-    void updatePerspOverlay(const int persp);
-    void updatePerspOverlay(const QPointF& point);
+    void updatePerspective(const int persp);
+    void updatePerspective(const QPointF& point);
 
-    void setOverlayCenter(bool b);
-    void setOverlayThirds(bool b);
-    void setOverlayGoldenRatio(bool b);
-    void setOverlaySafeAreas(bool b);
-    void setOverlayPerspective1(bool b);
-    void setOverlayPerspective2(bool b);
-    void setOverlayPerspective3(bool b);
+    void setCenterEnabled(bool b) { mOverlayCenter = b; }
+    void setThirdsEnabled(bool b) { mOverlayThirds = b; }
+    void setGoldenRatioEnabled(bool b) { mOverlayGoldenRatio = b; }
+    void setSafeAreasEnabled(bool b) { mOverlaySafeAreas = b; }
+    void setOnePointPerspectiveEnabled(bool b);
+    void setTwoPointPerspectiveEnabled(bool b);
+    void setThreePointPerspectiveEnabled(bool b);
 
-    bool getOverlayCenter() { return mOverlayCenter; }
-    bool getOverlayThirds() { return mOverlayThirds; }
-    bool getOverlayGoldenRatio() { return mOverlayGoldenRatio; }
-    bool getOverlaySafeAreas() { return mOverlaySafeAreas; }
-    bool getOverlayPerspective1() { return mOverlayPerspective1; }
-    bool getOverlayPerspective2() { return mOverlayPerspective2; }
-    bool getOverlayPerspective3() { return mOverlayPerspective3; }
+    MoveMode getMoveMode() const { return mMoveMode; }
+    void setMoveMode(MoveMode mode) { mMoveMode = mode; }
+    void setSinglePerspPoint(QPointF point) { mSinglePerspPoint = point; }
+    QPointF getSinglePerspPoint() const { return mSinglePerspPoint; }
+    void setLeftPerspPoint(QPointF point) { mLeftPerspPoint = point; }
+    QPointF getLeftPerspPoint() const { return mLeftPerspPoint; }
+    void setRightPerspPoint(QPointF point) { mRightPerspPoint = point; }
+    QPointF getRightPerspPoint() const { return mRightPerspPoint; }
+    void setMiddlePerspPoint(QPointF point) { mMiddlePerspPoint = point; }
+    QPointF getMiddlePerspPoint() const { return mMiddlePerspPoint; }
 
-	MoveMode getMoveMode() const { return op.getMoveMode(); }
-    void setMoveMode(MoveMode mode);
-    void setSinglePerspPoint(QPointF point);
-    QPointF getSinglePerspPoint() const;
-    void setLeftPerspPoint(QPointF point);
-    QPointF getLeftPerspPoint() const;
-    void setRightPerspPoint(QPointF point);
-    QPointF getRightPerspPoint() const;
-    void setMiddlePerspPoint(QPointF point);
-    QPointF getMiddlePerspPoint() const;
-
-    void setPerpsOverlayActive(int perspType) { mActivePerspOverlays.append(perspType); }
-    void removePerspOverlayActive(int perspType) { mActivePerspOverlays.removeOne(perspType); }
-    QList<int> getActivePerspOverlays() { return mActivePerspOverlays; }
-    bool isPerspOverlaysActive() { return !mActivePerspOverlays.isEmpty(); }
+    bool isPerspOverlaysActive() const { return !mActivePerspOverlays.isEmpty(); }
     void updatePerspOverlayActiveList();
 
 private:
     Editor* mEditor = nullptr;
-    OverlayPainter op;
 
     QPointF mSinglePerspPoint;   // for single point perspective.
     QPointF mLeftPerspPoint;
     QPointF mRightPerspPoint;    // Left, right and middle are for
     QPointF mMiddlePerspPoint;   // two and three point perspective
 
-    QPointF mLastLeftPoint;
-    QPointF mLastRightPoint;
-    QPointF mLastMiddlePoint;
+    MoveMode mMoveMode = MoveMode::NONE;
 
     bool mOverlayCenter = false;
     bool mOverlayThirds = false;

@@ -136,8 +136,6 @@ public:
     void setModified(const Layer* layer, int frameNumber);
 
     void flipSelection(bool flipVertical);
-    void renderOverlays();
-    void prepOverlays();
 
     BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
@@ -243,6 +241,7 @@ private:
 
     void prepCameraPainter(int frame);
     void prepCanvas(int frame, QRect rect);
+    void prepOverlays();
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter &painter);

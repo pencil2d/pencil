@@ -112,7 +112,7 @@ QCursor MoveTool::cursor()
     else if (mEditor->overlays()->isPerspOverlaysActive())
     {
         LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
-        mode = mEditor->overlays()->getMoveModeForOverlayAnchor(currentPoint, layerCam->getViewAtFrame(mEditor->currentFrame()));
+        mode = mEditor->overlays()->getMoveModeForPoint(currentPoint, layerCam->getViewAtFrame(mEditor->currentFrame()));
         mPerspMode = mode;
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
@@ -195,7 +195,7 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
 
         QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()).toPoint();
-        mEditor->overlays()->updatePerspOverlay(mapped);
+        mEditor->overlays()->updatePerspective(mapped);
     }
 }
 
@@ -223,7 +223,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         else if (mEditor->overlays()->isPerspOverlaysActive())
         {
             LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
-            mEditor->overlays()->updatePerspOverlay(layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()));
+            mEditor->overlays()->updatePerspective(layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()));
         }
         if (mEditor->select()->somethingSelected())
         {

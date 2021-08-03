@@ -45,6 +45,8 @@ protected:
     int getMinHeightForWidth(int width) override;
 
 private slots:
+    void toggleThinLines(bool);
+    void toggleOutlines(bool);
     void toggleMirror(bool);
     void toggleMirrorV(bool);
     void toggleOverlayCenter(bool isOn);

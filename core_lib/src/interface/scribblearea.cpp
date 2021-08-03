@@ -1163,7 +1163,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         paintCanvasCursor(painter);
 
         mCanvasPainter.renderGrid(painter);
-        mOverlayPainter.renderOverlays(painter, editor()->overlays()->getMoveMode());
+        mOverlayPainter.renderOverlays(painter);
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
@@ -1358,11 +1358,6 @@ void ScribbleArea::flipSelection(bool flipVertical)
     paintTransformedSelection();
 }
 
-void ScribbleArea::renderOverlays()
-{
-    updateCurrentFrame();
-}
-
 void ScribbleArea::prepOverlays()
 {
     OverlayPainterOptions o;
@@ -1380,6 +1375,7 @@ void ScribbleArea::prepOverlays()
     o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
     o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
     o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
+    o.nOverlayAngle = mPrefs->getInt(SETTING::OVERLAY_ANGLE);
 
     o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspPoint();
     o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspPoint();
@@ -1483,8 +1479,6 @@ QPointF ScribbleArea::getCentralPoint()
 {
     return mEditor->view()->mapScreenToCanvas(QPointF(width() / 2, height() / 2));
 }
-
-
 
 void ScribbleArea::paintTransformedSelection()
 {
