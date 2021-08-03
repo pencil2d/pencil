@@ -53,6 +53,11 @@ Status LayerManager::save(Object* o)
     return Status::OK;
 }
 
+Layer* LayerManager::getFirstVisibleLayer(int layerIndex, Layer::LAYER_TYPE type)
+{
+    return object()->getFirstVisibleLayer(layerIndex, type);
+}
+
 Layer* LayerManager::getLastCameraLayer()
 {
     Layer* layer = object()->getLayer(mLastCameraLayerIdx);

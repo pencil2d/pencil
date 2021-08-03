@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+#include "layercamera.h"
 #include "layermanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
@@ -190,9 +191,13 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
     if (targetLayer->type() != Layer::BITMAP) { return; }
 
+    LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+    // TODO: show popup when trying to fill and there's no camera layer?
+    Q_ASSERT(layerCam);
+
     mBitmapBucket = BitmapBucket(mEditor,
                                  mEditor->color()->frontColor(),
-                                 mScribbleArea->getCameraRect(),
+                                 layerCam ? layerCam->getViewRect() : QRectF(),
                                  getCurrentPoint(),
                                  properties);
 

@@ -7,6 +7,7 @@
 
 struct OverlayPainterOptions
 {
+    int   nFrameIndex = 1;
     bool  bCenter = false;
     bool  bThirds = false;
     bool  bGoldenRatio = false;
@@ -30,6 +31,9 @@ struct OverlayPainterOptions
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
 
+class LayerCamera;
+class Layer;
+
 class OverlayPainter
 {
 public:
@@ -39,15 +43,18 @@ public:
     void setOptions(const OverlayPainterOptions& p) { mOptions = p; }
     OverlayPainterOptions getOptions() { return mOptions; }
 
+    void initPerspectivePainter(QPainter& painter);
+    void preparePainter(Layer* cameraLayer);
+
     void renderOverlays(QPainter& painter, MoveMode mode);
 
-    void paintOverlayCenter(QPainter& painter);
-    void paintOverlayThirds(QPainter& painter);
-    void paintOverlayGolden(QPainter& painter);
-    void paintOverlaySafeAreas(QPainter& painter);
-    void paintOverlayPerspective1(QPainter& painter);
-    void paintOverlayPerspective2(QPainter& painter);
-    void paintOverlayPerspective3(QPainter& painter);
+    void paintOverlayCenter(QPainter& painter, QTransform& camTransform, QRect& camRect);
+    void paintOverlayThirds(QPainter& painter, QTransform& camTransform, QRect& camRect);
+    void paintOverlayGolden(QPainter& painter, QTransform& camTransform, QRect& camRect);
+    void paintOverlaySafeAreas(QPainter& painter, QTransform& camTransform, QRect& camRect);
+    void paintOverlayPerspective1(QPainter& painter, QTransform& camTransform, QRect& camRect);
+    void paintOverlayPerspective2(QPainter& painter, QTransform& camTransform, QRect& camRect);
+    void paintOverlayPerspective3(QPainter& painter, QTransform& camTransform, QRect& camRect);
 
     void setCameraRect(QRect rect) { mOptions.mRect = rect; }
     void setIsCamera(bool isCamera) { mOptions.mIsCamera = isCamera; }
@@ -67,6 +74,8 @@ private:
     MoveMode mMoveMode = MoveMode::NONE;
 
     QTransform mViewTransform;
+
+    LayerCamera* mCameraLayer = nullptr;
 
     Q_CONSTEXPR static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
     Q_CONSTEXPR static qreal LINELENGTHFACTOR = 2.0;

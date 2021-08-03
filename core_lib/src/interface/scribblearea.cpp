@@ -1386,7 +1386,10 @@ void ScribbleArea::prepOverlays()
     o.mRightPerspPoint = mEditor->overlays()->getRightPerspPoint();
     o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspPoint();
 
+    o.nFrameIndex = mEditor->currentFrame();
+
     mOverlayPainter.setOptions(o);
+    mOverlayPainter.preparePainter(mEditor->object()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
 
     ViewManager* vm = mEditor->view();
     mOverlayPainter.setViewTransform(vm->getView());
@@ -1480,6 +1483,8 @@ QPointF ScribbleArea::getCentralPoint()
 {
     return mEditor->view()->mapScreenToCanvas(QPointF(width() / 2, height() / 2));
 }
+
+
 
 void ScribbleArea::paintTransformedSelection()
 {

@@ -109,9 +109,10 @@ QCursor MoveTool::cursor()
     {
         mode = mEditor->select()->getMoveModeForSelectionAnchor(currentPoint);
     }
-    if (mEditor->overlays()->isPerspOverlaysActive())
+    else if (mEditor->overlays()->isPerspOverlaysActive())
     {
-        mode = mEditor->overlays()->getMoveModeForOverlayAnchor(getCurrentPoint());
+        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+        mode = mEditor->overlays()->getMoveModeForOverlayAnchor(currentPoint, layerCam->getViewAtFrame(mEditor->currentFrame()));
         mPerspMode = mode;
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
@@ -168,6 +169,9 @@ void MoveTool::updateSettings(const SETTING setting)
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
 {
+    mCurrentLayer = currentPaintableLayer();
+    if (mCurrentLayer == nullptr) return;
+
     if (mCurrentLayer->type() == Layer::CAMERA &&
         mCurrentLayer->keyExists(mEditor->currentFrame()))
     {
@@ -176,9 +180,6 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         camera->setOffsetPoint(getCurrentPoint());
         return;
     }
-
-    mCurrentLayer = currentPaintableLayer();
-    if (mCurrentLayer == nullptr) return;
 
     if (mEditor->select()->somethingSelected())
     {
@@ -189,9 +190,12 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     }
     if (mEditor->overlays()->isPerspOverlaysActive())
     {
-        QPointF point = mEditor->view()->mapScreenToCanvas(event->posF());
         mEditor->overlays()->setMoveMode(mPerspMode);
-        mEditor->overlays()->updatePerspOverlay(point);
+
+        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+
+        QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()).toPoint();
+        mEditor->overlays()->updatePerspOverlay(mapped);
     }
 }
 
@@ -205,16 +209,8 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
-        if (mEditor->overlays()->isPerspOverlaysActive())
-        {
-            QPointF mapped = mEditor->view()->mapScreenToCanvas(event->pos());
-            mEditor->overlays()->updatePerspOverlay(mapped);
-        }
-        if (mEditor->select()->somethingSelected())
-        {
-            transformSelection(event->modifiers(), mCurrentLayer);
-        }
-        else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
+
+        if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
         {
             if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
                 transformCamera();
@@ -223,6 +219,15 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
             {
                 transformCameraPath();
             }
+        }
+        else if (mEditor->overlays()->isPerspOverlaysActive())
+        {
+            LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+            mEditor->overlays()->updatePerspOverlay(layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()));
+        }
+        if (mEditor->select()->somethingSelected())
+        {
+            transformSelection(event->modifiers(), mCurrentLayer);
         }
     }
     else
@@ -235,19 +240,12 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         {
             storeClosestVectorCurve(mCurrentLayer);
         }
-        //if (mEditor->overlays()->isPerspOverlaysActive())
-        //{
-//            QPointF mapped = mEditor->view()->mapScreenToCanvas(event->pos());
-//            mEditor->overlays()->updatePerspOverlay(mapped);
-        //}
-        //mEditor->getScribbleArea()->prepOverlays();
     }
     mScribbleArea->updateCurrentFrame();
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
-
     if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
     {
         if (mCurrentLayer->keyExists(mEditor->currentFrame())) {

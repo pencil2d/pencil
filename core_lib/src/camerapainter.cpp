@@ -77,30 +77,12 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
 
 void CameraPainter::paintVisuals(QPainter& painter) const
 {
-    LayerCamera* cameraLayer = nullptr;
     bool isCameraMode = false;
+    LayerCamera* cameraLayer = static_cast<LayerCamera*>(mObject->getFirstVisibleLayer(mCurrentLayerIndex, Layer::CAMERA));
 
-    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
-    if (layer->type() == Layer::CAMERA && layer->visible())
-    {
-        cameraLayer = static_cast<LayerCamera*>(layer);
+    if (cameraLayer && cameraLayer == mObject->getLayer(mCurrentLayerIndex)) {
         isCameraMode = true;
     }
-    else
-    {
-        // Find the first visible camera layers
-        for (int i = 0; i < mObject->getLayerCount(); ++i)
-        {
-            layer = mObject->getLayer(i);
-            if (layer->type() == Layer::CAMERA && layer->visible())
-            {
-                cameraLayer = static_cast<LayerCamera*>(layer);
-                isCameraMode = (i == mCurrentLayerIndex);
-                break;
-            }
-        }
-    }
-
 
     if (cameraLayer == nullptr) { return; }
 

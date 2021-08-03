@@ -32,12 +32,12 @@ void OverlayManager::workingLayerChanged(Layer *)
 {
 }
 
-MoveMode OverlayManager::getMoveModeForOverlayAnchor(const QPointF& pos)
+MoveMode OverlayManager::getMoveModeForOverlayAnchor(const QPointF& pos, QTransform transform)
 {
     const double calculatedSelectionTol = selectionTolerance();
     MoveMode mode = MoveMode::NONE;
 
-    if (QLineF(pos, op.getSinglePoint()).length() < calculatedSelectionTol)
+    if (QLineF(pos, transform.inverted().map(op.getSinglePoint())).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_SINGLE;
     }
@@ -86,9 +86,6 @@ void OverlayManager::updatePerspOverlay(int persp)
     default:
         break;
     }
-
-    mEditor->getScribbleArea()->prepOverlays();
-    mEditor->getScribbleArea()->renderOverlays();
 }
 
 void OverlayManager::updatePerspOverlay(const QPointF& point)
@@ -113,8 +110,6 @@ void OverlayManager::updatePerspOverlay(const QPointF& point)
     default:
         break;
     }
-    mEditor->getScribbleArea()->prepOverlays();
-    mEditor->getScribbleArea()->renderOverlays();
 }
 
 void OverlayManager::setOverlayCenter(bool b)

@@ -26,7 +26,7 @@ public:
 
     void workingLayerChanged(Layer *) override;
 
-    MoveMode getMoveModeForOverlayAnchor(const QPointF& pos);
+    MoveMode getMoveModeForOverlayAnchor(const QPointF& pos, QTransform transform);
     double selectionTolerance();
 
     void initPerspOverlay();

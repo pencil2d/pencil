@@ -244,6 +244,28 @@ Layer* Object::getLayer(int i) const
     return mLayers.at(i);
 }
 
+Layer* Object::getFirstVisibleLayer(int i, Layer::LAYER_TYPE type) const
+{
+    Layer* layer = getLayer(i);
+
+    if (layer && layer->type() == type && layer->visible())
+    {
+        return layer;
+    }
+    else
+    {
+        for (int i = 0; i < getLayerCount(); ++i)
+        {
+            Layer* layerCheck = getLayer(i);
+            if (layerCheck && layerCheck->type() == type && layerCheck->visible())
+            {
+                return layerCheck;
+            }
+        }
+    }
+    return nullptr;
+}
+
 Layer* Object::findLayerById(int layerId) const
 {
     for(Layer* layer : mLayers)
