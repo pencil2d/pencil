@@ -1385,7 +1385,7 @@ void ScribbleArea::prepOverlays()
     o.nFrameIndex = mEditor->currentFrame();
 
     mOverlayPainter.setOptions(o);
-    mOverlayPainter.preparePainter(mEditor->object()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+    mOverlayPainter.preparePainter(mEditor->object()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA), palette());
 
     ViewManager* vm = mEditor->view();
     mOverlayPainter.setViewTransform(vm->getView());

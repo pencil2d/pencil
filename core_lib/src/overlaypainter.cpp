@@ -20,8 +20,9 @@ void OverlayPainter::initializePainter(QPainter& painter)
     painter.setBrush(Qt::NoBrush);
 }
 
-void OverlayPainter::preparePainter(Layer* cameraLayer)
+void OverlayPainter::preparePainter(Layer* cameraLayer, QPalette palette)
 {
+    mPalette = palette;
     mCameraLayer = static_cast<LayerCamera*>(cameraLayer);
 }
 
@@ -236,8 +237,7 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
 void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, QTransform& camTransform, QRect& camRect) const
 {
     painter.save();
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter.setRenderHint(QPainter::Antialiasing, true);
 
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
@@ -260,15 +260,21 @@ void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, QTransfo
     }
     painter.drawLines(lines);
 
-    painter.setRenderHints(previous_renderhints);
+    painter.setWorldMatrixEnabled(false);
+
+    singlePoint = mViewTransform.map(singlePoint);
+
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.setPen(mPalette.color(QPalette::HighlightedText));
+    painter.setBrush(mPalette.color(QPalette::Highlight));
+    painter.drawEllipse(QRectF(singlePoint.x()-HANDLE_WIDTH*.5, singlePoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH, HANDLE_WIDTH));
     painter.restore();
 }
 
 void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const
 {
     painter.save();
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter.setRenderHint(QPainter::Antialiasing, true);
 
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
@@ -307,7 +313,17 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, QTransf
     }
     painter.drawLines(lines);
 
-    painter.setRenderHints(previous_renderhints);
+    painter.setWorldMatrixEnabled(false);
+
+    leftPoint = mViewTransform.map(leftPoint);
+    rightPoint = mViewTransform.map(rightPoint);
+
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.setPen(mPalette.color(QPalette::HighlightedText));
+    painter.setBrush(mPalette.color(QPalette::Highlight));
+    painter.drawEllipse(QRectF(leftPoint.x()-HANDLE_WIDTH*.5, leftPoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH,HANDLE_WIDTH));
+    painter.drawEllipse(QRectF(rightPoint.x()-HANDLE_WIDTH*.5, rightPoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH, HANDLE_WIDTH));
+
     painter.restore();
 }
 
@@ -317,8 +333,7 @@ void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, QTran
         paintOverlayPerspectiveTwoPoints(painter, camTransform, camRect);
 
     painter.save();
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter.setRenderHint(QPainter::Antialiasing, true);
 
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
@@ -344,6 +359,13 @@ void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, QTran
     }
     painter.drawLines(lines);
 
-    painter.setRenderHints(previous_renderhints);
+    painter.setWorldMatrixEnabled(false);
+
+    middlePoint = mViewTransform.map(middlePoint);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    painter.setPen(mPalette.color(QPalette::HighlightedText));
+    painter.setBrush(mPalette.color(QPalette::Highlight));
+    painter.drawEllipse(QRectF(middlePoint.x()-HANDLE_WIDTH*.5, middlePoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH,HANDLE_WIDTH));
+
     painter.restore();
 }

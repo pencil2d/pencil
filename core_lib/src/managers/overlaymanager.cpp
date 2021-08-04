@@ -3,7 +3,7 @@
 #include "overlaymanager.h"
 #include "overlaypainter.h"
 
-OverlayManager::OverlayManager(Editor *editor): BaseManager(editor, __FUNCTION__)
+OverlayManager::OverlayManager(Editor *editor): BaseManager(editor, "OverlayManager")
 {
     mEditor = editor;
 
