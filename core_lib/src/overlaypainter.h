@@ -20,7 +20,10 @@ struct OverlayPainterOptions
     bool  bPerspective3 = false;
     int   nOverlayAngle = 15; // for perspective overlays
     bool  bShowSafeAreaHelperText = true;
-    bool  mIsCamera = false;
+    bool  bIsCamera = false;
+    bool  bGrid = false;
+    int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
+    int   nGridSizeH = 50; /* This is the grid Height IN PIXELS. The grid will scale with the image, though */
     QPointF mSinglePerspPoint;
     QPointF mLeftPerspPoint;
     QPointF mRightPerspPoint;
@@ -43,8 +46,10 @@ public:
     void initializePainter(QPainter& painter);
     void preparePainter(Layer* cameraLayer, QPalette palette);
 
-    void renderOverlays(QPainter& painter);
+    void paint(QPainter& painter);
+private:
 
+    void paintGrid(QPainter& painter) const;
     void paintOverlayCenter(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
     void paintOverlayThirds(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
     void paintOverlayGolden(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
@@ -53,7 +58,8 @@ public:
     void paintOverlayPerspectiveTwoPoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
     void paintOverlayPerspectiveThreePoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
 
-private:
+    int round100(double f, int gridSize) const;
+
     OverlayPainterOptions mOptions;
 
     QTransform mViewTransform;

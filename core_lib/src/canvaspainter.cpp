@@ -168,17 +168,11 @@ void CanvasPainter::renderPostLayers(QPainter& painter)
     {
         paintCurrentFrame(painter, mCurrentLayerIndex + 1, mObject->getLayerCount() - 1);
     }
-
-    // post effects
-    if (mOptions.bAxis)
-    {
-        paintAxis(painter);
-    }
 }
 
 void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer)
 {
-    Q_UNUSED(rect);
+    Q_UNUSED(rect)
     Q_ASSERT(object);
     mObject = object;
 
@@ -474,64 +468,4 @@ qreal CanvasPainter::calculateRelativeOpacityForLayer(int layerIndex) const
         newOpacity = qPow(static_cast<qreal>(mOptions.fLayerVisibilityThreshold), absoluteOffset);
     }
     return newOpacity;
-}
-
-void CanvasPainter::paintAxis(QPainter& painter) const
-{
-    painter.setPen(Qt::green);
-    painter.drawLine(QLineF(0, -500, 0, 500));
-
-    painter.setPen(Qt::red);
-    painter.drawLine(QLineF(-500, 0, 500, 0));
-}
-
-int round100(double f, int gridSize)
-{
-    return static_cast<int>(f) / gridSize * gridSize;
-}
-
-void CanvasPainter::paintGrid(QPainter& painter) const
-{
-    int gridSizeW = mOptions.nGridSizeW;
-    int gridSizeH = mOptions.nGridSizeH;
-
-    QRectF rect = painter.viewport();
-    QRectF boundingRect = mViewTransform.inverted().mapRect(rect);
-
-    int left = round100(boundingRect.left(), gridSizeW) - gridSizeW;
-    int right = round100(boundingRect.right(), gridSizeW) + gridSizeW;
-    int top = round100(boundingRect.top(), gridSizeH) - gridSizeH;
-    int bottom = round100(boundingRect.bottom(), gridSizeH) + gridSizeH;
-
-    QPen pen(Qt::lightGray);
-    pen.setCosmetic(true);
-    painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
-    painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
-    painter.setRenderHint(QPainter::Antialiasing, false);
-    // draw vertical grid lines
-    for (int x = left; x < right; x += gridSizeW)
-    {
-        painter.drawLine(x, top, x, bottom);
-    }
-
-    // draw horizontal grid lines
-    for (int y = top; y < bottom; y += gridSizeH)
-    {
-        painter.drawLine(left, y, right, y);
-    }
-    painter.setRenderHints(previous_renderhints);
-}
-
-
-void CanvasPainter::renderGrid(QPainter& painter) const
-{
-    if (mOptions.bGrid)
-    {
-        painter.save();
-        painter.setWorldTransform(mViewTransform);
-        paintGrid(painter);
-        painter.restore();
-    }
 }

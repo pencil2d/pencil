@@ -31,7 +31,7 @@ void OverlayPainter::setViewTransform(const QTransform view)
     mViewTransform = view;
 }
 
-void OverlayPainter::renderOverlays(QPainter &painter)
+void OverlayPainter::paint(QPainter &painter)
 {
     painter.save();
     initializePainter(painter);
@@ -81,6 +81,12 @@ void OverlayPainter::renderOverlays(QPainter &painter)
         paintOverlayPerspectiveThreePoints(painter, camTransform, cameraRect);
     }
 
+    if (mOptions.bGrid)
+    {
+        painter.setWorldTransform(mViewTransform);
+        paintGrid(painter);
+    }
+
     painter.restore();
 }
 
@@ -127,7 +133,6 @@ void OverlayPainter::paintOverlayThirds(QPainter &painter, QTransform& camTransf
     painter.setPen(pen);
     painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     QPolygon poly = camTransform.inverted().mapToPolygon(camRect);
@@ -140,7 +145,6 @@ void OverlayPainter::paintOverlayThirds(QPainter &painter, QTransform& camTransf
     painter.drawLine(leftLine.pointAt(0.333).toPoint(), rightLine.pointAt(0.333));
     painter.drawLine(leftLine.pointAt(0.667).toPoint(), rightLine.pointAt(0.667));
 
-    painter.setRenderHints(previous_renderhints);
     painter.restore();
 }
 
@@ -158,7 +162,6 @@ void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransf
     painter.setPen(pen);
     painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::Antialiasing, false);
 
     QPolygon poly = camTransform.inverted().mapToPolygon(camRect);
@@ -171,7 +174,6 @@ void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransf
     painter.drawLine(leftLine.pointAt(0.382).toPoint(), rightLine.pointAt(0.382));
     painter.drawLine(leftLine.pointAt(0.618).toPoint(), rightLine.pointAt(0.618));
 
-    painter.setRenderHints(previous_renderhints);
     painter.restore();
 }
 
@@ -188,7 +190,6 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
     painter.setPen(pen);
     painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
-    QPainter::RenderHints previous_renderhints = painter.renderHints();
     painter.setRenderHint(QPainter::TextAntialiasing, true);
 
     QPolygon poly = camTransform.inverted().mapToPolygon(camRect);
@@ -229,8 +230,6 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
             painter.drawText(bottomLeftCrossLine.pointAt((title / 2.0) / 100), QObject::tr("Safe Title area %1 %").arg(title));
         }
     }
-
-    painter.setRenderHints(previous_renderhints);
     painter.restore();
 }
 
@@ -264,11 +263,15 @@ void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, QTransfo
 
     singlePoint = mViewTransform.map(singlePoint);
 
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.setPen(mPalette.color(QPalette::HighlightedText));
-    painter.setBrush(mPalette.color(QPalette::Highlight));
-    painter.drawEllipse(QRectF(singlePoint.x()-HANDLE_WIDTH*.5, singlePoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH, HANDLE_WIDTH));
+    if (!mOptions.bIsCamera) {
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.setPen(mPalette.color(QPalette::HighlightedText));
+        painter.setBrush(mPalette.color(QPalette::Highlight));
+        painter.drawEllipse(QRectF(singlePoint.x()-HANDLE_WIDTH*.5, singlePoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH, HANDLE_WIDTH));
+    }
+
     painter.restore();
+
 }
 
 void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const
@@ -318,11 +321,13 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, QTransf
     leftPoint = mViewTransform.map(leftPoint);
     rightPoint = mViewTransform.map(rightPoint);
 
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.setPen(mPalette.color(QPalette::HighlightedText));
-    painter.setBrush(mPalette.color(QPalette::Highlight));
-    painter.drawEllipse(QRectF(leftPoint.x()-HANDLE_WIDTH*.5, leftPoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH,HANDLE_WIDTH));
-    painter.drawEllipse(QRectF(rightPoint.x()-HANDLE_WIDTH*.5, rightPoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH, HANDLE_WIDTH));
+    if (!mOptions.bIsCamera) {
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.setPen(mPalette.color(QPalette::HighlightedText));
+        painter.setBrush(mPalette.color(QPalette::Highlight));
+        painter.drawEllipse(QRectF(leftPoint.x()-HANDLE_WIDTH*.5, leftPoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH,HANDLE_WIDTH));
+        painter.drawEllipse(QRectF(rightPoint.x()-HANDLE_WIDTH*.5, rightPoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH, HANDLE_WIDTH));
+    }
 
     painter.restore();
 }
@@ -362,10 +367,54 @@ void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, QTran
     painter.setWorldMatrixEnabled(false);
 
     middlePoint = mViewTransform.map(middlePoint);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.setPen(mPalette.color(QPalette::HighlightedText));
-    painter.setBrush(mPalette.color(QPalette::Highlight));
-    painter.drawEllipse(QRectF(middlePoint.x()-HANDLE_WIDTH*.5, middlePoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH,HANDLE_WIDTH));
+
+    if (!mOptions.bIsCamera) {
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+        painter.setPen(mPalette.color(QPalette::HighlightedText));
+        painter.setBrush(mPalette.color(QPalette::Highlight));
+        painter.drawEllipse(QRectF(middlePoint.x()-HANDLE_WIDTH*.5, middlePoint.y()-HANDLE_WIDTH*.5, HANDLE_WIDTH,HANDLE_WIDTH));
+    }
 
     painter.restore();
 }
+
+void OverlayPainter::paintGrid(QPainter& painter) const
+{
+    painter.save();
+    int gridSizeW = mOptions.nGridSizeW;
+    int gridSizeH = mOptions.nGridSizeH;
+
+    QRectF rect = painter.viewport();
+    QRectF boundingRect = mViewTransform.inverted().mapRect(rect);
+
+    int left = round100(boundingRect.left(), gridSizeW) - gridSizeW;
+    int right = round100(boundingRect.right(), gridSizeW) + gridSizeW;
+    int top = round100(boundingRect.top(), gridSizeH) - gridSizeH;
+    int bottom = round100(boundingRect.bottom(), gridSizeH) + gridSizeH;
+
+    QPen pen(Qt::lightGray);
+    pen.setCosmetic(true);
+    painter.setPen(pen);
+    painter.setWorldMatrixEnabled(true);
+    painter.setBrush(Qt::NoBrush);
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    // draw vertical grid lines
+    for (int x = left; x < right; x += gridSizeW)
+    {
+        painter.drawLine(x, top, x, bottom);
+    }
+
+    // draw horizontal grid lines
+    for (int y = top; y < bottom; y += gridSizeH)
+    {
+        painter.drawLine(left, y, right, y);
+    }
+
+    painter.restore();
+}
+
+int OverlayPainter::round100(double f, int gridSize) const
+{
+    return static_cast<int>(f) / gridSize * gridSize;
+}
+

@@ -37,10 +37,6 @@ class LayerCamera;
 struct CanvasPainterOptions
 {
     bool  bAntiAlias = false;
-    bool  bGrid = false;
-    int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
-    int   nGridSizeH = 50; /* This is the grid Height IN PIXELS. The grid will scale with the image, though */
-    bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
@@ -68,8 +64,6 @@ public:
     void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
     void paint();
     void paintCached();
-    void renderGrid(QPainter& painter) const;
-    void renderOverlays(QPainter& painter) const;
     void resetLayerCache();
 
 private:
@@ -99,8 +93,6 @@ private:
     void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
 
     void paintTransformedSelection(QPainter& painter) const;
-    void paintGrid(QPainter& painter) const;
-    void paintAxis(QPainter& painter) const;
     void prescale(BitmapImage* bitmapImage);
 
     /** Calculate layer opacity based on current layer offset */
