@@ -32,13 +32,13 @@ bool sortAsc(int left, int right)
     return left < right;
 }
 
-Layer::Layer(Object* object, LAYER_TYPE eType) : QObject(object)
+Layer::Layer(Object* object, LAYER_TYPE eType)
 {
     Q_ASSERT(eType != UNDEFINED);
 
     mObject = object;
     meType = eType;
-    mName = QString(tr("Undefined Layer"));
+    mName = QString(QObject::tr("Undefined Layer"));
 
     mId = object->getUniqueLayerID();
 }
@@ -57,7 +57,6 @@ void Layer::setObject(Object* obj)
 {
     Q_ASSERT(obj);
     mObject = obj;
-    setParent(mObject);
     mId = mObject->getUniqueLayerID();
 }
 
@@ -231,10 +230,7 @@ bool Layer::moveKeyFrame(int position, int offset)
     }
 
     setFrameSelected(position, true);
-    bool moved = false;
-    if (moveSelectedFrames(offset)) {
-        moved = true;
-    }
+    bool moved = moveSelectedFrames(offset);
     setFrameSelected(newPos, false);
 
     mSelectedFrames_byLast = listOfFramesLast;
@@ -317,7 +313,7 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
     return Status::OK;
 }
 
-void Layer::setModified(int position, bool modified)
+void Layer::setModified(int position, bool modified) const
 {
     KeyFrame* key = getKeyFrameAt(position);
     if (key)
@@ -363,7 +359,6 @@ void Layer::setFrameSelected(int position, bool isSelected)
             mSelectedFrames_byPosition.removeAt(iPos);
         }
         keyFrame->setSelected(isSelected);
-        emit selectedFramesChanged();
     }
 }
 
@@ -429,7 +424,6 @@ void Layer::deselectAll()
 {
     mSelectedFrames_byLast.clear();
     mSelectedFrames_byPosition.clear();
-    emit selectedFramesChanged();
 
     for (auto pair : mKeyFrames)
     {
@@ -503,7 +497,6 @@ bool Layer::moveSelectedFrames(int offset)
             }
             indexInSelection = indexInSelection + step;
         }
-        emit selectedFramesChanged();
 
         // Update selection lists
         for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)

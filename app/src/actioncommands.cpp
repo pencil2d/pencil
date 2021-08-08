@@ -585,16 +585,16 @@ void ActionCommands::GotoPrevKeyFrame()
 Status ActionCommands::addNewKey()
 {
     // Sound keyframes should not be empty, so we try to import a sound instead
-    if (mEditor->layers()->currentLayer()->type() == Layer::SOUND) {
+    if (mEditor->layers()->currentLayer()->type() == Layer::SOUND)
+    {
         return importSound(FileType::SOUND);
     }
 
     KeyFrame* key = mEditor->addNewKey();
-
     Camera* cam = dynamic_cast<Camera*>(key);
     if (cam)
     {
-        mEditor->view()->updateViewTransforms();
+        mEditor->view()->forceUpdateViewTransform();
     }
 
     return Status::OK;
@@ -659,7 +659,6 @@ void ActionCommands::moveFrameForward()
             mEditor->scrubForward();
         }
     }
-
     mEditor->layers()->notifyAnimationLengthChanged();
     emit mEditor->framesModified();
 }

@@ -75,3 +75,9 @@ ipch
 /tests/tests
 /bin/*
 /tests/bin
+
+# Visual Studio Code
+.vscode
+
+# Build directory
+build

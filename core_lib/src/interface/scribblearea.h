@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "bitmapimage.h"
 #include "canvaspainter.h"
+#include "overlaypainter.h"
 #include "preferencemanager.h"
 #include "strokemanager.h"
 #include "selectionpainter.h"
@@ -132,6 +133,7 @@ public:
 
     /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
+    void setModified(const Layer* layer, int frameNumber);
 
     void flipSelection(bool flipVertical);
 
@@ -239,6 +241,7 @@ private:
 
     void prepCameraPainter(int frame);
     void prepCanvas(int frame, QRect rect);
+    void prepOverlays();
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter &painter);
@@ -292,6 +295,7 @@ private:
 
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
+    OverlayPainter mOverlayPainter;
     SelectionPainter mSelectionPainter;
     CameraPainter mCameraPainter;
 

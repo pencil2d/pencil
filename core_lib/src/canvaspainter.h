@@ -37,19 +37,6 @@ class LayerCamera;
 struct CanvasPainterOptions
 {
     bool  bAntiAlias = false;
-    bool  bGrid = false;
-    int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
-    int   nGridSizeH = 50; /* This is the grid Height IN PIXELS. The grid will scale with the image, though */
-    bool  bCenter = false;
-    bool  bThirds = false;
-    bool  bGoldenRatio = false;
-    bool  bActionSafe = true;
-    int   nActionSafe = 5;
-    bool  bSafeArea = false;
-    bool  bTitleSafe = true;
-    int   nTitleSafe = 10;
-    bool bShowSafeAreaHelperText = true;
-    bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
@@ -73,13 +60,10 @@ public:
     void setOptions(const CanvasPainterOptions& p) { mOptions = p; }
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
-    QRect getCameraRect(); // TODO: rework this.. there should not be getter in painter classes!
 
     void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
     void paint();
     void paintCached();
-    void renderGrid(QPainter& painter) const;
-    void renderOverlays(QPainter& painter) const;
     void resetLayerCache();
 
 private:
@@ -109,12 +93,6 @@ private:
     void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
 
     void paintTransformedSelection(QPainter& painter) const;
-    void paintGrid(QPainter& painter) const;
-    void paintOverlayCenter(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
-    void paintOverlayThirds(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
-    void paintOverlayGolden(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
-    void paintOverlaySafeAreas(QPainter& painter, QTransform cameraTransform, QRect cameraRect) const;
-    void paintAxis(QPainter& painter) const;
     void prescale(BitmapImage* bitmapImage);
 
     /** Calculate layer opacity based on current layer offset */
@@ -134,8 +112,6 @@ private:
     BitmapImage* mBuffer = nullptr;
 
     QImage mScaledBitmap;
-
-    QRect mCameraRect;
 
     bool bMultiLayerOnionSkin = false;
 

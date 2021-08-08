@@ -43,6 +43,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "soundmanager.h"
 #include "selectionmanager.h"
+#include "overlaymanager.h"
 
 #include "scribblearea.h"
 #include "timeline.h"
@@ -78,6 +79,7 @@ bool Editor::init()
     mPreferenceManager = new PreferenceManager(this);
     mSoundManager = new SoundManager(this);
     mSelectionManager = new SelectionManager(this);
+    mOverlayManager = new OverlayManager(this);
 
     mAllManagers =
     {
@@ -88,7 +90,8 @@ bool Editor::init()
         mViewManager,
         mPreferenceManager,
         mSoundManager,
-        mSelectionManager
+        mSelectionManager,
+        mOverlayManager
     };
 
     for (BaseManager* pManager : mAllManagers)
@@ -225,6 +228,7 @@ bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
             if (bitmapImage != nullptr)
             {
                 BackupBitmapElement* element = new BackupBitmapElement(bitmapImage);
+                element->layerId = layer->id();
                 element->layer = backupLayer;
                 element->frame = bitmapImage->pos();
                 element->undoText = undoText;
@@ -247,6 +251,7 @@ bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
             if (vectorImage != nullptr)
             {
                 BackupVectorElement* element = new BackupVectorElement(vectorImage);
+                element->layerId = layer->id();
                 element->layer = backupLayer;
                 element->frame = vectorImage->pos();
                 element->undoText = undoText;
@@ -279,6 +284,7 @@ bool Editor::backup(int backupLayer, int backupFrame, const QString& undoText)
                 if (clip)
                 {
                     BackupSoundElement* element = new BackupSoundElement(clip);
+                    element->layerId = layer->id();
                     element->layer = backupLayer;
                     element->frame = backupFrame;
                     element->undoText = undoText;
@@ -375,7 +381,7 @@ void Editor::restoreKey()
         BackupBitmapElement* lastBackupBitmapElement = static_cast<BackupBitmapElement*>(lastBackupElement);
         layerIndex = lastBackupBitmapElement->layer;
         frame = lastBackupBitmapElement->frame;
-        layer = object()->getLayer(layerIndex);
+        layer = object()->findLayerById(lastBackupBitmapElement->layerId);
         addKeyFrame(layerIndex, frame);
         dynamic_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(frame)->paste(&lastBackupBitmapElement->bitmapImage);
         emit frameModified(frame);
@@ -385,7 +391,7 @@ void Editor::restoreKey()
         BackupVectorElement* lastBackupVectorElement = static_cast<BackupVectorElement*>(lastBackupElement);
         layerIndex = lastBackupVectorElement->layer;
         frame = lastBackupVectorElement->frame;
-        layer = object()->getLayer(layerIndex);
+        layer = object()->findLayerById(layerIndex);
         addKeyFrame(layerIndex, frame);
         dynamic_cast<LayerVector*>(layer)->getVectorImageAtFrame(frame)->paste(lastBackupVectorElement->vectorImage);
         emit frameModified(frame);
@@ -619,6 +625,11 @@ LayerVisibility Editor::layerVisibility()
     return mScribbleArea->getLayerVisibility();
 }
 
+qreal Editor::viewScaleInversed()
+{
+    return view()->getViewScaleInverse();
+}
+
 void Editor::increaseLayerVisibilityIndex()
 {
     mScribbleArea->increaseLayerVisibilityIndex();
@@ -673,7 +684,7 @@ Status Editor::openObject(const QString& strFilePath, const std::function<void(i
     }
     if (!fileInfo.isReadable())
     {
-        dd << QString("Permissions: 0x%1").arg(QString::number(fileInfo.permissions(), 16));
+        dd << QString("Permissions: 0x%1").arg(fileInfo.permissions(), 0, 16);
         return Status(Status::ERROR_FILE_CANNOT_OPEN,
                       dd,
                       tr("Could not open file"),
@@ -743,12 +754,6 @@ Status Editor::setObject(Object* newObject)
     {
         m->load(mObject.get());
     }
-
-    if (mViewManager)
-    {
-        connect(newObject, &Object::layerViewChanged, mViewManager, &ViewManager::viewChanged);
-    }
-
     emit objectLoaded();
 
     return Status::OK;
@@ -908,6 +913,8 @@ void Editor::selectAll() const
 
 void Editor::deselectAll() const
 {
+    select()->resetSelectionProperties();
+
     Layer* layer = layers()->currentLayer();
     if (layer == nullptr) { return; }
 
@@ -919,8 +926,6 @@ void Editor::deselectAll() const
             vectorImage->deselectAll();
         }
     }
-
-    select()->resetSelectionProperties();
 }
 
 void Editor::updateFrame(int frameNumber)

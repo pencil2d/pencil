@@ -23,18 +23,21 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QSettings>
 #include <QMenu>
+#include <QDebug>
+
 #include "camerapropertiesdialog.h"
 #include "editor.h"
 #include "keyframe.h"
 #include "camera.h"
 #include "cameraeasingtype.h"
 #include "layermanager.h"
+#include "viewmanager.h"
 #include "object.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "toolmanager.h"
-#include <QDebug>
+
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
     mTimeLine = parent;
@@ -806,10 +809,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                 {
                     int previousLayerNumber = mEditor->layers()->currentLayerIndex();
 
-                    if (previousLayerNumber != layerNumber) {
+                    if (previousLayerNumber != layerNumber)
+                    {
                         Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
                         previousLayer->deselectAll();
-
+                        mEditor->selectedFramesChanged();
                         mEditor->layers()->setCurrentLayer(layerNumber);
                     }
 
@@ -823,6 +827,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         mCanMoveFrame = true;
 
                         currentLayer->selectAllFramesAfter(frameNumber);
+                        mEditor->selectedFramesChanged();
                     }
                     // Check if we are clicking on a non selected frame
                     else if (!currentLayer->isFrameSelected(frameNumber))
@@ -837,11 +842,13 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                             {
                                 // Add/remove from already selected
                                 currentLayer->toggleFrameSelected(frameNumber, true);
+                                mEditor->selectedFramesChanged();
                             }
                             else if (event->modifiers() == Qt::ShiftModifier)
                             {
                                 // Select a range from the last selected
                                 currentLayer->extendSelectionTo(frameNumber);
+                                mEditor->selectedFramesChanged();
                             }
                             else if (event->button() == Qt::LeftButton)
                             {
@@ -952,6 +959,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             currentLayer->deselectAll();
                             currentLayer->setFrameSelected(mStartFrameNumber, true);
                             currentLayer->extendSelectionTo(frameNumber);
+                            mEditor->selectedFramesChanged();
                         }
                         mLastFrameNumber = frameNumber;
                     }
@@ -983,6 +991,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
+            mEditor->selectedFramesChanged();
         }
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
@@ -1035,17 +1044,17 @@ void TimeLineCells::editLayerProperties(Layer *layer) const
         return;
     }
 
-    auto cameraLayer = qobject_cast<LayerCamera*>(layer);
+    auto cameraLayer = dynamic_cast<LayerCamera*>(layer);
     Q_ASSERT(cameraLayer);
     editLayerProperties(cameraLayer);
 }
 
-void TimeLineCells::editLayerProperties(LayerCamera *layer) const
+void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
 {
     QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
-    CameraPropertiesDialog dialog(layer->name(), layer->getViewRect().width(),
-                                  layer->getViewRect().height());
+    CameraPropertiesDialog dialog(cameraLayer->name(), cameraLayer->getViewRect().width(),
+                                  cameraLayer->getViewRect().height());
     if (dialog.exec() != QDialog::Accepted)
     {
         return;
@@ -1054,12 +1063,13 @@ void TimeLineCells::editLayerProperties(LayerCamera *layer) const
 
     if (!name.isEmpty())
     {
-        mEditor->layers()->renameLayer(layer, name);
+        mEditor->layers()->renameLayer(cameraLayer, name);
     }
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_FIELD_W, dialog.getWidth());
     settings.setValue(SETTING_FIELD_H, dialog.getHeight());
-    layer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
+    cameraLayer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
+    mEditor->view()->forceUpdateViewTransform();
 }
 
 void TimeLineCells::editLayerName(Layer* layer) const

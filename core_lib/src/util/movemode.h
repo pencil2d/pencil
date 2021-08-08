@@ -12,6 +12,10 @@ enum class MoveMode {
     ROTATIONLEFT,
     ROTATIONRIGHT,
     SYMMETRY,
+    PERSP_SINGLE,
+    PERSP_LEFT,
+    PERSP_RIGHT,
+    PERSP_MIDDLE,
     CENTER,
     NONE
 };

@@ -19,7 +19,9 @@ GNU General Public License for more details.
 
 #include <QSettings>
 #include "editor.h"
+#include "layercamera.h"
 #include "viewmanager.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 
 ImportPositionDialog::ImportPositionDialog(QWidget *parent) :
@@ -76,7 +78,12 @@ void ImportPositionDialog::changeImportView()
     }
     else if (mImportOption == ImportPosition::Type::CenterOfCamera)
     {
-        QRectF cameraRect = mEditor->getScribbleArea()->getCameraRect();
+        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+        QRectF cameraRect = layerCam ? layerCam->getViewRect() : QRectF();
+
+        // TODO: import option should be disabled if no camera is found
+        Q_ASSERT(layerCam);
+
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
         mEditor->view()->setImportView(transform);
         QSettings settings(PENCIL2D, PENCIL2D);

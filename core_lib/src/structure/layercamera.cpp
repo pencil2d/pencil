@@ -26,7 +26,7 @@ GNU General Public License for more details.
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
-    setName(tr("Camera Layer"));
+    setName(QObject::tr("Camera Layer"));
 
     QSettings settings(PENCIL2D, PENCIL2D);
     mFieldW = settings.value("FieldW").toInt();
@@ -304,7 +304,8 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
 {
     QEasingCurve easing;
 
-    switch (type) {
+    switch (type)
+    {
     case CameraEasingType::LINEAR : easing.setType(QEasingCurve::Linear); break;
     case CameraEasingType::INQUAD : easing.setType(QEasingCurve::InQuad); break;
     case CameraEasingType::OUTQUAD : easing.setType(QEasingCurve::OutQuad); break;
@@ -423,7 +424,6 @@ QSize LayerCamera::getViewSize() const
 void LayerCamera::setViewRect(QRect newViewRect)
 {
     viewRect = newViewRect;
-    emit resolutionChanged();
 }
 
 void LayerCamera::setCameraEasing(CameraEasingType type, int frame)

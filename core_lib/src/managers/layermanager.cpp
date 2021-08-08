@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 
-LayerManager::LayerManager(Editor* editor) : BaseManager(editor)
+LayerManager::LayerManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -51,6 +51,11 @@ Status LayerManager::save(Object* o)
 {
     o->data()->setCurrentLayer(editor()->currentLayerIndex());
     return Status::OK;
+}
+
+Layer* LayerManager::getFirstVisibleLayer(int layerIndex, Layer::LAYER_TYPE type)
+{
+    return object()->getFirstVisibleLayer(layerIndex, type);
 }
 
 Layer* LayerManager::getLastCameraLayer()

@@ -185,12 +185,12 @@ TEST_CASE("Test Layer::keyExists()", "[Layer]")
 TEST_CASE("Layer::firstKeyFramePosition()")
 {
     Object* obj = new Object;
-    
+
     SECTION("At least one key")
-    {        
+    {
         Layer* layer = obj->addNewBitmapLayer();
         REQUIRE(layer->firstKeyFramePosition() == 1);
-        
+
         layer->addNewKeyFrameAt(99);
         REQUIRE(layer->firstKeyFramePosition() != 0);
 

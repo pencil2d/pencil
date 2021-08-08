@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "strokemanager.h"
 #include "selectionmanager.h"
+#include "overlaymanager.h"
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
@@ -108,6 +109,13 @@ QCursor MoveTool::cursor()
     {
         mode = mEditor->select()->getMoveModeForSelectionAnchor(currentPoint);
     }
+    else if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+        mode = mEditor->overlays()->getMoveModeForPoint(currentPoint, layerCam->getViewAtFrame(mEditor->currentFrame()));
+        mPerspMode = mode;
+        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
 
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
@@ -161,6 +169,9 @@ void MoveTool::updateSettings(const SETTING setting)
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
 {
+    mCurrentLayer = currentPaintableLayer();
+    if (mCurrentLayer == nullptr) return;
+
     if (mCurrentLayer->type() == Layer::CAMERA &&
         mCurrentLayer->keyExists(mEditor->currentFrame()))
     {
@@ -170,13 +181,22 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         return;
     }
 
-    mCurrentLayer = currentPaintableLayer();
-    if (mCurrentLayer == nullptr) return;
+    if (mEditor->select()->somethingSelected())
+    {
+        mEditor->select()->updatePolygons();
 
-    mEditor->select()->updatePolygons();
+        setAnchorToLastPoint();
+        beginInteraction(event->modifiers(), mCurrentLayer);
+    }
+    if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        mEditor->overlays()->setMoveMode(mPerspMode);
 
-    setAnchorToLastPoint();
-    beginInteraction(event->modifiers(), mCurrentLayer);
+        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+
+        QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()).toPoint();
+        mEditor->overlays()->updatePerspective(mapped);
+    }
 }
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
@@ -188,11 +208,9 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
-        if (mEditor->select()->somethingSelected())
-        {
-            transformSelection(event->modifiers(), mCurrentLayer);
-        }
-        else if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
+        transformSelection(event->modifiers(), mCurrentLayer);
+
+        if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
         {
             if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
                 transformCamera();
@@ -201,6 +219,15 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
             {
                 transformCameraPath();
             }
+        }
+        else if (mEditor->overlays()->isPerspOverlaysActive())
+        {
+            LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+            mEditor->overlays()->updatePerspective(layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()));
+        }
+        if (mEditor->select()->somethingSelected())
+        {
+            transformSelection(event->modifiers(), mCurrentLayer);
         }
     }
     else
@@ -223,14 +250,20 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     {
         if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
             transformCamera();
-            mEditor->view()->updateViewTransforms();
+            mEditor->view()->forceUpdateViewTransform();
             mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
         } else if (mCamPathMoveMode == MoveMode::MIDDLE) {
             transformCameraPath();
-            mEditor->view()->updateViewTransforms();
+            mEditor->view()->forceUpdateViewTransform();
             mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
         }
         return;
+    }
+    
+    if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        mEditor->overlays()->setMoveMode(MoveMode::NONE);
+        mPerspMode = MoveMode::NONE;
     }
 
     auto selectMan = mEditor->select();
@@ -423,9 +456,7 @@ void MoveTool::setAnchorToLastPoint()
 
 void MoveTool::cancelChanges()
 {
-    auto selectMan = mEditor->select();
     mScribbleArea->cancelTransformedSelection();
-    selectMan->resetSelectionProperties();
     mEditor->deselectAll();
 }
 
