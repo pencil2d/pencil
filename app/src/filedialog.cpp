@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "fileformat.h"
 #include "pencildef.h"
 
+
 QString FileDialog::getOpenFileName(QWidget* parent, FileType fileType, const QString& caption)
 {
     QString strInitialFilePath = getLastOpenPath(fileType);
@@ -39,6 +40,7 @@ QString FileDialog::getOpenFileName(QWidget* parent, FileType fileType, const QS
     {
         setLastOpenPath(fileType, filePath);
     }
+
 
     return filePath;
 }
@@ -105,7 +107,6 @@ QString FileDialog::getLastOpenPath(FileType fileType)
 {
     QSettings setting(PENCIL2D, PENCIL2D);
     setting.beginGroup("LastOpenPath");
-
     return setting.value(toSettingKey(fileType), QDir::homePath()).toString();
 }
 
@@ -114,7 +115,7 @@ void FileDialog::setLastOpenPath(FileType fileType, const QString& openPath)
     QSettings setting(PENCIL2D, PENCIL2D);
     setting.beginGroup("LastOpenPath");
 
-    setting.setValue(toSettingKey(fileType), QFileInfo(openPath).absolutePath());
+    setting.setValue(toSettingKey(FileType::ANIMATION), QFileInfo(openPath).absolutePath());
 }
 
 QString FileDialog::getLastSavePath(FileType fileType)
@@ -122,8 +123,10 @@ QString FileDialog::getLastSavePath(FileType fileType)
     QSettings setting(PENCIL2D, PENCIL2D);
     setting.beginGroup("LastSavePath");
 
-    return setting.value(toSettingKey(fileType),
+    return setting.value(toSettingKey(FileType::ANIMATION),
                          QDir::homePath() + "/" + defaultFileName(fileType)).toString();
+    // return setting.value(toSettingKey(fileType),
+    //                     QDir::homePath() + "/" + defaultFileName(fileType)).toString();
 }
 
 void FileDialog::setLastSavePath(FileType fileType, const QString& savePath)

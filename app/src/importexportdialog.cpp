@@ -19,7 +19,9 @@ GNU General Public License for more details.
 #include "ui_importexportdialog.h"
 #include <QFileInfo>
 #include <QDialogButtonBox>
+#include <QSettings>
 #include "filedialog.h"
+
 
 ImportExportDialog::ImportExportDialog(QWidget* parent, Mode eMode, FileType eFileType) : QDialog(parent)
 {
@@ -48,6 +50,7 @@ QDialogButtonBox* ImportExportDialog::getDialogButtonBox()
 
 QString ImportExportDialog::getFilePath() const
 {
+
     return m_filePaths.isEmpty() ? QString() : m_filePaths.first();
 }
 
@@ -74,6 +77,9 @@ void ImportExportDialog::setInstructionsLabel(const QString& text)
 
 void ImportExportDialog::init()
 {
+    // Here implement code for set default fileExt variable
+    QString fileExt="";
+    //
     switch (mMode)
     {
         case Import:
@@ -81,11 +87,13 @@ void ImportExportDialog::init()
             break;
         case Export:
             m_filePaths = QStringList(FileDialog::getLastSavePath(mFileType));
+            this->setFileExtension(fileExt);
             break;
         default:
             Q_ASSERT(false);
     }
     ui->fileEdit->setText("\"" + m_filePaths.first() + "\"");
+
 
     emit filePathsChanged(m_filePaths);
 }
@@ -125,6 +133,7 @@ void ImportExportDialog::setFileExtension(const QString& extension)
 void ImportExportDialog::browse()
 {
     QStringList filePaths;
+
     switch (mMode)
     {
         case Import:
@@ -152,3 +161,5 @@ void ImportExportDialog::browse()
 
     emit filePathsChanged(m_filePaths);
 }
+
+
