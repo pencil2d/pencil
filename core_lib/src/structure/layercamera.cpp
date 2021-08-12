@@ -479,26 +479,27 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
     camera->modification();
 }
 
-void LayerCamera::setDotColor(DotColor color)
+void LayerCamera::setDotColorType(DotColorType color)
 {
     switch (color)
     {
-    case DotColor::RED_DOT:
-        setDotColor(Qt::red);
+    case DotColorType::RED:
+        mDotColor = Qt::red;
         break;
-    case DotColor::GREEN_DOT:
-        setDotColor(Qt::green);
+    case DotColorType::GREEN:
+        mDotColor = Qt::green;
         break;
-    case DotColor::BLUE_DOT:
-        setDotColor(Qt::blue);
+    case DotColorType::BLUE:
+        mDotColor = Qt::blue;
         break;
-    case DotColor::BLACK_DOT:
-        setDotColor(Qt::black);
+    case DotColorType::BLACK:
+        mDotColor = Qt::black;
         break;
-    case DotColor::WHITE_DOT:
-        setDotColor(Qt::white);
+    case DotColorType::WHITE:
+        mDotColor = Qt::white;
         break;
     }
+    mDotColorType = color;
 }
 
 QString LayerCamera::getInterpolationText(int frame) const

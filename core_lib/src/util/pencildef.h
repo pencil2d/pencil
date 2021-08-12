@@ -67,12 +67,12 @@ enum ToolPropertyType
     CAMERAPATH
 };
 
-enum class DotColor {
-    RED_DOT,
-    BLUE_DOT,
-    GREEN_DOT,
-    BLACK_DOT,
-    WHITE_DOT
+enum class DotColorType {
+    RED,
+    BLUE,
+    GREEN,
+    BLACK,
+    WHITE
 };
 
 enum BackgroundStyle

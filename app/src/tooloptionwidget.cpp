@@ -81,7 +81,8 @@ void ToolOptionWidget::updateUI()
     setAA(p.useAA);
     setStabilizerLevel(p.stabilizerLevel);
     setFillContour(p.useFillContour);
-    setShowCameraPath(p.showCameraPath);
+    setShowCameraPath(p.cameraShowPath);
+    setPathDotColorType(p.cameraPathDotColorType);
 }
 
 void ToolOptionWidget::createUI()
@@ -142,7 +143,11 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case BEZIER: setBezier(p.bezier_state); break;
-    case CAMERAPATH: setShowCameraPath(p.showCameraPath); break;
+    case CAMERAPATH: {
+        setShowCameraPath(p.cameraShowPath);
+        setPathDotColorType(p.cameraPathDotColorType);
+        break;
+    }
     case TOLERANCE: break;
     case USETOLERANCE: break;
     case BUCKETFILLEXPAND: break;
@@ -342,6 +347,12 @@ void ToolOptionWidget::setShowCameraPath(bool showCameraPath)
 {
     QSignalBlocker b(ui->showCameraPathCheckBox);
     ui->showCameraPathCheckBox->setChecked(showCameraPath);
+}
+
+void ToolOptionWidget::setPathDotColorType(int index)
+{
+    QSignalBlocker b(ui->pathColorComboBox);
+    ui->pathColorComboBox->setCurrentIndex(index);
 }
 
 void ToolOptionWidget::disableAllOptions()

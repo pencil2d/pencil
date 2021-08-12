@@ -55,9 +55,9 @@ public:
     bool getShowCameraPath() { return mShowPath; }
     void setCameraEasing(CameraEasingType type, int frame);
     void setCameraReset(CameraFieldOption type, int frame);
-    void setDotColor(DotColor color);
-    void setDotColor(QColor color) { dotColor = color ; }
-    QColor getDotColor() const { return dotColor; }
+    void setDotColorType(DotColorType color);
+    QColor getDotColor() const { return mDotColor; }
+    DotColorType getDotColorType() const { return mDotColorType; }
 
     QString getInterpolationText(int frame) const;
     QPointF getPathMidPoint(int frame) const;
@@ -90,7 +90,8 @@ private:
     QRect viewRect;
 
     bool mShowPath = false;
-    QColor dotColor = Qt::red;
+    QColor mDotColor = Qt::red;
+    DotColorType mDotColorType = DotColorType::RED;
 };
 
 #endif

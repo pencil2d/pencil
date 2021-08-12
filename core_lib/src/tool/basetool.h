@@ -56,8 +56,8 @@ public:
     int bucketFillToLayerMode = 0;
     int bucketFillReferenceMode = 0;
     bool  useFillContour = false;
-    bool  showCameraPath = true;
-    int   pathDotColor = 0;
+    bool  cameraShowPath = true;
+    int   cameraPathDotColorType = 0;
 };
 
 const int ON = 1;
@@ -131,10 +131,10 @@ public:
     virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
     virtual void setShowCameraPath(const bool showCameraPath);
-    virtual void setPathDotColor(const int pathDotColor);
+    virtual void setPathDotColorType(const int dotColorType);
     virtual void resetCameraPath();
 
-    virtual void updateTool() { }
+    virtual void onLayerChanged(int) {}
     virtual bool leavingThisTool() { return true; }
     virtual bool switchingLayer() { return true; } // default state should be true
 

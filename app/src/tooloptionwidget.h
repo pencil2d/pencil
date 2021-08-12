@@ -66,6 +66,7 @@ private:
     void setFillContour(int);
     void setBezier(bool);
     void setShowCameraPath(bool);
+    void setPathDotColorType(int);
 
     void disableAllOptions();
     void createUI();

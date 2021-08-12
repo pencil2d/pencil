@@ -94,7 +94,6 @@ void ToolManager::setCurrentTool(ToolType eToolType)
     }
 
     mCurrentTool = getTool(eToolType);
-    mCurrentTool->updateTool();
     emit toolChanged(eToolType);
 }
 
@@ -266,7 +265,7 @@ void ToolManager::resetCameraPath()
 
 void ToolManager::setCameraPathDotColor(int dotColorNum)
 {
-    currentTool()->setPathDotColor(dotColorNum);
+    currentTool()->setPathDotColorType(dotColorNum);
     emit toolPropertyChanged(currentTool()->type(), CAMERAPATH);
 }
 

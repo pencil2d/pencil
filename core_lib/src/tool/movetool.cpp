@@ -55,16 +55,21 @@ void MoveTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.showCameraPath = settings.value(SETTING_CAMERA_SHOWPATH).toBool();
+    properties.cameraShowPath = settings.value(SETTING_CAMERA_SHOWPATH).toBool();
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MoveTool::updateTool);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MoveTool::onLayerChanged);
 }
 
-void MoveTool::updateTool()
+void MoveTool::onLayerChanged(int index)
 {
-    setShowCameraPath(properties.showCameraPath);
+    Layer* layer = mEditor->layers()->getLayer(index);
+    if (layer->type() == Layer::CAMERA) {
+        LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
+        properties.cameraPathDotColorType = static_cast<int>(layerCam->getDotColorType());
+        properties.cameraShowPath = layerCam->getShowCameraPath();
+    }
 }
 
 QCursor MoveTool::cursor()
@@ -127,7 +132,7 @@ void MoveTool::setShowCameraPath(const bool showCameraPath)
     if (layer->type() != Layer::CAMERA) { return; }
     layer->setShowCameraPath(showCameraPath);
 
-    properties.showCameraPath = showCameraPath;
+    properties.cameraShowPath = showCameraPath;
     QSettings settings(PENCIL2D, PENCIL2D);
 
     // Should we save a setting per layer?
@@ -135,13 +140,13 @@ void MoveTool::setShowCameraPath(const bool showCameraPath)
     settings.sync();
 }
 
-void MoveTool::setPathDotColor(const int pathDotColor)
+void MoveTool::setPathDotColorType(const int pathDotColor)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     if (layer->type() != Layer::CAMERA) { return; }
 
-    DotColor color = static_cast<DotColor>(pathDotColor);
-    layer->setDotColor(color);
+    DotColorType color = static_cast<DotColorType>(pathDotColor);
+    layer->setDotColorType(color);
 }
 
 void MoveTool::resetCameraPath()
