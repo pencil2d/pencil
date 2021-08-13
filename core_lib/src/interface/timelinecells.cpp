@@ -759,7 +759,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 
     primaryButton = event->button();
 
-    bool switchLayer = mEditor->tools()->currentTool()->switchingLayer();
+    bool switchLayer = mEditor->tools()->currentTool()->onWillChangeLayer();
     if (!switchLayer) { return; }
 
     switch (mType)

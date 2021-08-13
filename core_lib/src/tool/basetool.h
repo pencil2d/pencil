@@ -134,9 +134,9 @@ public:
     virtual void setPathDotColorType(const int dotColorType);
     virtual void resetCameraPath();
 
-    virtual void onLayerChanged(int) {}
+    virtual bool onWillChangeLayer() { return true; } // default state should be true
+    virtual void onDidChangeLayer(int) {}
     virtual bool leavingThisTool() { return true; }
-    virtual bool switchingLayer() { return true; } // default state should be true
 
     Properties properties;
 

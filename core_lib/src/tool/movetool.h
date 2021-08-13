@@ -39,9 +39,9 @@ public:
     void pointerReleaseEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
 
-    void onLayerChanged(int index) override;
+    bool onWillChangeLayer() override;
+    void onDidChangeLayer(int index) override;
     bool leavingThisTool() override;
-    bool switchingLayer() override;
 
     void setShowCameraPath(const bool showCameraPath) override;
     void resetCameraPath() override;

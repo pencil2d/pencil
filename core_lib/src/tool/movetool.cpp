@@ -59,10 +59,10 @@ void MoveTool::loadSettings()
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MoveTool::onLayerChanged);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MoveTool::onDidChangeLayer);
 }
 
-void MoveTool::onLayerChanged(int index)
+void MoveTool::onDidChangeLayer(int index)
 {
     Layer* layer = mEditor->layers()->getLayer(index);
     if (layer->type() == Layer::CAMERA) {
@@ -497,7 +497,7 @@ bool MoveTool::leavingThisTool()
     return true;
 }
 
-bool MoveTool::switchingLayer()
+bool MoveTool::onWillChangeLayer()
 {
     auto selectMan = mEditor->select();
     if (!selectMan->transformHasBeenModified())

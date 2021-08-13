@@ -143,11 +143,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case BEZIER: setBezier(p.bezier_state); break;
-    case CAMERAPATH: {
-        setShowCameraPath(p.cameraShowPath);
-        setPathDotColorType(p.cameraPathDotColorType);
-        break;
-    }
+    case CAMERAPATH: { setShowCameraPath(p.cameraShowPath); break; }
     case TOLERANCE: break;
     case USETOLERANCE: break;
     case BUCKETFILLEXPAND: break;
