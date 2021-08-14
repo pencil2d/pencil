@@ -234,6 +234,7 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
         int frame = keyframe->pos();
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
 
+        painter.save();
         if (cameraLayer->getShowCameraPath() && !cameraLayer->hasSameTranslation(frame, nextFrame)) {
 
             QPointF cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
@@ -270,6 +271,7 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
                 painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
             }
         }
+        painter.restore();
 
         painter.save();
         painter.setBrush(Qt::NoBrush);
@@ -279,18 +281,16 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
         mOnionSkinPainter.paint(painter, cameraLayer, mOnionSkinOptions, mFrameIndex, [&] (OnionSkinPaintState state, int onionSkinNumber) {
             if (state == OnionSkinPaintState::PREV) {
                 onionSkinPen.setColor(Qt::red);
+
+                painter.setPen(onionSkinPen);
+                painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(prevFrame).inverted().map(cameraViewPoly)));
             }
             if (state == OnionSkinPaintState::NEXT) {
                 onionSkinPen.setColor(Qt::blue);
+
+                painter.setPen(onionSkinPen);
+                painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly)));
             }
-
-            painter.setPen(onionSkinPen);
-
-            // paint the "current" absolute frame
-            painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(prevFrame).inverted().map(cameraViewPoly)));
-
-            // paint normal onion skinning
-            painter.drawPolygon(mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly)));
         });
         painter.restore();
     });

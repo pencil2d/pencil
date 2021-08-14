@@ -45,7 +45,11 @@ void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, const Oni
         {
             onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber + 1, true);
         }
-        onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, options.isAbsolute);
+
+        if (onionFrameNumber > 1)
+        {
+            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, options.isAbsolute);
+        }
 
         int onionPosition = 0;
 
