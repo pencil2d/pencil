@@ -103,7 +103,6 @@ void CameraPainter::paintVisuals(QPainter& painter) const
 
     if (cameraLayer == nullptr) { return; }
 
-    painter.save();
     painter.setWorldMatrixEnabled(false);
 
     QTransform camTransform = cameraLayer->getViewAtFrame(mFrameIndex);
@@ -122,6 +121,7 @@ void CameraPainter::paintVisuals(QPainter& painter) const
 
 void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
 {
+    painter.save();
     QRectF viewRect = painter.viewport();
 
     painter.setOpacity(1.0);

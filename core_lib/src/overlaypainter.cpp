@@ -33,11 +33,12 @@ void OverlayPainter::setViewTransform(const QTransform view)
 
 void OverlayPainter::paint(QPainter &painter)
 {
-    painter.save();
-    initializePainter(painter);
     LayerCamera* cameraLayer = mCameraLayer;
 
     if (cameraLayer == nullptr) { return; }
+
+    painter.save();
+    initializePainter(painter);
 
     painter.setWorldMatrixEnabled(false);
 
