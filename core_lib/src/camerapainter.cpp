@@ -161,13 +161,13 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
 {
     painter.save();
     painter.setWorldMatrixEnabled(false);
-    QPolygonF camPolygon = mViewTransform.map(camTransform.inverted().mapToPolygon(cameraRect));
-    // if the current view is narrower than the camera field
 
     painter.setBrush(Qt::NoBrush);
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+
+    // if the current view is narrower than the camera field
     // Indicates that the quality of the output will be degraded
-    if (cameraRect.width()-2 > QLineF(camPolygon.at(0), camPolygon.at(1)).length() / mViewScaling)
+    if (camTransform.m22() > 1 || camTransform.m11() > 1)
     {
         painter.setPen(Qt::red);
     }
@@ -175,6 +175,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     {
         painter.setPen(QColor(0, 0, 0, 255));
     }
+    QPolygonF camPolygon = mViewTransform.map(camTransform.inverted().mapToPolygon(cameraRect));
     painter.drawPolygon(camPolygon);
 
     painter.setPen(mHighlightedTextColor);
