@@ -100,7 +100,6 @@ public:
 
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
     QPixmap quickSizeCursor(qreal scalingFac);
-    static QCursor selectMoveCursor(MoveMode mode, ToolType type);
     static bool isAdjusting() { return msIsAdjusting; }
 
     /** Check if the tool is active.

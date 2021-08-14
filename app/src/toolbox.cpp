@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "spinslider.h"
 #include "editor.h"
 #include "toolmanager.h"
+#include "layermanager.h"
 #include "pencilsettings.h"
 
 // ----------------------------------------------------------------------------------
@@ -140,6 +141,9 @@ void ToolBoxWidget::initUI()
     connect(ui->brushButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn);
     connect(ui->smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
 
+    connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &ToolBoxWidget::onLayerDidChange);
+
+
     FlowLayout* flowlayout = new FlowLayout;
 
     flowlayout->addWidget(ui->clearButton);
@@ -186,6 +190,7 @@ void ToolBoxWidget::onToolSetActive(ToolType toolType)
         ui->handButton->setChecked(true);
         break;
     case ToolType::MOVE:
+    case ToolType::CAMERA:
         ui->moveButton->setChecked(true);
         break;
     case ToolType::ERASER:
@@ -225,7 +230,11 @@ void ToolBoxWidget::selectOn()
 
 void ToolBoxWidget::moveOn()
 {
-    toolOn(MOVE, ui->moveButton);
+    if (editor()->layers()->currentLayer()->type() == Layer::CAMERA) {
+        toolOn(CAMERA, ui->moveButton);
+    } else {
+        toolOn(MOVE, ui->moveButton);
+    }
 }
 
 void ToolBoxWidget::penOn()
@@ -292,4 +301,13 @@ bool ToolBoxWidget::toolOn(ToolType toolType, QToolButton* toolButton)
     }
     editor()->tools()->setCurrentTool(toolType);
     return true;
+}
+
+void ToolBoxWidget::onLayerDidChange(int)
+{
+    BaseTool* currentTool = editor()->tools()->currentTool();
+    if (currentTool->type() == MOVE || currentTool->type() == CAMERA)
+    {
+        moveOn();
+    }
 }

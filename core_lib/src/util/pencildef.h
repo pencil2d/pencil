@@ -36,6 +36,7 @@ enum ToolType : int
     MOVE,
     HAND,
     SMUDGE,
+    CAMERA,
     PEN,
     POLYLINE,
     BUCKET,

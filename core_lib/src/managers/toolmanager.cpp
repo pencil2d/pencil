@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "polylinetool.h"
 #include "selecttool.h"
 #include "smudgetool.h"
+#include "cameratool.h"
 #include "editor.h"
 
 
@@ -50,6 +51,7 @@ bool ToolManager::init()
     mToolSetHash.insert(POLYLINE, new PolylineTool(this));
     mToolSetHash.insert(SELECT, new SelectTool(this));
     mToolSetHash.insert(SMUDGE, new SmudgeTool(this));
+    mToolSetHash.insert(CAMERA, new CameraTool(this));
 
     foreach(BaseTool* pTool, mToolSetHash.values())
     {

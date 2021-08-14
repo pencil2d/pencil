@@ -34,18 +34,14 @@ public:
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;
+    QCursor cursor(MoveMode mode);
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
 
     bool onWillChangeLayer() override;
-    void onDidChangeLayer(int index) override;
     bool leavingThisTool() override;
-
-    void setShowCameraPath(const bool showCameraPath) override;
-    void resetCameraPath() override;
-    void setPathDotColorType(const int pathDotColor) override;
 
 private:
     void cancelChanges();
@@ -62,8 +58,6 @@ private:
     void createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void storeClosestVectorCurve(Layer* layer);
-    void transformCamera();
-    void transformCameraPath();
 
     void setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
     void setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);

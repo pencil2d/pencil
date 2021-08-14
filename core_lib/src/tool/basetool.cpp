@@ -200,63 +200,6 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
     return cursorPixmap;
 }
 
-QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
-{
-    QPixmap cursorPixmap = QPixmap(24, 24);
-    if (!cursorPixmap.isNull())
-    {
-        cursorPixmap.fill(QColor(255, 255, 255, 0));
-        QPainter cursorPainter(&cursorPixmap);
-        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
-
-        switch(mode)
-        {
-        case MoveMode::PERSP_LEFT:
-        case MoveMode::PERSP_RIGHT:
-        case MoveMode::PERSP_MIDDLE:
-        case MoveMode::PERSP_SINGLE:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            break;
-        }
-        case MoveMode::TOPLEFT:
-        case MoveMode::BOTTOMRIGHT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-            break;
-        }
-        case MoveMode::TOPRIGHT:
-        case MoveMode::BOTTOMLEFT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-            break;
-        }
-        case MoveMode::ROTATIONLEFT:
-        case MoveMode::ROTATIONRIGHT:
-        case MoveMode::ROTATION:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
-            break;
-        }
-        case MoveMode::MIDDLE:
-        case MoveMode::CENTER:
-        {
-            if (type == SELECT || type == MOVE) {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            } else {
-                return Qt::ArrowCursor;
-            }
-            break;
-        }        
-        default:
-            return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
-            break;
-        }
-        cursorPainter.end();
-    }
-    return QCursor(cursorPixmap);
-}
-
 bool BaseTool::isActive()
 {
     return strokeManager()->isActive();

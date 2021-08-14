@@ -45,6 +45,7 @@ public:
 
 public slots:
     void onToolSetActive(ToolType toolType);
+    void onLayerDidChange(int index);
     void pencilOn();
     void eraserOn();
     void selectOn();

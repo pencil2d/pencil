@@ -184,7 +184,8 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
-    ui->showCameraPathCheckBox->setVisible(tool->isPropertyEnabled(CAMERAPATH));
+    ui->showCameraPathCheckBox->setVisible(false);
+    ui->cameraPathGroupBox->setVisible(false);
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
     auto propertyType = editor()->tools()->currentTool()->type();
@@ -223,11 +224,9 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
             ui->brushSpinBox->setVisible(false);
             ui->sizeSlider->setVisible(false);
             break;
-        case MOVE:
-            if (currentLayerType == Layer::CAMERA)
-                ui->cameraPathGroupBox->setVisible(true);
-            else
-                ui->cameraPathGroupBox->setVisible(false);
+        case CAMERA:
+            ui->showCameraPathCheckBox->setVisible(true);
+            ui->cameraPathGroupBox->setVisible(true);
             break;
         default:
             ui->makeInvisibleBox->setVisible(false);
@@ -368,5 +367,6 @@ void ToolOptionWidget::disableAllOptions()
     ui->inpolLevelsCombo->hide();
     ui->fillContourBox->hide();
     ui->stabilizerLabel->hide();
+    ui->showCameraPathCheckBox->hide();
     ui->cameraPathGroupBox->hide();
 }

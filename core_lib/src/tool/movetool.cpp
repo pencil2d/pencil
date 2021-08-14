@@ -46,7 +46,6 @@ ToolType MoveTool::type()
 
 void MoveTool::loadSettings()
 {
-    mPropertyEnabled[CAMERAPATH] = true;
     properties.width = -1;
     properties.feather = -1;
     properties.useFeather = false;
@@ -55,62 +54,17 @@ void MoveTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.cameraShowPath = settings.value(SETTING_CAMERA_SHOWPATH).toBool();
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &MoveTool::onDidChangeLayer);
-}
-
-void MoveTool::onDidChangeLayer(int index)
-{
-    Layer* layer = mEditor->layers()->getLayer(index);
-    if (layer->type() == Layer::CAMERA) {
-        LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
-        properties.cameraPathDotColorType = static_cast<int>(layerCam->getDotColorType());
-        properties.cameraShowPath = layerCam->getShowCameraPath();
-    }
 }
 
 QCursor MoveTool::cursor()
 {
     MoveMode mode = MoveMode::NONE;
     QPointF currentPoint = getCurrentPoint();
-    qreal selectionTolerance = mEditor->select()->selectionTolerance();
-    Layer* layer = mEditor->layers()->currentLayer();
 
-    if (layer->type() == Layer::CAMERA)
-    {
-        LayerCamera* cam = static_cast<LayerCamera*>(layer);
-        if (layer->keyExists(mEditor->currentFrame()))
-        {
-            mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
-                                             currentPoint,
-                                             selectionTolerance);
-            mCamMoveMode = mode;
-        } else {
-            int keyPos = cam->firstKeyFramePosition();
-            while (keyPos <= cam->getMaxKeyFramePosition())
-            {
-                mode = cam->getMoveModeForCameraPath(keyPos,
-                                                     currentPoint,
-                                                     selectionTolerance);
-                mCamPathMoveMode = mode;
-                if (mode != MoveMode::NONE && !cam->hasSameTranslation(keyPos, cam->getPreviousKeyFramePosition(keyPos)))
-                {
-                    mDragPathFrame = keyPos;
-                    break;
-                }
-
-                if (keyPos == cam->getNextKeyFramePosition(keyPos)) {
-                    break;
-                }
-
-                keyPos = cam->getNextKeyFramePosition(keyPos);
-            }
-        }
-    }
-    else if (mEditor->select()->somethingSelected())
+    if (mEditor->select()->somethingSelected())
     {
         mode = mEditor->select()->getMoveModeForSelectionAnchor(currentPoint);
     }
@@ -119,42 +73,9 @@ QCursor MoveTool::cursor()
         LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
         mode = mEditor->overlays()->getMoveModeForPoint(currentPoint, layerCam->getViewAtFrame(mEditor->currentFrame()));
         mPerspMode = mode;
-        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
 
-    return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
-}
-
-void MoveTool::setShowCameraPath(const bool showCameraPath)
-{
-    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-
-    if (layer->type() != Layer::CAMERA) { return; }
-    layer->setShowCameraPath(showCameraPath);
-
-    properties.cameraShowPath = showCameraPath;
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    // Should we save a setting per layer?
-    settings.setValue(SETTING_CAMERA_SHOWPATH, showCameraPath);
-    settings.sync();
-}
-
-void MoveTool::setPathDotColorType(const int pathDotColor)
-{
-    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    if (layer->type() != Layer::CAMERA) { return; }
-
-    DotColorType color = static_cast<DotColorType>(pathDotColor);
-    layer->setDotColorType(color);
-}
-
-void MoveTool::resetCameraPath()
-{
-    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    if (layer->type() != Layer::CAMERA) { return; }
-
-    layer->centerMidPoint(mEditor->currentFrame());
+    return cursor(mode);
 }
 
 void MoveTool::updateSettings(const SETTING setting)
@@ -176,15 +97,6 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
-
-    if (mCurrentLayer->type() == Layer::CAMERA &&
-        mCurrentLayer->keyExists(mEditor->currentFrame()))
-    {
-        mDragPathFrame = mEditor->currentFrame();
-        LayerCamera* camera = static_cast<LayerCamera*>(mCurrentLayer);
-        camera->setOffsetPoint(getCurrentPoint());
-        return;
-    }
 
     if (mEditor->select()->somethingSelected())
     {
@@ -215,17 +127,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
 
-        if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
-        {
-            if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
-                transformCamera();
-            }
-            else if (mCamPathMoveMode == MoveMode::MIDDLE)
-            {
-                transformCameraPath();
-            }
-        }
-        else if (mEditor->overlays()->isPerspOverlaysActive())
+        if (mEditor->overlays()->isPerspOverlaysActive())
         {
             LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
             mEditor->overlays()->updatePerspective(layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()));
@@ -250,21 +152,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
-{
-    if (mEditor->layers()->currentLayer()->type() == Layer::CAMERA)
-    {
-        if (mCurrentLayer->keyExists(mEditor->currentFrame())) {
-            transformCamera();
-            mEditor->view()->forceUpdateViewTransform();
-            mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
-        } else if (mCamPathMoveMode == MoveMode::MIDDLE) {
-            transformCameraPath();
-            mEditor->view()->forceUpdateViewTransform();
-            mScribbleArea->invalidateCacheForFrame(mEditor->currentFrame());
-        }
-        return;
-    }
-    
+{   
     if (mEditor->overlays()->isPerspOverlaysActive())
     {
         mEditor->overlays()->setMoveMode(MoveMode::NONE);
@@ -440,20 +328,6 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     selectMan->setCurves(pVecImg->getCurvesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
 }
 
-void MoveTool::transformCamera()
-{
-    LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
-    layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mEditor->currentFrame());
-    mScribbleArea->invalidateLayerPixmapCache();
-}
-
-void MoveTool::transformCameraPath()
-{
-    LayerCamera* layer = static_cast<LayerCamera*>(mCurrentLayer);
-    layer->updatePathAtFrame(getCurrentPoint(), mDragPathFrame);
-    mScribbleArea->invalidateLayerPixmapCache();
-}
-
 void MoveTool::setAnchorToLastPoint()
 {
     anchorOriginPoint = getLastPoint();
@@ -559,4 +433,58 @@ Layer* MoveTool::currentPaintableLayer()
 QPointF MoveTool::offsetFromPressPos()
 {
     return getCurrentPoint() - getCurrentPressPoint();
+}
+
+
+QCursor MoveTool::cursor(MoveMode mode)
+{
+    QPixmap cursorPixmap = QPixmap(24, 24);
+    if (!cursorPixmap.isNull())
+    {
+        cursorPixmap.fill(QColor(255, 255, 255, 0));
+        QPainter cursorPainter(&cursorPixmap);
+        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+        switch(mode)
+        {
+        case MoveMode::PERSP_LEFT:
+        case MoveMode::PERSP_RIGHT:
+        case MoveMode::PERSP_MIDDLE:
+        case MoveMode::PERSP_SINGLE:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            break;
+        }
+        case MoveMode::TOPLEFT:
+        case MoveMode::BOTTOMRIGHT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+            break;
+        }
+        case MoveMode::TOPRIGHT:
+        case MoveMode::BOTTOMLEFT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+            break;
+        }
+        case MoveMode::ROTATIONLEFT:
+        case MoveMode::ROTATIONRIGHT:
+        case MoveMode::ROTATION:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
+            break;
+        }
+        case MoveMode::MIDDLE:
+        case MoveMode::CENTER:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            break;
+        }
+        default:
+            return Qt::ArrowCursor;
+            break;
+        }
+        cursorPainter.end();
+    }
+    return QCursor(cursorPixmap);
 }
