@@ -227,18 +227,6 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
     QPolygon cameraViewPoly = cameraLayer->getViewRect();
     QPen onionSkinPen;
 
-    QPointF cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
-    painter.setBrush(cameraDotColor);
-    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    // Highlight current dot
-    QPen pen(Qt::black);
-    pen.setWidth(2);
-    painter.setPen(pen);
-    cameraMidPoint = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
-    painter.drawEllipse(cameraMidPoint, DOT_WIDTH/2., DOT_WIDTH/2.);
-
     bool keyExistsOnCurrentFrame = cameraLayer->keyExists(mFrameIndex);
 
     cameraLayer->foreachKeyFrame([&] (KeyFrame* keyframe) {
@@ -247,6 +235,19 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
 
         if (cameraLayer->getShowCameraPath() && !cameraLayer->hasSameTranslation(frame, nextFrame)) {
+
+            QPointF cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(mFrameIndex));
+            painter.setBrush(cameraDotColor);
+            painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+            painter.setRenderHint(QPainter::Antialiasing);
+
+            // Highlight current dot
+            QPen pen(Qt::black);
+            pen.setWidth(2);
+            painter.setPen(pen);
+            cameraMidPoint = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
+            painter.drawEllipse(cameraMidPoint, DOT_WIDTH/2., DOT_WIDTH/2.);
+
             if (!keyExistsOnCurrentFrame)
             {
                 cameraMidPoint = mViewTransform.map(cameraLayer->getPathMidPoint(frame + 1));
