@@ -170,8 +170,8 @@ MoveMode LayerCamera::getMoveModeForCameraPath(int frameNumber, QPointF point, q
 void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNumber)
 {
     QPolygon curPoly = getViewAtFrame(frameNumber).inverted().mapToPolygon(viewRect);
-    QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5f).toPoint();
-    QLineF lineOld;
+    QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5).toPoint();
+    QLineF lineOld(curCenter, point);
     QLineF lineNew(curCenter, point);
     qreal degree;
     Camera* curCam = getCameraAtFrame(frameNumber);
@@ -189,37 +189,32 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
         break;
     }
     case MoveMode::TOPLEFT:
-        lineOld = QLineF(curCenter, curPoly.at(0));
+        lineOld.setP2(curPoly.at(0));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
     case MoveMode::TOPRIGHT:
-        lineOld = QLineF(curCenter, curPoly.at(1));
+        lineOld.setP2(curPoly.at(1));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
     case MoveMode::BOTTOMRIGHT:
-        lineOld = QLineF(curCenter, curPoly.at(2));
+        lineOld.setP2(curPoly.at(2));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
     case MoveMode::BOTTOMLEFT:
-        lineOld = QLineF(curCenter, curPoly.at(3));
+        lineOld.setP2(curPoly.at(3));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
     case MoveMode::ROTATIONRIGHT:
-        degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(curCenter, point));
+    case MoveMode::ROTATIONLEFT: {
+        qreal angle = mode == MoveMode::ROTATIONLEFT ? MathUtils::getDifferenceAngle(point, curCenter) : MathUtils::getDifferenceAngle(curCenter, point);
+        degree = -qRadiansToDegrees(angle);
         curCam->translate(curCenter);
         curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
         curCam->translate(-curCenter);
         // since rotations can move midpoint slightly
         curCam->setPathMidPoint(mid);
         break;
-    case MoveMode::ROTATIONLEFT:
-        degree = -qRadiansToDegrees(MathUtils::getDifferenceAngle(point, curCenter));
-        curCam->translate(curCenter);
-        curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
-        curCam->translate(-curCenter);
-        // since rotations can move midpoint slightly
-        curCam->setPathMidPoint(mid);
-        break;
+    }
     default:
         break;
     }
@@ -235,17 +230,9 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
 
     int frameNumber = cam->pos();
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
-    if (camera1)
-    {
-        camera1->setEasingType(camera1->getEasingType());
-    }
 
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
-    if (camera2)
-    {
-        camera2->setEasingType(camera2->getEasingType());
-    }
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -254,22 +241,16 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
 
     else if (camera1 == nullptr && camera2 != nullptr)
     {
-        cam->setPathMidPoint(camera2->translation());
-        cam->setIsMidPointSet(false);
         return cam->assign(*camera2);
     }
 
     else if (camera2 == nullptr && camera1 != nullptr)
     {
-        cam->setPathMidPoint(camera1->translation());
-        cam->setIsMidPointSet(false);
         return cam->assign(*camera1);
     }
 
     if (camera1 == camera2)
     {
-        cam->setPathMidPoint(-camera1->translation());
-        cam->setIsMidPointSet(false);
         return cam->assign(*camera1);
     }
 
