@@ -39,7 +39,8 @@ public:
     MoveMode cursorForMoveMode();
     ToolType type() override { return ToolType::CAMERA; }
     void loadSettings() override;
-    void onDidChangeLayer(int index) override;
+    void onDidChangeLayer(int index);
+    void onDidLoadObject();
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;

@@ -631,6 +631,8 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
     QDomElement layerElem = createBaseDomElement(doc);
     layerElem.setAttribute("width", viewRect.width());
     layerElem.setAttribute("height", viewRect.height());
+    layerElem.setAttribute("showPath", mShowPath);
+    layerElem.setAttribute("pathColorType", static_cast<int>(mDotColorType));
 
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
                     {
@@ -660,6 +662,8 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
 
     int width = element.attribute("width").toInt();
     int height = element.attribute("height").toInt();
+    mShowPath = element.attribute("showPath").toInt();
+    mDotColorType = static_cast<DotColorType>(element.attribute("pathColorType").toInt());
     viewRect = QRect(-width / 2, -height / 2, width, height);
 
     QDomNode imageTag = element.firstChild();

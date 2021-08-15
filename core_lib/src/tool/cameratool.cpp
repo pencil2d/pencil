@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "pointerevent.h"
 #include "layermanager.h"
+#include "toolmanager.h"
 #include "selectionmanager.h"
 #include "viewmanager.h"
 #include "camera.h"
@@ -44,11 +45,19 @@ CameraTool::~CameraTool()
 
 void CameraTool::loadSettings()
 {
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    properties.cameraShowPath = settings.value(SETTING_CAMERA_SHOWPATH).toBool();
     mPropertyEnabled[CAMERAPATH] = true;
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraTool::onDidChangeLayer);
+    connect(mEditor, &Editor::objectLoaded, this, &CameraTool::onDidLoadObject);
+}
+
+void CameraTool::onDidLoadObject()
+{
+    Layer* layer = mEditor->layers()->getLayer(mEditor->currentLayerIndex());
+    if (!layer || layer->type() != Layer::CAMERA) { return ; }
+
+    LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
+    properties.cameraPathDotColorType = static_cast<int>(layerCam->getDotColorType());
+    properties.cameraShowPath = layerCam->getShowCameraPath();
 }
 
 void CameraTool::onDidChangeLayer(int index)
@@ -159,11 +168,6 @@ void CameraTool::setShowCameraPath(const bool showCameraPath)
     layer->setShowCameraPath(showCameraPath);
 
     properties.cameraShowPath = showCameraPath;
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    // Should we save a setting per layer?
-    settings.setValue(SETTING_CAMERA_SHOWPATH, showCameraPath);
-    settings.sync();
 }
 
 void CameraTool::setPathDotColorType(const int pathDotColor)

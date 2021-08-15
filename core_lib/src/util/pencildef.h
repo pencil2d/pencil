@@ -290,8 +290,6 @@ const static int MaxFramesBound = 9999;
 #define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
 #define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
 
-#define SETTING_CAMERA_SHOWPATH         "CameraShowPath"
-
 #define SETTING_BUCKET_TOLERANCE "Tolerance"
 #define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
 #define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"

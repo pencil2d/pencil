@@ -134,7 +134,6 @@ public:
     virtual void resetCameraPath();
 
     virtual bool onWillChangeLayer() { return true; } // default state should be true
-    virtual void onDidChangeLayer(int) {}
     virtual bool leavingThisTool() { return true; }
 
     Properties properties;
