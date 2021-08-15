@@ -70,12 +70,9 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     }
 
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
-    if (camera1)
-        camera1->setEasingType(camera1->getEasingType());
+
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
-    if (camera2)
-        camera2->setEasingType(camera2->getEasingType());
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -99,9 +96,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double frame2 = camera2->pos();
 
     // interpolation
-    Camera* cam = camera1->clone();
-    cam->setEasingType(camera1->getEasingType());
-    qreal percent = getInterpolationPercent(cam->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1) / (frame2 - frame1));
     auto lerp = [](double f1, double f2, double percent) -> double
     {
         return f1 * (1.0 - percent) + f2 * percent;
@@ -113,11 +108,12 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     double r = lerp(camera1->rotation(), camera2->rotation(), percent);
     double s = lerp(camera1->scaling(), camera2->scaling(), percent);
 
-    cam->translate(dx, dy);
-    cam->rotate(r);
-    cam->scale(s);
-    cam->updateViewTransform();
-    return cam->getView();
+    QTransform camTransform;
+    camTransform.scale(s, s);
+    camTransform.rotate(r);
+    camTransform.translate(dx, dy);
+
+    return camTransform;
 
 }
 
