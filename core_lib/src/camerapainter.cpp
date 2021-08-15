@@ -186,6 +186,18 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     QPolygonF camPolygon = mViewTransform.map(camTransform.inverted().mapToPolygon(cameraRect));
     painter.drawPolygon(camPolygon);
 
+
+    painter.setPen(QColor(0, 0, 0, 100));
+
+    QTransform scaleT;
+    scaleT.translate(camTransform.m31() / scale, camTransform.m32() / scale);
+    scaleT.rotate(rotation);
+    scaleT.scale(1, 1);
+
+    QPolygon nonScaledCamPoly = mViewTransform.map(scaleT.inverted().mapToPolygon(cameraRect));
+    painter.drawPolygon(nonScaledCamPoly);
+    painter.drawText(nonScaledCamPoly[0]-QPoint(0, 2), "100%");
+
     painter.setPen(mHighlightedTextColor);
     painter.setBrush(mHighlightColor);
     int handleW = HANDLE_WIDTH;
