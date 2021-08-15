@@ -24,6 +24,7 @@ GNU General Public License for more details.
 
 #include "object.h"
 #include "layercamera.h"
+#include "camera.h"
 #include "keyframe.h"
 
 CameraPainter::CameraPainter()
@@ -109,10 +110,17 @@ void CameraPainter::paintVisuals(QPainter& painter) const
     QRect cameraRect = cameraLayer->getViewRect();
 
     if (isCameraMode) {
+
+        Camera* cam = cameraLayer->getLastCameraAtFrame(mFrameIndex, 0);
+
+        Q_ASSERT(cam);
+
+        qreal rotation = cam->rotation();
+        qreal scale = cam->scaling();
         paintInterpolations(painter, cameraLayer);
 
         if (cameraLayer->keyExists(mFrameIndex) && !mIsPlaying) {
-            paintHandles(painter, camTransform, cameraRect);
+            paintHandles(painter, camTransform, cameraRect, scale, rotation);
         }
     }
 
@@ -157,7 +165,7 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     painter.restore();
 }
 
-void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect) const
+void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const qreal scale, const qreal rotation) const
 {
     painter.save();
     painter.setWorldMatrixEnabled(false);
@@ -167,7 +175,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
 
     // if the current view is narrower than the camera field
     // Indicates that the quality of the output will be degraded
-    if (camTransform.m22() > 1 || camTransform.m11() > 1)
+    if (scale > 1)
     {
         painter.setPen(Qt::red);
     }
