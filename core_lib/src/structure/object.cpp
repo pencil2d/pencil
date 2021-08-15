@@ -60,6 +60,7 @@ Object::~Object()
 void Object::init()
 {
     createWorkingDir();
+    mMainXMLFile = QDir(mWorkingDirPath).filePath(PFF_XML_FILE_NAME);
 
     // default palette
     loadDefaultPalette();

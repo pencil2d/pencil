@@ -57,7 +57,7 @@ void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber
 
 Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
 {
-    QString strFilePath = filePath(keyframe, QDir(path));
+    QString strFilePath = keyFrameFilePath(keyframe, path);
 
     BitmapImage* bitmapImage = static_cast<BitmapImage*>(keyframe);
 
@@ -87,6 +87,11 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
     return Status::OK;
 }
 
+QString LayerBitmap::keyFrameFilePath(KeyFrame* key, QString dataPath)
+{
+    return QDir(dataPath).filePath(fileName(key));
+}
+
 KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
 {
     BitmapImage* b = new BitmapImage;
@@ -106,7 +111,7 @@ Status LayerBitmap::presave(const QString& sDataFolder)
         // (b->fileName() != fileName(b) && !modified => the keyframe has been moved, but users didn't draw on it.
         if (!bitmap->fileName().isEmpty()
             && !bitmap->isModified()
-            && bitmap->fileName() != filePath(bitmap, dataFolder))
+            && bitmap->fileName() != keyFrameFilePath(bitmap, dataFolder.absolutePath()))
         {
             movedOnlyBitmaps.push_back(bitmap);
         }
@@ -129,7 +134,7 @@ Status LayerBitmap::presave(const QString& sDataFolder)
 
     for (BitmapImage* b : movedOnlyBitmaps)
     {
-        QString dest = filePath(b, dataFolder);
+        QString dest = keyFrameFilePath(b, sDataFolder);
         QFile::remove(dest);
 
         QFile::rename(b->fileName(), dest);
@@ -137,11 +142,6 @@ Status LayerBitmap::presave(const QString& sDataFolder)
     }
 
     return Status::OK;
-}
-
-QString LayerBitmap::filePath(KeyFrame* key, const QDir& dataFolder) const
-{
-    return dataFolder.filePath(fileName(key));
 }
 
 QString LayerBitmap::fileName(KeyFrame* key) const
