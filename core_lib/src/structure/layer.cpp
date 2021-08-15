@@ -211,7 +211,7 @@ bool Layer::removeKeyFrame(int position)
     if (frame)
     {
         mKeyFrames.erase(frame->pos());
-        markFrameAsDirty(position);
+        markFrameAsDirty(frame->pos());
         emit keyframeDeleted(frame->pos());
         delete frame;
     }
