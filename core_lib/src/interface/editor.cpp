@@ -1024,8 +1024,6 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         scrubTo(frameIndex); // currentFrameChanged() emit inside.
         emit frameModified(frameIndex);
         layers()->notifyAnimationLengthChanged();
-        if (layer->type() == Layer::CAMERA) // to update camera path
-            emit layer->keyframeAdded(frameIndex);
     }
     return layer->getKeyFrameAt(frameIndex);
 }
@@ -1050,8 +1048,6 @@ void Editor::removeKey()
 
     deselectAll();
     layer->removeKeyFrame(currentFrame());
-    if (layer->type() == Layer::CAMERA)
-        emit layer->keyframeDeleted(currentFrame());
     scrubBackward();
     layers()->notifyAnimationLengthChanged();
     emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
