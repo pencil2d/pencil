@@ -25,10 +25,6 @@ DebugDetails::DebugDetails()
 {
 }
 
-DebugDetails::~DebugDetails()
-{
-}
-
 void DebugDetails::collect(const DebugDetails& d)
 {
     for (const QString& s : d.mDetails)

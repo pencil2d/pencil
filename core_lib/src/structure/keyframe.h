@@ -33,6 +33,8 @@ public:
     explicit KeyFrame(const KeyFrame& k2);
     virtual ~KeyFrame();
 
+    KeyFrame& operator=(const KeyFrame& k2);
+
     int  pos() const { return mFrame; }
     void setPos(int position) { mFrame = position; }
 

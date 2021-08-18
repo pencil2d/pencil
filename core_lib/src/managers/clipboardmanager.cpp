@@ -20,7 +20,7 @@ GNU General Public License for more details.
 
 #include <editor.h>
 
-ClipboardManager::ClipboardManager(Editor* editor) : BaseManager(editor)
+ClipboardManager::ClipboardManager(Editor* editor) : BaseManager(editor, "ClipboardManager")
 {
     resetStates();
 }

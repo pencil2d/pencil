@@ -30,6 +30,8 @@ class QMouseEvent;
 class QResizeEvent;
 class Editor;
 class PreferenceManager;
+class QMenu;
+class QAction;
 enum class SETTING;
 
 enum class TIMELINE_CELL_TYPE
@@ -68,6 +70,8 @@ public:
 
     bool didDetachLayer() const;
 
+    void showCameraMenu(QPoint pos);
+
 signals:
     void mouseMovedY(int);
     void lengthChanged(int);
@@ -94,6 +98,9 @@ protected:
 
 private slots:
     void loadSetting(SETTING setting);
+
+    void setHold(int frame);
+    void setCameraEasing(CameraEasingType type, int frame);
 
 private:
     void paintTrack(QPainter& painter, const Layer* layer,
@@ -160,6 +167,10 @@ private:
     const static int mOffsetX = 0;
     const static int mOffsetY = 20;
     const static int mLayerDetachThreshold = 5;
+
+    QMenu* mEasingMenu = nullptr;
+    QMenu* mInterpolationMenu = nullptr;
+    QAction* mHoldAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H

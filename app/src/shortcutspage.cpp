@@ -357,6 +357,7 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_SAVE_AS, ShortcutsPage::tr("Save File As", "Shortcut")},
         {CMD_SAVE_FILE, ShortcutsPage::tr("Save File", "Shortcut")},
         {CMD_SELECT_ALL, ShortcutsPage::tr("Select All", "Shortcut")},
+        {CMD_TOGGLE_STATUS_BAR, ShortcutsPage::tr("Toggle Status Bar Visibility", "Shortcut")},
         {CMD_TOGGLE_COLOR_INSPECTOR, ShortcutsPage::tr("Toggle Color Inspector Window Visibility", "Shortcut")},
         {CMD_TOGGLE_COLOR_LIBRARY, ShortcutsPage::tr("Toggle Color Palette Window Visibility", "Shortcut")},
         {CMD_TOGGLE_COLOR_WHEEL, ShortcutsPage::tr("Toggle Color Box Window Visibility", "Shortcut")},

@@ -113,7 +113,7 @@ public:
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
 
-    void setModified(int position, bool isModified);
+    void setModified(int position, bool isModified) const;
 
     // Handle selection
     bool isFrameSelected(int position) const;
@@ -143,6 +143,7 @@ public:
     void deselectAll();
 
     bool moveSelectedFrames(int offset);
+    QList<int> getListOfSelectedFrames() { return mSelectedFrames_byPosition; }
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
@@ -159,6 +160,7 @@ public:
     /** Clear the list of dirty keyframes */
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
+    QList<int> getSelectedFrameList() { return mSelectedFrames_byPosition; }
 
 protected:
     void setId(int LayerId) { mId = LayerId; }

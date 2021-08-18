@@ -29,7 +29,7 @@ class BaseManager : public QObject
 {
     Q_OBJECT
 protected:
-    explicit BaseManager(Editor* editor = nullptr);
+    explicit BaseManager(Editor* editor, const QString& name);
     virtual ~BaseManager();
 
 public:

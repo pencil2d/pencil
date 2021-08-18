@@ -55,6 +55,7 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
+#include "layeropacitydialog.h"
 #include "errordialog.h"
 
 
@@ -109,6 +110,7 @@ Status ActionCommands::importMovieVideo()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    emit mEditor->framesModified();
 
     progressDialog.setValue(100);
     progressDialog.close();
@@ -583,16 +585,16 @@ void ActionCommands::GotoPrevKeyFrame()
 Status ActionCommands::addNewKey()
 {
     // Sound keyframes should not be empty, so we try to import a sound instead
-    if (mEditor->layers()->currentLayer()->type() == Layer::SOUND) {
+    if (mEditor->layers()->currentLayer()->type() == Layer::SOUND)
+    {
         return importSound(FileType::SOUND);
     }
 
     KeyFrame* key = mEditor->addNewKey();
-
     Camera* cam = dynamic_cast<Camera*>(key);
     if (cam)
     {
-        mEditor->view()->updateViewTransforms();
+        mEditor->view()->forceUpdateViewTransform();
     }
 
     return Status::OK;
@@ -680,7 +682,7 @@ void ActionCommands::reverseSelectedFrames()
     currentLayer->reverseOrderOfSelection();
 
     if (currentLayer->type() == Layer::CAMERA) {
-        mEditor->view()->updateViewTransforms();
+        mEditor->view()->forceUpdateViewTransform();
     }
     mEditor->framesModified();
 };
@@ -744,9 +746,8 @@ void ActionCommands::moveFrameForward()
             mEditor->scrubForward();
         }
     }
-
     mEditor->layers()->notifyAnimationLengthChanged();
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 }
 
 void ActionCommands::moveFrameBackward()
@@ -759,7 +760,7 @@ void ActionCommands::moveFrameBackward()
             mEditor->scrubBackward();
         }
     }
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 }
 
 Status ActionCommands::addNewBitmapLayer()
