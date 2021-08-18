@@ -598,20 +598,40 @@ Status ActionCommands::addNewKey()
     return Status::OK;
 }
 
-void ActionCommands::addExposureToSelectedFrames() {
+void ActionCommands::exposeSelectedFrames(int offset)
+{
     Layer* currentLayer = mEditor->layers()->currentLayer();
 
-    currentLayer->setExposureForSelectedFrames(1);
+    bool hasSelectedFrames = currentLayer->hasAnySelectedFrames();
+    KeyFrame* key = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
+
+    if (key == nullptr) { return; }
+
+    // Functionality to be able to expose the current frame without selecting
+    // A:
+    if (!hasSelectedFrames) {
+        currentLayer->setFrameSelected(key->pos(), true);
+    }
+
+    currentLayer->setExposureForSelectedFrames(offset);
     mEditor->updateTimeLine();
     mEditor->framesModified();
+
+    // Remember to deselect frame again so we don't show it being visually selected.
+    // B:
+    if (!hasSelectedFrames) {
+        currentLayer->setFrameSelected(key->pos(), false);
+    }
 }
 
-void ActionCommands::subtractExposureFromSelectedFrames() {
-    Layer* currentLayer = mEditor->layers()->currentLayer();
+void ActionCommands::addExposureToSelectedFrames()
+{
+    exposeSelectedFrames(1);
+}
 
-    currentLayer->setExposureForSelectedFrames(-1);
-    mEditor->updateTimeLine();
-    mEditor->framesModified();
+void ActionCommands::subtractExposureFromSelectedFrames()
+{
+    exposeSelectedFrames(-1);
 }
 
 Status ActionCommands::insertKeyFrameAtCurrentPosition()

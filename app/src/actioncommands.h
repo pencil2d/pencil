@@ -99,6 +99,8 @@ public:
 
 private:
 
+    void exposeSelectedFrames(int offset);
+
     Status convertSoundToWav(const QString& filePath);
 
     Editor* mEditor = nullptr;
