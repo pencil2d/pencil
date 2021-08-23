@@ -74,17 +74,41 @@ void ImportExportDialog::setInstructionsLabel(const QString& text)
 
 void ImportExportDialog::init()
 {
+    QString ext;
+    switch (mFileType)
+    {
+       case FileType::ANIMATION:
+            ext = "gif";
+            break;
+       case FileType::GIF:
+            ext = "gif";
+            break;
+       case FileType::IMAGE:
+            ext = "png";
+            break;
+       case FileType::IMAGE_SEQUENCE:
+            ext = "png";
+            break;
+       case FileType::MOVIE:
+            ext = "mp4";
+            break;
+       default:
+            break;
+    }
+
     switch (mMode)
     {
         case Import:
             m_filePaths = QStringList(FileDialog::getLastOpenPath(mFileType));
             break;
         case Export:
-            m_filePaths = QStringList(FileDialog::getLastSavePath(mFileType));
+            m_filePaths = QStringList(FileDialog::getLastSavePath(FileType::ANIMATION));
             break;
         default:
             Q_ASSERT(false);
     }
+
+    setFileExtension(ext);
     ui->fileEdit->setText("\"" + m_filePaths.first() + "\"");
 
     emit filePathsChanged(m_filePaths);
