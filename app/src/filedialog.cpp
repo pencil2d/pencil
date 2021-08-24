@@ -123,10 +123,8 @@ QString FileDialog::getLastSavePath(FileType fileType)
     QSettings setting(PENCIL2D, PENCIL2D);
     setting.beginGroup("LastSavePath");
 
-    return setting.value(toSettingKey(FileType::ANIMATION),
+    return setting.value(toSettingKey(fileType),
                          QDir::homePath() + "/" + defaultFileName(fileType)).toString();
-    // return setting.value(toSettingKey(fileType),
-    //                     QDir::homePath() + "/" + defaultFileName(fileType)).toString();
 }
 
 void FileDialog::setLastSavePath(FileType fileType, const QString& savePath)
