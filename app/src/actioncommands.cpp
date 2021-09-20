@@ -673,13 +673,10 @@ void ActionCommands::removeSelectedFrames()
 void ActionCommands::reverseSelectedFrames()
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
-    int selectedCount = currentLayer->selectedKeyFrameCount();
-    if (selectedCount <= 1)
-    {
+
+    if (!currentLayer->reverseOrderOfSelection()) {
         return;
     }
-
-    currentLayer->reverseOrderOfSelection();
 
     if (currentLayer->type() == Layer::CAMERA) {
         mEditor->view()->forceUpdateViewTransform();

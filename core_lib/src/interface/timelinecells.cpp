@@ -542,8 +542,8 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
     painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
     int recTop = y + 1;
-    int recHeight = height - 4;
     int recWidth = frameSize - 2;
+    int recHeight = height - 4;
     layer->foreachKeyFrame([&](KeyFrame* key)
     {
         int framePos = key->pos();
@@ -558,44 +558,45 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         }
 
         // Paint the frame border
-        if (selected && key->pos() == mEditor->currentFrame()) {
+        if (selected && framePos == mEditor->currentFrame()) {
             painter.setPen(Qt::white);
         } else {
             painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         }
 
         // Paint the frame contents
-        if (selected && key->isSelected())
+        if (selected)
         {
-            painter.setBrush(QColor(60, 60, 60));
-        }
-        else if (selected)
-        {
-            painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
+            if (key->isSelected()) {
+                painter.setBrush(QColor(60, 60, 60));
+            }
+            else
+            {
+                painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
+            }
         }
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
     });
 
-    paintGhostOfFrameAtPosition(painter, recTop, recHeight, recWidth, selected);
+    if (selected && mLayerPosMouseY != -1 && mLayerPosMouseY == mEditor->currentLayerIndex()) {
+        paintGhostOfFrameAtPosition(painter, recTop, recWidth, recHeight, selected);
+    }
 }
 
-void TimeLineCells::paintGhostOfFrameAtPosition(QPainter& painter, int recTop, int recHeight, int recWidth, bool selected) const
+void TimeLineCells::paintGhostOfFrameAtPosition(QPainter &painter, int recTop, int recWidth, int recHeight, bool selected) const
 {
-    int layerNumberMouseY = getLayerNumberAtMouseY();
-    if (selected && layerNumberMouseY != -1 && layerNumberMouseY == mEditor->currentLayerIndex()) {
-        int recLeft = getFrameX(getFrameNumberAtMouseX()) - recWidth;
+    int recLeft = getFrameX(mFramePosMouseX) - recWidth;
 
-        painter.save();
-        const QPalette palette = QApplication::palette();
-        // Don't fill
-        painter.setBrush(Qt::NoBrush);
-        // paint border
-        QColor penColor = palette.color(QPalette::WindowText);
-        penColor.setAlpha(127);
-        painter.setPen(penColor);
-        painter.drawRect(recLeft, recTop, recWidth, recHeight);
-        painter.restore();
-    }
+    painter.save();
+    const QPalette palette = QApplication::palette();
+    // Don't fill
+    painter.setBrush(Qt::NoBrush);
+    // paint border
+    QColor penColor = palette.color(QPalette::WindowText);
+    penColor.setAlpha(127);
+    painter.setPen(penColor);
+    painter.drawRect(recLeft, recTop, recWidth, recHeight);
+    painter.restore();
 }
 
 void TimeLineCells::paintLabel(QPainter& painter, const Layer* layer,

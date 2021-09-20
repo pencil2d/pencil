@@ -26,8 +26,6 @@ GNU General Public License for more details.
 
 
 class QClipboard;
-class QDragEnterEvent;
-class QDropEvent;
 class QTemporaryDir;
 class Object;
 class KeyFrame;
@@ -179,8 +177,6 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
-    void notifyAnimationLengthChanged();
-
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
 
@@ -252,7 +248,7 @@ private:
     SoundManager*      mSoundManager = nullptr;
     SelectionManager*  mSelectionManager = nullptr;
     OverlayManager*    mOverlayManager = nullptr;
-    ClipboardManager* mClipboardManager = nullptr;
+    ClipboardManager*  mClipboardManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 

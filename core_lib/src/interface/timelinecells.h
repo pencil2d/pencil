@@ -58,10 +58,7 @@ public:
     static int getOffsetY() { return mOffsetY; }
     int getLayerHeight() const { return mLayerHeight; }
 
-    int getFrameNumberAtMouseX() const { return mFramePosMouseX; }
-    int getLayerNumberAtMouseY() const { return mLayerPosMouseY; }
-
-    int getFrameLength() const {return mFrameLength;}
+    int getFrameLength() const { return mFrameLength; }
     int getFrameSize() const { return mFrameSize; }
 
     void setFrameLength(int n) { mFrameLength = n; }
@@ -109,7 +106,7 @@ private:
 
     void paintTicks(QPainter& painter, const QPalette& palette) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
-    void paintGhostOfFrameAtPosition(QPainter& painter, int recTop, int recHeight, int recWidth, bool selected) const;
+    void paintGhostOfFrameAtPosition(QPainter& painter, int recTop, int recWidth, int recHeight, bool selected) const;
     void paintLabel(QPainter& painter, const Layer* layer,
                     int x, int y, int width, int height,
                     bool selected, LayerVisibility layerVisibility) const;

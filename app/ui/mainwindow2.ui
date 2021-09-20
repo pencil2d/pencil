@@ -205,8 +205,6 @@
     <addaction name="actionDuplicate_Frame"/>
     <addaction name="actionRemove_Frame"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionMove_Frame_Forward"/>
     <addaction name="actionMove_Frame_Backward"/>
     <addaction name="separator"/>
@@ -653,11 +651,6 @@
    </property>
    <property name="text">
     <string>Remove Frame</string>
-   </property>
-  </action>
-  <action name="actionDecrease_Frame_Exposure">
-   <property name="text">
-    <string>Decrease Frame Exposure</string>
    </property>
   </action>
   <action name="actionMove">
@@ -1120,16 +1113,6 @@
    <property name="toolTip">
     <string>Onion Skins</string>
    </property>
-  </action>
-  <action name="actionReverse_Selected_Frames">
-   <property name="text">
-    <string>Reverse Selected Frames</string>
-   </property>
-  </action>
-  <action name="actionRemove_Selected_Frames">
-   <property name="text">
-    <string>Remove Selected Frames</string>
-    </property>
   </action>
   <action name="actionChangeLayerOpacity">
    <property name="text">

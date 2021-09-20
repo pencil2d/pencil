@@ -209,7 +209,6 @@ const static int MaxFramesBound = 9999;
 // Import
 #define IMPORT_REPOSITION_TYPE      "ImportRepositionType"
 
-
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
 #define SHORTCUTS_GROUP             "Shortcuts"
