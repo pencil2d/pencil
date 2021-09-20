@@ -123,21 +123,24 @@ public:
     void selectAllFramesAfter(int position);
 
     /** Make a selection from specified position until a blank spot appears
-     *  The search is only looking forward
-     *  eg. |123| 4 5
-     *       ^
-     *    pos/search from
+     *  The search is only looking forward, e.g.
+     *  @code
+     *  |123| 4 5
+     *   ^
+     *   pos/search from
+     *  @endcode
      *  @param position the current position
      */
     bool newSelectionOfConnectedFrames(int position);
 
     /** Add or subtract exposure from selected frames
      * @param offset Any value above 0 for adding exposure and any value below 0 to subtract exposure
-    */
+     */
     void setExposureForSelectedFrames(int offset);
 
     /** Reverse order of selected frames
-     * @return true if all frames were successfully reversed, otherwise will return false. */
+     * @return true if all frames were successfully reversed, otherwise will return false.
+     */
     bool reverseOrderOfSelection();
 
     void deselectAll();
@@ -167,7 +170,7 @@ protected:
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
-    void removeFromSelectionList(int pos);
+    void removeFromSelectionList(int position);
 
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;

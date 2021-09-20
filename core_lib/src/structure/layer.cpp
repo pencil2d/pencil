@@ -384,9 +384,7 @@ bool Layer::isFrameSelected(int position) const
     if (keyFrame == nullptr) { return false; }
 
     int frameFound = mSelectedFrames_byLast.contains(keyFrame->pos());
-    if (frameFound) {
-        Q_ASSERT(keyFrame->isSelected());
-    }
+    Q_ASSERT(!frameFound || keyFrame->isSelected());
     return frameFound;
 }
 
