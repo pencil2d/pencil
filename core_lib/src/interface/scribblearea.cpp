@@ -761,10 +761,9 @@ void ScribbleArea::mouseDoubleClickEvent(QMouseEvent* e)
 void ScribbleArea::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
-    const qreal dpr = devicePixelRatioF();
-    mCanvas = QPixmap(QSizeF(size() * dpr).toSize());
+    mDevicePixelRatio = devicePixelRatioF();
+    mCanvas = QPixmap(QSizeF(size() * mDevicePixelRatio).toSize());
     mCanvas.fill(Qt::transparent);
-    mDevicePixelRatio = dpr;
 
     mEditor->view()->setCanvasSize(size());
 
