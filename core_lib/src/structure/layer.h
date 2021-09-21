@@ -111,10 +111,9 @@ public:
 
     bool moveSelectedFrames(int offset);
 
-    /** Predetermins whether the frames can be moves to a new position depending on the offset
-     * offset should be start press position - current position
+    /** Predetermines whether the frames can be moved to a new position depending on the offset
      *
-     * @param offset
+     * @param offset Should be start press position - current position
      * @return true if selected frames can be moved otherwise false
      */
     bool canMoveSelectedFramesToOffset(int offset) const;
