@@ -30,6 +30,9 @@ create_package_linux() {
     Pencil2D/usr/share/applications/org.pencil2d.Pencil2D.desktop \
     -executable=Pencil2D/usr/plugins/ffmpeg \
     ${gst_executables} \
+    -extra-plugins=platforms/libqwayland-egl.so,platforms/libqwayland-generic.so,\
+platforms/libqwayland-xcomposite-egl.so,platforms/libqwayland-xcomposite-glx.so,\
+wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-integration \
     -appimage
   mv Pencil2D*.AppImage* "pencil2d-linux-$1-$(date +%F).AppImage"
   echo "::set-output name=package-name::pencil2d-linux-$1-$(date +%F).AppImage"
