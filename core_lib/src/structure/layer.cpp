@@ -438,11 +438,10 @@ bool Layer::canMoveSelectedFramesToOffset(int offset) const
 {
     QList<int> newByPositions = mSelectedFrames_byPosition;
 
-    std::map<int, KeyFrame*, std::greater<int>>::const_iterator it;
-    for (int i = 0; i < newByPositions.count(); i++)
+    for (int pos : newByPositions)
     {
-        newByPositions[i] = newByPositions[i] + offset;
-        if (keyExists(newByPositions[i]) && !mSelectedFrames_byPosition.contains(newByPositions[i])) {
+        pos += offset;
+        if (keyExists(pos) && !mSelectedFrames_byPosition.contains(pos)) {
             return false;
         }
     }
@@ -472,7 +471,7 @@ bool Layer::moveSelectedFrames(int offset)
 
     if (!canMoveSelectedFramesToOffset(offset)) { return false; }
 
-    while (indexInSelection > -1 && indexInSelection < mSelectedFrames_byPosition.count())
+    for (; indexInSelection > -1 && indexInSelection < mSelectedFrames_byPosition.count(); indexInSelection += step)
     {
         int fromPos = mSelectedFrames_byPosition[indexInSelection];
         int toPos = fromPos + offset;
@@ -490,17 +489,16 @@ bool Layer::moveSelectedFrames(int offset)
             mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
             markFrameAsDirty(toPos);
         }
-        indexInSelection = indexInSelection + step;
     }
 
     // Update selection lists
-    for (int i = 0; i < mSelectedFrames_byPosition.count(); i++)
+    for (int& pos : mSelectedFrames_byPosition)
     {
-        mSelectedFrames_byPosition[i] = mSelectedFrames_byPosition[i] + offset;
+        pos += offset;
     }
-    for (int i = 0; i < mSelectedFrames_byLast.count(); i++)
+    for (int& pos : mSelectedFrames_byLast)
     {
-        mSelectedFrames_byLast[i] = mSelectedFrames_byLast[i] + offset;
+        pos += offset;
     }
     return true;
 }

@@ -20,11 +20,8 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QResizeEvent>
 #include <QInputDialog>
-#include <QtMath>
 #include <QPainter>
 #include <QSettings>
-
-#include <QDebug>
 
 #include "camerapropertiesdialog.h"
 #include "editor.h"
@@ -195,8 +192,8 @@ void TimeLineCells::drawContent()
 
     Q_ASSERT(object != nullptr);
 
-    const Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) return;
+    const Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer == nullptr) return;
 
     // grey background of the view
     painter.setPen(Qt::NoPen);
@@ -239,14 +236,14 @@ void TimeLineCells::drawContent()
         int layerYMouseMove = getLayerY(mEditor->layers()->currentLayerIndex()) + mMouseMoveY;
         if (mType == TIMELINE_CELL_TYPE::Tracks)
         {
-            paintTrack(painter, layer,
+            paintTrack(painter, currentLayer,
                        mOffsetX, layerYMouseMove,
                        widgetWidth - mOffsetX, layerHeight,
                        true, mFrameSize);
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers)
         {
-            paintLabel(painter, layer,
+            paintLabel(painter, currentLayer,
                        0, layerYMouseMove,
                        widgetWidth - 1, layerHeight, true, mEditor->layerVisibility());
 
@@ -258,7 +255,7 @@ void TimeLineCells::drawContent()
         if (mType == TIMELINE_CELL_TYPE::Tracks)
         {
             paintTrack(painter,
-                       layer,
+                       currentLayer,
                        mOffsetX,
                        getLayerY(mEditor->layers()->currentLayerIndex()),
                        widgetWidth - mOffsetX,
@@ -269,7 +266,7 @@ void TimeLineCells::drawContent()
         else if (mType == TIMELINE_CELL_TYPE::Layers)
         {
             paintLabel(painter,
-                       layer,
+                       currentLayer,
                        0,
                        getLayerY(mEditor->layers()->currentLayerIndex()),
                        widgetWidth - 1,
@@ -344,7 +341,6 @@ void TimeLineCells::drawContent()
         }
 
         for (int i = 0; i < object->getLayerCount(); i++) {
-
             Layer* layer = object->getLayer(i);
             paintSelectedFrames(painter, layer, i);
         }
