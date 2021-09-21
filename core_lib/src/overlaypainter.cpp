@@ -179,7 +179,7 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter)
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(safeAction.x(), safeAction.y() - 1, QObject::tr("Safe Action area %1 %").arg(action));
+            painter.drawText(safeAction.x(), safeAction.y() - 1, tr("Safe Action area %1 %").arg(action));
         }
     }
     if (mOptions.bTitleSafe)
@@ -193,7 +193,7 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter)
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(safeTitle.x(), safeTitle.y()-1, QObject::tr("Safe Title area %1 %").arg(title));
+            painter.drawText(safeTitle.x(), safeTitle.y()-1, tr("Safe Title area %1 %").arg(title));
         }
     }
 
