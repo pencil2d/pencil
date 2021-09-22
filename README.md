@@ -26,10 +26,10 @@ We currently do not offer legacy mac or 32-bit linux nightly builds. If you have
 | :--------------: | :---------------: | :-------------: | :---------------: |
 | [Download][4]    | [Download][5]     | [Download][6]   | [Download][7]     |
 
-[4]: https://goo.gl/ZaYAtw
-[5]: https://goo.gl/cKbtgM
-[6]: https://goo.gl/WrAVu9
-[7]: https://goo.gl/9TzYRV
+[4]: https://drive.google.com/drive/folders/0BxdcdOiOmg-CSVlqc3JNQV9hVGs?resourcekey=0-mfeDpkYVm70KrOvKYM7UVw&usp=sharing
+[5]: https://drive.google.com/drive/folders/0BxdcdOiOmg-CcUEwS1R0WFhwM0E?resourcekey=0-7hr0hkLkSBVdEkaeb-okdg&usp=sharing
+[6]: https://drive.google.com/drive/folders/0BxdcdOiOmg-CeVpTY294cXdLZ2c?resourcekey=0-OH02kleYDbtzlw3UbxFMZA&usp=sharing
+[7]: https://drive.google.com/drive/folders/0BxdcdOiOmg-CcU1WOFpCOFBvVXc?resourcekey=0-2L-INjRPsn2ANX4MZIGU0Q&usp=sharing
 
 ## Contributing
 

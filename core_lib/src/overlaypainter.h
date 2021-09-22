@@ -2,6 +2,7 @@
 #define OVERLAYPAINTER_H
 
 
+#include <QCoreApplication>
 #include <QPainter>
 #include "movemode.h"
 
@@ -32,6 +33,7 @@ struct OverlayPainterOptions
 
 class OverlayPainter
 {
+    Q_DECLARE_TR_FUNCTIONS(OverlayPainter)
 public:
     explicit OverlayPainter();
 

@@ -65,13 +65,13 @@ void detectWhichOSX()
 
 void disableCoalescing()
 {
-    SetMouseCoalescingEnabled(gIsMouseCoalescing, NULL);
+    SetMouseCoalescingEnabled(gIsMouseCoalescing, nullptr);
     //MacOSXNative::setMouseCoalescingEnabled(false);
 }
 
 void enableCoalescing()
 {
-    SetMouseCoalescingEnabled(true, NULL);
+    SetMouseCoalescingEnabled(true, nullptr);
     //MacOSXNative::setMouseCoalescingEnabled(true);
 }
 
