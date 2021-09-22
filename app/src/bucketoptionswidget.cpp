@@ -53,13 +53,13 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     ui->fillToLayerComboBox->addItem(tr("Layer below"), 1);
     ui->fillToLayerComboBox->setToolTip(tr("Fill to the current layer or the layer below"));
 
-    ui->referenceLayerComboBox->addItem(tr("Current layer"), 0);
-    ui->referenceLayerComboBox->addItem(tr("All layers"), 1);
+    ui->referenceLayerComboBox->addItem(tr("Current layer", "Reference Layer Options"), 0);
+    ui->referenceLayerComboBox->addItem(tr("All layers", "Reference Layer Options"), 1);
     ui->referenceLayerComboBox->setToolTip(tr("Refers to the layer that used to flood fill from"));
 
-    ui->blendModeComboBox->addItem(tr("Overlay"), 0);
-    ui->blendModeComboBox->addItem(tr("Replace"), 1);
-    ui->blendModeComboBox->addItem(tr("Behind"), 2);
+    ui->blendModeComboBox->addItem(tr("Overlay", "Blend Mode dropdown option"), 0);
+    ui->blendModeComboBox->addItem(tr("Replace", "Blend Mode dropdown option"), 1);
+    ui->blendModeComboBox->addItem(tr("Behind",  "Blend Mode dropdown option"), 2);
     ui->blendModeComboBox->setToolTip(tr("Defines how the fill will behave when the new color is not opaque"));
 
     connect(ui->colorToleranceSlider, &SpinSlider::valueChanged, mEditor->tools(), &ToolManager::setTolerance);
