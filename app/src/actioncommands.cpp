@@ -605,13 +605,13 @@ void ActionCommands::exposeSelectedFrames(int offset)
     Layer* currentLayer = mEditor->layers()->currentLayer();
 
     bool hasSelectedFrames = currentLayer->hasAnySelectedFrames();
-    KeyFrame* key = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
-
-    if (key == nullptr) { return; }
 
     // Functionality to be able to expose the current frame without selecting
     // A:
+    KeyFrame* key = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
     if (!hasSelectedFrames) {
+
+        if (key == nullptr) { return; }
         currentLayer->setFrameSelected(key->pos(), true);
     }
 
