@@ -520,22 +520,13 @@ void Editor::copy()
 
     if (currentLayer->hasAnySelectedFrames() && !select()->somethingSelected()) {
         clipboards()->copySelectedFrames(currentLayer);
-        return;
-    }
-
-    if (currentLayer->type() == Layer::BITMAP) {
+    } else if (currentLayer->type() == Layer::BITMAP) {
         BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getLastKeyFrameAtPosition(currentFrame()));
         clipboards()->copyBitmapImage(bitmapImage, select()->mySelectionRect());
-        return;
-    }
-
-    if (currentLayer->type() == Layer::VECTOR) {
+    } else if (currentLayer->type() == Layer::VECTOR) {
         VectorImage* vectorImage = static_cast<VectorImage*>(currentLayer->getLastKeyFrameAtPosition(currentFrame()));
         clipboards()->copyVectorImage(vectorImage);
-        return;
     }
-
-    Q_UNREACHABLE();
 }
 
 void Editor::copyAndCut()
