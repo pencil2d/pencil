@@ -544,7 +544,7 @@ void Editor::copyAndCut()
 
     Layer* currentLayer = layers()->currentLayer();
 
-    if (currentLayer->hasAnySelectedFrames()) {
+    if (currentLayer->hasAnySelectedFrames() && !select()->somethingSelected()) {
         for (int pos : currentLayer->selectedKeyFramesPositions()) {
             currentLayer->removeKeyFrame(pos);
         }
