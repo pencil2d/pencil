@@ -665,8 +665,6 @@ void ActionCommands::removeSelectedFrames()
     for (int pos : currentLayer->selectedKeyFramesPositions()) {
         currentLayer->removeKeyFrame(pos);
     }
-
-    currentLayer->deselectAll();
     mEditor->layers()->notifyLayerChanged(currentLayer);
 }
 
