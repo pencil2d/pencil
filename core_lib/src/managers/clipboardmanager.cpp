@@ -73,7 +73,7 @@ void ClipboardManager::copyBitmapImage(BitmapImage* bitmapImage, QRectF selectio
 void ClipboardManager::copyVectorImage(const VectorImage* vectorImage)
 {
     resetStates();
-    if (vectorImage == nullptr || !vectorImage->isValid()) { return; }
+    if (vectorImage == nullptr || !vectorImage->isEmpty()) { return; }
 
     // FIXME: handle vector selections, ie. independent strokes...
     mVectorImage = *vectorImage->clone();

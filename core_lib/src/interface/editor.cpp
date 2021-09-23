@@ -649,7 +649,7 @@ void Editor::paste()
         VectorImage clipboardVectorImage = clipboards()->getVectorClipboard();
         if (currentLayer->type() == Layer::BITMAP && clipboardImage.isLoaded()) {
             pasteToCanvas(&clipboardImage, mFrame);
-        } else if (currentLayer->type() == Layer::VECTOR && clipboardVectorImage.isValid()) {
+        } else if (currentLayer->type() == Layer::VECTOR && !clipboardVectorImage.isEmpty()) {
             pasteToCanvas(&clipboardVectorImage, mFrame);
         }
     } else {
@@ -1210,7 +1210,7 @@ bool Editor::canPaste(const Layer* layer) const
     auto layerType = layer->type();
     return (layerType == clipboardMan->framesTypeChanged(layer) && !clipboardMan->anyFramesInClipbord()) ||
            (layerType == Layer::BITMAP && clipboardMan->getBitmapClipboard().isLoaded()) ||
-           (layerType == Layer::VECTOR && clipboardMan->getVectorClipboard().isValid());
+           (layerType == Layer::VECTOR && clipboardMan->getVectorClipboard().isEmpty());
 }
 
 bool Editor::canCopyFrames(const Layer* layer) const
@@ -1226,5 +1226,5 @@ bool Editor::canCopyBitmapImage(BitmapImage* bitmapImage) const
 
 bool Editor::canCopyVectorImage(const VectorImage* vectorImage) const
 {
-    return vectorImage != nullptr && vectorImage->isValid();
+    return vectorImage != nullptr && !vectorImage->isEmpty();
 }

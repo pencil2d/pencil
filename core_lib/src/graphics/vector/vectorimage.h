@@ -80,7 +80,7 @@ public:
     void deleteSelectedPoints();
     void removeVertex(int curve, int vertex);
 
-    bool isValid() const { return !mCurves.isEmpty(); }
+    bool isEmpty() const { return mCurves.isEmpty(); }
 
     void paste(VectorImage&);
 
