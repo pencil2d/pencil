@@ -223,9 +223,6 @@ private:
     void pasteToCanvas(VectorImage* vectorImage, int frameNumber);
     void pasteToFrames();
 
-    bool canCopy(int keyPos, const Layer* layer) const;
-    bool canPaste(const Layer* layer) const;
-
     bool canCopyBitmapImage(BitmapImage* bitmapImage) const;
     bool canCopyFrames(const Layer* layer) const;
     bool canCopyVectorImage(const VectorImage* vectorImage) const;

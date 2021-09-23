@@ -514,7 +514,7 @@ void Editor::copy()
 
     Q_ASSERT(currentLayer != nullptr);
 
-    if (!canCopy(mFrame, currentLayer)) { return; }
+    if (!canCopy()) { return; }
 
     backup(tr("Copy"));
 
@@ -638,7 +638,7 @@ void Editor::paste()
 
     Q_ASSERT(currentLayer != nullptr);
 
-    if (!canPaste(currentLayer)) { return; }
+    if (!canPaste()) { return; }
 
     if (clipboards()->getClipboardFrames().empty()) {
 
@@ -661,16 +661,6 @@ void Editor::paste()
     emit frameModified(mFrame);
 }
 
-bool Editor::canCopy() const
-{
-    return canCopy(mFrame, layers()->currentLayer());
-}
-
-bool Editor::canPaste() const
-{
-    return canPaste(layers()->currentLayer());
-}
-
 void Editor::flipSelection(bool flipVertical)
 {
     mScribbleArea->flipSelection(flipVertical);
@@ -682,8 +672,8 @@ void Editor::clipboardChanged(const QClipboard* clipboard)
 
     clipboards()->setFromSystemClipboard(clipboard, layer);
 
-    bool canCopyState = canCopy(mFrame, layer);
-    bool canPasteState = canPaste(layer);
+    bool canCopyState = canCopy();
+    bool canPasteState = canPaste();
 
     emit canCopyChanged(canCopyState);
     emit canPasteChanged(canPasteState);
@@ -1186,9 +1176,10 @@ void Editor::clearCurrentFrame()
     mScribbleArea->clearImage();
 }
 
-bool Editor::canCopy(int keyPos, const Layer* layer) const
+bool Editor::canCopy() const
 {
-    KeyFrame* keyframe = layer->getLastKeyFrameAtPosition(keyPos);
+    Layer* layer = layers()->currentLayer();
+    KeyFrame* keyframe = layer->getLastKeyFrameAtPosition(mFrame);
 
     switch (layer->type())
     {
@@ -1204,8 +1195,9 @@ bool Editor::canCopy(int keyPos, const Layer* layer) const
     }
 }
 
-bool Editor::canPaste(const Layer* layer) const
+bool Editor::canPaste() const
 {
+    Layer* layer = layers()->currentLayer();
     auto clipboardMan = clipboards();
     auto layerType = layer->type();
     return (layerType == clipboardMan->framesTypeChanged(layer) && clipboardMan->framesIsEmpty()) ||
