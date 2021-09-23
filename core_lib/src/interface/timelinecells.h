@@ -84,6 +84,7 @@ public slots:
     void setMouseMoveY(int x);
 
 protected:
+    bool event(QEvent *event);
     void trackScrubber();
     void drawContent();
     void paintEvent(QPaintEvent* event) override;
@@ -100,6 +101,7 @@ private slots:
     void setCameraEasing(CameraEasingType type, int frame);
 
 private:
+    void onDidLeaveWidget();
     void paintTrack(QPainter& painter, const Layer* layer,
                     int x, int y, int width, int height,
                     bool selected, int frameSize) const;

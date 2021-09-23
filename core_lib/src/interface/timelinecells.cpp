@@ -829,6 +829,15 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
     emit lengthChanged(getFrameLength());
 }
 
+bool TimeLineCells::event(QEvent* event)
+{
+    if (event->type() == QEvent::Leave) {
+        onDidLeaveWidget();
+    }
+
+    return QWidget::event(event);
+}
+
 void TimeLineCells::mousePressEvent(QMouseEvent* event)
 {
     int frameNumber = getFrameNumber(event->pos().x());
@@ -1242,4 +1251,11 @@ void TimeLineCells::trackScrubber()
         emit offsetChanged(mFrameOffset);
         mTimeLine->updateContent();
     }
+}
+
+void TimeLineCells::onDidLeaveWidget()
+{
+    // Reset last known frame pos to avoid wrong UI states when leaving the widget
+    mFramePosMouseX = 0;
+    update();
 }
