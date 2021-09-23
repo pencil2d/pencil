@@ -1143,7 +1143,6 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks && (layerNumber != -1) && (frameNumber > 0) && layerNumber < mEditor->object()->getLayerCount())
         {
-            layer->setFrameSelected(frameNumber, false);
             mEditor->scrubTo(frameNumber);
             emit insertNewKeyFrame();
 
