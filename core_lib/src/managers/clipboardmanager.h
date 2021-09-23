@@ -70,7 +70,7 @@ public:
     std::map<int, KeyFrame*> getClipboardFrames() { return mFrames; }
 
     bool framesTypeChanged(const Layer* layer) const { return layer->type() != mFramesType; }
-    bool anyFramesInClipbord() const { return !mFrames.empty(); }
+    bool framesIsEmpty() const { return mFrames.empty(); }
 
 private:
 
