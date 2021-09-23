@@ -627,7 +627,8 @@ void Editor::pasteToFrames()
             auto soundClip = static_cast<SoundClip*>(keyClone);
             sound()->loadSound(soundClip, soundClip->fileName());
         }
-        currentLayer->deselectAll();
+
+        currentLayer->setFrameSelected(keyClone->pos(), true);
     }
 }
 
