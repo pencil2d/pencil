@@ -1349,8 +1349,10 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
-    connect(editor, &Editor::canCopyChanged, ui->actionCopy, &QAction::setEnabled);
-    connect(editor, &Editor::canCutChanged, ui->actionCut, &QAction::setEnabled);
+    connect(editor, &Editor::canCopyChanged, this, [=](bool canCopy) {
+        ui->actionCopy->setEnabled(canCopy);
+        ui->actionCut->setEnabled(canCopy);
+    });
     connect(editor, &Editor::canPasteChanged, ui->actionPaste, &QAction::setEnabled);
 
 }

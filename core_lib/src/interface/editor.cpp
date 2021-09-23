@@ -686,7 +686,6 @@ void Editor::clipboardChanged(const QClipboard* clipboard)
     bool canPasteState = canPaste(layer);
 
     emit canCopyChanged(canCopyState);
-    emit canCutChanged(canCopyState);
     emit canPasteChanged(canPasteState);
 }
 

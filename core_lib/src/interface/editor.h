@@ -147,7 +147,6 @@ signals:
     void needDisplayInfoNoTitle(const QString& body);
 
     void canCopyChanged(bool enabled);
-    void canCutChanged(bool enabled);
     void canPasteChanged(bool enabled);
 
 public: //slots
