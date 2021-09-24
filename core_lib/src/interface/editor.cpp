@@ -1203,7 +1203,7 @@ bool Editor::canPaste() const
     auto layerType = layer->type();
     return (layerType == clipboardMan->framesTypeChanged(layer) && clipboardMan->framesIsEmpty()) ||
            (layerType == Layer::BITMAP && clipboardMan->getBitmapClipboard().isLoaded()) ||
-           (layerType == Layer::VECTOR && clipboardMan->getVectorClipboard().isEmpty());
+           (layerType == Layer::VECTOR && !clipboardMan->getVectorClipboard().isEmpty());
 }
 
 bool Editor::canCopyFrames(const Layer* layer) const

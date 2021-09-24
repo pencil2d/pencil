@@ -113,7 +113,6 @@ protected:
 
 private slots:
     void updateCopyCutPasteEnabled();
-    void fetchClipboard();
 private:
     void newObject();
     bool newObjectFromPresets(int presetIndex);

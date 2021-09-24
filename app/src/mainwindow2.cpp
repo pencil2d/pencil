@@ -1404,7 +1404,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
 
     // Clipboard state handling
-    connect(QApplication::clipboard(), &QClipboard::dataChanged, this, &MainWindow2::fetchClipboard);
+    connect(QApplication::clipboard(), &QClipboard::dataChanged, mEditor, &Editor::clipboardChanged);
     connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(pTimeline, &TimeLine::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(this, &MainWindow2::windowActivated, this, &MainWindow2::updateCopyCutPasteEnabled);
@@ -1458,11 +1458,6 @@ void MainWindow2::makeConnections(Editor* editor, StatusBar *statusBar)
 
     connect(editor->view(), &ViewManager::viewChanged, statusBar, &StatusBar::updateZoomStatus);
     connect(statusBar, &StatusBar::zoomChanged, editor->view(), &ViewManager::scale);
-}
-
-void MainWindow2::fetchClipboard()
-{
-    mEditor->clipboardChanged();
 }
 
 void MainWindow2::updateCopyCutPasteEnabled()
