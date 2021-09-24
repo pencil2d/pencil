@@ -110,6 +110,12 @@ void LayerManager::setCurrentLayer(int layerIndex)
         return;
     }
 
+    // Deselect frames of previous layer.
+    Layer* previousLayer = object()->getLayer(editor()->currentLayerIndex());
+    if (previousLayer != nullptr) {
+        previousLayer->deselectAll();
+    }
+
     // Do not check if layer index has changed
     // because the current layer may have changed either way
     editor()->setCurrentLayerIndex(layerIndex);
@@ -133,6 +139,7 @@ void LayerManager::gotoNextLayer()
 {
     if (editor()->currentLayerIndex() < object()->getLayerCount() - 1)
     {
+        currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
         emit currentLayerChanged(editor()->currentLayerIndex());
     }
@@ -142,6 +149,7 @@ void LayerManager::gotoPreviouslayer()
 {
     if (editor()->currentLayerIndex() > 0)
     {
+        currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
         emit currentLayerChanged(editor()->currentLayerIndex());
     }
