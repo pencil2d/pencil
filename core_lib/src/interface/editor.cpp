@@ -644,7 +644,7 @@ void Editor::paste()
 
         backup(tr("Paste"));
 
-        clipboards()->updateIfNeeded(currentLayer);
+        clipboards()->setFromSystemClipboard(currentLayer);
 
         BitmapImage clipboardImage = clipboards()->getBitmapClipboard();
         VectorImage clipboardVectorImage = clipboards()->getVectorClipboard();
@@ -666,11 +666,11 @@ void Editor::flipSelection(bool flipVertical)
     mScribbleArea->flipSelection(flipVertical);
 }
 
-void Editor::clipboardChanged(const QClipboard* clipboard)
+void Editor::clipboardChanged()
 {
     Layer* layer = layers()->currentLayer();
 
-    clipboards()->setFromSystemClipboard(clipboard, layer);
+    clipboards()->setFromSystemClipboard(layer);
 
     bool canCopyState = canCopy();
     bool canPasteState = canPaste();

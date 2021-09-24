@@ -39,13 +39,7 @@ public:
     Status save(Object*) override { return Status::OK; }
     void workingLayerChanged(Layer*) override { }
 
-    /** Update latest locally stored clipboard if needed
-     * @param layer
-     * @return true if the clipboard has been updated, otherwise false
-     */
-    bool updateIfNeeded(const Layer* layer);
-
-    void setFromSystemClipboard(const QClipboard* clipboard, const Layer* layer);
+    void setFromSystemClipboard(const Layer* layer);
 
     /** Copy bitmap image to clipboard and save its latest position
      *  Additionally only a part of the image will be copied if a non-empty rect is given

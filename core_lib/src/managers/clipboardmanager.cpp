@@ -30,22 +30,9 @@ ClipboardManager::~ClipboardManager()
 
 }
 
-bool ClipboardManager::updateIfNeeded(const Layer* layer)
+void ClipboardManager::setFromSystemClipboard(const Layer* layer)
 {
-    if (layer->type() != Layer::BITMAP) {
-        return false;
-    }
-
-    QImage clipboardImage = mClipboard->image(QClipboard::Mode::Clipboard);
-    if (clipboardImage.isNull()) { return false; }
-
-    mBitmapImage = BitmapImage(mLastBitmapPosition, clipboardImage);
-    return true;
-}
-
-void ClipboardManager::setFromSystemClipboard(const QClipboard *clipboard, const Layer* layer)
-{
-    QImage image = clipboard->image(QClipboard::Clipboard);
+    QImage image = mClipboard->image(QClipboard::Clipboard);
     // Only bitmap is supported currently...
     if (layer->type() == Layer::BITMAP && !image.isNull()) {
         mBitmapImage = BitmapImage(mLastBitmapPosition, image);

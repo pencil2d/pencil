@@ -1462,8 +1462,7 @@ void MainWindow2::makeConnections(Editor* editor, StatusBar *statusBar)
 
 void MainWindow2::fetchClipboard()
 {
-    QClipboard* clipboard = QApplication::clipboard();
-    mEditor->clipboardChanged(clipboard);
+    mEditor->clipboardChanged();
 }
 
 void MainWindow2::updateCopyCutPasteEnabled()

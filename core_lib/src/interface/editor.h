@@ -115,7 +115,7 @@ public:
     void deselectAll() const;
     void selectAll() const;
 
-    void clipboardChanged(const QClipboard* clipboard);
+    void clipboardChanged();
 
     // backup
     int mBackupIndex;
