@@ -30,12 +30,14 @@ ClipboardManager::~ClipboardManager()
 
 }
 
-void ClipboardManager::setFromSystemClipboard(const Layer* layer)
+void ClipboardManager::setFromSystemClipboard(const QPointF& pos, const Layer* layer)
 {
+    resetStates();
+
     QImage image = mClipboard->image(QClipboard::Clipboard);
     // Only bitmap is supported currently...
     if (layer->type() == Layer::BITMAP && !image.isNull()) {
-        mBitmapImage = BitmapImage(mLastBitmapPosition, image);
+        mBitmapImage = BitmapImage(pos.toPoint()-QPoint(image.size().width()/2, image.size().height()/2), image);
     }
 }
 
@@ -53,7 +55,6 @@ void ClipboardManager::copyBitmapImage(BitmapImage* bitmapImage, QRectF selectio
         mBitmapImage = bitmapImage->copy();
     }
 
-    mLastBitmapPosition = mBitmapImage.topLeft();
     mClipboard->setImage(*mBitmapImage.image());
 }
 
@@ -86,6 +87,5 @@ void ClipboardManager::resetStates()
     mFrames.clear();
     mBitmapImage = BitmapImage();
     mVectorImage = VectorImage();
-    mLastBitmapPosition = QPoint();
     mFramesType = Layer::LAYER_TYPE::UNDEFINED;
 }

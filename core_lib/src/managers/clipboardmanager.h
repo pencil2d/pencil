@@ -39,7 +39,7 @@ public:
     Status save(Object*) override { return Status::OK; }
     void workingLayerChanged(Layer*) override { }
 
-    void setFromSystemClipboard(const Layer* layer);
+    void setFromSystemClipboard(const QPointF& pos, const Layer* layer);
 
     /** Copy bitmap image to clipboard and save its latest position
      *  Additionally only a part of the image will be copied if a non-empty rect is given
@@ -71,7 +71,6 @@ private:
     /** This should be called before copying and updating the clipboard to ensure no previous state is saved */
     void resetStates();
 
-    QPoint mLastBitmapPosition;
     BitmapImage mBitmapImage;
     VectorImage mVectorImage;
     std::map<int, KeyFrame*> mFrames;

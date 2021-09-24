@@ -644,7 +644,7 @@ void Editor::paste()
 
         backup(tr("Paste"));
 
-        clipboards()->setFromSystemClipboard(currentLayer);
+        clipboards()->setFromSystemClipboard(mScribbleArea->getCentralPoint(), currentLayer);
 
         BitmapImage clipboardImage = clipboards()->getBitmapClipboard();
         VectorImage clipboardVectorImage = clipboards()->getVectorClipboard();
@@ -670,7 +670,8 @@ void Editor::clipboardChanged()
 {
     Layer* layer = layers()->currentLayer();
 
-    clipboards()->setFromSystemClipboard(layer);
+
+    clipboards()->setFromSystemClipboard(mScribbleArea->getCentralPoint(), layer);
 
     bool canCopyState = canCopy();
     bool canPasteState = canPaste();
