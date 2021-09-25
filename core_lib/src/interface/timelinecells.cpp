@@ -22,16 +22,23 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QPainter>
 #include <QSettings>
+#include <QMenu>
+
+#include <QDebug>
 
 #include "camerapropertiesdialog.h"
 #include "editor.h"
 #include "keyframe.h"
+#include "camera.h"
+#include "cameraeasingtype.h"
 #include "layermanager.h"
+#include "viewmanager.h"
 #include "object.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "toolmanager.h"
+
 
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
 {
@@ -49,6 +56,7 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setMinimumSize(500, 4 * mLayerHeight);
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
     setAttribute(Qt::WA_OpaquePaintEvent, false);
+    setMouseTracking(true);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
 }
@@ -83,6 +91,49 @@ void TimeLineCells::loadSetting(SETTING setting)
         break;
     }
     updateContent();
+}
+
+void TimeLineCells::setHold(int frame)
+{
+    LayerCamera* curLayer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+    QList<int> frames = curLayer->getListOfSelectedFrames();
+    if (!frames.empty())
+    {
+        for (int pos:frames)
+        {
+            Camera* cam = curLayer->getCameraAtFrame(pos);
+            Camera* next = curLayer->getCameraAtFrame(curLayer->getNextKeyFramePosition(pos));
+            next->assign(*cam);
+            cam->setEasingType(CameraEasingType::LINEAR);
+        }
+    }
+    else
+    {
+        Camera* cam = curLayer->getCameraAtFrame(frame);
+        Camera* next = curLayer->getCameraAtFrame(curLayer->getNextKeyFramePosition(frame));
+        next->assign(*cam);
+        cam->setEasingType(CameraEasingType::LINEAR);
+    }
+    updateContent();
+}
+
+void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
+    QList<int> frames = layer->getListOfSelectedFrames();
+    if (!frames.empty())
+    {
+        for (int pos:frames)
+        {
+            Camera* cam = layer->getCameraAtFrame(pos);
+            cam->setEasingType(type);
+        }
+    }
+    else
+    {
+        Camera* cam = layer->getCameraAtFrame(frame);
+        cam->setEasingType(type);
+    }
 }
 
 int TimeLineCells::getFrameNumber(int x) const
@@ -170,6 +221,103 @@ bool TimeLineCells::didDetachLayer() const {
     return abs(mMouseMoveY) > mLayerDetachThreshold;
 }
 
+void TimeLineCells::showCameraMenu(QPoint pos)
+{
+    int frameNumber = getFrameNumber(pos.x());
+    pos = this->mapToGlobal(pos);
+
+    Layer* curLayer = mEditor->layers()->currentLayer();
+    Q_ASSERT(curLayer);
+    // only show menu if on camera layer
+    if (curLayer->type() != Layer::CAMERA)
+    {
+        return;
+    }
+
+    int nextFrame = curLayer->getNextKeyFramePosition(frameNumber);
+
+    const QString interpolateFrom = tr("Interpolate frames from: %1 to %2");
+    const QString clearMovementDesc = tr("Clear interpolation on: %1");
+
+    if (mEasingMenu == nullptr)
+    {
+        mEasingMenu = new QMenu(this);
+
+        mInterpolationMenu = mEasingMenu->addMenu(interpolateFrom.arg(frameNumber).arg(nextFrame));
+
+        QMenu* subSine  = mInterpolationMenu->addMenu(tr("Slow"));
+        QMenu* subQuad  = mInterpolationMenu->addMenu(tr("Normal"));
+        QMenu* subCubic = mInterpolationMenu->addMenu(tr("Quick"));
+        QMenu* subQuart = mInterpolationMenu->addMenu(tr("Fast"));
+        QMenu* subQuint = mInterpolationMenu->addMenu(tr("Faster"));
+        QMenu* subExpo  = mInterpolationMenu->addMenu(tr("Fastest"));
+
+        mInterpolationMenu->addSeparator();
+        QMenu* subCirc  = mInterpolationMenu->addMenu(tr("Circle-based"));
+        QMenu* subOther = mInterpolationMenu->addMenu(tr("Other"));
+
+        subSine->addAction(tr("Slow Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INSINE, frameNumber); });
+        subSine->addAction(tr("Slow Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTSINE, frameNumber); });
+        subSine->addAction(tr("Slow Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTSINE, frameNumber); });
+        subSine->addAction(tr("Slow Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINSINE, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUAD, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUAD, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUAD, frameNumber); });
+        subQuad->addAction(tr("Normal Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUAD, frameNumber); });
+        subCubic->addAction(tr("Quick Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INCUBIC, frameNumber); });
+        subCubic->addAction(tr("Quick Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTCUBIC, frameNumber); });
+        subCubic->addAction(tr("Quick Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCUBIC, frameNumber); });
+        subCubic->addAction(tr("Quick Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCUBIC, frameNumber); });
+        subQuart->addAction(tr("Fast Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUART, frameNumber); });
+        subQuart->addAction(tr("Fast Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUART, frameNumber); });
+        subQuart->addAction(tr("Fast Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUART, frameNumber); });
+        subQuart->addAction(tr("Fast Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUART, frameNumber); });
+        subQuint->addAction(tr("Faster Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INQUINT, frameNumber); });
+        subQuint->addAction(tr("Faster Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTQUINT, frameNumber); });
+        subQuint->addAction(tr("Faster Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTQUINT, frameNumber); });
+        subQuint->addAction(tr("Faster Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINQUINT, frameNumber); });
+        subExpo->addAction(tr("Fastest Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INEXPO, frameNumber); });
+        subExpo->addAction(tr("Fastest Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTEXPO, frameNumber); });
+        subExpo->addAction(tr("Fastest Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTEXPO, frameNumber); });
+        subExpo->addAction(tr("Fastest Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINEXPO, frameNumber); });
+        subCirc->addAction(tr("Circle-based Ease-in"), [=] { this->setCameraEasing(CameraEasingType::INCIRC, frameNumber); });
+        subCirc->addAction(tr("Circle-based Ease-out"), [=] { this->setCameraEasing(CameraEasingType::OUTCIRC, frameNumber); });
+        subCirc->addAction(tr("Circle-based Ease-in - Ease-out"), [=] { this->setCameraEasing(CameraEasingType::INOUTCIRC, frameNumber); });
+        subCirc->addAction(tr("Circle-based Ease-out - Ease-in"), [=] { this->setCameraEasing(CameraEasingType::OUTINCIRC, frameNumber); });
+        mHoldAction = subOther->addAction(tr("Hold to frame %1").arg(nextFrame), [=] { this->setHold(frameNumber); });
+        subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
+    }
+
+    if (curLayer->getListOfSelectedFrames().empty() && !curLayer->keyExists(frameNumber)) {
+        return;
+    }
+
+    if (curLayer->getListOfSelectedFrames().size() > 1)
+    {
+        QList<int> frameList = curLayer->getListOfSelectedFrames();
+        QString keyNumbers = "";
+        for (int pos:frameList)
+        {
+            keyNumbers += " " + QString::number(pos) + ",";
+        }
+        // Remove last comma
+        keyNumbers.chop(1);
+        mInterpolationMenu->setTitle(tr("Interpolate frames at: %1").arg(keyNumbers));
+        mHoldAction->setText(clearMovementDesc.arg(keyNumbers));
+    }
+    else if(curLayer->keyExists(frameNumber))
+    {
+        QString keyPosString = QString::number(nextFrame);
+        if (frameNumber == nextFrame) {
+            keyPosString = "-";
+        }
+        mInterpolationMenu->setTitle(interpolateFrom.arg(frameNumber).arg(keyPosString));
+        mHoldAction->setText(clearMovementDesc.arg(nextFrame));
+    }
+
+    mEasingMenu->popup(pos);
+}
+
 void TimeLineCells::drawContent()
 {
     const QPalette palette = QApplication::palette();
@@ -183,8 +331,6 @@ void TimeLineCells::drawContent()
             return;
         }
     }
-
-    mCurrentFrame = mEditor->currentFrame();
 
     QPainter painter(mCache);
 
@@ -231,6 +377,7 @@ void TimeLineCells::drawContent()
             }
         }
     }
+
     if (didDetachLayer())
     {
         int layerYMouseMove = getLayerY(mEditor->layers()->currentLayerIndex()) + mMouseMoveY;
@@ -276,10 +423,12 @@ void TimeLineCells::drawContent()
         }
     }
 
-    // --- draw top
+    // --- draw track bar background
     painter.setPen(Qt::NoPen);
     painter.setBrush(palette.color(QPalette::Base));
     painter.drawRect(QRect(0, 0, width() - 1, mOffsetY - 1));
+
+    // --- draw bottom line splitter for track bar
     painter.setPen(palette.color(QPalette::Mid));
     painter.drawLine(0, mOffsetY - 2, width() - 1, mOffsetY - 2);
 
@@ -307,42 +456,48 @@ void TimeLineCells::drawContent()
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-        // --- draw ticks
-        painter.setPen(palette.color(QPalette::Text));
-        painter.setBrush(palette.brush(QPalette::Text));
-        int fps = mEditor->playback()->fps();
-        for (int i = mFrameOffset; i < mFrameOffset + (widgetWidth - mOffsetX) / mFrameSize; i++)
+        paintTicks(painter, palette);
+
+        const auto object = mEditor->object();
+        for (int i = 0; i < object->getLayerCount(); i++) {
+            paintSelectedFrames(painter, object->getLayer(i), i);
+        }
+    }
+}
+
+void TimeLineCells::paintTicks(QPainter& painter, const QPalette& palette) const
+{
+    painter.setPen(palette.color(QPalette::Text));
+    painter.setBrush(palette.brush(QPalette::Text));
+    int fps = mEditor->playback()->fps();
+    for (int i = mFrameOffset; i < mFrameOffset + (width() - mOffsetX) / mFrameSize; i++)
+    {
+        // line x pos + some offset
+        const int lineX = getFrameX(i) + 1;
+        if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
         {
-            const int frameX = getFrameX(i);
-            if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
-            {
-                painter.setPen(Qt::NoPen);
-                painter.setBrush(palette.color(QPalette::Highlight));
+            painter.setPen(Qt::NoPen);
+            painter.setBrush(palette.color(QPalette::Highlight));
 
-                painter.drawRect(frameX, 1, mFrameSize + 1, 2);
+            painter.drawRect(lineX, 1, mFrameSize + 1, 2);
 
-                painter.setPen(palette.color(QPalette::Text));
-                painter.setBrush(palette.brush(QPalette::Text));
-            }
-
-            if (i%fps == 0 || i%fps == fps / 2)
-            {
-                painter.drawLine(frameX, 1, frameX, 5);
-            }
-            else
-            {
-                painter.drawLine(frameX, 1, frameX, 3);
-            }
-            if (i == 0 || i % fps == fps - 1)
-            {
-                int incr = (i < 9) ? 4 : 0; // poor man’s text centering
-                painter.drawText(QPoint(frameX + incr, 15), QString::number(i + 1));
-            }
+            painter.setPen(palette.color(QPalette::Text));
+            painter.setBrush(palette.brush(QPalette::Text));
         }
 
-        for (int i = 0; i < object->getLayerCount(); i++) {
-            Layer* layer = object->getLayer(i);
-            paintSelectedFrames(painter, layer, i);
+        // Draw large tick at fps mark
+        if (i % fps == 0 || i % fps == fps / 2)
+        {
+            painter.drawLine(lineX, 1, lineX, 5);
+        }
+        else // draw small tick
+        {
+            painter.drawLine(lineX, 1, lineX, 3);
+        }
+        if (i == 0 || i % fps == fps - 1)
+        {
+            int incr = (i < 9) ? 4 : 0; // poor man’s text centering
+            painter.drawText(QPoint(lineX + incr, 15), QString::number(i + 1));
         }
     }
 }
@@ -389,12 +544,12 @@ void TimeLineCells::paintTrack(QPainter& painter, const Layer* layer,
         painter.restore();
     }
 
-    paintFrames(painter, layer, col, y, height, selected, frameSize);
+    paintFrames(painter, col, layer, y, height, selected, frameSize);
 
     painter.restore();
 }
 
-void TimeLineCells::paintFrames(QPainter& painter, const Layer* layer, QColor trackCol, int y, int height, bool selected, int frameSize) const
+void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const
 {
     painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
@@ -403,7 +558,8 @@ void TimeLineCells::paintFrames(QPainter& painter, const Layer* layer, QColor tr
     int recHeight = height - 4;
     layer->foreachKeyFrame([&](KeyFrame* key)
     {
-        int recLeft = getFrameX(key->pos()) - frameSize + 2;
+        int framePos = key->pos();
+        int recLeft = getFrameX(framePos) - frameSize + 2;
 
         if (key->length() > 1)
         {
@@ -413,15 +569,22 @@ void TimeLineCells::paintFrames(QPainter& painter, const Layer* layer, QColor tr
         }
 
         // Paint the frame border
-        if (selected && key->pos() == mCurrentFrame) {
+        if (selected && framePos == mEditor->currentFrame()) {
             painter.setPen(Qt::white);
         } else {
             painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
         }
 
+        // Paint the frame contents
         if (selected)
         {
-            painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
+            if (key->isSelected()) {
+                painter.setBrush(QColor(60, 60, 60));
+            }
+            else
+            {
+                painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
+            }
         }
 
         if (!key->isSelected()) {
@@ -458,6 +621,7 @@ void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, c
             int offset = framePos - posUnderCursor;
             int newFrameX = getFrameX(getFrameNumber(getFrameX(offset)+mouseX))-recWidth;
 
+            qDebug() << newFrameX;
             // Paint as frames are hovering
             painter.drawRect(newFrameX, recTop-4, recWidth, recHeight);
 
@@ -660,17 +824,31 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             painter.setBrush(scrubColor);
             painter.setPen(Qt::NoPen);
 
+            int currentFrameStartX = getFrameX(mEditor->currentFrame() - 1) + 1;
+            int currentFrameEndX = getFrameX(mEditor->currentFrame());
             QRect scrubRect;
-            scrubRect.setTopLeft(QPoint(getFrameX(mEditor->currentFrame() - 1), 0));
-            scrubRect.setBottomRight(QPoint(getFrameX(mEditor->currentFrame()), height()));
+            scrubRect.setTopLeft(QPoint(currentFrameStartX, 0));
+            scrubRect.setBottomRight(QPoint(currentFrameEndX, height()));
+            bool mouseUnderScrubber = mEditor->currentFrame() == getFrameNumber(mMouseMoveX);
             if (mbShortScrub)
             {
-                scrubRect.setBottomRight(QPoint(getFrameX(mEditor->currentFrame()), 19));
+                scrubRect.setBottomRight(QPoint(currentFrameEndX, 19));
+            }
+            painter.save();
+            if (mouseUnderScrubber) {
+                QRect smallScrub = QRect(QPoint(currentFrameStartX, 0), QPoint(currentFrameEndX,19));
+                QPen pen = scrubColor;
+                pen.setWidth(2);
+                painter.setPen(pen);
+                painter.drawRect(smallScrub);
+                painter.setBrush(Qt::NoBrush);
             }
             painter.drawRect(scrubRect);
+            painter.restore();
+
             painter.setPen(palette.color(QPalette::HighlightedText));
             int incr = (mEditor->currentFrame() < 10) ? 4 : 0;
-            painter.drawText(QPoint(getFrameX(mEditor->currentFrame() - 1) + incr, 15),
+            painter.drawText(QPoint(currentFrameStartX + incr, 15),
                              QString::number(mEditor->currentFrame()));
         }
     }
@@ -682,6 +860,15 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
     updateContent();
     event->accept();
     emit lengthChanged(getFrameLength());
+}
+
+bool TimeLineCells::event(QEvent* event)
+{
+    if (event->type() == QEvent::Leave) {
+        onDidLeaveWidget();
+    }
+
+    return QWidget::event(event);
 }
 
 void TimeLineCells::mousePressEvent(QMouseEvent* event)
@@ -724,7 +911,10 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             }
             else
             {
+                if (mEditor->currentLayerIndex() == layerNumber) { return; }
+
                 mEditor->layers()->setCurrentLayer(layerNumber);
+                mEditor->layers()->currentLayer()->deselectAll();
             }
         }
         if (layerNumber == -1)
@@ -746,7 +936,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         }
         else
         {
-            if (frameNumber == mEditor->currentFrame() && (!mbShortScrub || (mbShortScrub && mStartY < 20)))
+            if (frameNumber == mEditor->currentFrame() && mStartY < 20)
             {
                 if (mEditor->playback()->isPlaying())
                 {
@@ -760,10 +950,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                 {
                     int previousLayerNumber = mEditor->layers()->currentLayerIndex();
 
-                    if (previousLayerNumber != layerNumber) {
+                    if (previousLayerNumber != layerNumber)
+                    {
                         Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
                         previousLayer->deselectAll();
-
+                        mEditor->selectedFramesChanged();
                         mEditor->layers()->setCurrentLayer(layerNumber);
                     }
 
@@ -777,6 +968,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         mCanMoveFrame = true;
 
                         currentLayer->selectAllFramesAfter(frameNumber);
+                        mEditor->selectedFramesChanged();
                     }
                     // Check if we are clicking on a non selected frame
                     else if (!currentLayer->isFrameSelected(frameNumber))
@@ -784,26 +976,42 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         // If it is the case, we select it
                         mCanBoxSelect = true;
                         mClickSelecting = true;
+                        if (event->button() == Qt::RightButton)
+                        {
+                            showCameraMenu(event->pos());
+                        }
 
                         if (event->modifiers() == Qt::ControlModifier)
                         {
                             // Add/remove from already selected
                             currentLayer->toggleFrameSelected(frameNumber, true);
+                            mEditor->selectedFramesChanged();
                         }
                         else if (event->modifiers() == Qt::ShiftModifier)
                         {
                             // Select a range from the last selected
                             currentLayer->extendSelectionTo(frameNumber);
+                            mEditor->selectedFramesChanged();
                         }
                         else
                         {
                             currentLayer->toggleFrameSelected(frameNumber, false);
+                            mEditor->selectedFramesChanged();
                         }
                     }
                     else
                     {
+                        // If selected they can also be interpolated
+                        if (event->button() == Qt::RightButton)
+                        {
+                            showCameraMenu(event->pos());
+                        }
                         // We clicked on a selected frame, we can move it
                         mCanMoveFrame = true;
+                    }
+
+                    if (currentLayer->hasAnySelectedFrames()) {
+                        emit selectionChanged();
                     }
 
                     mTimeLine->updateContent();
@@ -839,13 +1047,14 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
     mMouseMoveX = event->pos().x();
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
-        mEndY = event->pos().y();
-        emit mouseMovedY(mEndY - mStartY);
+        if (event->buttons() & Qt::LeftButton ) {
+            mEndY = event->pos().y();
+            emit mouseMovedY(mEndY - mStartY);
+        }
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
         int frameNumber = getFrameNumber(event->pos().x());
-
         if (primaryButton == Qt::MidButton)
         {
             mFrameOffset = qMin(qMax(0, mFrameLength - width() / getFrameSize()), qMax(0, mFrameOffset + mLastFrameNumber - frameNumber));
@@ -928,6 +1137,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
+            mEditor->selectedFramesChanged();
         }
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
@@ -957,6 +1167,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
 void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
 {
+    int frameNumber = getFrameNumber(event->pos().x());
     int layerNumber = getLayerNumber(event->pos().y());
 
     // -- short scrub --
@@ -967,9 +1178,21 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
 
     // -- layer --
     Layer* layer = mEditor->object()->getLayer(layerNumber);
-    if (layer && mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
+    if (layer && event->buttons() & Qt::LeftButton)
     {
-        editLayerProperties(layer);
+        if (mType == TIMELINE_CELL_TYPE::Tracks && (layerNumber != -1) && (frameNumber > 0) && layerNumber < mEditor->object()->getLayerCount())
+        {
+            mEditor->scrubTo(frameNumber);
+            emit insertNewKeyFrame();
+
+            // The release event will toggle the frame on again, so we make sure it gets
+            // deselected now instead.
+            layer->setFrameSelected(frameNumber, true);
+        }
+        else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
+        {
+            editLayerProperties(layer);
+        }
     }
     QWidget::mouseDoubleClickEvent(event);
 }
@@ -982,16 +1205,16 @@ void TimeLineCells::editLayerProperties(Layer *layer) const
         return;
     }
 
-    auto cameraLayer = qobject_cast<LayerCamera*>(layer);
+    auto cameraLayer = dynamic_cast<LayerCamera*>(layer);
     Q_ASSERT(cameraLayer);
     editLayerProperties(cameraLayer);
 }
 
-void TimeLineCells::editLayerProperties(LayerCamera *layer) const
+void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
 {
     QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
-    CameraPropertiesDialog dialog(layer->name(), layer->getViewRect().width(), layer->getViewRect().height());
+    CameraPropertiesDialog dialog(cameraLayer->name(), cameraLayer->getViewRect().width(), cameraLayer->getViewRect().height());
     if (dialog.exec() != QDialog::Accepted)
     {
         return;
@@ -1000,12 +1223,13 @@ void TimeLineCells::editLayerProperties(LayerCamera *layer) const
 
     if (!name.isEmpty())
     {
-        mEditor->layers()->renameLayer(layer, name);
+        mEditor->layers()->renameLayer(cameraLayer, name);
     }
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_FIELD_W, dialog.getWidth());
     settings.setValue(SETTING_FIELD_H, dialog.getHeight());
-    layer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
+    cameraLayer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
+    mEditor->view()->forceUpdateViewTransform();
 }
 
 void TimeLineCells::editLayerName(Layer* layer) const
@@ -1065,4 +1289,11 @@ void TimeLineCells::trackScrubber()
         emit offsetChanged(mFrameOffset);
         mTimeLine->updateContent();
     }
+}
+
+void TimeLineCells::onDidLeaveWidget()
+{
+    // Reset last known frame pos to avoid wrong UI states when leaving the widget
+    mMouseMoveX = 0;
+    update();
 }

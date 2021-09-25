@@ -2986,16 +2986,28 @@ void tinfl_decompressor_free(tinfl_decompressor *pDecomp)
 #else
 #include <sys/stat.h>
 
-#if defined(_MSC_VER) || defined(__MINGW64__)
-#include <codecvt>
-#include <string>
-#include <locale>
+#if defined(_MSC_VER) || defined(__MINGW64__) || defined(__MINGW32__)
 
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <string>
+
+static std::wstring convert_to_utf16(const char *s)
+{
+    std::wstring utf16String;
+    int inputSize = strlen(s);
+    int requiredSize = MultiByteToWideChar(CP_UTF8, 0, s, inputSize, 0, 0);
+    if( requiredSize > 0 )
+    {
+        utf16String.resize(requiredSize);
+        MultiByteToWideChar(CP_UTF8, 0, s, inputSize, &utf16String[0], requiredSize);
+    }
+    return utf16String;
+}
 static FILE *mz_fopen(const char *pFilename, const char *pMode)
 {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring wideFilename = converter.from_bytes(pFilename);
-    std::wstring wideMode = converter.from_bytes(pMode);
+    std::wstring wideFilename = convert_to_utf16(pFilename);
+    std::wstring wideMode = convert_to_utf16(pMode);
 
     FILE *pFile = NULL;
     _wfopen_s(&pFile, wideFilename.c_str(), wideMode.c_str());
@@ -3003,9 +3015,8 @@ static FILE *mz_fopen(const char *pFilename, const char *pMode)
 }
 static FILE *mz_freopen(const char *pPath, const char *pMode, FILE *pStream)
 {
-    std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    std::wstring widePath = converter.from_bytes(pPath);
-    std::wstring wideMode = converter.from_bytes(pMode);
+    std::wstring widePath = convert_to_utf16(pPath);
+    std::wstring wideMode = convert_to_utf16(pMode);
 
     FILE *pFile = NULL;
     if (_wfreopen_s(&pFile, widePath.c_str(), wideMode.c_str(), pStream))
@@ -3026,21 +3037,21 @@ static FILE *mz_freopen(const char *pPath, const char *pMode, FILE *pStream)
 #define MZ_FFLUSH fflush
 #define MZ_FREOPEN mz_freopen
 #define MZ_DELETE_FILE remove
-#elif defined(__MINGW32__)
-#ifndef MINIZ_NO_TIME
-#include <sys/utime.h>
-#endif
-#define MZ_FOPEN(f, m) fopen(f, m)
-#define MZ_FCLOSE fclose
-#define MZ_FREAD fread
-#define MZ_FWRITE fwrite
-#define MZ_FTELL64 ftello64
-#define MZ_FSEEK64 fseeko64
-#define MZ_FILE_STAT_STRUCT _stat
-#define MZ_FILE_STAT _stat
-#define MZ_FFLUSH fflush
-#define MZ_FREOPEN(f, m, s) freopen(f, m, s)
-#define MZ_DELETE_FILE remove
+//#elif defined(__MINGW32__)
+//#ifndef MINIZ_NO_TIME
+//#include <sys/utime.h>
+//#endif
+//#define MZ_FOPEN(f, m) fopen(f, m)
+//#define MZ_FCLOSE fclose
+//#define MZ_FREAD fread
+//#define MZ_FWRITE fwrite
+//#define MZ_FTELL64 ftello64
+//#define MZ_FSEEK64 fseeko64
+//#define MZ_FILE_STAT_STRUCT _stat
+//#define MZ_FILE_STAT _stat
+//#define MZ_FFLUSH fflush
+//#define MZ_FREOPEN(f, m, s) freopen(f, m, s)
+//#define MZ_DELETE_FILE remove
 #elif defined(__TINYC__)
 #ifndef MINIZ_NO_TIME
 #include <sys/utime.h>

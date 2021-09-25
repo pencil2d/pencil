@@ -20,8 +20,8 @@ GNU General Public License for more details.
 
 #include <QTextStream>
 
+class Editor;
 class LayerCamera;
-class MainWindow2;
 
 /**
  * Handles command line export jobs
@@ -34,9 +34,9 @@ public:
     /**
      * Creates a new exporter instance.
      *
-     * @param mainWindow The *main window* to be used by this *command line* exporter. Don't ask.
+     * @param editor The Editor instance to be used by the exporter
      */
-    explicit CommandLineExporter(MainWindow2 *mainWindow);
+    explicit CommandLineExporter(Editor *editor);
 
     /**
      * Exports a Pencil2D file according to the specified options.
@@ -62,7 +62,7 @@ public:
                  bool transparency);
 
 private:
-    MainWindow2 *mMainWindow;
+    Editor *mEditor;
     QTextStream mOut;
     QTextStream mErr;
     void exportMovie(const QString &outputPath,

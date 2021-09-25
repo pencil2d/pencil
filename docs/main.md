@@ -19,5 +19,5 @@ Get started with this documentation and start building and fixing bugs in just a
 - [Issue List](https://github.com/pencil2d/pencil/issues/): A pending list of bugs, information and to-do tasks
 - [Roadmap](https://github.com/pencil2d/pencil/issues/540)
 - Developers’ online chat room (both channels are synced):
-  - [\#pencil2d on freenode IRC](https://webchat.freenode.net/?channels=#pencil2d)
+  - [\#pencil2d on Libera Chat IRC](https://web.libera.chat/#pencil2d)
   - \#general-development on [our Discord server](https://discord.gg/8FxdV2g)

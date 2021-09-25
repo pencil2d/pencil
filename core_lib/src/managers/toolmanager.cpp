@@ -31,7 +31,7 @@ GNU General Public License for more details.
 #include "editor.h"
 
 
-ToolManager::ToolManager(Editor* editor) : BaseManager(editor)
+ToolManager::ToolManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -194,6 +194,12 @@ void ToolManager::setAA(int usingAA)
     emit toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
 }
 
+void ToolManager::setFillMode(int mode)
+{
+    currentTool()->setFillMode(mode);
+    emit toolPropertyChanged(currentTool()->type(), FILL_MODE);
+}
+
 void ToolManager::setStabilizerLevel(int level)
 {
     currentTool()->setStabilizerLevel(level);
@@ -207,6 +213,36 @@ void ToolManager::setTolerance(int newTolerance)
     currentTool()->setTolerance(newTolerance);
     emit toleranceValueChanged(newTolerance);
     emit toolPropertyChanged(currentTool()->type(), TOLERANCE);
+}
+
+void ToolManager::setBucketColorToleranceEnabled(bool enabled)
+{
+    currentTool()->setToleranceEnabled(enabled);
+    emit toolPropertyChanged(currentTool()->type(), USETOLERANCE);
+}
+
+void ToolManager::setBucketFillExpandEnabled(bool expandValue)
+{
+    currentTool()->setFillExpandEnabled(expandValue);
+    emit toolPropertyChanged(currentTool()->type(), USEBUCKETFILLEXPAND);
+}
+
+void ToolManager::setBucketFillExpand(int expandValue)
+{
+    currentTool()->setFillExpand(expandValue);
+    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLEXPAND);
+}
+
+void ToolManager::setBucketFillToLayer(int layerIndex)
+{
+    currentTool()->setFillToLayer(layerIndex);
+    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERMODE);
+}
+
+void ToolManager::setBucketFillReferenceMode(int referenceMode)
+{
+    currentTool()->setFillReferenceMode(referenceMode);
+    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERREFERENCEMODE);
 }
 
 void ToolManager::setUseFillContour(bool useFillContour)
@@ -223,19 +259,15 @@ int ToolManager::propertySwitch(bool condition, int tool)
     int value = 0;
     int newValue = 0;
 
-    if (condition == true) {
+    if (condition == true)
+    {
         value = -1;
         newValue = mOldValue;
         mOldValue = tool;
     }
-
-    if (condition == false) {
-        if (newValue == 1) {
-            value = 1;
-        }
-        else {
-            value = mOldValue;
-        }
+    else if (condition == false)
+    {
+        value = (newValue == 1) ? 1 : mOldValue;
     }
     return value;
 }

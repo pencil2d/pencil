@@ -27,6 +27,7 @@ class ObjectData
 {
 public:
     ObjectData();
+    ~ObjectData() = default;
 
     void setCurrentFrame(int n) { mCurrentFrame = n; }
     int  getCurrentFrame() const { return mCurrentFrame; }
@@ -71,7 +72,6 @@ private:
     bool mIsRangedPlayback = false;
     int  mMarkInFrame = 1;
     int  mMarkOutFrame = 10;
-
 };
 
 #endif // EDITORSTATE_H

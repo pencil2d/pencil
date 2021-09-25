@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) { error( Could not find the common.pri file! ) }
+! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml xmlpatterns multimedia svg
 
@@ -32,6 +32,7 @@ PRECOMPILED_HEADER = src/corelib-pch.h
 
 HEADERS +=  \
     src/corelib-pch.h \
+    src/graphics/bitmap/bitmapbucket.h \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \
@@ -51,6 +52,8 @@ HEADERS +=  \
     src/interface/basedockwidget.h \
     src/interface/backgroundwidget.h \
     src/managers/basemanager.h \
+    src/managers/overlaymanager.h \
+    src/managers/clipboardmanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -60,6 +63,7 @@ HEADERS +=  \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
     src/movieimporter.h \
+    src/overlaypainter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -67,6 +71,7 @@ HEADERS +=  \
     src/structure/layercamera.h \
     src/structure/layersound.h \
     src/structure/layervector.h \
+    src/structure/pegbaraligner.h \
     src/structure/soundclip.h \
     src/structure/object.h \
     src/structure/objectdata.h \
@@ -86,6 +91,8 @@ HEADERS +=  \
     src/tool/strokemanager.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
+    src/util/cameraeasingtype.h \
+    src/util/camerafieldoption.h \
     src/util/colordictionary.h \
     src/util/fileformat.h \
     src/util/filetype.h \
@@ -108,6 +115,7 @@ HEADERS +=  \
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
+    src/graphics/bitmap/bitmapbucket.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
     src/graphics/vector/colorref.cpp \
@@ -126,6 +134,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/basedockwidget.cpp \
     src/interface/backgroundwidget.cpp \
     src/managers/basemanager.cpp \
+    src/managers/overlaymanager.cpp \
+    src/managers/clipboardmanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \
@@ -135,6 +145,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/viewmanager.cpp \
     src/managers/soundmanager.cpp \
     src/movieimporter.cpp \
+    src/overlaypainter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \
@@ -143,6 +154,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/structure/layersound.cpp \
     src/structure/layervector.cpp \
     src/structure/object.cpp \
+    src/structure/pegbaraligner.cpp \
     src/structure/soundclip.cpp \
     src/structure/objectdata.cpp \
     src/structure/filemanager.cpp \

@@ -45,13 +45,13 @@ void ColorSlider::init(ColorSpecType specType, ColorType type, const QColor &col
 
 void ColorSlider::paintEvent(QPaintEvent *)
 {
-    QPainter painter(this);
-
     drawColorBox(mColor, size());
 
+    QPainter painter(this);
     painter.drawPixmap(0, 0, mBoxPixmapSource);
-    drawPicker(mColor);
     painter.end();
+
+    drawPicker(mColor);
 }
 
 QLinearGradient ColorSlider::setColorSpec(const QColor &color)
@@ -182,7 +182,7 @@ void ColorSlider::drawColorBox(const QColor &color, QSize size)
 
     // draw checkerboard background
     painter.begin(&mBoxPixmapSource);
-    QBrush brush2(QBrush(QPixmap("://icons/new/checkerboard_smaller")));
+    QBrush brush2(QBrush(QPixmap("://icons/new/checkerboard_smaller.png")));
 
     painter.setBrush(brush2);
     QPen pen2;

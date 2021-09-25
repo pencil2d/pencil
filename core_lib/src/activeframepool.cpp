@@ -25,7 +25,10 @@ ActiveFramePool::ActiveFramePool()
     Q_ASSERT(mMemoryBudgetInBytes >= (1024 * 1024 * 100)); // at least 100MB
 }
 
-ActiveFramePool::~ActiveFramePool() {}
+ActiveFramePool::~ActiveFramePool()
+{
+    clear();
+}
 
 void ActiveFramePool::put(KeyFrame* key)
 {

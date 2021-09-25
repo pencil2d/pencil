@@ -25,10 +25,6 @@ DebugDetails::DebugDetails()
 {
 }
 
-DebugDetails::~DebugDetails()
-{
-}
-
 void DebugDetails::collect(const DebugDetails& d)
 {
     for (const QString& s : d.mDetails)
@@ -105,12 +101,12 @@ QString Status::msg()
     static std::map<ErrorCode, QString> msgMap =
     {
         // error messages.
-        { OK,                    QObject::tr("Everything ok.") },
-        { FAIL,                  QObject::tr("Ooops, Something went wrong.") },
-        { FILE_NOT_FOUND,        QObject::tr("File doesn't exist.") },
-        { ERROR_FILE_CANNOT_OPEN,    QObject::tr("Cannot open file.") },
-        { ERROR_INVALID_XML_FILE,    QObject::tr("The file is not a valid xml document.") },
-        { ERROR_INVALID_PENCIL_FILE, QObject::tr("The file is not valid pencil document.") },
+        { OK,                    tr("Everything ok.") },
+        { FAIL,                  tr("Ooops, Something went wrong.") },
+        { FILE_NOT_FOUND,        tr("File doesn't exist.") },
+        { ERROR_FILE_CANNOT_OPEN,    tr("Cannot open file.") },
+        { ERROR_INVALID_XML_FILE,    tr("The file is not a valid xml document.") },
+        { ERROR_INVALID_PENCIL_FILE, tr("The file is not valid pencil document.") },
     };
 
     auto it = msgMap.find(mCode);

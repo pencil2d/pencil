@@ -55,8 +55,14 @@ enum ToolPropertyType
     USEFEATHER,
     VECTORMERGE,
     ANTI_ALIASING,
+    FILL_MODE,
     STABILIZATION,
     TOLERANCE,
+    USETOLERANCE,
+    BUCKETFILLEXPAND,
+    USEBUCKETFILLEXPAND,
+    BUCKETFILLLAYERMODE,
+    BUCKETFILLLAYERREFERENCEMODE,
     FILLCONTOUR
 };
 
@@ -147,6 +153,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_GRID "CmdGrid"
 #define CMD_ONIONSKIN_PREV "CmdOnionSkinPrevious"
 #define CMD_ONIONSKIN_NEXT "CmdOnionSkinNext"
+#define CMD_TOGGLE_STATUS_BAR "CmdToggleStatusBar"
 #define CMD_PLAY "CmdPlay"
 #define CMD_LOOP "CmdLoop"
 #define CMD_FLIP_INBETWEEN "CmdFlipInBetween"
@@ -158,6 +165,10 @@ const static int MaxFramesBound = 9999;
 #define CMD_ADD_FRAME "CmdAddFrame"
 #define CMD_DUPLICATE_FRAME "CmdDuplicateFrame"
 #define CMD_REMOVE_FRAME "CmdRemoveFrame"
+#define CMD_REVERSE_SELECTED_FRAMES "CmdReverseSelectedFrames"
+#define CMD_REMOVE_SELECTED_FRAMES "CmdRemoveSelectedFrames"
+#define CMD_SELECTION_ADD_FRAME_EXPOSURE "CmdSelectionAddFrameExposure"
+#define CMD_SELECTION_SUBTRACT_FRAME_EXPOSURE "CmdSelectionSubtractFrameExposure"
 #define CMD_MOVE_FRAME_BACKWARD "CmdMoveFrameBackward"
 #define CMD_MOVE_FRAME_FORWARD "CmdMoveFrameForward"
 #define CMD_TOOL_MOVE "CmdToolMove"
@@ -210,6 +221,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_WINDOW_OPACITY      "WindowOpacity"
 #define SETTING_WINDOW_GEOMETRY     "WindowGeometry"
 #define SETTING_WINDOW_STATE        "WindowState"
+#define SETTING_SHOW_STATUS_BAR     "ShowStatusBar"
 #define SETTING_CURVE_SMOOTHING     "CurveSmoothing"
 #define SETTING_DISPLAY_EFFECT      "RenderEffect"
 #define SETTING_SHORT_SCRUB         "ShortScrub"
@@ -249,6 +261,10 @@ const static int MaxFramesBound = 9999;
 #define SETTING_OVERLAY_THIRDS   "OverlayThirds"
 #define SETTING_OVERLAY_GOLDEN   "OverlayGolden"
 #define SETTING_OVERLAY_SAFE     "OverlaySafe"
+#define SETTING_OVERLAY_PERSPECTIVE1 "OverlayPerspective1"
+#define SETTING_OVERLAY_PERSPECTIVE2 "OverlayPerspective2"
+#define SETTING_OVERLAY_PERSPECTIVE3 "OverlayPerspective3"
+#define SETTING_OVERLAY_ANGLE    "OverlayAngle"
 #define SETTING_TITLE_SAFE_ON    "TitleSafeOn"
 #define SETTING_TITLE_SAFE       "TitleSafe"
 #define SETTING_ACTION_SAFE_ON   "ActionSafeOn"
@@ -267,6 +283,16 @@ const static int MaxFramesBound = 9999;
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
 #define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
 #define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
+
+// Ideally this should also BucketTolerance eg.. but for compatibility sake, i'm not changing it now
+#define SETTING_BUCKET_TOLERANCE "Tolerance"
+#define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
+#define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"
+#define SETTING_BUCKET_FILL_EXPAND_ON "BucketFillExpandEnabled"
+#define SETTING_BUCKET_FILL_TO_LAYER_MODE "BucketFillToLayerMode"
+#define SETTING_BUCKET_FILL_REFERENCE_MODE "BucketFillReferenceMode"
+
+#define SETTING_FILL_MODE "FillMode"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <ctime>
 #include <QDir>
 #include <QVersionNumber>
-#include "pencildef.h"
 #include "qminiz.h"
 #include "fileformat.h"
 #include "object.h"
@@ -28,8 +27,8 @@ GNU General Public License for more details.
 
 namespace
 {
-    QString openErrorTitle = QObject::tr("Could not open file");
-    QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
+    QString openErrorTitle = FileManager::tr("Could not open file");
+    QString openErrorDesc = FileManager::tr("There was an error processing your file. This usually means that your project has "
                              "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
                              "or you can try to use a backup file if you have one. If you contact us through one of "
                              "our official channels we may be able to help you. For reporting issues, "
@@ -406,7 +405,7 @@ ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
     return data;
 }
 
-QDomElement FileManager::saveProjectData(ObjectData* data, QDomDocument& xmlDoc)
+QDomElement FileManager::saveProjectData(const ObjectData* data, QDomDocument& xmlDoc)
 {
     QDomElement rootTag = xmlDoc.createElement("projectdata");
 
@@ -589,7 +588,7 @@ Status FileManager::writeKeyFrameFiles(const Object* object, const QString& data
     {
         Layer* layer = object->getLayer(i);
 
-        dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
+        dd << QString("Layer[%1] = [id=%2, type=%3, name=%4]").arg(i).arg(layer->id()).arg(layer->type()).arg(layer->name());
 
         Status st = layer->save(dataFolder, filesFlushed, [this] { progressForward(); });
         if (!st.ok())
@@ -607,14 +606,14 @@ Status FileManager::writeKeyFrameFiles(const Object* object, const QString& data
     return Status(errorCode, dd);
 }
 
-Status FileManager::writeMainXml(const Object* object, const QString& mainXml, QStringList& filesWritten)
+Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPath, QStringList& filesWritten)
 {
     DebugDetails dd;
 
-    QFile file(mainXml);
+    QFile file(mainXmlPath);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        dd << "Failed to open Main XML" << mainXml;
+        dd << "Failed to open Main XML" << mainXmlPath;
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
 
@@ -648,9 +647,9 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXml, Q
     out.flush();
     file.close();
 
-    dd << "Done writing main xml file: " << mainXml;
+    dd << "Done writing main xml file: " << mainXmlPath;
 
-    filesWritten.append(mainXml);
+    filesWritten.append(mainXmlPath);
     return Status(Status::OK, dd);
 }
 
@@ -923,11 +922,11 @@ QString FileManager::recoverLayerName(Layer::LAYER_TYPE type, int index)
     switch (type)
     {
     case Layer::BITMAP:
-        return QString("%1 %2").arg(tr("Bitmap Layer")).arg(index);
+        return tr("Bitmap Layer %1").arg(index);
     case Layer::VECTOR:
-        return QString("%1 %2").arg(tr("Vector Layer")).arg(index);
+        return tr("Vector Layer %1").arg(index);
     case Layer::SOUND:
-        return QString("%1 %2").arg(tr("Sound Layer")).arg(index);
+        return tr("Sound Layer %1").arg(index);
     default:
         Q_ASSERT(false);
     }

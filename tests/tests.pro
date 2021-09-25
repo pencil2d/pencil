@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) { error( Could not find the common.pri file! ) }
+! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml xmlpatterns multimedia svg testlib
 
@@ -43,6 +43,7 @@ SOURCES += \
     src/test_object.cpp \
     src/test_filemanager.cpp \
     src/test_bitmapimage.cpp \
+    src/test_bitmapbucket.cpp \
     src/test_viewmanager.cpp
 
 # --- core_lib ---
