@@ -1118,9 +1118,8 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
         Layer* currentLayer = mEditor->layers()->getLayer(mCurrentLayerNumber);
 
         Q_ASSERT(currentLayer);
-        if (mMovingFrames) {
-
-            // New offset is first added after 50% of the frame has been crossed
+        if (mMovingFrames)
+        {
             int posUnderCursor = getFrameNumber(mMousePressX);
             int offset = frameNumber - posUnderCursor;
 
