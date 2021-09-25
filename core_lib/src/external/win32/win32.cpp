@@ -18,9 +18,27 @@ GNU General Public License for more details.
 
 #include "platformhandler.h"
 
+#include <QCoreApplication>
+#include <QSettings>
+
+#include "pencildef.h"
+
 namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
     bool isDarkMode() { return false; };
-    void initialise() {};
+    void initialise()
+    {
+        // Temporary solution for high DPI displays
+        // EnableHighDpiScaling is a just in case mechanism in the event that we
+        // want to disable this without recompiling, see #922
+        QSettings settings(PENCIL2D, PENCIL2D);
+        if (settings.value("EnableHighDpiScaling", "true").toBool())
+        {
+            // Enable auto screen scaling on high dpi display, for example, a 4k monitor
+            // This attr has to be set before the QApplication is constructed
+            // Only works on Windows & X11
+            QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        }
+    };
 }
