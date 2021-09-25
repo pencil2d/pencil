@@ -908,10 +908,8 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             {
                 mEditor->switchVisibilityOfLayer(layerNumber);
             }
-            else
+            else if (mEditor->currentLayerIndex() != layerNumber)
             {
-                if (mEditor->currentLayerIndex() == layerNumber) { return; }
-
                 mEditor->layers()->setCurrentLayer(layerNumber);
                 mEditor->layers()->currentLayer()->deselectAll();
             }
@@ -1113,16 +1111,16 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     int frameNumber = getFrameNumber(event->pos().x());
     if (frameNumber < 1) frameNumber = 1;
     int layerNumber = getLayerNumber(event->pos().y());
-    if (mType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton)
+
+    if (mCurrentLayerNumber != -1 && mType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton)
     {
         // We should affect the current layer based on what's selected, not where the mouse currently is.
-        Layer *currentLayer = mEditor->layers()->getLayer(mCurrentLayerNumber);
-        if (currentLayer == nullptr) { return; }
+        Layer* currentLayer = mEditor->layers()->getLayer(mCurrentLayerNumber);
 
+        Q_ASSERT(currentLayer);
         if (mMovingFrames) {
 
             // New offset is first added after 50% of the frame has been crossed
-            int frameNumber = getFrameNumber(event->pos().x());
             int posUnderCursor = getFrameNumber(mMousePressX);
             int offset = frameNumber - posUnderCursor;
 
