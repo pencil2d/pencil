@@ -24,8 +24,6 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QMenu>
 
-#include <QDebug>
-
 #include "camerapropertiesdialog.h"
 #include "editor.h"
 #include "keyframe.h"
@@ -591,7 +589,7 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         }
     });
 
-    if (selected && mLayerPosMoveY != -1 && mLayerPosMoveY == mEditor->currentLayerIndex()) {
+    if (!mMovingFrames && selected && mLayerPosMoveY != -1 && mLayerPosMoveY == mEditor->currentLayerIndex()) {
         paintFrameCursorOnCurrentLayer(painter, recTop, recWidth, recHeight);
     }
 }
