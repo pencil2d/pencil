@@ -509,7 +509,7 @@ bool Layer::canMoveSelectedFramesToOffset(int offset) const
     for (int pos : newByPositions)
     {
         pos += offset;
-        if (keyExists(pos) && !mSelectedFrames_byPosition.contains(pos)) {
+        if (keyExists(pos) && !newByPositions.contains(pos)) {
             return false;
         }
     }

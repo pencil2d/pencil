@@ -143,8 +143,7 @@ int TimeLineCells::getFrameNumber(int x) const
 
 int TimeLineCells::getFrameX(int frameNumber) const
 {
-    int x = mOffsetX + (frameNumber - mFrameOffset) * mFrameSize;
-    return x;
+    return mOffsetX + (frameNumber - mFrameOffset) * mFrameSize;
 }
 
 void TimeLineCells::setFrameSize(int size)
