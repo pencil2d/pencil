@@ -1501,7 +1501,7 @@ bool MainWindow2::event(QEvent* event)
         emit windowActivated();
         return true;
     }
-    return QWidget::event(event);
+    return QMainWindow::event(event);
 }
 
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)
