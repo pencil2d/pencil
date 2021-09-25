@@ -652,16 +652,15 @@ bool Layer::moveSelectedFrames(int offset)
         // Get the frame to move
         KeyFrame* selectedFrame = getKeyFrameAt(fromPos);
 
-        if (selectedFrame != nullptr && !keyExists(toPos))
-        {
-            mKeyFrames.erase(fromPos);
-            markFrameAsDirty(fromPos);
+        Q_ASSERT(!keyExists(toPos));
 
-            // Update the position of the selected frame
-            selectedFrame->setPos(toPos);
-            mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
-            markFrameAsDirty(toPos);
-        }
+        mKeyFrames.erase(fromPos);
+        markFrameAsDirty(fromPos);
+
+        // Update the position of the selected frame
+        selectedFrame->setPos(toPos);
+        mKeyFrames.insert(std::make_pair(toPos, selectedFrame));
+        markFrameAsDirty(toPos);
     }
 
     // Update selection lists
