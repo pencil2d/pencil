@@ -591,6 +591,26 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
             painter.drawRect(recLeft, recTop, recWidth, recHeight);
         }
     });
+
+    if (selected && mLayerPosMoveY != -1 && mLayerPosMoveY == mEditor->currentLayerIndex()) {
+        paintFrameCursorOnCurrentLayer(painter, recTop, recWidth, recHeight);
+    }
+}
+
+void TimeLineCells::paintFrameCursorOnCurrentLayer(QPainter &painter, int recTop, int recWidth, int recHeight) const
+{
+    int recLeft = getFrameX(mFramePosMoveX) - recWidth;
+
+    painter.save();
+    const QPalette palette = QApplication::palette();
+    // Don't fill
+    painter.setBrush(Qt::NoBrush);
+    // paint border
+    QColor penColor = palette.color(QPalette::WindowText);
+    penColor.setAlpha(127);
+    painter.setPen(penColor);
+    painter.drawRect(recLeft, recTop, recWidth, recHeight);
+    painter.restore();
 }
 
 void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, const int layerIndex) const
@@ -1043,6 +1063,8 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
     mMouseMoveX = event->pos().x();
     mFramePosMoveX = getFrameNumber(mMouseMoveX);
+    mLayerPosMoveY = getLayerNumber(event->pos().y());
+
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
         if (event->buttons() & Qt::LeftButton ) {
@@ -1071,12 +1093,12 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
             }
             else
             {
-                if (mStartLayerNumber != -1 && mStartLayerNumber < mEditor->object()->getLayerCount())
-                {
-                    Layer *currentLayer = mEditor->object()->getLayer(mStartLayerNumber);
+                if (event->buttons() & Qt::LeftButton) {
+                    if (mStartLayerNumber != -1 && mStartLayerNumber < mEditor->object()->getLayerCount())
+                    {
+                        Layer *currentLayer = mEditor->object()->getLayer(mStartLayerNumber);
 
-                    // Check if the frame we clicked was selected
-                    if (event->buttons() & Qt::LeftButton) {
+                        // Check if the frame we clicked was selected
                         if (mCanMoveFrame) {
 
                             // If it is the case, we move the selected frames in the layer

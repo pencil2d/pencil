@@ -108,6 +108,7 @@ private:
     void paintLayerGutter(QPainter& painter) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
+    void paintFrameCursorOnCurrentLayer(QPainter& painter, int recTop, int recWidth, int recHeight) const;
     void paintSelectedFrames(QPainter& painter, const Layer* layer, const int layerIndex) const;
     void paintLabel(QPainter& painter, const Layer* layer, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
@@ -158,6 +159,7 @@ private:
     bool mClickSelecting = false;
 
     int mFramePosMoveX = 0;
+    int mLayerPosMoveY = 0;
 
     int mMouseMoveX = 0;
     int mMousePressX = 0;
