@@ -620,8 +620,6 @@ void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, c
         if (mMovingFrames) {
             int offset = framePos - posUnderCursor;
             int newFrameX = getFrameX(getFrameNumber(getFrameX(offset)+mouseX))-recWidth;
-
-            qDebug() << newFrameX;
             // Paint as frames are hovering
             painter.drawRect(newFrameX, recTop-4, recWidth, recHeight);
 
@@ -829,12 +827,13 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             QRect scrubRect;
             scrubRect.setTopLeft(QPoint(currentFrameStartX, 0));
             scrubRect.setBottomRight(QPoint(currentFrameEndX, height()));
-            bool mouseUnderScrubber = mEditor->currentFrame() == getFrameNumber(mMouseMoveX);
             if (mbShortScrub)
             {
                 scrubRect.setBottomRight(QPoint(currentFrameEndX, 19));
             }
             painter.save();
+
+            bool mouseUnderScrubber = mEditor->currentFrame() == mFramePosMoveX;
             if (mouseUnderScrubber) {
                 QRect smallScrub = QRect(QPoint(currentFrameStartX, 0), QPoint(currentFrameEndX,19));
                 QPen pen = scrubColor;
@@ -1045,6 +1044,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
 void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
 {
     mMouseMoveX = event->pos().x();
+    mFramePosMoveX = getFrameNumber(mMouseMoveX);
     if (mType == TIMELINE_CELL_TYPE::Layers)
     {
         if (event->buttons() & Qt::LeftButton ) {
@@ -1054,10 +1054,9 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-        int frameNumber = getFrameNumber(event->pos().x());
         if (primaryButton == Qt::MidButton)
         {
-            mFrameOffset = qMin(qMax(0, mFrameLength - width() / getFrameSize()), qMax(0, mFrameOffset + mLastFrameNumber - frameNumber));
+            mFrameOffset = qMin(qMax(0, mFrameLength - width() / getFrameSize()), qMax(0, mFrameOffset + mLastFrameNumber - mFramePosMoveX));
             update();
             emit offsetChanged(mFrameOffset);
         }
@@ -1065,12 +1064,12 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
         {
             if (mTimeLine->scrubbing)
             {
-                if (mEditor->playback()->getSoundScrubActive() && mLastScrubFrame != frameNumber)
+                if (mEditor->playback()->getSoundScrubActive() && mLastScrubFrame != mFramePosMoveX)
                 {
-                    mEditor->playback()->playScrub(frameNumber);
-                    mLastScrubFrame = frameNumber;
+                    mEditor->playback()->playScrub(mFramePosMoveX);
+                    mLastScrubFrame = mFramePosMoveX;
                 }
-                mEditor->scrubTo(frameNumber);
+                mEditor->scrubTo(mFramePosMoveX);
             }
             else
             {
@@ -1079,21 +1078,23 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                     Layer *currentLayer = mEditor->object()->getLayer(mStartLayerNumber);
 
                     // Check if the frame we clicked was selected
-                    if (mCanMoveFrame) {
+                    if (event->buttons() & Qt::LeftButton) {
+                        if (mCanMoveFrame) {
 
-                        // If it is the case, we move the selected frames in the layer
-                        mMovingFrames = true;
-                    }
-                    else if (mCanBoxSelect)
-                    {
-                        // Otherwise, we do a box select
-                        mBoxSelecting = true;
+                            // If it is the case, we move the selected frames in the layer
+                            mMovingFrames = true;
+                        }
+                        else if (mCanBoxSelect)
+                        {
+                            // Otherwise, we do a box select
+                            mBoxSelecting = true;
 
-                        currentLayer->deselectAll();
-                        currentLayer->setFrameSelected(mStartFrameNumber, true);
-                        currentLayer->extendSelectionTo(frameNumber);
+                            currentLayer->deselectAll();
+                            currentLayer->setFrameSelected(mStartFrameNumber, true);
+                            currentLayer->extendSelectionTo(mFramePosMoveX);
+                        }
+                        mLastFrameNumber = mFramePosMoveX;
                     }
-                    mLastFrameNumber = frameNumber;
                 }
             }
         }
@@ -1294,6 +1295,6 @@ void TimeLineCells::trackScrubber()
 void TimeLineCells::onDidLeaveWidget()
 {
     // Reset last known frame pos to avoid wrong UI states when leaving the widget
-    mMouseMoveX = 0;
+    mFramePosMoveX = 0;
     update();
 }

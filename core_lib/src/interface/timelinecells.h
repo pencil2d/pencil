@@ -157,6 +157,8 @@ private:
 
     bool mClickSelecting = false;
 
+    int mFramePosMoveX = 0;
+
     int mMouseMoveX = 0;
     int mMousePressX = 0;
 
