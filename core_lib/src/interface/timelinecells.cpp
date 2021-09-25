@@ -618,7 +618,7 @@ void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, c
 
         int frameX = getFrameX(framePos);
         if (mMovingFrames) {
-            int offset = framePos - posUnderCursor;
+            int offset = (framePos - posUnderCursor) + mFrameOffset;
             int newFrameX = getFrameX(getFrameNumber(getFrameX(offset)+mouseX))-recWidth;
             // Paint as frames are hovering
             painter.drawRect(newFrameX, recTop-4, recWidth, recHeight);
