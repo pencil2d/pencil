@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,14 +18,16 @@ GNU General Public License for more details.
 #define CANVASPAINTER_H
 
 #include <memory>
+#include <QCoreApplication>
 #include <QObject>
 #include <QTransform>
 #include <QPainter>
 #include "log.h"
+#include "pencildef.h"
 
+#include "layer.h"
 
 class Object;
-class Layer;
 class BitmapImage;
 class ViewManager;
 
@@ -46,20 +48,20 @@ struct CanvasPainterOptions
     bool  bAxis = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
-    int   nShowAllLayers = 3;
     bool  bIsOnionAbsolute = false;
+    LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
+    float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
     bool isPlaying = false;
     bool onionWhilePlayback = false;
+    QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
 
-
-class CanvasPainter : public QObject
+class CanvasPainter
 {
-    Q_OBJECT
-
+    Q_DECLARE_TR_FUNCTIONS(CanvasPainter)
 public:
-    explicit CanvasPainter(QObject* parent = 0);
+    explicit CanvasPainter();
     virtual ~CanvasPainter();
 
     void setCanvas(QPixmap* canvas);
@@ -69,23 +71,46 @@ public:
     void ignoreTransformedSelection();
     QRect getCameraRect();
 
-    void paint(const Object* object, int layer, int frame, QRect rect);
+    void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
+    void paint();
+    void paintCached();
     void renderGrid(QPainter& painter);
+    void resetLayerCache();
 
 private:
+
+    /**
+     * CanvasPainter::initializePainter
+     * Enriches the painter with a context and sets it's initial matrix.
+     * @param painter The in/out painter
+     * @param pixmap The paint device ie. a pixmap
+     */
+    void initializePainter(QPainter& painter, QPixmap& pixmap);
+
+    void renderPreLayers(QPainter& painter);
+    void renderCurLayer(QPainter& painter);
+    void renderPostLayers(QPainter& painter);
+
     void paintBackground();
     void paintOnionSkin(QPainter& painter);
 
-    void paintCurrentFrame(QPainter& painter);
+    void renderPostLayers(QPixmap* pixmap);
+    void renderCurLayer(QPixmap* pixmap);
+    void renderPreLayers(QPixmap* pixmap);
 
-    void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame);
-    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame);
+    void paintCurrentFrame(QPainter& painter, int startLayer, int endLayer);
+
+    void paintBitmapFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
+    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
 
     void paintTransformedSelection(QPainter& painter);
     void paintGrid(QPainter& painter);
     void paintCameraBorder(QPainter& painter);
     void paintAxis(QPainter& painter);
     void prescale(BitmapImage* bitmapImage);
+
+    /** Calculate layer opacity based on current layer offset */
+    qreal calculateRelativeOpacityForLayer(int layerIndex) const;
 
 private:
     CanvasPainterOptions mOptions;
@@ -99,6 +124,7 @@ private:
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
+    BitmapImage* mBuffer = nullptr;
 
     QImage mScaledBitmap;
 
@@ -109,7 +135,10 @@ private:
     QRect mSelection;
     QTransform mSelectionTransform;
 
-    QLoggingCategory mLog;
+    // Caches specifically for when drawing on the canvas
+    std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
+
+    const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };
 
 #endif // CANVASRENDERER_H

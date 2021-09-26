@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -52,31 +52,29 @@ void SelectTool::beginSelection()
     selectMan->calculateSelectionTransformation();
 
     // paint and apply the transformation
-    mScribbleArea->paintTransformedSelection();
-    mScribbleArea->applyTransformedSelection();
+    if (selectMan->transformHasBeenModified()) {
+        mScribbleArea->paintTransformedSelection();
+        mScribbleArea->applyTransformedSelection();
+    }
+    mMoveMode = selectMan->validateMoveMode(getLastPoint());
 
-    if (selectMan->somethingSelected()) // there is something selected
+    if (selectMan->somethingSelected() && mMoveMode != MoveMode::NONE) // there is something selected
     {
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
-            static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->deselectAll();
+            VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            if (vectorImage != nullptr) {
+                vectorImage->deselectAll();
+            }
         }
 
         mAnchorOriginPoint = selectMan->whichAnchorPoint(getLastPoint());
-
-        // the user did not click on one of the corners
-        if (selectMan->validateMoveMode(getLastPoint()) == MoveMode::NONE)
-        {
-            const QRectF& newRect = QRectF(getLastPoint(), getLastPoint());
-            selectMan->setSelection(newRect);
-        }
     }
     else
     {
-        selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(),1,1));
-        mMoveMode = MoveMode::NONE;
+        selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     }
-    mScribbleArea->update();
+    mScribbleArea->updateCurrentFrame();
 }
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
@@ -94,7 +92,7 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     beginSelection();
 }
 
-void SelectTool::pointerMoveEvent(PointerEvent* event)
+void SelectTool::pointerMoveEvent(PointerEvent*)
 {
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) { return; }
@@ -113,9 +111,10 @@ void SelectTool::pointerMoveEvent(PointerEvent* event)
 
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
-            static_cast<LayerVector*>(mCurrentLayer)->
-                    getLastVectorImageAtFrame(mEditor->currentFrame(), 0)->
-                    select(selectMan->myTempTransformedSelectionRect());
+            VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            if (vectorImage != nullptr) {
+                vectorImage->select(selectMan->myTempTransformedSelectionRect());
+            }
         }
     }
 
@@ -149,7 +148,6 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
-//    mScribbleArea->setAllDirty();
 }
 
 bool SelectTool::maybeDeselect()
@@ -167,17 +165,18 @@ void SelectTool::keepSelection()
     if (mCurrentLayer->type() == Layer::BITMAP) {
         if (!selectMan->myTempTransformedSelectionRect().isValid())
         {
-            selectMan->setSelection(selectMan->myTempTransformedSelectionRect().normalized());
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect().normalized(), true);
         }
         else
         {
-            selectMan->setSelection(selectMan->myTempTransformedSelectionRect());
+            selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), true);
         }
     }
     else if (mCurrentLayer->type() == Layer::VECTOR)
     {
         VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-        selectMan->setSelection(vectorImage->getSelectionRect());
+        if (vectorImage == nullptr) { return; }
+        selectMan->setSelection(vectorImage->getSelectionRect(), false);
     }
 }
 

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include <memory>
 
 #include <QColor>
-#include <QTransform>
 #include <QPoint>
 #include <QWidget>
 #include <QPixmapCache>
@@ -34,9 +33,8 @@ GNU General Public License for more details.
 #include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
-#include "colourref.h"
-#include "vectorselection.h"
 #include "canvaspainter.h"
+#include "overlaypainter.h"
 #include "preferencemanager.h"
 #include "strokemanager.h"
 #include "selectionpainter.h"
@@ -48,11 +46,12 @@ class PointerEvent;
 class BitmapImage;
 class VectorImage;
 
+
 class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-        friend class MoveTool;
+    friend class MoveTool;
     friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
@@ -75,13 +74,12 @@ public:
     void cancelTransformedSelection();
 
     bool isLayerPaintable() const;
-    bool allowSmudging();
 
     QVector<QPoint> calcSelectionCenterPoints();
 
     void setEffect(SETTING e, bool isOn);
 
-    int showAllLayers() const { return mShowAllLayers; }
+    LayerVisibility getLayerVisibility() const { return mLayerVisibility; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
@@ -89,19 +87,54 @@ public:
     QRectF getCameraRect();
     QPointF getCentralPoint();
 
+    /** Update current frame.
+     *  calls update() behind the scene and update cache if necessary */
     void updateCurrentFrame();
+    /** Update frame.
+     * calls update() behind the scene and update cache if necessary */
     void updateFrame(int frame);
-    void updateAllFrames();
-    void updateAllVectorLayersAtCurrentFrame();
-    void updateAllVectorLayersAt(int frameNumber);
 
+    /** Frame scrubbed, invalidate relevant cache */
+    void onScrubbed(int frameNumber);
+
+    /** Multiple frames modified, invalidate cache for affected frames */
+    void onFramesModified();
+
+    /** Playstate changed, invalidate relevant cache */
+    void onPlayStateChanged();
+
+    /** View updated, invalidate relevant cache */
+    void onViewChanged();
+
+    /** Frame modified, invalidate cache for frame if any */
+    void onFrameModified(int frameNumber);
+
+    /** Current frame modified, invalidate current frame cache if any.
+     * Convenient function that does the same as onFrameModified */
+    void onCurrentFrameModified();
+
+    /** Layer changed, invalidate relevant cache */
+    void onLayerChanged();
+
+    /** Selection was changed, keep cache */
+    void onSelectionChanged();
+
+    /** Onion skin type changed, all frames will be affected.
+     * All cache will be invalidated */
+    void onOnionSkinTypeChanged();
+
+    /** Object updated, invalidate all cache */
+    void onObjectLoaded();
+
+    /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
-    bool shouldUpdateAll() const { return mNeedUpdateAll; }
-    void setAllDirty() { mNeedUpdateAll = true; }
+    void setModified(const Layer* layer, int frameNumber);
 
     void flipSelection(bool flipVertical);
+    void renderOverlays();
+    void prepOverlays();
 
-    BaseTool* currentTool();
+    BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
     void setTemporaryTool(ToolType eToolMode);
@@ -110,14 +143,14 @@ public:
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
-    bool isPointerInUse() const { return mMouseInUse || mStrokeManager->isTabletInUse(); }
+    bool isTabletInUse() const { return mTabletInUse; }
+    bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
     bool isTemporaryTool() const { return mInstantTool; }
 
     void keyEvent(QKeyEvent* event);
     void keyEventForSelection(QKeyEvent* event);
 
 signals:
-    void modification(int);
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
 
@@ -126,17 +159,18 @@ public slots:
     void setCurveSmoothing(int);
     void toggleThinLines();
     void toggleOutlines();
-    void toggleShowAllLayers();
+    void increaseLayerVisibilityIndex();
+    void decreaseLayerVisibilityIndex();
+    void setLayerVisibility(LayerVisibility visibility);
 
     void updateToolCursor();
     void paletteColorChanged(QColor);
-
-    bool isDoingAssistedToolAdjustment(Qt::KeyboardModifiers keyMod);
 
     void showLayerNotVisibleWarning();
 
 
 protected:
+    bool event(QEvent *event) override;
     void tabletEvent(QTabletEvent*) override;
     void wheelEvent(QWheelEvent*) override;
     void mousePressEvent(QMouseEvent*) override;
@@ -152,9 +186,9 @@ public:
     void drawPolyline(QPainterPath path, QPen pen, bool useAA);
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
-    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColour, bool useAA = true);
-    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColour, qreal opacity);
-    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColour, qreal opacity, bool usingFeather = true, int useAA = 0);
+    void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA = true);
+    void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, qreal opacity, bool usingFeather = true, bool useAA = false);
     void blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
@@ -164,7 +198,7 @@ public:
     void clearBitmapBuffer();
     void refreshBitmap(const QRectF& rect, int rad);
     void refreshVector(const QRectF& rect, int rad);
-    void setGaussianGradient(QGradient &gradient, QColor colour, qreal opacity, qreal offset);
+    void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
     void pointerMoveEvent(PointerEvent*);
@@ -182,9 +216,30 @@ public:
     QPixmap mTransCursImg;
 
 private:
+
+    /** Invalidate the layer pixmap cache.
+     * Call this in most situations where the layer rendering order is affected.
+     * Peviously known as setAllDirty.
+    */
+    void invalidateLayerPixmapCache();
+
+    /** Invalidate cache for the given frame */
+    void invalidateCacheForFrame(int frameNumber);
+
+    /** Invalidate all cache.
+     * call this if you're certain that the change you've made affects all frames */
+    void invalidateAllCache();
+
+    /** invalidate cache for dirty keyframes. */
+    void invalidateCacheForDirtyFrames();
+
+    /** invalidate onion skin cache around frame */
+    void invalidateOnionSkinsCacheAround(int frame);
+
+    void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
-    void paintSelectionVisuals();
+    void paintSelectionVisuals(QPainter &painter);
 
     BitmapImage* currentBitmapImage(Layer* layer) const;
     VectorImage* currentVectorImage(Layer* layer) const;
@@ -199,24 +254,23 @@ private:
 
     Editor* mEditor = nullptr;
 
+
     bool mIsSimplified = false;
     bool mShowThinLines = false;
     bool mQuickSizing = true;
-    int  mShowAllLayers = 1;
-    bool mUsePressure = true;
+    LayerVisibility mLayerVisibility = LayerVisibility::ALL;
+    bool mUsePressure   = true;
     bool mMakeInvisible = false;
     bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;
-    bool mMultiLayerOnionSkin; // future use. If required, just add a checkbox to updated it.
+    bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
-
-    bool mNeedUpdateAll = false;
 
 private:
     bool mKeyboardInUse = false;
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
-    bool mPenHeldDown = false;
+    bool mTabletInUse = false;
 
     // Double click handling for tablet input
     void handleDoubleClick();
@@ -224,10 +278,9 @@ private:
     int mDoubleClickMillis = 0;
     // Microsoft suggests that a double click action should be no more than 500 ms
     const int DOUBLE_CLICK_THRESHOLD = 500;
-    QTimer* mDoubleClickTimer;
+    QTimer* mDoubleClickTimer = nullptr;
 
     QPoint mCursorCenterPos;
-
     QPointF mTransformedCursorPos;
 
     //instant tool (temporal eg. eraser)
@@ -237,15 +290,14 @@ private:
 
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
+    OverlayPainter mOverlayPainter;
     SelectionPainter mSelectionPainter;
 
     // Pixmap Cache keys
-    std::vector<QPixmapCache::Key> mPixmapCacheKeys;
+    QMap<unsigned int, QPixmapCache::Key> mPixmapCacheKeys;
 
     // debug
-    QRectF mDebugRect;
-    QLoggingCategory mLog;
-    std::deque<clock_t> mDebugTimeQue;
+    QLoggingCategory mLog{ "ScribbleArea" };
 };
 
 #endif

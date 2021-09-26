@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
+#include <QColor>
 
 #include "beziercurve.h"
 #include "vectorimage.h"
@@ -49,26 +50,25 @@ void BrushTool::loadSettings()
 {
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
-    mPropertyEnabled[USEFEATHER] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[INVISIBILITY] = true;
     mPropertyEnabled[STABILIZATION] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
     properties.width = settings.value("brushWidth", 24.0).toDouble();
     properties.feather = settings.value("brushFeather", 48.0).toDouble();
-    properties.useFeather = settings.value("brushUseFeather", true).toBool();
     properties.pressure = settings.value("brushPressure", true).toBool();
     properties.invisibility = settings.value("brushInvisibility", false).toBool();
     properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt();
-    properties.useAA = settings.value("brushAA", 1).toInt();
+    properties.useAA = DISABLED;
 
-    if (properties.useFeather == true) { properties.useAA = -1; }
     if (properties.width <= 0) { setWidth(15); }
     if (std::isnan(properties.feather)) { setFeather(15); }
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
 void BrushTool::resetToDefault()
@@ -76,7 +76,6 @@ void BrushTool::resetToDefault()
     setWidth(24.0);
     setFeather(48.0);
     setStabilizerLevel(StabilizationLevel::STRONG);
-    setUseFeather(true);
 }
 
 void BrushTool::setWidth(const qreal width)
@@ -87,17 +86,6 @@ void BrushTool::setWidth(const qreal width)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("brushWidth", width);
-    settings.sync();
-}
-
-void BrushTool::setUseFeather(const bool usingFeather)
-{
-    // Set current property
-    properties.useFeather = usingFeather;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushUseFeather", usingFeather);
     settings.sync();
 }
 
@@ -142,38 +130,26 @@ void BrushTool::setStabilizerLevel(const int level)
     settings.sync();
 }
 
-void BrushTool::setAA(const int AA)
-{
-    // Set current property
-    properties.useAA = AA;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushAA", AA);
-    settings.sync();
-}
-
 QCursor BrushTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
         return QCursor(QPixmap(":icons/brush.png"), 0, 13);
     }
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
-void BrushTool::pointerPressEvent(PointerEvent*)
+void BrushTool::pointerPressEvent(PointerEvent *event)
 {
-    mScribbleArea->setAllDirty();
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
-    startStroke();
+    startStroke(event->inputType());
 }
 
 void BrushTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
         drawStroke();
@@ -182,8 +158,10 @@ void BrushTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void BrushTool::pointerReleaseEvent(PointerEvent*)
+void BrushTool::pointerReleaseEvent(PointerEvent *event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     Layer* layer = mEditor->layers()->currentLayer();
     mEditor->backup(typeName());
 
@@ -223,8 +201,7 @@ void BrushTool::paintAt(QPointF point)
                                  properties.feather,
                                  mEditor->color()->frontColor(),
                                  opacity,
-                                 properties.useFeather,
-                                 properties.useAA);
+                                 true);
 
         int rad = qRound(brushWidth) / 2 + 2;
         mScribbleArea->refreshBitmap(rect, rad);
@@ -271,8 +248,7 @@ void BrushTool::drawStroke()
                                      properties.feather,
                                      mEditor->color()->frontColor(),
                                      opacity,
-                                     properties.useFeather,
-                                     properties.useAA);
+                                     true);
             if (i == (steps - 1))
             {
                 mLastBrushPoint = getCurrentPoint();
@@ -327,7 +303,6 @@ void BrushTool::drawStroke()
 void BrushTool::paintBitmapStroke()
 {
     mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
 }
 
@@ -352,7 +327,7 @@ void BrushTool::paintVectorStroke()
         curve.setFilled(false);
         curve.setInvisibility(properties.invisibility);
         curve.setVariableWidth(properties.pressure);
-        curve.setColourNumber(mEditor->color()->frontColorNumber());
+        curve.setColorNumber(mEditor->color()->frontColorNumber());
 
         VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
@@ -365,6 +340,5 @@ void BrushTool::paintVectorStroke()
         vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
         mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-        mScribbleArea->setAllDirty();
     }
 }

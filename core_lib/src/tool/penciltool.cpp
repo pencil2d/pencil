@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -56,6 +56,8 @@ void PencilTool::loadSettings()
     properties.useFillContour = false;
     //    properties.invisibility = 1;
     //    properties.preserveAlpha = 0;
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
 
 void PencilTool::resetToDefault()
@@ -141,20 +143,18 @@ QCursor PencilTool::cursor()
     {
         return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
     }
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
-void PencilTool::pointerPressEvent(PointerEvent*)
+void PencilTool::pointerPressEvent(PointerEvent *event)
 {
-    mScribbleArea->setAllDirty();
-
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
-    startStroke();
+    startStroke(event->inputType());
 
     // note: why are we doing this on device press event?
-    if ( !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES) )
+    if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
     {
         mScribbleArea->toggleThinLines();
     }
@@ -162,7 +162,7 @@ void PencilTool::pointerPressEvent(PointerEvent*)
 
 void PencilTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
         drawStroke();
@@ -171,8 +171,10 @@ void PencilTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void PencilTool::pointerReleaseEvent(PointerEvent*)
+void PencilTool::pointerReleaseEvent(PointerEvent *event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     mEditor->backup(typeName());
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)
@@ -183,7 +185,7 @@ void PencilTool::pointerReleaseEvent(PointerEvent*)
     {
         drawStroke();
     }
-    
+
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
         paintBitmapStroke();
@@ -293,7 +295,6 @@ void PencilTool::drawStroke()
 void PencilTool::paintBitmapStroke()
 {
     mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
 }
 
@@ -312,9 +313,9 @@ void PencilTool::paintVectorStroke(Layer* layer)
     curve.setFilled(false);
     curve.setInvisibility(true);
     curve.setVariableWidth(false);
-    curve.setColourNumber(mEditor->color()->frontColorNumber());
-    VectorImage* vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-
+    curve.setColorNumber(mEditor->color()->frontColorNumber());
+    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), properties.vectorMergeEnabled);
 
     if (properties.useFillContour)
@@ -334,5 +335,4 @@ void PencilTool::paintVectorStroke(Layer* layer)
     // TODO: selection doesn't apply on enter
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-    mScribbleArea->setAllDirty();
 }

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -18,16 +18,20 @@ GNU General Public License for more details.
 #ifndef TIMELINECELLS_H
 #define TIMELINECELLS_H
 
-#include <QWidget>
 #include <QString>
+#include <QWidget>
+#include "layercamera.h"
 
-
+class Layer;
+enum class LayerVisibility;
 class TimeLine;
 class QPaintEvent;
 class QMouseEvent;
 class QResizeEvent;
 class Editor;
 class PreferenceManager;
+class QMenu;
+class QAction;
 enum class SETTING;
 
 enum class TIMELINE_CELL_TYPE
@@ -42,31 +46,35 @@ class TimeLineCells : public QWidget
 
 public:
     TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
-    ~TimeLineCells();
+    ~TimeLineCells() override;
 
-    int getLayerNumber(int y);
-    int getInbetweenLayerNumber(int y);
-    int getLayerY(int layerNumber);
-    int getFrameNumber(int x);
-    int getFrameX(int frameNumber);
-    int getMouseMoveY() { return mMouseMoveY; }
-    int getOffsetX() { return mOffsetX; }
-    int getOffsetY() { return mOffsetY; }
-    int getLayerHeight() { return mLayerHeight; }
-    
-    int getFrameLength() {return mFrameLength;}
+    int getLayerNumber(int y) const;
+    int getInbetweenLayerNumber(int y) const;
+    int getLayerY(int layerNumber) const;
+    int getFrameNumber(int x) const;
+    int getFrameX(int frameNumber) const;
+    int getMouseMoveY() const { return mMouseMoveY; }
+    static int getOffsetX() { return mOffsetX; }
+    static int getOffsetY() { return mOffsetY; }
+    int getLayerHeight() const { return mLayerHeight; }
+
+    int getFrameLength() const { return mFrameLength; }
+    int getFrameSize() const { return mFrameSize; }
+
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
+    void clearCache() { delete mCache; mCache = new QPixmap( size() ); }
 
-    int getFrameSize() { return mFrameSize; }
-    void clearCache() { if ( mCache ) delete mCache; mCache = new QPixmap( size() ); }
-    void paintLayerGutter(QPainter& painter);
-    bool didDetatchLayer();
+    bool didDetachLayer() const;
 
-Q_SIGNALS:
+    void showCameraMenu(QPoint pos);
+
+signals:
     void mouseMovedY(int);
     void lengthChanged(int);
     void offsetChanged(int);
+    void selectionChanged();
+    void insertNewKeyFrame();
 
 public slots:
     void updateContent();
@@ -76,20 +84,42 @@ public slots:
     void setMouseMoveY(int x);
 
 protected:
+    bool event(QEvent *event);
     void trackScrubber();
     void drawContent();
-    void paintOnionSkin(QPainter& painter);
-    void paintEvent(QPaintEvent* event);
-    void resizeEvent(QResizeEvent* event);
-    void mousePressEvent(QMouseEvent* event);
-    void mouseMoveEvent(QMouseEvent* event);
-    void mouseReleaseEvent(QMouseEvent* event);
-    void mouseDoubleClickEvent(QMouseEvent* event);
+    void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent* event) override;
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
 
 private slots:
     void loadSetting(SETTING setting);
 
+    void setHold(int frame);
+    void setCameraEasing(CameraEasingType type, int frame);
+
 private:
+    void onDidLeaveWidget();
+    void paintTrack(QPainter& painter, const Layer* layer,
+                    int x, int y, int width, int height,
+                    bool selected, int frameSize) const;
+
+    void paintTicks(QPainter& painter, const QPalette& palette) const;
+    void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
+    void paintGhostOfFrameAtPosition(QPainter& painter, int recTop, int recWidth, int recHeight, bool selected) const;
+    void paintLabel(QPainter& painter, const Layer* layer,
+                    int x, int y, int width, int height,
+                    bool selected, LayerVisibility layerVisibility) const;
+    void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
+    void paintLayerGutter(QPainter& painter) const;
+    void paintOnionSkin(QPainter& painter) const;
+
+    void editLayerProperties(Layer* layer) const;
+    void editLayerProperties(LayerCamera *layer) const;
+    void editLayerName(Layer* layer) const;
+
     TimeLine* mTimeLine;
     Editor* mEditor; // the editor for which this timeLine operates
     PreferenceManager* mPrefs;
@@ -107,13 +137,19 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
+    int mLastScrubFrame = 0;
+
+    int mFramePosMouseX = 0;
+    int mLayerPosMouseY = 0;
+
     int mFromLayer = 0;
     int mToLayer   = 1;
     int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
+
+    // is used to move layers, don't use this to get mousePos;
     int mMouseMoveY = 0;
-    int mMouseMoveX = 0;
     int mPrevFrame = 0;
     int mFrameOffset = 0;
     int mLayerOffset = 0;
@@ -129,7 +165,11 @@ private:
 
     const static int mOffsetX = 0;
     const static int mOffsetY = 20;
-    const static int mLayerDetatchThreshold = 5;
+    const static int mLayerDetachThreshold = 5;
+
+    QMenu* mEasingMenu = nullptr;
+    QMenu* mInterpolationMenu = nullptr;
+    QAction* mHoldAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H

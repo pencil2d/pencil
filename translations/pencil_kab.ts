@@ -13,13 +13,13 @@
         <translation>Asmel unṣib: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Asnefli sɣur: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Tanmirt i Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distributed under the &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/aboutdialog.cpp" line="43"/>
+        <location filename="../app/src/aboutdialog.cpp" line="46"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
         <translation>Lqem: %1</translation>
     </message>
     <message>
-        <location filename="../app/src/aboutdialog.cpp" line="55"/>
+        <location filename="../app/src/aboutdialog.cpp" line="74"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
         <translation>Suken ɣer tecfawit</translation>
@@ -28,126 +28,165 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="70"/>
+        <location filename="../app/src/actioncommands.cpp" line="174"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Tazribt-inek n imesli ulamek ara tettwakter acku ulac tazribt n imesli yellan. Ad d-tesnulfuḍ tazribt n imesli tamaynutt?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="71"/>
+        <location filename="../app/src/actioncommands.cpp" line="175"/>
         <source>Create sound layer</source>
         <translation>Snulfu-d akalku n imesli</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="72"/>
+        <location filename="../app/src/actioncommands.cpp" line="176"/>
         <source>Don&apos;t create layer</source>
         <translation>Ur d-snulfu ara akalku</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="82"/>
+        <location filename="../app/src/actioncommands.cpp" line="186"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>Iraten n ukalku</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="84"/>
+        <location filename="../app/src/actioncommands.cpp" line="188"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>Akalku n imesli</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="204"/>
+        <location filename="../app/src/actioncommands.cpp" line="338"/>
         <source>Exporting movie</source>
         <translation>Sifeḍ asaru</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="256"/>
+        <location filename="../app/src/actioncommands.cpp" line="392"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>Ifuk. Ldi asaru tura?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="607"/>
-        <location filename="../app/src/actioncommands.cpp" line="620"/>
-        <location filename="../app/src/actioncommands.cpp" line="633"/>
-        <location filename="../app/src/actioncommands.cpp" line="646"/>
+        <location filename="../app/src/actioncommands.cpp" line="753"/>
+        <location filename="../app/src/actioncommands.cpp" line="766"/>
+        <location filename="../app/src/actioncommands.cpp" line="792"/>
         <source>Layer Properties</source>
         <translation>Iraten n ukalku</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="83"/>
-        <location filename="../app/src/actioncommands.cpp" line="608"/>
-        <location filename="../app/src/actioncommands.cpp" line="621"/>
-        <location filename="../app/src/actioncommands.cpp" line="634"/>
-        <location filename="../app/src/actioncommands.cpp" line="647"/>
+        <location filename="../app/src/actioncommands.cpp" line="187"/>
+        <location filename="../app/src/actioncommands.cpp" line="754"/>
+        <location filename="../app/src/actioncommands.cpp" line="767"/>
+        <location filename="../app/src/actioncommands.cpp" line="780"/>
+        <location filename="../app/src/actioncommands.cpp" line="793"/>
         <source>Layer name:</source>
         <translation>Isem n ukalku</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="110"/>
-        <source>A sound clip already exists on this frame! Please select another frame or layer.</source>
-        <translation>Aklip ameslaw yella yakan deg ukatar-agi! Ttxil-k fren akatar-nniḍen neɣ akalku-nniḍen.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/actioncommands.cpp" line="246"/>
+        <location filename="../app/src/actioncommands.cpp" line="382"/>
         <source>Finished. Open file location?</source>
         <translation>Ifuk. Ad teldiḍ adig n ufaylu?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="318"/>
+        <location filename="../app/src/actioncommands.cpp" line="466"/>
         <source>Exporting image sequence...</source>
         <translation>Sifeḍ tilubbayin n tugna...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="318"/>
+        <location filename="../app/src/actioncommands.cpp" line="77"/>
+        <location filename="../app/src/actioncommands.cpp" line="128"/>
+        <location filename="../app/src/actioncommands.cpp" line="244"/>
+        <location filename="../app/src/actioncommands.cpp" line="466"/>
         <source>Abort</source>
         <translation>Eǧǧ</translation>
     </message>
     <message>
+        <location filename="../app/src/actioncommands.cpp" line="77"/>
+        <source>Importing movie...</source>
+        <translation>Asali n usaru...</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="85"/>
+        <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
+        <translation>Tessuliḍ-d aṭas n tugniwin, ḥader acku ayagi yezmer ad iɛṭel aṭas. Tebɣiḍ s tidet ad tkemleḍ?</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="128"/>
+        <source>Importing movie audio...</source>
+        <translation>Asali n imesli n usaru...</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="244"/>
+        <source>Importing sound...</source>
+        <translation>Asali n ṣut...</translation>
+    </message>
+    <message>
         <location filename="../app/src/actioncommands.cpp" line="400"/>
+        <source>Unknown export error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="400"/>
+        <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="548"/>
+        <location filename="../app/src/actioncommands.cpp" line="908"/>
         <source>Warning</source>
         <translation>Ɣur-k</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="401"/>
+        <location filename="../app/src/actioncommands.cpp" line="549"/>
         <source>Unable to export image.</source>
         <translation>D awezɣi asifeḍ n tugna.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="609"/>
+        <location filename="../app/src/actioncommands.cpp" line="755"/>
         <source>Bitmap Layer</source>
         <translation>Tisi Bitmap</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="622"/>
+        <location filename="../app/src/actioncommands.cpp" line="768"/>
         <source>Vector Layer</source>
         <translation>Tisi n umaway</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="635"/>
+        <location filename="../app/src/actioncommands.cpp" line="779"/>
+        <source>Layer Properties</source>
+        <comment>A popup when creating a new layer</comment>
+        <translation>Iraten n tissi</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="781"/>
         <source>Camera Layer</source>
         <translation>Tisi n tkamirat</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="648"/>
+        <location filename="../app/src/actioncommands.cpp" line="794"/>
         <source>Sound Layer</source>
         <translation>Tisi n imesli</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="663"/>
+        <location filename="../app/src/actioncommands.cpp" line="809"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Kkes akalku</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="664"/>
-        <source>Are you sure you want to delete layer: </source>
-        <translation>D tidet tebɣiḍ ad tekkseḍ akalku:</translation>
+        <location filename="../app/src/actioncommands.cpp" line="810"/>
+        <source>Are you sure you want to delete layer: %1?</source>
+        <translation>D tidet tebɣiḍ ad tekkseḍ tissi: %1?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="673"/>
+        <location filename="../app/src/actioncommands.cpp" line="819"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Ttxil-k eǧǧ xerṣum yiwet n ukalku n tkamirat deg usenfar</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="908"/>
+        <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -229,62 +268,76 @@
 <context>
     <name>CheckUpdatesDialog</name>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="27"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="44"/>
         <source>Checking for Updates...</source>
         <comment>status description in the check-for-update dialog</comment>
-        <translation type="unfinished"/>
+        <translation>Anadi n ileqman...</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="39"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="56"/>
         <source>Download</source>
-        <translation type="unfinished"/>
+        <translation>Sider</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="40"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="57"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Mel</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="93"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="110"/>
         <source>&lt;b&gt;You are using a Pencil2D nightly build&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Ala tseqdaceḍ lqem n yiḍ n Pencil2D&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="94"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="111"/>
         <source>Please go %1 here %2 to check new nightly builds.</source>
-        <translation type="unfinished"/>
+        <translation>Ttxil-k ddu ɣer %1 dagi %2 iwakken ad tnadiḍ ileqman imaynuten  n yiḍ.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="104"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="121"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="130"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="139"/>
         <source>&lt;b&gt;An error occurred while checking for updates&lt;/b&gt;</source>
         <comment>error msg of check-for-update</comment>
-        <translation type="unfinished"/>
+        <translation>Teḍra-d tuccḍa deg unadi n ileqman</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="105"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="122"/>
         <source>Please check your internet connection and try again later.</source>
+        <comment>error msg of check-for-update</comment>
+        <translation>Ttxil-k selken tuqqna n internet inek sakin eɛreḍ tikkelt-nniḍen.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="131"/>
+        <source>Network response is empty</source>
         <comment>error msg of check-for-update</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="140"/>
+        <source>Couldn&apos;t retrieve the version information</source>
+        <comment>error msg of check-for-update</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="176"/>
         <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Yewjed lqem amaynut n Pencil2D!</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="177"/>
         <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D %1 yewjed tura -- tesɛiḍ %2. Tebɣiḍ ad t-tsidreḍ?</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="185"/>
         <source>&lt;b&gt;Pencil2D is up to date&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;b&gt;Pencil2D yettwaleqqem&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
-        <source>Version</source>
-        <translation type="unfinished"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="186"/>
+        <source>Version %1</source>
+        <translation>Lqem %1</translation>
     </message>
 </context>
 <context>
@@ -304,32 +357,32 @@
         <translation>HSV</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="99"/>
+        <location filename="../app/ui/colorinspector.ui" line="102"/>
         <source>RGB</source>
         <translation>RGB</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="254"/>
+        <location filename="../app/ui/colorinspector.ui" line="278"/>
         <source>R</source>
         <translation>R</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="161"/>
+        <location filename="../app/ui/colorinspector.ui" line="179"/>
         <source>A</source>
         <translation>A</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="211"/>
+        <location filename="../app/ui/colorinspector.ui" line="235"/>
         <source>G</source>
         <translation>G</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorinspector.ui" line="264"/>
+        <location filename="../app/ui/colorinspector.ui" line="288"/>
         <source>B</source>
         <translation>B</translation>
     </message>
     <message>
-        <location filename="../app/src/colorinspector.cpp" line="35"/>
+        <location filename="../app/src/colorinspector.cpp" line="33"/>
         <source>Color Inspector</source>
         <comment>Window title of color inspector</comment>
         <translation>Amaswaḍ n yini</translation>
@@ -354,106 +407,121 @@
         <translation>Kkes ini</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="133"/>
+        <location filename="../app/ui/colorpalette.ui" line="130"/>
         <source>Native color dialog window</source>
         <translation>Asfaylu n udiwenni n yiniten isentanen</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="258"/>
+        <location filename="../app/ui/colorpalette.ui" line="267"/>
         <source>List Mode</source>
         <translation>Askar n tebdart</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="261"/>
+        <location filename="../app/ui/colorpalette.ui" line="270"/>
         <source>Show palette as a list</source>
         <translation>Beqqeḍ tafelwit s talɣa n tebdart</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="269"/>
+        <location filename="../app/ui/colorpalette.ui" line="278"/>
         <source>Grid Mode</source>
         <translation>Askar n tferrugt</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="272"/>
+        <location filename="../app/ui/colorpalette.ui" line="281"/>
         <source>Show palette as icons</source>
         <translation>Beqqeḍ tafelwit s talɣa n tignitin</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="282"/>
+        <location filename="../app/ui/colorpalette.ui" line="291"/>
         <source>Small swatch</source>
         <translation>Talemmict tamecṭuḥt</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="285"/>
+        <location filename="../app/ui/colorpalette.ui" line="294"/>
         <source>Sets swatch size to: 16x16px</source>
         <translation>Sbadu tiddi n ulemmec ɣer: 16x16px</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="293"/>
+        <location filename="../app/ui/colorpalette.ui" line="302"/>
         <source>Medium Swatch</source>
         <translation>Talemmict talemmast</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="296"/>
+        <location filename="../app/ui/colorpalette.ui" line="305"/>
         <source>Sets swatch size to: 26x26px</source>
         <translation>Ad yesbadu tiddi n tlemmict: 26x26px</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="307"/>
+        <location filename="../app/ui/colorpalette.ui" line="316"/>
         <source>Large Swatch</source>
         <translation> Talemmict tameqrant</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="310"/>
+        <location filename="../app/ui/colorpalette.ui" line="319"/>
         <source>Sets swatch size to: 36x36px</source>
         <translation>Ad yesbadu tiddi n tlemmict: 36x36px</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/colorpalette.ui" line="327"/>
+        <source>Fit Swatch</source>
+        <translation>Fit Swatch</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/colorpalette.ui" line="330"/>
+        <source>Fit swatch to window (19-36 px)</source>
+        <translation>Fit swatch to window (19-36 px)</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/colorpalette.ui" line="333"/>
+        <source>Swatch fits window</source>
+        <translation>Swatch fits window</translation>
     </message>
 </context>
 <context>
     <name>ColorPaletteWidget</name>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="104"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="123"/>
         <source>Add</source>
         <translation>Rnu</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="105"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="124"/>
         <source>Replace</source>
         <translation>Semselsi</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="106"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="125"/>
         <source>Remove</source>
         <translation>Kkes</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="244"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="245"/>
-        <source>Colour name</source>
-        <translation>Isem n yini</translation>
+        <location filename="../app/src/colorpalettewidget.cpp" line="273"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="274"/>
+        <source>Color name</source>
+        <translation>Isem n wunuɣ</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="482"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="641"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation>Ini(en) i tettedduḍ ad tekkseḍ iseqdac-it yiwen n izirig neɣ ugar n izirigen.</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="483"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="642"/>
         <source>Cancel</source>
         <translation>Semmet</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="484"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="643"/>
         <source>Delete</source>
         <translation>Sfeḍ</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="500"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="659"/>
         <source>Palette Restriction</source>
         <translation>Aseḥreṣ n tpaliḍt</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="501"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="660"/>
         <source>The palette requires at least one swatch to remain functional</source>
         <translation>Tapaliḍt tesra ma drus yiwet t n tlemmict iwakken ad teqqim tetteddu</translation>
     </message>
@@ -461,7 +529,7 @@
 <context>
     <name>ColorWheel</name>
     <message>
-        <location filename="../app/src/colorwheel.cpp" line="32"/>
+        <location filename="../app/src/colorwheel.cpp" line="30"/>
         <source>Color Wheel</source>
         <comment>Color Wheel's window title</comment>
         <translation>Ruda n yiniten</translation>
@@ -470,20 +538,40 @@
 <context>
     <name>DisplayOption</name>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="67"/>
+        <location filename="../app/ui/displayoption.ui" line="72"/>
         <source>Horizontal flip</source>
         <translation>Tuzzya taglawant</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="44"/>
-        <location filename="../app/ui/displayoption.ui" line="102"/>
-        <location filename="../app/ui/displayoption.ui" line="134"/>
-        <location filename="../app/ui/displayoption.ui" line="166"/>
-        <location filename="../app/ui/displayoption.ui" line="192"/>
-        <location filename="../app/ui/displayoption.ui" line="221"/>
-        <location filename="../app/ui/displayoption.ui" line="259"/>
+        <location filename="../app/ui/displayoption.ui" line="107"/>
+        <location filename="../app/ui/displayoption.ui" line="139"/>
+        <location filename="../app/ui/displayoption.ui" line="165"/>
+        <location filename="../app/ui/displayoption.ui" line="191"/>
+        <location filename="../app/ui/displayoption.ui" line="217"/>
+        <location filename="../app/ui/displayoption.ui" line="243"/>
+        <location filename="../app/ui/displayoption.ui" line="269"/>
         <source>...</source>
         <translation>...</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/displayoption.ui" line="188"/>
+        <source>Overlay shows field center</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/displayoption.ui" line="240"/>
+        <source>Overlay shows field in thirds</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/displayoption.ui" line="214"/>
+        <source>Overlay shows field in Golden Ratio</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/displayoption.ui" line="266"/>
+        <source>Overlay shows field safe areas</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/displayoption.ui" line="14"/>
@@ -492,41 +580,17 @@
         <translation>Beqqeḍ</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="125"/>
-        <location filename="../app/ui/displayoption.ui" line="128"/>
-        <source>Onion skin previous frame</source>
-        <translation>Wali tugna tuzwirt s tefrawant</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="163"/>
+        <location filename="../app/ui/displayoption.ui" line="136"/>
         <source>Show invisible lines</source>
         <translation>Sken izirigen uffiren</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="250"/>
-        <location filename="../app/ui/displayoption.ui" line="253"/>
-        <source>Onion skin color: blue</source>
-        <translation>Ini n tefrawant: anili</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="38"/>
-        <location filename="../app/ui/displayoption.ui" line="41"/>
-        <source>Onion skin next frame</source>
-        <translation>Sken tugna tuḍfirt s tefrawant</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="215"/>
-        <location filename="../app/ui/displayoption.ui" line="218"/>
-        <source>Onion skin color: red</source>
-        <translation>Ini n tefrawant: azeggaɣ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="189"/>
+        <location filename="../app/ui/displayoption.ui" line="162"/>
         <source>Show outlines only</source>
         <translation>Sken kan azizdew</translation>
     </message>
     <message>
-        <location filename="../app/ui/displayoption.ui" line="99"/>
+        <location filename="../app/ui/displayoption.ui" line="104"/>
         <source>Vertical flip</source>
         <translation>zzi s ibeddi</translation>
     </message>
@@ -547,19 +611,31 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="537"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="558"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="574"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="598"/>
         <source>Paste</source>
         <translation>Senteḍ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="961"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1128"/>
         <source>Remove frame</source>
         <translation>Kkes akatar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="786"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="818"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1192"/>
+        <source>Peg hole not found!
+Check selection, and please try again.</source>
+        <comment>PegBar error message</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1207"/>
+        <source>Peg bar not found at %1, %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="857"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="889"/>
         <source>Import Image</source>
         <translation>Kter tugna</translation>
     </message>
@@ -665,7 +741,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="238"/>
         <source>Export keyframes only</source>
-        <translation type="unfinished"/>
+        <translation>Sifeḍ anagar ikataren yufraren</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="177"/>
@@ -761,188 +837,211 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="249"/>
         <source>Exporter Settings</source>
-        <translation type="unfinished"/>
+        <translation>Sifeḍ iɣewwaren</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="267"/>
         <source>WebM and APNG only</source>
-        <translation type="unfinished"/>
+        <translation>WebM akked APNG kan</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="270"/>
         <source>Transparency</source>
-        <translation type="unfinished"/>
+        <translation>Tafrawant</translation>
     </message>
 </context>
 <context>
     <name>FileDialog</name>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="132"/>
+        <location filename="../app/src/filedialog.cpp" line="141"/>
         <source>Open animation</source>
         <translation>Ldi asemwwiwel</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="133"/>
+        <location filename="../app/src/filedialog.cpp" line="142"/>
         <source>Import image</source>
         <translation>Kter tugna</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="134"/>
+        <location filename="../app/src/filedialog.cpp" line="143"/>
         <source>Import image sequence</source>
         <translation>Kter talubbayt n tugna</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="135"/>
+        <location filename="../app/src/filedialog.cpp" line="144"/>
         <source>Import Animated GIF</source>
         <translation>Kter GIF yettemwwiwilen</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="136"/>
+        <location filename="../app/src/filedialog.cpp" line="145"/>
         <source>Import movie</source>
         <translation>Kter asaru</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="137"/>
+        <location filename="../app/src/filedialog.cpp" line="146"/>
         <source>Import sound</source>
         <translation>Kter imesli</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="138"/>
-        <source>Import palette</source>
-        <translation>Kter tafelwit</translation>
+        <location filename="../app/src/filedialog.cpp" line="147"/>
+        <source>Open palette</source>
+        <translation>Ldi tapaliḍt</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="148"/>
+        <location filename="../app/src/filedialog.cpp" line="156"/>
         <source>Save animation</source>
         <translation>Sekles asemwwiwel</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="149"/>
+        <location filename="../app/src/filedialog.cpp" line="157"/>
         <source>Export image</source>
         <translation>Sifeḍ tugna</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="150"/>
+        <location filename="../app/src/filedialog.cpp" line="158"/>
         <source>Export image sequence</source>
         <translation>Sifeḍ talubbayt n tugna</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="151"/>
+        <location filename="../app/src/filedialog.cpp" line="159"/>
         <source>Export Animated GIF</source>
         <translation>Sifeḍ GIF yettemwwiwilen</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="152"/>
+        <location filename="../app/src/filedialog.cpp" line="160"/>
         <source>Export movie</source>
         <translation>Sifeḍ asaru</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="153"/>
+        <location filename="../app/src/filedialog.cpp" line="161"/>
         <source>Export sound</source>
         <translation>Sifeḍ imesli</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="154"/>
+        <location filename="../app/src/filedialog.cpp" line="162"/>
         <source>Export palette</source>
         <translation>Sifeḍ tafelwit</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="167"/>
-        <location filename="../app/src/filedialogex.cpp" line="183"/>
-        <source>Animated GIF (*.gif)</source>
-        <translation>GIF yettemwwiwilen (*.gif)</translation>
+        <location filename="../app/src/filedialog.cpp" line="189"/>
+        <source>Animated GIF</source>
+        <translation>GIF yettemwwiwilen</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialogex.cpp" line="169"/>
-        <source>Sounds (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</source>
-        <translation>Imesla (*.wav *.mp3);;WAV (*.wav);;MP3 (*.mp3)</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialogex.cpp" line="170"/>
-        <location filename="../app/src/filedialogex.cpp" line="186"/>
-        <source>Palette (*.xml *.gpl);;Pencil2D Palette (*.xml);;GIMP Palette (*.gpl)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/filedialogex.cpp" line="184"/>
-        <source>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</source>
-        <translation>MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialogex.cpp" line="226"/>
+        <location filename="../app/src/filedialog.cpp" line="229"/>
         <source>MyAnimation.pclx</source>
         <translation>MyAnimation.pclx</translation>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="231"/>
+        <source>untitled.png</source>
+        <translation>warazwel.png</translation>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="232"/>
+        <source>untitled.gif</source>
+        <translation>warazwel.gif</translation>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="233"/>
+        <source>untitled.mp4</source>
+        <translation>warazwel.mp4</translation>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="234"/>
+        <source>untitled.wav</source>
+        <translation>warazwel.wav</translation>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="235"/>
+        <source>untitled.xml</source>
+        <translation>warazwel.xml</translation>
     </message>
 </context>
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="57"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="111"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="55"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="109"/>
         <source>Could not open file</source>
         <translation>D awezɣi alday n ufaylu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="58"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="56"/>
         <source>The file does not exist, so we are unable to open it. Please check to make sure the path is correct and that the file is accessible and try again.</source>
         <translation>Afaylu ulac-it, ihi ur nezmir ara ad t-neldi. Ttxil-k selken belli abrid d ameɣtu yerna afaylu yettwaddaf sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="112"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="110"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Ahil-agi ur yurig ara akken ad iɣer afaylu i tferneḍ. Ttxil-k ttḥeqqeq belli teɣriḍ isirigen n ufaylu-agi sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="239"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="229"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="237"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="244"/>
         <source>Invalid Save Path</source>
         <translation>Abrid n usekles d armeɣtu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="232"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Abrid (&quot;%1&quot;) iṛeccem s akaram.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="240"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="238"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Akaram (&quot;%1&quot;) ulac-it.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="247"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Abrid (&quot;%1&quot;) ur yesɛi ara adduf s tira.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="283"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="292"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="281"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="290"/>
         <source>Cannot Create Data Directory</source>
         <translation>D awezɣi asnulfu n ukaram n sisefka</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="284"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="282"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>D awezɣi asnulfu n ufaylu &quot;%1&quot;. Ttxil-k tḥeqqeq belli tesɛiḍ isirigen.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="293"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="291"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; d afaylu. Ttxil-k kkes afaylu sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="383"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="319"/>
         <source>Miniz Error</source>
         <translation>Tuccḍa Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="400"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="334"/>
         <source>Internal Error</source>
         <translation>Tuccḍa tadigant</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="384"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="401"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="901"/>
+        <source>Bitmap Layer</source>
+        <translation>Tissi Bitmap</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="903"/>
+        <source>Vector Layer</source>
+        <translation>Tissi tamawayt</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="905"/>
+        <source>Sound Layer</source>
+        <translation>Tissi n umeslaw</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="320"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="335"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Teḍra-d tuccḍa tadigant. Afaylu-inek ulamek ara yettwasekles akken iwata.</translation>
     </message>
@@ -951,21 +1050,67 @@
     <name>FilesPage</name>
     <message>
         <location filename="../app/ui/filespage.ui" line="17"/>
+        <source>Startup Settings</source>
+        <translation>Iɣewwaren n usekker</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/filespage.ui" line="25"/>
+        <location filename="../app/ui/filespage.ui" line="28"/>
+        <source>Saving the current project as a preset</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/filespage.ui" line="31"/>
+        <source>+</source>
+        <translation>+</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/filespage.ui" line="38"/>
+        <source>-</source>
+        <translation>-</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/filespage.ui" line="45"/>
+        <source>Make Default</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/filespage.ui" line="61"/>
+        <source>Ask on startup</source>
+        <translation>Suter deg usekker</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/filespage.ui" line="71"/>
+        <source>Load default preset</source>
+        <translation>Sali-d azwirɣewwar n lexṣas</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/filespage.ui" line="81"/>
+        <source>Load last active file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/filespage.ui" line="91"/>
         <source>Autosave documents</source>
         <comment>Preference</comment>
         <translation>Asekles awurman n isemliyen</translation>
     </message>
     <message>
-        <location filename="../app/ui/filespage.ui" line="23"/>
+        <location filename="../app/ui/filespage.ui" line="97"/>
         <source>Enable autosave</source>
         <comment>Preference</comment>
         <translation>Sermed Autosave</translation>
     </message>
     <message>
-        <location filename="../app/ui/filespage.ui" line="30"/>
+        <location filename="../app/ui/filespage.ui" line="104"/>
         <source>Number of modifications before autosaving:</source>
         <comment>Preference</comment>
         <translation>Amḍan n ibeddilen send asekles awurman:</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="636"/>
+        <source>&lt;br&gt;&lt;br&gt;Error: your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please include the following details in your issue:</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -1021,129 +1166,39 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="307"/>
+        <source>Overlays</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="323"/>
+        <source>Enable Action Safe area (%)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="366"/>
+        <source>Enable Title Safe area (%)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="406"/>
+        <source>Show Safe area labels</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="416"/>
         <source>Advanced</source>
         <comment>groupBox title in Preference</comment>
+        <translation>Anaẓi</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="431"/>
+        <source>Memory Cache Budget</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="322"/>
-        <source>Cached Frame Number:</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="97"/>
-        <source>Czech</source>
-        <translation>Tačikit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="98"/>
-        <source>Danish</source>
-        <translation>Tadanmarkit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="101"/>
-        <source>English</source>
-        <translation>Taglizit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="99"/>
-        <source>German</source>
-        <translation>Talmanit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="103"/>
-        <source>Estonian</source>
-        <translation>Tisṭunit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="102"/>
-        <source>Spanish</source>
-        <translation>Taspenyulit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="96"/>
-        <source>Catalan </source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="100"/>
-        <source>Greek</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="104"/>
-        <source>French</source>
-        <translation>Tafransist</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="105"/>
-        <source>Hebrew</source>
-        <translation>Taɛebrit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="106"/>
-        <source>Hungarian</source>
-        <translation>Tahungarit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="107"/>
-        <source>Indonesian</source>
-        <translation>Tandunisit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="108"/>
-        <source>Italian</source>
-        <translation>Taṭelyanit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
-        <source>Japanese</source>
-        <translation>Tajapunit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
-        <source>Kabyle</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
-        <source>Polish</source>
-        <translation>Tapulunit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
-        <source>Portuguese - Portugal</source>
-        <translation>Tapurtugalit - Purugal</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
-        <source>Portuguese - Brazil</source>
-        <translation>Tapurtugalit - Brizil</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
-        <source>Russian</source>
-        <translation>Tarusit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
-        <source>Slovenian</source>
-        <translation>Tasluvakit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
-        <source>Vietnamese</source>
-        <translation>Tavyiṭnamit</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="117"/>
-        <source>Chinese - China</source>
-        <translation>Tacinwat - Ccinwa</translation>
-    </message>
-    <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="118"/>
-        <source>Chinese - Taiwan</source>
-        <translation>Tacinwat -Taywan</translation>
+        <location filename="../app/ui/generalpage.ui" line="462"/>
+        <source>MB</source>
+        <translation>MAṭ</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="77"/>
@@ -1173,15 +1228,15 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="245"/>
         <source>Grid Height</source>
-        <translation type="unfinished"/>
+        <translation>Tattayt n uferrug</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="252"/>
+        <location filename="../app/ui/generalpage.ui" line="297"/>
         <source>Grid Width</source>
         <translation>Tehri n tferrugt</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="297"/>
+        <location filename="../app/ui/generalpage.ui" line="252"/>
         <source>Enable Grid</source>
         <translation>Sermed taferrugt</translation>
     </message>
@@ -1196,12 +1251,142 @@
         <translation>Ideg n tbadut tafellayt n tfelwit</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="221"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="109"/>
+        <source>Arabic</source>
+        <translation>Taɛrabt</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="110"/>
+        <source>Catalan</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="111"/>
+        <source>Czech</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="112"/>
+        <source>Danish</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="113"/>
+        <source>German</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="114"/>
+        <source>Greek</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="115"/>
+        <source>English</source>
+        <translation>Taglizit</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="116"/>
+        <source>Spanish</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="117"/>
+        <source>Estonian</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="118"/>
+        <source>French</source>
+        <translation>Tafransist</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="119"/>
+        <source>Hebrew</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="120"/>
+        <source>Hungarian</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="121"/>
+        <source>Indonesian</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="122"/>
+        <source>Italian</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="123"/>
+        <source>Japanese</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="124"/>
+        <source>Kabyle</source>
+        <translation>Taqbaylit</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="125"/>
+        <source>Polish</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="126"/>
+        <source>Portuguese – Portugal</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="127"/>
+        <source>Portuguese – Brazil</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="128"/>
+        <source>Russian</source>
+        <translation>Tarusit</translation>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="129"/>
+        <source>Slovene</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="130"/>
+        <source>Swedish</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="131"/>
+        <source>Turkish</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="132"/>
+        <source>Vietnamese</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="133"/>
+        <source>Chinese – China</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="134"/>
+        <source>Chinese – Taiwan</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="264"/>
         <source>Restart Required</source>
         <translation>Yettwasra usekker tikkelt-niḍen</translation>
     </message>
     <message>
-        <location filename="../app/src/preferencesdialog.cpp" line="222"/>
+        <location filename="../app/src/preferencesdialog.cpp" line="265"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Abeddel n tutlayt ad yeddu ticki tsekkreḍ tikkelt-nniḍen Pencil2D</translation>
     </message>
@@ -1209,46 +1394,202 @@
 <context>
     <name>ImportExportDialog</name>
     <message>
-        <location filename="../app/ui/importexportdialog.ui" line="32"/>
+        <location filename="../app/ui/importexportdialog.ui" line="38"/>
+        <source>Instructions</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/importexportdialog.ui" line="48"/>
         <source>File</source>
         <translation>Afaylu</translation>
     </message>
     <message>
-        <location filename="../app/ui/importexportdialog.ui" line="48"/>
+        <location filename="../app/ui/importexportdialog.ui" line="79"/>
         <source>Browse...</source>
         <translation>Snirem...</translation>
     </message>
     <message>
-        <location filename="../app/ui/importexportdialog.ui" line="58"/>
+        <location filename="../app/ui/importexportdialog.ui" line="89"/>
         <source>Options</source>
         <translation>Tinefrunin</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/importexportdialog.ui" line="96"/>
+        <source>Imports</source>
+        <translation>Iktaren</translation>
     </message>
 </context>
 <context>
     <name>ImportImageSeqDialog</name>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="29"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="60"/>
         <source>Import Animated GIF</source>
         <translation>Kter GIF yettemwwiwilen</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="31"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="62"/>
         <source>Import image sequence</source>
         <translation>Kter talubbayt n tugna</translation>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="71"/>
+        <source>Import predefined keyframe set</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="72"/>
+        <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
+The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="171"/>
+        <source>Importing image sequence...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="171"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="309"/>
+        <source>Abort</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="222"/>
+        <source>Warning</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="223"/>
+        <source>Unable to import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="309"/>
+        <source>Importing images...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="365"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="390"/>
+        <source>Invalid path</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="366"/>
+        <source>The following file did not meet the criteria: 
+%1 
+
+Read the instructions and try again</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="391"/>
+        <source>The following file(-s) did not meet the criteria: 
+%1</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>ImportImageSeqOptions</name>
     <message>
-        <location filename="../app/ui/importimageseqoptions.ui" line="15"/>
+        <location filename="../app/ui/importimageseqoptions.ui" line="38"/>
         <source>Import an image every # frame</source>
         <translation>Kter tugna yal # trame</translation>
     </message>
 </context>
 <context>
+    <name>ImportImageSeqPreviewGroupBox</name>
+    <message>
+        <location filename="../app/ui/importimageseqpreview.ui" line="14"/>
+        <source>GroupBox</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ImportLayersDialog</name>
+    <message>
+        <location filename="../app/ui/importlayersdialog.ui" line="14"/>
+        <source>Import Layers from other *.pclx files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/importlayersdialog.ui" line="22"/>
+        <source>1. Select Project file:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/importlayersdialog.ui" line="42"/>
+        <source>Select File</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/importlayersdialog.ui" line="51"/>
+        <source>2. Select layers from file:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/importlayersdialog.ui" line="76"/>
+        <source>Close</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/importlayersdialog.ui" line="83"/>
+        <source>Import layers</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importlayersdialog.cpp" line="62"/>
+        <source>Choose file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importlayersdialog.cpp" line="128"/>
+        <source>Opening document...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importlayersdialog.cpp" line="128"/>
+        <source>Abort</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>ImportPositionDialog</name>
+    <message>
+        <location filename="../app/ui/importpositiondialog.ui" line="14"/>
+        <source>Import position</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/importpositiondialog.ui" line="22"/>
+        <source>Import image/s relative to:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importpositiondialog.cpp" line="31"/>
+        <source>Center of current view</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importpositiondialog.cpp" line="32"/>
+        <source>Center of canvas (0,0)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importpositiondialog.cpp" line="33"/>
+        <source>Center of camera, current frame</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
+        <source>Center of camera, follow camera</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>Layer</name>
     <message>
-        <location filename="../core_lib/src/structure/layer.cpp" line="38"/>
+        <location filename="../core_lib/src/structure/layer.cpp" line="41"/>
         <source>Undefined Layer</source>
         <translation>Akalku ur ittusbadu ara</translation>
     </message>
@@ -1256,7 +1597,7 @@
 <context>
     <name>LayerBitmap</name>
     <message>
-        <location filename="../core_lib/src/structure/layerbitmap.cpp" line="29"/>
+        <location filename="../core_lib/src/structure/layerbitmap.cpp" line="30"/>
         <source>Bitmap Layer</source>
         <translation>Akalku Bitmap</translation>
     </message>
@@ -1264,7 +1605,7 @@
 <context>
     <name>LayerCamera</name>
     <message>
-        <location filename="../core_lib/src/structure/layercamera.cpp" line="80"/>
+        <location filename="../core_lib/src/structure/layercamera.cpp" line="78"/>
         <source>Camera Layer</source>
         <translation>Akalku takamirat</translation>
     </message>
@@ -1280,7 +1621,7 @@
 <context>
     <name>LayerVector</name>
     <message>
-        <location filename="../core_lib/src/structure/layervector.cpp" line="24"/>
+        <location filename="../core_lib/src/structure/layervector.cpp" line="27"/>
         <source>Vector Layer</source>
         <translation>Akalku amaway</translation>
     </message>
@@ -1303,825 +1644,1154 @@
         <translation>Kter</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="75"/>
+        <location filename="../app/ui/mainwindow2.ui" line="79"/>
         <source>Export</source>
         <translation>Sifeḍ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="98"/>
+        <location filename="../app/ui/mainwindow2.ui" line="102"/>
         <source>Edit</source>
         <translation>Taẓrigt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="102"/>
+        <location filename="../app/ui/mainwindow2.ui" line="106"/>
         <source>Selection</source>
         <translation>Tafrayt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="124"/>
+        <location filename="../app/ui/mainwindow2.ui" line="130"/>
         <source>View</source>
         <translation>Abeqqeḍ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="128"/>
+        <location filename="../app/ui/mainwindow2.ui" line="134"/>
         <source>Onion Skin</source>
         <translation>Iclem n uẓalim</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="136"/>
+        <location filename="../app/ui/mainwindow2.ui" line="141"/>
         <source>Zoom</source>
+        <translation>Zoom</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="153"/>
+        <source>Layer Visibility</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="166"/>
+        <location filename="../app/ui/mainwindow2.ui" line="183"/>
         <source>Animation</source>
         <translation>Asemwwiwel</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="189"/>
-        <location filename="../app/ui/mainwindow2.ui" line="826"/>
+        <location filename="../app/ui/mainwindow2.ui" line="206"/>
+        <location filename="../app/ui/mainwindow2.ui" line="848"/>
         <source>Tools</source>
         <translation>Ifecka</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="207"/>
+        <location filename="../app/ui/mainwindow2.ui" line="224"/>
         <source>Layer</source>
         <translation>Akalku</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="218"/>
-        <location filename="../app/ui/mainwindow2.ui" line="757"/>
+        <location filename="../app/ui/mainwindow2.ui" line="228"/>
+        <source>Change line color</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="245"/>
+        <location filename="../app/ui/mainwindow2.ui" line="779"/>
         <source>Help</source>
         <translation>Tallalt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="234"/>
+        <location filename="../app/ui/mainwindow2.ui" line="262"/>
         <source>Windows</source>
         <translation>Isfuyla</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="253"/>
+        <location filename="../app/ui/mainwindow2.ui" line="283"/>
         <source>New</source>
         <translation>Amaynut</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="262"/>
+        <location filename="../app/ui/mainwindow2.ui" line="292"/>
         <source>Open</source>
         <translation>Ldi</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="271"/>
+        <location filename="../app/ui/mainwindow2.ui" line="301"/>
         <source>Save</source>
         <translation>Sekles</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="289"/>
+        <location filename="../app/ui/mainwindow2.ui" line="319"/>
         <source>Exit</source>
         <translation>Tuffɣa</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="294"/>
-        <location filename="../app/ui/mainwindow2.ui" line="322"/>
+        <location filename="../app/ui/mainwindow2.ui" line="324"/>
+        <location filename="../app/ui/mainwindow2.ui" line="352"/>
         <source>Image Sequence...</source>
         <translation>Talubbayt n tugna...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="299"/>
-        <location filename="../app/ui/mainwindow2.ui" line="317"/>
+        <location filename="../app/ui/mainwindow2.ui" line="329"/>
+        <location filename="../app/ui/mainwindow2.ui" line="347"/>
         <source>Image...</source>
         <translation>Tugna...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="304"/>
-        <location filename="../app/ui/mainwindow2.ui" line="327"/>
+        <location filename="../app/ui/mainwindow2.ui" line="334"/>
         <source>Movie...</source>
         <translation>Asaru...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="312"/>
-        <location filename="../app/ui/mainwindow2.ui" line="340"/>
-        <source>Palette...</source>
-        <translation>Tapaliḍt...</translation>
+        <location filename="../app/ui/mainwindow2.ui" line="357"/>
+        <source>Movie Video...</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="335"/>
+        <location filename="../app/ui/mainwindow2.ui" line="362"/>
         <source>Sound...</source>
         <translation>Imesli...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="345"/>
-        <source>Image Sequence Numbered...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="354"/>
+        <location filename="../app/ui/mainwindow2.ui" line="376"/>
         <source>Undo</source>
         <translation>Semmet</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="366"/>
+        <location filename="../app/ui/mainwindow2.ui" line="388"/>
         <source>Redo</source>
         <translation>Err-d</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="375"/>
+        <location filename="../app/ui/mainwindow2.ui" line="397"/>
         <source>Cut</source>
         <translation>Gzem</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="384"/>
+        <location filename="../app/ui/mainwindow2.ui" line="406"/>
         <source>Copy</source>
         <translation>Suken</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="393"/>
+        <location filename="../app/ui/mainwindow2.ui" line="415"/>
         <source>Paste</source>
         <translation>Senṭeḍ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="398"/>
+        <location filename="../app/ui/mainwindow2.ui" line="420"/>
         <source>Crop</source>
         <translation>Ɣeẓ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="403"/>
+        <location filename="../app/ui/mainwindow2.ui" line="425"/>
         <source>Crop To Selection</source>
         <translation>Ɣeẓ ɣer tefrayt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="408"/>
+        <location filename="../app/ui/mainwindow2.ui" line="430"/>
         <source>Select All</source>
         <translation>Fren akk</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="413"/>
+        <location filename="../app/ui/mainwindow2.ui" line="435"/>
         <source>Deselect All</source>
         <translation>Kkes tafrayt akk</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="422"/>
-        <location filename="../app/ui/mainwindow2.ui" line="621"/>
+        <location filename="../app/ui/mainwindow2.ui" line="444"/>
+        <location filename="../app/ui/mainwindow2.ui" line="643"/>
         <source>Clear Frame</source>
         <translation>Sfeḍ tugna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="427"/>
+        <location filename="../app/ui/mainwindow2.ui" line="449"/>
         <source>Preferences</source>
         <translation>Ismenyifen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="435"/>
+        <location filename="../app/ui/mainwindow2.ui" line="457"/>
         <source>Reset Windows</source>
         <translation>Ales awennez n usfaylu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="444"/>
+        <location filename="../app/ui/mainwindow2.ui" line="466"/>
         <source>Zoom In</source>
         <translation>Simɣur</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="453"/>
+        <location filename="../app/ui/mainwindow2.ui" line="475"/>
         <source>Zoom Out</source>
         <translation>Simecṭuḥ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="458"/>
+        <location filename="../app/ui/mainwindow2.ui" line="480"/>
         <source>Rotate Clockwise</source>
         <translation>Tuzzya di tnila n temrilt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="468"/>
+        <location filename="../app/ui/mainwindow2.ui" line="490"/>
         <source>Reset Zoom/Rotate</source>
         <translation>Ales awennez n Zoom/Tuzzya</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="477"/>
+        <location filename="../app/ui/mainwindow2.ui" line="499"/>
         <source>Horizontal Flip</source>
         <translation>Tuzzya taglawant</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="486"/>
+        <location filename="../app/ui/mainwindow2.ui" line="508"/>
         <source>Vertical Flip</source>
         <translation>Tuzzya taratakt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="494"/>
+        <location filename="../app/ui/mainwindow2.ui" line="516"/>
         <source>Preview</source>
         <translation>Tamuɣli</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="502"/>
+        <location filename="../app/ui/mainwindow2.ui" line="524"/>
         <source>Grid</source>
         <translation>Taferrugt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="514"/>
+        <location filename="../app/ui/mainwindow2.ui" line="536"/>
         <source>Previous</source>
         <translation>Uzwir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="517"/>
+        <location filename="../app/ui/mainwindow2.ui" line="539"/>
         <source>Show previous onion skin</source>
         <translation>Sken tugna tafrawant tuzwirt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="529"/>
+        <location filename="../app/ui/mainwindow2.ui" line="551"/>
         <source>Next</source>
         <translation>Uḍfir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="532"/>
+        <location filename="../app/ui/mainwindow2.ui" line="554"/>
         <source>Show next onion skin</source>
         <translation>Sken tugna tafrawant tuḍfirt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="541"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1394"/>
+        <location filename="../app/ui/mainwindow2.ui" line="563"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1501"/>
         <source>Play</source>
         <translation>Urar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="553"/>
+        <location filename="../app/ui/mainwindow2.ui" line="575"/>
         <source>Loop</source>
         <translation>Tineddict</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="562"/>
+        <location filename="../app/ui/mainwindow2.ui" line="584"/>
         <source>Next Frame</source>
         <translation>Tugna tuḍfirt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="571"/>
+        <location filename="../app/ui/mainwindow2.ui" line="593"/>
         <source>Previous Frame</source>
         <translation>Tugna tuzwirt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="576"/>
+        <location filename="../app/ui/mainwindow2.ui" line="598"/>
         <source>Extend Frame</source>
         <translation>Tugna yettwaẓlen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="585"/>
+        <location filename="../app/ui/mainwindow2.ui" line="607"/>
         <source>Add Frame</source>
         <translation>Rnu tugna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="594"/>
+        <location filename="../app/ui/mainwindow2.ui" line="616"/>
         <source>Duplicate Frame</source>
         <translation>Sisleg tugna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="603"/>
+        <location filename="../app/ui/mainwindow2.ui" line="625"/>
         <source>Remove Frame</source>
         <translation>Kkes tugna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="612"/>
+        <location filename="../app/ui/mainwindow2.ui" line="634"/>
         <source>Move</source>
         <translation>Smutti</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="630"/>
+        <location filename="../app/ui/mainwindow2.ui" line="652"/>
         <source>Select</source>
         <translation>Fren</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="639"/>
+        <location filename="../app/ui/mainwindow2.ui" line="661"/>
         <source>Brush</source>
         <translation>Tasrekna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="648"/>
+        <location filename="../app/ui/mainwindow2.ui" line="670"/>
         <source>Polyline</source>
         <translation>Izirig irẓen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="657"/>
+        <location filename="../app/ui/mainwindow2.ui" line="679"/>
         <source>Smudge</source>
         <translation>Ẓel</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="666"/>
+        <location filename="../app/ui/mainwindow2.ui" line="688"/>
         <source>Pen</source>
         <translation>Imru</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="675"/>
+        <location filename="../app/ui/mainwindow2.ui" line="697"/>
         <source>Hand</source>
         <translation>Afus</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="684"/>
+        <location filename="../app/ui/mainwindow2.ui" line="706"/>
         <source>Pencil</source>
         <translation>Akeryun</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="693"/>
+        <location filename="../app/ui/mainwindow2.ui" line="715"/>
         <source>Bucket</source>
         <translation>Abelyun</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="702"/>
+        <location filename="../app/ui/mainwindow2.ui" line="724"/>
         <source>Eyedropper</source>
         <translation>Amelqaḍ n yini</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="711"/>
+        <location filename="../app/ui/mainwindow2.ui" line="733"/>
         <source>Eraser</source>
         <translation>Tasemsut</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="720"/>
+        <location filename="../app/ui/mainwindow2.ui" line="742"/>
         <source>New Bitmap Layer</source>
         <translation>Akalku amaynut n tugna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="729"/>
+        <location filename="../app/ui/mainwindow2.ui" line="751"/>
         <source>New Vector Layer</source>
         <translation>Akalku amaynut n umaway</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="738"/>
+        <location filename="../app/ui/mainwindow2.ui" line="760"/>
         <source>New Sound Layer</source>
         <translation>Akalku amaynut n imesli</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="747"/>
+        <location filename="../app/ui/mainwindow2.ui" line="769"/>
         <source>New Camera Layer</source>
         <translation>Akalku amayunut n tkamirat</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="752"/>
+        <location filename="../app/ui/mainwindow2.ui" line="774"/>
         <source>Delete Current Layer</source>
         <translation>Kkes akalku amiran</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="762"/>
+        <location filename="../app/ui/mainwindow2.ui" line="784"/>
         <source>About</source>
         <translation>Ɣef</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="767"/>
-        <location filename="../app/ui/mainwindow2.ui" line="770"/>
+        <location filename="../app/ui/mainwindow2.ui" line="789"/>
+        <location filename="../app/ui/mainwindow2.ui" line="792"/>
         <source>Reset to default</source>
         <translation>Ales awennez s lexṣas</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="780"/>
-        <location filename="../app/ui/mainwindow2.ui" line="783"/>
+        <location filename="../app/ui/mainwindow2.ui" line="802"/>
+        <location filename="../app/ui/mainwindow2.ui" line="805"/>
         <source>Next Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Akatar yufraren uḍfir</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="807"/>
-        <source>MultiLayer Onion Skin</source>
-        <translation>Iclem n uẓalim s waṭas n tissiyin</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="818"/>
+        <location filename="../app/ui/mainwindow2.ui" line="840"/>
         <source>Range</source>
         <translation>Tagrumma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="891"/>
+        <location filename="../app/ui/mainwindow2.ui" line="913"/>
         <source>Pencil2D Website</source>
         <translation>Asmel n web n Pencil</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="896"/>
+        <location filename="../app/ui/mainwindow2.ui" line="918"/>
         <source>Report a Bug</source>
         <translation>Azen aneqqis n tuccḍa</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="901"/>
+        <location filename="../app/ui/mainwindow2.ui" line="923"/>
         <source>Quick Reference Guide</source>
         <translation>Tamaweskatut </translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="904"/>
+        <location filename="../app/ui/mainwindow2.ui" line="926"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="909"/>
-        <location filename="../app/ui/mainwindow2.ui" line="914"/>
+        <location filename="../app/ui/mainwindow2.ui" line="931"/>
+        <location filename="../app/ui/mainwindow2.ui" line="936"/>
         <source>Animated GIF...</source>
         <translation>GIF yettemwwiwilen</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="919"/>
+        <location filename="../app/ui/mainwindow2.ui" line="941"/>
         <source>Check for Updates</source>
-        <translation type="unfinished"/>
+        <translation>Nadi ileqman</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="924"/>
+        <location filename="../app/ui/mainwindow2.ui" line="946"/>
         <source>Pencil2D Forum</source>
-        <translation type="unfinished"/>
+        <translation>Afurum n Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="929"/>
+        <location filename="../app/ui/mainwindow2.ui" line="951"/>
         <source>Pencil2D Discord</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D Discord</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="934"/>
+        <location filename="../app/ui/mainwindow2.ui" line="956"/>
         <source>200%</source>
-        <translation type="unfinished"/>
+        <translation>200%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="939"/>
+        <location filename="../app/ui/mainwindow2.ui" line="961"/>
         <source>300%</source>
-        <translation type="unfinished"/>
+        <translation>300%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="944"/>
+        <location filename="../app/ui/mainwindow2.ui" line="966"/>
         <source>400%</source>
-        <translation type="unfinished"/>
+        <translation>400%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="949"/>
+        <location filename="../app/ui/mainwindow2.ui" line="971"/>
         <source>50%</source>
-        <translation type="unfinished"/>
+        <translation>50%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="954"/>
+        <location filename="../app/ui/mainwindow2.ui" line="976"/>
         <source>33%</source>
-        <translation type="unfinished"/>
+        <translation>33%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="959"/>
+        <location filename="../app/ui/mainwindow2.ui" line="981"/>
         <source>25%</source>
-        <translation type="unfinished"/>
+        <translation>25%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="964"/>
+        <location filename="../app/ui/mainwindow2.ui" line="986"/>
         <source>100%</source>
-        <translation type="unfinished"/>
+        <translation>100%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="969"/>
+        <location filename="../app/ui/mainwindow2.ui" line="991"/>
         <source>Flip In-Between</source>
-        <translation type="unfinished"/>
+        <translation>Qluqel gar</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="974"/>
+        <location filename="../app/ui/mainwindow2.ui" line="996"/>
         <source>Flip Rolling</source>
+        <translation>Flip Rolling</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1001"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1059"/>
+        <source>Current layer only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="280"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1006"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1067"/>
+        <source>Relative</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1011"/>
+        <source>All Layers</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1016"/>
+        <source>Peg bar Alignment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1021"/>
+        <source>Movie Audio...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1026"/>
+        <source>Append to Palette...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1031"/>
+        <source>Replace Palette...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1036"/>
+        <source>Other Palette format...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1041"/>
+        <source>Current keyframe</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1046"/>
+        <source>All keyframes on layer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1051"/>
+        <source>Layers from Project file...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1075"/>
+        <source>All layers</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1083"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1086"/>
+        <source>Onion Skins</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1091"/>
+        <source>Open Temporary Directory</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="310"/>
         <source>Save As...</source>
         <translation>Sekles s yisem...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="463"/>
-        <source>Rotate Anticlockwise</source>
+        <location filename="../app/ui/mainwindow2.ui" line="342"/>
+        <source>Palette</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="793"/>
-        <location filename="../app/ui/mainwindow2.ui" line="796"/>
+        <location filename="../app/ui/mainwindow2.ui" line="367"/>
+        <source>Image Predefined set...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="485"/>
+        <source>Rotate Anticlockwise</source>
+        <translation>Tuzzya mgal tamrilt</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="815"/>
+        <location filename="../app/ui/mainwindow2.ui" line="818"/>
         <source>Previous KeyFrame</source>
         <translation>Tugna tuzwirt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="834"/>
+        <location filename="../app/ui/mainwindow2.ui" line="829"/>
+        <source>Multilayer Onion Skin</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="856"/>
         <source>Timeline</source>
         <translation>Tasnakudt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="842"/>
+        <location filename="../app/ui/mainwindow2.ui" line="864"/>
         <source>Options</source>
         <translation>Tinefrunin</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="850"/>
+        <location filename="../app/ui/mainwindow2.ui" line="872"/>
         <source>Color Wheel</source>
         <translation>Ruda n yiniten</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="858"/>
+        <location filename="../app/ui/mainwindow2.ui" line="880"/>
         <source>Color Palette</source>
         <translation>Tafelwit n yiniten</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="866"/>
+        <location filename="../app/ui/mainwindow2.ui" line="888"/>
         <source>Display Options</source>
         <translation>Tinefrunin n ubeqqeḍ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="871"/>
+        <location filename="../app/ui/mainwindow2.ui" line="893"/>
         <source>Flip X</source>
         <translation>Tuzzya ɣef ugellus X</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="876"/>
+        <location filename="../app/ui/mainwindow2.ui" line="898"/>
         <source>Flip Y</source>
         <translation>Tuzzya ɣef ugellus Y</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="881"/>
+        <location filename="../app/ui/mainwindow2.ui" line="903"/>
         <source>Move Frame Forward</source>
         <translation>Siẓ tugna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="886"/>
+        <location filename="../app/ui/mainwindow2.ui" line="908"/>
         <source>Move Frame Backward</source>
         <translation>Sewxer tugna</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="144"/>
+        <location filename="../app/src/mainwindow2.cpp" line="149"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>tapaliḍt n yiniten:&lt;br&gt;seqdec&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;qluqel ɣer teḥnacaḍt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="148"/>
+        <location filename="../app/src/mainwindow2.cpp" line="153"/>
         <source>Color inspector</source>
         <translation>Amaswaḍ n yini</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="359"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1099"/>
         <source>Lock Windows</source>
         <translation>Sekkeṛ isfuyla</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="379"/>
+        <location filename="../app/src/mainwindow2.cpp" line="404"/>
         <source>Open Recent</source>
         <translation>Ldi afaylu n melmi kan</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="413"/>
+        <location filename="../app/src/mainwindow2.cpp" line="433"/>
         <source>
 
  You have successfully cleared the list</source>
         <translation>Tsefḍeḍ tabdart akken ilaq</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="514"/>
-        <location filename="../app/src/mainwindow2.cpp" line="524"/>
-        <location filename="../app/src/mainwindow2.cpp" line="533"/>
-        <location filename="../app/src/mainwindow2.cpp" line="592"/>
+        <location filename="../app/src/mainwindow2.cpp" line="444"/>
+        <source>Dialog is already open!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="564"/>
+        <location filename="../app/src/mainwindow2.cpp" line="574"/>
+        <location filename="../app/src/mainwindow2.cpp" line="583"/>
+        <location filename="../app/src/mainwindow2.cpp" line="641"/>
         <source>Could not open file</source>
         <translation>D awezɣi alday n ufaylu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="515"/>
+        <location filename="../app/src/mainwindow2.cpp" line="565"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>Afaylu i tferneḍ d akaram, ihi ur nezmir ara ad t-neldi. Ma tettaɛraḍeḍ adeldiḍ asenfar iseqdacen tamṣukt taqburt, ttxil-k ldi afaylu yettfakkan s .pcl, mačči d akaram n isefka.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="525"/>
+        <location filename="../app/src/mainwindow2.cpp" line="575"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Afaylu tferneḍ ulac-it, ihi ulamek ara t-neldi. Ttxil-k/m ttḥeqqeq beli tsekecmeḍ abrid ameɣtu yerna afaylu yettwaddaf sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="534"/>
+        <location filename="../app/src/mainwindow2.cpp" line="584"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Ahil-agi ur ur yesɛi ara isirigen iwakken ad iɣer afaylu i tferneḍ. Ttxil-k selken belli tesɛiḍ isirigen n tɣuri i ufaylu-agi sakin eɛreḍ tikkelt-nniḍen.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="543"/>
-        <location filename="../app/src/mainwindow2.cpp" line="705"/>
-        <location filename="../app/src/mainwindow2.cpp" line="764"/>
-        <location filename="../app/src/mainwindow2.cpp" line="844"/>
-        <location filename="../app/src/mainwindow2.cpp" line="990"/>
+        <location filename="../app/src/mainwindow2.cpp" line="593"/>
+        <location filename="../app/src/mainwindow2.cpp" line="763"/>
+        <location filename="../app/src/mainwindow2.cpp" line="840"/>
+        <location filename="../app/src/mainwindow2.cpp" line="971"/>
         <source>Warning</source>
         <translation>Ɣur-k</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="544"/>
+        <location filename="../app/src/mainwindow2.cpp" line="594"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Ahil-agi ur yesɛi ara isirigen iwakken ad yaru deg ufaylu i tferneḍ. Ttxil-k selken belli tesɛiḍ isirigrn iwakken ad taruḍ deg ufaylu-agi send ad tɛerḍeḍ ad t-teskelseḍ. Tzemreḍ daɣen ad tesqedceḍ tanerunt n wumuɣ Sekles am...iwakken ad teskelseḍ deg wadig yettwaddafen s tira.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="550"/>
+        <location filename="../app/src/mainwindow2.cpp" line="600"/>
         <source>Opening document...</source>
         <translation>Isemli n ulday...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="550"/>
-        <location filename="../app/src/mainwindow2.cpp" line="625"/>
-        <location filename="../app/src/mainwindow2.cpp" line="793"/>
-        <location filename="../app/src/mainwindow2.cpp" line="964"/>
+        <location filename="../app/src/mainwindow2.cpp" line="600"/>
+        <location filename="../app/src/mainwindow2.cpp" line="676"/>
+        <location filename="../app/src/mainwindow2.cpp" line="945"/>
         <source>Abort</source>
         <translation>Eǧǧ</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="593"/>
+        <location filename="../app/src/mainwindow2.cpp" line="642"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>teḍra-d tuccḍa mi neɛreḍ ad nɛebbi afaylu yerna ur nezmir ara ad nɛebbi afaylu-inek.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="625"/>
+        <location filename="../app/src/mainwindow2.cpp" line="676"/>
         <source>Saving document...</source>
         <translation>Asekles n isemli...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="666"/>
+        <location filename="../app/src/mainwindow2.cpp" line="719"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Teḍra-d tuccḍa dɣa afaylu-inek ur yettwasekles ara akken iwata. Ma twalaḍ belli tuccḍa-agi tekka-d s Pencil2D, ttxil-k snulfu-d ugur amaynut di:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt; https: //github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Ttxil-k seddu ifatusen-agi deg wugur-inek:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="706"/>
+        <location filename="../app/src/mainwindow2.cpp" line="764"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Asemwwiwel-agi yettwabeddel.
 Tebɣiḍ ad teskelseḍ ibeddilen ?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="734"/>
+        <location filename="../app/src/mainwindow2.cpp" line="791"/>
+        <source>AutoSave Reminder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="792"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Asemwwiwel ur yettwasekles ara yakan.
 Tebɣiḍ ad t-teskelseḍ tura?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="735"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Dayen ur yi-d-ssutur ara</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="765"/>
+        <location filename="../app/src/mainwindow2.cpp" line="841"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>D awezɣi taktert n tugna.&lt;br&gt;&lt;b&gt;TIXIDEST:&lt;/b&gt; Seqdec akalku &quot;Bitmap&quot; iwakken ad tketreḍ tugniwin bitmap.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="793"/>
-        <source>Importing image sequence...</source>
-        <translation>Taktert n tlubbayt n tugnba...</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="845"/>
-        <location filename="../app/src/mainwindow2.cpp" line="991"/>
-        <source>was unable to import</source>
-        <translation>D awezɣi taktert</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="922"/>
-        <source>Illegal numbering</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="964"/>
+        <location filename="../app/src/mainwindow2.cpp" line="945"/>
         <source>Importing Animated GIF...</source>
         <translation>Taktert n GIF yettemwwiwilen...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1219"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1224"/>
+        <location filename="../app/src/mainwindow2.cpp" line="972"/>
+        <source>was unable to import %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1296"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1301"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Semmet</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1232"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1239"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1309"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1316"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Err-d</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1389"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1358"/>
+        <source>Opening palette, will replace the old palette.
+Color(s) in strokes will be altered by this action!
+</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1360"/>
+        <source>Open Palette</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1361"/>
+        <source>Cancel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1489"/>
+        <source>Zoom: %0%</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1496"/>
         <source>Stop</source>
         <translation>Ḥbes</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1542"/>
+        <source>Restore Project?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1543"/>
+        <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1548"/>
+        <source>Restore project</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1582"/>
+        <source>Recovery Failed.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1583"/>
+        <source>Sorry! Pencil2D is unable to restore your project</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1590"/>
+        <source>Recovery Succeeded!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1591"/>
+        <source>Please save your work immediately to prevent loss of data</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="364"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="370"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation>Asenfal n tissi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="365"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="371"/>
         <source>You are about to switch away, do you want to apply the transformation?</source>
+        <translation>Ala tettedduḍ ad tbedeleḍ, tebɣiḍ ad teskelseḍ abeddel ?</translation>
+    </message>
+</context>
+<context>
+    <name>MovieImporter</name>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="226"/>
+        <source>Unknown error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="227"/>
+        <source>This should not happen...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="259"/>
+        <source>Video processed, adding frames...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="306"/>
+        <source>Failed import</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="307"/>
+        <source>Was unable to find internal files, import unsuccessful.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="336"/>
+        <source> Move the scrubber to a empty position on the timeline and try again</source>
         <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="561"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="344"/>
+        <source>error</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="646"/>
         <source>Black</source>
         <translation>Aberkan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="562"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="647"/>
         <source>Red</source>
         <translation>Azeggaɣ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="648"/>
         <source>Dark Red</source>
         <translation>Azeggaɣ aɣmayan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="649"/>
         <source>Orange</source>
         <translation>Ačinawi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="565"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="650"/>
         <source>Dark Orange</source>
         <translation>Ačinawi aɣmayan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="566"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="651"/>
         <source>Yellow</source>
         <translation>Awraɣ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="567"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="652"/>
         <source>Dark Yellow</source>
         <translation>Awraɣ aɣmayan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="568"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="653"/>
         <source>Green</source>
         <translation>Azegzaw</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="569"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="654"/>
         <source>Dark Green</source>
         <translation>Azegzaw aɣmayan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="570"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="655"/>
         <source>Cyan</source>
         <translation>Anili azegzaw</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="571"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="656"/>
         <source>Dark Cyan</source>
         <translation>Anili azegzaw imibrik</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="572"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="657"/>
         <source>Blue</source>
         <translation>Anili</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="573"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="658"/>
         <source>Dark Blue</source>
         <translation>Anili imibrik</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="574"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="659"/>
         <source>White</source>
         <translation>Amellal</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="575"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="660"/>
         <source>Very Light Grey</source>
         <translation>Amellal afessas</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="576"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="661"/>
         <source>Light Grey</source>
         <translation>Amelliɣdi afessas</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="577"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="662"/>
         <source>Grey</source>
         <translation>Amelliɣdi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="578"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="663"/>
         <source>Dark Grey</source>
         <translation>Amelliɣdi aɣmayan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="579"/>
-        <source>Light Skin</source>
-        <translation>Aglim anafaw</translation>
+        <location filename="../core_lib/src/structure/object.cpp" line="664"/>
+        <source>Pale Orange Yellow</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="580"/>
-        <source>Light Skin - shade</source>
-        <translation>Aglim anafaw - s tili</translation>
+        <location filename="../core_lib/src/structure/object.cpp" line="665"/>
+        <source>Pale Grayish Orange Yellow</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="581"/>
-        <source>Skin</source>
-        <translation>Aglim</translation>
+        <location filename="../core_lib/src/structure/object.cpp" line="666"/>
+        <source>Orange Yellow </source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="582"/>
-        <source>Skin - shade</source>
-        <translation>Aglim - s tili</translation>
+        <location filename="../core_lib/src/structure/object.cpp" line="667"/>
+        <source>Grayish Orange Yellow</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="583"/>
-        <source>Dark Skin</source>
-        <translation>Aglim imibrik</translation>
+        <location filename="../core_lib/src/structure/object.cpp" line="668"/>
+        <source>Light Orange Yellow</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="584"/>
-        <source>Dark Skin - shade</source>
-        <translation>Aglim imibrik - s tili</translation>
+        <location filename="../core_lib/src/structure/object.cpp" line="669"/>
+        <source>Light Grayish Orange Yellow</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="366"/>
+        <source>Color %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>OnionSkin</name>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="23"/>
+        <source>Onion Skins</source>
+        <comment>Window title of display options like .</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="98"/>
+        <source>Previous Frames</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="119"/>
+        <location filename="../app/ui/onionskin.ui" line="122"/>
+        <source>Onion skin previous frame</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="128"/>
+        <location filename="../app/ui/onionskin.ui" line="182"/>
+        <location filename="../app/ui/onionskin.ui" line="234"/>
+        <location filename="../app/ui/onionskin.ui" line="300"/>
+        <source>...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="176"/>
+        <location filename="../app/ui/onionskin.ui" line="179"/>
+        <source>Onion skin color: red</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="207"/>
+        <source>Next Frames</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="228"/>
+        <location filename="../app/ui/onionskin.ui" line="231"/>
+        <source>Onion skin next frame</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="291"/>
+        <location filename="../app/ui/onionskin.ui" line="294"/>
+        <source>Onion skin color: blue</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="325"/>
+        <source>Distributed opacity</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="343"/>
+        <source>Min</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="365"/>
+        <location filename="../app/ui/onionskin.ui" line="400"/>
+        <source> %</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="378"/>
+        <source>Max</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="415"/>
+        <source>Show Keyframes Only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="422"/>
+        <source>Show During Playback</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>PegBarAlignmentDialog</name>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="14"/>
+        <source>Peg bar Alignment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="30"/>
+        <source>Peg Bar Alignment:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="46"/>
+        <source>Prerequisites</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="53"/>
+        <source>1) Select a reference area around center pegs.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="60"/>
+        <source>2) Select one reference keyframe from timeline.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="67"/>
+        <source>3) Select at least one layer to align. (Bitmaps only!)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="76"/>
+        <source>Layer selection</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="97"/>
+        <source>Reference key:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="104"/>
+        <source>TextLabel</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="144"/>
+        <source>Close</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/pegbaralignmentdialog.ui" line="154"/>
+        <source>Align Peg Bars</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/pegbaralignmentdialog.cpp" line="145"/>
+        <source>No layers selected!</source>
+        <comment>PegBar Dialog error message</comment>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -2158,57 +2828,59 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     </message>
 </context>
 <context>
+    <name>PresetDialog</name>
+    <message>
+        <location filename="../app/ui/presetdialog.ui" line="14"/>
+        <source>Choose a Preset for your Project</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/presetdialog.ui" line="20"/>
+        <source>&lt;h1&gt;Welcome to Pencil2D!&lt;/h1&gt;</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/presetdialog.ui" line="27"/>
+        <source>Choose a preset to get started:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/presetdialog.ui" line="37"/>
+        <source>Always use this preset</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
-        <location filename="../core_lib/src/util/pencildef.h" line="26"/>
-        <source>AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)</source>
-        <translation>AVI (*.avi);;MPEG(*.mpg);;MOV(*.mov);;MP4(*.mp4);;SWF(*.swf);;FLV(*.flv);;WMV(*.wmv)</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/util/pencildef.h" line="29"/>
-        <location filename="../core_lib/src/util/pencildef.h" line="32"/>
-        <source>Images (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</source>
-        <translation>Tugniwin (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);; TIFF(*.tif *.tiff)</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="98"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="108"/>
         <source>Everything ok.</source>
         <translation>Kulec igerrez.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="99"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
         <source>Ooops, Something went wrong.</source>
         <translation>Yella wacu ur neddi ara.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="100"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
         <source>File doesn&apos;t exist.</source>
         <translation>Afaylu ulac-it.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="101"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
         <source>Cannot open file.</source>
         <translation>D awezɣi alday n ufaylu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="102"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
         <source>The file is not a valid xml document.</source>
         <translation>Afaylu mači d isemli xml ameɣtu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="103"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
         <source>The file is not valid pencil document.</source>
         <translation>Afaylu mači d isemli pencil ameɣtu.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="29"/>
-        <source>All Pencil Files PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</source>
-        <translation>All Pencil Files PCLX &amp; PCL(*.pclx *.pcl);;Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl);;Any files (*)</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
-        <source>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</source>
-        <translation>Pencil Animation File PCLX(*.pclx);;Old Pencil Animation File PCL(*.pcl)</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="284"/>
@@ -3556,165 +4228,836 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
         <translation>Tella-d tuccḍa dek useker n ufaylu-inek. Ayagi yebɣa ad d-yini s umata belli asenfar-inek yexser. Tzemreḍ ad tɛerḍeḍ s lqem aneggaru n Pencil2D, neɣ ad tesqedceḍ afaylu n weḥraz ma tesɛiḍ. Ma tnermseḍ-aɣ-d s yiwet gar tregwa-nneɣ tunṣibin, ahat ad nizmir ad k-nɛiwen. Iwakken ad ɣ-d-tazneḍ ineqqisen n wuguren, imeḍqan iwulmen iwakken aɣ-d-tnermseḍ d wigi:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="98"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="79"/>
         <source>Checking environment...</source>
+        <translation>Aselken n twennaḍt...</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="113"/>
+        <source>Generating GIF...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="149"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
+        <source>Assembling audio...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="125"/>
+        <source>Generating movie...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="130"/>
         <source>Done</source>
+        <translation>Ifuk</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="563"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="575"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="700"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="712"/>
+        <source>Something went wrong</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="75"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="564"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="701"/>
+        <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="576"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="713"/>
+        <source>Couldn&apos;t start the video backend, please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="76"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D d aseɣẓan n usmussu akked usuneɣ i Mac OS X, Windows, akked Linux. Ad k-yeǧǧ ad d-tesnulfuḍ unuɣen yettemwwiwilen ara tsunɣeḍ s ufus s useqdec n wudlifen n bitmap akked wudlifen imawayen.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="78"/>
+        <location filename="../app/src/main.cpp" line="79"/>
         <source>Path to the input pencil file.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="81"/>
-        <location filename="../app/src/main.cpp" line="87"/>
-        <source>Render the file to &lt;output_path&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Abrid n wadduf ɣef ufaylu n yimru.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="82"/>
         <location filename="../app/src/main.cpp" line="88"/>
-        <source>output_path</source>
-        <translation type="unfinished"/>
+        <source>Render the file to &lt;output_path&gt;</source>
+        <translation>Err afaylu ɣer &lt;output_path&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="95"/>
-        <source>Name of the camera layer to use</source>
-        <translation type="unfinished"/>
+        <location filename="../app/src/main.cpp" line="83"/>
+        <location filename="../app/src/main.cpp" line="89"/>
+        <source>output_path</source>
+        <translation>output_path</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="96"/>
-        <source>layer_name</source>
-        <translation type="unfinished"/>
+        <source>Name of the camera layer to use</source>
+        <translation>Isem n tissi akked tkamirat ara yettwasqedcen</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="100"/>
-        <source>Width of the output frames</source>
-        <translation type="unfinished"/>
+        <location filename="../app/src/main.cpp" line="97"/>
+        <source>layer_name</source>
+        <translation>layer_name</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="101"/>
-        <location filename="../app/src/main.cpp" line="106"/>
+        <source>Width of the output frames</source>
+        <translation>Tehri n yikataren n tuffɣa</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="102"/>
+        <location filename="../app/src/main.cpp" line="107"/>
         <source>integer</source>
-        <translation type="unfinished"/>
+        <translation>ummid</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="105"/>
+        <location filename="../app/src/main.cpp" line="106"/>
         <source>Height of the output frames</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="110"/>
-        <source>The first frame you want to include in the exported movie</source>
-        <translation type="unfinished"/>
+        <translation>Tattayt n yikataren n tuffɣa</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="111"/>
-        <location filename="../app/src/main.cpp" line="118"/>
+        <source>The first frame you want to include in the exported movie</source>
+        <translation>Akatar amezwaru i tebɣiḍ ad tsedduḍ di tvidyut ara tsifḍeḍ</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="112"/>
+        <location filename="../app/src/main.cpp" line="119"/>
         <source>frame</source>
-        <translation type="unfinished"/>
+        <translation>akatar</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="115"/>
+        <location filename="../app/src/main.cpp" line="116"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="unfinished"/>
+        <translation>Akatar aneggaru i tebɣiḍ ad tsedduḍ di tvidyut ara tsifḍeḍ. Yezmer daɣen ad yili d aneggaru neɣ d imesli aneggaru ara yettwasqedcen s wudem awurman.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="122"/>
+        <location filename="../app/src/main.cpp" line="123"/>
         <source>Render transparency when possible</source>
-        <translation type="unfinished"/>
+        <translation>Err tafrawant ticki yella wamek</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="141"/>
+        <location filename="../app/src/main.cpp" line="142"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Alɣu: azal n tehri %1 mačči d ummid, ttu-t.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="151"/>
+        <location filename="../app/src/main.cpp" line="152"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Alɣu: azal n tattayt %1 mačči d ummid, ttu-t.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="161"/>
+        <location filename="../app/src/main.cpp" line="162"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Alɣu: azal n tazwara %1 mačči d ummid, ttu-t.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="166"/>
+        <location filename="../app/src/main.cpp" line="167"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Alɣu: azal n tazwara isefk ad yili ma drus 1, ttu-t.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="186"/>
+        <location filename="../app/src/main.cpp" line="187"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Alɣu: azal n taggara %1 mačči d ummid, aneggaru neɣ imesli aneggaru, ttu-t.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="192"/>
+        <location filename="../app/src/main.cpp" line="193"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Alɣu: azal n taggara %1 d amecṭuḥ ɣef wazal n taggara %2, ttu-t.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="203"/>
+        <location filename="../app/src/main.cpp" line="204"/>
         <source>Error: No input file specified.</source>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa: ulac afaylu n unekcum i d-ittunefken.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="210"/>
+        <location filename="../app/src/main.cpp" line="211"/>
         <source>Error: the input file at &apos;%1&apos; does not exist</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa: afaylu n unekcum &apos;%1&apos; ulac-it</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="215"/>
+        <location filename="../app/src/main.cpp" line="216"/>
         <source>Error: the input path &apos;%1&apos; is not a file</source>
         <comment>Command line error</comment>
-        <translation type="unfinished"/>
+        <translation>Tuccḍa: abrid n unekcum &apos;%1&apos; mačči d afaylu</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="244"/>
+        <location filename="../app/src/main.cpp" line="246"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Alɣu: tissi n tkamirat i d-ittunefken %1 ur yettwaf ara, ttu-t.</translation>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="277"/>
+        <location filename="../app/src/main.cpp" line="279"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/main.cpp" line="299"/>
-        <source>Warning: Transparency is not currently supported in movie files</source>
-        <comment>Command line warning</comment>
-        <translation type="unfinished"/>
+        <translation>Alɣu: amasal n tuffɣa ur d-ittunefk ara neɣ ur itteddu ara. Aseqdec n PNG.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="301"/>
-        <source>Exporting movie...</source>
-        <comment>Command line task progress</comment>
-        <translation type="unfinished"/>
+        <source>Warning: Transparency is not currently supported in movie files</source>
+        <comment>Command line warning</comment>
+        <translation>Alɣu: akka tura tafrawant ur tetteddu ara deg yifuyla n tbidyut.</translation>
     </message>
     <message>
         <location filename="../app/src/main.cpp" line="303"/>
-        <location filename="../app/src/main.cpp" line="308"/>
+        <source>Exporting movie...</source>
+        <comment>Command line task progress</comment>
+        <translation>Asifeḍ n tvidyut</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="305"/>
+        <location filename="../app/src/main.cpp" line="310"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
+        <translation>Ifuk</translation>
+    </message>
+    <message>
+        <location filename="../app/src/main.cpp" line="308"/>
+        <source>Exporting image sequence...</source>
+        <comment>Command line task progress</comment>
+        <translation>Asifeḍ n tlubbayt n tugna...</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
+        <source>Pencil2D formats</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/main.cpp" line="306"/>
-        <source>Exporting image sequence...</source>
-        <comment>Command line task progress</comment>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="33"/>
+        <source>Pencil2D Project</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="33"/>
+        <source>Legacy Pencil2D Project</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="36"/>
+        <source>Movie formats</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="41"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
+        <source>Image formats</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="47"/>
+        <source>Palette formats</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="47"/>
+        <source>GIMP Palette</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="47"/>
+        <source>Pencil2D Palette</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="50"/>
+        <source>Animated GIF</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="53"/>
+        <source>Sound formats</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/graphics/vector/colorref.cpp" line="28"/>
+        <source>Green</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="52"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="242"/>
+        <source>Bitmap only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="53"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="243"/>
+        <source>You need to be on the bitmap layer to import a movie clip</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="149"/>
+        <source>Loading video failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="150"/>
+        <source>Could not get duration from the specified video. Are you sure you are importing a valid video file?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="175"/>
+        <source>Error creating folder</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="176"/>
+        <source>Unable to create a temporary folder, cannot import video.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="190"/>
+        <source>Imported movie too big!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="191"/>
+        <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="322"/>
+        <source>Sound only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="323"/>
+        <source>You need to be on a sound layer to import the audio</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="335"/>
+        <source>Move to an empty frame</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="336"/>
+        <source>A frame already exists on frame: </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="379"/>
+        <source>FFmpeg Not Found</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieimporter.cpp" line="380"/>
+        <source>Please place the ffmpeg binary in plugins directory and try again</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/predefinedsetmodel.h" line="62"/>
+        <source>Files</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/predefinedsetmodel.h" line="64"/>
+        <source>KeyFrame Pos</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="302"/>
+        <source>Add Frame</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="303"/>
+        <source>Clear Frame</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="304"/>
+        <source>Copy</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="305"/>
+        <source>Cut</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="306"/>
+        <source>Delete Current Layer</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="307"/>
+        <source>Deselect All</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="308"/>
+        <source>Duplicate Frame</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="309"/>
+        <source>Exit</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="310"/>
+        <source>Export Image</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="311"/>
+        <source>Export Image Sequence</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="312"/>
+        <source>Export Movie</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="313"/>
+        <source>Export Palette</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="314"/>
+        <source>Export Sound</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="315"/>
+        <source>Horizontal Flip</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="316"/>
+        <source>Flip In-Between</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="317"/>
+        <source>Flip Rolling</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="318"/>
+        <source>Vertical Flip</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="319"/>
+        <source>Next Frame</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="320"/>
+        <source>Next Keyframe</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="321"/>
+        <source>Previous Frame</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="322"/>
+        <source>Previous Keyframe</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="323"/>
+        <source>Toggle Grid</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="324"/>
+        <source>Import Image</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="325"/>
+        <source>Import Image Sequence</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="326"/>
+        <source>Import Sound</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="327"/>
+        <source>Show All Layers</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="328"/>
+        <source>Show Current Layer Only</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="329"/>
+        <source>Show Layers Relative to Current Layer</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="330"/>
+        <source>Toggle Loop</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="331"/>
+        <source>Move Frame Backward</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="332"/>
+        <source>Move Frame Forward</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="333"/>
+        <source>New Bitmap Layer</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="334"/>
+        <source>New Camera Layer</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="335"/>
+        <source>New File</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="336"/>
+        <source>New Sound Layer</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="337"/>
+        <source>New Vector Layer</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="338"/>
+        <source>Toggle Next Onion Skin</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="339"/>
+        <source>Toggle Previous Onion Skin</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="340"/>
+        <source>Open File</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="341"/>
+        <source>Paste</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="342"/>
+        <source>Play/Stop</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="343"/>
+        <source>Preferences</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="344"/>
+        <source>Preview</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="345"/>
+        <source>Redo</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="346"/>
+        <source>Remove Frame</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="347"/>
+        <source>Reset Windows</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="348"/>
+        <source>Reset Zoom/Rotate</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="349"/>
+        <source>Rotate Anticlockwise</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="350"/>
+        <source>Rotate Clockwise</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="351"/>
+        <source>Save File As</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="352"/>
+        <source>Save File</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="353"/>
+        <source>Select All</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="354"/>
+        <source>Toggle Color Inspector Window Visibility</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="355"/>
+        <source>Toggle Color Palette Window Visibility</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="356"/>
+        <source>Toggle Color Box Window Visibility</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="357"/>
+        <source>Toggle Display Window Visibility</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="358"/>
+        <source>Toggle Onion Skins Window Visibility</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="359"/>
+        <source>Toggle Timeline Window Visibility</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="360"/>
+        <source>Toggle Tools Window Visibility</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="361"/>
+        <source>Toggle Options Window Visibility</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="362"/>
+        <source>Brush Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="363"/>
+        <source>Bucket Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="364"/>
+        <source>Eraser Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="365"/>
+        <source>Eyedropper Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="366"/>
+        <source>Hand Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="367"/>
+        <source>Move Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="368"/>
+        <source>Pen Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="369"/>
+        <source>Pencil Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="370"/>
+        <source>Polyline Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="371"/>
+        <source>Select Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="372"/>
+        <source>Smudge Tool</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="373"/>
+        <source>Undo</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="374"/>
+        <source>Set Zoom to 100%</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="375"/>
+        <source>Set Zoom to 200%</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="376"/>
+        <source>Set Zoom to 25%</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="377"/>
+        <source>Set Zoom to 300%</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="378"/>
+        <source>Set Zoom to 33%</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="379"/>
+        <source>Set Zoom to 400%</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="380"/>
+        <source>Set Zoom to 50%</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="381"/>
+        <source>Zoom In</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="382"/>
+        <source>Zoom Out</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/canvaspainter.cpp" line="699"/>
+        <source>Safe Action area %1 %</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/canvaspainter.cpp" line="713"/>
+        <source>Safe Title area %1 %</source>
         <translation type="unfinished"/>
     </message>
 </context>
@@ -3728,66 +5071,76 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="31"/>
         <source>Clear</source>
-        <translation>Sfeḍ</translation>
+        <comment>Clear Recent File menu</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="32"/>
+        <source>Empty</source>
+        <comment>Showing when Recent File Menu is empty</comment>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="704"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="721"/>
         <source>Warning</source>
         <translation>Ɣur-k</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="705"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="722"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
-        <translation type="unfinished"/>
+        <translation>Ala tettaɛraḍeḍ ad tbeddeleḍ tissi yefren ! Ttxil-k fren tissi-nniḍen (neɣ err tissi tamirant tettban).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1953"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1593"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Kkes tafrayt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1969"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1977"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1619"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1631"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Sfeḍ tugna</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2003"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1662"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Yella icerriq de wunuɣ-inek (neɣ ahat tesmeɣreḍ aṭas zzom).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2004"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1665"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Surfaɣ! Ayagi ur itteddu ara yalas. Ttxil-k eɛreḍ tikkelt-nniḍen (ennu ciṭ zoom, sit deg umḍiq-nniḍen...)&lt;br&gt;ma yella ayagi ur itteddu ara, ernu ciṭ zoom yerna selken belli iberdan-ik qqnen s usiti ɣef f1).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2008"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1670"/>
         <source>Out of bound.</source>
-        <translation>Berra n talast.</translation>
+        <comment>Bucket tool fill error message</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2009"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1671"/>
         <source>Could not find a closed path.</source>
-        <translation>D awezzɣi tifin n ubrid imedlen.</translation>
+        <comment>Bucket tool fill error message</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2010"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1672"/>
         <source>Could not find the root index.</source>
-        <translation>D awezɣi tifin n umatar aẓar.</translation>
+        <comment>Bucket tool fill error message</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2011"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1673"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Tuccḍa:%2</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="2011"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1673"/>
         <source>Flood fill error</source>
         <translation>Tuccḍa n tačart</translation>
     </message>
@@ -3817,22 +5170,65 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="73"/>
         <source>Clear</source>
+        <translation>Sfeḍ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/shortcutspage.ui" line="87"/>
+        <source>Save</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/shortcutspage.ui" line="100"/>
+        <location filename="../app/ui/shortcutspage.ui" line="94"/>
+        <source>Load</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/shortcutspage.ui" line="114"/>
         <source>Restore Default Shortcuts</source>
         <translation>Err-d inegzumen n lexṣas</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="95"/>
+        <location filename="../app/src/shortcutspage.cpp" line="44"/>
+        <source>Action</source>
+        <comment>Shortcut table header</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="44"/>
+        <source>Shortcut</source>
+        <comment>Shortcut table header</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="105"/>
         <source>Shortcut Conflict!</source>
         <translation>Ameggired gar inegzumen!</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="96"/>
+        <location filename="../app/src/shortcutspage.cpp" line="106"/>
         <source>%1 is already used, overwrite?</source>
         <translation>%1 yettwaseqdec yakan, ad t-tesemselsiḍ ?</translation>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="140"/>
+        <source>Save Pencil2D Shortcut file</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="141"/>
+        <source>untitled.pcls</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="142"/>
+        <location filename="../app/src/shortcutspage.cpp" line="168"/>
+        <source>Pencil2D Shortcut File(*.pcls)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="166"/>
+        <source>Open Pencil2D Shortcut file</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3846,6 +5242,11 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="47"/>
         <source>Frames per second</source>
         <translation>Tugniwin i tasint</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="46"/>
+        <source> fps</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timecontrols.cpp" line="55"/>
@@ -3863,33 +5264,40 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
         <translation>Tagrumma n tɣuri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="88"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="94"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="208"/>
         <source>Play</source>
         <translation>Urar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="89"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="95"/>
         <source>Loop</source>
         <translation>Tineddict</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="90"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="96"/>
         <source>Sound on/off</source>
         <translation>Imesli yermed/yexsi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="91"/>
-        <source>End</source>
-        <translation>Tagara</translation>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="97"/>
+        <source>Sound scrub on/off</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="92"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="195"/>
-        <source>Start</source>
-        <translation>Tazwara</translation>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="98"/>
+        <source>Jump to the End</source>
+        <comment>Tooltip of the jump to end button</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="190"/>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="99"/>
+        <source>Jump to the Start</source>
+        <comment>Tooltip of the jump to start button</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/timecontrols.cpp" line="203"/>
         <source>Stop</source>
         <translation>Ḥbes</translation>
     </message>
@@ -3899,7 +5307,8 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
         <source>Timeline</source>
-        <translation>Tasnakudt</translation>
+        <comment>Subpanel title</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
@@ -3965,49 +5374,39 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="135"/>
         <source>Zoom:</source>
-        <translation type="unfinished"/>
+        <translation>Zoom:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/timeline.cpp" line="142"/>
         <source>Adjust frame width</source>
-        <translation type="unfinished"/>
+        <translation>Sgaddi tehri n ukatar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="145"/>
-        <source>Onion skin:</source>
-        <translation>Tafrawant:</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="149"/>
-        <source>Toggle match keyframes</source>
-        <translation>Qluqel tugniwin inmeɣran</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="300"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="289"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Kkes akalku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="310"/>
-        <source>Please keep at least one camera layer in project</source>
-        <translation>Ttxil-k eǧǧ ma drus yiwen n ukalku n tkamirat deg usenfar</translation>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="290"/>
+        <source>Are you sure you want to delete layer: %1?</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="301"/>
-        <source>Are you sure you want to delete layer: </source>
-        <translation>D tidet tebɣiḍ ad tekkseḍ akalku:</translation>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="299"/>
+        <source>Please keep at least one camera layer in project</source>
+        <translation>Ttxil-k eǧǧ ma drus yiwen n ukalku n tkamirat deg usenfar</translation>
     </message>
 </context>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="731"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="764"/>
         <source>Layer Properties</source>
         <translation>Iraten n ukalku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="732"/>
+        <location filename="../core_lib/src/interface/timelinecells.cpp" line="765"/>
         <source>Layer name:</source>
         <translation>Isem n ukalku:</translation>
     </message>
@@ -4082,37 +5481,67 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Eraser, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Ad yettusnes ɣef Akeryun, Tasemsut, Imru, Izirig yerrẓen, Taqbuct akked yifeck n umfezzu)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="269"/>
+        <source>Sound scrub</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="160"/>
-        <source>Playback</source>
-        <translation>Taɣuri</translation>
+        <location filename="../app/ui/timelinepage.ui" line="302"/>
+        <source> ms</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="172"/>
-        <source>Show onion skin while playing</source>
-        <translation>Sken iclem n uẓalim deg wurar</translation>
+        <location filename="../app/ui/timelinepage.ui" line="326"/>
+        <source>Layer Visibility</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="180"/>
+        <location filename="../app/ui/timelinepage.ui" line="332"/>
+        <source>Startup option</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="340"/>
+        <source>Current layer only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="345"/>
+        <source>Relative</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="350"/>
+        <source>All Layers</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="358"/>
+        <source>When layer visibility is relative (gray dot)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/timelinepage.ui" line="148"/>
         <source>Flip and Roll</source>
-        <translation type="unfinished"/>
+        <translation>Tti yerna sker</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="188"/>
+        <location filename="../app/ui/timelinepage.ui" line="156"/>
         <source>Maximum numbers of drawings in roll</source>
-        <translation type="unfinished"/>
+        <translation>Amḍan afellay n wunuɣen deg wunuḍ</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="240"/>
+        <location filename="../app/ui/timelinepage.ui" line="208"/>
         <source>Msecs per drawing in flip inbetween</source>
-        <translation type="unfinished"/>
+        <translation>Mili tasint i wunuɣ di flip inbetween</translation>
     </message>
     <message>
-        <location filename="../app/ui/timelinepage.ui" line="289"/>
+        <location filename="../app/ui/timelinepage.ui" line="257"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation type="unfinished"/>
+        <translation>Mili tasint i wunuɣ di flip roll</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>
@@ -4129,122 +5558,122 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
         <translation>Ifecka</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="77"/>
+        <location filename="../app/src/toolbox.cpp" line="78"/>
         <source>Pencil Tool (%1): Sketch with pencil</source>
         <translation>Afecku akeryun (%1): azenziɣ s ukeryun</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="79"/>
+        <location filename="../app/src/toolbox.cpp" line="80"/>
         <source>Select Tool (%1): Select an object</source>
         <translation>Fren afecku (%1): fren taɣawsa</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="81"/>
+        <location filename="../app/src/toolbox.cpp" line="82"/>
         <source>Move Tool (%1): Move an object</source>
         <translation>Afecku n usmutti (%1): Smutti taɣawsa</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="83"/>
+        <location filename="../app/src/toolbox.cpp" line="84"/>
         <source>Hand Tool (%1): Move the canvas</source>
         <translation>Afecku afus (%1): Smutti taɣzut n usuneɣ</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="85"/>
+        <location filename="../app/src/toolbox.cpp" line="86"/>
         <source>Pen Tool (%1): Sketch with pen</source>
         <translation>Afecku imru (%1): Azenziɣ s imru</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="87"/>
+        <location filename="../app/src/toolbox.cpp" line="88"/>
         <source>Eraser Tool (%1): Erase</source>
         <translation>Afecku Tasemsut (%1): Sfeḍ</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="89"/>
+        <location filename="../app/src/toolbox.cpp" line="90"/>
         <source>Polyline Tool (%1): Create line/curves</source>
         <translation>Afecku Izirig irẓen (%1): Snulfu-d izirig/azlig</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="91"/>
+        <location filename="../app/src/toolbox.cpp" line="92"/>
         <source>Paint Bucket Tool (%1): Fill selected area with a color</source>
         <translation>Afecku taqbuct n taklut (%1): Aččar taɣzut yettwafernen s yini</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="93"/>
+        <location filename="../app/src/toolbox.cpp" line="94"/>
         <source>Brush Tool (%1): Paint smooth stroke with a brush</source>
         <translation>Afecku Amfezzu (%1): Klu izirig yemzin s umfezzu</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="95"/>
+        <location filename="../app/src/toolbox.cpp" line="96"/>
         <source>Eyedropper Tool (%1): Set color from the stage&lt;br&gt;[ALT] for instant access</source>
         <translation>Afecku Amelqaḍ n yini (%1): Sbadu ini seg usayes&lt;br&gt;[ALT] iwakken ad taddfeḍ imir kan</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="98"/>
+        <location filename="../app/src/toolbox.cpp" line="99"/>
         <source>Clear Frame (%1): Erases content of selected frame</source>
         <translation>Sfeḍ akatar (%1): Ad yesfeḍ agbur n ukatar yettwafernen</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="100"/>
+        <location filename="../app/src/toolbox.cpp" line="101"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
         <translation>Afecku Ḍlu (%1):&lt;br&gt;ẓreg izirig irẓen/izligen&lt;br&gt; Sefsi ipiksilen bitmap&lt;br&gt; (%1)+[Alt]: Smooth</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="104"/>
+        <location filename="../app/src/toolbox.cpp" line="105"/>
         <source>Pencil Tool (%1)</source>
         <translation>Afecku Akeryun (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="106"/>
+        <location filename="../app/src/toolbox.cpp" line="107"/>
         <source>Select Tool (%1)</source>
         <translation>Afecku Fren (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="108"/>
+        <location filename="../app/src/toolbox.cpp" line="109"/>
         <source>Move Tool (%1)</source>
         <translation> Afecku Smutti (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="110"/>
+        <location filename="../app/src/toolbox.cpp" line="111"/>
         <source>Hand Tool (%1)</source>
         <translation>Afecku Afus (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="112"/>
+        <location filename="../app/src/toolbox.cpp" line="113"/>
         <source>Pen Tool (%1)</source>
         <translation>Afecku Imru (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="114"/>
+        <location filename="../app/src/toolbox.cpp" line="115"/>
         <source>Eraser Tool (%1)</source>
         <translation>Afecku Tasemsut (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="116"/>
+        <location filename="../app/src/toolbox.cpp" line="117"/>
         <source>Polyline Tool (%1)</source>
         <translation>Afecku Izirig irẓen (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="118"/>
+        <location filename="../app/src/toolbox.cpp" line="119"/>
         <source>Paint Bucket Tool (%1)</source>
         <translation>Afecku Taqbuct n teklut (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="120"/>
+        <location filename="../app/src/toolbox.cpp" line="121"/>
         <source>Brush Tool (%1)</source>
         <translation>Afecku Amfezzu (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="122"/>
+        <location filename="../app/src/toolbox.cpp" line="123"/>
         <source>Eyedropper Tool (%1)</source>
         <translation>Afecku Amleqqaḍ n yini (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="124"/>
+        <location filename="../app/src/toolbox.cpp" line="125"/>
         <source>Clear Tool (%1)</source>
         <translation>Afecku Sfeḍ (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="126"/>
+        <location filename="../app/src/toolbox.cpp" line="127"/>
         <source>Smudge Tool (%1)</source>
         <translation>Afecku Ḍlu (%1)</translation>
     </message>
@@ -4252,17 +5681,17 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="48"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="49"/>
         <source>Brush</source>
         <translation>Amfezzu</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="52"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="53"/>
         <source>Feather</source>
         <translation>Rrica</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="56"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="57"/>
         <source>Color Tolerance</source>
         <translation>Tisurfa n yini</translation>
     </message>
@@ -4273,12 +5702,12 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
         <translation>Tinefrunin</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="183"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="187"/>
         <source>Stroke Thickness</source>
         <translation>Tuzert n ujerriḍ</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="188"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="192"/>
         <source>Width</source>
         <translation>Tehri</translation>
     </message>
@@ -4291,108 +5720,117 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
         <translation>Talɣa</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="22"/>
+        <location filename="../app/ui/tooloptions.ui" line="70"/>
         <source>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Sbadu tuzert n imru &lt;br&gt;&lt;b&gt; [SHIFT] + zuɣer&lt;/b&gt;&lt;br&gt; i wesgaddi arurad</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="58"/>
+        <location filename="../app/ui/tooloptions.ui" line="106"/>
         <source>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
         <translation>Sbadu rrica n imru &lt;br&gt;&lt;b&gt;[CTRL]+zuɣer&lt;/b&gt;&lt;br&gt;i wesgaddi s tɣawla</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="92"/>
+        <location filename="../app/ui/tooloptions.ui" line="140"/>
         <source>Enable or disable feathering</source>
-        <translation type="unfinished"/>
+        <translation>Sermed neɣ sexsi areyyec</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="95"/>
+        <location filename="../app/ui/tooloptions.ui" line="143"/>
         <source>Use Feather</source>
         <translation>Seqdec rrica</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="102"/>
+        <location filename="../app/ui/tooloptions.ui" line="150"/>
         <source>Contour will be filled</source>
         <translation>Azizdew ad yaččar</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="105"/>
+        <location filename="../app/ui/tooloptions.ui" line="153"/>
         <source>Fill Contour</source>
         <translation>Aččar azizdew</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="133"/>
+        <location filename="../app/ui/tooloptions.ui" line="181"/>
         <source>Bezier</source>
-        <translation>Bezier</translation>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="140"/>
+        <location filename="../app/ui/tooloptions.ui" line="188"/>
         <source>Pressure</source>
-        <comment>Brush</comment>
-        <translation>Tussda</translation>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="147"/>
+        <location filename="../app/ui/tooloptions.ui" line="205"/>
+        <source>Invisible</source>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="215"/>
+        <source>Alpha</source>
+        <comment>Tool options</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="247"/>
+        <source>None</source>
+        <comment>Stablizer level</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="195"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
         <translation>Amzay</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="177"/>
-        <source>Merge</source>
-        <comment>Vector line merge</comment>
-        <translation>Zdi</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="200"/>
+        <location filename="../app/ui/tooloptions.ui" line="251"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
         <translation>Ulac</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="205"/>
+        <location filename="../app/ui/tooloptions.ui" line="256"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
         <translation>Aḥerfi</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="210"/>
+        <location filename="../app/ui/tooloptions.ui" line="261"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
         <translation>Iǧhedd</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="154"/>
+        <location filename="../app/ui/tooloptions.ui" line="202"/>
         <source>Make invisible</source>
         <translation>Err d attwalay</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="114"/>
+        <location filename="../app/ui/tooloptions.ui" line="162"/>
         <source>The extent to which the color variation will be treated as being equal</source>
-        <translation type="unfinished"/>
+        <translation>Temɣer s wayes asenfel n yini ad yettwaḥseb yugda</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="157"/>
-        <source>Invisible</source>
-        <translation>Uffir</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="164"/>
+        <location filename="../app/ui/tooloptions.ui" line="212"/>
         <source>Preserve Alpha</source>
         <translation>Ḥrez Alfa</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="167"/>
-        <source>Alpha</source>
-        <translation>Alfa</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="174"/>
+        <location filename="../app/ui/tooloptions.ui" line="222"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Zdi izirigen imawayen ticki mqarabent</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="192"/>
+        <location filename="../app/ui/tooloptions.ui" line="225"/>
+        <source>Merge</source>
+        <comment>Vector line merge (Tool options)</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="240"/>
         <source>Stabilizer</source>
         <translation>Amserked</translation>
     </message>
@@ -4401,38 +5839,33 @@ Tebɣiḍ ad t-teskelseḍ tura?</translation>
     <name>ToolsPage</name>
     <message>
         <location filename="../app/ui/toolspage.ui" line="44"/>
-        <source>Onion skin</source>
-        <translation>Iclem n uẓalim</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/toolspage.ui" line="50"/>
-        <source>Maximum onion opacity %</source>
-        <translation>Tiḍullest tafellayt n tefrawant %</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/toolspage.ui" line="76"/>
-        <source>Minimum onion opacity %</source>
-        <translation>Tiḍullest taddayt n tefrawant %</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/toolspage.ui" line="102"/>
-        <source>Number of previous onion frames shown</source>
-        <translation>Amaḍan n tugniwin tuzwirin tifrawanin yettwaseknen</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/toolspage.ui" line="131"/>
-        <source>Number of next onion frames shown</source>
-        <translation>Amaḍan n tugniwin tuḍfirin tifrawanin yettwaseknen</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/toolspage.ui" line="163"/>
         <source>Brush Tools</source>
         <translation>Ifecka n imfezza</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolspage.ui" line="169"/>
+        <location filename="../app/ui/toolspage.ui" line="50"/>
         <source>Use Quick Sizing</source>
         <translation>Seqdec asemɣer arurad</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/toolspage.ui" line="60"/>
+        <source>Move Tool</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/toolspage.ui" line="66"/>
+        <source>Rotation snap increment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/toolspage.ui" line="89"/>
+        <source>15 degrees</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/preferencesdialog.cpp" line="820"/>
+        <source>%1 degrees</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

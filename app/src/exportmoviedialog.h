@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -31,7 +31,7 @@ class ExportMovieDialog : public ImportExportDialog
     Q_OBJECT
 
 public:
-    explicit ExportMovieDialog(QWidget* parent = nullptr, Mode mode = ImportExportDialog::Export, FileType fileType = FileType::MOVIE);
+    explicit ExportMovieDialog(QWidget* parent, Mode mode, FileType fileType);
     ~ExportMovieDialog();
 
     void setCamerasInfo(const std::vector<std::pair<QString, QSize>>);
@@ -47,14 +47,14 @@ public:
     int getEndFrame();
 
     bool getLoop();
-    
+
 private:
     void frameCheckboxClicked(bool checked);
     void onFilePathsChanged(QStringList filePaths);
 
     bool supportsLooping(QString filePath) const;
     bool supportsTransparency(QString filePath) const;
-    
+
     int mEndFrameWithSounds = 0;
     int mEndFrame = 0;
 

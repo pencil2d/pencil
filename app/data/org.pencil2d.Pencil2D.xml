@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mime-info xmlns="http://www.freedesktop.org/standards/shared-mime-info">
+  <mime-type type="application/x-pencil2d-pcl">
+    <comment>Pencil2D animation (old format)</comment>
+    <comment xml:lang="de">Pencil2D-Animation (altes Format)</comment>
+    <generic-icon name="video-x-generic"/>
+    <glob pattern="*.pcl"/>
+    <magic priority="90">
+      <match type="string" offset="0" value="&lt;!DOCTYPE PencilDocument&gt;"/>
+    </magic>
+    <sub-class-of type="text/xml"/>
+  </mime-type>
+  <mime-type type="application/x-pencil2d-pclx">
+    <comment>Pencil2D animation</comment>
+    <comment xml:lang="de">Pencil2D-Animation</comment>
+    <generic-icon name="video-x-generic"/>
+    <glob pattern="*.pclx"/>
+    <sub-class-of type="application/zip"/>
+  </mime-type>
+  <mime-type type="application/x-pencil2d-palette">
+    <comment>Pencil2D palette</comment>
+    <comment xml:lang="de">Pencil2D-Palette</comment>
+    <glob pattern="*.xml"/>
+    <magic priority="90">
+      <match type="string" offset="0" value="&lt;!DOCTYPE PencilPalette&gt;"/>
+    </magic>
+    <sub-class-of type="text/xml"/>
+  </mime-type>
+  <mime-type type="application/x-pencil2d-shortcuts">
+    <comment>Pencil2D shortcuts</comment>
+    <comment xml:lang="de">Pencil2D-Tastenkürzel</comment>
+    <glob pattern="*.pcls"/>
+    <magic priority="90">
+      <match type="string" offset="0" value="[shortcuts]"/>
+    </magic>
+    <sub-class-of type="text/plain"/>
+  </mime-type>
+</mime-info>

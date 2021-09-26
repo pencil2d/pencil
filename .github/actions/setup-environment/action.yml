@@ -1,0 +1,15 @@
+name: Set up environment
+inputs:
+  arch:
+    description: Architecture
+    required: true
+runs:
+  using: composite
+  steps:
+    # XXX: Should use github.action_path here, but it’s currently broken in
+    #      container builds, see https://github.com/actions/runner/issues/716
+  - run: .github/actions/setup-environment/setup-environment.sh
+    shell: bash
+    env:
+      RUNNER_OS: ${{runner.os}}
+      INPUT_ARCH: ${{inputs.arch}}

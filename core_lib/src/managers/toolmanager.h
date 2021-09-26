@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -46,7 +46,7 @@ public:
     void tabletRestorePrevTool();
     int propertySwitch(bool condition, int property);
 
-Q_SIGNALS:
+signals:
     void penWidthValueChanged(float);
     void penFeatherValueChanged(float);
     void toleranceValueChanged(qreal);
@@ -66,8 +66,14 @@ public slots:
     void setBezier(bool);
     void setPressure(bool);
     void setAA(int);
+    void setFillMode(int);
     void setStabilizerLevel(int);
     void setTolerance(int);
+    void setBucketColorToleranceEnabled(bool enabled);
+    void setBucketFillExpandEnabled(bool enabled);
+    void setBucketFillToLayer(int layerIndex);
+    void setBucketFillReferenceMode(int referenceMode);
+    void setBucketFillExpand(int);
     void setUseFillContour(bool);
 
 private:
