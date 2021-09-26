@@ -1148,11 +1148,17 @@ void VectorImage::removeColor(int index)
 {
     for (int i = 0; i < mArea.size(); i++)
     {
-        if (mArea[i].getColorNumber() > index) mArea[i].decreaseColorNumber();
+        int colorNumber = mArea[i].getColorNumber();
+        if (colorNumber >= index && colorNumber > 0) {
+            mArea[i].decreaseColorNumber();
+        }
     }
     for (int i = 0; i < mCurves.size(); i++)
     {
-        if (mCurves[i].getColorNumber() > index) mCurves[i].decreaseColorNumber();
+        int colorNumber = mCurves[i].getColorNumber();
+        if (colorNumber >= index && colorNumber > 0) {
+            mCurves[i].decreaseColorNumber();
+        }
     }
 }
 
