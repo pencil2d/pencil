@@ -1003,7 +1003,20 @@ void MainWindow2::newObject()
 {
     auto object = new Object();
     object->init();
-    object->createDefaultLayers();
+
+    // default layers
+    bool createVectorLayer = mEditor->preference()->isOn(SETTING::CREATE_DEFAULT_VECTOR_LAYER);
+    object->addNewCameraLayer();
+    if (createVectorLayer) {
+        object->addNewVectorLayer();
+    }
+    object->addNewBitmapLayer();
+    // Layers are counted bottom up
+    // 0 - Camera Layer
+    // (1 - Vector Layer)
+    // 1/2 - Bitmap Layer
+    object->data()->setCurrentLayer(createVectorLayer ? 2 : 1);
+
     mEditor->setObject(object);
 
     closeDialogs();

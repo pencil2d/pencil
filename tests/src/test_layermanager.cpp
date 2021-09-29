@@ -32,10 +32,12 @@ TEST_CASE("LayerManager::init()")
         LayerManager* layerMgr = new LayerManager(editor);
         layerMgr->init();
 
-        object->init(); 
-        object->createDefaultLayers(); // create default 3 layers
+        object->init();
+        object->addNewCameraLayer();
+        object->addNewVectorLayer();
+        object->addNewBitmapLayer();
         REQUIRE(layerMgr->count() == 3);
-        REQUIRE(layerMgr->currentLayerIndex() == 2);
+        REQUIRE(layerMgr->currentLayerIndex() == 0);
         REQUIRE(layerMgr->getLayer(0)->type() == Layer::CAMERA);
         REQUIRE(layerMgr->getLayer(1)->type() == Layer::VECTOR);
         REQUIRE(layerMgr->getLayer(2)->type() == Layer::BITMAP);
