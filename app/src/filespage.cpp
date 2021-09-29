@@ -42,6 +42,8 @@ FilesPage::FilesPage()
     connect(ui->loadDefaultPresetRbtn, &QRadioButton::toggled, this, &FilesPage::loadDefaultPreset);
     connect(ui->presetListWidget, &QListWidget::itemChanged, this, &FilesPage::presetNameChanged);
 
+    connect(ui->vectorCheckBox, &QCheckBox::stateChanged, this, &FilesPage::vectorChanged);
+
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->autosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autoSaveChange);
     connect(ui->autosaveNumberBox, spinBoxValueChange, this, &FilesPage::autoSaveNumberChange);
@@ -207,6 +209,7 @@ void FilesPage::updateValues()
         QBrush backgroundBrush = (isDefault) ? palette().light() : palette().window();
         item->setBackground(backgroundBrush);
     }
+    ui->vectorCheckBox->setChecked(mManager->isOn(SETTING::CREATE_DEFAULT_VECTOR_LAYER));
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
     ui->askPresetRbtn->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
@@ -227,6 +230,11 @@ void FilesPage::loadMostRecentChange(int b)
 void FilesPage::loadDefaultPreset(int b)
 {
     mManager->set(SETTING::LOAD_DEFAULT_PRESET, b != Qt::Unchecked);
+}
+
+void FilesPage::vectorChanged(int b)
+{
+    mManager->set(SETTING::CREATE_DEFAULT_VECTOR_LAYER, b != Qt::Unchecked);
 }
 
 void FilesPage::autoSaveChange(int b)

@@ -48,6 +48,7 @@ public slots:
     void askForPresetChange(int b);
     void loadMostRecentChange(int b);
     void loadDefaultPreset(int b);
+    void vectorChanged(int b);
     void autoSaveChange(int b);
     void autoSaveNumberChange(int number);
 

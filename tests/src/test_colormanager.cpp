@@ -52,7 +52,10 @@ TEST_CASE("ColorManager set color tests")
     layerMgr->init();
 
     layerObj->init();
-    layerObj->createDefaultLayers();    // 0 = camera, 1 = vector, 2 = bitmap
+    // 0 = camera, 1 = vector, 2 = bitmap
+    layerObj->addNewCameraLayer();
+    layerObj->addNewVectorLayer();
+    layerObj->addNewBitmapLayer();
 
 
     SECTION("setColor non vector layer")

@@ -208,14 +208,6 @@ void Object::setWorkingDir(const QString& path)
     mWorkingDirPath = path;
 }
 
-void Object::createDefaultLayers()
-{
-    // default layers
-    addNewCameraLayer();
-    addNewVectorLayer();
-    addNewBitmapLayer();
-}
-
 int Object::getMaxLayerID()
 {
     int maxId = 0;
