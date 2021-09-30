@@ -65,10 +65,10 @@ BitmapBucket::BitmapBucket(Editor* editor,
     const QPoint point = QPoint(qFloor(fillPoint.x()), qFloor(fillPoint.y()));
 
     BitmapImage* image = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
-    mReferenceColor = image->constScanLine(point.x(), point.y());
+    mFillToImageColor = image->constScanLine(point.x(), point.y());
 }
 
-bool BitmapBucket::shouldFill(QPointF checkPoint) const
+bool BitmapBucket::allowFill(QPointF checkPoint) const
 {
     const QPoint point = QPoint(qFloor(checkPoint.x()), qFloor(checkPoint.y()));
 
@@ -84,12 +84,10 @@ bool BitmapBucket::shouldFill(QPointF checkPoint) const
 
     if (!targetImage.isLoaded()) { return false; }
 
-    BitmapImage referenceImage = mReferenceImage;
-
-    QRgb pixelColor = referenceImage.constScanLine(point.x(), point.y());
+    QRgb colorOfreferenceImage = mReferenceImage.constScanLine(point.x(), point.y());
     QRgb targetPixelColor = targetImage.constScanLine(point.x(), point.y());
 
-    if (mProperties.fillMode == 2 && pixelColor != 0)
+    if (mProperties.fillMode == 2 && colorOfreferenceImage != 0)
     {
         // don't try to fill because we won't be able to see it anyway...
         return false;
@@ -101,17 +99,20 @@ bool BitmapBucket::shouldFill(QPointF checkPoint) const
         return true;
     }
 
-    // Ensure that when dragging that we're only filling on either transparent or same color
-    if ((mReferenceColor == targetPixelColor && targetPixelColor == pixelColor) || (pixelColor == 0 && targetPixelColor == 0))
-    {
-        return true;
+    QRgb fillToColor = mFillToImageColor;
+
+    // Using either of these modes applies premultiplied colors, so we have to unpremultiply to compare the colors
+    if (mProperties.bucketFillReferenceMode == 1) {
+        colorOfreferenceImage = qUnpremultiply(colorOfreferenceImage);
+    }
+    if (mProperties.bucketFillToLayerMode == 1) {
+        fillToColor = qUnpremultiply(fillToColor);
     }
 
-    // When filling with various blending modes we need to verify that the applied color
-    // doesn't match the target color, otherwise it will fill the same color for no reason.
-    // We still expect to only fill on either transparent or same color.
-    if (mAppliedColor != targetPixelColor && pixelColor == 0)
-    {
+    // Ensure that when dragging that we're only filling on either transparent or same color
+    if (targetPixelColor != mAppliedColor &&
+        targetPixelColor == mFillToImageColor &&
+        (colorOfreferenceImage == fillToColor || colorOfreferenceImage == 0)) {
         return true;
     }
 
@@ -130,7 +131,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
     const int currentFrameIndex = mEditor->currentFrame();
     const QRgb origColor = fillColor;
 
-    if (!shouldFill(updatedPoint)) { return; }
+    if (!allowFill(updatedPoint)) { return; }
 
     BitmapImage* targetImage = static_cast<BitmapImage*>(targetLayer->getLastKeyFrameAtPosition(currentFrameIndex));
 

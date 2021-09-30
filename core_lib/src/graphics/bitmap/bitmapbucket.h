@@ -57,7 +57,7 @@ private:
      * @param checkPoint
      * @return True if you are allowed to fill, otherwise false
      */
-    bool shouldFill(QPointF checkPoint) const;
+    bool allowFill(QPointF checkPoint) const;
 
     std::pair<Layer*, int> findBitmapLayerBelow(Layer* targetLayer, int layerIndex) const;
     BitmapImage flattenBitmapLayersToImage();
@@ -67,7 +67,7 @@ private:
 
     BitmapImage mReferenceImage;
     QRgb mBucketColor = 0;
-    QRgb mReferenceColor = 0;
+    QRgb mFillToImageColor = 0;
     QRgb mAppliedColor = 0;
 
     QPointF mBucketStartPoint;

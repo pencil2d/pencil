@@ -135,4 +135,68 @@ TEST_CASE("BitmapBucket - Fill drag logic")
 
         verifyPixels(pressPoint, image, fillColor.rgba());
     }
+
+    SECTION("Ensure that we only fill with same color on reference color - "
+            "layerMode: current layer and reference mode: current")
+    {
+        properties.bucketFillToLayerMode = 0;
+        properties.bucketFillReferenceMode = 0;
+        properties.fillMode = 0;
+
+        dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties);
+        BitmapImage* image = static_cast<LayerBitmap*>(editor->layers()->currentLayer())->getLastBitmapImageAtFrame(1);
+        image->writeFile(resultsPath + "test5a.png");
+
+        fillColor = QColor(0,255,0,255);
+        dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties);
+
+        image = static_cast<LayerBitmap*>(editor->layers()->currentLayer())->getLastBitmapImageAtFrame(1);
+        image->writeFile(resultsPath + "test5b.png");
+
+        verifyPixels(pressPoint, image, fillColor.rgba());
+    }
+
+    SECTION("Ensure that we only fill with same color on reference color - "
+            "layer mode: all layers and referenceMode: layer below")
+    {
+        properties.bucketFillToLayerMode = 1;
+        properties.bucketFillReferenceMode = 1;
+        properties.fillMode = 1;
+
+        dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties);
+        BitmapImage* image = static_cast<LayerBitmap*>(editor->layers()->currentLayer(-1))->getLastBitmapImageAtFrame(1);
+        image->writeFile(resultsPath + "test6a.png");
+
+        fillColor = QColor(0,255,0,255);
+        dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties);
+
+        image = static_cast<LayerBitmap*>(editor->layers()->currentLayer(-1))->getLastBitmapImageAtFrame(1);
+        image->writeFile(resultsPath + "test6b.png");
+
+        // Because layers reference all layers are used and we're filling to layer below
+        // the color has to be premultiplied because the reference pixel is premultiplied
+        verifyPixels(pressPoint, image, qPremultiply(fillColor.rgba()));
+    }
+
+    SECTION("Ensure that we only fill with same color on reference color - "
+            "layer mode: current layer and referenceMode: all layers")
+    {
+        properties.bucketFillToLayerMode = 0;
+        properties.bucketFillReferenceMode = 1;
+        properties.fillMode = 1;
+
+        dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties);
+        BitmapImage* image = static_cast<LayerBitmap*>(editor->layers()->currentLayer())->getLastBitmapImageAtFrame(1);
+        image->writeFile(resultsPath + "test7a.png");
+
+        fillColor = QColor(0,255,0,255);
+        dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties);
+
+        image = static_cast<LayerBitmap*>(editor->layers()->currentLayer())->getLastBitmapImageAtFrame(1);
+        image->writeFile(resultsPath + "test7b.png");
+
+        // Because layers reference all layers are used and we're filling to layer below
+        // the color has to be premultiplied because the reference pixel is premultiplied
+        verifyPixels(pressPoint, image, qPremultiply(fillColor.rgba()));
+    }
 }
