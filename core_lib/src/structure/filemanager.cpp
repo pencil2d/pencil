@@ -721,7 +721,7 @@ QStringList FileManager::searchForUnsavedProjects()
     QStringList entries = pencil2DTempDir.entryList(nameFilter, QDir::Dirs | QDir::Readable);
 
     QStringList recoverables;
-    for (const QString path : entries)
+    for (const QString& path : entries)
     {
         QString fullPath = pencil2DTempDir.filePath(path);
         if (isProjectRecoverable(fullPath))
