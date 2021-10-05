@@ -60,15 +60,18 @@ bool ScribbleArea::init()
 {
     mPrefs = mEditor->preference();
     mDoubleClickTimer = new QTimer(this);
+    mMouseFilterTimer = new QTimer(this);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
+    connect(mMouseFilterTimer, &QTimer::timeout, this, &ScribbleArea::tabletReleaseEventFired);
 
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::onSelectionChanged);
     connect(mEditor->select(), &SelectionManager::needPaintAndApply, this, &ScribbleArea::applySelectionChanges);
     connect(mEditor->select(), &SelectionManager::needDeleteSelection, this, &ScribbleArea::deleteSelection);
 
     mDoubleClickTimer->setInterval(50);
+    mMouseFilterTimer->setInterval(50);
 
     const int curveSmoothingLevel = mPrefs->getInt(SETTING::CURVE_SMOOTHING);
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
@@ -86,7 +89,6 @@ bool ScribbleArea::init()
     updateCanvasCursor();
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
-
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     setTabletTracking(true); // tablet tracking first added in 5.9
 #endif
@@ -581,6 +583,8 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     }
     else if (event.eventType() == QTabletEvent::TabletRelease)
     {
+        mTabletReleaseMillisAgo = 0;
+        mMouseFilterTimer->start();
         if (mTabletInUse)
         {
             mStrokeManager->pointerReleaseEvent(&event);
@@ -706,6 +710,22 @@ void ScribbleArea::handleDoubleClick()
     }
 }
 
+void ScribbleArea::tabletReleaseEventFired()
+{
+    // Under certain circumstances a mouse press event will fire after a tablet release event.
+    // This causes unexpected behaviours for some of the tools, eg. the bucket.
+    // The problem only seems to occur on windows and only when tapping.
+    // prior to this fix, the event queue would look like this:
+    // eg: TabletPress -> TabletRelease -> MousePress
+    // The following will filter mouse events created after a tablet release event.
+    mTabletReleaseMillisAgo += 100;
+
+    if (mTabletReleaseMillisAgo >= MOUSE_FILTER_THRESHOLD) {
+        mTabletReleaseMillisAgo = 0;
+        mMouseFilterTimer->stop();
+    }
+}
+
 bool ScribbleArea::isLayerPaintable() const
 {
     Layer* layer = mEditor->layers()->currentLayer();
@@ -716,7 +736,7 @@ bool ScribbleArea::isLayerPaintable() const
 
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
-    if (mTabletInUse)
+    if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD))
     {
         e->ignore();
         return;
@@ -732,6 +752,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
+    if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD)) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerMoveEvent(&event);
@@ -741,6 +762,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 {
+    if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD)) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerReleaseEvent(&event);
