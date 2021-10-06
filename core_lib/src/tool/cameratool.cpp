@@ -237,6 +237,7 @@ void CameraTool::pointerMoveEvent(PointerEvent*)
         // update cursor to reflect selection corner interaction
         mScribbleArea->updateToolCursor();
     }
+    mEditor->view()->forceUpdateViewTransform();
     mEditor->updateCurrentFrame();
 }
 
