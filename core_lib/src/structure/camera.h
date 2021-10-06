@@ -30,7 +30,7 @@ public:
     explicit Camera(const Camera&);
     ~Camera() override;
 
-    Camera* clone() override;
+    Camera* clone() const override;
 
     QTransform getView();
     void reset();

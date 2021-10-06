@@ -987,6 +987,10 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
         return;
     }
 
+    if (currentTool()->type() == ERASER) {
+        return;
+    }
+
     int frameNumber = mEditor->currentFrame();
     if (layer->getKeyFrameAt(frameNumber)) { return; }
 

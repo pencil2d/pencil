@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define OBJECT_H
 
 #include <memory>
+#include <QCoreApplication>
 #include <QObject>
 #include <QList>
 #include <QColor>
@@ -39,13 +40,14 @@ class ActiveFramePool;
 
 class Object final
 {
+    Q_DECLARE_TR_FUNCTIONS(Object)
 public:
     explicit Object();
     ~Object();
 
 	Object(Object const&) = delete;
 	Object(Object&&) = delete;
-	Object& operator=(Object const&) = default;
+	Object& operator=(Object const&) = delete;
 	Object& operator=(Object&&) = delete;
 
     void init();

@@ -22,7 +22,6 @@ GNU General Public License for more details.
 
 // Qt
 #include <QDebug>
-#include <QListWidget>
 #include <QListWidgetItem>
 #include <QInputDialog>
 #include <QColorDialog>
@@ -261,7 +260,7 @@ void ColorPaletteWidget::refreshColorList()
 
 void ColorPaletteWidget::changeColorName(QListWidgetItem* item)
 {
-    Q_ASSERT(item != NULL);
+    Q_ASSERT(item != nullptr);
 
     if (ui->colorListWidget->viewMode() == QListView::IconMode)
     {

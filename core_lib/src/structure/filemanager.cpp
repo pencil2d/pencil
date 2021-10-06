@@ -27,8 +27,8 @@ GNU General Public License for more details.
 
 namespace
 {
-    QString openErrorTitle = QObject::tr("Could not open file");
-    QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
+    QString openErrorTitle = FileManager::tr("Could not open file");
+    QString openErrorDesc = FileManager::tr("There was an error processing your file. This usually means that your project has "
                              "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
                              "or you can try to use a backup file if you have one. If you contact us through one of "
                              "our official channels we may be able to help you. For reporting issues, "
@@ -721,7 +721,7 @@ QStringList FileManager::searchForUnsavedProjects()
     QStringList entries = pencil2DTempDir.entryList(nameFilter, QDir::Dirs | QDir::Readable);
 
     QStringList recoverables;
-    for (const QString path : entries)
+    for (const QString& path : entries)
     {
         QString fullPath = pencil2DTempDir.filePath(path);
         if (isProjectRecoverable(fullPath))

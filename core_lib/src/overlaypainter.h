@@ -1,6 +1,7 @@
 #ifndef OVERLAYPAINTER_H
 #define OVERLAYPAINTER_H
 
+#include <QCoreApplication>
 #include <QPainter>
 #include <QPalette>
 
@@ -37,6 +38,7 @@ class Layer;
 
 class OverlayPainter
 {
+    Q_DECLARE_TR_FUNCTIONS(OverlayPainter)
 public:
     explicit OverlayPainter();
 

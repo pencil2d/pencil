@@ -282,7 +282,6 @@
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="52"/>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
         <source>Current layer</source>
         <translation type="unfinished"></translation>
     </message>
@@ -297,28 +296,38 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
-        <source>All layers</source>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
+        <source>Current layer</source>
+        <comment>Reference Layer Options</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
-        <source>Refers to the layer that used to flood fill from</source>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
+        <source>All layers</source>
+        <comment>Reference Layer Options</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="60"/>
         <source>Overlay</source>
+        <comment>Blend Mode dropdown option</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="61"/>
         <source>Replace</source>
+        <comment>Blend Mode dropdown option</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="62"/>
         <source>Behind</source>
+        <comment>Blend Mode dropdown option</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
+        <source>Refers to the layer that used to flood fill from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -588,48 +597,48 @@
 <context>
     <name>ColorPaletteWidget</name>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="123"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="122"/>
         <source>Add</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="124"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="123"/>
         <source>Replace</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="125"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="124"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../app/src/colorpalettewidget.cpp" line="272"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="273"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="274"/>
         <source>Color name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="641"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="640"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="642"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="641"/>
         <source>Cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="643"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="642"/>
         <source>Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="659"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="658"/>
         <source>Palette Restriction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="660"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="659"/>
         <source>The palette requires at least one swatch to remain functional</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2714,9 +2723,15 @@
 <context>
     <name>FileManager</name>
     <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="55"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="109"/>
         <source>Could not open file</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
+        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3678,7 +3693,7 @@ Read the instructions and try again</source>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="570"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1463"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1449"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4100,153 +4115,146 @@ Read the instructions and try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="440"/>
-        <source>
-
- You have successfully cleared the list</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="451"/>
-        <location filename="../app/src/mainwindow2.cpp" line="475"/>
+        <location filename="../app/src/mainwindow2.cpp" line="437"/>
+        <location filename="../app/src/mainwindow2.cpp" line="461"/>
         <source>Dialog is already open!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="631"/>
-        <location filename="../app/src/mainwindow2.cpp" line="733"/>
-        <location filename="../app/src/mainwindow2.cpp" line="806"/>
-        <location filename="../app/src/mainwindow2.cpp" line="931"/>
+        <location filename="../app/src/mainwindow2.cpp" line="617"/>
+        <location filename="../app/src/mainwindow2.cpp" line="719"/>
+        <location filename="../app/src/mainwindow2.cpp" line="792"/>
+        <location filename="../app/src/mainwindow2.cpp" line="917"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="632"/>
+        <location filename="../app/src/mainwindow2.cpp" line="618"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="587"/>
+        <location filename="../app/src/mainwindow2.cpp" line="573"/>
         <source>Opening document...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="587"/>
-        <location filename="../app/src/mainwindow2.cpp" line="643"/>
-        <location filename="../app/src/mainwindow2.cpp" line="910"/>
+        <location filename="../app/src/mainwindow2.cpp" line="573"/>
+        <location filename="../app/src/mainwindow2.cpp" line="629"/>
+        <location filename="../app/src/mainwindow2.cpp" line="896"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="643"/>
+        <location filename="../app/src/mainwindow2.cpp" line="629"/>
         <source>Saving document...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="686"/>
+        <location filename="../app/src/mainwindow2.cpp" line="672"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="734"/>
+        <location filename="../app/src/mainwindow2.cpp" line="720"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="757"/>
+        <location filename="../app/src/mainwindow2.cpp" line="743"/>
         <source>AutoSave Reminder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="758"/>
+        <location filename="../app/src/mainwindow2.cpp" line="744"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="759"/>
+        <location filename="../app/src/mainwindow2.cpp" line="745"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="807"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="910"/>
+        <location filename="../app/src/mainwindow2.cpp" line="896"/>
         <source>Importing Animated GIF...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="932"/>
+        <location filename="../app/src/mainwindow2.cpp" line="918"/>
         <source>was unable to import %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1265"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1270"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1251"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1256"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1278"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1285"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1264"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1271"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1327"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1313"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1329"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1315"/>
         <source>Open Palette</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1458"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1444"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1499"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1485"/>
         <source>Restore Project?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1500"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1486"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1505"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1491"/>
         <source>Restore project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1539"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1525"/>
         <source>Recovery Failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1540"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1526"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1549"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1535"/>
         <source>Recovery Succeeded!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1550"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1536"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4414,6 +4422,134 @@ Color(s) in strokes will be altered by this action!</source>
     </message>
 </context>
 <context>
+    <name>Object</name>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="347"/>
+        <source>error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="639"/>
+        <source>Black</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="640"/>
+        <source>Red</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="641"/>
+        <source>Dark Red</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="642"/>
+        <source>Orange</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="643"/>
+        <source>Dark Orange</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="644"/>
+        <source>Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="645"/>
+        <source>Dark Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="646"/>
+        <source>Green</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="647"/>
+        <source>Dark Green</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="648"/>
+        <source>Cyan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="649"/>
+        <source>Dark Cyan</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="650"/>
+        <source>Blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="651"/>
+        <source>Dark Blue</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="652"/>
+        <source>White</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="653"/>
+        <source>Very Light Grey</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="654"/>
+        <source>Light Grey</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="655"/>
+        <source>Grey</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="656"/>
+        <source>Dark Grey</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="657"/>
+        <source>Pale Orange Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="658"/>
+        <source>Pale Grayish Orange Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="659"/>
+        <source>Orange Yellow </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="660"/>
+        <source>Grayish Orange Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="661"/>
+        <source>Light Orange Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="662"/>
+        <source>Light Grayish Orange Yellow</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>OnionSkin</name>
     <message>
         <location filename="../app/ui/onionskin.ui" line="23"/>
@@ -4492,6 +4628,19 @@ Color(s) in strokes will be altered by this action!</source>
     <message>
         <location filename="../app/ui/onionskin.ui" line="483"/>
         <source>Show During Playback</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>OverlayPainter</name>
+    <message>
+        <location filename="../core_lib/src/overlaypainter.cpp" line="182"/>
+        <source>Safe Action area %1 %</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/overlaypainter.cpp" line="196"/>
+        <source>Safe Title area %1 %</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4641,26 +4790,6 @@ Check selection, and please try again.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core_lib/src/overlaypainter.cpp" line="182"/>
-        <source>Safe Action area %1 %</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/overlaypainter.cpp" line="196"/>
-        <source>Safe Title area %1 %</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
-        <source>Could not open file</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
-        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../core_lib/src/structure/layer.cpp" line="41"/>
         <source>Undefined Layer</source>
         <translation type="unfinished"></translation>
@@ -4685,136 +4814,11 @@ Check selection, and please try again.</source>
         <source>Vector Layer</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="347"/>
-        <source>error</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="639"/>
-        <source>Black</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="640"/>
-        <source>Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="641"/>
-        <source>Dark Red</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="642"/>
-        <source>Orange</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="643"/>
-        <source>Dark Orange</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="644"/>
-        <source>Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="645"/>
-        <source>Dark Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="646"/>
-        <source>Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="647"/>
-        <source>Dark Green</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="648"/>
-        <source>Cyan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="649"/>
-        <source>Dark Cyan</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="650"/>
-        <source>Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="651"/>
-        <source>Dark Blue</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="652"/>
-        <source>White</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="653"/>
-        <source>Very Light Grey</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="654"/>
-        <source>Light Grey</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="655"/>
-        <source>Grey</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="656"/>
-        <source>Dark Grey</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="657"/>
-        <source>Pale Orange Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="658"/>
-        <source>Pale Grayish Orange Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="659"/>
-        <source>Orange Yellow </source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="660"/>
-        <source>Grayish Orange Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="661"/>
-        <source>Light Orange Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="662"/>
-        <source>Light Grayish Orange Yellow</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RecentFileMenu</name>
     <message>
-        <location filename="../core_lib/src/interface/recentfilemenu.h" line="35"/>
+        <location filename="../core_lib/src/interface/recentfilemenu.h" line="34"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
     </message>

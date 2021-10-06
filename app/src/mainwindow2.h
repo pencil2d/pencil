@@ -66,7 +66,6 @@ public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
-    void clearRecentFilesList();
     void openPegAlignDialog();
     void openLayerOpacityDialog();
     void currentLayerChanged();
@@ -97,19 +96,23 @@ public:
 
     void openFile(const QString& filename);
 
-    PreferencesDialog* getPrefDialog() { return mPrefDialog; }
-
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
 signals:
     void updateRecentFilesList(bool b);
 
+    /** Emitted when window regains focus */
+    void windowActivated();
+
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
     void showEvent(QShowEvent*) override;
+    bool event(QEvent*) override;
 
+private slots:
+    void updateCopyCutPasteEnabled();
 private:
     void newObject();
     bool newObjectFromPresets(int presetIndex);
