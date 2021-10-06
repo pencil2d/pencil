@@ -18,15 +18,16 @@ GNU General Public License for more details.
 #include "ui_importpositiondialog.h"
 
 #include <QSettings>
+#include <QStandardItemModel>
 #include "editor.h"
 #include "layercamera.h"
 #include "viewmanager.h"
 #include "layermanager.h"
 #include "scribblearea.h"
 
-ImportPositionDialog::ImportPositionDialog(QWidget *parent) :
+ImportPositionDialog::ImportPositionDialog(Editor* editor, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ImportPositionDialog)
+    ui(new Ui::ImportPositionDialog), mEditor(editor)
 {
     ui->setupUi(this);
 
@@ -34,6 +35,12 @@ ImportPositionDialog::ImportPositionDialog(QWidget *parent) :
     ui->cbImagePosition->addItem(tr("Center of canvas (0,0)"));
     ui->cbImagePosition->addItem(tr("Center of camera, current frame"));
     ui->cbImagePosition->addItem(tr("Center of camera, follow camera"));
+
+    if (mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA) == nullptr) {
+        auto model = dynamic_cast<QStandardItemModel*>(ui->cbImagePosition->model());
+        model->item(2, 0)->setEnabled(false);
+        model->item(3, 0)->setEnabled(false);
+    }
 
     connect(ui->cbImagePosition, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ImportPositionDialog::didChangeComboBoxIndex);
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ImportPositionDialog::changeImportView);
@@ -80,9 +87,6 @@ void ImportPositionDialog::changeImportView()
     {
         LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
         QRectF cameraRect = layerCam ? layerCam->getViewRect() : QRectF();
-
-        // TODO: import option should be disabled if no camera is found
-        Q_ASSERT(layerCam);
 
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
         mEditor->view()->setImportView(transform);

@@ -788,10 +788,9 @@ void MainWindow2::importImage()
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
 
-    ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
 
     if (positionDialog->result() != QDialog::Accepted)
@@ -830,10 +829,9 @@ void MainWindow2::importImageSequence()
         return;
     }
 
-    ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -860,10 +858,9 @@ void MainWindow2::importPredefinedImageSet()
         return;
     }
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -894,10 +891,9 @@ void MainWindow2::importGIF()
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
     mSuppressAutoSaveDialog = true;
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
