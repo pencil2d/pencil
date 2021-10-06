@@ -18,7 +18,6 @@ GNU General Public License for more details.
 
 #include <QtMath>
 #include <QSettings>
-#include <QDebug>
 
 #include "object.h"
 #include "layerbitmap.h"

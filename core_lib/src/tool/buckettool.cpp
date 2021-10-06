@@ -192,7 +192,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
     if (targetLayer->type() != Layer::BITMAP) { return; }
 
     LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
-    // TODO: show popup when trying to fill and there's no camera layer?
+
     Q_ASSERT(layerCam);
 
     mBitmapBucket = BitmapBucket(mEditor,

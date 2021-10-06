@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "camerapainter.h"
 
 #include <QPainter>
-#include <QDebug>
 #include <QPixmap>
 #include <QPalette>
 

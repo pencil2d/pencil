@@ -77,7 +77,7 @@ QTransform Camera::getView()
 {
     if (mNeedUpdateView)
         updateViewTransform();
-    return view;
+    return mView;
 }
 
 void Camera::reset()
@@ -102,7 +102,7 @@ void Camera::updateViewTransform()
         QTransform s;
         s.scale(mScale, mScale);
 
-        view = t * r * s;
+        mView = t * r * s;
     }
     mNeedUpdateView = false;
 }

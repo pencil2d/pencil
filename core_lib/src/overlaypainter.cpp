@@ -1,5 +1,4 @@
 #include "overlaypainter.h"
-#include <QDebug>
 
 #include "layercamera.h"
 #include "layer.h"

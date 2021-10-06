@@ -209,11 +209,10 @@ void CameraTool::pointerPressEvent(PointerEvent*)
 
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
-    if (layer->keyExists(mEditor->currentFrame()))
-    {
-        mDragPathFrame = mEditor->currentFrame();
-        layer->setOffsetPoint(getCurrentPoint());
-    }
+    if (!layer->keyExists(mEditor->currentFrame())) { return; }
+
+    mDragPathFrame = mEditor->currentFrame();
+    layer->setOffsetPoint(getCurrentPoint());
 }
 
 void CameraTool::pointerMoveEvent(PointerEvent*)

@@ -18,7 +18,7 @@ GNU General Public License for more details.
 
 #include <QSettings>
 #include <QEasingCurve>
-#include <QDebug>
+
 #include "camera.h"
 #include "pencildef.h"
 #include "mathutils.h"
@@ -80,16 +80,16 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     }
     else if (camera1 == nullptr && camera2 != nullptr)
     {
-        return camera2->view;
+        return camera2->getView();
     }
     else if (camera2 == nullptr && camera1 != nullptr)
     {
-        return camera1->view;
+        return camera1->getView();
     }
 
     if (camera1 == camera2)
     {
-        return camera1->view;
+        return camera1->getView();
     }
 
     double frame1 = camera1->pos();
@@ -114,7 +114,6 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     camTransform.translate(dx, dy);
 
     return camTransform;
-
 }
 
 MoveMode LayerCamera::getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance)

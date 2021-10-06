@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QSettings>
 #include <QMenu>
-#include <QDebug>
 
 #include "camerapropertiesdialog.h"
 #include "editor.h"

@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #define CAMERA_H
 
 #include <QTransform>
-#include <QPainterPath>
 #include "keyframe.h"
 #include "cameraeasingtype.h"
 
@@ -40,16 +39,14 @@ public:
 
     void translate(qreal dx, qreal dy);
     void translate(const QPointF);
-    QPointF translation() { return mTranslate; }
+    QPointF translation() const { return mTranslate; }
 
     void rotate(qreal degree);
-    qreal rotation() { return mRotate; }
+    qreal rotation() const { return mRotate; }
 
     void scale(qreal scaleValue);
     void scaleWithOffset(qreal scaleValue, QPointF offset); // for zooming at the mouse position
-    qreal scaling() { return mScale; }
-
-    QTransform view;
+    qreal scaling() const { return mScale; }
 
     bool operator==(const Camera& rhs) const;
 
@@ -57,12 +54,13 @@ public:
     CameraEasingType getEasingType() const { return mEasingType; }
 
     void setPathMidPoint(QPointF point) { mPathMidPoint = point; }
-    QPointF getPathMidPoint() { return mPathMidPoint; }
+    QPointF getPathMidPoint() const { return mPathMidPoint; }
     void setIsMidPointSet(bool b) { mMidPointSet = b; }
-    bool getIsMidPointSet() { return mMidPointSet; }
+    bool getIsMidPointSet() const { return mMidPointSet; }
 
 
 private:
+    QTransform mView;
     QPointF mTranslate;
     qreal mRotate = 0.;
     qreal mScale = 1.;

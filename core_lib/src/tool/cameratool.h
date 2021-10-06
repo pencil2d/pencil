@@ -22,7 +22,6 @@ GNU General Public License for more details.
 
 #include "movetool.h"
 #include "movemode.h"
-
 #include "basetool.h"
 
 class PointerEvent;
@@ -51,7 +50,6 @@ public:
     void setPathDotColorType(const int pathDotColor) override;
 
 private:
-
     void transformCamera();
     void transformCameraPath();
 
