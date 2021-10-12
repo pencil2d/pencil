@@ -38,7 +38,7 @@ public:
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     Camera* getCameraAtFrame(int frameNumber) const;
-    Camera* getLastCameraAtFrame(int frameNumber, int increment);
+    Camera* getLastCameraAtFrame(int frameNumber, int increment) const;
     QTransform getViewAtFrame(int frameNumber) const;
     MoveMode getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance);
     MoveMode getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance);

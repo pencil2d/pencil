@@ -51,7 +51,7 @@ Camera* LayerCamera::getCameraAtFrame(int frameNumber) const
     return static_cast<Camera*>(getKeyFrameAt(frameNumber));
 }
 
-Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
+Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment) const
 {
     return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
@@ -404,9 +404,7 @@ void LayerCamera::setViewRect(QRect newViewRect)
 
 void LayerCamera::setCameraEasing(CameraEasingType type, int frame)
 {
-    Q_ASSERT(keyExists(frame));
-
-    Camera* camera = getCameraAtFrame(frame);
+    Camera* camera = getLastCameraAtFrame(frame, 0);
     camera->setEasingType(type);
     camera->updateViewTransform();
     camera->modification();
@@ -414,10 +412,7 @@ void LayerCamera::setCameraEasing(CameraEasingType type, int frame)
 
 void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
 {
-    Q_ASSERT(keyExists(frame));
-
-    Camera* camera = getCameraAtFrame(frame);
-    Camera* copyCamera = getCameraAtFrame(frame);
+    Camera* camera = getLastCameraAtFrame(frame, 0);
     int nextFrame = getNextKeyFramePosition(frame);
     switch (type)
     {
@@ -433,20 +428,28 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
     case CameraFieldOption::RESET_ROTATION:
         camera->rotate(0.0);
         break;
-    case CameraFieldOption::ALIGN_HORIZONTAL:
-        camera = getCameraAtFrame(nextFrame);
-        camera->translate(camera->translation().x(), copyCamera->translation().y());
+    case CameraFieldOption::ALIGN_HORIZONTAL: {
+        qreal otherYCoord = camera->translation().y();
+        camera = getLastCameraAtFrame(nextFrame, 0);
+        camera->translate(camera->translation().x(), otherYCoord);
         break;
-    case CameraFieldOption::ALIGN_VERTICAL:
-        camera = getCameraAtFrame(nextFrame);
-        camera->translate(copyCamera->translation().x(), camera->translation().y());
+    }
+    case CameraFieldOption::ALIGN_VERTICAL: {
+        qreal otherXCoord = camera->translation().x();
+        camera = getLastCameraAtFrame(nextFrame, 0);
+        camera->translate(otherXCoord, camera->translation().y());
         break;
-    case CameraFieldOption::HOLD_FRAME:
-        camera = getCameraAtFrame(nextFrame);
-        camera->translate(copyCamera->translation());
-        camera->scale(copyCamera->scaling());
-        camera->rotate(copyCamera->rotation());
+    }
+    case CameraFieldOption::HOLD_FRAME: {
+        QPointF translation = camera->translation();
+        qreal rotation = camera->rotation();
+        qreal scaling = camera->scaling();
+        camera = getLastCameraAtFrame(nextFrame, 0);
+        camera->translate(translation);
+        camera->scale(scaling);
+        camera->rotate(rotation);
         break;
+    }
     default:
         break;
     }
@@ -482,8 +485,7 @@ void LayerCamera::setDotColorType(DotColorType color)
 
 QString LayerCamera::getInterpolationText(int frame) const
 {
-    Camera* camera = getCameraAtFrame(frame);
-    Q_ASSERT(camera);
+    Camera* camera = getLastCameraAtFrame(frame, 0);
 
     CameraEasingType type = camera->getEasingType();
     QString retString = "";
