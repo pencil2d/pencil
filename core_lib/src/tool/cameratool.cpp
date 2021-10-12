@@ -187,6 +187,15 @@ void CameraTool::resetCameraPath()
     layer->centerMidPoint(mEditor->currentFrame());
 }
 
+void CameraTool::resetTransform(CameraFieldOption option)
+{
+    LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
+    Q_ASSERT(layer->type() == Layer::CAMERA);
+
+    layer->setCameraReset(option, mEditor->currentFrame());
+    mEditor->frameModified(mEditor->currentFrame());
+}
+
 void CameraTool::transformCamera()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());

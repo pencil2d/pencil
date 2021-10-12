@@ -424,7 +424,7 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
     case CameraFieldOption::RESET_FIELD:
         camera->reset();
         break;
-    case CameraFieldOption::RESET_TRANSITION:
+    case CameraFieldOption::RESET_TRANSLATION:
         camera->translate(QPoint(0,0));
         break;
     case CameraFieldOption::RESET_SCALING:

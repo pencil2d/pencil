@@ -20,9 +20,9 @@ GNU General Public License for more details.
 
 #include <QCursor>
 
-#include "movetool.h"
 #include "movemode.h"
 #include "basetool.h"
+#include "camerafieldoption.h"
 
 class PointerEvent;
 class Editor;
@@ -48,6 +48,7 @@ public:
     void setShowCameraPath(const bool showCameraPath) override;
     void resetCameraPath() override;
     void setPathDotColorType(const int pathDotColor) override;
+    void resetTransform(CameraFieldOption option);
 
 private:
     void transformCamera();

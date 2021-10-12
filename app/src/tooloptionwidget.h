@@ -34,6 +34,7 @@ class QGroupBox;
 class Editor;
 class BaseTool;
 class BucketOptionsWidget;
+class CameraOptionsWidget;
 
 
 class ToolOptionWidget : public BaseDockWidget
@@ -65,8 +66,6 @@ private:
     void setStabilizerLevel(int);
     void setFillContour(int);
     void setBezier(bool);
-    void setShowCameraPath(bool);
-    void setPathDotColorType(int);
 
     void disableAllOptions();
     void createUI();
@@ -75,6 +74,7 @@ private:
     Ui::ToolOptions* ui = nullptr;
 
     BucketOptionsWidget* mBucketOptionsWidget = nullptr;
+    CameraOptionsWidget* mCameraOptionsWidget = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

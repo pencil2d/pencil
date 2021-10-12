@@ -265,6 +265,12 @@ void ToolManager::resetCameraPath()
     emit toolPropertyChanged(currentTool()->type(), CAMERAPATH);
 }
 
+void ToolManager::resetCameraTransform(CameraFieldOption option)
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(currentTool());
+    cameraTool->resetTransform(option);
+}
+
 void ToolManager::setCameraPathDotColor(int dotColorNum)
 {
     currentTool()->setPathDotColorType(dotColorNum);

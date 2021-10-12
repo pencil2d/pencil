@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QHash>
 #include "basetool.h"
 #include "basemanager.h"
+#include "camerafieldoption.h"
 
 class ScribbleArea;
 
@@ -35,7 +36,7 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    BaseTool* currentTool() { return mCurrentTool; }
+    BaseTool* currentTool() const { return mCurrentTool; }
     BaseTool* getTool(ToolType eToolType);
     void setDefaultTool();
     void setCurrentTool(ToolType eToolType);
@@ -78,6 +79,7 @@ public slots:
     void setShowCameraPath(bool);
     void resetCameraPath();
     void setCameraPathDotColor(int);
+    void resetCameraTransform(CameraFieldOption option);
 
 private:
     BaseTool* mCurrentTool = nullptr;

@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CameraOptionsWidget</class>
+ <widget class="QWidget" name="CameraOptionsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>229</width>
+    <height>208</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="transformGroupBox">
+     <property name="title">
+      <string>Transform</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout" rowstretch="0,0">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <property name="horizontalSpacing">
+       <number>2</number>
+      </property>
+      <item row="1" column="3">
+       <widget class="QPushButton" name="resetScaleButton">
+        <property name="toolTip">
+         <string>Reset scaling</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/icons/new/svg/transform-scale.svg</normaloff>:/icons/new/svg/transform-scale.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>26</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="resetRotationButton">
+        <property name="toolTip">
+         <string>Reset rotation</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/icons/new/svg/transform-rotation.svg</normaloff>:/icons/new/svg/transform-rotation.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>26</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="resetLabel">
+        <property name="text">
+         <string>Reset</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QPushButton" name="resetTranslationButton">
+        <property name="toolTip">
+         <string>Reset translation</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/icons/new/svg/transform-translate.svg</normaloff>:/icons/new/svg/transform-translate.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>26</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="4">
+       <widget class="QPushButton" name="resetAllButton">
+        <property name="toolTip">
+         <string>Reset all transforms</string>
+        </property>
+        <property name="text">
+         <string>Reset all</string>
+        </property>
+        <property name="icon">
+         <iconset resource="../data/app.qrc">
+          <normaloff>:/icons/new/svg/transform-resetall.svg</normaloff>:/icons/new/svg/transform-resetall.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>20</width>
+          <height>24</height>
+         </size>
+        </property>
+        <property name="default">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="cameraPathGroupBox">
+     <property name="title">
+      <string>Camera path</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_2">
+      <property name="spacing">
+       <number>2</number>
+      </property>
+      <property name="leftMargin">
+       <number>4</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>4</number>
+      </property>
+      <property name="bottomMargin">
+       <number>4</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
+        <item>
+         <widget class="QCheckBox" name="showCameraPathCheckBox">
+          <property name="toolTip">
+           <string>Show interpolation path</string>
+          </property>
+          <property name="text">
+           <string>Show path</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QComboBox" name="pathColorComboBox">
+          <item>
+           <property name="text">
+            <string>Red</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Blue</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Green</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Black</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>White</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
+        <item>
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnResetPath">
+          <property name="toolTip">
+           <string>Reset path</string>
+          </property>
+          <property name="text">
+           <string>Reset path</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="../data/app.qrc"/>
+ </resources>
+ <connections/>
+</ui>

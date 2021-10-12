@@ -108,7 +108,8 @@ HEADERS += \
     src/commandlineparser.h \
     src/commandlineexporter.h \
     src/statusbar.h \
-    src/elidedlabel.h
+    src/elidedlabel.h \
+    src/cameraoptionswidget.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -154,9 +155,11 @@ SOURCES += \
     src/commandlineparser.cpp \
     src/commandlineexporter.cpp \
     src/statusbar.cpp \
-    src/elidedlabel.cpp
+    src/elidedlabel.cpp \
+    src/cameraoptionswidget.cpp
 
 FORMS += \
+    ui/cameraoptionswidget.ui \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \

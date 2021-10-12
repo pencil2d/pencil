@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QColor>
 #include "layer.h"
 #include "movemode.h"
+#include "camerafieldoption.h"
 #include "cameraeasingtype.h"
 
 class Camera;
@@ -68,9 +69,6 @@ public:
 
     void updateOnDeleteFrame(int frame);
     void updateOnAddFrame(int frame);
-
-signals:
-    void resolutionChanged();
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;

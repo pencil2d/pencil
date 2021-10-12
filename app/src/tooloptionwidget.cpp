@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QDebug>
 
+#include "cameraoptionswidget.h"
 #include "bucketoptionswidget.h"
 #include "spinslider.h"
 #include "editor.h"
@@ -47,7 +48,9 @@ ToolOptionWidget::~ToolOptionWidget()
 void ToolOptionWidget::initUI()
 {
 	mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
+    mCameraOptionsWidget = new CameraOptionsWidget(editor(), this);
 	ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
+    ui->horizontalLayout_2->addWidget(mCameraOptionsWidget);
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -81,8 +84,6 @@ void ToolOptionWidget::updateUI()
     setAA(p.useAA);
     setStabilizerLevel(p.stabilizerLevel);
     setFillContour(p.useFillContour);
-    setShowCameraPath(p.cameraShowPath);
-    setPathDotColorType(p.cameraPathDotColorType);
 }
 
 void ToolOptionWidget::createUI()
@@ -111,16 +112,9 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(ui->vectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled);
     connect(ui->useAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA);
 
-    connect(ui->fillMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setFillMode);
-
     connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
-
-
-    connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowCameraPath);
-    connect(ui->pathColorComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), toolManager, &ToolManager::setCameraPathDotColor);
-    connect(ui->btnResetPath, &QPushButton::clicked, toolManager, &ToolManager::resetCameraPath);
 
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
@@ -143,7 +137,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case BEZIER: setBezier(p.bezier_state); break;
-    case CAMERAPATH: { setShowCameraPath(p.cameraShowPath); break; }
+    case CAMERAPATH: { break; }
     case TOLERANCE: break;
     case USETOLERANCE: break;
     case BUCKETFILLEXPAND: break;
@@ -166,8 +160,14 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
         mBucketOptionsWidget->setHidden(false);
         return;
     }
+    else if (tool->type() == CAMERA)
+    {
+        disableAllOptions();
+        mCameraOptionsWidget->setHidden(false);
+    }
     else
     {
+        mCameraOptionsWidget->setHidden(true);
         mBucketOptionsWidget->setHidden(true);
     }
 
@@ -184,8 +184,6 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
-    ui->showCameraPathCheckBox->setVisible(false);
-    ui->cameraPathGroupBox->setVisible(false);
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
     auto propertyType = editor()->tools()->currentTool()->type();
@@ -223,10 +221,6 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
         case BUCKET:
             ui->brushSpinBox->setVisible(false);
             ui->sizeSlider->setVisible(false);
-            break;
-        case CAMERA:
-            ui->showCameraPathCheckBox->setVisible(true);
-            ui->cameraPathGroupBox->setVisible(true);
             break;
         default:
             ui->makeInvisibleBox->setVisible(false);
@@ -338,18 +332,6 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
-void ToolOptionWidget::setShowCameraPath(bool showCameraPath)
-{
-    QSignalBlocker b(ui->showCameraPathCheckBox);
-    ui->showCameraPathCheckBox->setChecked(showCameraPath);
-}
-
-void ToolOptionWidget::setPathDotColorType(int index)
-{
-    QSignalBlocker b(ui->pathColorComboBox);
-    ui->pathColorComboBox->setCurrentIndex(index);
-}
-
 void ToolOptionWidget::disableAllOptions()
 {
     ui->sizeSlider->hide();
@@ -363,10 +345,7 @@ void ToolOptionWidget::disableAllOptions()
     ui->preserveAlphaBox->hide();
     ui->vectorMergeBox->hide();
     ui->useAABox->hide();
-    ui->fillModeGroup->hide();
     ui->inpolLevelsCombo->hide();
     ui->fillContourBox->hide();
     ui->stabilizerLabel->hide();
-    ui->showCameraPathCheckBox->hide();
-    ui->cameraPathGroupBox->hide();
 }
