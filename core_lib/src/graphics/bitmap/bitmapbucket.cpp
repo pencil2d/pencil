@@ -84,10 +84,10 @@ bool BitmapBucket::allowFill(QPointF checkPoint) const
 
     if (!targetImage.isLoaded()) { return false; }
 
-    QRgb colorOfreferenceImage = mReferenceImage.constScanLine(point.x(), point.y());
+    QRgb colorOfReferenceImage = mReferenceImage.constScanLine(point.x(), point.y());
     QRgb targetPixelColor = targetImage.constScanLine(point.x(), point.y());
 
-    if (mProperties.fillMode == 2 && colorOfreferenceImage != 0)
+    if (mProperties.fillMode == 2 && colorOfReferenceImage != 0)
     {
         // don't try to fill because we won't be able to see it anyway...
         return false;
@@ -103,7 +103,7 @@ bool BitmapBucket::allowFill(QPointF checkPoint) const
 
     // Using either of these modes applies premultiplied colors, so we have to unpremultiply to compare the colors
     if (mProperties.bucketFillReferenceMode == 1) {
-        colorOfreferenceImage = qUnpremultiply(colorOfreferenceImage);
+        colorOfReferenceImage = qUnpremultiply(colorOfReferenceImage);
     }
     if (mProperties.bucketFillToLayerMode == 1) {
         fillToColor = qUnpremultiply(fillToColor);
@@ -112,7 +112,7 @@ bool BitmapBucket::allowFill(QPointF checkPoint) const
     // Ensure that when dragging that we're only filling on either transparent or same color
     if (targetPixelColor != mAppliedColor &&
         targetPixelColor == mFillToImageColor &&
-        (colorOfreferenceImage == fillToColor || colorOfreferenceImage == 0)) {
+        (colorOfReferenceImage == fillToColor || colorOfReferenceImage == 0)) {
         return true;
     }
 
