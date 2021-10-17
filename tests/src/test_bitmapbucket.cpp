@@ -173,9 +173,7 @@ TEST_CASE("BitmapBucket - Fill drag logic")
         image = static_cast<LayerBitmap*>(editor->layers()->currentLayer(-1))->getLastBitmapImageAtFrame(1);
         image->writeFile(resultsPath + "test6b.png");
 
-        // Because layers reference all layers are used and we're filling to layer below
-        // the color has to be premultiplied because the reference pixel is premultiplied
-        verifyPixels(pressPoint, image, qPremultiply(fillColor.rgba()));
+        verifyPixels(pressPoint, image, fillColor.rgba());
     }
 
     SECTION("Ensure that we only fill with same color on reference color - "
@@ -195,8 +193,6 @@ TEST_CASE("BitmapBucket - Fill drag logic")
         image = static_cast<LayerBitmap*>(editor->layers()->currentLayer())->getLastBitmapImageAtFrame(1);
         image->writeFile(resultsPath + "test7b.png");
 
-        // Because layers reference all layers are used and we're filling to layer below
-        // the color has to be premultiplied because the reference pixel is premultiplied
-        verifyPixels(pressPoint, image, qPremultiply(fillColor.rgba()));
+        verifyPixels(pressPoint, image, fillColor.rgba());
     }
 }

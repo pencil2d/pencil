@@ -65,13 +65,20 @@ private:
     Editor* mEditor = nullptr;
     Layer* mTargetFillToLayer = nullptr;
 
+    QHash<QRgb, bool> *mPixelCache;
+
     BitmapImage mReferenceImage;
     QRgb mBucketColor = 0;
     QRgb mFillToImageColor = 0;
     QRgb mAppliedColor = 0;
 
+    QPixelFormat mFillToLayerPixelFormat;
+    QPixelFormat mReferenceLayerPixelFormat;
+
     QPointF mBucketStartPoint;
     QRectF mMaxFillRegion;
+
+    int mTolerance = 0;
 
     int mTargetFillToLayerIndex = -1;
 

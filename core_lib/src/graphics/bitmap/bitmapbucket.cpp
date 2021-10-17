@@ -48,6 +48,8 @@ BitmapBucket::BitmapBucket(Editor* editor,
     mTargetFillToLayer = initialLayer;
     mTargetFillToLayerIndex = initialLayerIndex;
 
+    mTolerance = mProperties.toleranceEnabled ? static_cast<int>(mProperties.tolerance) : 0;
+
     if (properties.bucketFillToLayerMode == 1)
     {
         auto result = findBitmapLayerBelow(initialLayer, initialLayerIndex);
@@ -61,11 +63,15 @@ BitmapBucket::BitmapBucket(Editor* editor,
     {
         mReferenceImage = flattenBitmapLayersToImage();
     }
+    mReferenceLayerPixelFormat = mReferenceImage.image()->pixelFormat();
 
     const QPoint point = QPoint(qFloor(fillPoint.x()), qFloor(fillPoint.y()));
 
     BitmapImage* image = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
     mFillToImageColor = image->constScanLine(point.x(), point.y());
+    mFillToLayerPixelFormat = image->image()->pixelFormat();
+
+    mPixelCache = new QHash<QRgb, bool>();
 }
 
 bool BitmapBucket::allowFill(QPointF checkPoint) const
@@ -101,18 +107,19 @@ bool BitmapBucket::allowFill(QPointF checkPoint) const
 
     QRgb fillToColor = mFillToImageColor;
 
-    // Using either of these modes applies premultiplied colors, so we have to unpremultiply to compare the colors
-    if (mProperties.bucketFillReferenceMode == 1) {
-        colorOfReferenceImage = qUnpremultiply(colorOfReferenceImage);
-    }
-    if (mProperties.bucketFillToLayerMode == 1) {
+    // Ensure that when dragging that we're only filling on either transparent or same color
+
+    if (mFillToLayerPixelFormat.premultiplied() == QPixelFormat::Premultiplied) {
         fillToColor = qUnpremultiply(fillToColor);
     }
 
-    // Ensure that when dragging that we're only filling on either transparent or same color
-    if (targetPixelColor != mAppliedColor &&
-        targetPixelColor == mFillToImageColor &&
-        (colorOfReferenceImage == fillToColor || colorOfReferenceImage == 0)) {
+    if (mReferenceLayerPixelFormat.premultiplied() == QPixelFormat::Premultiplied) {
+        colorOfReferenceImage = qUnpremultiply(colorOfReferenceImage);
+    }
+
+    if (!targetImage.compareColor(targetPixelColor, mAppliedColor, mTolerance, mPixelCache) &&
+        targetImage.compareColor(targetPixelColor, mFillToImageColor, mTolerance, mPixelCache) &&
+        (mReferenceImage.compareColor(colorOfReferenceImage, fillToColor, mTolerance, mPixelCache) || colorOfReferenceImage == 0)) {
         return true;
     }
 
@@ -127,7 +134,6 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
 
     const QPoint point = QPoint(qFloor(updatedPoint.x()), qFloor(updatedPoint.y()));
     const QRect cameraRect = mMaxFillRegion.toRect();
-    const int tolerance = mProperties.toleranceEnabled ? static_cast<int>(mProperties.tolerance) : 0;
     const int currentFrameIndex = mEditor->currentFrame();
     const QRgb origColor = fillColor;
 
@@ -157,7 +163,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
                            cameraRect,
                            point,
                            fillColor,
-                           tolerance);
+                           mTolerance);
 
     if (!didFloodFill) {
         return;
