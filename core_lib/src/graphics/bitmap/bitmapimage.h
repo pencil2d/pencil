@@ -74,7 +74,7 @@ public:
     void clear(QRect rectangle);
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
-    static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
+    static bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
     static bool floodFill(BitmapImage* replaceImage, BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb fillColor, int tolerance);
     static void expandFill(BitmapImage* targetImage, QRgb fillColor, int expand);
     static QVector<QVector<int> > manhattanDistance(BitmapImage* image, QRgb& searchColor);

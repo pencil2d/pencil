@@ -117,9 +117,9 @@ bool BitmapBucket::allowFill(QPointF checkPoint) const
         colorOfReferenceImage = qUnpremultiply(colorOfReferenceImage);
     }
 
-    if (!targetImage.compareColor(targetPixelColor, mAppliedColor, mTolerance, mPixelCache) &&
-        targetImage.compareColor(targetPixelColor, mFillToImageColor, mTolerance, mPixelCache) &&
-        (mReferenceImage.compareColor(colorOfReferenceImage, fillToColor, mTolerance, mPixelCache) || colorOfReferenceImage == 0)) {
+    if (!BitmapImage::compareColor(targetPixelColor, mAppliedColor, mTolerance, mPixelCache) &&
+        BitmapImage::compareColor(targetPixelColor, mFillToImageColor, mTolerance, mPixelCache) &&
+        (BitmapImage::compareColor(colorOfReferenceImage, fillToColor, mTolerance, mPixelCache) || colorOfReferenceImage == 0)) {
         return true;
     }
 
