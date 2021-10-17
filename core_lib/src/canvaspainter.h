@@ -128,8 +128,6 @@ private:
 
     QImage mScaledBitmap;
 
-    bool bMultiLayerOnionSkin = false;
-
     // Handle selection transformation
     bool mRenderTransform = false;
     QRect mSelection;
