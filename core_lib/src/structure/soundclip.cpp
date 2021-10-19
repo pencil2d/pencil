@@ -70,7 +70,7 @@ bool SoundClip::isValid() const
         return false;
     }
 
-    if (mPlayer == nullptr)
+    if (!mPlayer)
     {
         return false;
     }
