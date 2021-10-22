@@ -95,7 +95,6 @@ void PreferenceManager::loadPrefs()
     set(SETTING::TIMECODE_TEXT,            settings.value(SETTING_TIMECODE_TEXT,          1).toInt());
 
     // Files
-    set(SETTING::CREATE_DEFAULT_VECTOR_LAYER, settings.value(SETTING_CREATE_DEFAULT_VECTOR_LAYER, false).toBool());
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              false).toBool());
     set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       256).toInt());
     set(SETTING::ASK_FOR_PRESET,           settings.value(SETTING_ASK_FOR_PRESET,         false).toBool());
@@ -423,9 +422,6 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::HIGH_RESOLUTION:
         settings.setValue(SETTING_HIGH_RESOLUTION, value);
-        break;
-    case SETTING::CREATE_DEFAULT_VECTOR_LAYER:
-        settings.setValue(SETTING_CREATE_DEFAULT_VECTOR_LAYER, value);
         break;
     case SETTING::AUTO_SAVE:
         settings.setValue(SETTING_AUTO_SAVE, value);
