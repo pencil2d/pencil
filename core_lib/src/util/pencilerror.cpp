@@ -81,6 +81,18 @@ Status::Status(ErrorCode code)
 {
 }
 
+Status::Status(const ErrorCode code, const QString& description)
+    : mCode(code)
+    , mDescription(description)
+{
+}
+
+Status::Status(Status::ErrorCode eCode, const DebugDetails& detailsList)
+    : mCode(eCode)
+    , mDetails(detailsList)
+{
+}
+
 Status::Status(Status::ErrorCode eCode, const DebugDetails& detailsList, QString title, QString description)
     : mCode(eCode)
     , mTitle(title)
@@ -89,12 +101,6 @@ Status::Status(Status::ErrorCode eCode, const DebugDetails& detailsList, QString
 {
 }
 
-Status::Status(const ErrorCode code, const QString& title, const QString& description)
-    : mCode(code)
-    , mTitle(title)
-    , mDescription(description)
-{
-}
 
 QString Status::msg()
 {
