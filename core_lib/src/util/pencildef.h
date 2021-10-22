@@ -212,7 +212,6 @@ const static int MaxFramesBound = 9999;
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
 #define SHORTCUTS_GROUP             "Shortcuts"
-#define SETTING_CREATE_DEFAULT_VECTOR_LAYER "CreateDefaultVectorLayer"
 #define SETTING_AUTO_SAVE           "AutoSave"
 #define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
 #define SETTING_TOOL_CURSOR         "ToolCursors"
