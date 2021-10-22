@@ -77,10 +77,10 @@ public:
     Status(const ErrorCode code, const DebugDetails& detailsList);
     Status(const ErrorCode code, const DebugDetails& detailsList, QString title, QString description);
 
-    ErrorCode   code() { return mCode; }
+    ErrorCode   code() const { return mCode; }
     bool        ok() const { return (mCode == OK) || (mCode == SAFE); }
-    QString     msg();
-    QString     title() { return !mTitle.isEmpty() ? mTitle : msg(); }
+    QString     msg() const;
+    QString     title() const { return !mTitle.isEmpty() ? mTitle : msg(); }
     QString     description() const { return mDescription; }
     DebugDetails details() const { return mDetails; }
 

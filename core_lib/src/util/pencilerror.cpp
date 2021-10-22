@@ -102,7 +102,7 @@ Status::Status(Status::ErrorCode eCode, const DebugDetails& detailsList, QString
 }
 
 
-QString Status::msg()
+QString Status::msg() const
 {
     static std::map<ErrorCode, QString> msgMap =
     {
