@@ -34,6 +34,7 @@ struct OverlayPainterOptions
 };
 
 class LayerCamera;
+class Camera;
 class Layer;
 
 class OverlayPainter
@@ -55,7 +56,7 @@ private:
     void paintOverlayCenter(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
     void paintOverlayThirds(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
     void paintOverlayGolden(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
-    void paintOverlaySafeAreas(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
+    void paintOverlaySafeAreas(QPainter& painter, QTransform& camTransform, QRect& camRect, Camera* camera) const;
     void paintOverlayPerspectiveOnePoint(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
     void paintOverlayPerspectiveTwoPoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
     void paintOverlayPerspectiveThreePoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const;

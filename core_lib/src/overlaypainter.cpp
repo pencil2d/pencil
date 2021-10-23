@@ -1,6 +1,7 @@
 #include "overlaypainter.h"
 
 #include "layercamera.h"
+#include "camera.h"
 #include "layer.h"
 
 #include "pencildef.h"
@@ -43,6 +44,7 @@ void OverlayPainter::paint(QPainter &painter)
 
     QTransform camTransform = cameraLayer->getViewAtFrame(mOptions.nFrameIndex);
     QRect cameraRect = cameraLayer->getViewRect();
+    Camera* camera = cameraLayer->getLastCameraAtFrame(mOptions.nFrameIndex, 0);
 
     if (mOptions.bCenter)
     {
@@ -62,7 +64,7 @@ void OverlayPainter::paint(QPainter &painter)
     if (mOptions.bSafeArea)
     {
         painter.setWorldTransform(mViewTransform);
-        paintOverlaySafeAreas(painter, camTransform, cameraRect);
+        paintOverlaySafeAreas(painter, camTransform, cameraRect, camera);
     }
 
     if (mOptions.bPerspective1)
@@ -177,7 +179,7 @@ void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransf
     painter.restore();
 }
 
-void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTransform, QRect& camRect) const
+void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTransform, QRect& camRect, Camera* camera) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -210,7 +212,17 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(topLeftCrossLine.pointAt((action / 2.0) / 100.0).toPoint(), QObject::tr("Safe Action area %1 %").arg(action));
+            painter.save();
+            QPointF topLeft = topLeftCrossLine.pointAt((action / 2.0) / 100 ).toPoint();
+
+            QTransform trans = QTransform::fromTranslate(topLeft.x(), topLeft.y());
+            QTransform rot = QTransform().rotate(-camera->rotation());
+            QTransform scale = QTransform::fromScale(camera->scaling(), camera->scaling());
+
+            QTransform t = scale.inverted() * rot * trans;
+            painter.setTransform(t, true);
+            painter.drawText(QPoint(), QObject::tr("Safe Action area %1 %").arg(action));
+            painter.restore();
         }
     }
     if (mOptions.bTitleSafe)
@@ -227,7 +239,17 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
 
         if (mOptions.bShowSafeAreaHelperText)
         {
-            painter.drawText(bottomLeftCrossLine.pointAt((title / 2.0) / 100), QObject::tr("Safe Title area %1 %").arg(title));
+            QPointF bottomLeft = bottomLeftCrossLine.pointAt((title / 2.0) / 100);
+            painter.save();
+
+            QTransform trans = QTransform::fromTranslate(bottomLeft.x(), bottomLeft.y());
+            QTransform rot = QTransform().rotate(-camera->rotation());
+            QTransform scale = QTransform::fromScale(camera->scaling(), camera->scaling());
+
+            QTransform t = scale.inverted() * rot * trans;
+            painter.setTransform(t, true);
+            painter.drawText(QPoint(), QObject::tr("Safe Title area %1 %").arg(title));
+            painter.restore();
         }
     }
     painter.restore();
