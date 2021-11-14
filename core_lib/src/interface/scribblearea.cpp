@@ -749,7 +749,8 @@ void ScribbleArea::mouseDoubleClickEvent(QMouseEvent* e)
 void ScribbleArea::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
-    mCanvas = QPixmap(size());
+    mDevicePixelRatio = devicePixelRatioF();
+    mCanvas = QPixmap(QSizeF(size() * mDevicePixelRatio).toSize());
     mCanvas.fill(Qt::transparent);
 
     mEditor->view()->setCanvasSize(size());
@@ -1231,6 +1232,7 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
 void ScribbleArea::drawCanvas(int frame, QRect rect)
 {
     mCanvas.fill(Qt::transparent);
+    mCanvas.setDevicePixelRatio(mDevicePixelRatio);
     prepCanvas(frame, rect);
     mCanvasPainter.paint();
     prepOverlays();

@@ -266,6 +266,7 @@ private:
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
     bool mTabletInUse = false;
+    qreal mDevicePixelRatio = 1.;
 
     // Double click handling for tablet input
     void handleDoubleClick();
