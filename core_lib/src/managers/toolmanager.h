@@ -41,9 +41,9 @@ public:
     void setCurrentTool(ToolType eToolType);
     void tabletSwitchToEraser();
     void tabletRestorePrevTool();
-    bool setTemporaryTool(ToolType eToolType, int keys, Qt::KeyboardModifiers modifiers);
+    bool setTemporaryTool(ToolType eToolType, QFlags<Qt::Key> keys, Qt::KeyboardModifiers modifiers);
     bool setTemporaryTool(ToolType eToolType, Qt::MouseButtons buttons);
-    bool tryClearTemporaryTool(int key);
+    bool tryClearTemporaryTool(Qt::Key key);
     bool tryClearTemporaryTool(Qt::MouseButton button);
     void clearTemporaryTool();
     void cleanupAllToolsData();
@@ -88,7 +88,7 @@ private:
     BaseTool* mTabletEraserTool = nullptr;
     BaseTool* mTemporaryTool = nullptr;
     Qt::KeyboardModifiers mTemporaryTriggerModifiers = Qt::NoModifier;
-    int mTemporaryTriggerKeys = 0;
+    QFlags<Qt::Key> mTemporaryTriggerKeys;
     Qt::MouseButtons mTemporaryTriggerMouseButtons = Qt::NoButton;
 
     QHash<ToolType, BaseTool*> mToolSetHash;

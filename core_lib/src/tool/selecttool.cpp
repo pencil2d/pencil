@@ -242,7 +242,8 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
     switch (event->key())
     {
     case Qt::Key_Alt:
-        if (mEditor->tools()->setTemporaryTool(MOVE, 0, Qt::AltModifier)) {
+        if (mEditor->tools()->setTemporaryTool(MOVE, {}, Qt::AltModifier))
+        {
             return true;
         }
         break;

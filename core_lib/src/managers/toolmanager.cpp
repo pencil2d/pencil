@@ -305,7 +305,7 @@ void ToolManager::tabletRestorePrevTool()
     }
 }
 
-bool ToolManager::setTemporaryTool(ToolType eToolType, int keys, Qt::KeyboardModifiers modifiers)
+bool ToolManager::setTemporaryTool(ToolType eToolType, QFlags<Qt::Key> keys, Qt::KeyboardModifiers modifiers)
 {
     if (mTemporaryTool != nullptr) return false;
     mTemporaryTriggerKeys = keys;
@@ -318,14 +318,14 @@ bool ToolManager::setTemporaryTool(ToolType eToolType, int keys, Qt::KeyboardMod
 bool ToolManager::setTemporaryTool(ToolType eToolType, Qt::MouseButtons buttons)
 {
     if (mTemporaryTool != nullptr) return false;
-    mTemporaryTriggerKeys = 0;
+    mTemporaryTriggerKeys = {};
     mTemporaryTriggerModifiers = Qt::NoModifier;
     mTemporaryTriggerMouseButtons = buttons;
     setTemporaryTool(eToolType);
     return true;
 }
 
-bool ToolManager::tryClearTemporaryTool(int key)
+bool ToolManager::tryClearTemporaryTool(Qt::Key key)
 {
     Qt::KeyboardModifier modifier = Qt::NoModifier;
     switch(key)
@@ -342,10 +342,12 @@ bool ToolManager::tryClearTemporaryTool(int key)
     case Qt::Key_Meta:
         modifier = Qt::MetaModifier;
         break;
+    default:
+        break;
     }
 
-    if ((mTemporaryTriggerKeys & key) != 0 ||
-        (mTemporaryTriggerModifiers & modifier) != 0)
+    if (mTemporaryTriggerKeys.testFlag(key) ||
+        mTemporaryTriggerModifiers.testFlag(modifier))
     {
         clearTemporaryTool();
         return true;
@@ -355,7 +357,7 @@ bool ToolManager::tryClearTemporaryTool(int key)
 
 bool ToolManager::tryClearTemporaryTool(Qt::MouseButton button)
 {
-    if (mTemporaryTriggerMouseButtons != Qt::NoButton && (mTemporaryTriggerMouseButtons & button) != 0)
+    if (mTemporaryTriggerMouseButtons != Qt::NoButton && mTemporaryTriggerMouseButtons.testFlag(button))
     {
         clearTemporaryTool();
         return true;
@@ -372,7 +374,7 @@ void ToolManager::setTemporaryTool(ToolType eToolType)
 void ToolManager::clearTemporaryTool()
 {
     mTemporaryTool = nullptr;
-    mTemporaryTriggerKeys = 0;
+    mTemporaryTriggerKeys = {};
     mTemporaryTriggerModifiers = Qt::NoModifier;
     mTemporaryTriggerMouseButtons = Qt::NoButton;
     emit toolChanged(currentTool()->type());

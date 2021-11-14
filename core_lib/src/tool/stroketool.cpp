@@ -71,13 +71,13 @@ bool StrokeTool::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Alt:
-        if (mEditor->tools()->setTemporaryTool(EYEDROPPER, 0, Qt::AltModifier))
+        if (mEditor->tools()->setTemporaryTool(EYEDROPPER, {}, Qt::AltModifier))
         {
             return true;
         }
         break;
     case Qt::Key_Space:
-        if (mEditor->tools()->setTemporaryTool(HAND, event->key(), Qt::NoModifier))
+        if (mEditor->tools()->setTemporaryTool(HAND, Qt::Key_Space, Qt::NoModifier))
         {
             return true;
         }

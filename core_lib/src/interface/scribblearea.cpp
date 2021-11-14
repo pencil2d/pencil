@@ -380,7 +380,7 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
 
     // --- fixed control key shortcuts ---
     if (event->modifiers() == (Qt::ControlModifier | Qt::ShiftModifier) &&
-        editor()->tools()->setTemporaryTool(ERASER, 0, event->modifiers()))
+        editor()->tools()->setTemporaryTool(ERASER, {}, event->modifiers()))
     {
         return;
     }
@@ -433,7 +433,8 @@ void ScribbleArea::keyEventForSelection(QKeyEvent* event)
         mEditor->deselectAll();
         return;
     case Qt::Key_Space:
-        if (editor()->tools()->setTemporaryTool(HAND, Qt::Key_Space, Qt::NoModifier)) {
+        if (editor()->tools()->setTemporaryTool(HAND, Qt::Key_Space, Qt::NoModifier))
+        {
             return;
         }
         break;
@@ -481,7 +482,14 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 
     mKeyboardInUse = false;
 
-    editor()->tools()->tryClearTemporaryTool(event->key());
+    if (event->key() == 0)
+    {
+        editor()->tools()->tryClearTemporaryTool(Qt::Key_unknown);
+    }
+    else
+    {
+        editor()->tools()->tryClearTemporaryTool(static_cast<Qt::Key>(event->key()));
+    }
 
     if (isPointerInUse()) { return; }
 
