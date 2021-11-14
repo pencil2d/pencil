@@ -242,14 +242,16 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
     switch (event->key())
     {
     case Qt::Key_Alt:
-        mScribbleArea->setTemporaryTool(MOVE);
+        if (mEditor->tools()->setTemporaryTool(MOVE, 0, Qt::AltModifier)) {
+            return true;
+        }
         break;
     default:
         break;
     }
 
     // Follow the generic behaviour anyway
-    return false;
+    return BaseTool::keyPressEvent(event);
 }
 
 QPointF SelectTool::offsetFromPressPos()
