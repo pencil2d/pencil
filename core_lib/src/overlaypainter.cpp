@@ -27,6 +27,7 @@ void OverlayPainter::setViewTransform(const QTransform view)
 void OverlayPainter::renderOverlays(QPainter &painter, MoveMode mode)
 {
     mMoveMode = mode;
+    painter.save();
 
     if (mOptions.bCenter)
     {
@@ -67,6 +68,7 @@ void OverlayPainter::renderOverlays(QPainter &painter, MoveMode mode)
         painter.setWorldTransform(mViewTransform);
         paintOverlayPerspective3(painter);
     }
+    painter.restore();
 }
 
 void OverlayPainter::paintOverlayCenter(QPainter &painter)
