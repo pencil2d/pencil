@@ -27,7 +27,7 @@ setup_linux() {
   echo "::endgroup::"
 
   echo "::group::Install Python packages"
-  pip3 install --upgrade oauth2client google-api-python-client typing 'setuptools<44'
+  pip3 install --upgrade oauth2client 'google-api-python-client<2' 'setuptools<58.4' 'pyparsing<3'
   echo "::endgroup::"
 }
 
