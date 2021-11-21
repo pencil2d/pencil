@@ -27,7 +27,7 @@ create_package_linux() {
   chmod 755 linuxdeployqt-continuous-x86_64.AppImage
   local update_info="" # Currently no appimageupdate support for nightly builds
   if [ $IS_RELEASE = "true" ]; then
-    update_info='-updateinformation=gh-releases-zsync|pencil2d|pencil|latest|pencil2d-linux-amd64-*.AppImage.zsync'
+    update_info="-updateinformation=gh-releases-zsync|${GITHUB_REPOSITORY/\//|}|latest|pencil2d-linux-amd64-*.AppImage.zsync"
   fi
   LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/x86_64-linux-gnu/pulseaudio" \
     ./linuxdeployqt-continuous-x86_64.AppImage \
@@ -41,10 +41,11 @@ wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-inte
     -appimage
   local output_name="pencil2d-linux-$1-$(date +%F)"
   mv Pencil2D*.AppImage "$output_name.AppImage"
-  mv Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" || true
+  mv Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" \
+    && sed -i '1,/^$/s/^\(Filename\|URL\): .*$/\1: '"$output_name.AppImage/" "$output_name.AppImage.zsync" \
+    || true
   if [ $IS_RELEASE = "true" ] && [ -e "$output_name.AppImage.zsync" ]; then
-    zip "$output_name.zip" "$output_name.AppImage" "$output_name.AppImage.zsync"
-    echo "::set-output name=package-name::$output_name.zip"
+    echo "::set-output name=package-name::$output_name.AppImage $output_name.AppImage.zsync"
   else
     echo "::set-output name=package-name::$output_name.AppImage"
   fi

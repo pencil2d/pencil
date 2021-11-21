@@ -23,7 +23,7 @@ setup_linux() {
     qt515xmlpatterns qt515wayland libgl1-mesa-dev bsdtar ffmpeg \
     gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-alsa \
-    gstreamer1.0-pulseaudio git curl libfuse2 python3 python3-pip zip
+    gstreamer1.0-pulseaudio git curl libfuse2 python3 python3-pip
   echo "::endgroup::"
 
   echo "::group::Install Python packages"
