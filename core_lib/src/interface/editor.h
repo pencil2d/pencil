@@ -197,6 +197,7 @@ public: //slots
 
     void copy();
     void copyAndCut();
+    void copyFromPreviousFrame();
     void paste();
 
     bool canCopy() const;

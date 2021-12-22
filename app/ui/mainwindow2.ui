@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>22</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -112,6 +112,7 @@
     <addaction name="separator"/>
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
+    <addaction name="actionCopy_Previous"/>
     <addaction name="actionPaste"/>
     <addaction name="actionClearFrame"/>
     <addaction name="separator"/>
@@ -1160,7 +1161,7 @@
   <action name="actionRemove_Frames">
    <property name="text">
     <string>Remove Frames</string>
-    </property>
+   </property>
   </action>
   <action name="actionStatusBar">
    <property name="checkable">
@@ -1171,6 +1172,14 @@
    </property>
    <property name="text">
     <string>Status Bar</string>
+   </property>
+  </action>
+  <action name="actionCopy_Previous">
+   <property name="text">
+    <string>Copy Previous</string>
+   </property>
+   <property name="toolTip">
+    <string>Copy from Previous frame</string>
    </property>
   </action>
  </widget>

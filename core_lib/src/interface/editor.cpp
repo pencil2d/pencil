@@ -550,6 +550,24 @@ void Editor::copyAndCut()
     }
 }
 
+void Editor::copyFromPreviousFrame()
+{
+    Layer* currentLayer = layers()->currentLayer();
+    if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
+        if (currentLayer->keyExists(mFrame)
+                && select()->somethingSelected()
+                && currentLayer->keyExists(currentLayer->getPreviousKeyFramePosition(mFrame)))
+        {
+            scrubBackward();
+            copy();
+            scrubForward();
+            paste();
+            mScribbleArea->applySelectionChanges();
+            deselectAll();
+        }
+    }
+}
+
 void Editor::pasteToCanvas(BitmapImage* bitmapImage, int frameNumber)
 {
     Layer* currentLayer = layers()->currentLayer();
