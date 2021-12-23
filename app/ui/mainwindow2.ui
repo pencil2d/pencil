@@ -1176,7 +1176,7 @@
   </action>
   <action name="actionCopy_Previous">
    <property name="text">
-    <string>Copy Previous</string>
+    <string>Copy from Previous</string>
    </property>
    <property name="toolTip">
     <string>Copy from Previous frame</string>
