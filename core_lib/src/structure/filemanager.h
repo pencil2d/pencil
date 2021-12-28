@@ -69,7 +69,7 @@ private:
     QDomElement saveProjectData(const ObjectData*, QDomDocument& xmlDoc);
 
     void extractProjectData(const QDomElement& element, ObjectData* data);
-    Object* cleanUpWithErrorCode(Status);
+    void handleOpenProjectError(Status::ErrorCode, const DebugDetails&);
 
     QString backupPreviousFile(const QString& fileName);
     void deleteBackupFile(const QString& fileName);

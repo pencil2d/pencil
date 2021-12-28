@@ -140,15 +140,12 @@ public:
     BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
-    void setTemporaryTool(ToolType eToolMode);
-    void setPrevTool();
 
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
     bool isTabletInUse() const { return mTabletInUse; }
     bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
-    bool isTemporaryTool() const { return mInstantTool; }
 
     void keyEvent(QKeyEvent* event);
     void keyEventForSelection(QKeyEvent* event);
@@ -250,8 +247,6 @@ private:
     VectorImage* currentVectorImage(Layer* layer) const;
 
     MoveMode mMoveMode = MoveMode::NONE;
-    ToolType mPrevTemporalToolType = ERASER;
-    ToolType mPrevToolType = PEN; // previous tool (except temporal)
 
     BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
 
@@ -276,6 +271,7 @@ private:
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
     bool mTabletInUse = false;
+    qreal mDevicePixelRatio = 1.;
 
     // Double click handling for tablet input
     void handleDoubleClick();
@@ -287,9 +283,6 @@ private:
 
     QPoint mCursorCenterPos;
     QPointF mTransformedCursorPos;
-
-    //instant tool (temporal eg. eraser)
-    bool mInstantTool = false; //whether or not using temporal tool
 
     PreferenceManager* mPrefs = nullptr;
 

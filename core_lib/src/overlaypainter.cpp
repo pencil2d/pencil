@@ -46,6 +46,7 @@ void OverlayPainter::paint(QPainter &painter)
     QRect cameraRect = cameraLayer->getViewRect();
     Camera* camera = cameraLayer->getLastCameraAtFrame(mOptions.nFrameIndex, 0);
 
+
     if (mOptions.bCenter)
     {
         painter.setWorldTransform(mViewTransform);
