@@ -352,7 +352,9 @@ void LayerCamera::updateOnAddFrame(int frame)
     // if frame is last keyframe
     if (next == frame)
     {
-        return;
+        Camera* camFrame = static_cast<Camera*>(getKeyFrameAt(frame));
+        camFrame->setPathMidPoint(getViewRect().center());
+        camFrame->modification();
     }
     // if inbetween frames
     else if (prev < frame)
@@ -448,6 +450,7 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
         camera->translate(translation);
         camera->scale(scaling);
         camera->rotate(rotation);
+        camera->setPathMidPoint(getViewRect().center());
         break;
     }
     default:
