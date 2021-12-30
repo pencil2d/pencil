@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -35,7 +35,6 @@ class Status;
 
 #define ProgressCallback std::function<void()>
 
-
 class Layer : public QObject
 {
     Q_OBJECT
@@ -52,12 +51,13 @@ public:
     };
 
     explicit Layer(Object*, LAYER_TYPE);
-    virtual ~Layer();
+    ~Layer() override;
 
     int id() const { return mId; }
-
     LAYER_TYPE type() const { return meType; }
+
     Object* object() const { return mObject; }
+    void setObject(Object* obj);
 
     void setName(QString name) { mName = name; }
     QString name() const { return mName; }
@@ -67,10 +67,16 @@ public:
     bool visible() const { return mVisible; }
     void setVisible(bool b) { mVisible = b; }
 
+    /** Get selected keyframe positions sorted by position */
+    QList<int> selectedKeyFramesPositions() const { return mSelectedFrames_byPosition; }
+
+    /** Get selected keyframe positions based on the order they were selected */
+    QList<int> selectedKeyFramesByLast() const { return mSelectedFrames_byLast; }
+
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressForward) = 0;
-    virtual QDomElement createDomElement(QDomDocument& doc) = 0;
-    QDomElement createBaseDomElement(QDomDocument& doc);
+    virtual QDomElement createDomElement(QDomDocument& doc) const = 0;
+    QDomElement createBaseDomElement(QDomDocument& doc) const;
     void loadBaseDomElement(const QDomElement& elem);
 
     // KeyFrame interface
@@ -84,23 +90,29 @@ public:
     int  getNextFrameNumber(int position, bool isAbsolute) const;
 
     int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
+    int selectedKeyFrameCount() const { return mSelectedFrames_byPosition.count(); }
+    bool hasAnySelectedFrames() const { return !mSelectedFrames_byLast.empty() && !mSelectedFrames_byPosition.empty(); }
+
+    /** Will insert an empty frame (exposure) after the given position
+        @param position The frame to add exposure to
+    */
+    bool insertExposureAt(int position);
 
     bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);
     bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);
-    bool moveKeyFrameForward(int position);
-    bool moveKeyFrameBackward(int position);
+    bool moveKeyFrame(int position, int offset);
     bool loadKey(KeyFrame*);
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
     KeyFrame *getKeyFrameWhichCovers(int frameNumber) const;
-    bool getVisibility() { return mVisible; }
+    bool getVisibility() const { return mVisible; }
 
-    void foreachKeyFrame(std::function<void(KeyFrame*)>);
+    void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
 
-    void setModified(int position, bool isModified);
+    void setModified(int position, bool isModified) const;
 
     // Handle selection
     bool isFrameSelected(int position) const;
@@ -108,30 +120,67 @@ public:
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
+
+    /** Make a selection from specified position until a blank spot appears
+     *  The search is only looking forward, e.g.
+     *  @code
+     *  |123| 4 5
+     *   ^
+     *   pos/search from
+     *  @endcode
+     *  @param position the current position
+     */
+    bool newSelectionOfConnectedFrames(int position);
+
+    /** Add or subtract exposure from selected frames
+     * @param offset Any value above 0 for adding exposure and any value below 0 to subtract exposure
+     */
+    void setExposureForSelectedFrames(int offset);
+
+    /** Reverse order of selected frames
+     * @return true if all frames were successfully reversed, otherwise will return false.
+     */
+    bool reverseOrderOfSelection();
+
     void deselectAll();
 
     bool moveSelectedFrames(int offset);
     QList<int> getSelectedFramesList() { return mSelectedFrames_byPosition; }
+    QList<int> getListOfSelectedFrames() { return mSelectedFrames_byPosition; }
+
+    /** Predetermines whether the frames can be moved to a new position depending on the offset
+     *
+     * @param offset Should be start press position - current position
+     * @return true if selected frames can be moved otherwise false
+     */
+    bool canMoveSelectedFramesToOffset(int offset) const;
+
+    QList<int> getSelectedFramesByPos() const { return mSelectedFrames_byPosition; }
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
 
-    // graphic representation -- could be put in another class
-    void paintTrack(QPainter& painter, TimeLineCells* cells, int x, int y, int width, int height, bool selected, int frameSize);
-    void paintFrames(QPainter& painter, QColor trackCol, TimeLineCells* cells, int y, int height, bool selected, int frameSize);
-    void paintLabel(QPainter& painter, TimeLineCells* cells, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility);
-    void paintSelection(QPainter& painter, int x, int y, int height, int width);
-    void mouseDoubleClick(QMouseEvent*, int frameNumber);
-
-    virtual void editProperties(); // TODO: it's used by camera layers only, should move somewhere else
-
     bool isPaintable() const;
+
+    /** Returns a list of dirty frame positions */
+    QList<int> dirtyFrames() const { return mDirtyFrames; }
+
+    /** Mark the frame position as dirty.
+     *  Any operation causing the frame to be modified, added, updated or removed, should call this. */
+    void markFrameAsDirty(const int frameNumber) { mDirtyFrames << frameNumber; }
+
+    /** Clear the list of dirty keyframes */
+    void clearDirtyFrames() { mDirtyFrames.clear(); }
+
+    QList<int> getSelectedFrameList() { return mSelectedFrames_byPosition; }
 
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
+    void removeFromSelectionList(int position);
+
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;
     int        mId = 0;
@@ -146,6 +195,9 @@ private:
     //
     QList<int> mSelectedFrames_byLast; // Used to handle selection range (based on last selected
     QList<int> mSelectedFrames_byPosition; // Used to handle frames movements on the timeline
+
+    // Used for clearing cache for modified frames.
+    QList<int> mDirtyFrames;
 };
 
 #endif

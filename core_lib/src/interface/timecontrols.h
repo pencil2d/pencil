@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QToolButton>
 #include <QSpinBox>
 #include <QCheckBox>
+#include <QLabel>
 
 class Editor;
 class PreferenceManager;
@@ -47,7 +48,7 @@ public:
     int getRangeLower() { return mPlaybackRangeCheckBox->isChecked() ? mLoopStartSpinBox->value() : -1; }
     int getRangeUpper() { return mPlaybackRangeCheckBox->isChecked() ? mLoopEndSpinBox->value() : -1; }
 
-Q_SIGNALS:
+signals:
     void soundToggled(bool);
     void soundScrubToggled(bool);
     void fpsChanged(int);
@@ -56,6 +57,7 @@ Q_SIGNALS:
 public slots:
     /// Work-around in case the FPS spin-box "valueChanged" signal doesn't work.
     void onFpsEditingFinished();
+    void updateTimecodeLabel(int frame);
 
 private:
     void makeConnections();
@@ -67,8 +69,12 @@ private:
     void playbackRangeClicked(bool bChecked);
     void loopStartValueChanged(int);
     void loopEndValueChanged(int);
-    void updateSoundIcon(bool soundEnabled);
     void updateSoundScrubIcon(bool soundScrubEnabled);
+
+    void noTimecodeText();
+    void onlyFramesText();
+    void sffText();
+    void smpteText();
 
 private:
     QPushButton* mPlayButton = nullptr;
@@ -81,6 +87,13 @@ private:
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
     QSpinBox*    mLoopEndSpinBox = nullptr;
+    QToolButton* mTimecodeSelect = nullptr;
+    QLabel*      mTimecodeLabel = nullptr;
+    QAction*     mNoTimecodeAction = nullptr;
+    QAction*     mOnlyFramesAction = nullptr;
+    QAction*     mSmpteAction = nullptr;
+    QAction*     mSffAction = nullptr;
+    QAction*     mTimecodeLabelAction = nullptr;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
@@ -92,6 +105,8 @@ private:
 
     TimeLine* mTimeline = nullptr;
     Editor* mEditor = nullptr;
+    int mFps = 12;
+    int mTimecodeLabelEnum;
 };
 
 #endif

@@ -1,4 +1,25 @@
-## Pencil2D 0.6.5 - 31 July 2019
+## Pencil2D v0.6.6 - 17 Feb 2021 
+
+### Features
+
+- A preliminary version of crash recovery
+- Open the last edited project when launching Pencil2D
+- Timeline now using the system palette colors
+
+### Fixes
+
+- Improved user interface overlapping issue at low screen resolutions by adding scrollbars
+- Check for updates didn't work on Windows
+- Temporary tools getting stuck if changing applications by pressing Alt key
+- Fixed a couple of issues regarding frame cache invalidation 
+- Fixed misc tablet/mouse stroke issues
+- Fixed memory leaks
+- #1414 Fixed new layer naming
+- #1437 "Reset Windows" now resets all sub panels to their initial positions
+- #1433 Fixed broken polyline tool
+
+
+## Pencil2D v0.6.5 - 31 July 2020
 
 ### Features
 

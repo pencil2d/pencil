@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -22,7 +22,6 @@ GNU General Public License for more details.
 
 // Qt
 #include <QDebug>
-#include <QListWidget>
 #include <QListWidgetItem>
 #include <QInputDialog>
 #include <QColorDialog>
@@ -261,7 +260,7 @@ void ColorPaletteWidget::refreshColorList()
 
 void ColorPaletteWidget::changeColorName(QListWidgetItem* item)
 {
-    Q_ASSERT(item != NULL);
+    Q_ASSERT(item != nullptr);
 
     if (ui->colorListWidget->viewMode() == QListView::IconMode)
     {

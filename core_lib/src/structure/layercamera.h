@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -17,58 +17,30 @@ GNU General Public License for more details.
 #ifndef LAYERCAMERA_H
 #define LAYERCAMERA_H
 
-#include <QList>
-#include <QDialog>
+#include <QRect>
 #include "layer.h"
+#include "cameraeasingtype.h"
 
-class QLineEdit;
-class QSpinBox;
 class Camera;
-
-namespace Ui {
-    class CameraPropertiesDialog;
-}
-
-// TODO: move this to somewhere else
-class CameraPropertiesDialog : public QDialog
-{
-    Q_OBJECT
-public:
-    CameraPropertiesDialog(QString name, int width, int height);
-    ~CameraPropertiesDialog();
-    QString getName();
-    void setName(QString);
-    int getWidth();
-    void setWidth(int);
-    int getHeight();
-    void setHeight(int);
-private:
-    Ui::CameraPropertiesDialog* ui = nullptr;
-};
 
 class LayerCamera : public Layer
 {
-    Q_OBJECT
-
 public:
-    LayerCamera(Object* object);
-    ~LayerCamera();
+    explicit LayerCamera(Object* object);
+    ~LayerCamera() override;
 
-    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType type);
 
-    void editProperties() override;
-    QDomElement createDomElement(QDomDocument& doc) override;
+    QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     Camera* getCameraAtFrame(int frameNumber);
     Camera* getLastCameraAtFrame(int frameNumber, int increment);
-    QTransform getViewAtFrame(int frameNumber);
+    QTransform getViewAtFrame(int frameNumber) const;
 
     QRect getViewRect();
-    QSize getViewSize();
-
-signals:
-    void resolutionChanged();
+    QSize getViewSize() const;
+    void setViewRect(QRect newViewRect);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
@@ -76,11 +48,11 @@ protected:
 
 private:
     void linearInterpolateTransform(Camera*);
+    qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
 
     int mFieldW = 800;
     int mFieldH = 600;
     QRect viewRect;
-    CameraPropertiesDialog* dialog = nullptr;
 };
 
 #endif

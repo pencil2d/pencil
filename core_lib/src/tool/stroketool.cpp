@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "viewmanager.h"
 #include "editor.h"
+#include "toolmanager.h"
 
 #ifdef Q_OS_MAC
 extern "C" {
@@ -42,7 +43,7 @@ StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
     detectWhichOSX();
 }
 
-void StrokeTool::startStroke()
+void StrokeTool::startStroke(PointerEvent::InputType inputType)
 {
     if (emptyFrameActionEnabled())
     {
@@ -61,6 +62,8 @@ void StrokeTool::startStroke()
     mStrokePressures.clear();
     mStrokePressures << strokeManager()->getPressure();
 
+    mCurrentInputType = inputType;
+
     disableCoalescing();
 }
 
@@ -68,19 +71,19 @@ bool StrokeTool::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Alt:
-        mScribbleArea->setTemporaryTool(EYEDROPPER);
-        return true;
+        if (mEditor->tools()->setTemporaryTool(EYEDROPPER, {}, Qt::AltModifier))
+        {
+            return true;
+        }
+        break;
     case Qt::Key_Space:
-        mScribbleArea->setTemporaryTool(HAND); // just call "setTemporaryTool()" to activate temporarily any tool
-        return true;
+        if (mEditor->tools()->setTemporaryTool(HAND, Qt::Key_Space, Qt::NoModifier))
+        {
+            return true;
+        }
+        break;
     }
-    return false;
-}
-
-bool StrokeTool::keyReleaseEvent(QKeyEvent *event)
-{
-    Q_UNUSED(event);
-    return true;
+    return BaseTool::keyPressEvent(event);
 }
 
 bool StrokeTool::emptyFrameActionEnabled()
@@ -96,6 +99,8 @@ void StrokeTool::endStroke()
     mStrokePressures.clear();
 
     enableCoalescing();
+
+    mScribbleArea->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
 }
 
 void StrokeTool::drawStroke()

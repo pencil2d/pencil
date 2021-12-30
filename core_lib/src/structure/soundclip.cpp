@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -36,14 +36,19 @@ SoundClip::~SoundClip()
     //QFile::remove( fileName() );
 }
 
-SoundClip& SoundClip::operator=(const SoundClip& a) {
-    if (this != &a) {
-        mOriginalSoundClipName = a.mOriginalSoundClipName;
+SoundClip& SoundClip::operator=(const SoundClip& a)
+{
+    if (this == &a)
+    {
+        return *this; // a self-assignment
     }
+
+    KeyFrame::operator=(a);
+    mOriginalSoundClipName = a.mOriginalSoundClipName;
     return *this;
 }
 
-SoundClip* SoundClip::clone()
+SoundClip* SoundClip::clone() const
 {
     return new SoundClip(*this);
 }
@@ -65,7 +70,7 @@ bool SoundClip::isValid() const
         return false;
     }
 
-    if (mPlayer == nullptr)
+    if (!mPlayer)
     {
         return false;
     }

@@ -1,0 +1,113 @@
+name: Build & Tests
+
+on:
+  push:
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
+    - '**.sh'
+    - '**.py'
+    - '**.ps1'
+  pull_request:
+    # Need to repeat these paths - YAML anchors aren’t supported on GHA atm
+    # (or any other CI service that I know of, for that matter)
+    paths-ignore:
+    - 'docs/**'
+    - '**.md'
+    - '**.sh'
+    - '**.py'
+    - '**.ps1'
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - name: Linux x86_64
+          os: ubuntu-latest
+          # XXX: --privileged is sort of a brute-force solution to get FUSE
+          #      working inside Docker, however so far I haven’t been able to
+          #      figure out precisely *which* privileges are needed.
+          container: { image: "ubuntu:16.04", options: --privileged }
+          upload-parent: linux_x86_64_parent
+        - name: macOS x86_64
+          os: macos-10.15
+          container:
+          upload-parent: macos_x86_64_parent
+        - name: Windows x86
+          os: windows-2019
+          arch: win32_msvc2019
+          container:
+          upload-parent: windows_x86_parent
+        - name: Windows x86_64
+          os: windows-2019
+          arch: win64_msvc2019_64
+          container:
+          upload-parent: windows_x86_64_parent
+
+    name: ${{matrix.name}}
+    runs-on: ${{matrix.os}}
+    container: ${{matrix.container}}
+
+    steps:
+    - name: Install git (Linux)
+      # GitHub runners come with git pre-installed, but our "custom" Linux
+      # container image does not
+      if: runner.os == 'Linux'
+      run: |
+        apt-get update -yq
+        apt-get -yq install software-properties-common
+        apt-add-repository -y ppa:git-core/ppa
+        apt-get update -yq
+        apt-get install -yq --no-install-suggests --no-install-recommends git
+    - name: Check out repository
+      uses: actions/checkout@v2
+    - name: Install Qt (Windows)
+      if: runner.os == 'Windows'
+      uses: jurplel/install-qt-action@v2
+      with:
+        arch: ${{matrix.arch}}
+    - name: Install dependencies
+      uses: ./.github/actions/install-dependencies
+      with:
+        arch: ${{matrix.arch}}
+
+    - name: Set up environment
+      uses: ./.github/actions/setup-environment
+      with:
+        arch: ${{matrix.arch}}
+
+    - name: Create build directory
+      run: mkdir build
+    - name: Configure build (Nightly Build)
+      if: github.ref != 'refs/heads/release'
+      working-directory: build
+      run: qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_NIGHTLY
+    - name: Configure build (Release)
+      if: github.ref == 'refs/heads/release'
+      working-directory: build
+      run: qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_RELEASE
+
+    - name: Build Pencil2D
+      working-directory: build
+      run: test "${{runner.os}}" != "Windows" && make || nmake
+
+    - name: Run tests
+      env: { QT_QPA_PLATFORM: minimal }
+      run: build/tests/bin/tests
+
+    - name: Create package
+      id: package
+      uses: ./.github/actions/create-package
+      with:
+        arch: ${{matrix.arch}}
+
+    - name: Upload package
+      env: { GOOGLE_PRIVATE_KEY: "${{secrets.google_private_key}}" }
+      if: env.GOOGLE_PRIVATE_KEY != null
+      uses: ./.github/actions/upload-package
+      with:
+        google-private-key: ${{secrets.google_private_key}}
+        parent: ${{secrets[matrix.upload-parent]}}
+        path: build/${{steps.package.outputs.package-name}}

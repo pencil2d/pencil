@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -43,7 +43,7 @@ public:
     void setLoop( bool loop );
     void setRangeState( bool range );
     void setPlaying( bool isPlaying );
-    
+
     int  getLength();
     void setLength(int frame);
     void extendLength(int frame);
@@ -53,10 +53,11 @@ public:
 
     void onObjectLoaded();
 
-Q_SIGNALS:
+signals:
+    void selectionChanged();
     void modification();
 
-    void addKeyClick();
+    void insertKeyClick();
     void removeKeyClick();
     void duplicateKeyClick();
 

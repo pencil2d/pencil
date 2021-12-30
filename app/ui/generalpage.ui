@@ -38,9 +38,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-335</y>
-        <width>303</width>
-        <height>866</height>
+        <y>-302</y>
+        <width>292</width>
+        <height>845</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="lay">
@@ -428,7 +428,7 @@
           <item>
            <widget class="QLabel" name="cacheLabel">
             <property name="text">
-             <string>Cached Frame Number:</string>
+             <string>Memory Cache Budget</string>
             </property>
             <property name="alignment">
              <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
@@ -458,14 +458,17 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="suffix">
+             <string>MB</string>
+            </property>
             <property name="minimum">
-             <number>11</number>
+             <number>100</number>
             </property>
             <property name="maximum">
-             <number>1500</number>
+             <number>16000</number>
             </property>
             <property name="value">
-             <number>200</number>
+             <number>1024</number>
             </property>
            </widget>
           </item>
@@ -499,19 +502,6 @@
  </tabstops>
  <resources/>
  <connections/>
- <slots>
-  <signal>windowOpacityChange(int)</signal>
-  <slot>gridSizeChange(int)</slot>
-  <slot>languageChanged(int)</slot>
-  <slot>shadowsCheckboxStateChanged(int)</slot>
-  <slot>toolCursorsCheckboxStateChanged(int)</slot>
-  <slot>antiAliasCheckboxStateChanged(int)</slot>
-  <slot>curveSmoothingChange(int)</slot>
-  <slot>highResCheckboxStateChanged(int)</slot>
-  <slot>dottedCursorCheckboxStateChanged(int)</slot>
-  <slot>gridCheckBoxStateChanged(int)</slot>
-  <slot>backgroundChange(int)</slot>
- </slots>
  <buttongroups>
   <buttongroup name="backgroundButtons"/>
  </buttongroups>

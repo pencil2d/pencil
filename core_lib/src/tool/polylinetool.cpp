@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -91,6 +91,16 @@ void PolylineTool::setAA(const int AA)
     settings.sync();
 }
 
+bool PolylineTool::leavingThisTool()
+{
+    if (mPoints.size() > 0)
+    {
+        cancelPolyline();
+        clearToolData();
+    }
+    return true;
+}
+
 bool PolylineTool::isActive()
 {
     return !mPoints.isEmpty();
@@ -98,12 +108,13 @@ bool PolylineTool::isActive()
 
 QCursor PolylineTool::cursor()
 {
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
 void PolylineTool::clearToolData()
 {
     mPoints.clear();
+    emit isActiveChanged(POLYLINE, false);
 }
 
 void PolylineTool::pointerPressEvent(PointerEvent* event)
@@ -127,7 +138,7 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
                 }
             }
             mPoints << getCurrentPoint();
-            mScribbleArea->setAllDirty();
+            emit isActiveChanged(POLYLINE, true);
         }
     }
 }
@@ -179,10 +190,10 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         break;
 
     default:
-        return false;
+        break;
     }
 
-    return false;
+    return BaseTool::keyPressEvent(event);
 }
 
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
@@ -269,5 +280,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         if (bitmapImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
         bitmapImage->paste(mScribbleArea->mBufferImg);
     }
+
+    mScribbleArea->clearBitmapBuffer();
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

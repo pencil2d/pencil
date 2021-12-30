@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -29,6 +29,7 @@ KeyFrame::KeyFrame(const KeyFrame& k2)
     mIsModified = k2.mIsModified;
     mIsSelected = k2.mIsSelected;
     mAttachedFileName = k2.mAttachedFileName;
+    // intentionally not copying event listeners
 }
 
 KeyFrame::~KeyFrame()
@@ -37,6 +38,22 @@ KeyFrame::~KeyFrame()
     {
         listener->onKeyFrameDestroy(this);
     }
+}
+
+KeyFrame& KeyFrame::operator=(const KeyFrame& k2)
+{
+	if (this == &k2)
+	{
+		return *this; // a self-assignment
+	}
+
+	mFrame = k2.mFrame;
+	mLength = k2.mLength;
+	mIsModified = k2.mIsModified;
+	mIsSelected = k2.mIsSelected;
+	mAttachedFileName = k2.mAttachedFileName;
+    // intentionally not copying event listeners
+    return *this;
 }
 
 void KeyFrame::addEventListener(KeyFrameEventListener* listener)

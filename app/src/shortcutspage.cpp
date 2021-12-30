@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -239,6 +239,12 @@ void ShortcutsPage::treeModelLoadShortcutsSetting()
     int row = 0;
     foreach (QString strCmdName, settings.allKeys())
     {
+        const QString &strShortcutName = getHumanReadableShortcutName(strCmdName);
+        if (strShortcutName.isEmpty()) {
+            // Shortcut not supported by this version of Pencil2D
+            continue;
+        }
+
         QString strKeySequence = settings.value(strCmdName).toString();
 
         //convert to native format
@@ -250,13 +256,14 @@ void ShortcutsPage::treeModelLoadShortcutsSetting()
             m_treeModel->setItem(row, KEY_SEQ_COLUMN, new QStandardItem());
 
         m_treeModel->item(row, ACT_NAME_COLUMN)->setData(strCmdName);
-        m_treeModel->item(row, ACT_NAME_COLUMN)->setText(getHumanReadableShortcutName(strCmdName));
+        m_treeModel->item(row, ACT_NAME_COLUMN)->setText(strShortcutName);
         m_treeModel->item(row, ACT_NAME_COLUMN)->setEditable(false);
         m_treeModel->item(row, KEY_SEQ_COLUMN)->setText(strKeySequence);
         m_treeModel->item(row, KEY_SEQ_COLUMN)->setEditable(false);
 
         row++;
     }
+    m_treeModel->setRowCount(row);
     settings.endGroup();
 
     ui->treeView->resizeColumnToContents( 0 );
@@ -292,87 +299,95 @@ void ShortcutsPage::clearButtonClicked()
 static QString getHumanReadableShortcutName(const QString& cmdName)
 {
     static QHash<QString, QString> humanReadableShortcutNames = QHash<QString, QString>{
-        {CMD_ADD_FRAME, QObject::tr("Add Frame", "Shortcut")},
-        {CMD_CLEAR_FRAME, QObject::tr("Clear Frame", "Shortcut")},
-        {CMD_COPY, QObject::tr("Copy", "Shortcut")},
-        {CMD_CUT, QObject::tr("Cut", "Shortcut")},
-        {CMD_DELETE_CUR_LAYER, QObject::tr("Delete Current Layer", "Shortcut")},
-        {CMD_DESELECT_ALL, QObject::tr("Deselect All", "Shortcut")},
-        {CMD_DUPLICATE_FRAME, QObject::tr("Duplicate Frame", "Shortcut")},
-        {CMD_EXIT, QObject::tr("Exit", "Shortcut")},
-        {CMD_EXPORT_IMAGE, QObject::tr("Export Image", "Shortcut")},
-        {CMD_EXPORT_IMAGE_SEQ, QObject::tr("Export Image Sequence", "Shortcut")},
-        {CMD_EXPORT_MOVIE, QObject::tr("Export Movie", "Shortcut")},
-        {CMD_EXPORT_PALETTE, QObject::tr("Export Palette", "Shortcut")},
-        {CMD_EXPORT_SOUND, QObject::tr("Export Sound", "Shortcut")},
-        {CMD_FLIP_HORIZONTAL, QObject::tr("Horizontal Flip", "Shortcut")},
-        {CMD_FLIP_INBETWEEN, QObject::tr("Flip In-Between", "Shortcut")},
-        {CMD_FLIP_ROLLING, QObject::tr("Flip Rolling", "Shortcut")},
-        {CMD_FLIP_VERTICAL, QObject::tr("Vertical Flip", "Shortcut")},
-        {CMD_GOTO_NEXT_FRAME, QObject::tr("Next Frame", "Shortcut")},
-        {CMD_GOTO_NEXT_KEY_FRAME, QObject::tr("Next Keyframe", "Shortcut")},
-        {CMD_GOTO_PREV_FRAME, QObject::tr("Previous Frame", "Shortcut")},
-        {CMD_GOTO_PREV_KEY_FRAME, QObject::tr("Previous Keyframe", "Shortcut")},
-        {CMD_GRID, QObject::tr("Toggle Grid", "Shortcut")},
-        {CMD_IMPORT_IMAGE, QObject::tr("Import Image", "Shortcut")},
-        {CMD_IMPORT_IMAGE_SEQ, QObject::tr("Import Image Sequence", "Shortcut")},
-        {CMD_IMPORT_SOUND, QObject::tr("Import Sound", "Shortcut")},
-        {CMD_ALL_LAYER_VISIBILITY, QObject::tr("Show All Layers", "Shortcut")},
-        {CMD_CURRENT_LAYER_VISIBILITY, QObject::tr("Show Current Layer Only", "Shortcut")},
-        {CMD_RELATIVE_LAYER_VISIBILITY, QObject::tr("Show Layers Relative to Current Layer", "Shortcut")},
-        {CMD_LOOP, QObject::tr("Toggle Loop", "Shortcut")},
-        {CMD_MOVE_FRAME_BACKWARD, QObject::tr("Move Frame Backward", "Shortcut")},
-        {CMD_MOVE_FRAME_FORWARD, QObject::tr("Move Frame Forward", "Shortcut")},
-        {CMD_NEW_BITMAP_LAYER, QObject::tr("New Bitmap Layer", "Shortcut")},
-        {CMD_NEW_CAMERA_LAYER, QObject::tr("New Camera Layer", "Shortcut")},
-        {CMD_NEW_FILE, QObject::tr("New File", "Shortcut")},
-        {CMD_NEW_SOUND_LAYER, QObject::tr("New Sound Layer", "Shortcut")},
-        {CMD_NEW_VECTOR_LAYER, QObject::tr("New Vector Layer", "Shortcut")},
-        {CMD_ONIONSKIN_NEXT, QObject::tr("Toggle Next Onion Skin", "Shortcut")},
-        {CMD_ONIONSKIN_PREV, QObject::tr("Toggle Previous Onion Skin", "Shortcut")},
-        {CMD_OPEN_FILE, QObject::tr("Open File", "Shortcut")},
-        {CMD_PASTE, QObject::tr("Paste", "Shortcut")},
-        {CMD_PLAY, QObject::tr("Play/Stop", "Shortcut")},
-        {CMD_PREFERENCE, QObject::tr("Preferences", "Shortcut")},
-        {CMD_REDO, QObject::tr("Redo", "Shortcut")},
-        {CMD_REMOVE_FRAME, QObject::tr("Remove Frame", "Shortcut")},
-        {CMD_RESET_WINDOWS, QObject::tr("Reset Windows", "Shortcut")},
-        {CMD_RESET_ZOOM_ROTATE, QObject::tr("Reset Zoom/Rotate", "Shortcut")},
-        {CMD_ROTATE_ANTI_CLOCK, QObject::tr("Rotate Anticlockwise", "Shortcut")},
-        {CMD_ROTATE_CLOCK, QObject::tr("Rotate Clockwise", "Shortcut")},
-        {CMD_SAVE_AS, QObject::tr("Save File As", "Shortcut")},
-        {CMD_SAVE_FILE, QObject::tr("Save File", "Shortcut")},
-        {CMD_SELECT_ALL, QObject::tr("Select All", "Shortcut")},
-        {CMD_TOGGLE_COLOR_INSPECTOR, QObject::tr("Toggle Color Inspector Window Visibility", "Shortcut")},
-        {CMD_TOGGLE_COLOR_LIBRARY, QObject::tr("Toggle Color Palette Window Visibility", "Shortcut")},
-        {CMD_TOGGLE_COLOR_WHEEL, QObject::tr("Toggle Color Box Window Visibility", "Shortcut")},
-        {CMD_TOGGLE_DISPLAY_OPTIONS, QObject::tr("Toggle Display Window Visibility", "Shortcut")},
-        {CMD_TOGGLE_ONION_SKIN, QObject::tr("Toggle Onion Skins Window Visibility", "Shortcut")},
-        {CMD_TOGGLE_TIMELINE, QObject::tr("Toggle Timeline Window Visibility", "Shortcut")},
-        {CMD_TOGGLE_TOOLBOX, QObject::tr("Toggle Tools Window Visibility", "Shortcut")},
-        {CMD_TOGGLE_TOOL_OPTIONS, QObject::tr("Toggle Options Window Visibility", "Shortcut")},
-        {CMD_TOOL_BRUSH, QObject::tr("Brush Tool", "Shortcut")},
-        {CMD_TOOL_BUCKET, QObject::tr("Bucket Tool", "Shortcut")},
-        {CMD_TOOL_ERASER, QObject::tr("Eraser Tool", "Shortcut")},
-        {CMD_TOOL_EYEDROPPER, QObject::tr("Eyedropper Tool", "Shortcut")},
-        {CMD_TOOL_HAND, QObject::tr("Hand Tool", "Shortcut")},
-        {CMD_TOOL_MOVE, QObject::tr("Move Tool", "Shortcut")},
-        {CMD_TOOL_PEN, QObject::tr("Pen Tool", "Shortcut")},
-        {CMD_TOOL_PENCIL, QObject::tr("Pencil Tool", "Shortcut")},
-        {CMD_TOOL_POLYLINE, QObject::tr("Polyline Tool", "Shortcut")},
-        {CMD_TOOL_SELECT, QObject::tr("Select Tool", "Shortcut")},
-        {CMD_TOOL_SMUDGE, QObject::tr("Smudge Tool", "Shortcut")},
-        {CMD_UNDO, QObject::tr("Undo", "Shortcut")},
-        {CMD_ZOOM_100, QObject::tr("Set Zoom to 100%", "Shortcut")},
-        {CMD_ZOOM_200, QObject::tr("Set Zoom to 200%", "Shortcut")},
-        {CMD_ZOOM_25, QObject::tr("Set Zoom to 25%", "Shortcut")},
-        {CMD_ZOOM_300, QObject::tr("Set Zoom to 300%", "Shortcut")},
-        {CMD_ZOOM_33, QObject::tr("Set Zoom to 33%", "Shortcut")},
-        {CMD_ZOOM_400, QObject::tr("Set Zoom to 400%", "Shortcut")},
-        {CMD_ZOOM_50, QObject::tr("Set Zoom to 50%", "Shortcut")},
-        {CMD_ZOOM_IN, QObject::tr("Zoom In", "Shortcut")},
-        {CMD_ZOOM_OUT, QObject::tr("Zoom Out", "Shortcut")},
+        {CMD_ADD_FRAME, ShortcutsPage::tr("Add Frame", "Shortcut")},
+        {CMD_CLEAR_FRAME, ShortcutsPage::tr("Clear Frame", "Shortcut")},
+        {CMD_COPY, ShortcutsPage::tr("Copy", "Shortcut")},
+        {CMD_CUT, ShortcutsPage::tr("Cut", "Shortcut")},
+        {CMD_DELETE_CUR_LAYER, ShortcutsPage::tr("Delete Current Layer", "Shortcut")},
+        {CMD_DESELECT_ALL, ShortcutsPage::tr("Deselect All", "Shortcut")},
+        {CMD_DUPLICATE_FRAME, ShortcutsPage::tr("Duplicate Frame", "Shortcut")},
+        {CMD_EXIT, ShortcutsPage::tr("Exit", "Shortcut")},
+        {CMD_EXPORT_IMAGE, ShortcutsPage::tr("Export Image", "Shortcut")},
+        {CMD_EXPORT_IMAGE_SEQ, ShortcutsPage::tr("Export Image Sequence", "Shortcut")},
+        {CMD_EXPORT_MOVIE, ShortcutsPage::tr("Export Movie", "Shortcut")},
+        {CMD_EXPORT_PALETTE, ShortcutsPage::tr("Export Palette", "Shortcut")},
+        {CMD_EXPORT_SOUND, ShortcutsPage::tr("Export Sound", "Shortcut")},
+        {CMD_FLIP_HORIZONTAL, ShortcutsPage::tr("Horizontal Flip", "Shortcut")},
+        {CMD_FLIP_INBETWEEN, ShortcutsPage::tr("Flip In-Between", "Shortcut")},
+        {CMD_FLIP_ROLLING, ShortcutsPage::tr("Flip Rolling", "Shortcut")},
+        {CMD_FLIP_VERTICAL, ShortcutsPage::tr("Vertical Flip", "Shortcut")},
+        {CMD_GOTO_NEXT_FRAME, ShortcutsPage::tr("Next Frame", "Shortcut")},
+        {CMD_GOTO_NEXT_KEY_FRAME, ShortcutsPage::tr("Next Keyframe", "Shortcut")},
+        {CMD_GOTO_PREV_FRAME, ShortcutsPage::tr("Previous Frame", "Shortcut")},
+        {CMD_GOTO_PREV_KEY_FRAME, ShortcutsPage::tr("Previous Keyframe", "Shortcut")},
+        {CMD_SELECTION_ADD_FRAME_EXPOSURE, ShortcutsPage::tr("Selection: Add Frame Exposure", "Shortcut")},
+        {CMD_SELECTION_SUBTRACT_FRAME_EXPOSURE, ShortcutsPage::tr("Selection: Subtract Frame Exposure", "Shortcut")},
+        {CMD_REVERSE_SELECTED_FRAMES, ShortcutsPage::tr("Selection: Reverse Keyframes", "Shortcut")},
+        {CMD_REMOVE_SELECTED_FRAMES, ShortcutsPage::tr("Selection: Remove Keyframes", "Shortcut")},
+        {CMD_GRID, ShortcutsPage::tr("Toggle Grid", "Shortcut")},
+        {CMD_IMPORT_IMAGE, ShortcutsPage::tr("Import Image", "Shortcut")},
+        {CMD_IMPORT_IMAGE_SEQ, ShortcutsPage::tr("Import Image Sequence", "Shortcut")},
+        {CMD_IMPORT_SOUND, ShortcutsPage::tr("Import Sound", "Shortcut")},
+        {CMD_ALL_LAYER_VISIBILITY, ShortcutsPage::tr("Show All Layers", "Shortcut")},
+        {CMD_CURRENT_LAYER_VISIBILITY, ShortcutsPage::tr("Show Current Layer Only", "Shortcut")},
+        {CMD_RELATIVE_LAYER_VISIBILITY, ShortcutsPage::tr("Show Layers Relative to Current Layer", "Shortcut")},
+        {CMD_LOOP, ShortcutsPage::tr("Toggle Loop", "Shortcut")},
+        {CMD_MOVE_FRAME_BACKWARD, ShortcutsPage::tr("Move Frame Backward", "Shortcut")},
+        {CMD_MOVE_FRAME_FORWARD, ShortcutsPage::tr("Move Frame Forward", "Shortcut")},
+        {CMD_NEW_BITMAP_LAYER, ShortcutsPage::tr("New Bitmap Layer", "Shortcut")},
+        {CMD_NEW_CAMERA_LAYER, ShortcutsPage::tr("New Camera Layer", "Shortcut")},
+        {CMD_NEW_FILE, ShortcutsPage::tr("New File", "Shortcut")},
+        {CMD_NEW_SOUND_LAYER, ShortcutsPage::tr("New Sound Layer", "Shortcut")},
+        {CMD_NEW_VECTOR_LAYER, ShortcutsPage::tr("New Vector Layer", "Shortcut")},
+        {CMD_ONIONSKIN_NEXT, ShortcutsPage::tr("Toggle Next Onion Skin", "Shortcut")},
+        {CMD_ONIONSKIN_PREV, ShortcutsPage::tr("Toggle Previous Onion Skin", "Shortcut")},
+        {CMD_OPEN_FILE, ShortcutsPage::tr("Open File", "Shortcut")},
+        {CMD_PASTE, ShortcutsPage::tr("Paste", "Shortcut")},
+        {CMD_PLAY, ShortcutsPage::tr("Play/Stop", "Shortcut")},
+        {CMD_PREFERENCE, ShortcutsPage::tr("Preferences", "Shortcut")},
+        {CMD_PREVIEW, ShortcutsPage::tr("Preview", "Shortcut")},
+        {CMD_REDO, ShortcutsPage::tr("Redo", "Shortcut")},
+        {CMD_REMOVE_FRAME, ShortcutsPage::tr("Remove Frame", "Shortcut")},
+        {CMD_RESET_WINDOWS, ShortcutsPage::tr("Reset Windows", "Shortcut")},
+        {CMD_RESET_ZOOM_ROTATE, ShortcutsPage::tr("Reset View", "Shortcut")},
+        {CMD_CENTER_VIEW, ShortcutsPage::tr("Center View", "Shortcut")},
+        {CMD_ROTATE_ANTI_CLOCK, ShortcutsPage::tr("Rotate Anticlockwise", "Shortcut")},
+        {CMD_ROTATE_CLOCK, ShortcutsPage::tr("Rotate Clockwise", "Shortcut")},
+        {CMD_RESET_ROTATION, ShortcutsPage::tr("Reset Rotation", "Shortcut")},
+        {CMD_SAVE_AS, ShortcutsPage::tr("Save File As", "Shortcut")},
+        {CMD_SAVE_FILE, ShortcutsPage::tr("Save File", "Shortcut")},
+        {CMD_SELECT_ALL, ShortcutsPage::tr("Select All", "Shortcut")},
+        {CMD_TOGGLE_STATUS_BAR, ShortcutsPage::tr("Toggle Status Bar Visibility", "Shortcut")},
+        {CMD_TOGGLE_COLOR_INSPECTOR, ShortcutsPage::tr("Toggle Color Inspector Window Visibility", "Shortcut")},
+        {CMD_TOGGLE_COLOR_LIBRARY, ShortcutsPage::tr("Toggle Color Palette Window Visibility", "Shortcut")},
+        {CMD_TOGGLE_COLOR_WHEEL, ShortcutsPage::tr("Toggle Color Box Window Visibility", "Shortcut")},
+        {CMD_TOGGLE_DISPLAY_OPTIONS, ShortcutsPage::tr("Toggle Display Window Visibility", "Shortcut")},
+        {CMD_TOGGLE_ONION_SKIN, ShortcutsPage::tr("Toggle Onion Skins Window Visibility", "Shortcut")},
+        {CMD_TOGGLE_TIMELINE, ShortcutsPage::tr("Toggle Timeline Window Visibility", "Shortcut")},
+        {CMD_TOGGLE_TOOLBOX, ShortcutsPage::tr("Toggle Tools Window Visibility", "Shortcut")},
+        {CMD_TOGGLE_TOOL_OPTIONS, ShortcutsPage::tr("Toggle Options Window Visibility", "Shortcut")},
+        {CMD_TOOL_BRUSH, ShortcutsPage::tr("Brush Tool", "Shortcut")},
+        {CMD_TOOL_BUCKET, ShortcutsPage::tr("Bucket Tool", "Shortcut")},
+        {CMD_TOOL_ERASER, ShortcutsPage::tr("Eraser Tool", "Shortcut")},
+        {CMD_TOOL_EYEDROPPER, ShortcutsPage::tr("Eyedropper Tool", "Shortcut")},
+        {CMD_TOOL_HAND, ShortcutsPage::tr("Hand Tool", "Shortcut")},
+        {CMD_TOOL_MOVE, ShortcutsPage::tr("Move Tool", "Shortcut")},
+        {CMD_TOOL_PEN, ShortcutsPage::tr("Pen Tool", "Shortcut")},
+        {CMD_TOOL_PENCIL, ShortcutsPage::tr("Pencil Tool", "Shortcut")},
+        {CMD_TOOL_POLYLINE, ShortcutsPage::tr("Polyline Tool", "Shortcut")},
+        {CMD_TOOL_SELECT, ShortcutsPage::tr("Select Tool", "Shortcut")},
+        {CMD_TOOL_SMUDGE, ShortcutsPage::tr("Smudge Tool", "Shortcut")},
+        {CMD_UNDO, ShortcutsPage::tr("Undo", "Shortcut")},
+        {CMD_ZOOM_100, ShortcutsPage::tr("Set Zoom to 100%", "Shortcut")},
+        {CMD_ZOOM_200, ShortcutsPage::tr("Set Zoom to 200%", "Shortcut")},
+        {CMD_ZOOM_25, ShortcutsPage::tr("Set Zoom to 25%", "Shortcut")},
+        {CMD_ZOOM_300, ShortcutsPage::tr("Set Zoom to 300%", "Shortcut")},
+        {CMD_ZOOM_33, ShortcutsPage::tr("Set Zoom to 33%", "Shortcut")},
+        {CMD_ZOOM_400, ShortcutsPage::tr("Set Zoom to 400%", "Shortcut")},
+        {CMD_ZOOM_50, ShortcutsPage::tr("Set Zoom to 50%", "Shortcut")},
+        {CMD_ZOOM_IN, ShortcutsPage::tr("Zoom In", "Shortcut")},
+        {CMD_ZOOM_OUT, ShortcutsPage::tr("Zoom Out", "Shortcut")},
     };
 
-    return humanReadableShortcutNames.value(cmdName, cmdName);
+    return humanReadableShortcutNames.value(cmdName, QString());
 }

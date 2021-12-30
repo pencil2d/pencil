@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "camera.h"
 #include "layercamera.h"
+#include "cameraeasingtype.h"
 
 
 TEST_CASE("ViewManager: Init")
@@ -249,7 +250,7 @@ TEST_CASE("ViewManager: working with camera layers")
         // a default key at frame 0
         // 2nd key at frame 10
         LayerCamera* layerCam = editor->object()->addNewCameraLayer();
-        layerCam->addKeyFrame(10, new Camera(QPointF(100, 0), 0, 1));
+        layerCam->addKeyFrame(10, new Camera(QPointF(100, 0), 0, 1, CameraEasingType::LINEAR));
 
         v.setCameraLayer(layerCam);
         editor->scrubTo(10);
@@ -276,7 +277,7 @@ TEST_CASE("ViewManager: working with camera layers")
         auto cam = layerCam->getCameraAtFrame(1);
         cam->translate(100, 0);
 
-        layerCam->addKeyFrame(5, new Camera(QPoint(200, 0), 0, 2.0));
+        layerCam->addKeyFrame(5, new Camera(QPoint(200, 0), 0, 2.0, CameraEasingType::LINEAR));
 
         v.setCameraLayer(layerCam);
         v.setCameraLayer(nullptr);

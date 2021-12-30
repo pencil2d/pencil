@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -15,67 +15,18 @@ GNU General Public License for more details.
 
 */
 #include "layercamera.h"
-#include "ui_camerapropertiesdialog.h"
 
-#include <QLineEdit>
-#include <QSpinBox>
-#include <QLabel>
-#include <QPushButton>
-#include <QHBoxLayout>
-#include <QtDebug>
+#include <QSettings>
+#include <QEasingCurve>
+
 #include "camera.h"
-#include <qsettings.h>
 #include "pencildef.h"
+#include "cameraeasingtype.h"
 
-CameraPropertiesDialog::CameraPropertiesDialog(QString name, int width, int height) :
-    QDialog(),
-    ui(new Ui::CameraPropertiesDialog)
-{
-    ui->setupUi(this);
-
-    ui->nameBox->setText(name);
-    ui->widthBox->setValue(width);
-    ui->heightBox->setValue(height);
-}
-
-CameraPropertiesDialog::~CameraPropertiesDialog()
-{
-    delete ui;
-}
-
-QString CameraPropertiesDialog::getName()
-{
-    return ui->nameBox->text();
-}
-
-void CameraPropertiesDialog::setName(QString name)
-{
-    ui->nameBox->setText(name);
-}
-
-int CameraPropertiesDialog::getWidth()
-{
-    return ui->widthBox->value();
-}
-
-void CameraPropertiesDialog::setWidth(int width)
-{
-    ui->widthBox->setValue(width);
-}
-
-int CameraPropertiesDialog::getHeight()
-{
-    return ui->heightBox->value();
-}
-
-void CameraPropertiesDialog::setHeight(int height)
-{
-    ui->heightBox->setValue(height);
-}
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
-    setName(tr("Camera Layer"));
+    setName(QObject::tr("Camera Layer"));
 
     QSettings settings(PENCIL2D, PENCIL2D);
     mFieldW = settings.value("FieldW").toInt();
@@ -86,7 +37,6 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
         mFieldH = 600;
     }
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
-    dialog = nullptr;
 }
 
 LayerCamera::~LayerCamera()
@@ -103,7 +53,7 @@ Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
     return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-QTransform LayerCamera::getViewAtFrame(int frameNumber)
+QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 {
     if (keyFrameCount() == 0)
     {
@@ -111,9 +61,11 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
     }
 
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
+    camera1->setEasingType(camera1->getEasingType());
 
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
+    camera2->setEasingType(camera2->getEasingType());
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -136,22 +88,20 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber)
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
 
-    // linear interpolation
-    qreal c2 = (frameNumber - frame1) / (frame2 - frame1);
-    qreal c1 = 1.0 - c2;
+    // interpolation
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
     auto interpolation = [=](double f1, double f2) -> double
     {
-        return f1 * c1 + f2 * c2;
+        return f1 * (1.0 - percent) + f2 * percent;
     };
 
     return QTransform(interpolation(camera1->view.m11(), camera2->view.m11()),
                       interpolation(camera1->view.m12(), camera2->view.m12()),
                       interpolation(camera1->view.m21(), camera2->view.m21()),
                       interpolation(camera1->view.m22(), camera2->view.m22()),
-                      interpolation(camera1->view.dx(), camera2->view.dx()),
-                      interpolation(camera1->view.dy(), camera2->view.dy()));
-
+                      interpolation(camera1->view.m31(), camera2->view.m31()),
+                      interpolation(camera1->view.m32(), camera2->view.m32()));
 }
 
 void LayerCamera::linearInterpolateTransform(Camera* cam)
@@ -161,9 +111,11 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
 
     int frameNumber = cam->pos();
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
+    camera1->setEasingType(camera1->getEasingType());
 
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
+    camera2->setEasingType(camera2->getEasingType());
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -186,22 +138,62 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     double frame1 = camera1->pos();
     double frame2 = camera2->pos();
 
-    // linear interpolation
-    double c2 = (frameNumber - frame1) / (frame2 - frame1);
+    // interpolation
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
 
-    auto lerp = [](double f1, double f2, double ratio) -> double
+    auto lerp = [](double f1, double f2, double percent) -> double
     {
-        return f1 * (1.0 - ratio) + f2 * ratio;
+        return f1 * (1.0 - percent) + f2 * percent;
     };
 
-    double dx = lerp(camera1->translation().x(), camera2->translation().x(), c2);
-    double dy = lerp(camera1->translation().y(), camera2->translation().y(), c2);
-    double r = lerp(camera1->rotation(), camera2->rotation(), c2);
-    double s = lerp(camera1->scaling(), camera2->scaling(), c2);
+    double dx = lerp(camera1->translation().x(), camera2->translation().x(), percent);
+    double dy = lerp(camera1->translation().y(), camera2->translation().y(), percent);
+    double r = lerp(camera1->rotation(), camera2->rotation(), percent);
+    double s = lerp(camera1->scaling(), camera2->scaling(), percent);
 
     cam->translate(dx, dy);
     cam->rotate(r);
     cam->scale(s);
+}
+
+qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent) const
+{
+    QEasingCurve easing;
+
+    switch (type)
+    {
+    case CameraEasingType::LINEAR : easing.setType(QEasingCurve::Linear); break;
+    case CameraEasingType::INQUAD : easing.setType(QEasingCurve::InQuad); break;
+    case CameraEasingType::OUTQUAD : easing.setType(QEasingCurve::OutQuad); break;
+    case CameraEasingType::INOUTQUAD : easing.setType(QEasingCurve::InOutQuad); break;
+    case CameraEasingType::OUTINQUAD : easing.setType(QEasingCurve::OutInQuad); break;
+    case CameraEasingType::INCUBIC : easing.setType(QEasingCurve::InCubic); break;
+    case CameraEasingType::OUTCUBIC : easing.setType(QEasingCurve::OutCubic); break;
+    case CameraEasingType::INOUTCUBIC : easing.setType(QEasingCurve::InOutCubic); break;
+    case CameraEasingType::OUTINCUBIC : easing.setType(QEasingCurve::OutInCubic); break;
+    case CameraEasingType::INQUART : easing.setType(QEasingCurve::InQuart); break;
+    case CameraEasingType::OUTQUART : easing.setType(QEasingCurve::OutQuart); break;
+    case CameraEasingType::INOUTQUART : easing.setType(QEasingCurve::InOutQuart); break;
+    case CameraEasingType::OUTINQUART : easing.setType(QEasingCurve::OutInQuart); break;
+    case CameraEasingType::INQUINT : easing.setType(QEasingCurve::InQuint); break;
+    case CameraEasingType::OUTQUINT : easing.setType(QEasingCurve::OutQuint); break;
+    case CameraEasingType::INOUTQUINT : easing.setType(QEasingCurve::InOutQuint); break;
+    case CameraEasingType::OUTINQUINT : easing.setType(QEasingCurve::OutInQuint); break;
+    case CameraEasingType::INSINE : easing.setType(QEasingCurve::InSine); break;
+    case CameraEasingType::OUTSINE : easing.setType(QEasingCurve::OutSine); break;
+    case CameraEasingType::INOUTSINE : easing.setType(QEasingCurve::InOutSine); break;
+    case CameraEasingType::OUTINSINE: easing.setType(QEasingCurve::OutInSine); break;
+    case CameraEasingType::INEXPO : easing.setType(QEasingCurve::InExpo); break;
+    case CameraEasingType::OUTEXPO : easing.setType(QEasingCurve::OutExpo); break;
+    case CameraEasingType::INOUTEXPO : easing.setType(QEasingCurve::InOutExpo); break;
+    case CameraEasingType::OUTINEXPO: easing.setType(QEasingCurve::OutInExpo); break;
+    case CameraEasingType::INCIRC : easing.setType(QEasingCurve::InCirc); break;
+    case CameraEasingType::OUTCIRC : easing.setType(QEasingCurve::OutCirc); break;
+    case CameraEasingType::INOUTCIRC : easing.setType(QEasingCurve::InOutCirc); break;
+    case CameraEasingType::OUTINCIRC: easing.setType(QEasingCurve::OutInCirc); break;
+    default: easing.setType(QEasingCurve::Linear); break;
+    }
+    return easing.valueForProgress(percent);
 }
 
 QRect LayerCamera::getViewRect()
@@ -209,18 +201,23 @@ QRect LayerCamera::getViewRect()
     return viewRect;
 }
 
-QSize LayerCamera::getViewSize()
+QSize LayerCamera::getViewSize() const
 {
     return viewRect.size();
 }
 
-void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale)
+void LayerCamera::setViewRect(QRect newViewRect)
+{
+    viewRect = newViewRect;
+}
+
+void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType type)
 {
     if (keyExists(frameNumber))
     {
         removeKeyFrame(frameNumber);
     }
-    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
+    Camera* camera = new Camera(QPointF(dx, dy), rotate, scale, type);
     camera->setPos(frameNumber);
     loadKey(camera);
 }
@@ -238,31 +235,9 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
     return c;
 }
 
-void LayerCamera::editProperties()
+QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
 {
-    if (dialog == nullptr)
-    {
-        dialog = new CameraPropertiesDialog(name(), viewRect.width(), viewRect.height());
-    }
-    dialog->setName(name());
-    dialog->setWidth(viewRect.width());
-    dialog->setHeight(viewRect.height());
-    int result = dialog->exec();
-    if (result == QDialog::Accepted)
-    {
-        setName(dialog->getName());
-        QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue(SETTING_FIELD_W, dialog->getWidth());
-        settings.setValue(SETTING_FIELD_H, dialog->getHeight());
-        viewRect = QRect(-dialog->getWidth() / 2, -dialog->getHeight() / 2, dialog->getWidth(), dialog->getHeight());
-
-        emit resolutionChanged();
-    }
-}
-
-QDomElement LayerCamera::createDomElement(QDomDocument& doc)
-{
-    QDomElement layerElem = this->createBaseDomElement(doc);
+    QDomElement layerElem = createBaseDomElement(doc);
     layerElem.setAttribute("width", viewRect.width());
     layerElem.setAttribute("height", viewRect.height());
 
@@ -276,6 +251,7 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc)
                         keyTag.setAttribute("s", camera->scaling());
                         keyTag.setAttribute("dx", camera->translation().x());
                         keyTag.setAttribute("dy", camera->translation().y());
+                        keyTag.setAttribute("easing", static_cast<int>(camera->getEasingType()));
                         layerElem.appendChild(keyTag);
                     });
 
@@ -307,8 +283,9 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 qreal scale = imageElement.attribute("s", "1").toDouble();
                 qreal dx = imageElement.attribute("dx", "0").toDouble();
                 qreal dy = imageElement.attribute("dy", "0").toDouble();
+                CameraEasingType type = static_cast<CameraEasingType>(imageElement.attribute("easing", "0").toInt());
 
-                loadImageAtFrame(frame, dx, dy, rotate, scale);
+                loadImageAtFrame(frame, dx, dy, rotate, scale, type);
             }
         }
         imageTag = imageTag.nextSibling();

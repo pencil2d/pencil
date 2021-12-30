@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
@@ -34,7 +34,7 @@ public:
     QColor color();
     void setColor(QColor);
 
-Q_SIGNALS:
+signals:
     void colorChanged(const QColor&);
 
 private:

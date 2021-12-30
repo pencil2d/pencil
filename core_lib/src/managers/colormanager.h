@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -40,7 +40,7 @@ public:
     void setColor(const QColor& color);
     void setColorNumber(int n);
 
-Q_SIGNALS:
+signals:
     void colorChanged(QColor, int); // new color and color index
     void colorNumberChanged(int);
 

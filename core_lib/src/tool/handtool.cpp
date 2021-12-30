@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -70,12 +70,7 @@ void HandTool::pointerMoveEvent(PointerEvent* event)
 
 void HandTool::pointerReleaseEvent(PointerEvent* event)
 {
-    //---- stop the hand tool if this was mid button
-    if (event->button() == Qt::MidButton)
-    {
-        qDebug("[HandTool] Stop Hand Tool");
-        mScribbleArea->setPrevTool();
-    }
+    Q_UNUSED(event)
     mIsHeld = false;
     mScribbleArea->updateToolCursor();
 }

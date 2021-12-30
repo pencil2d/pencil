@@ -7,6 +7,13 @@
 class PointerEvent
 {
 public:
+    enum InputType {
+        Mouse,
+        Tablet,
+        Touch,
+        Unknown
+    };
+
     PointerEvent(QMouseEvent* event);
     PointerEvent(QTabletEvent* event);
     ~PointerEvent();
@@ -63,7 +70,8 @@ public:
 
     bool isAccepted();
 
-    QEvent::Type type() const;
+    QEvent::Type eventType() const;
+    InputType inputType() const;
 
     QTabletEvent::TabletDevice device() const;
     QTabletEvent::PointerType pointerType() const;

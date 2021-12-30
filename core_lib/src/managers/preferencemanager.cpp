@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -18,9 +18,9 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 
 #include <QSettings>
+#include <QDebug>
 
-
-PreferenceManager::PreferenceManager(Editor* editor) : BaseManager(editor)
+PreferenceManager::PreferenceManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -56,6 +56,10 @@ void PreferenceManager::loadPrefs()
     set(SETTING::OVERLAY_THIRDS,           settings.value(SETTING_OVERLAY_THIRDS,         false).toBool());
     set(SETTING::OVERLAY_GOLDEN,           settings.value(SETTING_OVERLAY_GOLDEN,         false).toBool());
     set(SETTING::OVERLAY_SAFE,             settings.value(SETTING_OVERLAY_SAFE,           false).toBool());
+    set(SETTING::OVERLAY_PERSPECTIVE1,     settings.value(SETTING_OVERLAY_PERSPECTIVE1,   false).toBool());
+    set(SETTING::OVERLAY_PERSPECTIVE2,     settings.value(SETTING_OVERLAY_PERSPECTIVE2,   false).toBool());
+    set(SETTING::OVERLAY_PERSPECTIVE3,     settings.value(SETTING_OVERLAY_PERSPECTIVE3,   false).toBool());
+    set(SETTING::OVERLAY_ANGLE,            settings.value(SETTING_OVERLAY_ANGLE,          15).toInt());
     set(SETTING::ACTION_SAFE,              settings.value(SETTING_ACTION_SAFE,            5).toInt());
     set(SETTING::ACTION_SAFE_ON,           settings.value(SETTING_ACTION_SAFE_ON,         true).toBool());
     set(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON, settings.value(SETTING_OVERLAY_SAFE_HELPER_TEXT_ON, true).toBool());
@@ -78,21 +82,25 @@ void PreferenceManager::loadPrefs()
     set(SETTING::ROTATION_INCREMENT,       settings.value(SETTING_ROTATION_INCREMENT,     15).toInt());
 
     set(SETTING::WINDOW_OPACITY,           settings.value(SETTING_WINDOW_OPACITY,         0).toInt());
+    set(SETTING::SHOW_STATUS_BAR,          settings.value(SETTING_SHOW_STATUS_BAR,        true).toBool());
     set(SETTING::CURVE_SMOOTHING,          settings.value(SETTING_CURVE_SMOOTHING,        20).toInt());
 
     set(SETTING::BACKGROUND_STYLE,         settings.value(SETTING_BACKGROUND_STYLE,       "white").toString());
 
     set(SETTING::LAYOUT_LOCK,              settings.value(SETTING_LAYOUT_LOCK,            false).toBool());
-    set(SETTING::FRAME_POOL_SIZE,          settings.value(SETTING_FRAME_POOL_SIZE,        200).toInt());
+    set(SETTING::FRAME_POOL_SIZE,          settings.value(SETTING_FRAME_POOL_SIZE,        1024).toInt());
 
     set(SETTING::FPS,                      settings.value(SETTING_FPS,                    12).toInt());
     set(SETTING::FIELD_W,                  settings.value(SETTING_FIELD_W,                800).toInt());
     set(SETTING::FIELD_H,                  settings.value(SETTING_FIELD_H,                600).toInt());
+    set(SETTING::TIMECODE_TEXT,            settings.value(SETTING_TIMECODE_TEXT,          1).toInt());
 
     // Files
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              false).toBool());
     set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       256).toInt());
     set(SETTING::ASK_FOR_PRESET,           settings.value(SETTING_ASK_FOR_PRESET,         false).toBool());
+    set(SETTING::LOAD_MOST_RECENT,         settings.value(SETTING_LOAD_MOST_RECENT,       false).toBool());
+    set(SETTING::LOAD_DEFAULT_PRESET,      settings.value(SETTING_LOAD_DEFAULT_PRESET,    true).toBool());
     set(SETTING::DEFAULT_PRESET,           settings.value(SETTING_DEFAULT_PRESET,         0).toInt());
 
     // Timeline
@@ -267,6 +275,9 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::ONION_NEXT_FRAMES_NUM:
         settings.setValue(SETTING_ONION_NEXT_FRAMES_NUM, value);
         break;
+    case SETTING::OVERLAY_ANGLE:
+        settings.setValue(SETTING_OVERLAY_ANGLE, value);
+        break;
     case SETTING::FLIP_ROLL_MSEC :
         settings.setValue(SETTING_FLIP_ROLL_MSEC, value);
         break;
@@ -281,6 +292,9 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::GRID_SIZE_W:
         settings.setValue(SETTING_GRID_SIZE_W, value);
+        break;
+    case SETTING::TIMECODE_TEXT:
+        settings.setValue(SETTING_TIMECODE_TEXT, value);
         break;
     case SETTING::GRID_SIZE_H:
         settings.setValue(SETTING_GRID_SIZE_H, value);
@@ -338,6 +352,9 @@ void PreferenceManager::set(SETTING option, bool value)
     QSettings settings(PENCIL2D, PENCIL2D);
     switch (option)
     {
+    case SETTING::SHOW_STATUS_BAR:
+        settings.setValue(SETTING_SHOW_STATUS_BAR, value);
+        break;
     case SETTING::ANTIALIAS:
         settings.setValue(SETTING_ANTIALIAS, value);
         break;
@@ -355,6 +372,15 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::OVERLAY_SAFE:
         settings.setValue(SETTING_OVERLAY_SAFE, value);
+        break;
+    case SETTING::OVERLAY_PERSPECTIVE1:
+        settings.setValue(SETTING_OVERLAY_PERSPECTIVE1, value);
+        break;
+    case SETTING::OVERLAY_PERSPECTIVE2:
+        settings.setValue(SETTING_OVERLAY_PERSPECTIVE2, value);
+        break;
+    case SETTING::OVERLAY_PERSPECTIVE3:
+        settings.setValue(SETTING_OVERLAY_PERSPECTIVE3, value);
         break;
     case SETTING::ACTION_SAFE_ON:
         settings.setValue(SETTING_ACTION_SAFE_ON, value);
@@ -421,6 +447,12 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::ASK_FOR_PRESET:
         settings.setValue(SETTING_ASK_FOR_PRESET, value);
+        break;
+    case SETTING::LOAD_MOST_RECENT:
+        settings.setValue(SETTING_LOAD_MOST_RECENT, value);
+        break;
+    case SETTING::LOAD_DEFAULT_PRESET:
+        settings.setValue(SETTING_LOAD_DEFAULT_PRESET, value);
         break;
     default:
         Q_ASSERT(false);

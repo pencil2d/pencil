@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-! include( ../common.pri ) { error( Could not find the common.pri file! ) }
+! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
 QT += core widgets gui xml multimedia svg network
 
@@ -12,17 +12,41 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt precompile_header
+CONFIG += qt precompile_header lrelease embed_translations
 
 DESTDIR = ../bin
-
-RESOURCES += \
-    data/app.qrc \
-    ../translations/translations.qrc
-
 MOC_DIR = .moc
 OBJECTS_DIR = .obj
 UI_DIR = .ui
+
+RESOURCES += data/app.qrc
+
+EXTRA_TRANSLATIONS += \
+	$$PWD/../translations/pencil_ar.ts \
+	$$PWD/../translations/pencil_ca.ts \
+	$$PWD/../translations/pencil_cs.ts \
+	$$PWD/../translations/pencil_da.ts \
+	$$PWD/../translations/pencil_de.ts \
+	$$PWD/../translations/pencil_el.ts \
+	$$PWD/../translations/pencil_es.ts \
+	$$PWD/../translations/pencil_et.ts \
+	$$PWD/../translations/pencil_fr.ts \
+	$$PWD/../translations/pencil_he.ts \
+	$$PWD/../translations/pencil_hu_HU.ts \
+	$$PWD/../translations/pencil_id.ts \
+	$$PWD/../translations/pencil_it.ts \
+	$$PWD/../translations/pencil_ja.ts \
+	$$PWD/../translations/pencil_kab.ts \
+	$$PWD/../translations/pencil_pl.ts \
+	$$PWD/../translations/pencil_pt.ts \
+	$$PWD/../translations/pencil_pt_BR.ts \
+	$$PWD/../translations/pencil_ru.ts \
+	$$PWD/../translations/pencil_sl.ts \
+	$$PWD/../translations/pencil_sv.ts \
+	$$PWD/../translations/pencil_tr.ts \
+	$$PWD/../translations/pencil_vi.ts \
+	$$PWD/../translations/pencil_zh_CN.ts \
+	$$PWD/../translations/pencil_zh_TW.ts
 
 INCLUDEPATH += \
     src \
@@ -33,9 +57,10 @@ INCLUDEPATH += \
     ../core_lib/src/structure \
     ../core_lib/src/tool \
     ../core_lib/src/util \
-    ../core_lib/ui \
     ../core_lib/src/managers \
-    ../core_lib/src/external
+    ../core_lib/src/external \
+    ../core_lib/src \
+    ../core_lib/ui
 
 PRECOMPILED_HEADER = src/app-pch.h
 
@@ -43,6 +68,7 @@ HEADERS += \
     src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
+    src/layeropacitydialog.h \
     src/mainwindow2.h \
     src/onionskinwidget.h \
     src/predefinedsetmodel.h \
@@ -51,21 +77,26 @@ HEADERS += \
     src/timeline2.h \
     src/actioncommands.h \
     src/preferencesdialog.h \
+    src/filespage.h \
+    src/generalpage.h \
     src/shortcutspage.h \
+    src/timelinepage.h \
+    src/toolspage.h \
     src/preview.h \
     src/colorbox.h \
     src/colorinspector.h \
     src/colorpalettewidget.h \
     src/colorwheel.h \
-    src/filedialogex.h \
+    src/filedialog.h \
     src/displayoptionwidget.h \
-    src/pencilapplication.h \
+    src/pencil2d.h \
     src/exportmoviedialog.h \
     src/app_util.h \
     src/errordialog.h \
     src/aboutdialog.h \
     src/toolbox.h \
     src/tooloptionwidget.h \
+    src/bucketoptionswidget.h \
     src/importexportdialog.h \
     src/exportimagedialog.h \
     src/importimageseqdialog.h \
@@ -74,11 +105,17 @@ HEADERS += \
     src/colorslider.h \
     src/checkupdatesdialog.h \
     src/presetdialog.h     \
-    src/repositionframesdialog.h
+    src/repositionframesdialog.h \
+    src/presetdialog.h \
+    src/commandlineparser.h \
+    src/commandlineexporter.h \
+    src/statusbar.h \
+    src/elidedlabel.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
+    src/layeropacitydialog.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
     src/onionskinwidget.cpp \
@@ -88,20 +125,25 @@ SOURCES += \
     src/timeline2.cpp \
     src/actioncommands.cpp \
     src/preferencesdialog.cpp \
+    src/filespage.cpp \
+    src/generalpage.cpp \
     src/shortcutspage.cpp \
+    src/timelinepage.cpp \
+    src/toolspage.cpp \
     src/preview.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
-    src/filedialogex.cpp \
+    src/filedialog.cpp \
     src/displayoptionwidget.cpp \
-    src/pencilapplication.cpp \
+    src/pencil2d.cpp \
     src/exportmoviedialog.cpp \
     src/errordialog.cpp \
     src/aboutdialog.cpp \
     src/toolbox.cpp \
     src/tooloptionwidget.cpp \
+    src/bucketoptionswidget.cpp \
     src/importexportdialog.cpp \
     src/exportimagedialog.cpp \
     src/importimageseqdialog.cpp \
@@ -110,12 +152,18 @@ SOURCES += \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
     src/presetdialog.cpp \
-    src/repositionframesdialog.cpp
+    src/repositionframesdialog.cpp \
+    src/app_util.cpp \
+    src/commandlineparser.cpp \
+    src/commandlineexporter.cpp \
+    src/statusbar.cpp \
+    src/elidedlabel.cpp
 
 FORMS += \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \
+    ui/layeropacitydialog.ui \
     ui/mainwindow2.ui \
     ui/onionskin.ui \
     ui/pegbaralignmentdialog.ui \
@@ -131,6 +179,7 @@ FORMS += \
     ui/exportimageoptions.ui \
     ui/importimageseqoptions.ui \
     ui/tooloptions.ui \
+    ui/bucketoptionswidget.ui \
     ui/aboutdialog.ui \
     ui/doubleprogressdialog.ui \
     ui/preferencesdialog.ui \
@@ -140,8 +189,6 @@ FORMS += \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
     ui/presetdialog.ui
-
-
 
 GIT {
     DEFINES += GIT_EXISTS \
@@ -164,7 +211,6 @@ macx {
 }
 
 win32 {
-    CONFIG -= flat
     RC_FILE = data/pencil2d.rc
 }
 
@@ -194,31 +240,19 @@ unix:!macx {
 
 # --- core_lib ---
 
-INCLUDEPATH += $$PWD/../core_lib/src
+INCLUDEPATH += ../../core_lib/src
 
 CONFIG(debug,debug|release) BUILDTYPE = debug
 CONFIG(release,debug|release) BUILDTYPE = release
 
-win32-msvc*{
-  LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
-  PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
+win32-msvc* {
+    LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/core_lib.lib
 }
 
-
-# From 5.14, MinGW windows builds are not build with debug-release flag
-versionAtLeast(QT_VERSION, 5.14) {
-
-    win32-g++{
-      LIBS += -L$$OUT_PWD/../core_lib/ -lcore_lib
-      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/libcore_lib.a
-    }
-
-} else {
-
-    win32-g++{
-      LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
-      PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
-    }
+win32-g++{
+    LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
+    PRE_TARGETDEPS += $$OUT_PWD/../core_lib/$$BUILDTYPE/libcore_lib.a
 }
 
 # --- mac os and linux

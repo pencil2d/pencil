@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -150,15 +150,12 @@ void TimeLine::initUI()
     timelineButtons->addSeparator();
     timelineButtons->addWidget(zoomLabel);
     timelineButtons->addWidget(zoomSlider);
-    timelineButtons->addSeparator();
-    timelineButtons->addSeparator();
     timelineButtons->setFixedHeight(30);
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls(this);
     mTimeControls->setEditor(editor());
     mTimeControls->initUI();
-    mTimeControls->setSizePolicy(QSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding));
     updateLength();
 
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
@@ -201,7 +198,7 @@ void TimeLine::initUI()
 
     connect(splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength);
 
-    connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::addKeyClick);
+    connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::insertKeyClick);
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
@@ -210,6 +207,9 @@ void TimeLine::initUI()
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::updateLength);
     connect(mTimeControls, &TimeControls::playButtonTriggered, this, &TimeLine::playButtonTriggered);
+    connect(editor(), &Editor::scrubbed, mTimeControls, &TimeControls::updateTimecodeLabel);
+    connect(mTimeControls, &TimeControls::fpsChanged, mTimeControls, &TimeControls::setFps);
+    connect(this, &TimeLine::fpsChanged, mTimeControls, &TimeControls::setFps);
 
     connect(newBitmapLayerAct, &QAction::triggered, this, &TimeLine::newBitmapLayer);
     connect(newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer);
@@ -220,8 +220,11 @@ void TimeLine::initUI()
     connect(mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY);
     connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
     connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
+    connect(mTracks, &TimeLineCells::selectionChanged, this, &TimeLine::selectionChanged);
+    connect(mTracks, &TimeLineCells::insertNewKeyFrame, this, &TimeLine::insertKeyClick);
 
-    connect(editor(), &Editor::currentFrameChanged, this, &TimeLine::updateFrame);
+    connect(editor(), &Editor::scrubbed, this, &TimeLine::updateFrame);
+    connect(editor(), &Editor::frameModified, this, &TimeLine::updateContent);
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);
@@ -289,7 +292,7 @@ void TimeLine::deleteCurrentLayer()
 
     int ret = QMessageBox::warning(this,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: %1?").arg(strLayerName),
+                                   tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(strLayerName),
                                    QMessageBox::Ok | QMessageBox::Cancel,
                                    QMessageBox::Ok);
     if (ret == QMessageBox::Ok)
@@ -306,6 +309,7 @@ void TimeLine::deleteCurrentLayer()
 void TimeLine::updateFrame(int frameNumber)
 {
     Q_ASSERT(mTracks);
+
 
     mTracks->updateFrame(mLastUpdatedFrame);
     mTracks->updateFrame(frameNumber);

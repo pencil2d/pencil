@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -18,13 +18,13 @@ GNU General Public License for more details.
 #ifndef PENCILERROR_H
 #define PENCILERROR_H
 
+#include <QCoreApplication>
 #include <QStringList>
 
 class DebugDetails
 {
 public:
     DebugDetails();
-    ~DebugDetails();
 
     void collect(const DebugDetails& d);
     QString str();
@@ -38,6 +38,7 @@ private:
 
 class Status
 {
+    Q_DECLARE_TR_FUNCTIONS(Status)
 public:
     enum ErrorCode
     {
@@ -71,18 +72,15 @@ public:
         ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER
     };
 
-    struct StatusInt{
-        int value = 0;
-        ErrorCode errorcode = Status::OK;
-    };
+    Status(const ErrorCode code);
+    Status(const ErrorCode code, const QString& description);
+    Status(const ErrorCode code, const DebugDetails& detailsList);
+    Status(const ErrorCode code, const DebugDetails& detailsList, QString title, QString description);
 
-    Status(ErrorCode code);
-    Status(ErrorCode code, const DebugDetails& detailsList, QString title = "", QString description = "");
-
-    ErrorCode   code() { return mCode; }
+    ErrorCode   code() const { return mCode; }
     bool        ok() const { return (mCode == OK) || (mCode == SAFE); }
-    QString     msg();
-    QString     title() { return !mTitle.isEmpty() ? mTitle : msg(); }
+    QString     msg() const;
+    QString     title() const { return !mTitle.isEmpty() ? mTitle : msg(); }
     QString     description() const { return mDescription; }
     DebugDetails details() const { return mDetails; }
 
@@ -100,11 +98,13 @@ private:
     DebugDetails mDetails;
 };
 
-
-
-#ifndef STATUS_CHECK 
+#ifndef STATUS_CHECK
 #define STATUS_CHECK( x )\
 	{ Status st = (x); if (!st.ok()) { return st; } }
+#endif
+
+#ifndef STATUS_FAILED
+#define STATUS_FAILED(stcode) ((int)stcode >= (int)Status::FAIL)
 #endif
 
 #endif // PENCILERROR_H

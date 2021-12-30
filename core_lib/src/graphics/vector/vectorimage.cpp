@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -36,6 +36,7 @@ VectorImage::VectorImage(const VectorImage& v2) : KeyFrame(v2)
     mObject = v2.mObject;
     mCurves = v2.mCurves;
     mArea = v2.mArea;
+    mOpacity = v2.mOpacity;
 }
 
 VectorImage::~VectorImage()
@@ -43,17 +44,23 @@ VectorImage::~VectorImage()
 }
 
 VectorImage& VectorImage::operator=(const VectorImage& a) {
-    if (this != &a) {
-        deselectAll();
-        mObject = a.mObject;
-        mCurves = a.mCurves;
-        mArea = a.mArea;
-        modification();
+
+    if (this == &a)
+    {
+        return *this; // a self-assignment
     }
+
+    deselectAll();
+    KeyFrame::operator=(a);
+    mObject = a.mObject;
+    mCurves = a.mCurves;
+    mArea = a.mArea;
+    mOpacity = a.mOpacity;
+    modification();
     return *this;
 }
 
-VectorImage* VectorImage::clone()
+VectorImage* VectorImage::clone() const
 {
     return new VectorImage(*this);
 }
@@ -645,7 +652,7 @@ void VectorImage::setSelected(VertexRef vertexRef, bool YesOrNo)
 /**
  * @brief VectorImage::setSelected
  * @param curveList: the list of curves
- * @param yesOrNo: bool
+ * @param YesOrNo: bool
  */
 void VectorImage::setSelected(QList<int> curveList, bool YesOrNo)
 {
@@ -657,7 +664,7 @@ void VectorImage::setSelected(QList<int> curveList, bool YesOrNo)
 
 /**
  * @brief VectorImage::setSelected
- * @param QList<VertexRef> vertexList
+ * @param vertexList
  * @param YesOrNo: bool
  */
 void VectorImage::setSelected(QList<VertexRef> vertexList, bool YesOrNo)
@@ -1176,7 +1183,6 @@ void VectorImage::paintImage(QPainter& painter,
     painter.setRenderHint(QPainter::Antialiasing, antialiasing);
 
     painter.setClipping(false);
-    painter.setOpacity(1.0);
     QTransform painterMatrix = painter.transform();
 
     QRect mappedViewRect = QRect(0, 0, painter.device()->width(), painter.device()->height());
@@ -1781,8 +1787,7 @@ BezierArea VectorImage::getSelectedArea(QPointF currentPoint)
 
 /**
  * @brief VectorImage::fillSelectedPath
- * @param QPointF currentPoint
- * @param int color
+ * @param color
  * fills the selected path with a given color
  */
 void VectorImage::fillSelectedPath(int color)
@@ -1821,8 +1826,8 @@ void VectorImage::fillSelectedPath(int color)
 
 /**
  * @brief VectorImage::fillContour
- * @param QList<QPointF> contourPath
- * @param int color
+ * @param contourPath
+ * @param color
  * fills the contour with a given color
  */
 void VectorImage::fillContour(QList<QPointF> contourPath, int color)
@@ -2298,7 +2303,7 @@ int VectorImage::getLastAreaNumber(QPointF point, int maxAreaNumber)
 
 /**
  * @brief VectorImage::removeArea
- * @param QPointF point
+ * @param point
  * Remove the area under cursor
  */
 void VectorImage::removeArea(QPointF point)
@@ -2313,7 +2318,8 @@ void VectorImage::removeArea(QPointF point)
 
 /**
  * @brief VectorImage::removeAreaInCurve
- * @param BezierArea& bezierArea&
+ * @param curve
+ * @param areaNumber
  * remove the area in a curve
  */
 void VectorImage::removeAreaInCurve(int curve, int areaNumber)

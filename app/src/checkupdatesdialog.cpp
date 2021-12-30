@@ -1,6 +1,6 @@
 ﻿/*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "checkupdatesdialog.h"
+#include <QDebug>
 #include <QNetworkReply>
 #include <QNetworkAccessManager>
 #include <QHBoxLayout>
@@ -85,7 +86,7 @@ CheckUpdatesDialog::~CheckUpdatesDialog()
 
 void CheckUpdatesDialog::startChecking()
 {
-#ifdef NIGHTLY
+#ifdef PENCIL2D_NIGHTLY_BUILD
     nightlyBuildCheck();
 #else
     regularBuildCheck();
@@ -109,7 +110,7 @@ void CheckUpdatesDialog::nightlyBuildCheck()
 {
     mTitleLabel->setText(tr("<b>You are using a Pencil2D nightly build</b>"));
     mDetailLabel->setText(tr("Please go %1 here %2 to check new nightly builds.")
-                          .arg("<a href=\"https://www.pencil2d.org/download/#nightlybuild\">").arg("</a>"));
+                          .arg("<a href=\"https://www.pencil2d.org/download/#nightlybuild\">", "</a>"));
     mDetailLabel->setOpenExternalLinks(true);
     mProgressBar->setRange(0, 1);
     mProgressBar->setValue(1);
@@ -175,8 +176,7 @@ void CheckUpdatesDialog::networkRequestFinished(QNetworkReply* reply)
     {
         mTitleLabel->setText(tr("<b>A new version of Pencil2D is available!</b>"));
         mDetailLabel->setText(tr("Pencil2D %1 is now available -- you have %2. Would you like to download it?")
-                              .arg(latestVersionString)
-                              .arg(APP_VERSION));
+                              .arg(latestVersionString, APP_VERSION));
         mProgressBar->hide();
         mDownloadButton->setEnabled(true);
     }

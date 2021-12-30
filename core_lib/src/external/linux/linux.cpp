@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2009 Mj Mendoza IV
 Copyright (C) 2012-2020 Matthew Chiawen Chang
@@ -15,22 +15,14 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QFile>
-#include <QProcess>
-#include <QDir>
-#include <QString>
-#include <QImageWriter>
-#include <QImageReader>
-#include <QProgressDialog>
-#include <QDebug>
-#include <QSettings>
-#include "object.h"
-#include "editor.h"
-#include "layersound.h"
-#include "pencildef.h"
+
 #include "platformhandler.h"
 
-#define MIN(a,b) ((a)>(b)?(b):(a))
+#include <QCoreApplication>
+#include <QDebug>
+#include <QSettings>
+
+#include "pencildef.h"
 
 namespace PlatformHandler
 {
@@ -56,30 +48,17 @@ namespace PlatformHandler
                 qWarning() << "Unable to set up GStreamer environment";
             }
         }
+
+        // Temporary solution for high DPI displays
+        // EnableHighDpiScaling is a just in case mechanism in the event that we
+        // want to disable this without recompiling, see #922
+        QSettings settings(PENCIL2D, PENCIL2D);
+        if (settings.value("EnableHighDpiScaling", "true").toBool())
+        {
+            // Enable auto screen scaling on high dpi display, for example, a 4k monitor
+            // This attr has to be set before the QApplication is constructed
+            // Only works on Windows & X11
+            QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        }
     }
-}
-
-qint16 safeSum ( qint16 a, qint16 b)
-{
-    if (((int)a + (int)b) > 32767)
-        return 32767;
-    if (((int)a + (int)b) < -32768)
-        return -32768;
-    return a+b;
-}
-
-void initialise()
-{
-    qDebug() << "Initialize linux: <nothing, for now>";
-    // Phonon capabilities
-
-    // QImageReader capabilities
-    QList<QByteArray> formats = QImageReader::supportedImageFormats();
-    foreach (QString format, formats)
-    {qDebug() << "QImageReader capability: " << format;}
-
-    // QImageWriter capabilities
-    formats = QImageWriter::supportedImageFormats();
-    foreach (QString format, formats)
-    {qDebug() << "QImageWriter capability: " << format;}
 }

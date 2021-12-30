@@ -1,6 +1,6 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2012-2020 Matthew Chiawen Chang
 
@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "pencilerror.h"
 #include "colorref.h"
+#include "layer.h"
 
 class Object;
 class ObjectData;
@@ -38,14 +39,18 @@ class FileManager : public QObject
 public:
     FileManager(QObject* parent = 0);
 
-    Object* load(QString sFilenNme);
-    Status  save(Object*, QString sFileName);
+    Object* load(const QString& sFilenNme);
+    Status  save(const Object*, const QString& sFileName);
+    Status  writeToWorkingFolder(const Object*);
 
     QList<ColorRef> loadPaletteFile(QString strFilename);
     Status error() const { return mError; }
     Status verifyObject(Object* obj);
 
-Q_SIGNALS:
+    QStringList searchForUnsavedProjects();
+    Object* recoverUnsavedProject(QString projectIntermediatePath);
+
+signals:
     void progressChanged(int progress);
     void progressRangeChanged(int maxValue);
 
@@ -56,17 +61,30 @@ private:
     bool loadObjectOldWay(Object*, const QDomElement& root);
     bool isOldForamt(const QString& fileName) const;
     bool loadPalette(Object*);
+    Status writeKeyFrameFiles(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
+    Status writeMainXml(const Object* obj, const QString& mainXmlPath, QStringList& filesWritten);
+    Status writePalette(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
 
     ObjectData* loadProjectData(const QDomElement& element);
-    QDomElement saveProjectData(ObjectData*, QDomDocument& xmlDoc);
+    QDomElement saveProjectData(const ObjectData*, QDomDocument& xmlDoc);
 
     void extractProjectData(const QDomElement& element, ObjectData* data);
-    Object* cleanUpWithErrorCode(Status);
+    void handleOpenProjectError(Status::ErrorCode, const DebugDetails&);
 
     QString backupPreviousFile(const QString& fileName);
     void deleteBackupFile(const QString& fileName);
 
     void progressForward();
+
+private: // Project recovery
+    bool isProjectRecoverable(const QString& projectFolder);
+    Status recoverObject(Object* object);
+    Status rebuildMainXML(Object* object);
+    Status rebuildLayerXmlTag(QDomDocument& doc, QDomElement& elemObject,
+                              const int layerIndex, const QStringList& frames);
+    QString recoverLayerName(Layer::LAYER_TYPE, int index);
+    int layerIndexFromFilename(const QString& filename);
+    int framePosFromFilename(const QString& filename);
 
 private:
     Status mError = Status::OK;
