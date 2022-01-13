@@ -58,8 +58,8 @@ private:
     void paintOverlayGolden(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
     void paintOverlaySafeAreas(QPainter& painter, QTransform& camTransform, QRect& camRect, Camera* camera) const;
     void paintOverlayPerspectiveOnePoint(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
-    void paintOverlayPerspectiveTwoPoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
-    void paintOverlayPerspectiveThreePoints(QPainter& painter, QTransform& camTransform, QRect& camRect) const;
+    void paintOverlayPerspectiveTwoPoints(QPainter& painter, const Camera* camera, QTransform& camTransform, QRect& camRect) const;
+    void paintOverlayPerspectiveThreePoints(QPainter& painter, const Camera* camera, QTransform& camTransform, QRect& camRect) const;
 
     int round100(double f, int gridSize) const;
 
