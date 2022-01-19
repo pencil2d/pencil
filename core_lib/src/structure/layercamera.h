@@ -65,6 +65,7 @@ public:
     bool hasSameTranslation(int first, int last) const;
     QList<QPointF> getBezierPoints(int frame) const;
     void centerMidPoint(int frame);
+    QPointF getNewMidPoint(int frame);
     void updatePathAtFrame(QPointF point, int frame);
 
     void updateOnDeleteFrame(int frame);

@@ -179,11 +179,7 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     {
     case MoveMode::CENTER: {
         curCam->translate(curCam->translation() - (point - mOffsetPoint));
-
-        int prevFrame = getPreviousKeyFramePosition(frameNumber);
-        if (!static_cast<Camera*>(getKeyFrameAt(prevFrame))->getIsMidPointSet()) {
-            centerMidPoint(frameNumber - 1);
-        }
+        curCam->setPathMidPoint(getNewMidPoint(frameNumber - 1));
         break;
     }
     case MoveMode::TOPLEFT:
@@ -447,6 +443,7 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
         camera->translate(translation);
         camera->scale(scaling);
         camera->rotate(rotation);
+        camera->setPathMidPoint(-camera->translation());
         break;
     }
     default:
@@ -580,6 +577,16 @@ void LayerCamera::centerMidPoint(int frame)
     Camera* cam2 = getCameraAtFrame(nextFrame);
     cam1->setPathMidPoint(QLineF(-cam1->translation(), -cam2->translation()).pointAt(0.5));
     cam1->modification();
+}
+
+QPointF LayerCamera::getNewMidPoint(int frame)
+{
+    if (!keyExists(frame))
+        frame = getPreviousKeyFramePosition(frame);
+    int nextFrame = getNextKeyFramePosition(frame);
+    Camera* cam1 = getCameraAtFrame(frame);
+    Camera* cam2 = getCameraAtFrame(nextFrame);
+    return QLineF(-cam1->translation(), -cam2->translation()).pointAt(0.5);
 }
 
 void LayerCamera::updatePathAtFrame(QPointF point, int frame)
