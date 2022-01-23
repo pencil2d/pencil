@@ -20,7 +20,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPixmap>
 #include <QPalette>
-
+#include <QDebug>
 #include "object.h"
 #include "layercamera.h"
 #include "camera.h"
@@ -111,6 +111,9 @@ void CameraPainter::paintVisuals(QPainter& painter) const
     if (isCameraMode) {
 
         Camera* cam = cameraLayer->getLastCameraAtFrame(mFrameIndex, 0);
+        int frame = cameraLayer->getPreviousKeyFramePosition(mFrameIndex);
+        if (mFrameIndex < frame)
+            cam = cameraLayer->getLastCameraAtFrame(frame, 0);
 
         Q_ASSERT(cam);
 

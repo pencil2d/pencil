@@ -679,7 +679,7 @@ void ActionCommands::reverseSelectedFrames()
     if (currentLayer->type() == Layer::CAMERA) {
         mEditor->view()->forceUpdateViewTransform();
     }
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 };
 
 void ActionCommands::removeKey()

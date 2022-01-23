@@ -179,7 +179,10 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     {
     case MoveMode::CENTER: {
         curCam->translate(curCam->translation() - (point - mOffsetPoint));
-        curCam->setPathMidPoint(getNewMidPoint(frameNumber - 1));
+
+        int prevFrame = getPreviousKeyFramePosition(frameNumber);
+        curCam = getCameraAtFrame(prevFrame);
+        curCam->setPathMidPoint(getNewMidPoint(prevFrame));
         break;
     }
     case MoveMode::TOPLEFT:
@@ -333,6 +336,8 @@ QPointF LayerCamera::getBezierPoint(QPointF first, QPointF last, QPointF midpoin
 void LayerCamera::updateOnDeleteFrame(int frame)
 {
     int prev = getPreviousKeyFramePosition(frame);
+    if (prev > frame)
+        return;
     if (prev < frame)
         centerMidPoint(prev);
     else
@@ -439,11 +444,16 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
         QPointF translation = camera->translation();
         qreal rotation = camera->rotation();
         qreal scaling = camera->scaling();
+        camera->setPathMidPoint(-translation);
         camera = getLastCameraAtFrame(nextFrame, 0);
         camera->translate(translation);
         camera->scale(scaling);
         camera->rotate(rotation);
-        camera->setPathMidPoint(-camera->translation());
+        camera->setPathMidPoint(-translation);
+        // is there a camera after the hold end-frame?
+        int thirdFrame = getNextKeyFramePosition(nextFrame);
+        if (thirdFrame > nextFrame)
+            camera->setPathMidPoint(getNewMidPoint(nextFrame));
         break;
     }
     default:
