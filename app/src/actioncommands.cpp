@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include <QDesktopServices>
 #include <QStandardPaths>
 #include <QFileDialog>
-
+#include <QDebug>
 #include "pencildef.h"
 #include "editor.h"
 #include "object.h"
@@ -691,6 +691,38 @@ void ActionCommands::removeKey()
     if (layer->keyFrameCount() == 0 && layer->type() != Layer::SOUND)
     {
         layer->addNewKeyFrameAt(1);
+    }
+}
+
+void ActionCommands::duplicateLayer()
+{
+    LayerManager* Lmgr = mEditor->layers();
+    Layer* fromLayer = Lmgr->currentLayer();
+    if (fromLayer->type() == Layer::BITMAP)
+    {
+        mEditor->scrubTo(fromLayer->firstKeyFramePosition());
+        Layer* toLayer = Lmgr->createBitmapLayer(fromLayer->name() + "_copy");
+        fromLayer->foreachKeyFrame([&] (KeyFrame* key){
+           key = fromLayer->getKeyFrameAt(key->pos());
+           if (toLayer->keyExists(key->pos()))
+               toLayer->removeKeyFrame(key->pos());
+           toLayer->addKeyFrame(key->pos(), key);
+        });
+    }
+    else if (fromLayer->type() == Layer::VECTOR)
+    {
+        mEditor->scrubTo(fromLayer->firstKeyFramePosition());
+        Layer* toLayer = Lmgr->createVectorLayer(fromLayer->name() + "_copy");
+        fromLayer->foreachKeyFrame([&] (KeyFrame* key){
+           key = fromLayer->getKeyFrameAt(key->pos());
+           if (toLayer->keyExists(key->pos()))
+               toLayer->removeKeyFrame(key->pos());
+           toLayer->addKeyFrame(key->pos(), key);
+        });
+    }
+    else
+    {
+        return;
     }
 }
 
