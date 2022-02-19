@@ -1327,7 +1327,7 @@ void ScribbleArea::prepOverlays()
     o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
     o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
 
-    o.mRect = getCameraRect().toRect();   // camera rect!
+    o.mRect = getCameraRect();   // camera rect!
     o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspPoint();
     o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspPoint();
     o.mRightPerspPoint = mEditor->overlays()->getRightPerspPoint();
@@ -1423,7 +1423,7 @@ void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
 /************************************************************************************/
 // view handling
 
-QRectF ScribbleArea::getCameraRect()
+QRect ScribbleArea::getCameraRect()
 {
     return mCanvasPainter.getCameraRect();
 }
