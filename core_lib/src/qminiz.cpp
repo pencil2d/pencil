@@ -39,7 +39,7 @@ bool MiniZ::isZip(const QString& sZipFilePath)
 }
 
 // ReSharper disable once CppInconsistentNaming
-Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList)
+Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList, QString mimetype)
 {
     DebugDetails dd;
     dd << QString("Creating Zip %1 from folder %2").arg(zipFilePath, srcFolderPath);
@@ -65,11 +65,27 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         dd << QString("Miniz writer init failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));;
     }
 
+    // Add special uncompressed mimetype file to help with the identification of projects
+    {
+        auto mimeData = mimetype.toUtf8();
+        FILE *buffer = fmemopen(mimeData.data(), mimeData.length(), "read");
+        ok = mz_zip_writer_add_cfile(mz, "mimetype", buffer, mimeData.length(),
+                                    0, "", 0, MZ_NO_COMPRESSION, 0, 0,
+                                    0, 0);
+        fclose(buffer);
+        if (!ok)
+        {
+            mz_zip_error err = mz_zip_get_last_error(mz);
+            dd << QString("Cannot add mimetype: error %1").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        }
+    }
+
     //qDebug() << "SrcFolder=" << srcFolderPath;
     for (const QString& filePath : fileList)
     {
         QString sRelativePath = filePath;
         sRelativePath.remove(srcFolderPath);
+        if (sRelativePath == "mimetype") continue;
 
         dd << QString("Add file to zip: ").append(sRelativePath);
 
@@ -166,6 +182,7 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
 
         if (!stat->m_is_directory)
         {
+            if (QString(stat->m_filename) == "mimetype") continue;
             QString sFullPath = baseDir.filePath(QString::fromUtf8(stat->m_filename));
             dd << QString("Unzip file: ").append(sFullPath);
             bool b = QFileInfo(sFullPath).absoluteDir().mkpath(".");
