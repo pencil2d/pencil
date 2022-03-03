@@ -15,11 +15,11 @@ GNU General Public License for more details.
 */
 #include "qminiz.h"
 
+#include <sstream>
 #include <QFileInfo>
 #include <QDir>
 #include <QDebug>
 #include <QDirIterator>
-#include "miniz.h"
 #include "util.h"
 
 
@@ -36,6 +36,16 @@ bool MiniZ::isZip(const QString& sZipFilePath)
 
     mz_zip_reader_end(mz);
     return (num > 0);
+}
+
+size_t MiniZ::istreamReadCallback(void *pOpaque, mz_uint64 file_ofs, void * pBuf, size_t n)
+{
+    std::istream *stream = static_cast<std::istream*>(pOpaque);
+    mz_int64 cur_ofs = stream->tellg();
+    if ((mz_int64)file_ofs < 0 || (cur_ofs != (mz_int64)file_ofs && stream->seekg((mz_int64)file_ofs, std::ios_base::beg)))
+        return 0;
+    stream->read(static_cast<char*>(pBuf), n);
+    return stream->gcount();
 }
 
 // ReSharper disable once CppInconsistentNaming
@@ -67,12 +77,11 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
 
     // Add special uncompressed mimetype file to help with the identification of projects
     {
-        auto mimeData = mimetype.toUtf8();
-        FILE *buffer = fmemopen(mimeData.data(), mimeData.length(), "read");
-        ok = mz_zip_writer_add_cfile(mz, "mimetype", buffer, mimeData.length(),
+        QByteArray mimeData = mimetype.toUtf8();
+        std::stringstream mimeStream(mimeData.toStdString());
+        ok = mz_zip_writer_add_read_buf_callback(mz, "mimetype", MiniZ::istreamReadCallback, &mimeStream, mimeData.length(),
                                     0, "", 0, MZ_NO_COMPRESSION, 0, 0,
                                     0, 0);
-        fclose(buffer);
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
