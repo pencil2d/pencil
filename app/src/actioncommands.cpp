@@ -241,6 +241,15 @@ Status ActionCommands::exportGif()
 Status ActionCommands::exportMovie(bool isGif)
 {
     FileType fileType = (isGif) ? FileType::GIF : FileType::MOVIE;
+
+    int clipCount = mEditor->sound()->soundClipCount();
+    if (fileType == FileType::MOVIE && clipCount >= 63)
+    {
+        ErrorDialog errorDialog(tr("Something went wrong"), tr("You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding 63 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.").arg(clipCount), QString(), mParent);
+        errorDialog.exec();
+        return Status::FAIL;
+    }
+
     ExportMovieDialog* dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, fileType);
     OnScopeExit(dialog->deleteLater());
 
