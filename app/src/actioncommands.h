@@ -98,6 +98,7 @@ public:
     void about();
 
 private:
+    void showSoundClipWarning(int clipCount);
 
     void exposeSelectedFrames(int offset);
 
@@ -105,6 +106,8 @@ private:
 
     Editor* mEditor = nullptr;
     QWidget* mParent = nullptr;
+
+    bool mSuppressSoundWarning = false;
 };
 
 #endif // COMMANDCENTER_H
