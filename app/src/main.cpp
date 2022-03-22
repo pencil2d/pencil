@@ -38,6 +38,11 @@ int main(int argc, char* argv[])
     initCategoryLogging();
 
     Pencil2D app(argc, argv);
+
+    if (app.isInstanceOpen()) {
+        return EXIT_SUCCESS;
+    }
+
     switch (app.handleCommandLineOptions().code())
     {
         case Status::OK:
