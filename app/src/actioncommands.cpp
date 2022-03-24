@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QDesktopServices>
 #include <QStandardPaths>
 #include <QFileDialog>
-#include <QDebug>
 #include "pencildef.h"
 #include "editor.h"
 #include "object.h"
@@ -713,6 +712,28 @@ void ActionCommands::duplicateLayer()
     {
         mEditor->scrubTo(fromLayer->firstKeyFramePosition());
         Layer* toLayer = Lmgr->createVectorLayer(fromLayer->name() + "_copy");
+        fromLayer->foreachKeyFrame([&] (KeyFrame* key){
+           key = fromLayer->getKeyFrameAt(key->pos());
+           if (toLayer->keyExists(key->pos()))
+               toLayer->removeKeyFrame(key->pos());
+           toLayer->addKeyFrame(key->pos(), key);
+        });
+    }
+    else if (fromLayer->type() == Layer::SOUND)
+    {
+        mEditor->scrubTo(fromLayer->firstKeyFramePosition());
+        Layer* toLayer = Lmgr->createSoundLayer(fromLayer->name() + "_copy");
+        fromLayer->foreachKeyFrame([&] (KeyFrame* key){
+           key = fromLayer->getKeyFrameAt(key->pos());
+           if (toLayer->keyExists(key->pos()))
+               toLayer->removeKeyFrame(key->pos());
+           toLayer->addKeyFrame(key->pos(), key);
+        });
+    }
+    else if (fromLayer->type() == Layer::CAMERA)
+    {
+        mEditor->scrubTo(fromLayer->firstKeyFramePosition());
+        Layer* toLayer = Lmgr->createCameraLayer(fromLayer->name() + "_copy");
         fromLayer->foreachKeyFrame([&] (KeyFrame* key){
            key = fromLayer->getKeyFrameAt(key->pos());
            if (toLayer->keyExists(key->pos()))

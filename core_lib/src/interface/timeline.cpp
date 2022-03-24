@@ -83,7 +83,7 @@ void TimeLine::initUI()
 
     QToolButton* duplicateLayerButton = new QToolButton(this);
     duplicateLayerButton->setIcon(QIcon(":icons/controls/duplicate.png"));
-    duplicateLayerButton->setToolTip(tr("Duplicate Layer (Artwork layers only)"));
+    duplicateLayerButton->setToolTip(tr("Duplicate Layer"));
     duplicateLayerButton->setFixedSize(24, 24);
 
     layerButtons->addWidget(layerLabel);
