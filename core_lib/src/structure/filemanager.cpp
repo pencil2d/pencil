@@ -317,7 +317,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
         QString sBackupFile = backupPreviousFile(sFileName);
 
-        Status stMiniz = MiniZ::compressFolder(sFileName, sTempWorkingFolder, filesToZip);
+        Status stMiniz = MiniZ::compressFolder(sFileName, sTempWorkingFolder, filesToZip, "application/x-pencil2d-pclx");
         if (!stMiniz.ok())
         {
             dd.collect(stMiniz.details());

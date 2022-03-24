@@ -30,7 +30,7 @@ BitmapBucket::BitmapBucket()
 
 BitmapBucket::BitmapBucket(Editor* editor,
                            QColor color,
-                           QRectF maxFillRegion,
+                           QRect maxFillRegion,
                            QPointF fillPoint,
                            Properties properties):
     mEditor(editor),
@@ -125,7 +125,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
     QRgb fillColor = mBucketColor;
 
     const QPoint point = QPoint(qFloor(updatedPoint.x()), qFloor(updatedPoint.y()));
-    const QRect cameraRect = mMaxFillRegion.toRect();
+    const QRect cameraRect = mMaxFillRegion;
     const int tolerance = mProperties.toleranceEnabled ? static_cast<int>(mProperties.tolerance) : 0;
     const int currentFrameIndex = mEditor->currentFrame();
     const QRgb origColor = fillColor;
