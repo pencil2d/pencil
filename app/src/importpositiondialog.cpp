@@ -87,7 +87,6 @@ void ImportPositionDialog::changeImportView()
     {
         LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
         QRectF cameraRect = layerCam ? layerCam->getViewRect() : QRectF();
-
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
         mEditor->view()->setImportView(transform);
         QSettings settings(PENCIL2D, PENCIL2D);

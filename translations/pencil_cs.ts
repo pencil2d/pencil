@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS language="cs" version="2.1">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="cs">
 <context>
     <name>AboutDialog</name>
     <message>
@@ -280,7 +280,6 @@
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="52"/>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
         <source>Current layer</source>
         <translation>Nynější vrstva</translation>
     </message>
@@ -295,29 +294,39 @@
         <translation>Vyplnit nynější vrstvu nebo vrstvu níže</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
-        <source>All layers</source>
-        <translation>Všechny vrstvy</translation>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
+        <source>Current layer</source>
+        <comment>Reference Layer Options</comment>
+        <translation>Nynější vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
-        <source>Refers to the layer that used to flood fill from</source>
-        <translation>Odkazuje na vrstvu, ze které byla zaplavena výplň</translation>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
+        <source>All layers</source>
+        <comment>Reference Layer Options</comment>
+        <translation>Všechny vrstvy</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="60"/>
         <source>Overlay</source>
+        <comment>Blend Mode dropdown option</comment>
         <translation>Překrytí</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="61"/>
         <source>Replace</source>
+        <comment>Blend Mode dropdown option</comment>
         <translation>Nahradit</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="62"/>
         <source>Behind</source>
+        <comment>Blend Mode dropdown option</comment>
         <translation>Za</translation>
+    </message>
+    <message>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
+        <source>Refers to the layer that used to flood fill from</source>
+        <translation>Odkazuje na vrstvu, ze které byla zaplavena výplň</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="63"/>
@@ -586,48 +595,48 @@
 <context>
     <name>ColorPaletteWidget</name>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="123"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="122"/>
         <source>Add</source>
         <translation>Přidat</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="124"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="123"/>
         <source>Replace</source>
         <translation>Nahradit</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="125"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="124"/>
         <source>Remove</source>
         <translation>Odstranit</translation>
     </message>
     <message>
+        <location filename="../app/src/colorpalettewidget.cpp" line="272"/>
         <location filename="../app/src/colorpalettewidget.cpp" line="273"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="274"/>
         <source>Color name</source>
         <translation>Název barvy</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="641"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="640"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation>Barva(y), jíž se chystáte smazat, se nyní používá v jednom nebo vícero tazích.</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="642"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="641"/>
         <source>Cancel</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="643"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="642"/>
         <source>Delete</source>
         <translation>Smazat</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="659"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="658"/>
         <source>Palette Restriction</source>
         <translation>Omezení palety</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="660"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="659"/>
         <source>The palette requires at least one swatch to remain functional</source>
         <translation>Poleta vyžaduje alespoň jeden vzorek, aby zůstala použitelná</translation>
     </message>
@@ -2712,10 +2721,16 @@
 <context>
     <name>FileManager</name>
     <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="55"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="109"/>
         <source>Could not open file</source>
         <translation>Nepodařilo se otevřít soubor</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
+        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
+        <translation>Při zpracování souboru se vyskytla chyba. Obyčejně to znamená, že váš projekt byl alespoň částečně poškozen. Můžete to zkusit znovu s novou verzí Pencil2D, nebo můžete vyzkoušet použít záložní soubor, pokud nějaký máte. Pokud se s námi spojíte přes jeden z našich veřejných kanálů, můžeme vám být schopni pomoci. Pro hlášení potíží jsou nejlepšími místy, jak nás dosáhnout:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="56"/>
@@ -3681,7 +3696,7 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="570"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1463"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1449"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -4103,158 +4118,149 @@ Přečtěte si pokyny a zkuste to znovu</translation>
         <translation>Otevřít nedávné</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="440"/>
-        <source>
-
- You have successfully cleared the list</source>
-        <translation>
-
-Úspěšně jste vyprázdnil seznam</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="451"/>
-        <location filename="../app/src/mainwindow2.cpp" line="475"/>
+        <location filename="../app/src/mainwindow2.cpp" line="437"/>
+        <location filename="../app/src/mainwindow2.cpp" line="461"/>
         <source>Dialog is already open!</source>
         <translation>Dialog již je otevřen!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="631"/>
-        <location filename="../app/src/mainwindow2.cpp" line="733"/>
-        <location filename="../app/src/mainwindow2.cpp" line="806"/>
-        <location filename="../app/src/mainwindow2.cpp" line="931"/>
+        <location filename="../app/src/mainwindow2.cpp" line="617"/>
+        <location filename="../app/src/mainwindow2.cpp" line="719"/>
+        <location filename="../app/src/mainwindow2.cpp" line="792"/>
+        <location filename="../app/src/mainwindow2.cpp" line="917"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="632"/>
+        <location filename="../app/src/mainwindow2.cpp" line="618"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Tento program nyní nemá oprávnění k zapsání vybraného souboru. Ujistěte se, prosím, před pokusem o jeho uložení, že máte oprávnění k tomuto souboru. Náhradním způsobem je použití volby v nabídce Uložit jako... pro zápis do zapisovatelného umístění.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="587"/>
+        <location filename="../app/src/mainwindow2.cpp" line="573"/>
         <source>Opening document...</source>
         <translation>Otevírá se dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="587"/>
-        <location filename="../app/src/mainwindow2.cpp" line="643"/>
-        <location filename="../app/src/mainwindow2.cpp" line="910"/>
+        <location filename="../app/src/mainwindow2.cpp" line="573"/>
+        <location filename="../app/src/mainwindow2.cpp" line="629"/>
+        <location filename="../app/src/mainwindow2.cpp" line="896"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="643"/>
+        <location filename="../app/src/mainwindow2.cpp" line="629"/>
         <source>Saving document...</source>
         <translation>Ukládá se dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="686"/>
+        <location filename="../app/src/mainwindow2.cpp" line="672"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Vyskytla se chyba, a tak soubor nemusí být úspěšně uložen. Pokud si myslíte, že potíže souvisí s Pencil2D, vytvořte, prosím, nové téma na:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Ujistěte se, prosím, že do záznamu o problému zahrnete následující podrobnosti:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="734"/>
+        <location filename="../app/src/mainwindow2.cpp" line="720"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Tato animace byla změněna.
 Přejete si uložit změny?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="757"/>
+        <location filename="../app/src/mainwindow2.cpp" line="743"/>
         <source>AutoSave Reminder</source>
         <translation>Připomínka automatického uložení</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="758"/>
+        <location filename="../app/src/mainwindow2.cpp" line="744"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Animace ještě není uložena.
 Chcete ji uložit nyní?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="759"/>
+        <location filename="../app/src/mainwindow2.cpp" line="745"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Už se znovu neptat</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="807"/>
+        <location filename="../app/src/mainwindow2.cpp" line="793"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Obrázek nelze zavést.&lt;br&gt;&lt;b&gt;Rada:&lt;/b&gt; K zavedení bitmap použijte bitmapovou vrstvu.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="910"/>
+        <location filename="../app/src/mainwindow2.cpp" line="896"/>
         <source>Importing Animated GIF...</source>
         <translation>Zavádí se animovaný GIF...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="932"/>
+        <location filename="../app/src/mainwindow2.cpp" line="918"/>
         <source>was unable to import %1</source>
         <translation>nebylo možno zavést %1</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1265"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1270"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1251"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1256"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1278"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1285"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1264"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1271"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1327"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1313"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>Otevření palety nahradí starou paletu.
 Touto činností se změní barva(y) v tazích!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1329"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1315"/>
         <source>Open Palette</source>
         <translation>Otevřít paletu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1458"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1444"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1499"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1485"/>
         <source>Restore Project?</source>
         <translation>Obnovit projekt?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1500"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1486"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D se nezavřel správně. Chcete projekt obnovit?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1505"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1491"/>
         <source>Restore project</source>
         <translation>Obnovit projekt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1539"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1525"/>
         <source>Recovery Failed.</source>
         <translation>Nepodařilo se obnovit.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1540"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1526"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>Promiňte! Pencil2D nemůže obnovit váš projekt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1549"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1535"/>
         <source>Recovery Succeeded!</source>
         <translation>Podařilo se obnovit.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1550"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1536"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>Okamžitě, prosím, uložte svou práci, abyste zabránili ztrátě dat</translation>
     </message>
@@ -4422,6 +4428,134 @@ Touto činností se změní barva(y) v tazích!</translation>
     </message>
 </context>
 <context>
+    <name>Object</name>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="347"/>
+        <source>error</source>
+        <translation>chyba</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="639"/>
+        <source>Black</source>
+        <translation>Černá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="640"/>
+        <source>Red</source>
+        <translation>Červená</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="641"/>
+        <source>Dark Red</source>
+        <translation>Tmavá červená</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="642"/>
+        <source>Orange</source>
+        <translation>Oranžová</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="643"/>
+        <source>Dark Orange</source>
+        <translation>Tmavá oranžová</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="644"/>
+        <source>Yellow</source>
+        <translation>Žlutá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="645"/>
+        <source>Dark Yellow</source>
+        <translation>Tmavá žlutá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="646"/>
+        <source>Green</source>
+        <translation>Zelená</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="647"/>
+        <source>Dark Green</source>
+        <translation>Tmavá zelená</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="648"/>
+        <source>Cyan</source>
+        <translation>Modrozelená</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="649"/>
+        <source>Dark Cyan</source>
+        <translation>Tmavá modrozelená</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="650"/>
+        <source>Blue</source>
+        <translation>Modrá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="651"/>
+        <source>Dark Blue</source>
+        <translation>Tmavá modrá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="652"/>
+        <source>White</source>
+        <translation>Bílá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="653"/>
+        <source>Very Light Grey</source>
+        <translation>Velmi světlá zelená</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="654"/>
+        <source>Light Grey</source>
+        <translation>Světlá šedá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="655"/>
+        <source>Grey</source>
+        <translation>Šedá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="656"/>
+        <source>Dark Grey</source>
+        <translation>Tmavá šedá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="657"/>
+        <source>Pale Orange Yellow</source>
+        <translation>Bledá oranžová žlutá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="658"/>
+        <source>Pale Grayish Orange Yellow</source>
+        <translation>Bledá šedavá oranžová žlutá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="659"/>
+        <source>Orange Yellow </source>
+        <translation>Oranžová žlutá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="660"/>
+        <source>Grayish Orange Yellow</source>
+        <translation>Šedavá oranžová žlutá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="661"/>
+        <source>Light Orange Yellow</source>
+        <translation>Světlá oranžová žlutá</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="662"/>
+        <source>Light Grayish Orange Yellow</source>
+        <translation>Světlá šedavá oranžová žlutá</translation>
+    </message>
+</context>
+<context>
     <name>OnionSkin</name>
     <message>
         <location filename="../app/ui/onionskin.ui" line="23"/>
@@ -4501,6 +4635,19 @@ Touto činností se změní barva(y) v tazích!</translation>
         <location filename="../app/ui/onionskin.ui" line="483"/>
         <source>Show During Playback</source>
         <translation>Ukázat během přehrávání</translation>
+    </message>
+</context>
+<context>
+    <name>OverlayPainter</name>
+    <message>
+        <location filename="../core_lib/src/overlaypainter.cpp" line="182"/>
+        <source>Safe Action area %1 %</source>
+        <translation>Oblast bezpečné činnosti %1 %</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/overlaypainter.cpp" line="196"/>
+        <source>Safe Title area %1 %</source>
+        <translation>Oblast bezpečného názvu %1 %</translation>
     </message>
 </context>
 <context>
@@ -4650,26 +4797,6 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../core_lib/src/overlaypainter.cpp" line="182"/>
-        <source>Safe Action area %1 %</source>
-        <translation>Oblast bezpečné činnosti %1 %</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/overlaypainter.cpp" line="196"/>
-        <source>Safe Title area %1 %</source>
-        <translation>Oblast bezpečného názvu %1 %</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="30"/>
-        <source>Could not open file</source>
-        <translation>Nepodařilo se otevřít soubor</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="31"/>
-        <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. You can try again with a newer version of Pencil2D, or you can try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you. For reporting issues, the best places to reach us are:</source>
-        <translation>Při zpracování souboru se vyskytla chyba. Obyčejně to znamená, že váš projekt byl alespoň částečně poškozen. Můžete to zkusit znovu s novou verzí Pencil2D, nebo můžete vyzkoušet použít záložní soubor, pokud nějaký máte. Pokud se s námi spojíte přes jeden z našich veřejných kanálů, můžeme vám být schopni pomoci. Pro hlášení potíží jsou nejlepšími místy, jak nás dosáhnout:</translation>
-    </message>
-    <message>
         <location filename="../core_lib/src/structure/layer.cpp" line="41"/>
         <source>Undefined Layer</source>
         <translation>Nestanovená vrstva</translation>
@@ -4694,136 +4821,11 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
         <source>Vector Layer</source>
         <translation>Vektorová vrstva</translation>
     </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="347"/>
-        <source>error</source>
-        <translation>chyba</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="639"/>
-        <source>Black</source>
-        <translation>Černá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="640"/>
-        <source>Red</source>
-        <translation>Červená</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="641"/>
-        <source>Dark Red</source>
-        <translation>Tmavá červená</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="642"/>
-        <source>Orange</source>
-        <translation>Oranžová</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="643"/>
-        <source>Dark Orange</source>
-        <translation>Tmavá oranžová</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="644"/>
-        <source>Yellow</source>
-        <translation>Žlutá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="645"/>
-        <source>Dark Yellow</source>
-        <translation>Tmavá žlutá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="646"/>
-        <source>Green</source>
-        <translation>Zelená</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="647"/>
-        <source>Dark Green</source>
-        <translation>Tmavá zelená</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="648"/>
-        <source>Cyan</source>
-        <translation>Modrozelená</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="649"/>
-        <source>Dark Cyan</source>
-        <translation>Tmavá modrozelená</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="650"/>
-        <source>Blue</source>
-        <translation>Modrá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="651"/>
-        <source>Dark Blue</source>
-        <translation>Tmavá modrá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="652"/>
-        <source>White</source>
-        <translation>Bílá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="653"/>
-        <source>Very Light Grey</source>
-        <translation>Velmi světlá šedá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="654"/>
-        <source>Light Grey</source>
-        <translation>Světlá šedá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="655"/>
-        <source>Grey</source>
-        <translation>Šedá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="656"/>
-        <source>Dark Grey</source>
-        <translation>Tmavá šedá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="657"/>
-        <source>Pale Orange Yellow</source>
-        <translation>Bledá oranžová žlutá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="658"/>
-        <source>Pale Grayish Orange Yellow</source>
-        <translation>Bledá šedavá oranžová žlutá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="659"/>
-        <source>Orange Yellow </source>
-        <translation>Oranžová žlutá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="660"/>
-        <source>Grayish Orange Yellow</source>
-        <translation>Šedavá oranžová žlutá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="661"/>
-        <source>Light Orange Yellow</source>
-        <translation>Světlá oranžová žlutá</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="662"/>
-        <source>Light Grayish Orange Yellow</source>
-        <translation>Světlá šedavá oranžová žlutá</translation>
-    </message>
 </context>
 <context>
     <name>RecentFileMenu</name>
     <message>
-        <location filename="../core_lib/src/interface/recentfilemenu.h" line="35"/>
+        <location filename="../core_lib/src/interface/recentfilemenu.h" line="34"/>
         <source>Open Recent</source>
         <translation>Otevřít nedávné</translation>
     </message>

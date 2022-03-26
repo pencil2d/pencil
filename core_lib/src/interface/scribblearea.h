@@ -85,7 +85,7 @@ public:
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    QRectF getCameraRect();
+    QRect getCameraRect();
     QPointF getCentralPoint();
 
     /** Update current frame.
@@ -130,10 +130,11 @@ public:
     /** Tool property updated, invalidate cache and frame if needed */
     void onToolPropertyUpdated(ToolType, ToolPropertyType);
 
-
     /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
     void setModified(const Layer* layer, int frameNumber);
+    void renderOverlays();
+    void prepOverlays();
 
     void flipSelection(bool flipVertical);
 
@@ -238,7 +239,6 @@ private:
 
     void prepCameraPainter(int frame);
     void prepCanvas(int frame, QRect rect);
-    void prepOverlays();
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter &painter);

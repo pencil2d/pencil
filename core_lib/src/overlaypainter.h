@@ -69,11 +69,6 @@ private:
 
     LayerCamera* mCameraLayer = nullptr;
     QPalette mPalette;
-
-    Q_CONSTEXPR static qreal LINELENGTHFACTOR = 2.0;
-    Q_CONSTEXPR static int LEFTANGLEOFFSET = 90;
-    Q_CONSTEXPR static int RIGHTANGLEOFFSET = -90;
-    Q_CONSTEXPR static int HANDLE_WIDTH = 12;
 };
 
 #endif // OVERLAYPAINTER_H

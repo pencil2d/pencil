@@ -197,7 +197,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
     mBitmapBucket = BitmapBucket(mEditor,
                                  mEditor->color()->frontColor(),
-                                 layerCam ? layerCam->getViewRect() : QRectF(),
+                                 layerCam ? layerCam->getViewRect() : QRect(),
                                  getCurrentPoint(),
                                  properties);
 
