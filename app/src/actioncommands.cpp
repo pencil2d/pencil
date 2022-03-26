@@ -700,7 +700,7 @@ void ActionCommands::duplicateLayer()
 
     Layer* toLayer = Lmgr->createLayer(fromLayer->type(), fromLayer->name() + tr("_copy"));
     fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
-       key = fromLayer->getKeyFrameAt(key->pos());
+       key = fromLayer->getKeyFrameAt(key->pos())->clone();
        toLayer->addKeyFrame(key->pos(), key);
     });
 }
