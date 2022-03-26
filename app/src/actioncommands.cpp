@@ -697,54 +697,12 @@ void ActionCommands::duplicateLayer()
 {
     LayerManager* Lmgr = mEditor->layers();
     Layer* fromLayer = Lmgr->currentLayer();
-    if (fromLayer->type() == Layer::BITMAP)
-    {
-        mEditor->scrubTo(fromLayer->firstKeyFramePosition());
-        Layer* toLayer = Lmgr->createBitmapLayer(fromLayer->name() + "_copy");
-        fromLayer->foreachKeyFrame([&] (KeyFrame* key){
-           key = fromLayer->getKeyFrameAt(key->pos());
-           if (toLayer->keyExists(key->pos()))
-               toLayer->removeKeyFrame(key->pos());
-           toLayer->addKeyFrame(key->pos(), key);
-        });
-    }
-    else if (fromLayer->type() == Layer::VECTOR)
-    {
-        mEditor->scrubTo(fromLayer->firstKeyFramePosition());
-        Layer* toLayer = Lmgr->createVectorLayer(fromLayer->name() + "_copy");
-        fromLayer->foreachKeyFrame([&] (KeyFrame* key){
-           key = fromLayer->getKeyFrameAt(key->pos());
-           if (toLayer->keyExists(key->pos()))
-               toLayer->removeKeyFrame(key->pos());
-           toLayer->addKeyFrame(key->pos(), key);
-        });
-    }
-    else if (fromLayer->type() == Layer::SOUND)
-    {
-        mEditor->scrubTo(fromLayer->firstKeyFramePosition());
-        Layer* toLayer = Lmgr->createSoundLayer(fromLayer->name() + "_copy");
-        fromLayer->foreachKeyFrame([&] (KeyFrame* key){
-           key = fromLayer->getKeyFrameAt(key->pos());
-           if (toLayer->keyExists(key->pos()))
-               toLayer->removeKeyFrame(key->pos());
-           toLayer->addKeyFrame(key->pos(), key);
-        });
-    }
-    else if (fromLayer->type() == Layer::CAMERA)
-    {
-        mEditor->scrubTo(fromLayer->firstKeyFramePosition());
-        Layer* toLayer = Lmgr->createCameraLayer(fromLayer->name() + "_copy");
-        fromLayer->foreachKeyFrame([&] (KeyFrame* key){
-           key = fromLayer->getKeyFrameAt(key->pos());
-           if (toLayer->keyExists(key->pos()))
-               toLayer->removeKeyFrame(key->pos());
-           toLayer->addKeyFrame(key->pos(), key);
-        });
-    }
-    else
-    {
-        return;
-    }
+
+    Layer* toLayer = Lmgr->createLayer(fromLayer->type(), fromLayer->name() + tr("_copy"));
+    fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
+       key = fromLayer->getKeyFrameAt(key->pos());
+       toLayer->addKeyFrame(key->pos(), key);
+    });
 }
 
 void ActionCommands::duplicateKey()
