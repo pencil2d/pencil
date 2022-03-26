@@ -504,18 +504,20 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
     painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
     int recTop = y + 1;
-    int recWidth = frameSize - 2;
+    int standardWidth = frameSize - 2;
+
     int recHeight = height - 4;
     layer->foreachKeyFrame([&](KeyFrame* key)
     {
         int framePos = key->pos();
-        int recLeft = getFrameX(framePos) - frameSize + 2;
+        int recWidth = standardWidth;
+        int recLeft = getFrameX(framePos) - recWidth;
 
         if (key->length() > 1)
         {
             // This is especially for sound clips.
             // Sound clips are the only type of KeyFrame with variable frame length.
-            recWidth = frameSize * key->length() - 2;
+            recWidth = frameSize * key->length();
         }
 
         // Paint the frame border
@@ -543,7 +545,7 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
     });
 
     if (!mMovingFrames && selected && mLayerPosMoveY != -1 && mLayerPosMoveY == mEditor->currentLayerIndex()) {
-        paintFrameCursorOnCurrentLayer(painter, recTop, recWidth, recHeight);
+        paintFrameCursorOnCurrentLayer(painter, recTop, standardWidth, recHeight);
     }
 }
 
@@ -567,8 +569,8 @@ void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, c
 {
     int mouseX = mMouseMoveX;
     int posUnderCursor = getFrameNumber(mMousePressX);
-    int frameSize = mFrameSize;
-    int recWidth = frameSize - 2;
+    int standardWidth = mFrameSize - 2;
+    int recWidth = standardWidth;
     int recHeight = mLayerHeight - 4;
     int recTop = getLayerY(layerIndex) + 1;
 
@@ -580,7 +582,7 @@ void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, c
         {
             // This is a special case for sound clip.
             // Sound clip is the only type of KeyFrame that has variable frame length.
-            recWidth = frameSize * key->length() - 2;
+            recWidth = mFrameSize * key->length();
         }
 
         painter.setBrush(QColor(60, 60, 60));
@@ -589,12 +591,12 @@ void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, c
         int frameX = getFrameX(framePos);
         if (mMovingFrames) {
             int offset = (framePos - posUnderCursor) + mFrameOffset;
-            int newFrameX = getFrameX(getFrameNumber(getFrameX(offset)+mouseX))-recWidth;
+            int newFrameX = getFrameX(getFrameNumber(getFrameX(offset)+mouseX)) - standardWidth;
             // Paint as frames are hovering
             painter.drawRect(newFrameX, recTop-4, recWidth, recHeight);
 
         } else {
-            int currentFrameX = frameX - recWidth;
+            int currentFrameX = frameX - standardWidth;
             painter.drawRect(currentFrameX, recTop, recWidth, recHeight);
         }
     }
