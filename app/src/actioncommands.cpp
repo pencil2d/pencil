@@ -15,7 +15,7 @@ GNU General Public License for more details.
 */
 
 #include "actioncommands.h"
-
+#include <QDebug>
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QProgressDialog>
@@ -221,6 +221,31 @@ Status ActionCommands::convertSoundToWav(const QString& filePath)
         ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
         errorDialog.exec();
     }
+    return st;
+}
+
+Status ActionCommands::loadSoundClipOnDuplicating(const QString &filePath)
+{
+    // Adding key before getting file name just to make sure the keyframe can be insterted
+    SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
+
+    if (key == nullptr)
+    {
+        // Probably tried to modify a hidden layer or something like that
+        // Let Editor handle the warnings
+        return Status::SAFE;
+    }
+
+    Status st = Status::FAIL;
+
+    st = mEditor->sound()->loadSound(key, filePath);
+
+    if (!st.ok())
+    {
+        mEditor->removeKey();
+        emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
+    }
+
     return st;
 }
 
@@ -697,11 +722,23 @@ void ActionCommands::duplicateLayer()
 {
     LayerManager* Lmgr = mEditor->layers();
     Layer* fromLayer = Lmgr->currentLayer();
+    int currFrame = mEditor->currentFrame();
 
     Layer* toLayer = Lmgr->createLayer(fromLayer->type(), fromLayer->name() + tr("_copy"));
     fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
-       key = fromLayer->getKeyFrameAt(key->pos())->clone();
-       toLayer->addKeyFrame(key->pos(), key);
+        if (toLayer->keyExists(key->pos()))
+            toLayer->removeKeyFrame(key->pos());
+        key = fromLayer->getKeyFrameAt(key->pos())->clone();
+        if (toLayer->type() != Layer::SOUND)
+        {
+            toLayer->addKeyFrame(key->pos(), key);
+        }
+        else
+        {
+            mEditor->scrubTo(key->pos());
+            loadSoundClipOnDuplicating(key->fileName());
+            mEditor->scrubTo(currFrame);
+        }
     });
 }
 

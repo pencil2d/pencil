@@ -103,6 +103,7 @@ private:
     void exposeSelectedFrames(int offset);
 
     Status convertSoundToWav(const QString& filePath);
+    Status loadSoundClipOnDuplicating(const QString& filePath);
 
     Editor* mEditor = nullptr;
     QWidget* mParent = nullptr;
