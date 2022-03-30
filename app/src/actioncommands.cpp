@@ -15,7 +15,7 @@ GNU General Public License for more details.
 */
 
 #include "actioncommands.h"
-#include <QDebug>
+
 #include <QInputDialog>
 #include <QMessageBox>
 #include <QProgressDialog>
@@ -221,31 +221,6 @@ Status ActionCommands::convertSoundToWav(const QString& filePath)
         ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
         errorDialog.exec();
     }
-    return st;
-}
-
-Status ActionCommands::loadSoundClipOnDuplicating(const QString &filePath)
-{
-    // Adding key before getting file name just to make sure the keyframe can be insterted
-    SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
-
-    if (key == nullptr)
-    {
-        // Probably tried to modify a hidden layer or something like that
-        // Let Editor handle the warnings
-        return Status::SAFE;
-    }
-
-    Status st = Status::FAIL;
-
-    st = mEditor->sound()->loadSound(key, filePath);
-
-    if (!st.ok())
-    {
-        mEditor->removeKey();
-        emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
-    }
-
     return st;
 }
 
@@ -640,8 +615,8 @@ void ActionCommands::exposeSelectedFrames(int offset)
     }
 
     currentLayer->setExposureForSelectedFrames(offset);
-    mEditor->updateTimeLine();
-    mEditor->framesModified();
+    emit mEditor->updateTimeLine();
+    emit mEditor->framesModified();
 
     // Remember to deselect frame again so we don't show it being visually selected.
     // B:
@@ -703,7 +678,7 @@ void ActionCommands::reverseSelectedFrames()
     if (currentLayer->type() == Layer::CAMERA) {
         mEditor->view()->forceUpdateViewTransform();
     }
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 };
 
 void ActionCommands::removeKey()
@@ -725,9 +700,8 @@ void ActionCommands::duplicateLayer()
     int currFrame = mEditor->currentFrame();
 
     Layer* toLayer = Lmgr->createLayer(fromLayer->type(), fromLayer->name() + tr("_copy"));
+    toLayer->removeKeyFrame(1);
     fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
-        if (toLayer->keyExists(key->pos()))
-            toLayer->removeKeyFrame(key->pos());
         key = fromLayer->getKeyFrameAt(key->pos())->clone();
         if (toLayer->type() != Layer::SOUND)
         {
@@ -736,10 +710,12 @@ void ActionCommands::duplicateLayer()
         else
         {
             mEditor->scrubTo(key->pos());
-            loadSoundClipOnDuplicating(key->fileName());
-            mEditor->scrubTo(currFrame);
+            QString filePath = key->fileName();
+            SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
+            mEditor->sound()->loadSound(key, filePath);
         }
     });
+    mEditor->scrubTo(currFrame);
 }
 
 void ActionCommands::duplicateKey()
