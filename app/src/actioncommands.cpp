@@ -194,7 +194,7 @@ Status ActionCommands::importSound(FileType type)
     else
     {
         int clipCount = mEditor->sound()->soundClipCount();
-        if (clipCount >= 63) {
+        if (clipCount >= MovieExporter::MAX_SOUND_FRAMES) {
             showSoundClipWarning(clipCount);
         }
     }
@@ -243,9 +243,9 @@ Status ActionCommands::exportMovie(bool isGif)
     FileType fileType = (isGif) ? FileType::GIF : FileType::MOVIE;
 
     int clipCount = mEditor->sound()->soundClipCount();
-    if (fileType == FileType::MOVIE && clipCount >= 63)
+    if (fileType == FileType::MOVIE && clipCount >= MovieExporter::MAX_SOUND_FRAMES)
     {
-        ErrorDialog errorDialog(tr("Something went wrong"), tr("You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding 63 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.").arg(clipCount), QString(), mParent);
+        ErrorDialog errorDialog(tr("Something went wrong"), tr("You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.").arg(clipCount).arg(MovieExporter::MAX_SOUND_FRAMES), QString(), mParent);
         errorDialog.exec();
         return Status::FAIL;
     }
@@ -738,7 +738,7 @@ void ActionCommands::duplicateKey()
     {
         mEditor->sound()->processSound(dynamic_cast<SoundClip*>(dupKey));
         int clipCount = mEditor->sound()->soundClipCount();
-        if (clipCount >= 63) {
+        if (clipCount >= MovieExporter::MAX_SOUND_FRAMES) {
             showSoundClipWarning(clipCount);
         }
     }
