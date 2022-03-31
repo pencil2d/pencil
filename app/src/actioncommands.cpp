@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QDesktopServices>
 #include <QStandardPaths>
 #include <QFileDialog>
+
 #include "pencildef.h"
 #include "editor.h"
 #include "object.h"
@@ -695,24 +696,23 @@ void ActionCommands::removeKey()
 
 void ActionCommands::duplicateLayer()
 {
-    LayerManager* Lmgr = mEditor->layers();
-    Layer* fromLayer = Lmgr->currentLayer();
+    LayerManager* layerMgr = mEditor->layers();
+    Layer* fromLayer = layerMgr->currentLayer();
     int currFrame = mEditor->currentFrame();
 
-    Layer* toLayer = Lmgr->createLayer(fromLayer->type(), fromLayer->name() + tr("_copy"));
+    Layer* toLayer = layerMgr->createLayer(fromLayer->type(), tr("%1 (copy)", "Default duplicate layer name").arg(fromLayer->name()));
     toLayer->removeKeyFrame(1);
     fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
-        key = fromLayer->getKeyFrameAt(key->pos())->clone();
-        if (toLayer->type() != Layer::SOUND)
+        key = key->clone();
+        toLayer->addKeyFrame(key->pos(), key);
+        if (toLayer->type() == Layer::SOUND)
         {
-            toLayer->addKeyFrame(key->pos(), key);
+            mEditor->sound()->processSound(static_cast<SoundClip*>(key));
         }
         else
         {
-            mEditor->scrubTo(key->pos());
-            QString filePath = key->fileName();
-            SoundClip* key = static_cast<SoundClip*>(mEditor->addNewKey());
-            mEditor->sound()->loadSound(key, filePath);
+            key->setFileName("");
+            key->modification();
         }
     });
     mEditor->scrubTo(currFrame);
