@@ -774,12 +774,12 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
     // Get Eulcidian distance between colors
     // Not an accurate representation of human perception,
     // but it's the best any image editing program ever does
-    int diffRed = static_cast<int>(qPow(qRed(oldColor) - qRed(newColor), 2));
-    int diffGreen = static_cast<int>(qPow(qGreen(oldColor) - qGreen(newColor), 2));
-    int diffBlue = static_cast<int>(qPow(qBlue(oldColor) - qBlue(newColor), 2));
+    int diffRed = abs(qRed(oldColor) - qRed(newColor)) << 2;
+    int diffGreen = abs(qGreen(oldColor) - qGreen(newColor)) << 2;
+    int diffBlue = abs(qBlue(oldColor) - qBlue(newColor)) << 2;
     // This may not be the best way to handle alpha since the other channels become less relevant as
     // the alpha is reduces (ex. QColor(0,0,0,0) is the same as QColor(255,255,255,0))
-    int diffAlpha = static_cast<int>(qPow(qAlpha(oldColor) - qAlpha(newColor), 2));
+    int diffAlpha = abs(qAlpha(oldColor) - qAlpha(newColor)) << 2;
 
     bool isSimilar = (diffRed + diffGreen + diffBlue + diffAlpha) <= tolerance;
 
