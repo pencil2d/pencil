@@ -151,12 +151,14 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
 
     BitmapImage replaceImage = BitmapImage(targetImage->bounds(), Qt::transparent);
 
+    int expandValue = mProperties.bucketFillExpandEnabled ? mProperties.bucketFillExpand : 0;
     bool didFloodFill = BitmapImage::floodFill(&replaceImage,
                            &referenceImage,
                            cameraRect,
                            point,
                            fillColor,
-                           tolerance);
+                           tolerance,
+                           expandValue);
 
     if (!didFloodFill) {
         return;

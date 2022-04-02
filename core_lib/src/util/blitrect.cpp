@@ -21,6 +21,13 @@ BlitRect::BlitRect()
 {
 }
 
+BlitRect::BlitRect(const QRect rect)
+{
+    setTopLeft(rect.topLeft());
+    setBottomRight(rect.bottomRight());
+    mInitialized = true;
+}
+
 BlitRect::BlitRect(const QPoint p)
 {
     extend(p);
