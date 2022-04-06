@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include "qminiz.h"
 #include "fileformat.h"
 #include "object.h"
+#include "layer.h"
+#include "keyframe.h"
 #include "layercamera.h"
 
 FileManager::FileManager(QObject* parent) : QObject(parent)
@@ -172,6 +174,10 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
             ObjectData* projectData = loadProjectData(element);
             object->setData(projectData);
         }
+        else if (element.tagName() == "framecomments")
+        {
+            loadFrameComments(object, element);
+        }
         else if (element.tagName() == "version")
         {
             QVersionNumber fileVersion = QVersionNumber::fromString(element.text());
@@ -308,6 +314,8 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     dd.collect(stPalette.details());
 
     const bool saveOk = stKeyFrames.ok() && stMainXml.ok() && stPalette.ok();
+
+    // save comment information
 
     progressForward();
 
@@ -447,6 +455,78 @@ QDomElement FileManager::saveProjectData(const ObjectData* data, QDomDocument& x
     QDomElement tagMarkOutFrame = xmlDoc.createElement("markOutFrame");
     tagMarkOutFrame.setAttribute("value", data->getMarkOutFrameNumber());
     rootTag.appendChild(tagMarkOutFrame);
+
+    return rootTag;
+}
+
+void FileManager::loadFrameComments(Object *obj, QDomElement &element)
+{
+    Layer* layer = nullptr;
+    KeyFrame* key = nullptr;
+
+    int newLayerIndex = -1;
+    int oldLayerIndex = -1;
+
+    for(QDomNode tag = element.firstChild(); !tag.isNull(); tag = tag.nextSibling())
+    {
+        QDomElement comments = tag.toElement();
+        if (comments.isNull())
+        {
+            continue;
+        }
+
+        oldLayerIndex = comments.attribute("layer").toInt();
+        if (newLayerIndex != oldLayerIndex) {
+            layer = obj->getLayer(oldLayerIndex);
+        }
+
+        if (layer == nullptr) {
+            continue;
+        }
+
+        // get keyFrame
+        int frame = comments.attribute("frame").toInt();
+        key = layer->getKeyFrameAt(frame);
+
+        // set keyFrame comments
+        key->setDialogueComment(comments.attribute("dialogue"));
+        key->setActionComment(comments.attribute("action"));
+        key->setSlugComment(comments.attribute("slug"));
+
+        newLayerIndex = oldLayerIndex;
+    }
+}
+
+QDomElement FileManager::saveFrameComments(const Object* obj, QDomDocument &xmlDoc)
+{
+    int layers = obj->getLayerCount();
+    QDomElement rootTag = xmlDoc.createElement("framecomments");
+
+    KeyFrame* key = nullptr;
+    for (int i = 0; i < layers; i++)
+    {
+        Layer* layer = obj->getLayer(i);
+        QString tag = "content";
+        int frame = layer->firstKeyFramePosition();
+        do
+        {
+            key = layer->getKeyFrameAt(frame);
+            if (key->frameHasComments())
+            {
+                QDomElement tagComments = xmlDoc.createElement(tag);
+                tagComments.setAttribute("layer", i);
+                tagComments.setAttribute("frame", frame);
+                tagComments.setAttribute("dialogue", key->getDialogueComment());
+                tagComments.setAttribute("action", key->getActionComment());
+                tagComments.setAttribute("slug", key->getSlugComment());
+                rootTag.appendChild(tagComments);
+            }
+            if (frame == layer->getMaxKeyFramePosition())
+                frame++;
+            else
+                frame = layer->getNextKeyFramePosition(frame);
+        } while (frame <= layer->getMaxKeyFramePosition());
+    }
 
     return rootTag;
 }
@@ -647,6 +727,10 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPat
     // save object
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
+
+    // save comment information
+    QDomElement frameComments = saveFrameComments(object, xmlDoc);
+    root.appendChild(frameComments);
 
     // save Pencil2D version
     QDomElement versionElem = xmlDoc.createElement("version");

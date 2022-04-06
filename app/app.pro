@@ -105,6 +105,7 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
+    src/framecommentwidget.h \
     src/presetdialog.h \
     src/commandlineparser.h \
     src/commandlineexporter.h \
@@ -150,6 +151,7 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
+    src/framecommentwidget.cpp \
     src/presetdialog.cpp \
     src/app_util.cpp \
     src/commandlineparser.cpp \
@@ -185,6 +187,7 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
+    ui/framecommentwidget.ui \
     ui/presetdialog.ui
 
 GIT {

@@ -40,6 +40,13 @@ KeyFrame::~KeyFrame()
     }
 }
 
+bool KeyFrame::frameHasComments()
+{
+    if (mDialogueComment.isEmpty() && mActionComment.isEmpty() && mSlugComment.isEmpty())
+        return false;
+    return true;
+}
+
 KeyFrame& KeyFrame::operator=(const KeyFrame& k2)
 {
 	if (this == &k2)
