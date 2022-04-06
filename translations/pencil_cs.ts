@@ -131,12 +131,12 @@
         <location filename="../app/src/actioncommands.cpp" line="655"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Odstranit vybrané snímky</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="656"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
-        <translation type="unfinished"/>
+        <translation>Opravdu chcete odstranit vybrané snímky? Tento krok je v současnosti nevratný!</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="764"/>
@@ -2803,17 +2803,17 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="521"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Soubor není, takže jej nelze otevřít. Podívejte se, prosím, a ujistěte se, že je cesta správná a zkuste to znovu.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="526"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Nemáte oprávnění číst soubor. Ověřte, prosím, že máte oprávnění k tomuto souboru a zkuste to znovu.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="532"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
-        <translation type="unfinished"/>
+        <translation>Při zpracování souboru se vyskytla chyba. Obyčejně to znamená, že váš projekt byl alespoň částečně poškozen. Zkuste to znovu s novou verzí Pencil2D, nebo vyzkoušejte použití záložního souboru, pokud nějaký máte. Pokud se s námi spojíte přes jeden z našich veřejných kanálů, můžeme vám být schopni pomoci. Pro hlášení potíží jsou nejlepšími místy, jak nás dosáhnout:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="940"/>
@@ -3520,7 +3520,7 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="187"/>
         <source>Timeline Selection</source>
-        <translation type="unfinished"/>
+        <translation>Výběr časové osy</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="218"/>
@@ -4118,22 +4118,22 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1144"/>
         <source>Add Exposure</source>
-        <translation type="unfinished"/>
+        <translation>Přidat osvit</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1149"/>
         <source>Subtract Exposure</source>
-        <translation type="unfinished"/>
+        <translation>Odečíst osvit</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1154"/>
         <source>Reverse Frames Order</source>
-        <translation type="unfinished"/>
+        <translation>Obrátit pořadí snímků</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1159"/>
         <source>Remove Frames</source>
-        <translation type="unfinished"/>
+        <translation>Odstranit snímky</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1170"/>
@@ -5172,25 +5172,25 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
         <location filename="../app/src/shortcutspage.cpp" line="323"/>
         <source>Selection: Add Frame Exposure</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Výběr: Přidat osvit snímku</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="324"/>
         <source>Selection: Subtract Frame Exposure</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Výběr: Odečíst osvit snímku</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="325"/>
         <source>Selection: Reverse Keyframes</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Výběr: Obrátit klíčové snímky</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="326"/>
         <source>Selection: Remove Keyframes</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Výběr: Odstranit klíčové snímky</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="327"/>
