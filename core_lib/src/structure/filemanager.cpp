@@ -312,76 +312,9 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
     Status stPalette = writePalette(object, sDataFolder, filesToZip);
     dd.collect(stPalette.details());
-/*
-<<<<<<< HEAD
-    bool saveLayersOK = true;
-    for (int i = 0; i < numLayers; ++i)
-    {
-        Layer* layer = object->getLayer(i);
 
-        dd << QString("Layer[%1] = [id=%2, name=%3, type=%4]").arg(i).arg(layer->id()).arg(layer->name()).arg(layer->type());
-        
-        Status st = layer->save(sDataFolder, zippedFiles, [this] { progressForward(); });
-        if (!st.ok())
-        {
-            saveLayersOK = false;
-            dd.collect(st.details());
-            dd << QString("  !! Failed to save Layer[%1] %2").arg(i).arg(layer->name());
-        }
-    }
-    dd << "All Layers saved";
-
-    // save palette
-    QString sPaletteFile = object->savePalette(sDataFolder);
-    if (!sPaletteFile.isEmpty())
-        zippedFiles.append(sPaletteFile);
-    else
-        dd << "Failed to save the palette xml";
-    
-    progressForward();
-
-    // -------- save main XML file -----------
-    QFile file(sMainXMLFile);
-    if (!file.open(QFile::WriteOnly | QFile::Text))
-    {
-        return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
-    }
-
-    QDomDocument xmlDoc("PencilDocument");
-    QDomElement root = xmlDoc.createElement("document");
-    QDomProcessingInstruction encoding = xmlDoc.createProcessingInstruction("xml", "version=\"1.0\" encoding=\"UTF-8\"");
-    xmlDoc.appendChild(encoding);
-    xmlDoc.appendChild(root);
-
-    progressForward();
-
-    // save editor information
-    QDomElement projDataXml = saveProjectData(object->data(), xmlDoc);
-    root.appendChild(projDataXml);
-
-    // save object
-    QDomElement objectElement = object->saveXML(xmlDoc);
-    root.appendChild(objectElement);
-
-    // save comment information
-    QDomElement frameComments = saveFrameComments(object, xmlDoc);
-    root.appendChild(frameComments);
-
-    dd << "Writing main xml file...";
-
-    const int indentSize = 2;
-
-    QTextStream out(&file);
-    xmlDoc.save(out, indentSize);
-    out.flush();
-    file.close();
-
-    dd << "Done writing main xml file at" << sMainXMLFile;
-
-    zippedFiles.append(sMainXMLFile);
-======= */
     const bool saveOk = stKeyFrames.ok() && stMainXml.ok() && stPalette.ok();
-//>>>>>>> master
+
     // save comment information
 
     progressForward();
@@ -794,6 +727,10 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPat
     // save object
     QDomElement objectElement = object->saveXML(xmlDoc);
     root.appendChild(objectElement);
+
+    // save comment information
+    QDomElement frameComments = saveFrameComments(object, xmlDoc);
+    root.appendChild(frameComments);
 
     // save Pencil2D version
     QDomElement versionElem = xmlDoc.createElement("version");
