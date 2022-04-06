@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QDebug>
 
+#include "bucketoptionswidget.h"
 #include "spinslider.h"
 #include "editor.h"
 #include "util.h"
@@ -30,7 +31,7 @@ GNU General Public License for more details.
 ToolOptionWidget::ToolOptionWidget(QWidget* parent) : BaseDockWidget(parent)
 {
     setWindowTitle(tr("Options", "Window title of tool option panel like pen width, feather etc.."));
-    
+
     QWidget* innerWidget = new QWidget;
     setWidget(innerWidget);
     ui = new Ui::ToolOptions;
@@ -39,23 +40,23 @@ ToolOptionWidget::ToolOptionWidget(QWidget* parent) : BaseDockWidget(parent)
 
 ToolOptionWidget::~ToolOptionWidget()
 {
+    delete ui;
 }
 
 void ToolOptionWidget::initUI()
 {
+	mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
+	ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
+
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    ui->sizeSlider->init(tr("Brush"), SpinSlider::EXPONENT, SpinSlider::INTEGER, 1, 200);
+    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, SpinSlider::INTEGER, 1, 200);
     ui->sizeSlider->setValue(settings.value("brushWidth", "3").toDouble());
     ui->brushSpinBox->setValue(settings.value("brushWidth", "3").toDouble());
 
     ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, 1, 99);
     ui->featherSlider->setValue(settings.value("brushFeather", "5").toDouble());
     ui->featherSpinBox->setValue(settings.value("brushFeather", "5").toDouble());
-
-    ui->toleranceSlider->init(tr("Color Tolerance"), SpinSlider::LINEAR, SpinSlider::INTEGER, 0, 100);
-    ui->toleranceSlider->setValue(settings.value("Tolerance", "50").toInt());
-    ui->toleranceSpinBox->setValue(settings.value("Tolerance", "50").toInt());
 }
 
 void ToolOptionWidget::updateUI()
@@ -64,7 +65,7 @@ void ToolOptionWidget::updateUI()
     Q_ASSERT(currentTool);
 
     disableAllOptions();
-    
+
     setVisibility(currentTool);
 
     const Properties& p = currentTool->properties;
@@ -78,12 +79,11 @@ void ToolOptionWidget::updateUI()
     setVectorMergeEnabled(p.vectorMergeEnabled);
     setAA(p.useAA);
     setStabilizerLevel(p.stabilizerLevel);
-    setTolerance(static_cast<int>(p.tolerance));
     setFillContour(p.useFillContour);
 }
 
 void ToolOptionWidget::createUI()
-{} 
+{}
 
 void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 {
@@ -108,11 +108,9 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(ui->vectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled);
     connect(ui->useAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA);
 
-    connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
+    connect(ui->fillMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setFillMode);
 
-    connect(ui->toleranceSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setTolerance);
-    connect(ui->toleranceSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setTolerance);
-    clearFocusOnFinished(ui->toleranceSpinBox);
+    connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
 
@@ -135,9 +133,15 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
     case ANTI_ALIASING: setAA(p.useAA); break;
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
-    case TOLERANCE: setTolerance(static_cast<int>(p.tolerance)); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case BEZIER: setBezier(p.bezier_state); break;
+    case TOLERANCE: break;
+    case USETOLERANCE: break;
+    case BUCKETFILLEXPAND: break;
+    case USEBUCKETFILLEXPAND: break;
+    case BUCKETFILLLAYERMODE: break;
+    case BUCKETFILLLAYERREFERENCEMODE: break;
+    case FILL_MODE: break;
     default:
         Q_ASSERT(false);
         break;
@@ -146,6 +150,18 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
 
 void ToolOptionWidget::setVisibility(BaseTool* tool)
 {
+    Q_ASSERT(mBucketOptionsWidget);
+    if (tool->type() == BUCKET)
+    {
+        disableAllOptions();
+        mBucketOptionsWidget->setHidden(false);
+        return;
+    }
+    else
+    {
+        mBucketOptionsWidget->setHidden(true);
+    }
+
     ui->sizeSlider->setVisible(tool->isPropertyEnabled(WIDTH));
     ui->brushSpinBox->setVisible(tool->isPropertyEnabled(WIDTH));
     ui->featherSlider->setVisible(tool->isPropertyEnabled(FEATHER));
@@ -158,8 +174,6 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
-    ui->toleranceSlider->setVisible(tool->isPropertyEnabled(TOLERANCE));
-    ui->toleranceSpinBox->setVisible(tool->isPropertyEnabled(TOLERANCE));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
@@ -182,15 +196,8 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
             ui->brushSpinBox->setVisible(false);
             ui->usePressureBox->setVisible(false);
             break;
-        case BUCKET:
-            ui->sizeSlider->setLabel(tr("Stroke Thickness"));
-            ui->toleranceSlider->setVisible(false);
-            ui->toleranceSpinBox->setVisible(false);
-            break;
         default:
             ui->sizeSlider->setLabel(tr("Width"));
-            ui->toleranceSlider->setVisible(false);
-            ui->toleranceSpinBox->setVisible(false);
             ui->useAABox->setVisible(false);
             break;
         }
@@ -220,64 +227,64 @@ void ToolOptionWidget::onToolChanged(ToolType)
 
 void ToolOptionWidget::setPenWidth(qreal width)
 {
-    SignalBlocker b(ui->sizeSlider);
+    QSignalBlocker b(ui->sizeSlider);
     ui->sizeSlider->setEnabled(true);
     ui->sizeSlider->setValue(width);
 
-    SignalBlocker b2(ui->brushSpinBox);
+    QSignalBlocker b2(ui->brushSpinBox);
     ui->brushSpinBox->setEnabled(true);
     ui->brushSpinBox->setValue(width);
 }
 
 void ToolOptionWidget::setPenFeather(qreal featherValue)
 {
-    SignalBlocker b(ui->featherSlider);
+    QSignalBlocker b(ui->featherSlider);
     ui->featherSlider->setEnabled(true);
     ui->featherSlider->setValue(featherValue);
 
-    SignalBlocker b2(ui->featherSpinBox);
+    QSignalBlocker b2(ui->featherSpinBox);
     ui->featherSpinBox->setEnabled(true);
     ui->featherSpinBox->setValue(featherValue);
 }
 
 void ToolOptionWidget::setUseFeather(bool useFeather)
 {
-    SignalBlocker b(ui->useFeatherBox);
+    QSignalBlocker b(ui->useFeatherBox);
     ui->useFeatherBox->setEnabled(true);
     ui->useFeatherBox->setChecked(useFeather);
 }
 
 void ToolOptionWidget::setPenInvisibility(int x)
 {
-    SignalBlocker b(ui->makeInvisibleBox);
+    QSignalBlocker b(ui->makeInvisibleBox);
     ui->makeInvisibleBox->setEnabled(true);
     ui->makeInvisibleBox->setChecked(x > 0);
 }
 
 void ToolOptionWidget::setPressure(int x)
 {
-    SignalBlocker b(ui->usePressureBox);
+    QSignalBlocker b(ui->usePressureBox);
     ui->usePressureBox->setEnabled(true);
     ui->usePressureBox->setChecked(x > 0);
 }
 
 void ToolOptionWidget::setPreserveAlpha(int x)
 {
-    SignalBlocker b(ui->preserveAlphaBox);
+    QSignalBlocker b(ui->preserveAlphaBox);
     ui->preserveAlphaBox->setEnabled(true);
     ui->preserveAlphaBox->setChecked(x > 0);
 }
 
 void ToolOptionWidget::setVectorMergeEnabled(int x)
 {
-    SignalBlocker b(ui->vectorMergeBox);
+    QSignalBlocker b(ui->vectorMergeBox);
     ui->vectorMergeBox->setEnabled(true);
     ui->vectorMergeBox->setChecked(x > 0);
 }
 
 void ToolOptionWidget::setAA(int x)
 {
-    SignalBlocker b(ui->useAABox);
+    QSignalBlocker b(ui->useAABox);
     ui->useAABox->setEnabled(true);
     ui->useAABox->setVisible(false);
 
@@ -303,27 +310,16 @@ void ToolOptionWidget::setStabilizerLevel(int x)
     ui->inpolLevelsCombo->setCurrentIndex(qBound(0, x, ui->inpolLevelsCombo->count() - 1));
 }
 
-void ToolOptionWidget::setTolerance(int tolerance)
-{
-    SignalBlocker b(ui->toleranceSlider);
-    ui->toleranceSlider->setEnabled(true);
-    ui->toleranceSlider->setValue(tolerance);
-
-    SignalBlocker b2(ui->toleranceSpinBox);
-    ui->toleranceSpinBox->setEnabled(true);
-    ui->toleranceSpinBox->setValue(tolerance);
-}
-
 void ToolOptionWidget::setFillContour(int useFill)
 {
-    SignalBlocker b(ui->fillContourBox);
+    QSignalBlocker b(ui->fillContourBox);
     ui->fillContourBox->setEnabled(true);
     ui->fillContourBox->setChecked(useFill > 0);
 }
 
 void ToolOptionWidget::setBezier(bool useBezier)
 {
-    SignalBlocker b(ui->useBezierBox);
+    QSignalBlocker b(ui->useBezierBox);
     ui->useBezierBox->setChecked(useBezier);
 }
 
@@ -340,8 +336,8 @@ void ToolOptionWidget::disableAllOptions()
     ui->preserveAlphaBox->hide();
     ui->vectorMergeBox->hide();
     ui->useAABox->hide();
+    ui->fillModeGroup->hide();
     ui->inpolLevelsCombo->hide();
-    ui->toleranceSlider->hide();
-    ui->toleranceSpinBox->hide();
     ui->fillContourBox->hide();
+    ui->stabilizerLabel->hide();
 }

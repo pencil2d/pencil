@@ -50,12 +50,21 @@
         <file>icons/new/svg/selection.svg</file>
         <file>icons/new/svg/smudge_detailed.svg</file>
         <file>icons/new/svg/trash_detailed.svg</file>
-        <file>icons/new/checkerboard_smaller</file>
+        <file>icons/new/checkerboard_smaller.png</file>
         <file>icons/new/arrow-diagonalleft.png</file>
         <file>icons/new/arrow-diagonalright.png</file>
-        <file>icons/new/arrow-horizontal.png</file>
         <file>icons/new/arrow-selectmove.png</file>
         <file>icons/new/arrow-vertical.png</file>
+        <file>icons/overlayCenter.png</file>
+        <file>icons/overlayGoldenRatio.png</file>
+        <file>icons/overlaySafe.png</file>
+        <file>icons/overlayThirds.png</file>
+        <file>icons/overlayPerspective1.png</file>
+        <file>icons/overlayPerspective2.png</file>
+        <file>icons/overlayPerspective3.png</file>
+        <file>icons/overlayAngle.png</file>
+        <file>icons/controls/soundscrub.png</file>
+        <file>icons/controls/soundscrub-disabled.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

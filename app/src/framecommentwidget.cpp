@@ -172,7 +172,7 @@ void FrameCommentWidget::makeConnections()
     connect(ui->textEditAction, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
     connect(ui->textEditDialogue, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
 
-    connect(mEditor, &Editor::currentFrameChanged, this, &FrameCommentWidget::currentFrameChanged);
+    connect(mEditor, &Editor::scrubbed, this, &FrameCommentWidget::currentFrameChanged);
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &FrameCommentWidget::currentLayerChanged);
     connect(mEditor, &Editor::objectLoaded, this, &FrameCommentWidget::fillComments);
     connect(mEditor->playback(), &PlaybackManager::playStateChanged, this, &FrameCommentWidget::playStateChanged);
@@ -189,7 +189,7 @@ void FrameCommentWidget::disconnectNotifiers()
     disconnect(ui->textEditAction, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
     disconnect(ui->textEditDialogue, &QPlainTextEdit::textChanged, this, &FrameCommentWidget::applyComments);
 
-    disconnect(mEditor, &Editor::currentFrameChanged, this, &FrameCommentWidget::currentFrameChanged);
+    disconnect(mEditor, &Editor::scrubbed, this, &FrameCommentWidget::currentFrameChanged);
     disconnect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &FrameCommentWidget::currentLayerChanged);
     disconnect(mEditor, &Editor::objectLoaded, this, &FrameCommentWidget::fillComments);
     disconnect(mEditor->playback(), &PlaybackManager::playStateChanged, this, &FrameCommentWidget::playStateChanged);

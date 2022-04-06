@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,23 +25,22 @@ GNU General Public License for more details.
 #include "pencildef.h"
 
 class QAction;
-class ListItemModel;
 
 class RecentFileMenu : public QMenu
 {
     Q_OBJECT
 
 public:
-    explicit RecentFileMenu(QString title = tr("Open Recent"), QWidget* parent = nullptr);
-    ~RecentFileMenu();
+    explicit RecentFileMenu(const QString& title = tr("Open Recent"), QWidget* parent = nullptr);
+    ~RecentFileMenu() override;
 
     static const int MAX_RECENT_FILES = 10;
 
     QStringList getRecentFiles() { return mRecentFiles; }
     void setRecentFiles(const QStringList& filenames);
 
-    void addRecentFile(QString filename);
-    void removeRecentFile(QString filename);
+    void addRecentFile(const QString& filename);
+    void removeRecentFile(const QString& filename);
 
     bool loadFromDisk();
     bool saveToDisk();
@@ -50,7 +49,7 @@ signals:
     void loadRecentFile(QString filename);
 
 public slots:
-    void clear();
+    void clearRecentFiles();
 
 protected slots:
     void onRecentFileTriggered();

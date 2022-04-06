@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -27,7 +27,7 @@ GNU General Public License for more details.
 
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
 {
-    setName(tr("Bitmap Layer"));
+    setName(QObject::tr("Bitmap Layer"));
 }
 
 LayerBitmap::~LayerBitmap()
@@ -46,11 +46,12 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber)
+void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber, qreal opacity)
 {
     BitmapImage* pKeyFrame = new BitmapImage(topLeft, path);
     pKeyFrame->enableAutoCrop(true);
     pKeyFrame->setPos(frameNumber);
+    pKeyFrame->setOpacity(opacity);
     loadKey(pKeyFrame);
 }
 
@@ -149,7 +150,7 @@ QString LayerBitmap::fileName(KeyFrame* key) const
 }
 
 bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& savePath)
-{    
+{
     if (key->isModified()) // keyframe was modified
         return true;
     if (QFile::exists(savePath) == false) // hasn't been saved before
@@ -159,13 +160,9 @@ bool LayerBitmap::needSaveFrame(KeyFrame* key, const QString& savePath)
     return false;
 }
 
-QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
+QDomElement LayerBitmap::createDomElement(QDomDocument& doc) const
 {
-    QDomElement layerTag = doc.createElement("layer");
-    layerTag.setAttribute("id", id());
-    layerTag.setAttribute("name", name());
-    layerTag.setAttribute("visibility", visible());
-    layerTag.setAttribute("type", type());
+    QDomElement layerElem = createBaseDomElement(doc);
 
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
     {
@@ -176,23 +173,18 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc)
         imageTag.setAttribute("src", fileName(pKeyFrame));
         imageTag.setAttribute("topLeftX", pImg->topLeft().x());
         imageTag.setAttribute("topLeftY", pImg->topLeft().y());
-        layerTag.appendChild(imageTag);
+        imageTag.setAttribute("opacity", pImg->getOpacity());
+        layerElem.appendChild(imageTag);
 
         Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
     });
 
-    return layerTag;
+    return layerElem;
 }
 
-void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep)
+void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep)
 {
-    if (!element.attribute("id").isNull())
-    {
-        int id = element.attribute("id").toInt();
-        setId(id);
-    }
-    setName(element.attribute("name"));
-    setVisible(element.attribute("visibility").toInt() == 1);
+    this->loadBaseDomElement(element);
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
@@ -208,7 +200,11 @@ void LayerBitmap::loadDomElement(QDomElement element, QString dataDirPath, Progr
                 int position = imageElement.attribute("frame").toInt();
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();
-                loadImageAtFrame(path, QPoint(x, y), position);
+                qreal opacity = 1.0;
+                if (imageElement.hasAttribute("opacity")) {
+                    opacity = imageElement.attribute("opacity").toDouble();
+                }
+                loadImageAtFrame(path, QPoint(x, y), position, opacity);
 
                 progressStep();
             }

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -22,14 +22,14 @@ GNU General Public License for more details.
 #include <QDebug>
 
 
-RecentFileMenu::RecentFileMenu(QString title, QWidget *parent) :
+RecentFileMenu::RecentFileMenu(const QString& title, QWidget *parent) :
     QMenu(title, parent)
 {
     mClearSeparator = new QAction(this);
     mClearSeparator->setSeparator(true);
 
-    mClearAction = new QAction(tr("Clear"), this); // share the same translation
-    mEmptyAction = new QAction(tr("Empty"), this);
+    mClearAction = new QAction(tr("Clear", "Clear Recent File menu"), this); // share the same translation
+    mEmptyAction = new QAction(tr("Empty", "Showing when Recent File Menu is empty"), this);
     mEmptyAction->setEnabled(false);
 }
 
@@ -40,7 +40,7 @@ RecentFileMenu::~RecentFileMenu()
     delete mEmptyAction;
 }
 
-void RecentFileMenu::clear()
+void RecentFileMenu::clearRecentFiles()
 {
     for (const QString& filename : mRecentFiles)
     {
@@ -51,16 +51,16 @@ void RecentFileMenu::clear()
     mRecentFiles.clear();
     mRecentActions.clear();
     addAction(mEmptyAction);
-    saveToDisk();
 }
 
 void RecentFileMenu::setRecentFiles(const QStringList& filenames)
 {
-    clear();
+    clearRecentFiles();
 
+    // Iterate in reverse because items are prepended to the list when first added
     for (auto filename = filenames.crbegin(); filename != filenames.crend(); filename++)
     {
-        if (*filename != "")
+        if (!filename->isEmpty())
         {
             addRecentFile(*filename);
         }
@@ -73,7 +73,7 @@ bool RecentFileMenu::loadFromDisk()
     QVariant recent = settings.value("RecentFiles");
     if (recent.isNull())
     {
-        clear();
+        clearRecentFiles();
         return false;
     }
     QStringList recentFileList = recent.toStringList();
@@ -88,7 +88,7 @@ bool RecentFileMenu::saveToDisk()
     return true;
 }
 
-void RecentFileMenu::addRecentFile(QString filename)
+void RecentFileMenu::addRecentFile(const QString& filename)
 {
     if (mRecentFiles.contains(filename))
     {
@@ -114,17 +114,20 @@ void RecentFileMenu::addRecentFile(QString filename)
         addAction(action);
         addAction(mClearSeparator);
         addAction(mClearAction);
-        QObject::connect(mClearAction, &QAction::triggered, this, &RecentFileMenu::clear);
+        QObject::connect(mClearAction, &QAction::triggered, [this]
+        {
+            clearRecentFiles();
+            saveToDisk();
+        });
     }
     else
     {
         QString firstFile = mRecentFiles[1];
-        qDebug() << "Recent file" << firstFile;
         insertAction(mRecentActions[firstFile], action);
     }
 }
 
-void RecentFileMenu::removeRecentFile(QString filename)
+void RecentFileMenu::removeRecentFile(const QString& filename)
 {
     if (mRecentFiles.contains(filename))
     {

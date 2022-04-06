@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>316</width>
-    <height>285</height>
+    <width>390</width>
+    <height>611</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -56,10 +56,39 @@
        </widget>
       </item>
       <item>
-       <widget class="QCheckBox" name="askPresetCheckBox">
+       <widget class="QRadioButton" name="askPresetRbtn">
         <property name="text">
          <string>Ask on startup</string>
         </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">startupGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="loadDefaultPresetRbtn">
+        <property name="text">
+         <string>Load default preset</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">startupGroup</string>
+        </attribute>
+       </widget>
+      </item>
+      <item>
+       <widget class="QRadioButton" name="loadLastActiveRbtn">
+        <property name="text">
+         <string>Load last active file</string>
+        </property>
+        <attribute name="buttonGroup">
+         <string notr="true">startupGroup</string>
+        </attribute>
        </widget>
       </item>
      </layout>
@@ -90,7 +119,7 @@
         <property name="minimumSize">
          <size>
           <width>50</width>
-          <height>0</height>
+          <height>34</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -130,9 +159,7 @@
  </widget>
  <resources/>
  <connections/>
- <slots>
-  <slot>autosaveChange(int)</slot>
-  <slot>autosaveNumberChange(int)</slot>
-  <slot>clearRecentFilesList()</slot>
- </slots>
+ <buttongroups>
+  <buttongroup name="startupGroup"/>
+ </buttongroups>
 </ui>

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -48,11 +48,13 @@ public:
     void updateUI() override;
     void setCore(Editor* editor);
 
-    int currentColourNumber();
+    int currentColorNumber();
 
     void selectColorNumber(int);
     void setColor(QColor, int);
     void refreshColorList();
+
+    void adjustSwatches();
 
     void showContextMenu(const QPoint&);
 
@@ -65,7 +67,7 @@ protected:
 
 private slots:
     void clickColorListItem(QListWidgetItem*);
-    void changeColourName(QListWidgetItem*);
+    void changeColorName(QListWidgetItem*);
     void onItemChanged(QListWidgetItem* item);
     void onRowsMoved(const QModelIndex &parent, int start, int end, const QModelIndex &destination, int row);
     void clickAddColorButton();
@@ -77,6 +79,7 @@ private slots:
     void setSwatchSizeSmall();
     void setSwatchSizeMedium();
     void setSwatchSizeLarge();
+    void fitSwatchSize();
     void addItem();
     void replaceItem();
     void removeItem();
@@ -106,6 +109,11 @@ private:
 
     bool mIsColorDialog = false;
     bool mMultipleSelected = false;
+    bool mFitSwatches = false;
+
+    const int MIN_ICON_SIZE = 19;
+    const int MEDIUM_ICON_SIZE = 26;
+    const int MAX_ICON_SIZE = 36;
 
     Editor* mEditor = nullptr;
     Object* mObject = nullptr;

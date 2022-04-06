@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +19,9 @@ GNU General Public License for more details.
 #define BUCKETTOOL_H
 
 #include "stroketool.h"
+
+#include "bitmapimage.h"
+#include "bitmapbucket.h"
 
 class Layer;
 class VectorImage;
@@ -37,10 +40,18 @@ public:
     void pointerMoveEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
 
-    void setTolerance(const int tolerance) override;
-    void setWidth(const qreal width) override;
+    bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep) override;
 
-    void paintBitmap(Layer* layer);
+    void setTolerance(const int tolerance) override;
+    void setToleranceEnabled(const bool enabled) override;
+    void setWidth(const qreal width) override;
+    void setFillExpand(const int fillExpandValue) override;
+    void setFillExpandEnabled(const bool enabled) override;
+    void setFillToLayer(int layerIndex) override;
+    void setFillReferenceMode(int referenceMode) override;
+    void setFillMode(int mode) override;
+
+    void paintBitmap();
     void paintVector(Layer* layer);
     void drawStroke();
 
@@ -48,7 +59,10 @@ public:
 
 private:
 
+    BitmapBucket mBitmapBucket;
     VectorImage* vectorImage = nullptr;
+
+    bool mFilledOnMove = false;
 };
 
 #endif // BUCKETTOOL_H

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,11 +20,12 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QtMath>
 #include <QFile>
+#include <QPainterPath>
 #include "util.h"
 
 BitmapImage::BitmapImage()
 {
-    mImage = std::make_shared<QImage>(); // create null image
+    mImage.reset(new QImage); // create null image
     mBounds = QRect(0, 0, 0, 0);
 }
 
@@ -33,14 +34,15 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
     mEnableAutoCrop = a.mEnableAutoCrop;
-    mImage = std::make_shared<QImage>(*a.mImage);
+    mOpacity = a.mOpacity;
+    mImage.reset(new QImage(*a.mImage));
 }
 
-BitmapImage::BitmapImage(const QRect& rectangle, const QColor& colour)
+BitmapImage::BitmapImage(const QRect& rectangle, const QColor& color)
 {
     mBounds = rectangle;
-    mImage = std::make_shared<QImage>(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
-    mImage->fill(colour.rgba());
+    mImage.reset(new QImage(mBounds.size(), QImage::Format_ARGB32_Premultiplied));
+    mImage->fill(color.rgba());
     mMinBound = false;
 }
 
@@ -48,7 +50,7 @@ BitmapImage::BitmapImage(const QPoint& topLeft, const QImage& image)
 {
     mBounds = QRect(topLeft, image.size());
     mMinBound = true;
-    mImage = std::make_shared<QImage>(image);
+    mImage.reset(new QImage(image));
 }
 
 BitmapImage::BitmapImage(const QPoint& topLeft, const QString& path)
@@ -76,14 +78,21 @@ void BitmapImage::setImage(QImage* img)
 
 BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 {
+    if (this == &a)
+    {
+        return *this; // a self-assignment
+    }
+
+    KeyFrame::operator=(a);
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
-    mImage = std::make_shared<QImage>(*a.mImage);
+    mOpacity = a.mOpacity;
+    mImage.reset(new QImage(*a.mImage));
     modification();
     return *this;
 }
 
-BitmapImage* BitmapImage::clone()
+BitmapImage* BitmapImage::clone() const
 {
     return new BitmapImage(*this);
 }
@@ -92,7 +101,7 @@ void BitmapImage::loadFile()
 {
     if (mImage == nullptr)
     {
-        mImage = std::make_shared<QImage>(fileName());
+        mImage.reset(new QImage(fileName()));
         mBounds.setSize(mImage->size());
         mMinBound = false;
     }
@@ -106,9 +115,18 @@ void BitmapImage::unloadFile()
     }
 }
 
-bool BitmapImage::isLoaded()
+bool BitmapImage::isLoaded() const
 {
     return (mImage != nullptr);
+}
+
+quint64 BitmapImage::memoryUsage()
+{
+    if (mImage)
+    {
+        return imageSize(*mImage);
+    }
+    return 0;
 }
 
 void BitmapImage::paintImage(QPainter& painter)
@@ -139,7 +157,16 @@ BitmapImage BitmapImage::copy(QRect rectangle)
     if (rectangle.isEmpty() || mBounds.isEmpty()) return BitmapImage();
 
     QRect intersection2 = rectangle.translated(-mBounds.topLeft());
-    BitmapImage result = BitmapImage(rectangle.topLeft(), image()->copy(intersection2));
+
+    // If the region goes out of bounds, make sure the image is formatted in ARGB
+    // so that the area beyond the image bounds is transparent.
+    if (!mBounds.contains(rectangle) && !image()->hasAlphaChannel())
+    {
+        QImage* img = image();
+        *mImage = img->convertToFormat(QImage::Format_ARGB32);
+    }
+
+    BitmapImage result(rectangle.topLeft(), image()->copy(intersection2));
     return result;
 }
 
@@ -436,7 +463,7 @@ void BitmapImage::autoCrop()
     int relRight = mBounds.width()-1;
 
     // Check left row
-    isEmpty = (relBottom >= relTop); // Check left only when 
+    isEmpty = (relBottom >= relTop); // Check left only when
     while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relLeft
@@ -526,17 +553,17 @@ QRgb BitmapImage::pixel(QPoint p)
     return result;
 }
 
-void BitmapImage::setPixel(int x, int y, QRgb colour)
+void BitmapImage::setPixel(int x, int y, QRgb color)
 {
-    setPixel(QPoint(x, y), colour);
+    setPixel(QPoint(x, y), color);
 }
 
-void BitmapImage::setPixel(QPoint p, QRgb colour)
+void BitmapImage::setPixel(QPoint p, QRgb color)
 {
     setCompositionModeBounds(QRect(p, QSize(1,1)), true, QPainter::CompositionMode_SourceOver);
     if (mBounds.contains(p))
     {
-        image()->setPixel(p - mBounds.topLeft(), colour);
+        image()->setPixel(p - mBounds.topLeft(), color);
     }
     modification();
 }
@@ -628,7 +655,7 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
         painter.setPen(pen);
         painter.setBrush(brush);
         painter.setTransform(QTransform().translate(-mBounds.left(), -mBounds.top()));
-        painter.setMatrixEnabled(true);
+        painter.setWorldMatrixEnabled(true);
         if (path.length() > 0)
         {
             /*
@@ -659,54 +686,6 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
-Status::StatusInt BitmapImage::findLeft(QRectF rect, int grayValue)
-{
-    Status::StatusInt retValues;
-    retValues.value = -1;
-    retValues.errorcode = Status::FAIL;
-    int left = static_cast<int>(rect.left());
-    int right = static_cast<int>(rect.right());
-    int top = static_cast<int>(rect.top());
-    int bottom = static_cast<int>(rect.bottom());
-    for (int x = left; x <= right; x++)
-    {
-        for (int y = top; y <= bottom; y++)
-        {
-            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
-            {
-                retValues.value = x;
-                retValues.errorcode = Status::OK;
-                return retValues;
-            }
-        }
-    }
-    return retValues;
-}
-
-Status::StatusInt BitmapImage::findTop(QRectF rect, int grayValue)
-{
-    Status::StatusInt retValues;
-    retValues.value = -1;
-    retValues.errorcode = Status::FAIL;
-    int left = static_cast<int>(rect.left());
-    int right = static_cast<int>(rect.right());
-    int top = static_cast<int>(rect.top());
-    int bottom = static_cast<int>(rect.bottom());
-    for (int y = top; y <= bottom; y++)
-    {
-        for (int x = left; x <= right; x++)
-        {
-            if (qAlpha(constScanLine(x,y)) == 255 && qGray(constScanLine(x,y)) < grayValue)
-            {
-                retValues.value = y;
-                retValues.errorcode = Status::OK;
-                return retValues;
-            }
-        }
-    }
-    return retValues;
-}
-
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (mImage && !mImage->isNull())
@@ -714,7 +693,7 @@ Status BitmapImage::writeFile(const QString& filename)
         bool b = mImage->save(filename);
         return (b) ? Status::OK : Status::FAIL;
     }
-    
+
     if (bounds().isEmpty())
     {
         QFile f(filename);
@@ -730,7 +709,7 @@ Status BitmapImage::writeFile(const QString& filename)
 
 void BitmapImage::clear()
 {
-    mImage = std::make_shared<QImage>(); // null image
+    mImage.reset(new QImage); // null image
     mBounds = QRect(0, 0, 0, 0);
     mMinBound = true;
     modification();
@@ -746,7 +725,7 @@ QRgb BitmapImage::constScanLine(int x, int y) const
     return result;
 }
 
-void BitmapImage::scanLine(int x, int y, QRgb colour)
+void BitmapImage::scanLine(int x, int y, QRgb color)
 {
     extend(QPoint(x, y));
     if (mBounds.contains(QPoint(x, y)))
@@ -754,10 +733,10 @@ void BitmapImage::scanLine(int x, int y, QRgb colour)
         // Make sure color is premultiplied before calling
         *(reinterpret_cast<QRgb*>(image()->scanLine(y - mBounds.top())) + x - mBounds.left()) =
             qRgba(
-                qRed(colour),
-                qGreen(colour),
-                qBlue(colour),
-                qAlpha(colour));
+                qRed(color),
+                qGreen(color),
+                qBlue(color),
+                qAlpha(color));
     }
 }
 
@@ -820,16 +799,17 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
 
 // Flood fill
 // ----- http://lodev.org/cgtutor/floodfill.html
-void BitmapImage::floodFill(BitmapImage* targetImage,
+bool BitmapImage::floodFill(BitmapImage* replaceImage,
+                            BitmapImage* targetImage,
                             QRect cameraRect,
                             QPoint point,
-                            QRgb newColor,
+                            QRgb fillColor,
                             int tolerance)
 {
     // If the point we are supposed to fill is outside the image and camera bounds, do nothing
     if(!cameraRect.united(targetImage->bounds()).contains(point))
     {
-        return;
+        return false;
     }
 
     // Square tolerance for use with compareColor
@@ -841,7 +821,6 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
 
-    BitmapImage* replaceImage = nullptr;
     QPoint tempPoint;
     QRgb newPlacedColor = 0;
     QScopedPointer< QHash<QRgb, bool> > cache(new QHash<QRgb, bool>());
@@ -852,7 +831,6 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
 
     // Extend to size of Camera
     targetImage->extend(cameraRect);
-    replaceImage = new BitmapImage(targetImage->mBounds, Qt::transparent);
 
     queue.append(point);
     // Preparations END
@@ -874,11 +852,11 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         spanLeft = spanRight = false;
         while (xTemp <= targetImage->mBounds.right() &&
                compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data()) &&
-               newPlacedColor != newColor)
+               newPlacedColor != fillColor)
         {
 
             // Set pixel color
-            replaceImage->scanLine(xTemp, point.y(), newColor);
+            replaceImage->scanLine(xTemp, point.y(), fillColor);
 
             if (!spanLeft && (point.y() > targetImage->mBounds.top()) &&
                 compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
@@ -906,7 +884,94 @@ void BitmapImage::floodFill(BitmapImage* targetImage,
         }
     }
 
-    targetImage->paste(replaceImage);
-    targetImage->modification();
-    delete replaceImage;
+    return true;
 }
+
+/** Fills the target image with a given color in a radius of the expansion value
+ *
+ * @param targetImage
+ * @param newColor
+ * @param expand
+ */
+void BitmapImage::expandFill(BitmapImage* targetImage, QRgb newColor, int expand)
+{
+    QList<QPoint> expandPoints;
+
+    QRect expandRect = QRect(targetImage->topLeft() - QPoint(expand, expand), targetImage->bottomRight() + QPoint(expand, expand));
+    targetImage->extend(expandRect);
+
+    auto twoDVectorList = manhattanDistance(targetImage, newColor);
+
+    for (int y = 0; y < expandRect.height(); y++)
+    {
+        for (int x = 0; x < expandRect.width(); x++)
+        {
+            if (twoDVectorList[y][x] <= expand && twoDVectorList[y][x] != 0) {
+                *(reinterpret_cast<QRgb*>(targetImage->image()->scanLine(y)) + x) = newColor;
+            }
+        }
+    }
+}
+
+/** Finds all pixels closest to the input color and returns the result as a 2D array
+ *  matching the size of the image
+ *
+ * An example:
+ *
+ * 0 is where the color was found
+ * 1 is the distance from the nearest pixel of that color
+ *
+ * 211112
+ * 100001
+ * 100001
+ * 211112
+ *
+ * @param bitmapImage: Image to search
+ * @param searchColor: Color to find
+ * @return Return a 2D array of pixels closes to the inputColor
+ */
+QVector<QVector<int>> BitmapImage::manhattanDistance(BitmapImage* bitmapImage, QRgb& searchColor) {
+
+    // Allocate with size of image size
+    QVector<QVector<int>> manhattanPoints(bitmapImage->height(), QVector<int>(bitmapImage->width()));
+
+    // traverse from top left to bottom right
+    for (int y = 0; y < manhattanPoints.length(); y++) {
+        for (int x = 0; x < manhattanPoints[y].length(); x++) {
+
+            const QRgb& colorAtPixel = *(reinterpret_cast<const QRgb*>(bitmapImage->image()->constScanLine(y)) + x);
+            if (colorAtPixel == searchColor) {
+                manhattanPoints[y][x] = 0;
+            } else {
+                manhattanPoints[y][x] = manhattanPoints.length() + manhattanPoints[y].length();
+
+                if (y > 0) {
+                    // the value will be the num of pixels away from y - 1 of the next position
+                    manhattanPoints[y][x] = qMin(manhattanPoints[y][x],
+                                                 manhattanPoints[y - 1][x] + 1);
+                }
+                if (x > 0) {
+                    // the value will be the num of pixels away from x - 1 of the next position
+                    manhattanPoints[y][x] = qMin(manhattanPoints[y][x],
+                                                 manhattanPoints[y][x - 1] + 1);
+                }
+            }
+        }
+    }
+
+    // traverse from bottom right to top left
+    for (int y = manhattanPoints.length() - 1; y >= 0; y--) {
+        for (int x = manhattanPoints[y].length() - 1; x >= 0; x--) {
+
+            if (y + 1 < manhattanPoints.length()) {
+                manhattanPoints[y][x] = qMin(manhattanPoints[y][x], manhattanPoints[y + 1][x] + 1);
+            }
+            if (x + 1 < manhattanPoints[y].length()) {
+                manhattanPoints[y][x] = qMin(manhattanPoints[y][x], manhattanPoints[y][x + 1] + 1);
+            }
+        }
+    }
+
+    return manhattanPoints;
+}
+
