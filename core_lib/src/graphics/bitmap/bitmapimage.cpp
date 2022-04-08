@@ -792,25 +792,22 @@ bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHas
     return isSimilar;
 }
 
-// Flood fill
-// ----- http://lodev.org/cgtutor/floodfill.html
 bool BitmapImage::floodFill(BitmapImage** replaceImage,
                             const BitmapImage* targetImage,
                             const QRect& cameraRect,
-                            QPoint point,
-                            QRgb fillColor,
+                            const QPoint& point,
+                            const QRgb& fillColor,
                             int tolerance,
-                            int expandValue)
+                            const int expandValue)
 {
-    QRect fillBounds = cameraRect.united(targetImage->mBounds);
+    QRect fillBounds = targetImage->mBounds;
+    QRect maxBounds = cameraRect.united(fillBounds).adjusted(-expandValue, -expandValue, expandValue, expandValue);
 
-    // If the point we are supposed to fill is outside the image and camera bounds, do nothing
-    if(!fillBounds.contains(point))
+    // If the point we are supposed to fill is outside the max bounds, do nothing
+    if(!maxBounds.contains(point))
     {
         return false;
     }
-
-    QRect maxBounds = fillBounds.adjusted(-expandValue, -expandValue, expandValue, expandValue);
 
     // Square tolerance for use with compareColor
     tolerance = static_cast<int>(qPow(tolerance, 2));
@@ -818,30 +815,35 @@ bool BitmapImage::floodFill(BitmapImage** replaceImage,
     QRect newBounds;
     bool *filledPixels = floodFillPoints(targetImage, fillBounds, maxBounds, point, tolerance, newBounds);
 
-    QRect expandRect = newBounds.adjusted(-expandValue, -expandValue, expandValue, expandValue);
+    const QRect& expandRect = newBounds.adjusted(-expandValue, -expandValue, expandValue, expandValue);
 
+    // The scanned bounds should take the expansion into account
     if (expandValue > 0) {
         newBounds = expandRect;
     }
 
-    if (!maxBounds.contains(expandRect)) {
+    // The new bounds was smaller than the max, so set the size to maxBounds
+    // This ensures that the expanded area is not doubled.
+    // because the initial maxBounds is already expanded
+    if (!maxBounds.contains(newBounds)) {
         newBounds = maxBounds;
     }
 
     *replaceImage = new BitmapImage(newBounds, Qt::transparent);
 
-    int maxWidth = maxBounds.width(), left = maxBounds.left(), top = maxBounds.top();
+    const int maxWidth = maxBounds.width(), left = maxBounds.left(), top = maxBounds.top();
 
     const QRect& translatedSearchBounds = newBounds.translated(-maxBounds.topLeft());
     if (expandValue > 0) {
         expandFill(filledPixels, translatedSearchBounds, maxBounds, expandValue);
     }
 
+    // Fill all the found pixels
     for (int y = translatedSearchBounds.top(); y <= translatedSearchBounds.bottom(); y++)
     {
         for (int x = translatedSearchBounds.left(); x <= translatedSearchBounds.right(); x++)
         {
-            int index = y * maxWidth + x;
+            const int index = y * maxWidth + x;
             if (!filledPixels[index])
             {
                 continue;
@@ -855,12 +857,14 @@ bool BitmapImage::floodFill(BitmapImage** replaceImage,
     return true;
 }
 
+// Flood filling based on this scanline algorithm
+// ----- http://lodev.org/cgtutor/floodfill.html
 bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
-                                                          const QRect& searchBounds,
-                                                          const QRect& maxBounds,
-                                                          QPoint point,
-                                                          const int tolerance,
-                                                          QRect& newBounds)
+                                   QRect searchBounds,
+                                   const QRect& maxBounds,
+                                   QPoint point,
+                                   const int tolerance,
+                                   QRect& newBounds)
 {
     QRgb oldColor = targetImage->constScanLine(point.x(), point.y());
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
@@ -892,6 +896,12 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
 
         int xCoord = xTemp - maxBounds.left();
         int yCoord = point.y() - maxBounds.top();
+
+        // In case we fill outside the searchBounds, expand the search area to the max.
+        if (!searchBounds.contains(xCoord, yCoord)) {
+            searchBounds = maxBounds;
+        }
+
         if (filledPixels[yCoord*maxBounds.width()+xCoord]) continue;
 
         while (xTemp >= searchBounds.left() &&
@@ -907,6 +917,7 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
             if (!blitBounds.contains(floodPoint)) {
                 blitBounds.extend(floodPoint);
             }
+
             xCoord = xTemp - maxBounds.left();
             // This pixel is what we're going to fill later
             filledPixels[yCoord*maxBounds.width()+xCoord] = true;
@@ -959,11 +970,12 @@ void BitmapImage::expandFill(bool* fillPixels, const QRect& searchBounds, const 
 
     const int maxHeight = maxBounds.height();
     const int maxWidth = maxBounds.width();
+    const int length = maxBounds.height() * maxBounds.width();
 
-    int* manhattanPoints = new int[(maxBounds.height())*(maxBounds.width())]{};
+    int* manhattanPoints = new int[length]{};
 
-    /// Fill points with max length, this is important because otherwise the filled pixels will include a border of the expanded area
-    std::fill_n(manhattanPoints, maxBounds.height()*maxBounds.width(), searchBounds.width()+searchBounds.height());
+    // Fill points with max length, this is important because otherwise the filled pixels will include a border of the expanded area
+    std::fill_n(manhattanPoints, length, searchBounds.width()+searchBounds.height());
 
     for (int y = searchBounds.top(); y <= searchBounds.bottom(); y++)
     {
