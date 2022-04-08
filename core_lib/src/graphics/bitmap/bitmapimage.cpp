@@ -968,7 +968,6 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
  */
 void BitmapImage::expandFill(bool* fillPixels, const QRect& searchBounds, const QRect& maxBounds, int expand) {
 
-    const int maxHeight = maxBounds.height();
     const int maxWidth = maxBounds.width();
     const int length = maxBounds.height() * maxBounds.width();
 
@@ -988,23 +987,23 @@ void BitmapImage::expandFill(bool* fillPixels, const QRect& searchBounds, const 
                 continue;
             }
 
-            if (y > 0 && y < (maxHeight - 1)) {
+            if (y > searchBounds.top()) {
                 // the value will be the num of pixels away from y - 1 of the next position
                 manhattanPoints[index] = qMin(manhattanPoints[index],
                                              manhattanPoints[(y - 1) * maxWidth+x] + 1);
 
                 int distance = manhattanPoints[index];
-                if (distance <= expand && distance != 0) {
+                if (distance <= expand) {
                     fillPixels[index] = true;
                 }
             }
-            if (x > 0 && x < (maxWidth - 1)) {
+            if (x > searchBounds.left()) {
                 // the value will be the num of pixels away from x - 1 of the next position
                 manhattanPoints[index] = qMin(manhattanPoints[index],
                                              manhattanPoints[y*maxWidth+(x - 1)] + 1);
 
                 int distance = manhattanPoints[index];
-                if (distance <= expand && distance != 0) {
+                if (distance <= expand) {
                     fillPixels[index] = true;
                 }
             }
@@ -1018,19 +1017,19 @@ void BitmapImage::expandFill(bool* fillPixels, const QRect& searchBounds, const 
         {
             const int index = y*maxWidth+x;
 
-            if (y + 1 < maxBounds.height()) {
+            if (y + 1 < searchBounds.bottom()) {
                 manhattanPoints[index] = qMin(manhattanPoints[index], manhattanPoints[(y + 1)*maxWidth+x] + 1);
 
                 int distance = manhattanPoints[index];
-                if (distance <= expand && distance != 0) {
+                if (distance <= expand) {
                     fillPixels[index] = true;
                 }
             }
-            if (x + 1 < maxBounds.width()) {
+            if (x + 1 < searchBounds.right()) {
                 manhattanPoints[index] = qMin(manhattanPoints[index], manhattanPoints[y*maxWidth+(x + 1)] + 1);
 
                 int distance = manhattanPoints[index];
-                if (distance <= expand && distance != 0) {
+                if (distance <= expand) {
                     fillPixels[index] = true;
                 }
             }
