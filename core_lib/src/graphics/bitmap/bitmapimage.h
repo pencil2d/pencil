@@ -76,13 +76,12 @@ public:
 
     static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
     static bool floodFill(BitmapImage** replaceImage, const BitmapImage* targetImage, const QRect& cameraRect, QPoint point, QRgb fillColor, int tolerance, int expandValue);
-    static bool *floodFillPoints(const BitmapImage* targetImage,
-                                 const QRect &searchBounds,
-                                 const QRect& maxBounds,
-                                 QPoint point,
-                                 const int tolerance,
-                                 QRect& newBounds);
-    static void expandFill(const QRect &searchBounds, const QRect& maxBounds, bool *filledPixels, int expand);
+    static bool* floodFillPoints(const BitmapImage* targetImage,
+                                const QRect& searchBounds, const QRect& maxBounds,
+                                QPoint point,
+                                const int tolerance,
+                                QRect& newBounds);
+    static void expandFill(bool* fillPixels, const QRect& searchBounds, const QRect& maxBounds, int expand);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
     void drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);

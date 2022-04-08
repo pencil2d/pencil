@@ -160,11 +160,11 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
                            tolerance,
                            expandValue);
 
-    Q_ASSERT(replaceImage != nullptr);
     if (!didFloodFill) {
         delete replaceImage;
         return;
     }
+    Q_ASSERT(replaceImage != nullptr);
 
     state(BucketState::WillFillTarget, targetLayerIndex, currentFrameIndex);
 
