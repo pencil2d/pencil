@@ -801,9 +801,8 @@ bool BitmapImage::floodFill(BitmapImage** replaceImage,
                             const int expandValue)
 {
     // Fill region must be 1 pixel larger than the target image to fill regions on the edge connected only by transparent pixels
-    const QRect& imageBounds = targetImage->mBounds;
-    QRect fillBounds = imageBounds.adjusted(-1, -1, 1, 1);
-    QRect maxBounds = cameraRect.united(imageBounds).adjusted(-expandValue, -expandValue, expandValue, expandValue);
+    const QRect& fillBounds = targetImage->mBounds;
+    QRect maxBounds = cameraRect.united(fillBounds).adjusted(-expandValue, -expandValue, expandValue, expandValue);
     const int maxWidth = maxBounds.width(), left = maxBounds.left(), top = maxBounds.top();
 
     // If the point we are supposed to fill is outside the max bounds, do nothing
@@ -883,7 +882,8 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
 {
     QRgb oldColor = targetImage->constScanLine(point.x(), point.y());
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
-    QRect borderBounds = searchBounds.adjusted(1,1,-1,-1);
+    QRect borderBounds = searchBounds.intersected(maxBounds);
+    searchBounds = searchBounds.adjusted(-1, -1, 1, 1).intersected(maxBounds);
 
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
