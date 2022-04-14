@@ -91,6 +91,16 @@ void PolylineTool::setAA(const int AA)
     settings.sync();
 }
 
+bool PolylineTool::leavingThisTool()
+{
+    if (mPoints.size() > 0)
+    {
+        cancelPolyline();
+        clearToolData();
+    }
+    return true;
+}
+
 bool PolylineTool::isActive()
 {
     return !mPoints.isEmpty();
@@ -104,6 +114,7 @@ QCursor PolylineTool::cursor()
 void PolylineTool::clearToolData()
 {
     mPoints.clear();
+    emit isActiveChanged(POLYLINE, false);
 }
 
 void PolylineTool::pointerPressEvent(PointerEvent* event)
@@ -127,6 +138,7 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
                 }
             }
             mPoints << getCurrentPoint();
+            emit isActiveChanged(POLYLINE, true);
         }
     }
 }
@@ -178,10 +190,10 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         break;
 
     default:
-        return false;
+        break;
     }
 
-    return false;
+    return BaseTool::keyPressEvent(event);
 }
 
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)

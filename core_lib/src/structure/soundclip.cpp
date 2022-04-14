@@ -48,7 +48,7 @@ SoundClip& SoundClip::operator=(const SoundClip& a)
     return *this;
 }
 
-SoundClip* SoundClip::clone()
+SoundClip* SoundClip::clone() const
 {
     return new SoundClip(*this);
 }
@@ -70,7 +70,7 @@ bool SoundClip::isValid() const
         return false;
     }
 
-    if (mPlayer == nullptr)
+    if (!mPlayer)
     {
         return false;
     }

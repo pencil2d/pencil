@@ -46,8 +46,8 @@ class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
 class LayerOpacityDialog;
-class QLabel;
 class PegBarAlignmentDialog;
+class StatusBar;
 enum class SETTING;
 
 
@@ -70,7 +70,6 @@ public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
-    void clearRecentFilesList();
     void openPegAlignDialog();
     void openLayerOpacityDialog();
     void openAddTranspToPaperDialog();
@@ -102,19 +101,23 @@ public:
 
     void openFile(const QString& filename);
 
-    PreferencesDialog* getPrefDialog() { return mPrefDialog; }
-
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
 signals:
     void updateRecentFilesList(bool b);
 
+    /** Emitted when window regains focus */
+    void windowActivated();
+
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
     void showEvent(QShowEvent*) override;
+    bool event(QEvent*) override;
 
+private slots:
+    void updateCopyCutPasteEnabled();
 private:
     void newObject();
     bool newObjectFromPresets(int presetIndex);
@@ -126,7 +129,6 @@ private:
     void createMenus();
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
-    void updateZoomLabel();
     bool loadMostRecent();
     bool tryLoadPreset();
 
@@ -149,6 +151,7 @@ private:
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
     void makeConnections(Editor*, OnionSkinWidget*);
+    void makeConnections(Editor*, StatusBar*);
 
     bool tryRecoverUnsavedProject();
     void startProjectRecovery(int result);
@@ -183,9 +186,6 @@ private:
 
     // a hack for MacOS because closeEvent fires twice
     bool m2ndCloseEvent = false;
-
-    // statusbar widgets
-    QLabel* mZoomLabel = nullptr;
 
     // Whether to suppress the auto save dialog due to internal work
     bool mSuppressAutoSaveDialog = false;

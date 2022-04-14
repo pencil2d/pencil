@@ -50,13 +50,13 @@ QVariant PredefinedSetModel::data(const QModelIndex &index, int role) const
         const int row = index.row();
         const int column = index.column();
 
-        const int& keyFrameIndex = mKeySet.keyFrameIndexAt(row);
-        const QString& filePath = mKeySet.filePathAt(row);
-        if (column == PredefinedKeySet::ColumnType::FILES) {
-            return QString("%1").arg(filePath);
+        if (column == PredefinedKeySet::ColumnType::FILES)
+        {
+            return mKeySet.filePathAt(row);
         }
-        if (column == PredefinedKeySet::ColumnType::KEYFRAMEPOS) {
-            return QString("%1").arg(keyFrameIndex);
+        else if (column == PredefinedKeySet::ColumnType::KEYFRAMEPOS)
+        {
+            return QString::number(mKeySet.keyFrameIndexAt(row));
         }
     }
     return QVariant();

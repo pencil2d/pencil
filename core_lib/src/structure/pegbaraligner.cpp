@@ -43,7 +43,7 @@ Status PegBarAligner::align(const QStringList& layers)
 
     if (!result.ok())
     {
-        return Status(Status::FAIL, "", tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar error message"));
+        return Status(Status::FAIL, tr("Peg hole not found!\nCheck selection, and please try again.", "PegBar error message"));
     }
 
     const int pegX = result.point.x();
@@ -62,8 +62,8 @@ Status PegBarAligner::align(const QStringList& layers)
             result = findPoint(*img);
             if (!result.ok())
             {
-                const QString errorDescription = tr("Peg bar not found at %1, %2").arg(layerBitmap->name()).arg(k);
-                return Status(result.code(), "", errorDescription);
+                const QString errorDescription = tr("Peg bar not found at %2, %1").arg(k).arg(layerBitmap->name());
+                return Status(result.code(), errorDescription);
             }
             img->moveTopLeft(QPoint(img->left() + (pegX - result.point.x()), img->top() + (pegY - result.point.y())));
 

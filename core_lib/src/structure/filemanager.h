@@ -62,14 +62,14 @@ private:
     bool isOldForamt(const QString& fileName) const;
     bool loadPalette(Object*);
     Status writeKeyFrameFiles(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
-    Status writeMainXml(const Object* obj, const QString& mainXml, QStringList& filesWritten);
+    Status writeMainXml(const Object* obj, const QString& mainXmlPath, QStringList& filesWritten);
     Status writePalette(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
 
     ObjectData* loadProjectData(const QDomElement& element);
-    QDomElement saveProjectData(ObjectData*, QDomDocument& xmlDoc);
+    QDomElement saveProjectData(const ObjectData*, QDomDocument& xmlDoc);
 
     void extractProjectData(const QDomElement& element, ObjectData* data);
-    Object* cleanUpWithErrorCode(Status);
+    void handleOpenProjectError(Status::ErrorCode, const DebugDetails&);
 
     QString backupPreviousFile(const QString& fileName);
     void deleteBackupFile(const QString& fileName);

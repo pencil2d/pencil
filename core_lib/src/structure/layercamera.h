@@ -19,18 +19,17 @@ GNU General Public License for more details.
 
 #include <QRect>
 #include "layer.h"
+#include "cameraeasingtype.h"
 
 class Camera;
 
 class LayerCamera : public Layer
 {
-    Q_OBJECT
-
 public:
     explicit LayerCamera(Object* object);
     ~LayerCamera() override;
 
-    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType type);
 
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -43,15 +42,13 @@ public:
     QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
 
-signals:
-    void resolutionChanged();
-
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
     KeyFrame* createKeyFrame(int position, Object*) override;
 
 private:
     void linearInterpolateTransform(Camera*);
+    qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
 
     int mFieldW = 800;
     int mFieldH = 600;

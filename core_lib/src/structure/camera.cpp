@@ -20,12 +20,13 @@ Camera::Camera()
 {
 }
 
-Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
+Camera::Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type)
 {
     Q_ASSERT(scaling > 0);
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;
+    mEasingType = static_cast<CameraEasingType>(type);
     updateViewTransform();
 }
 
@@ -41,7 +42,7 @@ Camera::~Camera()
 {
 }
 
-Camera* Camera::clone()
+Camera* Camera::clone() const
 {
     return new Camera(*this);
 }
@@ -51,6 +52,7 @@ void Camera::assign(const Camera& rhs)
     mTranslate = rhs.mTranslate;
     mRotate = rhs.mRotate;
     mScale = rhs.mScale;
+    mNeedUpdateView = true;
     updateViewTransform();
     modification();
 }

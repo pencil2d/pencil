@@ -35,7 +35,6 @@ class Status;
 
 #define ProgressCallback std::function<void()>
 
-
 class Layer : public QObject
 {
     Q_OBJECT
@@ -73,6 +72,13 @@ public:
     void setIsColorLayer(bool b) { mIsColorLayer = b; }
     bool getIsColorLayer() { return mIsColorLayer; }
 
+    /** Get selected keyframe positions sorted by position */
+    QList<int> selectedKeyFramesPositions() const { return mSelectedFrames_byPosition; }
+
+    /** Get selected keyframe positions based on the order they were selected */
+    QList<int> selectedKeyFramesByLast() const { return mSelectedFrames_byLast; }
+
+
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) const = 0;
@@ -90,6 +96,13 @@ public:
     int  getNextFrameNumber(int position, bool isAbsolute) const;
 
     int keyFrameCount() const { return static_cast<int>(mKeyFrames.size()); }
+    int selectedKeyFrameCount() const { return mSelectedFrames_byPosition.count(); }
+    bool hasAnySelectedFrames() const { return !mSelectedFrames_byLast.empty() && !mSelectedFrames_byPosition.empty(); }
+
+    /** Will insert an empty frame (exposure) after the given position
+        @param position The frame to add exposure to
+    */
+    bool insertExposureAt(int position);
 
     bool addNewKeyFrameAt(int position);
     bool addKeyFrame(int position, KeyFrame*);
@@ -105,17 +118,50 @@ public:
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
 
-    void setModified(int position, bool isModified);
     void copyFrame(Layer *fromLayer, Layer *toLayer, int frame);
+    void setModified(int position, bool isModified) const;
+
     // Handle selection
     bool isFrameSelected(int position) const;
     void setFrameSelected(int position, bool isSelected);
     void toggleFrameSelected(int position, bool allowMultiple = false);
     void extendSelectionTo(int position);
     void selectAllFramesAfter(int position);
+
+    /** Make a selection from specified position until a blank spot appears
+     *  The search is only looking forward, e.g.
+     *  @code
+     *  |123| 4 5
+     *   ^
+     *   pos/search from
+     *  @endcode
+     *  @param position the current position
+     */
+    bool newSelectionOfConnectedFrames(int position);
+
+    /** Add or subtract exposure from selected frames
+     * @param offset Any value above 0 for adding exposure and any value below 0 to subtract exposure
+     */
+    void setExposureForSelectedFrames(int offset);
+
+    /** Reverse order of selected frames
+     * @return true if all frames were successfully reversed, otherwise will return false.
+     */
+    bool reverseOrderOfSelection();
+
     void deselectAll();
 
     bool moveSelectedFrames(int offset);
+    QList<int> getListOfSelectedFrames() { return mSelectedFrames_byPosition; }
+
+    /** Predetermines whether the frames can be moved to a new position depending on the offset
+     *
+     * @param offset Should be start press position - current position
+     * @return true if selected frames can be moved otherwise false
+     */
+    bool canMoveSelectedFramesToOffset(int offset) const;
+
+    QList<int> getSelectedFramesByPos() const { return mSelectedFrames_byPosition; }
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
@@ -134,14 +180,13 @@ public:
 
     QList<int> getSelectedFrameList() { return mSelectedFrames_byPosition; }
 
-signals:
-    void selectedFramesChanged();
-
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
 private:
+    void removeFromSelectionList(int position);
+
     LAYER_TYPE meType = UNDEFINED;
     Object*    mObject = nullptr;
     int        mId = 0;

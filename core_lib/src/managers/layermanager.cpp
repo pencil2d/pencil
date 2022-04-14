@@ -27,7 +27,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 
-LayerManager::LayerManager(Editor* editor) : BaseManager(editor)
+LayerManager::LayerManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -80,13 +80,13 @@ Layer* LayerManager::currentLayer()
 
 Layer* LayerManager::currentLayer(int incr)
 {
-    Q_ASSERT(object() != NULL);
+    Q_ASSERT(object() != nullptr);
     return object()->getLayer(editor()->currentLayerIndex() + incr);
 }
 
 Layer* LayerManager::getLayer(int index)
 {
-    Q_ASSERT(object() != NULL);
+    Q_ASSERT(object() != nullptr);
     return object()->getLayer(index);
 }
 
@@ -109,6 +109,12 @@ void LayerManager::setCurrentLayer(int layerIndex)
     {
         Q_ASSERT(false);
         return;
+    }
+
+    // Deselect frames of previous layer.
+    Layer* previousLayer = object()->getLayer(editor()->currentLayerIndex());
+    if (previousLayer != nullptr) {
+        previousLayer->deselectAll();
     }
 
     // Do not check if layer index has changed
@@ -134,6 +140,7 @@ void LayerManager::gotoNextLayer()
 {
     if (editor()->currentLayerIndex() < object()->getLayerCount() - 1)
     {
+        currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
         emit currentLayerChanged(editor()->currentLayerIndex());
     }
@@ -143,6 +150,7 @@ void LayerManager::gotoPreviouslayer()
 {
     if (editor()->currentLayerIndex() > 0)
     {
+        currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
         emit currentLayerChanged(editor()->currentLayerIndex());
     }

@@ -44,10 +44,10 @@ public:
     ~BitmapImage() override;
     BitmapImage& operator=(const BitmapImage& a);
 
-    BitmapImage* clone() override;
+    BitmapImage* clone() const override;
     void loadFile() override;
     void unloadFile() override;
-    bool isLoaded() override;
+    bool isLoaded() const override;
     quint64 memoryUsage() override;
 
     void paintImage(QPainter& painter);
@@ -85,7 +85,9 @@ public:
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
     static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
-    static void floodFill(BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb newColor, int tolerance);
+    static bool floodFill(BitmapImage* replaceImage, BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb fillColor, int tolerance);
+    static void expandFill(BitmapImage* targetImage, QRgb fillColor, int expand);
+    static QVector<QVector<int> > manhattanDistance(BitmapImage* image, QRgb& searchColor);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
     void drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);

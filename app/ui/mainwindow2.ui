@@ -42,14 +42,14 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="StatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>20</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -93,7 +93,6 @@
     <addaction name="separator"/>
     <addaction name="menuImport"/>
     <addaction name="menuExport"/>
-    <addaction name="separator"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -180,17 +179,26 @@
     <addaction name="menuOnion_Skin"/>
     <addaction name="menuLayer_Visibility"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionGrid"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionPreview"/>
+    <addaction name="separator"/>
+    <addaction name="actionStatusBar"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
      <string>Animation</string>
     </property>
+    <widget class="QMenu" name="menuTimeline_Selection">
+     <property name="title">
+      <string>Timeline Selection</string>
+     </property>
+     <addaction name="actionAdd_Frame_Exposure"/>
+     <addaction name="actionSubtract_Frame_Exposure"/>
+     <addaction name="separator"/>
+     <addaction name="actionReverse_Frames_Order"/>
+     <addaction name="actionRemove_Frames"/>
+    </widget>
     <addaction name="actionPlay"/>
     <addaction name="actionLoop"/>
     <addaction name="actionLoopControl"/>
@@ -209,6 +217,8 @@
     <addaction name="separator"/>
     <addaction name="actionFlip_inbetween"/>
     <addaction name="actionFlip_rolling"/>
+    <addaction name="separator"/>
+    <addaction name="menuTimeline_Selection"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -387,9 +397,6 @@
    </property>
   </action>
   <action name="actionRedo">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
@@ -399,6 +406,9 @@
    </property>
   </action>
   <action name="actionCut">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
@@ -408,6 +418,9 @@
    </property>
   </action>
   <action name="actionCopy">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
@@ -417,6 +430,9 @@
    </property>
   </action>
   <action name="actionPaste">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
@@ -1140,6 +1156,37 @@
     <string>Add Transparency to paper</string>
    </property>
   </action>
+  <action name="actionAdd_Frame_Exposure">
+   <property name="text">
+    <string>Add Exposure</string>
+   </property>
+  </action>
+  <action name="actionSubtract_Frame_Exposure">
+   <property name="text">
+    <string>Subtract Exposure</string>
+   </property>
+  </action>
+  <action name="actionReverse_Frames_Order">
+   <property name="text">
+    <string>Reverse Frames Order</string>
+   </property>
+  </action>
+  <action name="actionRemove_Frames">
+   <property name="text">
+    <string>Remove Frames</string>
+   </property>
+  </action>
+  <action name="actionStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Status Bar</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -1153,6 +1200,11 @@
    <extends>QWidget</extends>
    <header>scribblearea.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StatusBar</class>
+   <extends>QStatusBar</extends>
+   <header>statusbar.h</header>
   </customwidget>
  </customwidgets>
  <resources>

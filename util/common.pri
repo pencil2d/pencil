@@ -26,6 +26,12 @@ win32-msvc* {
     }
 }
 
+WIN_LEGACY {
+    QMAKE_CXXFLAGS -= /utf-8
+    QMAKE_LFLAGS += /SUBSYSTEM:CONSOLE,5.01
+    QMAKE_CXX += /D_USING_V110_SDK71_
+}
+
 macx {
     QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
     LIBS += -lobjc -framework Carbon -framework AppKit

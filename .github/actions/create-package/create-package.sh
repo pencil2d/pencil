@@ -25,14 +25,30 @@ create_package_linux() {
   done
   curl -fsSLO https://github.com/probonopd/linuxdeployqt/releases/download/continuous/linuxdeployqt-continuous-x86_64.AppImage
   chmod 755 linuxdeployqt-continuous-x86_64.AppImage
+  local update_info="" # Currently no appimageupdate support for nightly builds
+  if [ $IS_RELEASE = "true" ]; then
+    update_info="-updateinformation=gh-releases-zsync|${GITHUB_REPOSITORY/\//|}|latest|pencil2d-linux-amd64-*.AppImage.zsync"
+  fi
   LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:/usr/lib/x86_64-linux-gnu/pulseaudio" \
     ./linuxdeployqt-continuous-x86_64.AppImage \
     Pencil2D/usr/share/applications/org.pencil2d.Pencil2D.desktop \
     -executable=Pencil2D/usr/plugins/ffmpeg \
     ${gst_executables} \
+    -extra-plugins=platforms/libqwayland-egl.so,platforms/libqwayland-generic.so,\
+platforms/libqwayland-xcomposite-egl.so,platforms/libqwayland-xcomposite-glx.so,\
+wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-integration \
+    ${update_info} \
     -appimage
-  mv Pencil2D*.AppImage* "pencil2d-linux-$1-$(date +%F).AppImage"
-  echo "::set-output name=package-name::pencil2d-linux-$1-$(date +%F).AppImage"
+  local output_name="pencil2d-linux-$1-$(date +%F)"
+  mv Pencil2D*.AppImage "$output_name.AppImage"
+  mv Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" \
+    && sed -i '1,/^$/s/^\(Filename\|URL\): .*$/\1: '"$output_name.AppImage/" "$output_name.AppImage.zsync" \
+    || true
+  if [ $IS_RELEASE = "true" ] && [ -e "$output_name.AppImage.zsync" ]; then
+    echo "::set-output name=package-name::$output_name.AppImage $output_name.AppImage.zsync"
+  else
+    echo "::set-output name=package-name::$output_name.AppImage"
+  fi
   echo "::endgroup::"
 }
 
