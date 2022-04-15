@@ -36,6 +36,7 @@ VectorImage::VectorImage(const VectorImage& v2) : KeyFrame(v2)
     mObject = v2.mObject;
     mCurves = v2.mCurves;
     mArea = v2.mArea;
+    mOpacity = v2.mOpacity;
 }
 
 VectorImage::~VectorImage()
@@ -43,17 +44,23 @@ VectorImage::~VectorImage()
 }
 
 VectorImage& VectorImage::operator=(const VectorImage& a) {
-    if (this != &a) {
-        deselectAll();
-        mObject = a.mObject;
-        mCurves = a.mCurves;
-        mArea = a.mArea;
-        modification();
+
+    if (this == &a)
+    {
+        return *this; // a self-assignment
     }
+
+    deselectAll();
+    KeyFrame::operator=(a);
+    mObject = a.mObject;
+    mCurves = a.mCurves;
+    mArea = a.mArea;
+    mOpacity = a.mOpacity;
+    modification();
     return *this;
 }
 
-VectorImage* VectorImage::clone()
+VectorImage* VectorImage::clone() const
 {
     return new VectorImage(*this);
 }
@@ -1176,7 +1183,6 @@ void VectorImage::paintImage(QPainter& painter,
     painter.setRenderHint(QPainter::Antialiasing, antialiasing);
 
     painter.setClipping(false);
-    painter.setOpacity(1.0);
     QTransform painterMatrix = painter.transform();
 
     QRect mappedViewRect = QRect(0, 0, painter.device()->width(), painter.device()->height());

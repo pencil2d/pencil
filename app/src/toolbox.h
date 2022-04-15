@@ -44,6 +44,7 @@ public:
     void updateUI() override;
 
 public slots:
+    void onToolSetActive(ToolType toolType);
     void pencilOn();
     void eraserOn();
     void selectOn();
@@ -64,7 +65,7 @@ signals:
 
 private:
     void deselectAllTools();
-    bool leavingTool(QToolButton*);
+    bool toolOn(ToolType toolType, QToolButton* toolButton);
 
     Ui::ToolBoxWidget* ui = nullptr;
 };

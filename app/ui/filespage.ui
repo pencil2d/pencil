@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>316</width>
-    <height>422</height>
+    <width>390</width>
+    <height>611</height>
    </rect>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -63,6 +63,9 @@
         <property name="checked">
          <bool>true</bool>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">startupGroup</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -73,6 +76,9 @@
         <property name="checked">
          <bool>false</bool>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">startupGroup</string>
+        </attribute>
        </widget>
       </item>
       <item>
@@ -80,6 +86,9 @@
         <property name="text">
          <string>Load last active file</string>
         </property>
+        <attribute name="buttonGroup">
+         <string notr="true">startupGroup</string>
+        </attribute>
        </widget>
       </item>
      </layout>
@@ -110,7 +119,7 @@
         <property name="minimumSize">
          <size>
           <width>50</width>
-          <height>0</height>
+          <height>34</height>
          </size>
         </property>
         <property name="maximumSize">
@@ -150,4 +159,7 @@
  </widget>
  <resources/>
  <connections/>
+ <buttongroups>
+  <buttongroup name="startupGroup"/>
+ </buttongroups>
 </ui>

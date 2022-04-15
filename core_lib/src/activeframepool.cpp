@@ -25,7 +25,10 @@ ActiveFramePool::ActiveFramePool()
     Q_ASSERT(mMemoryBudgetInBytes >= (1024 * 1024 * 100)); // at least 100MB
 }
 
-ActiveFramePool::~ActiveFramePool() {}
+ActiveFramePool::~ActiveFramePool()
+{
+    clear();
+}
 
 void ActiveFramePool::put(KeyFrame* key)
 {
@@ -80,6 +83,11 @@ bool ActiveFramePool::isFrameInPool(KeyFrame* key)
     return (it != mCacheFramesMap.end());
 }
 
+void ActiveFramePool::setMinFrameCount(size_t frameCount)
+{
+    mMinFrameCount = frameCount;
+}
+
 void ActiveFramePool::onKeyFrameDestroy(KeyFrame* key)
 {
     auto it = mCacheFramesMap.find(key);
@@ -96,7 +104,7 @@ void ActiveFramePool::onKeyFrameDestroy(KeyFrame* key)
 
 void ActiveFramePool::discardLeastUsedFrames()
 {
-    while (mTotalUsedMemory > mMemoryBudgetInBytes)
+    while ((mTotalUsedMemory > mMemoryBudgetInBytes) && (mCacheFramesList.size() > mMinFrameCount))
     {
         list_iterator_t last = mCacheFramesList.end();
         last--;

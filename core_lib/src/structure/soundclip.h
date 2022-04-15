@@ -31,7 +31,7 @@ public:
     ~SoundClip() override;
     SoundClip& operator=(const SoundClip& a);
 
-    SoundClip* clone() override;
+    SoundClip* clone() const override;
 
     Status init(const QString& strSoundFile);
     bool isValid() const;
@@ -58,8 +58,8 @@ private:
 
     QString mOriginalSoundClipName;
 
-    // Duration in seconds. This is stored to update the length of the
-    // frame when the FPS changes.
+    // Duration in seconds.
+    // This is stored to update the length of the frame when the FPS changes.
     int64_t mDuration = 0;
 };
 

@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "camera.h"
 #include "layercamera.h"
+#include <QDebug>
 
 const static qreal mMinScale = 0.01;
 const static qreal mMaxScale = 100.0;
@@ -34,19 +35,20 @@ const std::vector<qreal> gZoomLevels
 };
 
 
-ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
+ViewManager::ViewManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
     mDefaultEditorCamera = new Camera;
     mCurrentCamera = mDefaultEditorCamera;
 }
 
-ViewManager::~ViewManager() {
+ViewManager::~ViewManager()
+{
     delete mDefaultEditorCamera;
 }
 
 bool ViewManager::init()
 {
-    connect(editor(), &Editor::currentFrameChanged, this, &ViewManager::onCurrentFrameChanged);
+    connect(editor(), &Editor::scrubbed, this, &ViewManager::onCurrentFrameChanged);
     return true;
 }
 
@@ -128,6 +130,11 @@ QTransform ViewManager::getViewInverse() const
     return mViewCanvasInverse;
 }
 
+qreal ViewManager::getViewScaleInverse() const
+{
+    return mViewCanvasInverse.m11();
+}
+
 void ViewManager::updateViewTransforms()
 {
     if (mCameraLayer)
@@ -183,6 +190,11 @@ void ViewManager::translate(QPointF offset)
     translate(static_cast<float>(offset.x()), static_cast<float>(offset.y()));
 }
 
+void ViewManager::centerView()
+{
+    translate(0, 0);
+}
+
 float ViewManager::rotation()
 {
     if (mCurrentCamera)
@@ -201,6 +213,11 @@ void ViewManager::rotate(float degree)
 
         emit viewChanged();
     }
+}
+
+void ViewManager::resetRotation()
+{
+    rotate(0);
 }
 
 qreal ViewManager::scaling()
@@ -407,12 +424,21 @@ void ViewManager::setCameraLayer(Layer* layer)
     updateViewTransforms();
 }
 
+void ViewManager::forceUpdateViewTransform()
+{
+    updateViewTransforms();
+    emit viewChanged();
+}
+
 void ViewManager::onCurrentFrameChanged()
 {
     if (mCameraLayer)
     {
         updateViewTransforms();
     }
+
+    // emit changes either way because of potential camera interpolation changes
+    emit viewChanged();
 }
 
 void ViewManager::resetView()

@@ -44,24 +44,23 @@ public:
     explicit ColorSlider(QWidget* parent);
     ~ColorSlider() override;
 
-    void init(ColorType type, QColor color, qreal min, qreal max);
-    void init(ColorType type, QColor color, qreal min, qreal max, QSize size);
+    void init(ColorSpecType specType, ColorType type, const QColor &color, qreal min, qreal max);
 
-    QLinearGradient setColorSpec(QColor color);
+    QLinearGradient setColorSpec(const QColor &color);
 
     QColor color() { return mColor; }
 
-    void setHsv(QColor hsv) { mColor.setHsv(hsv.hsvHue(),
-                                           hsv.hsvSaturation(),
-                                           hsv.value(),
-                                           hsv.alpha());
-                            }
+    void setHsv(const QColor& hsv) { mColor.setHsv(hsv.hsvHue(),
+                                                  hsv.hsvSaturation(),
+                                                  hsv.value(),
+                                                  hsv.alpha());
+                                   }
 
-    void setRgb(QColor rgb) { mColor.setRgb(rgb.red(),
-                                           rgb.green(),
-                                           rgb.blue(),
-                                           rgb.alpha());
-                            }
+    void setRgb(const QColor& rgb) { mColor.setRgb(rgb.red(),
+                                                  rgb.green(),
+                                                  rgb.blue(),
+                                                  rgb.alpha());
+                                   }
 
     void setColorSpecType(ColorSpecType newType) { this->mSpecType = newType; }
     void setColorType(ColorType newType) { this->mColorType = newType; }
@@ -69,28 +68,25 @@ public:
     void setMin(qreal min) { mMin = min; }
     void setMax(qreal max) { mMax = max; }
 
+    QSize sizeHint() const override;
+
 protected:
     void paintEvent(QPaintEvent* event) override;
-    void resizeEvent(QResizeEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
 
-//public slots:
-
 signals:
     void valueChanged(QColor color);
-//    void valueChanged(QColor color);
 
 private:
 
-    void drawColorBox(QColor color, QSize size);
-    void drawPicker(QColor color);
-    QLinearGradient hsvGradient(QColor color);
-    QLinearGradient rgbGradient(QColor color);
+    void drawColorBox(const QColor &color, QSize size);
+    void drawPicker(const QColor &color);
+    QLinearGradient hsvGradient(const QColor &color);
+    QLinearGradient rgbGradient(const QColor &color);
 
     void colorPicked(QPoint point);
 
-    QPixmap mBoxPixmapTarget;
     QPixmap mBoxPixmapSource;
 
     QColor mColor;
@@ -99,8 +95,6 @@ private:
 
     ColorType mColorType = ColorType::HUE;
     ColorSpecType mSpecType = ColorSpecType::RGB;
-
-    QSize mSize = QSize(0,0);
 
     QLinearGradient mGradient;
 };

@@ -47,27 +47,12 @@
        </rect>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
-       <property name="spacing">
-        <number>6</number>
-       </property>
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>2</number>
-       </property>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
          <item>
-          <widget class="SpinSlider" name="sizeSlider">
+          <widget class="SpinSlider" name="sizeSlider" native="true">
            <property name="toolTip">
-            <string>Set Pen Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
+            <string>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
            </property>
           </widget>
          </item>
@@ -101,9 +86,9 @@
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="SpinSlider" name="featherSlider">
+          <widget class="SpinSlider" name="featherSlider" native="true">
            <property name="toolTip">
-            <string>Set Pen Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
+            <string>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
            </property>
           </widget>
          </item>
@@ -155,35 +140,20 @@
         </widget>
        </item>
        <item>
-        <layout class="QHBoxLayout" name="horizontalLayout_3" stretch="1,0">
-         <item>
-          <widget class="SpinSlider" name="toleranceSlider">
-           <property name="toolTip">
-            <string>The extent to which the color variation will be treated as being equal</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QSpinBox" name="toleranceSpinBox">
-           <property name="maximum">
-            <number>100</number>
-           </property>
-           <property name="value">
-            <number>50</number>
-           </property>
-          </widget>
-         </item>
-        </layout>
-       </item>
-       <item>
         <widget class="QCheckBox" name="useBezierBox">
+         <property name="toolTip">
+          <string>Use Bézier curves to create curved lines</string>
+         </property>
          <property name="text">
-          <string comment="Tool options">Bezier</string>
+          <string comment="Tool options">Bézier</string>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QCheckBox" name="usePressureBox">
+         <property name="toolTip">
+          <string>Vary strokes based on pressure when drawing on a tablet</string>
+         </property>
          <property name="text">
           <string comment="Tool options">Pressure</string>
          </property>
@@ -191,6 +161,9 @@
        </item>
        <item>
         <widget class="QCheckBox" name="useAABox">
+         <property name="toolTip">
+          <string>Use anti-aliasing to create smooth edges</string>
+         </property>
          <property name="text">
           <string comment="Brush AA">Anti-Aliasing</string>
          </property>
@@ -227,6 +200,54 @@
         </widget>
        </item>
        <item>
+        <widget class="QWidget" name="fillModeGroup" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_5">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="fillModeLabel">
+            <property name="text">
+             <string>Transparency</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QComboBox" name="fillMode">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="toolTip">
+             <string>Defines how the fill will behave when the new color is not opaque</string>
+            </property>
+            <item>
+             <property name="text">
+              <string>Overlay</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Replace</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
         <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
          <item>
           <widget class="QLabel" name="stabilizerLabel">
@@ -243,6 +264,9 @@
          </item>
          <item>
           <widget class="QComboBox" name="inpolLevelsCombo">
+           <property name="toolTip">
+            <string>Use stabilizer to interpolate strokes</string>
+           </property>
            <property name="currentText">
             <string comment="Stablizer level">None</string>
            </property>
@@ -290,7 +314,7 @@
  <customwidgets>
   <customwidget>
    <class>SpinSlider</class>
-   <extends>QSlider</extends>
+   <extends>QWidget</extends>
    <header>spinslider.h</header>
    <container>1</container>
   </customwidget>

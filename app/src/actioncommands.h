@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include "pencilerror.h"
+#include "filetype.h"
 
 class Editor;
 class QWidget;
@@ -30,15 +31,14 @@ class ActionCommands : public QObject
     Q_OBJECT
 
 public:
-    explicit ActionCommands(QWidget* parent = nullptr);
+    explicit ActionCommands(QWidget* parent);
     virtual ~ActionCommands();
 
     void setCore(Editor* e) { mEditor = e; }
 
     // file
     Status importMovieVideo();
-    Status importMovieAudio();
-    Status importSound();
+    Status importSound(FileType type);
     Status exportMovie(bool isGif = false);
     Status exportImageSequence();
     Status exportImage();
@@ -63,10 +63,17 @@ public:
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     Status addNewKey();
+
+    /** Will insert a keyframe at the current position and push connected frames to the right */
+    Status insertKeyFrameAtCurrentPosition();
     void removeKey();
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
+    void removeSelectedFrames();
+    void reverseSelectedFrames();
+    void addExposureToSelectedFrames();
+    void subtractExposureFromSelectedFrames();
 
     // Layer
     Status addNewBitmapLayer();
@@ -91,6 +98,8 @@ public:
     void about();
 
 private:
+
+    void exposeSelectedFrames(int offset);
 
     Status convertSoundToWav(const QString& filePath);
 

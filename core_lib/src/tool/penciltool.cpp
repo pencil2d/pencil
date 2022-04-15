@@ -143,13 +143,11 @@ QCursor PencilTool::cursor()
     {
         return QCursor(QPixmap(":icons/pencil2.png"), 0, 16);
     }
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
 void PencilTool::pointerPressEvent(PointerEvent *event)
 {
-    mScribbleArea->setAllDirty();
-
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
@@ -297,7 +295,6 @@ void PencilTool::drawStroke()
 void PencilTool::paintBitmapStroke()
 {
     mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
 }
 
@@ -338,5 +335,4 @@ void PencilTool::paintVectorStroke(Layer* layer)
     // TODO: selection doesn't apply on enter
 
     mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-    mScribbleArea->setAllDirty();
 }

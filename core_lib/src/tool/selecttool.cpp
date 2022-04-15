@@ -52,8 +52,10 @@ void SelectTool::beginSelection()
     selectMan->calculateSelectionTransformation();
 
     // paint and apply the transformation
-    mScribbleArea->paintTransformedSelection();
-    mScribbleArea->applyTransformedSelection();
+    if (selectMan->transformHasBeenModified()) {
+        mScribbleArea->paintTransformedSelection();
+        mScribbleArea->applyTransformedSelection();
+    }
     mMoveMode = selectMan->validateMoveMode(getLastPoint());
 
     if (selectMan->somethingSelected() && mMoveMode != MoveMode::NONE) // there is something selected
@@ -72,7 +74,7 @@ void SelectTool::beginSelection()
     {
         selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     }
-    mScribbleArea->update();
+    mScribbleArea->updateCurrentFrame();
 }
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
@@ -146,7 +148,6 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
-//    mScribbleArea->setAllDirty();
 }
 
 bool SelectTool::maybeDeselect()
@@ -241,14 +242,17 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
     switch (event->key())
     {
     case Qt::Key_Alt:
-        mScribbleArea->setTemporaryTool(MOVE);
+        if (mEditor->tools()->setTemporaryTool(MOVE, {}, Qt::AltModifier))
+        {
+            return true;
+        }
         break;
     default:
         break;
     }
 
     // Follow the generic behaviour anyway
-    return false;
+    return BaseTool::keyPressEvent(event);
 }
 
 QPointF SelectTool::offsetFromPressPos()

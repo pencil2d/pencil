@@ -45,7 +45,9 @@ class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
 class Xsheet;
+class LayerOpacityDialog;
 class PegBarAlignmentDialog;
+class StatusBar;
 enum class SETTING;
 
 
@@ -68,8 +70,8 @@ public slots:
     void undoActSetText();
     void undoActSetEnabled();
     void updateSaveState();
-    void clearRecentFilesList();
     void openPegAlignDialog();
+    void openLayerOpacityDialog();
     void currentLayerChanged();
     void selectionChanged();
     void viewFlipped();
@@ -86,48 +88,46 @@ public:
     // import
     void importImage();
     void importImageSequence();
-    void importImageSequenceNumbered();
-    void addLayerByFilename(QString strFilePath);
     void importPredefinedImageSet();
     void importLayers();
     void importMovieVideo();
     void importGIF();
-    void importMovieAudio();
 
     void lockWidgets(bool shouldLock);
 
-    void setSoundScrubActive(bool b);
-    void setSoundScrubMsec(int msec);
     void setOpacity(int opacity);
     void preferences();
 
-    void openFile(QString filename);
-
-    PreferencesDialog* getPrefDialog() { return mPrefDialog; }
+    void openFile(const QString& filename);
 
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
 signals:
     void updateRecentFilesList(bool b);
-    void appLostFocus();
+
+    /** Emitted when window regains focus */
+    void windowActivated();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
     void showEvent(QShowEvent*) override;
+    bool event(QEvent*) override;
 
+private slots:
+    void updateCopyCutPasteEnabled();
 private:
-    bool newObject();
+    void newObject();
     bool newObjectFromPresets(int presetIndex);
-    bool openObject(QString strFilename);
+    bool openObject(const QString& strFilename);
     bool saveObject(QString strFileName);
+    void closeDialogs();
 
     void createDockWidgets();
     void createMenus();
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
-    void updateZoomLabel();
     bool loadMostRecent();
     bool tryLoadPreset();
 
@@ -150,6 +150,7 @@ private:
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
     void makeConnections(Editor*, OnionSkinWidget*);
+    void makeConnections(Editor*, StatusBar*);
 
     bool tryRecoverUnsavedProject();
     void startProjectRecovery(int result);
@@ -160,11 +161,11 @@ private:
     DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
     ToolBoxWidget*        mToolBox = nullptr;
-    Timeline2*            mTimeline2 = nullptr;
+    //Timeline2*          mTimeline2 = nullptr;
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;
-    TimeLine*             mTimeLine = nullptr; // be public temporary
+    TimeLine*             mTimeLine = nullptr;
     ColorInspector*       mColorInspector = nullptr;
     Xsheet*               mXsheet = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
@@ -173,8 +174,8 @@ private:
     BackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
+    LayerOpacityDialog* mLayerOpacityDialog = nullptr;
 
-private:
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;
 
@@ -184,8 +185,8 @@ private:
     // a hack for MacOS because closeEvent fires twice
     bool m2ndCloseEvent = false;
 
-    // whether we are currently importing an image sequence.
-    bool mIsImportingImageSequence = false;
+    // Whether to suppress the auto save dialog due to internal work
+    bool mSuppressAutoSaveDialog = false;
 
     Ui::MainWindow2* ui = nullptr;
 };

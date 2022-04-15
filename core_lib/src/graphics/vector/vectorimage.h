@@ -34,10 +34,10 @@ class VectorImage : public KeyFrame
 public:
     VectorImage();
     VectorImage(const VectorImage&);
-    virtual ~VectorImage();
+    ~VectorImage() override;
     VectorImage& operator=(const VectorImage& a);
 
-    VectorImage* clone() override;
+    VectorImage* clone() const override;
 
     void setObject(Object* pObj) { mObject = pObj; }
 
@@ -79,6 +79,8 @@ public:
     void deleteSelection();
     void deleteSelectedPoints();
     void removeVertex(int curve, int vertex);
+
+    bool isEmpty() const { return mCurves.isEmpty(); }
 
     void paste(VectorImage&);
 
@@ -148,6 +150,9 @@ public:
 
     QSize getSize() { return mSize; }
 
+    void setOpacity(qreal opacity) { mOpacity = opacity; }
+    qreal getOpacity() const { return mOpacity; }
+
 private:
     void addPoint(int curveNumber, int vertexNumber, qreal fraction);
 
@@ -164,6 +169,7 @@ private:
     QRectF mSelectionRect;
     QTransform mSelectionTransformation;
     QSize mSize;
+    qreal mOpacity = 1.0;
 };
 
 #endif

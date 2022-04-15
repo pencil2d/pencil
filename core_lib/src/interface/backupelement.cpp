@@ -26,7 +26,7 @@ GNU General Public License for more details.
 
 void BackupBitmapElement::restore(Editor* editor)
 {
-    Layer* layer = editor->object()->getLayer(this->layer);
+    Layer* layer = editor->object()->findLayerById(this->layerId);
     auto selectMan = editor->select();
     selectMan->setSelection(mySelection, true);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
@@ -34,8 +34,10 @@ void BackupBitmapElement::restore(Editor* editor)
     selectMan->setRotation(rotationAngle);
     selectMan->setSomethingSelected(somethingSelected);
 
-    editor->updateFrame(this->frame);
-    editor->scrubTo(this->frame);
+    if (editor->currentFrame() != this->frame) {
+        editor->scrubTo(this->frame);
+    }
+    editor->frameModified(this->frame);
 
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
@@ -47,8 +49,8 @@ void BackupBitmapElement::restore(Editor* editor)
         {
             if (layer->type() == Layer::BITMAP)
             {
-                auto pLayerBitmap = static_cast<LayerBitmap*>(layer);
-                *pLayerBitmap->getLastBitmapImageAtFrame(this->frame, 0) = this->bitmapImage;  // restore the image
+                auto bitmapLayer = static_cast<LayerBitmap*>(layer);
+                *bitmapLayer->getLastBitmapImageAtFrame(this->frame, 0) = bitmapImage;  // restore the image
             }
         }
     }
@@ -56,7 +58,7 @@ void BackupBitmapElement::restore(Editor* editor)
 
 void BackupVectorElement::restore(Editor* editor)
 {
-    Layer* layer = editor->object()->getLayer(this->layer);
+    Layer* layer = editor->object()->findLayerById(this->layerId);
     auto selectMan = editor->select();
     selectMan->setSelection(mySelection, false);
     selectMan->setTransformedSelectionRect(myTransformedSelection);
@@ -64,8 +66,23 @@ void BackupVectorElement::restore(Editor* editor)
     selectMan->setRotation(rotationAngle);
     selectMan->setSomethingSelected(somethingSelected);
 
-    editor->updateFrameAndVector(this->frame);
-    editor->scrubTo(this->frame);
+    for (int i = 0; i < editor->object()->getLayerCount(); i++)
+    {
+        Layer* layer = editor->object()->getLayer(i);
+        if (layer->type() == Layer::VECTOR)
+        {
+            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getVectorImageAtFrame(this->frame);
+            if (vectorImage != nullptr)
+            {
+                vectorImage->modification();
+            }
+        }
+    }
+
+    if (editor->currentFrame() != this->frame) {
+        editor->scrubTo(this->frame);
+    }
+    editor->frameModified(this->frame);
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
         editor->restoreKey();
@@ -85,9 +102,11 @@ void BackupVectorElement::restore(Editor* editor)
 
 void BackupSoundElement::restore(Editor* editor)
 {
-    Layer* layer = editor->object()->getLayer(this->layer);
-    editor->updateFrame(this->frame);
-    editor->scrubTo(this->frame);
+    Layer* layer = editor->object()->findLayerById(this->layerId);
+    if (editor->currentFrame() != this->frame) {
+        editor->scrubTo(this->frame);
+    }
+    editor->frameModified(this->frame);
 
     // TODO: soundclip won't restore if overlapping on first frame
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)

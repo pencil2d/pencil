@@ -18,13 +18,13 @@ GNU General Public License for more details.
 #ifndef PENCILERROR_H
 #define PENCILERROR_H
 
+#include <QCoreApplication>
 #include <QStringList>
 
 class DebugDetails
 {
 public:
     DebugDetails();
-    ~DebugDetails();
 
     void collect(const DebugDetails& d);
     QString str();
@@ -38,6 +38,7 @@ private:
 
 class Status
 {
+    Q_DECLARE_TR_FUNCTIONS(Status)
 public:
     enum ErrorCode
     {
@@ -72,13 +73,14 @@ public:
     };
 
     Status(const ErrorCode code);
-    Status(const ErrorCode code, const QString& title, const QString& description);
-    Status(const ErrorCode code, const DebugDetails& detailsList, QString title = "", QString description = "");
+    Status(const ErrorCode code, const QString& description);
+    Status(const ErrorCode code, const DebugDetails& detailsList);
+    Status(const ErrorCode code, const DebugDetails& detailsList, QString title, QString description);
 
-    ErrorCode   code() { return mCode; }
+    ErrorCode   code() const { return mCode; }
     bool        ok() const { return (mCode == OK) || (mCode == SAFE); }
-    QString     msg();
-    QString     title() { return !mTitle.isEmpty() ? mTitle : msg(); }
+    QString     msg() const;
+    QString     title() const { return !mTitle.isEmpty() ? mTitle : msg(); }
     QString     description() const { return mDescription; }
     DebugDetails details() const { return mDetails; }
 
@@ -94,12 +96,6 @@ private:
     QString mTitle;
     QString mDescription;
     DebugDetails mDetails;
-};
-
-struct PegbarResult
-{
-    int value = 0;
-    Status::ErrorCode errorcode = Status::OK;
 };
 
 #ifndef STATUS_CHECK

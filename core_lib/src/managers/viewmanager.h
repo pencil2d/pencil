@@ -1,4 +1,4 @@
-/*
+﻿/*
 
 Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
@@ -41,6 +41,7 @@ public:
 
     QTransform getView() const;
     QTransform getViewInverse() const;
+    qreal getViewScaleInverse() const;
     void resetView();
 
     QPointF mapCanvasToScreen(QPointF p) const;
@@ -58,9 +59,11 @@ public:
     QPointF translation() const;
     void translate(float dx, float dy);
     void translate(QPointF offset);
+    void centerView();
 
     float rotation();
     void rotate(float degree);
+    void resetRotation();
 
     qreal scaling();
     void scale(qreal scaleValue);
@@ -77,6 +80,7 @@ public:
 
     void flipHorizontal(bool b);
     void flipVertical(bool b);
+
     void setOverlayCenter(bool b);
     void setOverlayThirds(bool b);
     void setOverlayGoldenRatio(bool b);
@@ -89,7 +93,6 @@ public:
     bool getOverlayGoldenRatio() const { return mOverlayGoldenRatio; }
     bool getOverlaySafeAreas() const { return mOverlaySafeAreas; }
 
-
     void setCanvasSize(QSize size);
     void setCameraLayer(Layer* layer);
 
@@ -99,14 +102,14 @@ public:
     void setImportFollowsCamera(bool b) { mImportFollowsCamera = b; }
     bool getImportFollowsCamera() { return mImportFollowsCamera; }
 
-    void updateViewTransforms();
+    void forceUpdateViewTransform();
 
 signals:
     void viewChanged();
     void viewFlipped();
 
 private:
-
+    void updateViewTransforms();
     void onCurrentFrameChanged();
 
     QTransform mView;
@@ -123,12 +126,13 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+
+    bool mImportFollowsCamera = false;
+
     bool mOverlayCenter = false;
     bool mOverlayThirds = false;
     bool mOverlayGoldenRatio = false;
     bool mOverlaySafeAreas = false;
-
-    bool mImportFollowsCamera = false;
 
     LayerCamera* mCameraLayer = nullptr;
 };

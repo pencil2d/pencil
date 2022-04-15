@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "fileformat.h"
 #include <QDir>
 #include <QFileInfo>
+#include <QMap>
 
 bool removePFFTmpDirectory(const QString& dirName)
 {
@@ -62,4 +63,48 @@ QString retrieveProjectNameFromTempPath(const QString& path)
     QStringList tokens = fileName.split("_");
     //qDebug() << tokens;
     return tokens[0];
+}
+
+QString detectFormatByFileNameExtension(const QString& fileName)
+{
+    QMap<QString, QString> extensionMapping
+        {
+            { "png",  "PNG" },
+            { "jpg" , "JPG" },
+            { "jpeg", "JPG" },
+            { "tif",  "TIF" },
+            { "tiff", "TIF" },
+            { "bmp",  "BMP" },
+            { "mp4",  "MP4" },
+            { "avi",  "AVI" },
+            { "gif",  "GIF" },
+            { "webm", "WEBM" },
+            { "apng", "APNG" },
+        };
+
+    QString extension = fileName.mid(fileName.lastIndexOf(".") + 1).toLower();
+    if (!fileName.contains(".") || !extensionMapping.contains(extension))
+    {
+        return QString();
+    }
+    return extensionMapping[extension];
+}
+
+bool isMovieFormat(const QString& format)
+{
+    QMap<QString, bool> formatMapping
+        {
+            { "PNG", false },
+            { "JPG", false },
+            { "TIF", false },
+            { "BMP", false },
+            { "MP4",  true },
+            { "AVI",  true },
+            { "GIF",  true },
+            { "WEBM", true },
+            { "APNG", true },
+        };
+
+    Q_ASSERT(formatMapping.contains(format));
+    return formatMapping[format];
 }

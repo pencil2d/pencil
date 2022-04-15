@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "bitmapimage.h"
 #include "canvaspainter.h"
+#include "overlaypainter.h"
 #include "preferencemanager.h"
 #include "strokemanager.h"
 #include "selectionpainter.h"
@@ -50,7 +51,7 @@ class ScribbleArea : public QWidget
 {
     Q_OBJECT
 
-        friend class MoveTool;
+    friend class MoveTool;
     friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
@@ -83,48 +84,70 @@ public:
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    QRectF getCameraRect();
+    QRect getCameraRect();
     QPointF getCentralPoint();
 
+    /** Update current frame.
+     *  calls update() behind the scene and update cache if necessary */
     void updateCurrentFrame();
+    /** Update frame.
+     * calls update() behind the scene and update cache if necessary */
     void updateFrame(int frame);
-    void updateOnionSkinsAround(int frame);
-    void updateAllFrames();
-    void updateAllVectorLayersAtCurrentFrame();
-    void updateAllVectorLayersAt(int frameNumber);
 
+    /** Frame scrubbed, invalidate relevant cache */
+    void onScrubbed(int frameNumber);
+
+    /** Multiple frames modified, invalidate cache for affected frames */
+    void onFramesModified();
+
+    /** Playstate changed, invalidate relevant cache */
+    void onPlayStateChanged();
+
+    /** View updated, invalidate relevant cache */
+    void onViewChanged();
+
+    /** Frame modified, invalidate cache for frame if any */
+    void onFrameModified(int frameNumber);
+
+    /** Current frame modified, invalidate current frame cache if any.
+     * Convenient function that does the same as onFrameModified */
+    void onCurrentFrameModified();
+
+    /** Layer changed, invalidate relevant cache */
+    void onLayerChanged();
+
+    /** Selection was changed, keep cache */
+    void onSelectionChanged();
+
+    /** Onion skin type changed, all frames will be affected.
+     * All cache will be invalidated */
+    void onOnionSkinTypeChanged();
+
+    /** Object updated, invalidate all cache */
+    void onObjectLoaded();
+
+    /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
-    void setAllDirty();
+    void setModified(const Layer* layer, int frameNumber);
 
     void flipSelection(bool flipVertical);
+    void renderOverlays();
+    void prepOverlays();
 
     BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
-    void setTemporaryTool(ToolType eToolMode);
-    void setPrevTool();
 
     void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
     bool isTabletInUse() const { return mTabletInUse; }
     bool isPointerInUse() const { return mMouseInUse || mTabletInUse; }
-    bool isTemporaryTool() const { return mInstantTool; }
-
-    /** Check if the content of the canvas depends on the active layer.
-      *
-      * Currently layers are only affected by Onion skins are displayed only for the active layer, and the opacity of all layers
-      * is affected when relative layer visiblity is active.
-      *
-      * @return True if the active layer could potentially influence the content of the canvas. False otherwise.
-      */
-    bool isAffectedByActiveLayer() const;
 
     void keyEvent(QKeyEvent* event);
     void keyEventForSelection(QKeyEvent* event);
 
 signals:
-    void modification(int);
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
 
@@ -144,6 +167,7 @@ public slots:
 
 
 protected:
+    bool event(QEvent *event) override;
     void tabletEvent(QTabletEvent*) override;
     void wheelEvent(QWheelEvent*) override;
     void mousePressEvent(QMouseEvent*) override;
@@ -189,6 +213,26 @@ public:
     QPixmap mTransCursImg;
 
 private:
+
+    /** Invalidate the layer pixmap cache.
+     * Call this in most situations where the layer rendering order is affected.
+     * Peviously known as setAllDirty.
+    */
+    void invalidateLayerPixmapCache();
+
+    /** Invalidate cache for the given frame */
+    void invalidateCacheForFrame(int frameNumber);
+
+    /** Invalidate all cache.
+     * call this if you're certain that the change you've made affects all frames */
+    void invalidateAllCache();
+
+    /** invalidate cache for dirty keyframes. */
+    void invalidateCacheForDirtyFrames();
+
+    /** invalidate onion skin cache around frame */
+    void invalidateOnionSkinsCacheAround(int frame);
+
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
@@ -198,14 +242,13 @@ private:
     VectorImage* currentVectorImage(Layer* layer) const;
 
     MoveMode mMoveMode = MoveMode::NONE;
-    ToolType mPrevTemporalToolType = ERASER;
-    ToolType mPrevToolType = PEN; // previous tool (except temporal)
 
     BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
 
     std::unique_ptr<StrokeManager> mStrokeManager;
 
     Editor* mEditor = nullptr;
+
 
     bool mIsSimplified = false;
     bool mShowThinLines = false;
@@ -223,6 +266,7 @@ private:
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
     bool mTabletInUse = false;
+    qreal mDevicePixelRatio = 1.;
 
     // Double click handling for tablet input
     void handleDoubleClick();
@@ -235,13 +279,11 @@ private:
     QPoint mCursorCenterPos;
     QPointF mTransformedCursorPos;
 
-    //instant tool (temporal eg. eraser)
-    bool mInstantTool = false; //whether or not using temporal tool
-
     PreferenceManager* mPrefs = nullptr;
 
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;
+    OverlayPainter mOverlayPainter;
     SelectionPainter mSelectionPainter;
 
     // Pixmap Cache keys

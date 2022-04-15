@@ -136,12 +136,11 @@ QCursor BrushTool::cursor()
     {
         return QCursor(QPixmap(":icons/brush.png"), 0, 13);
     }
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
 void BrushTool::pointerPressEvent(PointerEvent *event)
 {
-    mScribbleArea->setAllDirty();
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
@@ -304,7 +303,6 @@ void BrushTool::drawStroke()
 void BrushTool::paintBitmapStroke()
 {
     mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
 }
 
@@ -342,6 +340,5 @@ void BrushTool::paintVectorStroke()
         vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
         mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-        mScribbleArea->setAllDirty();
     }
 }

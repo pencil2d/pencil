@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "soundplayer.h"
 #include "layermanager.h"
 
-SoundManager::SoundManager(Editor* editor) : BaseManager(editor)
+SoundManager::SoundManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -68,7 +68,7 @@ Status SoundManager::save(Object*)
     return Status::OK;
 }
 
-Status SoundManager::loadSound(Layer* soundLayer, int frameNumber, QString strSoundFile)
+Status SoundManager::loadSound(Layer* soundLayer, int frameNumber, QString soundFilePath)
 {
     Q_ASSERT(soundLayer);
     if (soundLayer->type() != Layer::SOUND)
@@ -81,7 +81,7 @@ Status SoundManager::loadSound(Layer* soundLayer, int frameNumber, QString strSo
         return Status::ERROR_INVALID_FRAME_NUMBER;
     }
 
-    if (!QFile::exists(strSoundFile))
+    if (!QFile::exists(soundFilePath))
     {
         return Status::FILE_NOT_FOUND;
     }
@@ -96,14 +96,14 @@ Status SoundManager::loadSound(Layer* soundLayer, int frameNumber, QString strSo
     if (!key->fileName().isEmpty())
     {
         // file path should be empty.
-        // we can only load a audio clip to an empty key! 
+        // we can only load a audio clip to an empty key!
         return Status::FAIL;
     }
 
-    QString strCopyFile = soundLayer->object()->copyFileToDataFolder(strSoundFile);
+    QString strCopyFile = soundLayer->object()->copyFileToDataFolder(soundFilePath);
     Q_ASSERT(!strCopyFile.isEmpty());
 
-    QString sOriginalName = QFileInfo(strSoundFile).fileName();
+    QString sOriginalName = QFileInfo(soundFilePath).fileName();
 
     SoundClip* soundClip = dynamic_cast<SoundClip*>(key);
     soundClip->init(strCopyFile);
@@ -137,7 +137,10 @@ Status SoundManager::loadSound(SoundClip* soundClip, QString strSoundFile)
     Q_ASSERT(!strCopyFile.isEmpty());
 
     soundClip->init(strCopyFile);
-    soundClip->setSoundClipName(QFileInfo(strSoundFile).fileName());
+    if (soundClip->soundClipName().isEmpty())
+    {
+        soundClip->setSoundClipName(QFileInfo(strSoundFile).fileName());
+    }
 
     Status st = createMediaPlayer(soundClip);
     if (!st.ok())
