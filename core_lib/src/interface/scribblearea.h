@@ -84,7 +84,7 @@ public:
     bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    QRectF getCameraRect();
+    QRect getCameraRect();
     QPointF getCentralPoint();
 
     /** Update current frame.

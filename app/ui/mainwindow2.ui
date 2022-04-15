@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>26</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -391,9 +391,6 @@
    </property>
   </action>
   <action name="actionRedo">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
