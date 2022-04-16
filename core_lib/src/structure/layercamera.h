@@ -43,8 +43,7 @@ public:
     MoveMode getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance);
     MoveMode getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance);
 
-    void transformCameraView(MoveMode mode, QPointF point, int frameNumber);
-    void setOffsetPoint(QPointF offset) { mOffsetPoint = offset; }
+    void transformCameraView(MoveMode mode, QPointF point, QPointF offset, int frameNumber);
 
     QRect getViewRect() const;
     QSize getViewSize() const;
@@ -78,7 +77,6 @@ protected:
 private:
     void linearInterpolateTransform(Camera*);
     qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
-    CameraEasingType getCameraEasingType(int type);
     QPointF getBezierPoint(QPointF first, QPointF last, QPointF midpoint, qreal percent) const;
     qreal getRealLineAngle(QLineF line);
 

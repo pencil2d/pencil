@@ -54,8 +54,6 @@ public:
 
     void setPathMidPoint(QPointF point) { mPathMidPoint = point; }
     QPointF getPathMidPoint() const { return mPathMidPoint; }
-    void setIsMidPointSet(bool b) { mMidPointSet = b; }
-    bool getIsMidPointSet() const { return mMidPointSet; }
 
 
 private:
@@ -67,7 +65,6 @@ private:
 
     CameraEasingType mEasingType = CameraEasingType::LINEAR;
     QPointF mPathMidPoint = QPointF();
-    bool mMidPointSet = false;
 };
 
 #endif // CAMERA_H

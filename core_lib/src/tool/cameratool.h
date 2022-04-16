@@ -54,6 +54,7 @@ private:
     void transformCamera();
     void transformCameraPath();
 
+    QPointF mTransformOffset;
     MoveMode mCamMoveMode = MoveMode::NONE;
     MoveMode mCamPathMoveMode = MoveMode::NONE;
     int mDragPathFrame = 1;

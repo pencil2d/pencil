@@ -199,9 +199,10 @@ void CameraTool::resetTransform(CameraFieldOption option)
 void CameraTool::transformCamera()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mEditor->currentFrame());
+    layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mTransformOffset, mEditor->currentFrame());
 
     mEditor->frameModified(mEditor->currentFrame());
+    mTransformOffset = getCurrentPoint();
 }
 
 void CameraTool::transformCameraPath()
@@ -221,7 +222,7 @@ void CameraTool::pointerPressEvent(PointerEvent*)
     if (!layer->keyExists(mEditor->currentFrame())) { return; }
 
     mDragPathFrame = mEditor->currentFrame();
-    layer->setOffsetPoint(getCurrentPoint());
+    mTransformOffset = getCurrentPoint();
 }
 
 void CameraTool::pointerMoveEvent(PointerEvent*)

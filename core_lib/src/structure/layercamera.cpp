@@ -165,7 +165,7 @@ MoveMode LayerCamera::getMoveModeForCameraPath(int frameNumber, QPointF point, q
     return MoveMode::NONE;
 }
 
-void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNumber)
+void LayerCamera::transformCameraView(MoveMode mode, QPointF point, QPointF offset, int frameNumber)
 {
     QPolygon curPoly = getViewAtFrame(frameNumber).inverted().mapToPolygon(viewRect);
     QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5).toPoint();
@@ -178,7 +178,7 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     switch (mode)
     {
     case MoveMode::CENTER: {
-        curCam->translate(curCam->translation() - (point - mOffsetPoint));
+        curCam->translate(curCam->translation() - (point - offset));
 
         int prevFrame = getPreviousKeyFramePosition(frameNumber);
         curCam = getCameraAtFrame(prevFrame);
@@ -215,7 +215,6 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, int frameNum
     default:
         break;
     }
-    setOffsetPoint(point);
     curCam->updateViewTransform();
     curCam->modification();
 }
@@ -605,9 +604,7 @@ void LayerCamera::updatePathAtFrame(QPointF point, int frame)
     Q_ASSERT(camera);
 
     camera->setPathMidPoint(point);
-    camera->setIsMidPointSet(true);
     camera->modification();
-    setOffsetPoint(point);
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, QPointF midPoint)
@@ -621,14 +618,6 @@ void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal ro
     camera->setEasingType(easing);
     camera->setPathMidPoint(midPoint);
     loadKey(camera);
-    int nextFrame = getNextKeyFramePosition(frameNumber);
-    if (frameNumber < nextFrame)
-    {
-        Camera* nextCam = getCameraAtFrame(nextFrame);
-        QPointF mid2 = QLineF(camera->translation(), nextCam->translation()).pointAt(0.5);
-        if (mid2 != midPoint)
-            camera->setIsMidPointSet(true);
-    }
 }
 
 Status LayerCamera::saveKeyFrameFile(KeyFrame*, QString)
