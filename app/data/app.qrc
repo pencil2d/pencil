@@ -66,10 +66,9 @@
         <file>icons/controls/soundscrub.png</file>
         <file>icons/controls/soundscrub-disabled.png</file>
         <file>icons/new/arrow-rotate.png</file>
+        <file>icons/new/svg/transform-rotate.svg</file>
         <file>icons/new/svg/transform-scale.svg</file>
         <file>icons/new/svg/transform-translate.svg</file>
-        <file>icons/new/svg/transform-rotation.svg</file>
-        <file>icons/new/svg/transform-resetall.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

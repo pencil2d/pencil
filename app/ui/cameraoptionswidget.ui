@@ -77,7 +77,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/transform-rotation.svg</normaloff>:/icons/new/svg/transform-rotation.svg</iconset>
+          <normaloff>:/icons/new/svg/transform-rotate.svg</normaloff>:/icons/new/svg/transform-rotate.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -121,10 +121,6 @@
         </property>
         <property name="text">
          <string>Reset all</string>
-        </property>
-        <property name="icon">
-         <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/transform-resetall.svg</normaloff>:/icons/new/svg/transform-resetall.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
