@@ -45,7 +45,6 @@ public:
     qreal rotation() const { return mRotate; }
 
     void scale(qreal scaleValue);
-    void scaleWithOffset(qreal scaleValue, QPointF offset); // for zooming at the mouse position
     qreal scaling() const { return mScale; }
 
     bool operator==(const Camera& rhs) const;
