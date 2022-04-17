@@ -80,8 +80,6 @@ private:
     QPointF getBezierPoint(QPointF first, QPointF last, QPointF midpoint, qreal percent) const;
     qreal getRealLineAngle(QLineF line);
 
-    QPointF mOffsetPoint = QPointF();
-
     int mFieldW = 800;
     int mFieldH = 600;
     QRect viewRect;
