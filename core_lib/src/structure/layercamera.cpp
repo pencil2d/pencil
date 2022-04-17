@@ -631,6 +631,7 @@ KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
     c->setPos(position);
     c->setEasingType(CameraEasingType::LINEAR);
     linearInterpolateTransform(c);
+    c->setPathMidPoint(c->translation());
     return c;
 }
 
