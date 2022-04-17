@@ -79,6 +79,34 @@ SCENARIO("Add a second keyframe and see that the midpoint of the first keyframe 
     delete object;
 }
 
+SCENARIO("Add keyframe after having interpolated the previous keyframe and see that the translation is kept")
+{
+    Object* object = new Object;
+
+    GIVEN("A Camera layer with multiple keyframes")
+    {
+        Layer* layer = new LayerCamera(object);
+        LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
+
+        layer->addNewKeyFrameAt(1);
+
+        Camera* camera = static_cast<Camera*>(camLayer->getKeyFrameAt(1));
+        camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 1);
+        WHEN("Adding a new keyframe after the previous frame was interpolated")
+        {
+            layer->addNewKeyFrameAt(5);
+            THEN("The camera is placed at the interpolated position, not at 0,0")
+            {
+                Camera* camera2 = static_cast<Camera*>(camLayer->getKeyFrameAt(5));
+                QLineF line(camera->translation(), camera2->translation());
+                REQUIRE(camera2->translation() == QPoint(300, 300));
+            }
+        }
+    }
+
+    delete object;
+}
+
 SCENARIO("Remove a camera keyframe and see that the path is properly reset")
 {
     Object* object = new Object;
