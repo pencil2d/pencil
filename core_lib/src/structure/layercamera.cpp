@@ -202,10 +202,7 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, QPointF offs
         break;
     case MoveMode::ROTATIONRIGHT:
     case MoveMode::ROTATIONLEFT: {
-        curCam->translate(curCenter);
-        // FIXME: scale is set to -1 when when rotation is 180....
         curCam->rotate(angle);
-        curCam->translate(-curCenter);
         // since rotations can move midpoint slightly
         curCam->setPathMidPoint(mid);
         break;
