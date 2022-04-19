@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "movemode.h"
 #include "basetool.h"
 #include "camerafieldoption.h"
+#include "preferencemanager.h"
 
 class PointerEvent;
 class Editor;
@@ -51,13 +52,16 @@ public:
     void resetTransform(CameraFieldOption option);
 
 private:
-    void transformCamera();
+    void transformCamera(Qt::KeyboardModifiers keyMod);
     void transformCameraPath();
+    void updateSettings(const SETTING setting);
+    int constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const;
 
     QPointF mTransformOffset;
     MoveMode mCamMoveMode = MoveMode::NONE;
     MoveMode mCamPathMoveMode = MoveMode::NONE;
     int mDragPathFrame = 1;
+    int mRotationIncrement = 0;
     MoveMode mPerspMode;
 };
 

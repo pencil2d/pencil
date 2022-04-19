@@ -66,7 +66,7 @@ SCENARIO("Add a second keyframe and see that the midpoint of the first keyframe 
         WHEN("Transforming the second keyframe")
         {
             Camera* camera = static_cast<Camera*>(camLayer->getKeyFrameAt(1));
-            camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 5);
+            camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
             THEN("The camera path mid point of the previous frame is updated to the center of the the path between the two keyframes")
             {
                 Camera* camera2 = static_cast<Camera*>(camLayer->getKeyFrameAt(5));
@@ -91,7 +91,7 @@ SCENARIO("Add keyframe after having interpolated the previous keyframe and see t
         layer->addNewKeyFrameAt(1);
 
         Camera* camera = static_cast<Camera*>(camLayer->getKeyFrameAt(1));
-        camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 1);
+        camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 1);
         WHEN("Adding a new keyframe after the previous frame was interpolated")
         {
             layer->addNewKeyFrameAt(5);
@@ -120,7 +120,7 @@ SCENARIO("Remove a camera keyframe and see that the path is properly reset")
         layer->addNewKeyFrameAt(5);
 
         Camera* camera = static_cast<Camera*>(camLayer->getKeyFrameAt(1));
-        camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 5);
+        camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
         REQUIRE(camera->translation() != camera->getPathMidPoint());
 
         WHEN("Removing the last keyframe with transformation applied")

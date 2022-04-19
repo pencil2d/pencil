@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "camera.h"
 #include "layercamera.h"
 #include "movemode.h"
+#include "mathutils.h"
 
 #include "scribblearea.h"
 
@@ -48,6 +49,12 @@ void CameraTool::loadSettings()
     mPropertyEnabled[CAMERAPATH] = true;
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraTool::onDidChangeLayer);
     connect(mEditor, &Editor::objectLoaded, this, &CameraTool::onDidLoadObject);
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
+
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &CameraTool::updateSettings);
 }
 
 void CameraTool::onDidLoadObject()
@@ -68,6 +75,21 @@ void CameraTool::onDidChangeLayer(int index)
     LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
     properties.cameraPathDotColorType = static_cast<int>(layerCam->getDotColorType());
     properties.cameraShowPath = layerCam->getShowCameraPath();
+}
+
+void CameraTool::updateSettings(const SETTING setting)
+{
+    switch (setting)
+    {
+    case SETTING::ROTATION_INCREMENT:
+    {
+        mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
+        break;
+    }
+    default:
+        break;
+
+    }
 }
 
 QCursor CameraTool::cursor()
@@ -196,10 +218,18 @@ void CameraTool::resetTransform(CameraFieldOption option)
     mEditor->frameModified(mEditor->currentFrame());
 }
 
-void CameraTool::transformCamera()
+void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mTransformOffset, mEditor->currentFrame());
+
+    QRectF viewRect = layer->getViewAtFrame(mEditor->currentFrame()).inverted().mapRect(layer->getViewRect());
+    qreal angleRad = mCamMoveMode == MoveMode::ROTATIONLEFT ? MathUtils::getDifferenceAngle(getCurrentPoint(),viewRect.center()) : MathUtils::getDifferenceAngle(viewRect.center(), getCurrentPoint());
+    qreal angle = qRadiansToDegrees(angleRad);
+    if (keyMod == Qt::ShiftModifier && (mCamMoveMode == MoveMode::ROTATIONLEFT || mCamMoveMode == MoveMode::ROTATIONRIGHT)) {
+        angle = constrainedRotation(angle, mRotationIncrement);
+    }
+
+    layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mTransformOffset, -angle, mEditor->currentFrame());
 
     mEditor->frameModified(mEditor->currentFrame());
     mTransformOffset = getCurrentPoint();
@@ -211,6 +241,11 @@ void CameraTool::transformCameraPath()
     layer->updatePathAtFrame(getCurrentPoint(), mDragPathFrame);
 
     mEditor->frameModified(mEditor->currentFrame());
+}
+
+int CameraTool::constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const
+{
+    return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
 
 void CameraTool::pointerPressEvent(PointerEvent*)
@@ -225,7 +260,7 @@ void CameraTool::pointerPressEvent(PointerEvent*)
     mTransformOffset = getCurrentPoint();
 }
 
-void CameraTool::pointerMoveEvent(PointerEvent*)
+void CameraTool::pointerMoveEvent(PointerEvent* event)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     if (layer == nullptr) return;
@@ -233,7 +268,7 @@ void CameraTool::pointerMoveEvent(PointerEvent*)
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         if (layer->keyExists(mEditor->currentFrame())) {
-            transformCamera();
+            transformCamera(event->modifiers());
         }
         else if (mCamPathMoveMode == MoveMode::MIDDLE)
         {
@@ -250,13 +285,13 @@ void CameraTool::pointerMoveEvent(PointerEvent*)
     mEditor->updateCurrentFrame();
 }
 
-void CameraTool::pointerReleaseEvent(PointerEvent*)
+void CameraTool::pointerReleaseEvent(PointerEvent* event)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     if (layer->keyExists(mEditor->currentFrame())) {
-        transformCamera();
+        transformCamera(event->modifiers());
         mEditor->view()->forceUpdateViewTransform();
         mEditor->updateCurrentFrame();
     } else if (mCamPathMoveMode == MoveMode::MIDDLE) {
@@ -265,5 +300,3 @@ void CameraTool::pointerReleaseEvent(PointerEvent*)
         mEditor->updateCurrentFrame();
     }
 }
-
-

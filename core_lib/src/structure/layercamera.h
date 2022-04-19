@@ -43,7 +43,7 @@ public:
     MoveMode getMoveModeForCamera(int frameNumber, QPointF point, qreal tolerance);
     MoveMode getMoveModeForCameraPath(int frameNumber, QPointF point, qreal tolerance);
 
-    void transformCameraView(MoveMode mode, QPointF point, QPointF offset, int frameNumber);
+    void transformCameraView(MoveMode mode, QPointF point, QPointF offset, qreal angle, int frameNumber);
 
     QRect getViewRect() const;
     QSize getViewSize() const;

@@ -165,13 +165,12 @@ MoveMode LayerCamera::getMoveModeForCameraPath(int frameNumber, QPointF point, q
     return MoveMode::NONE;
 }
 
-void LayerCamera::transformCameraView(MoveMode mode, QPointF point, QPointF offset, int frameNumber)
+void LayerCamera::transformCameraView(MoveMode mode, QPointF point, QPointF offset, qreal angle, int frameNumber)
 {
     QPolygon curPoly = getViewAtFrame(frameNumber).inverted().mapToPolygon(viewRect);
     QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5).toPoint();
     QLineF lineOld(curCenter, point);
     QLineF lineNew(curCenter, point);
-    qreal degree;
     Camera* curCam = getCameraAtFrame(frameNumber);
     QPointF mid = curCam->getPathMidPoint();
 
@@ -203,10 +202,9 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, QPointF offs
         break;
     case MoveMode::ROTATIONRIGHT:
     case MoveMode::ROTATIONLEFT: {
-        qreal angle = mode == MoveMode::ROTATIONLEFT ? MathUtils::getDifferenceAngle(point, curCenter) : MathUtils::getDifferenceAngle(curCenter, point);
-        degree = -qRadiansToDegrees(angle);
         curCam->translate(curCenter);
-        curCam->rotate(curCam->rotation() + (degree - curCam->rotation()));
+        // FIXME: scale is set to -1 when when rotation is 180....
+        curCam->rotate(angle);
         curCam->translate(-curCenter);
         // since rotations can move midpoint slightly
         curCam->setPathMidPoint(mid);
