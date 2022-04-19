@@ -947,8 +947,8 @@ bool Editor::importImage(const QString& filePath)
 
     if (view()->getImportFollowsCamera())
     {
-        LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
-        QTransform transform = camera->getViewAtFrame(currentFrame());
+        QRectF cameraRect = mScribbleArea->getCameraRect(); // Must be QRectF for the precision of cameraRect.center()
+        QTransform transform = QTransform::fromTranslate(cameraRect.center().x(), cameraRect.center().y());
         view()->setImportView(transform);
     }
     switch (layer->type())
@@ -1230,7 +1230,8 @@ bool Editor::canPaste() const
     Layer* layer = layers()->currentLayer();
     auto clipboardMan = clipboards();
     auto layerType = layer->type();
-    return (layerType == clipboardMan->framesTypeChanged(layer) && clipboardMan->framesIsEmpty()) ||
+
+    return (layerType == clipboardMan->framesLayerType() && !clipboardMan->framesIsEmpty()) ||
            (layerType == Layer::BITMAP && clipboardMan->getBitmapClipboard().isLoaded()) ||
            (layerType == Layer::VECTOR && !clipboardMan->getVectorClipboard().isEmpty());
 }

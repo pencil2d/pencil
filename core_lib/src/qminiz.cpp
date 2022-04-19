@@ -15,11 +15,11 @@ GNU General Public License for more details.
 */
 #include "qminiz.h"
 
+#include <sstream>
 #include <QFileInfo>
 #include <QDir>
 #include <QDebug>
 #include <QDirIterator>
-#include "miniz.h"
 #include "util.h"
 
 
@@ -38,8 +38,18 @@ bool MiniZ::isZip(const QString& sZipFilePath)
     return (num > 0);
 }
 
+size_t MiniZ::istreamReadCallback(void *pOpaque, mz_uint64 file_ofs, void * pBuf, size_t n)
+{
+    std::istream *stream = static_cast<std::istream*>(pOpaque);
+    mz_int64 cur_ofs = stream->tellg();
+    if ((mz_int64)file_ofs < 0 || (cur_ofs != (mz_int64)file_ofs && stream->seekg((mz_int64)file_ofs, std::ios_base::beg)))
+        return 0;
+    stream->read(static_cast<char*>(pBuf), n);
+    return stream->gcount();
+}
+
 // ReSharper disable once CppInconsistentNaming
-Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList)
+Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList, QString mimetype)
 {
     DebugDetails dd;
     dd << QString("Creating Zip %1 from folder %2").arg(zipFilePath, srcFolderPath);
@@ -65,11 +75,26 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         dd << QString("Miniz writer init failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));;
     }
 
+    // Add special uncompressed mimetype file to help with the identification of projects
+    {
+        QByteArray mimeData = mimetype.toUtf8();
+        std::stringstream mimeStream(mimeData.toStdString());
+        ok = mz_zip_writer_add_read_buf_callback(mz, "mimetype", MiniZ::istreamReadCallback, &mimeStream, mimeData.length(),
+                                    0, "", 0, MZ_NO_COMPRESSION, 0, 0,
+                                    0, 0);
+        if (!ok)
+        {
+            mz_zip_error err = mz_zip_get_last_error(mz);
+            dd << QString("Cannot add mimetype: error %1").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        }
+    }
+
     //qDebug() << "SrcFolder=" << srcFolderPath;
     for (const QString& filePath : fileList)
     {
         QString sRelativePath = filePath;
         sRelativePath.remove(srcFolderPath);
+        if (sRelativePath == "mimetype") continue;
 
         dd << QString("Add file to zip: ").append(sRelativePath);
 
@@ -166,6 +191,7 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
 
         if (!stat->m_is_directory)
         {
+            if (QString(stat->m_filename) == "mimetype") continue;
             QString sFullPath = baseDir.filePath(QString::fromUtf8(stat->m_filename));
             dd << QString("Unzip file: ").append(sFullPath);
             bool b = QFileInfo(sFullPath).absoluteDir().mkpath(".");

@@ -76,7 +76,7 @@ void ImportPositionDialog::changeImportView()
     }
     else if (mImportOption == ImportPosition::Type::CenterOfCamera)
     {
-        QRectF cameraRect = mEditor->getScribbleArea()->getCameraRect();
+        QRectF cameraRect = mEditor->getScribbleArea()->getCameraRect(); // Must be QRectF for the precision of cameraRect.center()
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
         mEditor->view()->setImportView(transform);
         QSettings settings(PENCIL2D, PENCIL2D);
