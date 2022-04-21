@@ -454,8 +454,11 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
         break;
     }
 
-    // we reset mid point from previous frame
-    centerMidPoint(frame - 1);
+    if (type != CameraFieldOption::RESET_SCALING && type != CameraFieldOption::RESET_ROTATION) {
+        // we reset mid point from previous frame
+        centerMidPoint(frame - 1);
+    }
+
     camera->updateViewTransform();
     camera->modification();
 }
