@@ -252,16 +252,16 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     subOther->addAction(tr("Linear interpolation"), [=] { layer->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
 
     QMenu* cameraFieldMenu = cameraMenu->addMenu(tr("Camera field"));
-    cameraFieldMenu->addAction(tr("Reset camera field to default"), [=] { layer->setCameraReset(CameraFieldOption::RESET_FIELD, frameNumber); });
+    cameraFieldMenu->addAction(tr("Reset camera field to default"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_FIELD, frameNumber); });
     cameraFieldMenu->addSeparator();
-    cameraFieldMenu->addAction(tr("Reset camera position to center (0,0)"), [=] { layer->setCameraReset(CameraFieldOption::RESET_TRANSLATION, frameNumber); });
-    cameraFieldMenu->addAction(tr("Reset camera scaling to 1:1"), [=] { layer->setCameraReset(CameraFieldOption::RESET_SCALING, frameNumber); });
-    cameraFieldMenu->addAction(tr("Reset camera rotation to 0"), [=] { layer->setCameraReset(CameraFieldOption::RESET_ROTATION, frameNumber); });
+    cameraFieldMenu->addAction(tr("Reset camera position to center (0,0)"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_TRANSLATION, frameNumber); });
+    cameraFieldMenu->addAction(tr("Reset camera scaling to 1:1"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_SCALING, frameNumber); });
+    cameraFieldMenu->addAction(tr("Reset camera rotation to 0"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_ROTATION, frameNumber); });
     cameraFieldMenu->addSeparator();
-    cameraFieldMenu->addAction(tr("Align keyframe %1 horizontally").arg(QString::number(nextFrame)), [=] { layer->setCameraReset(CameraFieldOption::ALIGN_HORIZONTAL, frameNumber); });
-    cameraFieldMenu->addAction(tr("Align keyframe %1 vertically").arg(QString::number(nextFrame)), [=] { layer->setCameraReset(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
+    cameraFieldMenu->addAction(tr("Align keyframe %1 horizontally").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_HORIZONTAL, frameNumber); });
+    cameraFieldMenu->addAction(tr("Align keyframe %1 vertically").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
     cameraFieldMenu->addSeparator();
-    cameraFieldMenu->addAction(tr("Hold to keyframe %1").arg(QString::number(nextFrame)), [=] { layer->setCameraReset(CameraFieldOption::HOLD_FRAME, frameNumber); });
+    cameraFieldMenu->addAction(tr("Hold to keyframe %1").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::HOLD_FRAME, frameNumber); });
 
     cameraMenu->exec(pos);
     mEditor->scrubTo(mEditor->currentFrame());

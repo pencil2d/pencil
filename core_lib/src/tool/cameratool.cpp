@@ -215,7 +215,7 @@ void CameraTool::resetTransform(CameraFieldOption option)
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
-    layer->setCameraReset(option, mEditor->currentFrame());
+    layer->resetCameraAtFrame(option, mEditor->currentFrame());
     mEditor->frameModified(mEditor->currentFrame());
 }
 

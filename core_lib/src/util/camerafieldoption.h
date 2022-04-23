@@ -24,8 +24,7 @@ enum class CameraFieldOption {
     RESET_ROTATION,
     ALIGN_HORIZONTAL,
     ALIGN_VERTICAL,
-    HOLD_FRAME,
-    SHOW_CAMERA_PATH
+    HOLD_FRAME
 };
 
 #endif // CAMERAFIELDOPTION_H

@@ -401,10 +401,14 @@ void LayerCamera::setCameraEasing(CameraEasingType type, int frame)
     camera->modification();
 }
 
-void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
+void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame)
 {
-    Camera* camera = getLastCameraAtFrame(frame, 0);
-    int nextFrame = getNextKeyFramePosition(frame);
+    int frameToModify = frame;
+    if (!keyExists(frame)) {
+        frameToModify = getPreviousKeyFramePosition(frame);
+    }
+    Camera* camera = getLastCameraAtFrame(frameToModify, 0);
+
     switch (type)
     {
     case CameraFieldOption::RESET_FIELD:
@@ -421,14 +425,16 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
         break;
     case CameraFieldOption::ALIGN_HORIZONTAL: {
         qreal otherYCoord = camera->translation().y();
-        camera = getLastCameraAtFrame(nextFrame, 0);
-        camera->translate(camera->translation().x(), otherYCoord);
+        Camera* nextCam = getCameraAtFrame(getNextKeyFramePosition(frameToModify));
+        nextCam->translate(nextCam->translation().x(), otherYCoord);
+        camera->setPathControlPoint(getNewPathControlPoint(frameToModify));
         break;
     }
     case CameraFieldOption::ALIGN_VERTICAL: {
         qreal otherXCoord = camera->translation().x();
-        camera = getLastCameraAtFrame(nextFrame, 0);
-        camera->translate(otherXCoord, camera->translation().y());
+        Camera* nextCam = getCameraAtFrame(getNextKeyFramePosition(frameToModify));
+        nextCam->translate(otherXCoord, nextCam->translation().y());
+        camera->setPathControlPoint(getNewPathControlPoint(nextCam->pos()));
         break;
     }
     case CameraFieldOption::HOLD_FRAME: {
@@ -436,15 +442,15 @@ void LayerCamera::setCameraReset(CameraFieldOption type, int frame)
         qreal rotation = camera->rotation();
         qreal scaling = camera->scaling();
         camera->setPathControlPoint(-translation);
-        camera = getLastCameraAtFrame(nextFrame, 0);
+        camera = getLastCameraAtFrame(getNextKeyFramePosition(frame), 0);
         camera->translate(translation);
         camera->scale(scaling);
         camera->rotate(rotation);
         camera->setPathControlPoint(-translation);
         // is there a camera after the hold end-frame?
-        int thirdFrame = getNextKeyFramePosition(nextFrame);
-        if (thirdFrame > nextFrame)
-            camera->setPathControlPoint(getNewPathControlPoint(nextFrame));
+        int thirdFrame = getNextKeyFramePosition(frameToModify);
+        if (thirdFrame > frameToModify)
+            camera->setPathControlPoint(getNewPathControlPoint(frameToModify));
         break;
     }
     default:
