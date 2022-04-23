@@ -144,6 +144,24 @@ void Camera::scale(qreal scaleValue)
     modification();
 }
 
+void Camera::setEasingType(CameraEasingType type)
+{
+    mEasingType = type;
+    modification();
+}
+
+void Camera::setPathControlPoint(QPointF point)
+{
+    mPathControlPoint = point;
+    modification();
+}
+
+void Camera::setPathControlPointMoved(bool moved)
+{
+    mPathControlPointMoved = moved;
+    modification();
+}
+
 bool Camera::operator==(const Camera& rhs) const
 {
     bool b = (mTranslate == rhs.mTranslate)

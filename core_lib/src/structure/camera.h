@@ -49,13 +49,13 @@ public:
 
     bool operator==(const Camera& rhs) const;
 
-    void setEasingType(CameraEasingType type) { mEasingType = type; }
+    void setEasingType(CameraEasingType type);
     CameraEasingType getEasingType() const { return mEasingType; }
 
-    void setPathControlPoint(QPointF point) { mPathControlPoint = point; }
+    void setPathControlPoint(QPointF point);
     QPointF getPathControlPoint() const { return mPathControlPoint; }
 
-    void setPathControlPointMoved(bool pathMoved) { mPathControlPointMoved  = pathMoved; }
+    void setPathControlPointMoved(bool pathMoved);
     bool pathControlPointMoved() const { return mPathControlPointMoved ; }
 
 
