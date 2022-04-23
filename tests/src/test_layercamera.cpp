@@ -152,21 +152,23 @@ SCENARIO("Loading a project and see that all camera properties are set")
         {
             THEN("The keyframe(s) has been loaded properly")
             {
-                // <camera r="0" easing="9" midx="887" frame="1" dx="0" s="1" dy="0" midy="-281.5"/>
+                // <camera s="1.7482683523433076" r="-89.931555642192322" pathCPY="-306.81323380187314" frame="20" pathCPM="0" dx="-1723.3735323962537" pathCPX="861.68676619812686" dy="613.62646760374628" easing="29"/>
                 Camera* cam = static_cast<Camera*>(cameraLayer->getKeyFrameAt(1));
                 REQUIRE(cam->translation() == QPointF(0, 0));
                 REQUIRE(cam->rotation() == 0);
                 REQUIRE(cam->scaling() == 1);
                 REQUIRE(cam->getEasingType() == static_cast<CameraEasingType>(9));
-                REQUIRE(cam->getPathControlPoint() == QPointF(887, -281.5));
+                REQUIRE(cam->getPathControlPoint() == QPointF(91.250978402496912, -1317.8543267067691));
+                REQUIRE(cam->pathControlPointMoved() == true);
 
-                // <camera r="-89.931555642192322" easing="29" midx="0" frame="20" dx="-1774" s="1.7482683523433076" dy="563" midy="0"/>
+                // <camera s="1" r="0" pathCPY="-1317.8543267067691" frame="1" pathCPM="1" dx="0" pathCPX="91.250978402496912" dy="0" easing="9"/>
                 Camera* cam2 = static_cast<Camera*>(cameraLayer->getKeyFrameAt(20));
-                REQUIRE(cam2->translation() == QPointF(-1774, 563));
+                REQUIRE(cam2->translation() == QPointF(-1723.3735323962537, 613.62646760374628));
                 REQUIRE(cam2->rotation() == -89.931555642192322);
                 REQUIRE(cam2->scaling() == 1.7482683523433076);
                 REQUIRE(cam2->getEasingType() == static_cast<CameraEasingType>(29));
-                REQUIRE(cam2->getPathControlPoint() == QPointF(0, 0));
+                REQUIRE(cam2->getPathControlPoint() == QPointF(861.68676619812686, -306.81323380187314));
+                REQUIRE(cam2->pathControlPointMoved() == false);
 
             }
         }
