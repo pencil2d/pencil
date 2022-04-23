@@ -53,18 +53,18 @@ public:
     void showContextMenu(QPoint point);
     void setShowCameraPath(bool show) { mShowPath = show; }
     bool getShowCameraPath() { return mShowPath; }
-    void setCameraEasing(CameraEasingType type, int frame);
+    void setCameraEasingAtFrame(CameraEasingType type, int frame);
     void resetCameraAtFrame(CameraFieldOption type, int frame);
     void setDotColorType(DotColorType color);
     QColor getDotColor() const { return mDotColor; }
     DotColorType getDotColorType() const { return mDotColorType; }
 
-    QString getInterpolationText(int frame) const;
-    QPointF getPathHandle(int frame) const;
-    bool hasSameTranslation(int first, int last) const;
-    QList<QPointF> getBezierPoints(int frame) const;
-    void centerPathControlPoint(int frame);
-    QPointF getNewPathControlPoint(int frame);
+    QString getInterpolationTextAtFrame(int frame) const;
+    QPointF getPathControlPointAtFrame(int frame) const;
+    bool hasSameTranslation(int frame1, int frame2) const;
+    QList<QPointF> getBezierPointsAtFrame(int frame) const;
+    void centerPathControlPointAtFrame(int frame);
+    QPointF getNewPathControlPointAtFrame(int frame);
     void updatePathControlPointAtFrame(QPointF point, int frame);
     void setPathMovedAtFrame(int frame, bool moved);
 

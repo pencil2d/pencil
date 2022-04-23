@@ -260,7 +260,7 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
         painter.save();
         if (cameraLayer->getShowCameraPath() && !cameraLayer->hasSameTranslation(frame, nextFrame)) {
 
-            QPointF cameraPathPoint = mViewTransform.map(cameraLayer->getPathHandle(mFrameIndex));
+            QPointF cameraPathPoint = mViewTransform.map(cameraLayer->getPathControlPointAtFrame(mFrameIndex));
             painter.setBrush(cameraDotColor);
             painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
             painter.setRenderHint(QPainter::Antialiasing);
@@ -274,7 +274,7 @@ void CameraPainter::paintInterpolations(QPainter& painter, LayerCamera* cameraLa
 
             if (!keyExistsOnCurrentFrame)
             {
-                cameraPathPoint = mViewTransform.map(cameraLayer->getPathHandle(frame + 1));
+                cameraPathPoint = mViewTransform.map(cameraLayer->getPathControlPointAtFrame(frame + 1));
                 paintPath(painter, cameraLayer, frame, cameraPathPoint);
             }
 
@@ -326,11 +326,11 @@ void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer,
     painter.save();
     // draw movemode in text
     painter.setPen(Qt::black);
-    QString pathType = cameraLayer->getInterpolationText(frameIndex);
+    QString pathType = cameraLayer->getInterpolationTextAtFrame(frameIndex);
     painter.drawText(pathPoint - QPoint(0, 10), pathType);
 
     // if active path, draw bezier help lines for active path
-    QList<QPointF> points = cameraLayer->getBezierPoints(frameIndex + 1);
+    QList<QPointF> points = cameraLayer->getBezierPointsAtFrame(frameIndex + 1);
 
     QList<QPointF> mappedPoints;
     for (QPointF point : points) {

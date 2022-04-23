@@ -206,7 +206,7 @@ void CameraTool::resetCameraPath()
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
-    layer->centerPathControlPoint(mEditor->currentFrame());
+    layer->centerPathControlPointAtFrame(mEditor->currentFrame());
     layer->setPathMovedAtFrame(mEditor->currentFrame(), false);
 }
 
