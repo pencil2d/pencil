@@ -172,7 +172,6 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, QPointF offs
     QLineF lineOld(curCenter, point);
     QLineF lineNew(curCenter, point);
     Camera* curCam = getCameraAtFrame(frameNumber);
-    QPointF mid = curCam->getPathControlPoint();
 
     switch (mode)
     {
@@ -210,8 +209,6 @@ void LayerCamera::transformCameraView(MoveMode mode, QPointF point, QPointF offs
     case MoveMode::ROTATIONRIGHT:
     case MoveMode::ROTATIONLEFT: {
         curCam->rotate(angle);
-        // since rotations can move the path point slightly
-        curCam->setPathControlPoint(mid);
         break;
     }
     default:
