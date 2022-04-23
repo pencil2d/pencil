@@ -206,7 +206,8 @@ void CameraTool::resetCameraPath()
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
-    layer->centerMidPoint(mEditor->currentFrame());
+    layer->centerPathControlPoint(mEditor->currentFrame());
+    layer->setPathMovedAtFrame(mEditor->currentFrame(), false);
 }
 
 void CameraTool::resetTransform(CameraFieldOption option)
@@ -238,8 +239,7 @@ void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
 void CameraTool::transformCameraPath()
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    layer->updatePathAtFrame(getCurrentPoint(), mDragPathFrame);
-
+    layer->updatePathControlPointAtFrame(getCurrentPoint(), mDragPathFrame);
     mEditor->frameModified(mEditor->currentFrame());
 }
 
@@ -296,6 +296,7 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
         mEditor->updateCurrentFrame();
     } else if (mCamPathMoveMode == MoveMode::MIDDLE) {
         transformCameraPath();
+        layer->setPathMovedAtFrame(mEditor->currentFrame(), true);
         mEditor->view()->forceUpdateViewTransform();
         mEditor->updateCurrentFrame();
     }

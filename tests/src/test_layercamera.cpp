@@ -40,10 +40,10 @@ SCENARIO("Create camera keyframe with linear easing")
             REQUIRE(layer->addNewKeyFrameAt(1) == true);
 
             Camera* camera = static_cast<Camera*>(camLayer->getKeyFrameAt(1));
-            THEN("Camera easing is set to linear and path midpoint is set to the center of the current frame")
+            THEN("Camera easing is set to linear and path point is set to the center of the current frame")
             {
                 REQUIRE(camera->getEasingType() == CameraEasingType::LINEAR);
-                REQUIRE(camera->getPathMidPoint() == camera->translation());
+                REQUIRE(camera->getPathControlPoint() == camera->translation());
             }
         }
     }
@@ -51,7 +51,7 @@ SCENARIO("Create camera keyframe with linear easing")
     delete object;
 }
 
-SCENARIO("Add a second keyframe and see that the midpoint of the first keyframe is updated")
+SCENARIO("Add a second keyframe and see that the path point of the first keyframe is updated")
 {
     Object* object = new Object;
 
@@ -71,7 +71,7 @@ SCENARIO("Add a second keyframe and see that the midpoint of the first keyframe 
             {
                 Camera* camera2 = static_cast<Camera*>(camLayer->getKeyFrameAt(5));
                 QLineF line(camera->translation(), camera2->translation());
-                REQUIRE(-camera->getPathMidPoint() == line.pointAt(0.5));
+                REQUIRE(-camera->getPathControlPoint() == line.pointAt(0.5));
             }
         }
     }
@@ -121,14 +121,14 @@ SCENARIO("Remove a camera keyframe and see that the path is properly reset")
 
         Camera* camera = static_cast<Camera*>(camLayer->getKeyFrameAt(1));
         camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
-        REQUIRE(camera->translation() != camera->getPathMidPoint());
+        REQUIRE(camera->translation() != camera->getPathControlPoint());
 
         WHEN("Removing the last keyframe with transformation applied")
         {
             REQUIRE(layer->removeKeyFrame(5) == true);
             THEN("The path of the previous keyframe is reset to the center of the camera")
             {
-                REQUIRE(camera->translation() == camera->getPathMidPoint());
+                REQUIRE(camera->translation() == camera->getPathControlPoint());
             }
         }
     }
@@ -158,7 +158,7 @@ SCENARIO("Loading a project and see that all camera properties are set")
                 REQUIRE(cam->rotation() == 0);
                 REQUIRE(cam->scaling() == 1);
                 REQUIRE(cam->getEasingType() == static_cast<CameraEasingType>(9));
-                REQUIRE(cam->getPathMidPoint() == QPointF(887, -281.5));
+                REQUIRE(cam->getPathControlPoint() == QPointF(887, -281.5));
 
                 // <camera r="-89.931555642192322" easing="29" midx="0" frame="20" dx="-1774" s="1.7482683523433076" dy="563" midy="0"/>
                 Camera* cam2 = static_cast<Camera*>(cameraLayer->getKeyFrameAt(20));
@@ -166,7 +166,7 @@ SCENARIO("Loading a project and see that all camera properties are set")
                 REQUIRE(cam2->rotation() == -89.931555642192322);
                 REQUIRE(cam2->scaling() == 1.7482683523433076);
                 REQUIRE(cam2->getEasingType() == static_cast<CameraEasingType>(29));
-                REQUIRE(cam2->getPathMidPoint() == QPointF(0, 0));
+                REQUIRE(cam2->getPathControlPoint() == QPointF(0, 0));
 
             }
         }

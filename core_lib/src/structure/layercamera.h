@@ -32,7 +32,7 @@ public:
     explicit LayerCamera(Object* object);
     ~LayerCamera() override;
 
-    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, QPointF midPoint);
+    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, QPointF pathPoint, bool pathMoved);
 
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -60,15 +60,16 @@ public:
     DotColorType getDotColorType() const { return mDotColorType; }
 
     QString getInterpolationText(int frame) const;
-    QPointF getPathMidPoint(int frame) const;
+    QPointF getPathHandle(int frame) const;
     bool hasSameTranslation(int first, int last) const;
     QList<QPointF> getBezierPoints(int frame) const;
-    void centerMidPoint(int frame);
-    QPointF getNewMidPoint(int frame);
-    void updatePathAtFrame(QPointF point, int frame);
+    void centerPathControlPoint(int frame);
+    QPointF getNewPathControlPoint(int frame);
+    void updatePathControlPointAtFrame(QPointF point, int frame);
+    void setPathMovedAtFrame(int frame, bool moved);
 
-    void updateOnDeleteFrame(int frame);
-    void updateOnAddFrame(int frame);
+    void updateControlPointOnDeleteFrame(int frame);
+    void updateControlPointsOnAddFrame(int frame);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
@@ -77,7 +78,7 @@ protected:
 private:
     void linearInterpolateTransform(Camera*);
     qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
-    QPointF getBezierPoint(QPointF first, QPointF last, QPointF midpoint, qreal percent) const;
+    QPointF getBezierPoint(QPointF first, QPointF last, QPointF pathPoint, qreal percent) const;
     qreal getRealLineAngle(QLineF line);
 
     int mFieldW = 800;

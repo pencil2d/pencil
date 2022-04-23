@@ -33,7 +33,7 @@ public:
     Camera* clone() const override;
 
     QTransform getView();
-    void reset();
+    void resetTransform();
     void updateViewTransform();
     void assign(const Camera& rhs);
 
@@ -52,8 +52,11 @@ public:
     void setEasingType(CameraEasingType type) { mEasingType = type; }
     CameraEasingType getEasingType() const { return mEasingType; }
 
-    void setPathMidPoint(QPointF point) { mPathMidPoint = point; }
-    QPointF getPathMidPoint() const { return mPathMidPoint; }
+    void setPathControlPoint(QPointF point) { mPathControlPoint = point; }
+    QPointF getPathControlPoint() const { return mPathControlPoint; }
+
+    void setPathControlPointMoved(bool pathMoved) { mPathControlPointMoved  = pathMoved; }
+    bool pathControlPointMoved() const { return mPathControlPointMoved ; }
 
 
 private:
@@ -64,7 +67,8 @@ private:
     bool mNeedUpdateView = true;
 
     CameraEasingType mEasingType = CameraEasingType::LINEAR;
-    QPointF mPathMidPoint = QPointF();
+    QPointF mPathControlPoint = QPointF();
+    bool mPathControlPointMoved = false;
 };
 
 #endif // CAMERA_H

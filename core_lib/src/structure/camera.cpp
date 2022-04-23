@@ -44,7 +44,7 @@ Camera::Camera(const Camera& c2) : KeyFrame(c2)
     mTranslate = c2.mTranslate;
     mRotate = c2.mRotate;
     mScale = c2.mScale;
-    mPathMidPoint = c2.mPathMidPoint;
+    mPathControlPoint = c2.mPathControlPoint;
     mEasingType = c2.mEasingType;
     mNeedUpdateView = true;
 }
@@ -63,7 +63,7 @@ void Camera::assign(const Camera& rhs)
     mTranslate = rhs.mTranslate;
     mRotate = rhs.mRotate;
     mScale = rhs.mScale;
-    mPathMidPoint = rhs.mPathMidPoint;
+    mPathControlPoint = rhs.mPathControlPoint;
     mEasingType = rhs.mEasingType;
 
     mNeedUpdateView = true;
@@ -78,7 +78,7 @@ QTransform Camera::getView()
     return mView;
 }
 
-void Camera::reset()
+void Camera::resetTransform()
 {
     mTranslate = QPointF(0, 0);
     mRotate = 0.;
