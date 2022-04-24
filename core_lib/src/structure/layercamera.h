@@ -68,7 +68,7 @@ public:
     void updatePathControlPointAtFrame(QPointF point, int frame);
     void setPathMovedAtFrame(int frame, bool moved);
 
-    void updateControlPointOnDeleteFrame(int frame);
+    void updateControlPointOnWillDeleteFrame(int frame);
     void updateControlPointsOnAddFrame(int frame);
 
 protected:

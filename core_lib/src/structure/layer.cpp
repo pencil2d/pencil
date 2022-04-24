@@ -226,9 +226,9 @@ bool Layer::removeKeyFrame(int position)
         if (frame->isSelected()) {
             removeFromSelectionList(frame->pos());
         }
+        emit willDeleteKeyframe(frame->pos());
         mKeyFrames.erase(frame->pos());
         markFrameAsDirty(frame->pos());
-        emit keyframeDeleted(frame->pos());
         delete frame;
     }
     return true;
