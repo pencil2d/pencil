@@ -340,6 +340,7 @@ void LayerCamera::updateControlPointOnWillDeleteFrame(int frame)
     // Reset control point move state when there's no frame to adjust to
     if (prev == frame || frame == next) {
         camPrev->setPathControlPointMoved(false);
+        camPrev->setPathControlPoint(camPrev->translation());
         return;
     }
 
