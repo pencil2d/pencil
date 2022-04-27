@@ -25,8 +25,6 @@ GNU General Public License for more details.
 
 BitmapImage::BitmapImage()
 {
-    mImage.reset(new QImage); // create null image
-    mBounds = QRect(0, 0, 0, 0);
 }
 
 BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
@@ -35,14 +33,14 @@ BitmapImage::BitmapImage(const BitmapImage& a) : KeyFrame(a)
     mMinBound = a.mMinBound;
     mEnableAutoCrop = a.mEnableAutoCrop;
     mOpacity = a.mOpacity;
-    mImage.reset(new QImage(*a.mImage));
+    mImage = a.mImage;
 }
 
 BitmapImage::BitmapImage(const QRect& rectangle, const QColor& color)
 {
     mBounds = rectangle;
-    mImage.reset(new QImage(mBounds.size(), QImage::Format_ARGB32_Premultiplied));
-    mImage->fill(color.rgba());
+    mImage = QImage(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
+    mImage.fill(color.rgba());
     mMinBound = false;
 }
 
@@ -50,13 +48,13 @@ BitmapImage::BitmapImage(const QPoint& topLeft, const QImage& image)
 {
     mBounds = QRect(topLeft, image.size());
     mMinBound = true;
-    mImage.reset(new QImage(image));
+    mImage = image;
 }
 
 BitmapImage::BitmapImage(const QPoint& topLeft, const QString& path)
 {
     setFileName(path);
-    mImage.reset();
+    mImage = QImage();
 
     mBounds = QRect(topLeft, QSize(0, 0));
     mMinBound = true;
@@ -70,7 +68,7 @@ BitmapImage::~BitmapImage()
 void BitmapImage::setImage(QImage* img)
 {
     Q_CHECK_PTR(img);
-    mImage.reset(img);
+    mImage = *img;
     mMinBound = false;
 
     modification();
@@ -87,7 +85,7 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
     mBounds = a.mBounds;
     mMinBound = a.mMinBound;
     mOpacity = a.mOpacity;
-    mImage.reset(new QImage(*a.mImage));
+    mImage = a.mImage;
     modification();
     return *this;
 }
@@ -99,10 +97,10 @@ BitmapImage* BitmapImage::clone() const
 
 void BitmapImage::loadFile()
 {
-    if (mImage == nullptr)
+    if (!fileName().isEmpty() && mImage.isNull())
     {
-        mImage.reset(new QImage(fileName()));
-        mBounds.setSize(mImage->size());
+        mImage = QImage(fileName());
+        mBounds.setSize(mImage.size());
         mMinBound = false;
     }
 }
@@ -111,20 +109,20 @@ void BitmapImage::unloadFile()
 {
     if (isModified() == false)
     {
-        mImage.reset();
+        mImage = QImage();
     }
 }
 
 bool BitmapImage::isLoaded() const
 {
-    return (mImage != nullptr);
+    return !mImage.isNull();
 }
 
 quint64 BitmapImage::memoryUsage()
 {
-    if (mImage)
+    if (!mImage.isNull())
     {
-        return imageSize(*mImage);
+        return imageSize(mImage);
     }
     return 0;
 }
@@ -144,7 +142,7 @@ void BitmapImage::paintImage(QPainter& painter, QImage& image, QRect sourceRect,
 QImage* BitmapImage::image()
 {
     loadFile();
-    return mImage.get();
+    return &mImage;
 }
 
 BitmapImage BitmapImage::copy()
@@ -162,8 +160,7 @@ BitmapImage BitmapImage::copy(QRect rectangle)
     // so that the area beyond the image bounds is transparent.
     if (!mBounds.contains(rectangle) && !image()->hasAlphaChannel())
     {
-        QImage* img = image();
-        *mImage = img->convertToFormat(QImage::Format_ARGB32);
+        mImage = mImage.convertToFormat(QImage::Format_ARGB32);
     }
 
     BitmapImage result(rectangle.topLeft(), image()->copy(intersection2));
@@ -200,16 +197,16 @@ void BitmapImage::transform(QRect newBoundaries, bool smoothTransform)
 {
     mBounds = newBoundaries;
     newBoundaries.moveTopLeft(QPoint(0, 0));
-    QImage* newImage = new QImage(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
+    QImage newImage(mBounds.size(), QImage::Format_ARGB32_Premultiplied);
 
-    QPainter painter(newImage);
+    QPainter painter(&newImage);
     painter.setRenderHint(QPainter::SmoothPixmapTransform, smoothTransform);
     painter.setCompositionMode(QPainter::CompositionMode_Source);
-    painter.fillRect(newImage->rect(), QColor(0, 0, 0, 0));
+    painter.fillRect(newImage.rect(), QColor(0, 0, 0, 0));
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
     painter.drawImage(newBoundaries, *image());
     painter.end();
-    mImage.reset(newImage);
+    mImage = newImage;
 
     modification();
 }
@@ -256,15 +253,15 @@ void BitmapImage::updateBounds(QRect newBoundaries)
     // Check to make sure changes actually need to be made
     if (mBounds == newBoundaries) return;
 
-    QImage* newImage = new QImage( newBoundaries.size(), QImage::Format_ARGB32_Premultiplied);
-    newImage->fill(Qt::transparent);
-    if (!newImage->isNull())
+    QImage newImage(newBoundaries.size(), QImage::Format_ARGB32_Premultiplied);
+    newImage.fill(Qt::transparent);
+    if (!newImage.isNull())
     {
-        QPainter painter(newImage);
-        painter.drawImage(mBounds.topLeft() - newBoundaries.topLeft(), *mImage);
+        QPainter painter(&newImage);
+        painter.drawImage(mBounds.topLeft() - newBoundaries.topLeft(), mImage);
         painter.end();
     }
-    mImage.reset( newImage );
+    mImage = newImage;
     mBounds = newBoundaries;
     mMinBound = false;
 
@@ -290,15 +287,15 @@ void BitmapImage::extend(QRect rectangle)
     else
     {
         QRect newBoundaries = mBounds.united(rectangle).normalized();
-        QImage* newImage = new QImage(newBoundaries.size(), QImage::Format_ARGB32_Premultiplied);
-        newImage->fill(Qt::transparent);
-        if (!newImage->isNull())
+        QImage newImage(newBoundaries.size(), QImage::Format_ARGB32_Premultiplied);
+        newImage.fill(Qt::transparent);
+        if (!newImage.isNull())
         {
-            QPainter painter(newImage);
+            QPainter painter(&newImage);
             painter.drawImage(mBounds.topLeft() - newBoundaries.topLeft(), *image());
             painter.end();
         }
-        mImage.reset(newImage);
+        mImage = newImage;
         mBounds = newBoundaries;
 
         modification();
@@ -388,26 +385,26 @@ void BitmapImage::autoCrop()
 {
     if (!mEnableAutoCrop) return;
     if (mBounds.isEmpty()) return; // Exit if current bounds are null
-    if (!mImage) return;
+    if (mImage.isNull()) return;
 
-    Q_ASSERT(mBounds.size() == mImage->size());
+    Q_ASSERT(mBounds.size() == mImage.size());
 
     // Exit if already min bounded
     if (mMinBound) return;
 
     // Get image properties
-    const int width = mImage->width();
+    const int width = mImage.width();
 
     // Relative top and bottom row indices (inclusive)
     int relTop = 0;
-    int relBottom = mBounds.height()-1;
+    int relBottom = mBounds.height() - 1;
 
     // Check top row
     bool isEmpty = true; // Used to track if a non-transparent pixel has been found
     while (isEmpty && relTop <= relBottom) // Loop through rows
     {
         // Point cursor to the first pixel in the current top row
-        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relTop));
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(relTop));
         for (int col = 0; col < width; col++) // Loop through pixels in row
         {
             // If the pixel is not transparent
@@ -435,7 +432,7 @@ void BitmapImage::autoCrop()
     while (isEmpty && relBottom >= relTop) // Loop through rows
     {
         // Point cursor to the first pixel in the current bottom row
-        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relBottom));
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(relBottom));
         for (int col = 0; col < width; col++) // Loop through pixels in row
         {
             // If the pixel is not transparent
@@ -467,7 +464,7 @@ void BitmapImage::autoCrop()
     while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relLeft
-        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relTop)) + relLeft;
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(relTop)) + relLeft;
         // Loop through pixels in column
         // Note: we only need to loop from relTop to relBottom (inclusive)
         //       not the full image height, because rows 0 to relTop-1 and
@@ -501,7 +498,7 @@ void BitmapImage::autoCrop()
     while (isEmpty && relRight >= relLeft) // Loop through columns
     {
         // Point cursor to the pixel at row relTop and column relRight
-        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage->constScanLine(relTop)) + relRight;
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(relTop)) + relRight;
         // Loop through pixels in column
         // Note: we only need to loop from relTop to relBottom (inclusive)
         //       not the full image height, because rows 0 to relTop-1 and
@@ -688,9 +685,9 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
 
 Status BitmapImage::writeFile(const QString& filename)
 {
-    if (mImage && !mImage->isNull())
+    if (!mImage.isNull())
     {
-        bool b = mImage->save(filename);
+        bool b = mImage.save(filename);
         return (b) ? Status::OK : Status::FAIL;
     }
 
@@ -709,7 +706,7 @@ Status BitmapImage::writeFile(const QString& filename)
 
 void BitmapImage::clear()
 {
-    mImage.reset(new QImage); // null image
+    mImage = QImage(); // null image
     mBounds = QRect(0, 0, 0, 0);
     mMinBound = true;
     modification();
@@ -720,7 +717,7 @@ QRgb BitmapImage::constScanLine(int x, int y) const
     QRgb result = qRgba(0, 0, 0, 0);
     if (mBounds.contains(QPoint(x, y)))
     {
-        result = *(reinterpret_cast<const QRgb*>(mImage->constScanLine(y - mBounds.top())) + x - mBounds.left());
+        result = *(reinterpret_cast<const QRgb*>(mImage.constScanLine(y - mBounds.top())) + x - mBounds.left());
     }
     return result;
 }
