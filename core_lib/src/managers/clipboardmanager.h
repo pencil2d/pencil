@@ -63,7 +63,7 @@ public:
     const VectorImage& getVectorClipboard() const { return mVectorImage; }
     std::map<int, KeyFrame*> getClipboardFrames() { return mFrames; }
 
-    bool framesLayerType() const { return mFramesType; }
+    Layer::LAYER_TYPE framesLayerType() const { return mFramesType; }
     bool framesIsEmpty() const { return mFrames.empty(); }
 
 private:
