@@ -1396,6 +1396,7 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 {
     PlaybackManager* pPlaybackManager = pEditor->playback();
+    connect(pTimeline, &TimeLine::duplicateLayerClick, mCommands, &ActionCommands::duplicateLayer);
     connect(pTimeline, &TimeLine::duplicateKeyClick, mCommands, &ActionCommands::duplicateKey);
 
     connect(pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound);
