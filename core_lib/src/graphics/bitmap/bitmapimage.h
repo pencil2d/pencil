@@ -17,7 +17,6 @@ GNU General Public License for more details.
 #ifndef BITMAP_IMAGE_H
 #define BITMAP_IMAGE_H
 
-#include <memory>
 #include <QPainter>
 #include "keyframe.h"
 
@@ -130,8 +129,8 @@ protected:
     void setCompositionModeBounds(QRect sourceBounds, bool isSourceMinBounds, QPainter::CompositionMode cm);
 
 private:
-    std::unique_ptr<QImage> mImage;
-    QRect mBounds;
+    QImage mImage;
+    QRect mBounds{0, 0, 0, 0};
 
     /** @see isMinimallyBounded() */
     bool mMinBound = true;
