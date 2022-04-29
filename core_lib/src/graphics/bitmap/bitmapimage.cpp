@@ -56,7 +56,7 @@ BitmapImage::BitmapImage(const QPoint& topLeft, const QString& path)
     setFileName(path);
     mImage = QImage();
 
-    mBounds = QRect(topLeft, QSize(0, 0));
+    mBounds = QRect(topLeft, QSize(-1, 0));
     mMinBound = true;
     setModified(false);
 }
@@ -67,7 +67,7 @@ BitmapImage::~BitmapImage()
 
 void BitmapImage::setImage(QImage* img)
 {
-    Q_CHECK_PTR(img);
+    Q_ASSERT(img);
     mImage = *img;
     mMinBound = false;
 
@@ -97,7 +97,7 @@ BitmapImage* BitmapImage::clone() const
 
 void BitmapImage::loadFile()
 {
-    if (!fileName().isEmpty() && mImage.isNull())
+    if (!fileName().isEmpty() && !isLoaded())
     {
         mImage = QImage(fileName());
         mBounds.setSize(mImage.size());
@@ -115,7 +115,7 @@ void BitmapImage::unloadFile()
 
 bool BitmapImage::isLoaded() const
 {
-    return !mImage.isNull();
+    return mImage.width() == mBounds.width();
 }
 
 quint64 BitmapImage::memoryUsage()
