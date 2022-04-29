@@ -74,9 +74,14 @@ public:
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
     static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
-    static bool floodFill(BitmapImage* replaceImage, BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb fillColor, int tolerance);
-    static void expandFill(BitmapImage* targetImage, QRgb fillColor, int expand);
-    static QVector<QVector<int> > manhattanDistance(BitmapImage* image, QRgb& searchColor);
+    static bool floodFill(BitmapImage** replaceImage, const BitmapImage* targetImage, const QRect& cameraRect, const QPoint& point, const QRgb& fillColor, int tolerance, const int expandValue);
+    static bool* floodFillPoints(const BitmapImage* targetImage,
+                                QRect searchBounds, const QRect& maxBounds,
+                                QPoint point,
+                                const int tolerance,
+                                QRect& newBounds,
+                                 bool &fillBorder);
+    static void expandFill(bool* fillPixels, const QRect& searchBounds, const QRect& maxBounds, int expand);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
     void drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
