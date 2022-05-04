@@ -330,10 +330,15 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
     if (isArchiveSt.ok())
     {
-        dd << "Miniz";
-
         QString sBackupFile = backupPreviousFile(sFileName);
 
+        if (!saveOk) {
+            return Status(Status::FAIL, dd,
+                          tr("Internal Error"),
+                          tr("An internal error occurred. Your file may not be saved successfully."));
+        }
+
+        dd << "Miniz";
         Status stMiniz = MiniZ::compressFolder(sFileName, sTempWorkingFolder, filesToZip, "application/x-pencil2d-pclx");
         if (!stMiniz.ok())
         {
