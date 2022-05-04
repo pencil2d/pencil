@@ -569,10 +569,19 @@ QString FileManager::backupPreviousFile(const QString& fileName)
         return "";
 
     QFileInfo info(fileName);
-    QString sBackupFile = info.completeBaseName() + ".backup." + info.suffix();
+    int backupCount = 1;
+    QDir directory(info.absoluteDir());
+    QString backupString = "backup";
+    for (QFileInfo info : directory.entryInfoList(QDir::Filter::Files)) {
+        if (info.completeBaseName().contains(backupString)) {
+            backupCount++;
+        }
+    }
+
+    QString sBackupFile = info.baseName() + "." + backupString + QString::number(backupCount) + "." + info.suffix();
     QString sBackupFileFullPath = QDir(info.absolutePath()).filePath(sBackupFile);
 
-    bool ok = QFile::rename(info.absoluteFilePath(), sBackupFileFullPath);
+    bool ok = QFile::copy(info.absoluteFilePath(), sBackupFileFullPath);
     if (!ok)
     {
         FILEMANAGER_LOG("Cannot backup the previous file");
