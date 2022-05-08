@@ -50,11 +50,16 @@ Object* FileManager::load(const QString& sFileName)
     QString strDataFolder;
 
     // Test file format: new zipped .pclx or old .pcl?
-    bool oldFormat = isOldForamt(sFileName);
-    dd << QString("Is old format: ").append(oldFormat ? "true" : "false");
+    Status archiveSt = isArchiveFormat(sFileName);
 
-    if (oldFormat)
+    QString isArchive = "Is archive: ";
+    if (archiveSt.ok()) {
+        dd << isArchive.append("true");
+    }
+
+    if (archiveSt == Status::NOT_ARCHIVE_FORMAT)
     {
+        dd << isArchive.append("false");
         dd << "Recognized Old Pencil2D File Format (*.pcl) !";
 
         strMainXMLFile = sFileName;
@@ -64,7 +69,15 @@ Object* FileManager::load(const QString& sFileName)
     {
         dd << "Recognized New zipped Pencil2D File Format (*.pclx) !";
 
-        unzip(sFileName, obj->workingDir());
+        Status sanityCheck = MiniZ::sanityCheck(sFileName);
+
+        // Let's check if we can read the file before we try to unzip.
+        if (!sanityCheck.ok()) {
+            dd.collect(sanityCheck.details());
+        } else {
+            Status unzipStatus = unzip(sFileName, obj->workingDir());
+            dd.collect(unzipStatus.details());
+        }
 
         strMainXMLFile = QDir(obj->workingDir()).filePath(PFF_XML_FILE_NAME);
         strDataFolder = QDir(obj->workingDir()).filePath(PFF_DATA_DIR);
@@ -198,9 +211,12 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
     return object->loadXML(root, [this] { progressForward(); });
 }
 
-bool FileManager::isOldForamt(const QString& fileName) const
+Status FileManager::isArchiveFormat(const QString& fileName) const
 {
-    return !(MiniZ::isZip(fileName));
+    if (QFileInfo(fileName).suffix().compare(PFF_BIG_LETTER_EXTENSION, Qt::CaseInsensitive) != 0) {
+        return Status::NOT_ARCHIVE_FORMAT;
+    }
+    return Status::OK;
 }
 
 Status FileManager::save(const Object* object, const QString& sFileName)
@@ -255,8 +271,8 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     QString sMainXMLFile;
     QString sDataFolder;
 
-    const bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
-    if (isOldType)
+    Status isArchiveSt = isArchiveFormat(sFileName);
+    if (isArchiveSt == Status::NOT_ARCHIVE_FORMAT)
     {
         dd << "Old Pencil2D File Format (*.pcl) !";
 
@@ -266,6 +282,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     else
     {
         dd << "New zipped Pencil2D File Format (*.pclx) !";
+        dd.collect(MiniZ::sanityCheck(sFileName).details());
 
         sTempWorkingFolder = object->workingDir();
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
@@ -311,7 +328,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
     progressForward();
 
-    if (!isOldType)
+    if (isArchiveSt.ok())
     {
         dd << "Miniz";
 
@@ -681,7 +698,7 @@ Status FileManager::writePalette(const Object* object, const QString& dataFolder
     return Status::OK;
 }
 
-void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
+Status FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
 {
     // removes the previous directory first  - better approach
     removePFFTmpDirectory(strUnzipTarget);
@@ -690,6 +707,7 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     Q_ASSERT(s.ok());
 
     mstrLastTempFolder = strUnzipTarget;
+    return s;
 }
 
 QList<ColorRef> FileManager::loadPaletteFile(QString strFilename)
