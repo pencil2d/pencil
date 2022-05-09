@@ -37,7 +37,7 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
     }
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
 
-    connect(this, &LayerCamera::willDeleteKeyframe, this, &LayerCamera::updateControlPointOnWillDeleteFrame);
+    connect(this, &LayerCamera::keyframeDeleted, this, &LayerCamera::updateControlPointOnDeleteFrame);
     connect(this, &LayerCamera::keyframeAdded, this, &LayerCamera::updateControlPointsOnAddFrame);
 }
 
@@ -331,31 +331,15 @@ QPointF LayerCamera::getBezierPoint(QPointF first, QPointF last, QPointF pathPoi
     return QLineF(line1.pointAt(percent), line2.pointAt(percent)).pointAt(percent);
 }
 
-void LayerCamera::updateControlPointOnWillDeleteFrame(int frame)
+void LayerCamera::updateControlPointOnDeleteFrame(int frame)
 {
-    int next = getNextKeyFramePosition(frame);
-    int prev = getPreviousKeyFramePosition(frame);
-
-    Camera* camPrev = getCameraAtFrame(prev);
-    // Reset control point move state when there's no frame to adjust to
-    if (prev == frame || frame == next) {
-        camPrev->setPathControlPointMoved(false);
-        camPrev->setPathControlPoint(camPrev->translation());
+    int frameToUpdate = getPreviousKeyFramePosition(frame);
+    if (frameToUpdate > frame) {
         return;
     }
 
-    Camera* camFrame = getCameraAtFrame(frame);
-    Camera* camNext = getCameraAtFrame(next);
-    Q_ASSERT(camPrev && camFrame && camNext);
-
-    // Determine where we should put the new control point
-    QLineF camPrevLine(-camPrev->translation(), camPrev->getPathControlPoint());
-    QLineF camNextLine(-camNext->translation(), camFrame->getPathControlPoint());
-    QPointF intersectionP;
-    camPrevLine.intersects(camNextLine, &intersectionP);
-
-    camPrev->setPathControlPoint(intersectionP);
-    camPrev->modification();
+    centerPathControlPointAtFrame(frameToUpdate);
+    setPathMovedAtFrame(frameToUpdate, false);
 }
 
 void LayerCamera::updateControlPointsOnAddFrame(int frame)
@@ -364,39 +348,28 @@ void LayerCamera::updateControlPointsOnAddFrame(int frame)
     int prev = getPreviousKeyFramePosition(frame);
 
     // if inbetween frames
-    if (frame > prev && frame < next)
+    if (prev < frame)
     {
         Camera* camPrev = getCameraAtFrame(prev);
         Camera* camFrame = getCameraAtFrame(frame);
         Camera* camNext = getCameraAtFrame(next);
         Q_ASSERT(camPrev && camFrame && camNext);
 
-        QPointF currentCamTranslation = camFrame->translation();
-        QPointF prevCamTranslation = camPrev->translation();
-        QPointF prevCamCPoint = camPrev->getPathControlPoint();
-        QPointF nextCamTranslation = camNext->translation();
+        // get center point for new frame
+        QPointF point = camFrame->translation();
+        QPointF midPoint = camPrev->getPathControlPoint();
 
-        // Determine where to put control points
+        // from prev to frame
+        QLineF toPoint(-camPrev->translation(), -point);
+        QLineF toMidpoint(-camPrev->translation(), midPoint);
+        camPrev->setPathControlPoint(toMidpoint.pointAt(0.5));
+        camPrev->modification();
 
-        // First to added frame
-        QLineF intersection(-prevCamTranslation, prevCamCPoint);
-        qreal percent = 1. - ((static_cast<qreal>(camNext->pos()) - static_cast<qreal>(camFrame->pos())) / static_cast<qreal>(camNext->pos()));
-        QLineF toControlPoint(-currentCamTranslation, intersection.pointAt(percent));
-        QPointF newCamPrevCP;
-        intersection.intersects(toControlPoint, &newCamPrevCP);
-
-        camPrev->setPathControlPoint(newCamPrevCP);
-        camPrev->setPathControlPointMoved(true);
-
-        // Last to added frame
-        intersection = QLineF(-nextCamTranslation, prevCamCPoint);
-        percent = 1. - percent;
-        toControlPoint = QLineF(-currentCamTranslation, intersection.pointAt(percent));
-        QPointF newCamNextCP;
-        intersection.intersects(toControlPoint, &newCamNextCP);
-
-        camFrame->setPathControlPoint(newCamNextCP);
-        camFrame->setPathControlPointMoved(true);
+        // from frame to next
+        toPoint = QLineF(-camNext->translation(), -point);
+        toMidpoint = QLineF(-camNext->translation(), midPoint);
+        camFrame->setPathControlPoint(toMidpoint.pointAt(0.5));
+        camFrame->modification();
     }
     else
     {

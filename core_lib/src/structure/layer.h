@@ -175,7 +175,7 @@ public:
 
 signals:
     void selectedFramesChanged();
-    void willDeleteKeyframe(int frame);
+    void keyframeDeleted(int frame);
     void keyframeAdded(int frame);
 
 protected:
