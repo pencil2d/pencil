@@ -50,16 +50,11 @@ Object* FileManager::load(const QString& sFileName)
     QString strDataFolder;
 
     // Test file format: new zipped .pclx or old .pcl?
-    Status archiveSt = isArchiveFormat(sFileName);
+    bool isArchive = isArchiveFormat(sFileName);
+    QString isArchiveStr = "Is archive: " + QString(isArchive);
 
-    QString isArchive = "Is archive: ";
-    if (archiveSt.ok()) {
-        dd << isArchive.append("true");
-    }
-
-    if (archiveSt == Status::NOT_ARCHIVE_FORMAT)
+    if (!isArchive)
     {
-        dd << isArchive.append("false");
         dd << "Recognized Old Pencil2D File Format (*.pcl) !";
 
         strMainXMLFile = sFileName;
@@ -211,12 +206,12 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
     return object->loadXML(root, [this] { progressForward(); });
 }
 
-Status FileManager::isArchiveFormat(const QString& fileName) const
+bool FileManager::isArchiveFormat(const QString& fileName) const
 {
     if (QFileInfo(fileName).suffix().compare(PFF_BIG_LETTER_EXTENSION, Qt::CaseInsensitive) != 0) {
-        return Status::NOT_ARCHIVE_FORMAT;
+        return false;
     }
-    return Status::OK;
+    return true;
 }
 
 Status FileManager::save(const Object* object, const QString& sFileName)
@@ -271,8 +266,8 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     QString sMainXMLFile;
     QString sDataFolder;
 
-    Status isArchiveSt = isArchiveFormat(sFileName);
-    if (isArchiveSt == Status::NOT_ARCHIVE_FORMAT)
+    bool isArchive = isArchiveFormat(sFileName);
+    if (!isArchive)
     {
         dd << "Old Pencil2D File Format (*.pcl) !";
 
@@ -328,7 +323,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
     progressForward();
 
-    if (isArchiveSt.ok())
+    if (isArchive)
     {
         QString sBackupFile = backupPreviousFile(sFileName);
 

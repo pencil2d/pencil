@@ -56,7 +56,6 @@ public:
         ERROR_INVALID_XML_FILE,
         ERROR_INVALID_PENCIL_FILE,
         ERROR_MINIZ_FAIL,
-        NOT_ARCHIVE_FORMAT,
 
         // General
         ERROR_INVALID_LAYER_TYPE,
