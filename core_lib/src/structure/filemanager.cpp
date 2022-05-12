@@ -558,25 +558,38 @@ void FileManager::handleOpenProjectError(Status::ErrorCode error, const DebugDet
     removePFFTmpDirectory(mstrLastTempFolder);
 }
 
+int FileManager::countExistingBackups(const QString& fileName) const
+{
+    QFileInfo fileInfo(fileName);
+    QDir directory(fileInfo.absoluteDir());
+    const QString& baseName = fileInfo.completeBaseName();
+
+    int backupCount = 0;
+    for (QFileInfo dirFileInfo : directory.entryInfoList(QDir::Filter::Files)) {
+        QString searchFileBaseName = dirFileInfo.completeBaseName();
+        if (baseName.compare(searchFileBaseName) == 0 && searchFileBaseName.contains(PFF_BACKUP_IDENTIFIER)) {
+            backupCount++;
+        }
+    }
+
+    return backupCount;
+}
+
 QString FileManager::backupPreviousFile(const QString& fileName)
 {
     if (!QFile::exists(fileName))
         return "";
 
-    QFileInfo info(fileName);
-    int backupCount = 1;
-    QDir directory(info.absoluteDir());
-    QString backupString = "backup";
-    for (QFileInfo info : directory.entryInfoList(QDir::Filter::Files)) {
-        if (info.completeBaseName().contains(backupString)) {
-            backupCount++;
-        }
-    }
+    QFileInfo fileInfo(fileName);
+    QString baseName = fileInfo.completeBaseName();
 
-    QString sBackupFile = info.baseName() + "." + backupString + QString::number(backupCount) + "." + info.suffix();
-    QString sBackupFileFullPath = QDir(info.absolutePath()).filePath(sBackupFile);
+    int backupCount = countExistingBackups(fileName) + 1; // start index 1
+    QString countStr = QString::number(backupCount);
 
-    bool ok = QFile::copy(info.absoluteFilePath(), sBackupFileFullPath);
+    QString sBackupFile = baseName + "." + PFF_BACKUP_IDENTIFIER + countStr + "." + fileInfo.suffix();
+    QString sBackupFileFullPath = QDir(fileInfo.absolutePath()).filePath(sBackupFile);
+
+    bool ok = QFile::copy(fileInfo.absoluteFilePath(), sBackupFileFullPath);
     if (!ok)
     {
         FILEMANAGER_LOG("Cannot backup the previous file");

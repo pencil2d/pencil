@@ -73,6 +73,7 @@ private:
 
     QString backupPreviousFile(const QString& fileName);
     void deleteBackupFile(const QString& fileName);
+    int countExistingBackups(const QString& fileName) const;
 
     void progressForward();
 
