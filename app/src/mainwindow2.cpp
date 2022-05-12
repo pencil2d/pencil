@@ -1003,7 +1003,15 @@ void MainWindow2::newObject()
 {
     auto object = new Object();
     object->init();
-    object->createDefaultLayers();
+
+    // default layers
+    object->addNewCameraLayer();
+    object->addNewBitmapLayer();
+    // Layers are counted bottom up
+    // 0 - Camera Layer
+    // 1 - Bitmap Layer
+    object->data()->setCurrentLayer(1);
+
     mEditor->setObject(object);
 
     closeDialogs();
@@ -1388,6 +1396,7 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 {
     PlaybackManager* pPlaybackManager = pEditor->playback();
+    connect(pTimeline, &TimeLine::duplicateLayerClick, mCommands, &ActionCommands::duplicateLayer);
     connect(pTimeline, &TimeLine::duplicateKeyClick, mCommands, &ActionCommands::duplicateKey);
 
     connect(pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound);

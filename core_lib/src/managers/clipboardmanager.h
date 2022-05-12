@@ -59,11 +59,11 @@ public:
      */
     void copySelectedFrames(const Layer* currentLayer);
 
-    BitmapImage getBitmapClipboard() const { return mBitmapImage; }
-    VectorImage getVectorClipboard() const { return mVectorImage; }
+    const BitmapImage& getBitmapClipboard() const { return mBitmapImage; }
+    const VectorImage& getVectorClipboard() const { return mVectorImage; }
     std::map<int, KeyFrame*> getClipboardFrames() { return mFrames; }
 
-    bool framesTypeChanged(const Layer* layer) const { return layer->type() != mFramesType; }
+    Layer::LAYER_TYPE framesLayerType() const { return mFramesType; }
     bool framesIsEmpty() const { return mFrames.empty(); }
 
 private:

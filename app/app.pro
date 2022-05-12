@@ -28,6 +28,7 @@ EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_da.ts \
 	$$PWD/../translations/pencil_de.ts \
 	$$PWD/../translations/pencil_el.ts \
+	$$PWD/../translations/pencil_en.ts \
 	$$PWD/../translations/pencil_es.ts \
 	$$PWD/../translations/pencil_et.ts \
 	$$PWD/../translations/pencil_fr.ts \

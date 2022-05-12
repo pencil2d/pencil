@@ -100,14 +100,7 @@ void StatusBar::updateToolStatus(ToolType tool)
             mToolLabel->setText(tr("Click and drag to create or modify a selection. Hold Alt to modify its contents or press Backspace to clear them."));
             break;
         case MOVE:
-            if (mEditor->getScribbleArea()->isTemporaryTool())
-            {
-                mToolLabel->setText(tr("Click and drag to move an object."));
-            }
-            else
-            {
-                mToolLabel->setText(tr("Click and drag to move an object. Hold Ctrl to rotate."));
-            }
+            mToolLabel->setText(tr("Click and drag to move an object. Hold Ctrl to rotate."));
             break;
         case HAND:
             mToolLabel->setText(tr("Click and drag to pan. Hold Ctrl to zoom or Alt to rotate."));

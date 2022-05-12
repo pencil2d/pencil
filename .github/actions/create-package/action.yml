@@ -19,3 +19,4 @@ runs:
     env:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
+      IS_RELEASE: ${{ github.ref == 'refs/heads/release' }}

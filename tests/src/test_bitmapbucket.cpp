@@ -15,7 +15,7 @@
 
 #include "basetool.h"
 
-void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRectF bounds, Properties properties) {
+void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRect bounds, Properties properties) {
     int moveX = 0;
 
     BitmapBucket bucket = BitmapBucket(editor, color, bounds, movePoint, properties);

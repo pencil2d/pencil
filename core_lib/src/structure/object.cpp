@@ -208,14 +208,6 @@ void Object::setWorkingDir(const QString& path)
     mWorkingDirPath = path;
 }
 
-void Object::createDefaultLayers()
-{
-    // default layers
-    addNewCameraLayer();
-    addNewVectorLayer();
-    addNewBitmapLayer();
-}
-
 int Object::getMaxLayerID()
 {
     int maxId = 0;
@@ -887,10 +879,13 @@ void Object::updateActiveFrames(int frame) const
 
     for (Layer* layer : mLayers)
     {
-        for (int k = beginFrame; k < endFrame; ++k)
+        if (layer->visible())
         {
-            KeyFrame* key = layer->getKeyFrameAt(k);
-            mActiveFramePool->put(key);
+            for (int k = beginFrame; k < endFrame; ++k)
+            {
+                KeyFrame* key = layer->getKeyFrameAt(k);
+                mActiveFramePool->put(key);
+            }
         }
     }
 }
