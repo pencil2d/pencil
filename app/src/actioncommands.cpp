@@ -711,7 +711,6 @@ void ActionCommands::duplicateLayer()
         }
         else
         {
-            key->setFileName("");
             key->modification();
         }
     });

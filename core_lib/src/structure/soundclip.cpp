@@ -50,6 +50,8 @@ SoundClip& SoundClip::operator=(const SoundClip& a)
 
 SoundClip* SoundClip::clone() const
 {
+    // Question: need to copy the file?
+    // The audio files are not allowed to be edited in Pencil2D, it should be file for now.
     return new SoundClip(*this);
 }
 

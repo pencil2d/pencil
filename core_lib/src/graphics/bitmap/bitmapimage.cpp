@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QtMath>
 #include <QFile>
+#include <QFileInfo>
 #include <QPainterPath>
 #include "util.h"
 
@@ -94,7 +95,30 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 
 BitmapImage* BitmapImage::clone() const
 {
-    return new BitmapImage(*this);
+    BitmapImage* b = new BitmapImage(*this);
+    b->setFileName(""); // don't link to the file of the source bitmap image
+
+    const bool validKeyFrame = !fileName().isEmpty();
+    if (validKeyFrame && !isLoaded()) 
+    {
+        // This bitmapImage is temporarily unloaded.
+        // since it's not in the memory, we need to copy the linked png file to prevent data loss.
+        QFileInfo finfo(fileName());
+        Q_ASSERT(finfo.isAbsolute());
+        Q_ASSERT(QFile::exists(fileName()));
+
+        QString newFileName = QString("%1/%2-%3.%4")
+            .arg(finfo.canonicalPath())
+            .arg(finfo.completeBaseName())
+            .arg(uniqueString(12))
+            .arg(finfo.suffix());
+        b->setFileName(newFileName);
+
+        bool ok = QFile::copy(fileName(), newFileName);
+        Q_ASSERT(ok);
+        qDebug() << "COPY>" << fileName();
+    }
+    return b;
 }
 
 void BitmapImage::loadFile()
