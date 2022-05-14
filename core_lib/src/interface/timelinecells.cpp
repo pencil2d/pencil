@@ -882,9 +882,12 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
 
 bool TimeLineCells::event(QEvent* event)
 {
-    if (event->type() == QEvent::Leave) {
-        onDidLeaveWidget();
+    if (event->type() == QEvent::Leave || event->type() == QEvent::Enter) {
+        // There's no guarantee that a release event is send after a press event...
+        // Therefore to avoid any weird states, we reset when leaving and entering the widget
+        onMouseFocusChange();
     }
+
 
     return QWidget::event(event);
 }
@@ -1307,9 +1310,11 @@ void TimeLineCells::trackScrubber()
     }
 }
 
-void TimeLineCells::onDidLeaveWidget()
+void TimeLineCells::onMouseFocusChange()
 {
     // Reset last known frame pos to avoid wrong UI states when leaving the widget
     mFramePosMoveX = 0;
+    primaryButton = Qt::NoButton;
+    mTimeLine->scrubbing = false;
     update();
 }

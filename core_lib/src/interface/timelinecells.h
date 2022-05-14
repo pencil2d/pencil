@@ -99,7 +99,7 @@ private:
     int getFrameX(int frameNumber) const;
     int getFrameNumber(int x) const;
 
-    void onDidLeaveWidget();
+    void onMouseFocusChange();
 
     void trackScrubber();
     void drawContent();
@@ -129,7 +129,6 @@ private:
     int mFrameLength = 1;
     int mFrameSize = 0;
     int mFontSize = 10;
-    bool mScrubbing = false;
     int mLayerHeight = 20;
     int mStartY = 0;
     int mEndY   = 0;
