@@ -78,7 +78,7 @@ void SelectionManager::resetSelectionTransform()
 
 bool SelectionManager::isOutsideSelectionArea(const QPointF point)
 {
-    return (!mTransformedSelection.contains(point)
+    return (!mTempTransformedSelection.contains(point)
             && validateMoveMode(point) == MoveMode::NONE);
 }
 
