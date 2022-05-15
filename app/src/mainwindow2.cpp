@@ -1362,7 +1362,7 @@ void MainWindow2::makeConnections(Editor* editor)
         ui->actionCut->setEnabled(canCopy);
     });
     connect(editor, &Editor::canPasteChanged, ui->actionPaste, &QAction::setEnabled);
-
+    connect(editor, &Editor::blockUI, this, &MainWindow2::onBlockUI);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
@@ -1504,12 +1504,34 @@ void MainWindow2::importMovieVideo()
     mSuppressAutoSaveDialog = false;
 }
 
+void MainWindow2::onBlockUI(bool block) {
+
+    if (mEditor->tools()->currentTool()->type() == MOVE) {
+        for (BaseDockWidget* widget : mDockWidgets) {
+            if (widget == nullptr) { continue; }
+            widget->blockUI(block);
+        }
+
+        ui->menuFile->setDisabled(block);
+        ui->menuAnimation->setDisabled(block);
+        ui->menuTools->setDisabled(block);
+        ui->menuLayer->setDisabled(block);
+        ui->menuEdit->setDisabled(block);
+
+        // We explicitly enable the selection menu
+        ui->menuSelection->setEnabled(true);
+    } else {
+        ui->menuBar->setEnabled(true);
+    }
+}
+
 bool MainWindow2::event(QEvent* event)
 {
     if(event->type() == QEvent::WindowActivate) {
         emit windowActivated();
         return true;
     }
+
     return QMainWindow::event(event);
 }
 

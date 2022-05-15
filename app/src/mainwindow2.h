@@ -99,6 +99,8 @@ public:
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
+    void onBlockUI(bool block);
+
 signals:
     void updateRecentFilesList(bool b);
 

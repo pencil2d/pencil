@@ -35,6 +35,9 @@ protected:
 public:
     virtual void initUI() = 0;
     virtual void updateUI() = 0;
+    virtual void blockUI(bool block) { Q_UNUSED(block) };
+
+    void blockWidget(bool block);
 
     Editor* editor() const { return mEditor; }
     void setEditor( Editor* e ) { mEditor = e; }
@@ -43,6 +46,8 @@ protected:
     virtual int getMinHeightForWidth(int width);
 
 private:
+
+    QWidget* mBlockUIWidget = nullptr;
     Editor* mEditor = nullptr;
 };
 

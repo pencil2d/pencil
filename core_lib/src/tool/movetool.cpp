@@ -167,6 +167,10 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
+
+    if (selectMan->transformHasBeenModified()) {
+        mEditor->requireUserAction(true);
+    }
 }
 
 void MoveTool::updateTransformation()
@@ -363,15 +367,11 @@ bool MoveTool::leavingThisTool()
     return true;
 }
 
-bool MoveTool::switchingLayer()
+void MoveTool::requestAction()
 {
-    auto selectMan = mEditor->select();
-    if (!selectMan->transformHasBeenModified())
-    {
-        mEditor->deselectAll();
-        return true;
-    }
+    if (mWarningShown) { return; }
 
+    bool requireAction = false;
     int returnValue = showTransformWarning();
 
     if (returnValue == QMessageBox::Yes)
@@ -386,28 +386,25 @@ bool MoveTool::switchingLayer()
         }
 
         mEditor->deselectAll();
-        return true;
     }
     else if (returnValue == QMessageBox::No)
     {
         cancelChanges();
-        return true;
     }
     else if (returnValue == QMessageBox::Cancel)
     {
-        return false;
+        requireAction = true;
     }
-    return true;
+    mWarningShown = false;
 }
 
 int MoveTool::showTransformWarning()
 {
-    int returnValue = QMessageBox::warning(nullptr,
-                                           tr("Layer switch", "Windows title of layer switch pop-up."),
-                                           tr("You are about to switch away, do you want to apply the transformation?"),
-                                           QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
-                                           QMessageBox::Yes);
-    return returnValue;
+    mWarningShown = true;
+    return QMessageBox::warning(nullptr, tr("Action required", "Windows title of pop-up."),
+                                        tr("Do you wish to apply the transformation changes before continuing?"),
+                                        QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
+                                        QMessageBox::Yes);
 }
 
 Layer* MoveTool::currentPaintableLayer()

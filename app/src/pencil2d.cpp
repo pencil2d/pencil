@@ -100,6 +100,7 @@ bool Pencil2D::event(QEvent* event)
         emit openFileRequested(fileOpenEvent->file());
         return true;
     }
+
     return QApplication::event(event);
 }
 

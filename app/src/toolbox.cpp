@@ -166,6 +166,21 @@ void ToolBoxWidget::updateUI()
 {
 }
 
+void ToolBoxWidget::blockUI(bool block)
+{
+    setDisabled(block);
+    blockWidget(block);
+}
+
+bool ToolBoxWidget::event(QEvent* event)
+{
+    if (event->type() == QEvent::MouseButtonPress && editor()->userActionRequired()) {
+        editor()->requestUserAction();
+    }
+
+    return BaseDockWidget::event(event);
+}
+
 void ToolBoxWidget::onToolSetActive(ToolType toolType)
 {
     deselectAllTools();

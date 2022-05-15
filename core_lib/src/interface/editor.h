@@ -112,7 +112,7 @@ public:
     LayerVisibility layerVisibility();
 
     qreal viewScaleInversed();
-    void deselectAll() const;
+    void deselectAll();
     void selectAll() const;
 
     void clipboardChanged();
@@ -123,6 +123,8 @@ public:
     QList<BackupElement*> mBackupList;
 
 signals:
+
+    void blockUI(bool b);
 
     /** This should be emitted after scrubbing */
     void scrubbed(int frameNumber);
@@ -215,6 +217,12 @@ public: //slots
     bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
 
+    void requireUserAction(bool b);
+    bool userActionRequired();
+
+    /** Use this to request user action before proceeding, and block the execution cycle if required */
+    bool requestUserAction();
+
 private:
     bool importBitmapImage(const QString&, int space = 0);
     bool importVectorImage(const QString&);
@@ -252,6 +260,7 @@ private:
     int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
     bool mAutosaveNeverAskAgain = false;
+    bool mActionRequired = false;
 
     void makeConnections();
     KeyFrame* addKeyFrame(int layerNumber, int frameNumber);

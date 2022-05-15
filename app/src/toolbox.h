@@ -42,6 +42,7 @@ public:
 
     void initUI() override;
     void updateUI() override;
+    void blockUI(bool block) override;
 
 public slots:
     void onToolSetActive(ToolType toolType);
@@ -59,6 +60,7 @@ public slots:
 
 protected:
     int getMinHeightForWidth(int width) override;
+    bool event(QEvent* event) override;
 
 signals:
     void clearButtonClicked();

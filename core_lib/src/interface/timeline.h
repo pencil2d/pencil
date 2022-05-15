@@ -34,6 +34,7 @@ public:
 
     void initUI() override;
     void updateUI() override;
+    void blockUI(bool block) override;
 
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );
@@ -79,6 +80,7 @@ public:
 protected:
     void resizeEvent( QResizeEvent* event ) override;
     void wheelEvent( QWheelEvent* ) override;
+    bool event(QEvent* event) override;
 
 private:
     void deleteCurrentLayer();

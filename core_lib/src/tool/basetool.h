@@ -130,7 +130,7 @@ public:
     virtual void setUseFillContour(const bool useFillContour);
 
     virtual bool leavingThisTool() { return true; }
-    virtual bool switchingLayer() { return true; } // default state should be true
+    virtual void requestAction() { return; }
 
     Properties properties;
 

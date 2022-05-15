@@ -35,6 +35,10 @@ BaseDockWidget::BaseDockWidget(QWidget* pParent)
     }
 #endif
 
+    mBlockUIWidget = new QWidget(this);
+
+    mBlockUIWidget->setHidden(true);
+    layout()->addWidget(mBlockUIWidget);
 }
 
 BaseDockWidget::~BaseDockWidget()
@@ -44,6 +48,10 @@ BaseDockWidget::~BaseDockWidget()
 void BaseDockWidget::resizeEvent(QResizeEvent *event)
 {
     QDockWidget::resizeEvent(event);
+
+    if (mBlockUIWidget) {
+        mBlockUIWidget->setGeometry(QRect(QPoint(), event->size()));
+    }
 
     // Not sure where the -2 comes from, but the event width is always 2 more than what is passed to FlowLayout::setGeometry
     int minHeight = getMinHeightForWidth(event->size().width() - 2);
@@ -62,4 +70,15 @@ int BaseDockWidget::getMinHeightForWidth(int width)
 {
     Q_UNUSED(width)
     return -1;
+}
+
+void BaseDockWidget::blockWidget(bool block)
+{
+    if (block) {
+        mBlockUIWidget->raise();
+        mBlockUIWidget->setHidden(false);
+    } else {
+        mBlockUIWidget->setHidden(true);
+        mBlockUIWidget->lower();
+    }
 }

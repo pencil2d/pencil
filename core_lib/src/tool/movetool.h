@@ -40,7 +40,7 @@ public:
     void pointerMoveEvent(PointerEvent*) override;
 
     bool leavingThisTool() override;
-    bool switchingLayer() override;
+    void requestAction() override;
 
 private:
     void cancelChanges();
@@ -64,6 +64,8 @@ private:
     QPointF offsetFromPressPos();
 
     Layer* currentPaintableLayer();
+
+    bool mWarningShown = false;
 
     QPointF anchorOriginPoint;
     Layer* mCurrentLayer = nullptr;

@@ -100,10 +100,6 @@ void PlaybackManager::play()
     updateStartFrame();
     updateEndFrame();
 
-    // This is probably not the right place or function to be calling this, but it's the easiest thing to do right now that works
-    // TODO make a new tool function to handle playing (or perhaps generic scrubbing)
-    bool switchLayer = editor()->tools()->currentTool()->switchingLayer();
-    if (!switchLayer) return;
 
     int frame = editor()->currentFrame();
     if (frame >= mEndFrame || frame < mStartFrame)

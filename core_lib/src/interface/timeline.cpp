@@ -245,6 +245,21 @@ void TimeLine::updateUI()
     updateContent();
 }
 
+void TimeLine::blockUI(bool block)
+{
+    setDisabled(block);
+    blockWidget(block);
+}
+
+bool TimeLine::event(QEvent* event)
+{
+    if (event->type() == QEvent::MouseButtonPress && editor()->userActionRequired()) {
+        editor()->requestUserAction();
+    }
+
+    return BaseDockWidget::event(event);
+}
+
 int TimeLine::getLength()
 {
     return mTracks->getFrameLength();
@@ -275,8 +290,9 @@ void TimeLine::extendLength(int frame)
     }
 }
 
-void TimeLine::resizeEvent(QResizeEvent*)
+void TimeLine::resizeEvent(QResizeEvent* event)
 {
+    BaseDockWidget::resizeEvent(event);
     updateLayerView();
 }
 

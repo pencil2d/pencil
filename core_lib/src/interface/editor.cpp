@@ -974,7 +974,7 @@ void Editor::selectAll() const
     select()->setSelection(rect, false);
 }
 
-void Editor::deselectAll() const
+void Editor::deselectAll()
 {
     select()->resetSelectionProperties();
 
@@ -990,10 +990,31 @@ void Editor::deselectAll() const
         }
     }
 
+    requireUserAction(false);
+
     if (layer->hasAnySelectedFrames()) {
         layer->deselectAll();
         emit updateTimeLine();
     }
+}
+
+void Editor::requireUserAction(bool b)
+{
+    mActionRequired = b;
+
+    emit blockUI(b);
+}
+
+bool Editor::userActionRequired()
+{
+    return mActionRequired;
+}
+
+bool Editor::requestUserAction()
+{
+    if (!mActionRequired) { return false; }
+    tools()->currentTool()->requestAction();
+    return mActionRequired;
 }
 
 void Editor::updateFrame(int frameNumber)
