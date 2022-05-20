@@ -775,6 +775,14 @@ void ScribbleArea::showLayerNotVisibleWarning()
                          QMessageBox::Ok);
 }
 
+void ScribbleArea::updateOriginalPolygonF()
+{
+    if (mEditor->select()->somethingSelected() && mOriginalPolygonF.isEmpty())
+        mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
+    else
+        mOriginalPolygonF = QPolygonF();
+}
+
 void ScribbleArea::paintBitmapBuffer()
 {
     LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
@@ -1182,8 +1190,15 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
     }
     currentSelectionPolygon = editor()->view()->mapPolygonToScreen(currentSelectionPolygon);
 
+    if (mOriginalPolygonF.isEmpty())
+    {
+        mOriginalPolygonF = selectMan->currentSelectionPolygonF();
+    }
+
     TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
-    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
+    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(),
+                            currentTool(), params, mOriginalPolygonF, selectMan->currentSelectionPolygonF());
+    emit selectionUpdated();
 }
 
 BitmapImage* ScribbleArea::currentBitmapImage(Layer* layer) const
@@ -1543,6 +1558,7 @@ void ScribbleArea::cancelTransformedSelection()
         mEditor->select()->setSelection(selectMan->mySelectionRect(), false);
 
         selectMan->resetSelectionProperties();
+        mOriginalPolygonF = QPolygonF();
 
         setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         updateCurrentFrame();

@@ -46,6 +46,7 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -62,6 +63,8 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "toolbox.h"
 #include "onionskinwidget.h"
+#include "pegbaralignmentdialog.h"
+#include "repositionframesdialog.h"
 
 //#include "preview.h"
 //#include "timeline2.h"
@@ -280,6 +283,7 @@ void MainWindow2::createMenus()
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
+    connect(ui->actionReposition_Selected_Frames, &QAction::triggered, this, &MainWindow2::openRepositionDialog);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     //--- Layer Menu ---
@@ -480,6 +484,37 @@ void MainWindow2::openLayerOpacityDialog()
     {
         mLayerOpacityDialog = nullptr;
     });
+}
+
+void MainWindow2::openRepositionDialog()
+{
+    if (mEditor->layers()->currentLayer()->getSelectedFramesByPos().count() < 2)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Please select at least 2 frames!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+    if (mReposDialog != nullptr)
+    {
+        return;
+    }
+
+    mReposDialog = new RepositionFramesDialog(this);
+    mReposDialog->setAttribute(Qt::WA_DeleteOnClose);
+    mReposDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+    hideQuestionMark(*mReposDialog);
+    mReposDialog->setCore(mEditor);
+    mReposDialog->initUI();
+    mEditor->tools()->setCurrentTool(ToolType::MOVE);
+    connect(mReposDialog, &RepositionFramesDialog::finished, this, &MainWindow2::closeRepositionDialog);
+    mReposDialog->show();
+}
+
+void MainWindow2::closeRepositionDialog()
+{
+    selectionChanged();
+    mReposDialog = nullptr;
 }
 
 void MainWindow2::currentLayerChanged()
@@ -1357,6 +1392,7 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
+    connect(editor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
     connect(editor, &Editor::canCopyChanged, this, [=](bool canCopy) {
         ui->actionCopy->setEnabled(canCopy);
         ui->actionCut->setEnabled(canCopy);

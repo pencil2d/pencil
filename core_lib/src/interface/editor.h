@@ -205,6 +205,7 @@ public: //slots
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
+    void repositionImage(QPoint transform, int frame);
 
     void clearTemporary();
     void addTemporaryDir(QTemporaryDir* dir);

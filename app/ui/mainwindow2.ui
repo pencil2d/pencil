@@ -211,6 +211,7 @@
     <addaction name="actionFlip_inbetween"/>
     <addaction name="actionFlip_rolling"/>
     <addaction name="separator"/>
+    <addaction name="actionReposition_Selected_Frames"/>
     <addaction name="menuTimeline_Selection"/>
    </widget>
    <widget class="QMenu" name="menuTools">
@@ -1111,6 +1112,16 @@
     <string>Onion Skins</string>
    </property>
   </action>
+  <action name="actionReposition_Selection">
+   <property name="text">
+    <string>Reposition Selected frames</string>
+   </property>
+  </action>
+  <action name="actionReposition_Selected_Frames">
+   <property name="text">
+    <string>Reposition Selected Frames</string>
+    </property>
+   </action>
   <action name="actionChangeLayerOpacity">
    <property name="text">
     <string>Layer / Keyframe opacity</string>
