@@ -15,7 +15,7 @@
 #include "scribblearea.h"
 
 
-RepositionFramesDialog::RepositionFramesDialog(QWidget *parent) :
+RepositionFramesDialog::RepositionFramesDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::RepositionFramesDialog)
 {
@@ -35,9 +35,14 @@ void RepositionFramesDialog::setCore(Editor *editor)
 void RepositionFramesDialog::initUI()
 {
     if (mEditor->layers()->currentLayer()->keyExists(mEditor->currentFrame()))
+    {
         mRepositionFrame = mEditor->currentFrame();
+    }
     else
+    {
         mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesList().at(0);
+    }
+
     mEditor->prepareRepositionSelectedImages(mRepositionFrame);
     updateRadioButtons();
     ui->rbAllKeyframes->setChecked(true);
@@ -46,7 +51,6 @@ void RepositionFramesDialog::initUI()
     connect(ui->rbSameKeyframes, &QRadioButton::clicked, this, &RepositionFramesDialog::updateLayersBox);
     connect(ui->btnReposition, &QPushButton::clicked, this, &RepositionFramesDialog::repositionFrames);
     connect(ui->btnCancel, &QPushButton::clicked, this, &RepositionFramesDialog::closeClicked);
-    connect(this, &QDialog::finished, this, &RepositionFramesDialog::closeClicked);
     connect(mEditor->getScribbleArea(), &ScribbleArea::selectionUpdated, this, &RepositionFramesDialog::updateDialogText);
     connect(mEditor->select(), &SelectionManager::selectionReset, this, &RepositionFramesDialog::closeClicked);
     mEndPoint = mStartPoint = QPoint(0,0);
@@ -99,7 +103,7 @@ void RepositionFramesDialog::repositionFrames()
     {
         auto layerManager = mEditor->layers();
 
-        // if only selcted keyframe-numbers should be repositioned
+        // if only selected keyframe-numbers should be repositioned
         if (ui->rbSameKeyframes->isChecked())
         {
             int currLayer = mEditor->currentLayerIndex();
@@ -134,7 +138,8 @@ void RepositionFramesDialog::repositionFrames()
                     do {
                         mEditor->repositionImage(mEndPoint, keyframe);
                         keyframe = layerManager->currentLayer()->getNextKeyFramePosition(keyframe);
-                    } while (mEditor->currentFrame() != layerManager->currentLayer()->getMaxKeyFramePosition());
+                    }
+                    while (mEditor->currentFrame() != layerManager->currentLayer()->getMaxKeyFramePosition());
                 }
             }
             layerManager->setCurrentLayer(currLayer);
@@ -143,7 +148,8 @@ void RepositionFramesDialog::repositionFrames()
     mEditor->getScribbleArea()->applySelectionChanges();
     mEditor->select()->resetSelectionProperties();
     mEditor->scrubTo(mRepositionFrame);
-    closeClicked();
+    
+    accept();
 }
 
 void RepositionFramesDialog::updateRadioButtons()
@@ -183,9 +189,7 @@ void RepositionFramesDialog::updateLayersBox()
 
 void RepositionFramesDialog::closeClicked()
 {
-    mEndPoint = mStartPoint;
-    emit closeDialog();
-    close();
+    rejected();
 }
 
 void RepositionFramesDialog::updateLayersToSelect()

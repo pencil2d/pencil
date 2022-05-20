@@ -17,7 +17,7 @@ class RepositionFramesDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit RepositionFramesDialog(QWidget *parent = nullptr);
+    explicit RepositionFramesDialog(QWidget* parent);
     ~RepositionFramesDialog();
 
     void setCore(Editor* editor);
@@ -43,11 +43,11 @@ private:
     void updateLayersToSelect();
     QPoint getRepositionPoint();
 
-    int mRepositionFrame;
+    int mRepositionFrame = 0;
     QList<int> mLayerIndexes;
 
-    QPolygonF mCurrentPolygonF  = QPolygonF();
-    QPolygonF mOriginalPolygonF = QPolygonF();
+    QPolygonF mCurrentPolygonF;
+    QPolygonF mOriginalPolygonF;
     QPoint mStartPoint = QPoint(0,0);
     QPoint mEndPoint = QPoint(0,0);
     Editor* mEditor = nullptr;

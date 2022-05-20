@@ -495,23 +495,19 @@ void MainWindow2::openRepositionDialog()
                                  QMessageBox::Ok);
         return;
     }
-
     if (mReposDialog != nullptr)
     {
-        QMessageBox::information(this, nullptr,
-                                 tr("Dialog is already open!"),
-                                 QMessageBox::Ok);
         return;
     }
 
-    mReposDialog = new RepositionFramesDialog();
+    mReposDialog = new RepositionFramesDialog(this);
     mReposDialog->setAttribute(Qt::WA_DeleteOnClose);
-    connect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
+    mReposDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+    hideQuestionMark(*mReposDialog);
     mReposDialog->setCore(mEditor);
     mReposDialog->initUI();
-    mReposDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
     mEditor->tools()->setCurrentTool(ToolType::MOVE);
-    mToolBox->moveOn();
+    connect(mReposDialog, &RepositionFramesDialog::finished, this, &MainWindow2::closeRepositionDialog);
     mReposDialog->show();
 }
 
@@ -519,7 +515,6 @@ void MainWindow2::closeRepositionDialog()
 {
     selectionChanged();
     mReposDialog = nullptr;
-    disconnect(mReposDialog, &RepositionFramesDialog::closeDialog, this, &MainWindow2::closeRepositionDialog);
 }
 
 void MainWindow2::currentLayerChanged()
@@ -530,14 +525,6 @@ void MainWindow2::currentLayerChanged()
 
 void MainWindow2::selectionChanged()
 {
-    if (mEditor->select()->somethingSelected())
-    {
-        ui->actionReposition_Selected_Frames->setEnabled(false);
-    }
-    else
-    {
-        ui->actionReposition_Selected_Frames->setEnabled(true);
-    }
     bool somethingSelected = mEditor->select()->somethingSelected();
     ui->menuSelection->setEnabled(somethingSelected);
 }
