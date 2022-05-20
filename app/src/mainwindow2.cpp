@@ -488,7 +488,7 @@ void MainWindow2::openLayerOpacityDialog()
 
 void MainWindow2::openRepositionDialog()
 {
-    if (mEditor->layers()->currentLayer()->getSelectedFramesList().count() < 2)
+    if (mEditor->layers()->currentLayer()->getSelectedFramesByPos().count() < 2)
     {
         QMessageBox::information(this, nullptr,
                                  tr("Please select at least 2 frames!"),

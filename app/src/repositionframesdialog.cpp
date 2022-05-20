@@ -40,7 +40,7 @@ void RepositionFramesDialog::initUI()
     }
     else
     {
-        mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesList().at(0);
+        mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesByPos().at(0);
     }
 
     prepareRepositionSelectedImages(mRepositionFrame);
@@ -74,7 +74,7 @@ void RepositionFramesDialog::updateDialogText()
 
 void RepositionFramesDialog::updateDialogSelectedFrames()
 {
-    QList<int> framelist = mEditor->layers()->currentLayer()->getSelectedFramesList();
+    QList<int> framelist = mEditor->layers()->currentLayer()->getSelectedFramesByPos();
     ui->labRepositionFrames->setText(tr("Selected on Layer: %1").arg(mEditor->layers()->currentLayer()->name()));
     ui->listSelectedFrames->clear();
     for (int i = 0; i < framelist.count(); i++)
@@ -95,7 +95,7 @@ void RepositionFramesDialog::repositionFrames()
     }
 
     mEditor->getScribbleArea()->updateOriginalPolygonF();
-    QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesList();
+    QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesByPos();
     for (int i = 0; i < frames.size(); i++)
     {
         mEditor->repositionImage(mEndPoint, frames.at(i));
@@ -214,7 +214,7 @@ void RepositionFramesDialog::updateLayersToSelect()
     }
     else
     {
-        QList<int> frames = layerManager->currentLayer()->getSelectedFramesList();
+        QList<int> frames = layerManager->currentLayer()->getSelectedFramesByPos();
         bool ok = false;
         for (int i = layerManager->count() - 1; i >= 0; i--)
         {
