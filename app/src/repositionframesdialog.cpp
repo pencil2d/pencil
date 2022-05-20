@@ -43,8 +43,10 @@ void RepositionFramesDialog::initUI()
         mRepositionFrame = mEditor->layers()->currentLayer()->getSelectedFramesList().at(0);
     }
 
-    mEditor->prepareRepositionSelectedImages(mRepositionFrame);
+    prepareRepositionSelectedImages(mRepositionFrame);
+
     updateRadioButtons();
+
     ui->rbAllKeyframes->setChecked(true);
     connect(ui->cbOtherLayers, &QCheckBox::stateChanged, this, &RepositionFramesDialog::checkboxStateChanged);
     connect(ui->rbAllKeyframes, &QRadioButton::clicked, this, &RepositionFramesDialog::updateLayersBox);
@@ -243,5 +245,21 @@ QPoint RepositionFramesDialog::getRepositionPoint()
     int y = static_cast<int>(mCurrentPolygonF.boundingRect().y() - mOriginalPolygonF.boundingRect().y());
     mEndPoint = QPoint(x, y);
     return mEndPoint;
+}
+
+void RepositionFramesDialog::prepareRepositionSelectedImages(int repositionFrame)
+{
+    auto select = mEditor->select();
+    auto layers = mEditor->layers();
+
+    if (select->somethingSelected()) { return; }
+
+    if (layers->currentLayer()->type() == Layer::BITMAP)
+    {
+        mEditor->scrubTo(repositionFrame);
+        LayerBitmap* layer = static_cast<LayerBitmap*>(layers->currentLayer());
+        QRect reposRect = layer->getFrameBounds(repositionFrame);
+        select->setSelection(reposRect);
+    }
 }
 

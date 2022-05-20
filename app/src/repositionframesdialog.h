@@ -42,6 +42,7 @@ private:
     void closeClicked();
     void updateLayersToSelect();
     QPoint getRepositionPoint();
+    void prepareRepositionSelectedImages(int repositionFrame);
 
     int mRepositionFrame = 0;
     QList<int> mLayerIndexes;

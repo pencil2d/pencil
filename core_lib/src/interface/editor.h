@@ -205,7 +205,6 @@ public: //slots
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
-    void prepareRepositionSelectedImages(int frame);
     void repositionImage(QPoint transform, int frame);
 
     void clearTemporary();
