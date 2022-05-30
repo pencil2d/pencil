@@ -4,9 +4,9 @@ inputs:
     description: Architecture
     required: true
 outputs:
-  package-name:
-    description: Package name
-    value: ${{steps.create-package.outputs.package-name}}
+  output-basename:
+    description: Output basename
+    value: ${{steps.create-package.outputs.output-basename}}
 runs:
   using: composite
   steps:
