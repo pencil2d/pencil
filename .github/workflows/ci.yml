@@ -74,20 +74,13 @@ jobs:
       with:
         arch: ${{matrix.arch}}
 
-    - name: Create build directory
-      run: mkdir build
-    - name: Configure build (Nightly Build)
-      if: github.ref != 'refs/heads/release'
-      working-directory: build
-      run: qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_NIGHTLY
-    - name: Configure build (Release)
-      if: github.ref == 'refs/heads/release'
-      working-directory: build
-      run: qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_RELEASE
+    - name: Configure build
+      run: mkdir build; qmake -o build PREFIX=/usr CONFIG+=release CONFIG+=GIT
+        CONFIG+=PENCIL2D_${{github.ref == 'refs/heads/release' && 'RELEASE' || 'NIGHTLY'}}
 
     - name: Build Pencil2D
       working-directory: build
-      run: test "${{runner.os}}" != "Windows" && make || nmake
+      run: ${{runner.os != 'Windows' && 'make' || 'nmake'}}
 
     - name: Run tests
       env: { QT_QPA_PLATFORM: minimal }
