@@ -11,3 +11,7 @@ runs:
     env:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
+  - if: runner.os == 'Windows'
+    uses: jurplel/install-qt-action@v2
+    with:
+      arch: ${{inputs.arch}}
