@@ -58,7 +58,7 @@ jobs:
         apt-get update -yq
         apt-get install -yq --no-install-suggests --no-install-recommends git
     - name: Check out repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Install Qt (Windows)
       if: runner.os == 'Windows'
       uses: jurplel/install-qt-action@v2
