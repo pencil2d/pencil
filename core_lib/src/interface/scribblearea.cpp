@@ -66,6 +66,7 @@ bool ScribbleArea::init()
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
     connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &ScribbleArea::onToolPropertyUpdated);
+    connect(mEditor->tools(), &ToolManager::toolChanged, this, &ScribbleArea::onToolChanged);
 
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
 
@@ -114,6 +115,13 @@ void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
     default:
         break;
     }
+}
+
+void ScribbleArea::onToolChanged(ToolType toolType)
+{
+    Q_UNUSED(toolType);
+    prepOverlays();
+    renderOverlays();
 }
 
 void ScribbleArea::settingUpdated(SETTING setting)
@@ -1381,6 +1389,7 @@ void ScribbleArea::prepOverlays()
     o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
     o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
     o.nOverlayAngle = mPrefs->getInt(SETTING::OVERLAY_ANGLE);
+    o.bShowHandle = mEditor->tools()->currentTool()->type() == MOVE && mEditor->layers()->currentLayer()->type() != Layer::CAMERA;
 
     o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspPoint();
     o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspPoint();
@@ -1388,7 +1397,6 @@ void ScribbleArea::prepOverlays()
     o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspPoint();
 
     o.nFrameIndex = mEditor->currentFrame();
-    o.bIsCamera = mEditor->layers()->currentLayer()->type() == Layer::CAMERA;
 
     mOverlayPainter.setOptions(o);
     mOverlayPainter.preparePainter(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA), palette());

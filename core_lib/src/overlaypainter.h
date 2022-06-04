@@ -21,7 +21,7 @@ struct OverlayPainterOptions
     bool  bPerspective3 = false;
     int   nOverlayAngle = 15; // for perspective overlays
     bool  bShowSafeAreaHelperText = true;
-    bool  bIsCamera = false;
+    bool  bShowHandle = false;
     bool  bGrid = false;
     int   nGridSizeW = 50; /* This is the grid Width IN PIXELS. The grid will scale with the image, though */
     int   nGridSizeH = 50; /* This is the grid Height IN PIXELS. The grid will scale with the image, though */

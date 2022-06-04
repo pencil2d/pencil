@@ -291,7 +291,7 @@ void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, QTransfo
 
     singlePoint = mViewTransform.map(singlePoint);
 
-    if (!mOptions.bIsCamera) {
+    if (mOptions.bShowHandle) {
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.setPen(mPalette.color(QPalette::HighlightedText));
         painter.setBrush(mPalette.color(QPalette::Highlight));
@@ -347,7 +347,7 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const C
     leftPoint = mViewTransform.map(leftPoint);
     rightPoint = mViewTransform.map(rightPoint);
 
-    if (!mOptions.bIsCamera) {
+    if (mOptions.bShowHandle) {
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.setPen(mPalette.color(QPalette::HighlightedText));
         painter.setBrush(mPalette.color(QPalette::Highlight));
@@ -394,7 +394,7 @@ void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const
 
     middlePoint = mViewTransform.map(middlePoint);
 
-    if (!mOptions.bIsCamera) {
+    if (mOptions.bShowHandle) {
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.setPen(mPalette.color(QPalette::HighlightedText));
         painter.setBrush(mPalette.color(QPalette::Highlight));

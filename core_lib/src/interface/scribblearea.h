@@ -130,6 +130,9 @@ public:
     /** Tool property updated, invalidate cache and frame if needed */
     void onToolPropertyUpdated(ToolType, ToolPropertyType);
 
+    /** Tool changed, invalidate cache and frame if needed */
+    void onToolChanged(ToolType toolType);
+
     /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
     void setModified(const Layer* layer, int frameNumber);
