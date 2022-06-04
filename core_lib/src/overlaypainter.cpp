@@ -6,7 +6,6 @@
 
 
 Q_CONSTEXPR static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
-Q_CONSTEXPR static qreal LINELENGTHFACTOR = 2.0;
 Q_CONSTEXPR static int LR_DIFF = 10;         // minimum difference for Left and Right point
 Q_CONSTEXPR static int MID_DIFF = 2;         // minimum difference for Middle point
 Q_CONSTEXPR static int LEFTANGLEOFFSET = 90;
@@ -228,10 +227,11 @@ void OverlayPainter::paintOverlayPerspective1(QPainter& painter)
         mOptions.mSinglePerspPoint = QPointF(0.1, 0.1); // point to be (0,0)...
     angleLine.setP1(mOptions.mSinglePerspPoint);
     QVector<QLineF> lines;
+    qreal lineLength = mViewTransform.inverted().m11() * rect.width();
     for (int i = 0; i < repeats; i++)
     {
         angleLine.setAngle(i * degrees);
-        angleLine.setLength(rect.width() * 2.0);
+        angleLine.setLength(lineLength);
         lines.append(angleLine);
     }
     painter.drawLines(lines);
@@ -272,10 +272,11 @@ void OverlayPainter::paintOverlayPerspective2(QPainter& painter)
     angleLine.setAngle(LEFTANGLEOFFSET);
     angleLine.setP1(mOptions.mLeftPerspPoint);
     QVector<QLineF> lines;
+    qreal lineLength = mViewTransform.inverted().m11() * rect.width();
     for (int i = 0; i <= repeats; i++)
     {
         angleLine.setAngle(LEFTANGLEOFFSET - i * degrees);
-        angleLine.setLength(rect.width() * LINELENGTHFACTOR);
+        angleLine.setLength(lineLength);
         lines.append(angleLine);
     }
 
@@ -284,7 +285,7 @@ void OverlayPainter::paintOverlayPerspective2(QPainter& painter)
     for (int i = 0; i <= repeats; i++)
     {
         angleLine.setAngle(RIGHTANGLEOFFSET - i * degrees);
-        angleLine.setLength(rect.width() * LINELENGTHFACTOR);
+        angleLine.setLength(lineLength);
         lines.append(angleLine);
     }
     painter.drawLines(lines);
@@ -317,10 +318,11 @@ void OverlayPainter::paintOverlayPerspective3(QPainter& painter)
     angleLine.setAngle(middleAngleOffset);
     angleLine.setP1(mOptions.mMiddlePerspPoint);
     QVector<QLineF> lines;
+    qreal lineLength = mViewTransform.inverted().m11() * rect.width();
     for (int i = 0; i <= repeats; i++)
     {
         angleLine.setAngle(middleAngleOffset - i * degrees);
-        angleLine.setLength(rect.width() * LINELENGTHFACTOR);
+        angleLine.setLength(lineLength);
         lines.append(angleLine);
     }
     painter.drawLines(lines);
