@@ -65,8 +65,6 @@ private:
 
     Layer* currentPaintableLayer();
 
-    bool mWarningShown = false;
-
     QPointF anchorOriginPoint;
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;

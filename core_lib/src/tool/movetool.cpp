@@ -369,8 +369,6 @@ bool MoveTool::leavingThisTool()
 
 void MoveTool::requestAction()
 {
-    if (mWarningShown) { return; }
-
     bool requireAction = false;
     int returnValue = showTransformWarning();
 
@@ -395,12 +393,10 @@ void MoveTool::requestAction()
     {
         requireAction = true;
     }
-    mWarningShown = false;
 }
 
 int MoveTool::showTransformWarning()
 {
-    mWarningShown = true;
     return QMessageBox::warning(nullptr, tr("Action required", "Windows title of pop-up."),
                                         tr("Do you wish to apply the transformation changes before continuing?"),
                                         QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,

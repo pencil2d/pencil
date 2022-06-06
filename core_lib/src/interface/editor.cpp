@@ -1005,16 +1005,11 @@ void Editor::requireUserAction(bool b)
     emit blockUI(b);
 }
 
-bool Editor::userActionRequired()
+void Editor::requestUserActionIfNeeded()
 {
-    return mActionRequired;
-}
-
-bool Editor::requestUserAction()
-{
-    if (!mActionRequired) { return false; }
-    tools()->currentTool()->requestAction();
-    return mActionRequired;
+    if (mActionRequired) {
+        tools()->currentTool()->requestAction();
+    }
 }
 
 void Editor::updateFrame(int frameNumber)

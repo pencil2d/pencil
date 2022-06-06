@@ -173,8 +173,8 @@ void ToolBoxWidget::blockUI(bool block)
 
 bool ToolBoxWidget::event(QEvent* event)
 {
-    if (event->type() == QEvent::MouseButtonPress && editor()->userActionRequired()) {
-        editor()->requestUserAction();
+    if (event->type() == QEvent::MouseButtonPress) {
+        editor()->requestUserActionIfNeeded();
     }
 
     return BaseDockWidget::event(event);

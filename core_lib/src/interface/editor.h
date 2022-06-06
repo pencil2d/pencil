@@ -217,11 +217,17 @@ public: //slots
     bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
 
+    /**
+     * Does nothing on its own but can be used to require user action if a tool requires it.
+     * @param b True if user action should be required otherwise false
+     */
     void requireUserAction(bool b);
-    bool userActionRequired();
 
-    /** Use this to request user action before proceeding, and block the execution cycle if required */
-    bool requestUserAction();
+    /**
+     * Notifies the current tool that the user needs to take action before proceeding
+     * Currently used by the move tool for applying transformations.
+     * Calling this method when `mActionRequired` is false does nothing */
+    void requestUserActionIfNeeded();
 
 private:
     bool importBitmapImage(const QString&, int space = 0);
