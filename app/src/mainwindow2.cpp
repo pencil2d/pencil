@@ -1506,23 +1506,22 @@ void MainWindow2::importMovieVideo()
 
 void MainWindow2::onBlockUI(bool block) {
 
-    if (mEditor->tools()->currentTool()->type() == MOVE) {
-        for (BaseDockWidget* widget : mDockWidgets) {
-            if (widget == nullptr) { continue; }
-            widget->blockUI(block);
-        }
-
-        ui->menuFile->setDisabled(block);
-        ui->menuAnimation->setDisabled(block);
-        ui->menuTools->setDisabled(block);
-        ui->menuLayer->setDisabled(block);
-        ui->menuEdit->setDisabled(block);
-
-        // We explicitly enable the selection menu
-        ui->menuSelection->setEnabled(true);
-    } else {
-        ui->menuBar->setEnabled(true);
+    for (BaseDockWidget* widget : mDockWidgets) {
+        if (widget == nullptr) { continue; }
+        widget->blockUI(block);
     }
+
+    if (block &&
+       (mEditor->tools()->currentTool()->type() == MOVE || mEditor->tools()->currentTool()->type() == SELECT)) {
+        // We explicitly enable the selection menu to allow transform modifications
+        ui->menuSelection->setEnabled(true);
+    }
+
+    ui->menuFile->setDisabled(block);
+    ui->menuAnimation->setDisabled(block);
+    ui->menuTools->setDisabled(block);
+    ui->menuLayer->setDisabled(block);
+    ui->menuEdit->setDisabled(block);
 }
 
 bool MainWindow2::event(QEvent* event)
