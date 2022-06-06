@@ -3,6 +3,9 @@ inputs:
   arch:
     description: Architecture
     required: true
+  qt:
+    description: Qt Version
+    required: true
 outputs:
   output-basename:
     description: Output basename
@@ -17,4 +20,5 @@ runs:
     env:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
+      INPUT_QT: ${{inputs.qt}}
       IS_RELEASE: ${{ github.ref == 'refs/heads/release' }}

@@ -5,7 +5,9 @@ setup_linux() {
   # Our container image uses the non-Unicode C locale by default
   echo "LANG=C.UTF-8" >> "${GITHUB_ENV}"
   # Set up Qt environment variables and export them to the GitHub Actions workflow
-  (printenv; (. /opt/qt515/bin/qt515-env.sh; printenv)) | sort -st= -k1,1 | uniq -u >> "${GITHUB_ENV}"
+  if [ -f /opt/qt515/bin/qt515-env.sh ]; then
+    (printenv; (. /opt/qt515/bin/qt515-env.sh; printenv)) | sort -st= -k1,1 | uniq -u >> "${GITHUB_ENV}"
+  fi
 }
 
 setup_macos() {

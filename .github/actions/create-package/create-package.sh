@@ -39,12 +39,13 @@ platforms/libqwayland-xcomposite-egl.so,platforms/libqwayland-xcomposite-glx.so,
 wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-integration \
     ${update_info} \
     -appimage
-  local output_name="pencil2d-linux-$1-$(date +%F)"
+  local qtsuffix="-qt${INPUT_QT}"
+  local output_name="pencil2d${qtsuffix/-qt5/}-linux-$1-$(date +%F)"
   mv Pencil2D*.AppImage "$output_name.AppImage"
   mv Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" \
     && sed -i '1,/^$/s/^\(Filename\|URL\): .*$/\1: '"$output_name.AppImage/" "$output_name.AppImage.zsync" \
     || true
-  echo "::set-output name=output-basename::$output_name"
+  echo "output-basename=$output_name" >> "${GITHUB_OUTPUT}"
   echo "::endgroup::"
 }
 
@@ -67,8 +68,9 @@ create_package_macos() {
   rm ffmpeg.7z ffmpeg.7z.sig
   echo "::endgroup::"
 
-  echo "Deploy Qt libraries"
+  echo "::group::Deploy Qt libraries"
   macdeployqt Pencil2D.app
+  echo "::endgroup::"
   echo "::group::Apply macdeployqt fix"
   curl -fsSLO https://github.com/aurelien-rainone/macdeployqtfix/archive/master.zip
   bsdtar xf master.zip
@@ -80,8 +82,9 @@ create_package_macos() {
   rm -rf macdeployqtfix-master master.zip
   popd >/dev/null
   echo "Create ZIP"
-  bsdtar caf "pencil2d-mac-$1-$(date +%F).zip" Pencil2D
-  echo "::set-output name=output-basename::pencil2d-mac-$1-$(date +%F)"
+  local qtsuffix="-qt${INPUT_QT}"
+  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-$1-$(date +%F).zip" Pencil2D
+  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-$1-$(date +%F)" > "${GITHUB_OUTPUT}"
 }
 
 create_package_windows() {
@@ -105,8 +108,9 @@ create_package_windows() {
   local _xbits="_x${platform#win}"
   cp "${IQTA_TOOLS}\\OpenSSL\\Win${_xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${xbits/-x32/}.dll" Pencil2D/
   echo "Create ZIP"
-  "${WINDIR}\\System32\\tar" caf "pencil2d-${platform}-$1-$(date +%F).zip" Pencil2D
-  echo "::set-output name=output-basename::pencil2d-${platform}-$1-$(date +%F)"
+  local qtsuffix="-qt${INPUT_QT}"
+  "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$1-$(date +%F).zip" Pencil2D
+  echo "output-basename=pencil2d${qtsuffix/-qt5/}-${platform}-$1-$(date +%F)" > "${GITHUB_OUTPUT}"
 }
 
 "create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}"
