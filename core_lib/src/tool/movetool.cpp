@@ -367,7 +367,7 @@ QCursor MoveTool::cursor(MoveMode mode) const
 
     cursorPixmap.fill(QColor(255, 255, 255, 0));
     QPainter cursorPainter(&cursorPixmap);
-    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+    cursorPainter.setRenderHint(QPainter::Antialiasing);
 
     switch(mode)
     {

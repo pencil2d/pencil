@@ -15,6 +15,7 @@ GNU General Public License for more details.
 */
 
 #include "soundplayer.h"
+#include <QAudioOutput>
 #include <QMediaPlayer>
 #include <QFile>
 #include "soundclip.h"
@@ -44,7 +45,12 @@ void SoundPlayer::init(SoundClip* clip)
     mBuffer.setData(file.readAll());
     mBuffer.open(QBuffer::ReadOnly);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    mMediaPlayer->setAudioOutput(new QAudioOutput(this));
+    mMediaPlayer->setSourceDevice(&mBuffer, QUrl::fromLocalFile(clip->fileName()));
+#else
     mMediaPlayer->setMedia(QUrl::fromLocalFile(clip->fileName()), &mBuffer);
+#endif
     makeConnections();
 
     clip->attachPlayer(this);
@@ -107,8 +113,12 @@ void SoundPlayer::setMediaPlayerPosition(qint64 pos)
 
 void SoundPlayer::makeConnections()
 {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    connect(mMediaPlayer, &QMediaPlayer::errorOccurred, this, [](QMediaPlayer::Error err, const QString&)
+#else
     auto errorSignal = static_cast<void (QMediaPlayer::*)(QMediaPlayer::Error)>(&QMediaPlayer::error);
     connect(mMediaPlayer, errorSignal, this, [](QMediaPlayer::Error err)
+#endif
     {
         qDebug() << "MediaPlayer Error: " << err;
     });

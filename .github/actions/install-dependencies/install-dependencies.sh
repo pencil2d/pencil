@@ -19,11 +19,11 @@ setup_linux() {
 
   echo "::group::Install APT packages"
   apt-get install -yq --no-install-suggests --no-install-recommends \
-    build-essential qt515tools qt515base qt515multimedia qt515svg \
-    qt515xmlpatterns qt515wayland libgl1-mesa-dev bsdtar ffmpeg \
-    gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
-    gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-alsa \
-    gstreamer1.0-pulseaudio git curl libfuse2
+    build-essential qt515tools qt515base qt515multimedia qt515svg qt515wayland \
+    libgl1-mesa-dev bsdtar ffmpeg gstreamer1.0-plugins-base \
+    gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
+    gstreamer1.0-plugins-ugly gstreamer1.0-alsa gstreamer1.0-pulseaudio git \
+    curl libfuse2
   echo "::endgroup::"
 }
 

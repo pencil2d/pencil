@@ -43,14 +43,14 @@ void SelectTool::loadSettings()
 QCursor SelectTool::cursor()
 {
     // Don't update cursor while we're moving the selection
-    if (mScribbleArea->isPointerInUse()) { return mCursorPixmap; }
+    if (mScribbleArea->isPointerInUse()) { return QCursor(mCursorPixmap); }
 
     mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
     MoveMode mode = mEditor->select()->getMoveMode();
 
     mCursorPixmap.fill(QColor(255, 255, 255, 0));
     QPainter cursorPainter(&mCursorPixmap);
-    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+    cursorPainter.setRenderHint(QPainter::Antialiasing);
 
     switch(mode)
     {
@@ -79,7 +79,7 @@ QCursor SelectTool::cursor()
     default:
         Q_UNREACHABLE();
     }
-    return mCursorPixmap;
+    return QCursor(mCursorPixmap);
 }
 
 void SelectTool::resetToDefault()

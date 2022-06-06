@@ -28,7 +28,7 @@ Pencil2D relies on the %Qt application framework so you must install it before y
 
 Pencil2D must be built with the %Qt 5 framework. To install %Qt 5, run this command:
 
-    sudo apt install qt5-default qt5-qmake libqt5xmlpatterns5-dev libqt5svg5-dev qtmultimedia5-dev
+    sudo apt install qt5-default qt5-qmake libqt5svg5-dev qtmultimedia5-dev
 
 For a more pleasant development experience, you might want to install %Qt Creator as well (recommended). To do so, run the following command:
 
@@ -38,7 +38,7 @@ For a more pleasant development experience, you might want to install %Qt Creato
 
 Pencil uses version 5 of the %Qt framework. To install all required components of %Qt, run this command:
 
-    sudo pacman -S --needed qt5-multimedia qt5-svg qt5-xmlpatterns qt-gstreamer
+    sudo pacman -S --needed qt5-multimedia qt5-svg qt-gstreamer
 
 For a more pleasant development experience, you might want to install %Qt Creator as well (recommended). To do so, run the following command:
 
