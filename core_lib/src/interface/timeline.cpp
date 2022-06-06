@@ -247,7 +247,6 @@ void TimeLine::updateUI()
 
 void TimeLine::blockUI(bool block)
 {
-    setDisabled(block);
     blockWidget(block);
 }
 

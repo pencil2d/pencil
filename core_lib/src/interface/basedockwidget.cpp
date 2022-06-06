@@ -49,9 +49,7 @@ void BaseDockWidget::resizeEvent(QResizeEvent *event)
 {
     QDockWidget::resizeEvent(event);
 
-    if (mBlockUIWidget) {
-        mBlockUIWidget->setGeometry(QRect(QPoint(), event->size()));
-    }
+    mBlockUIWidget->resize(event->size());
 
     // Not sure where the -2 comes from, but the event width is always 2 more than what is passed to FlowLayout::setGeometry
     int minHeight = getMinHeightForWidth(event->size().width() - 2);

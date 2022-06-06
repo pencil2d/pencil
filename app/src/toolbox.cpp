@@ -168,7 +168,6 @@ void ToolBoxWidget::updateUI()
 
 void ToolBoxWidget::blockUI(bool block)
 {
-    setDisabled(block);
     blockWidget(block);
 }
 
