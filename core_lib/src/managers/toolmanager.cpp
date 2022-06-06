@@ -373,6 +373,9 @@ void ToolManager::setTemporaryTool(ToolType eToolType)
 
 void ToolManager::clearTemporaryTool()
 {
+    if (mTemporaryTool) {
+        mTemporaryTool->leavingThisTool();
+    }
     mTemporaryTool = nullptr;
     mTemporaryTriggerKeys = {};
     mTemporaryTriggerModifiers = Qt::NoModifier;

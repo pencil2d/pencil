@@ -341,6 +341,7 @@ void MoveTool::applySelectionChanges()
     mRotatedAngle = 0;
 
     mScribbleArea->applySelectionChanges();
+    mEditor->requireUserAction(false);
 }
 
 void MoveTool::applyTransformation()
