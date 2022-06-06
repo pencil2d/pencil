@@ -370,7 +370,6 @@ bool MoveTool::leavingThisTool()
 
 void MoveTool::requestAction()
 {
-    bool requireAction = false;
     int returnValue = showTransformWarning();
 
     if (returnValue == QMessageBox::Yes)
@@ -389,10 +388,6 @@ void MoveTool::requestAction()
     else if (returnValue == QMessageBox::No)
     {
         cancelChanges();
-    }
-    else if (returnValue == QMessageBox::Cancel)
-    {
-        requireAction = true;
     }
 }
 

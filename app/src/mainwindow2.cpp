@@ -1530,7 +1530,6 @@ bool MainWindow2::event(QEvent* event)
         emit windowActivated();
         return true;
     }
-
     return QMainWindow::event(event);
 }
 
