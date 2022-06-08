@@ -168,9 +168,8 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateCurrentFrame();
 
-    if (selectMan->transformHasBeenModified()) {
-        mEditor->requireUserAction(true);
-    }
+    mEditor->requireUserAction(selectMan->transformHasBeenModified());
+
 }
 
 void MoveTool::updateTransformation()

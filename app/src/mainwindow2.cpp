@@ -1205,7 +1205,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
     ui->actionFlip_rolling->setShortcut(cmdKeySeq(CMD_FLIP_ROLLING));
 
-    ShortcutFilter* shortcutFilter = new ShortcutFilter(ui->scribbleArea, this);
+    ShortcutFilter* shortcutFilter = new ShortcutFilter(ui->scribbleArea, mEditor, this);
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
     ui->actionSelect->setShortcut(cmdKeySeq(CMD_TOOL_SELECT));
     ui->actionBrush->setShortcut(cmdKeySeq(CMD_TOOL_BRUSH));

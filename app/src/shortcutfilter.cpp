@@ -17,14 +17,24 @@ GNU General Public License for more details.
 
 #include "shortcutfilter.h"
 
-ShortcutFilter::ShortcutFilter(ScribbleArea* scribbleArea , QObject* parent) :
+#include "scribblearea.h"
+#include "editor.h"
+
+ShortcutFilter::ShortcutFilter(ScribbleArea* scribbleArea, Editor* editor, QObject* parent) :
     QObject(parent)
 {
     mScribbleArea = scribbleArea;
+    mEditor = editor;
 }
 
 bool ShortcutFilter::eventFilter(QObject* obj, QEvent* event)
 {
+    if (mEditor->isUserActionRequired())
+    {
+        mEditor->requestUserActionIfNeeded();
+        return true;
+    }
+
     if (mScribbleArea->isMouseInUse())
     {
         return true;

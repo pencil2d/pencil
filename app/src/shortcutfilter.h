@@ -18,17 +18,20 @@ GNU General Public License for more details.
 #define SHORTCUTFILTER_H
 
 #include <QObject>
-#include "scribblearea.h"
+
+class ScribbleArea;
+class Editor;
 
 class ShortcutFilter : public QObject
 {
     Q_OBJECT
 
 public:
-    ShortcutFilter(ScribbleArea* scribbleArea, QObject* parent);
+    ShortcutFilter(ScribbleArea* scribbleArea, Editor*, QObject* parent);
 protected:
     bool eventFilter(QObject* obj, QEvent* event) override;
     ScribbleArea* mScribbleArea = nullptr;
+    Editor* mEditor = nullptr;
 };
 
 #endif

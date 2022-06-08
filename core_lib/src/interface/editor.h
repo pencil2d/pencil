@@ -218,10 +218,13 @@ public: //slots
     void resetAutoSaveCounter();
 
     /**
-     * Does nothing on its own but can be used to require user action if a tool requires it.
+     * Use this method to prevent user interaction until a certain action has been made.
      * @param b True if user action should be required otherwise false
      */
     void requireUserAction(bool b);
+
+    /** Use this for checking whether a user action is required to continue */
+    bool isUserActionRequired() { return mActionRequired; }
 
     /**
      * Notifies the current tool that the user needs to take action before proceeding
