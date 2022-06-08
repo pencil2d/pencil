@@ -162,11 +162,7 @@ private:
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;
-<<<<<<< HEAD
     TimeLine*             mTimeLine = nullptr;
-=======
-    TimeLine*             mTimeLine = nullptr; // be public temporarily
->>>>>>> bd2acacd (Add 3 Toolbars: main, view and overlay)
     ColorInspector*       mColorInspector = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
     QToolBar*             mMainToolbar = nullptr;
@@ -179,11 +175,8 @@ private:
     PegBarAlignmentDialog* mPegAlign = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;
 
-<<<<<<< HEAD
-=======
     void createToolbars();
 private:
->>>>>>> bd2acacd (Add 3 Toolbars: main, view and overlay)
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;
     QList<QToolBar*> mToolbars;

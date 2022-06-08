@@ -29,12 +29,9 @@ GNU General Public License for more details.
 #include <QTabletEvent>
 #include <QStandardPaths>
 #include <QDateTime>
-<<<<<<< HEAD
 #include <QLabel>
 #include <QClipboard>
-=======
 #include <QToolBar>
->>>>>>> bd2acacd (Add 3 Toolbars: main, view and overlay)
 
 // core_lib headers
 #include "pencildef.h"
