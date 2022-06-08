@@ -148,6 +148,7 @@ public:
     void keyEventForSelection(QKeyEvent* event);
 
 signals:
+    void modified(int, int);
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
     void selectionUpdated();

@@ -179,6 +179,7 @@ public: //slots
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
 
+    void onModified(int layer, int frame);
     void backup(const QString& undoText);
     bool backup(int layerNumber, int frameNumber, const QString& undoText);
     /**

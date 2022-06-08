@@ -349,6 +349,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     if (layer == nullptr) { return; }
 
     setModified(layer, frameNumber);
+    emit modified(layerNumber, frameNumber);
 }
 
 bool ScribbleArea::event(QEvent *event)
