@@ -23,6 +23,10 @@ GNU General Public License for more details.
 #include <QLibraryInfo>
 #include <QSettings>
 #include <QTranslator>
+#include <QLockFile>
+#include <QStandardPaths>
+#include <QDir>
+#include <QMessageBox>
 
 #include "commandlineexporter.h"
 #include "commandlineparser.h"
@@ -89,6 +93,22 @@ Status Pencil2D::handleCommandLineOptions()
         return Status::SAFE;
     }
     return Status::FAIL;
+}
+
+bool Pencil2D::isInstanceOpen()
+{
+    QDir appDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).filePath("Pencil2D");
+    appDir.mkpath(".");
+    mProcessLock.reset(new QLockFile(appDir.absoluteFilePath("pencil2d-process.lock")));
+    if (!mProcessLock->tryLock(10))
+    {
+        QMessageBox::StandardButton clickedButton = QMessageBox::warning(nullptr, QObject::tr("Warning"), QObject::tr("An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior."), QMessageBox::Close | QMessageBox::Open, QMessageBox::Close);
+        if (clickedButton != QMessageBox::Open)
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Pencil2D::event(QEvent* event)
