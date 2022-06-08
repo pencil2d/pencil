@@ -555,21 +555,24 @@ void Editor::pasteFromPreviousFrame()
     int prevFrame = currentLayer->getPreviousKeyFramePosition(mFrame);
     if (currentLayer->keyExists(mFrame) && prevFrame != mFrame)
     {
-        if (currentLayer->type() == Layer::BITMAP) {
+        if (currentLayer->type() == Layer::BITMAP)
+        {
             BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getKeyFrameAt(prevFrame));
             if (select()->somethingSelected())
+            {
                 clipboards()->copyBitmapImage(bitmapImage, select()->mySelectionRect());
+                paste();
+            }
             else
-                clipboards()->copyBitmapImage(bitmapImage, mScribbleArea->getCameraRect());
-            paste();
-        } else if (currentLayer->type() == Layer::VECTOR) {
+                pasteToCanvas(bitmapImage, mFrame);
+        }
+        else if (currentLayer->type() == Layer::VECTOR)
+        {
             VectorImage* vectorImage = static_cast<VectorImage*>(currentLayer->getKeyFrameAt(prevFrame));
-            clipboards()->copyVectorImage(vectorImage);
-            paste();
+            pasteToCanvas(vectorImage, mFrame);
         }
     }
 }
-
 
 void Editor::pasteToCanvas(BitmapImage* bitmapImage, int frameNumber)
 {
