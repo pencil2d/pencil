@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 #include <cmath>
+#include <QGuiApplication>
 #include <QMessageBox>
 #include <QPixmapCache>
 
@@ -515,12 +516,14 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         return;
     }
 
+    static const bool isX11 = QGuiApplication::platformName() == "xcb";
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
     const QPointF offset = mEditor->view()->mapScreenToCanvas(event->posF());
 
     const qreal currentScale = mEditor->view()->scaling();
-    if (!pixels.isNull())
+    // From the pixelDelta documentation: On X11 this value is driver-specific and unreliable, use angleDelta() instead
+    if (!isX11 && !pixels.isNull())
     {
         // XXX: This pixel-based zooming algorithm currently has some shortcomings compared to the angle-based one:
         //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
