@@ -50,7 +50,6 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "util.h"
 
-
 Editor::Editor(QObject* parent) : QObject(parent)
 {
     mBackupIndex = -1;
@@ -550,23 +549,27 @@ void Editor::copyAndCut()
     }
 }
 
-void Editor::copyFromPreviousFrame()
+void Editor::pasteFromPreviousFrame()
 {
     Layer* currentLayer = layers()->currentLayer();
-    if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
-        if (currentLayer->keyExists(mFrame)
-                && select()->somethingSelected()
-                && currentLayer->keyExists(currentLayer->getPreviousKeyFramePosition(mFrame)))
-        {
-            scrubBackward();
-            copy();
-            scrubForward();
+    int prevFrame = currentLayer->getPreviousKeyFramePosition(mFrame);
+    if (currentLayer->keyExists(mFrame) && prevFrame != mFrame)
+    {
+        if (currentLayer->type() == Layer::BITMAP) {
+            BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getKeyFrameAt(prevFrame));
+            if (select()->somethingSelected())
+                clipboards()->copyBitmapImage(bitmapImage, select()->mySelectionRect());
+            else
+                clipboards()->copyBitmapImage(bitmapImage, mScribbleArea->getCameraRect());
             paste();
-            mScribbleArea->applySelectionChanges();
-            deselectAll();
+        } else if (currentLayer->type() == Layer::VECTOR) {
+            VectorImage* vectorImage = static_cast<VectorImage*>(currentLayer->getKeyFrameAt(prevFrame));
+            clipboards()->copyVectorImage(vectorImage);
+            paste();
         }
     }
 }
+
 
 void Editor::pasteToCanvas(BitmapImage* bitmapImage, int frameNumber)
 {
