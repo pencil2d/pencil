@@ -1517,7 +1517,7 @@ void MainWindow2::onBlockUI(bool block) {
         ui->menuSelection->setEnabled(true);
     }
 
-    ui->menuFile->setDisabled(block);
+    ui->menuImport->setDisabled(block);
     ui->menuAnimation->setDisabled(block);
     ui->menuTools->setDisabled(block);
     ui->menuLayer->setDisabled(block);
