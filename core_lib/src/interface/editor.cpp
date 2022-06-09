@@ -557,10 +557,11 @@ void Editor::pasteFromPreviousFrame()
     {
         if (currentLayer->type() == Layer::BITMAP)
         {
+            backup(tr("Paste from previous"));
             BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getKeyFrameAt(prevFrame));
             if (select()->somethingSelected())
             {
-                clipboards()->copyBitmapImage(bitmapImage, select()->mySelectionRect());
+                bitmapImage->copy(select()->mySelectionRect().toRect());
                 paste();
             }
             else
@@ -568,6 +569,7 @@ void Editor::pasteFromPreviousFrame()
         }
         else if (currentLayer->type() == Layer::VECTOR)
         {
+            backup(tr("Paste from previous"));
             VectorImage* vectorImage = static_cast<VectorImage*>(currentLayer->getKeyFrameAt(prevFrame));
             pasteToCanvas(vectorImage, mFrame);
         }
