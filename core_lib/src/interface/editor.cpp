@@ -561,8 +561,8 @@ void Editor::pasteFromPreviousFrame()
             BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getKeyFrameAt(prevFrame));
             if (select()->somethingSelected())
             {
-                bitmapImage->copy(select()->mySelectionRect().toRect());
-                paste();
+                BitmapImage copy = bitmapImage->copy(select()->mySelectionRect().toRect());
+                pasteToCanvas(&copy, mFrame);
             }
             else
                 pasteToCanvas(bitmapImage, mFrame);
