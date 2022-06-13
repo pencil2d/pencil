@@ -56,5 +56,6 @@ QString ffprobeLocation();
 QString ffmpegLocation();
 
 quint64 imageSize(const QImage&);
+QString uniqueString(int len);
 
 #endif // UTIL_H

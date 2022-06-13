@@ -55,11 +55,11 @@ signals:
     void progressRangeChanged(int maxValue);
 
 private:
-    void unzip(const QString& strZipFile, const QString& strUnzipTarget);
+    Status unzip(const QString& strZipFile, const QString& strUnzipTarget);
 
     bool loadObject(Object*, const QDomElement& root);
     bool loadObjectOldWay(Object*, const QDomElement& root);
-    bool isOldForamt(const QString& fileName) const;
+    bool isArchiveFormat(const QString& fileName) const;
     bool loadPalette(Object*);
     Status writeKeyFrameFiles(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
     Status writeMainXml(const Object* obj, const QString& mainXmlPath, QStringList& filesWritten);
@@ -73,6 +73,7 @@ private:
 
     QString backupPreviousFile(const QString& fileName);
     void deleteBackupFile(const QString& fileName);
+    int countExistingBackups(const QString& fileName) const;
 
     void progressForward();
 

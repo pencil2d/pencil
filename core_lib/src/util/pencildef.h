@@ -58,12 +58,13 @@ enum ToolPropertyType
     FILL_MODE,
     STABILIZATION,
     TOLERANCE,
+    FILLCONTOUR,
+    SHOWSELECTIONINFO,
     USETOLERANCE,
     BUCKETFILLEXPAND,
     USEBUCKETFILLEXPAND,
     BUCKETFILLLAYERMODE,
     BUCKETFILLLAYERREFERENCEMODE,
-    FILLCONTOUR
 };
 
 enum BackgroundStyle
@@ -236,6 +237,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
+#define SETTING_SHOW_SELECTION_INFO "ShowSelectionInfo"
 #define SETTING_ASK_FOR_PRESET      "AskForPreset"
 #define SETTING_LOAD_MOST_RECENT    "LoadMostRecent"
 #define SETTING_LOAD_DEFAULT_PRESET "LoadDefaultPreset"

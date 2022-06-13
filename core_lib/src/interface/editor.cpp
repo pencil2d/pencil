@@ -124,6 +124,7 @@ void Editor::makeConnections()
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
     // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
     connect(mLayerManager, &LayerManager::layerDeleted, this, &Editor::sanitizeBackupElementsAfterLayerDeletion);
+    connect(mScribbleArea, &ScribbleArea::modified, this, &Editor::onModified);
 }
 
 void Editor::settingUpdated(SETTING setting)
@@ -150,6 +151,12 @@ void Editor::settingUpdated(SETTING setting)
     default:
         break;
     }
+}
+
+void Editor::onModified(int layer, int frame)
+{
+    mLastModifiedLayer = layer;
+    mLastModifiedFrame = frame;
 }
 
 BackupElement* Editor::currentBackup()
@@ -691,6 +698,22 @@ void Editor::flipSelection(bool flipVertical)
 {
     mScribbleArea->flipSelection(flipVertical);
 }
+
+void Editor::repositionImage(QPoint transform, int frame)
+{
+    if (layers()->currentLayer()->type() == Layer::BITMAP)
+    {
+        scrubTo(frame);
+        LayerBitmap* layer = static_cast<LayerBitmap*>(layers()->currentLayer());
+        QRect reposRect = layer->getFrameBounds(frame);
+        select()->setSelection(reposRect);
+        QPoint point = reposRect.topLeft();
+        point += transform;
+        layer->repositionFrame(point, frame);
+        backup(layer->id(), frame, tr("Reposition frame")); // TOOD: backup multiple reposition operations.
+    }
+}
+
 
 void Editor::clipboardChanged()
 {

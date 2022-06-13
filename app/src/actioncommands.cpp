@@ -616,8 +616,8 @@ void ActionCommands::exposeSelectedFrames(int offset)
     }
 
     currentLayer->setExposureForSelectedFrames(offset);
-    mEditor->updateTimeLine();
-    mEditor->framesModified();
+    emit mEditor->updateTimeLine();
+    emit mEditor->framesModified();
 
     // Remember to deselect frame again so we don't show it being visually selected.
     // B:
@@ -679,7 +679,7 @@ void ActionCommands::reverseSelectedFrames()
     if (currentLayer->type() == Layer::CAMERA) {
         mEditor->view()->forceUpdateViewTransform();
     }
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 };
 
 void ActionCommands::removeKey()
@@ -692,6 +692,29 @@ void ActionCommands::removeKey()
     {
         layer->addNewKeyFrameAt(1);
     }
+}
+
+void ActionCommands::duplicateLayer()
+{
+    LayerManager* layerMgr = mEditor->layers();
+    Layer* fromLayer = layerMgr->currentLayer();
+    int currFrame = mEditor->currentFrame();
+
+    Layer* toLayer = layerMgr->createLayer(fromLayer->type(), tr("%1 (copy)", "Default duplicate layer name").arg(fromLayer->name()));
+    toLayer->removeKeyFrame(1);
+    fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
+        key = key->clone();
+        toLayer->addKeyFrame(key->pos(), key);
+        if (toLayer->type() == Layer::SOUND)
+        {
+            mEditor->sound()->processSound(static_cast<SoundClip*>(key));
+        }
+        else
+        {
+            key->modification();
+        }
+    });
+    mEditor->scrubTo(currFrame);
 }
 
 void ActionCommands::duplicateKey()

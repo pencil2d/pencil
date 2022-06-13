@@ -212,6 +212,7 @@
     <addaction name="actionFlip_inbetween"/>
     <addaction name="actionFlip_rolling"/>
     <addaction name="separator"/>
+    <addaction name="actionReposition_Selected_Frames"/>
     <addaction name="menuTimeline_Selection"/>
    </widget>
    <widget class="QMenu" name="menuTools">
@@ -480,7 +481,7 @@
   <action name="actionZoom_In">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
+     <normaloff>:/icons/zoom-in.png</normaloff>:/icons/zoom-in.png</iconset>
    </property>
    <property name="text">
     <string>Zoom In</string>
@@ -489,7 +490,7 @@
   <action name="actionZoom_Out">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
+     <normaloff>:/icons/zoom-out.png</normaloff>:/icons/zoom-out.png</iconset>
    </property>
    <property name="text">
     <string>Zoom Out</string>
@@ -506,6 +507,10 @@
    </property>
   </action>
   <action name="actionReset_View">
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/zoom-reset.png</normaloff>:/icons/zoom-reset.png</iconset>
+   </property>
    <property name="text">
     <string>Reset</string>
    </property>
@@ -545,6 +550,10 @@
   <action name="actionGrid">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/grid.png</normaloff>:/icons/grid.png</iconset>
    </property>
    <property name="text">
     <string>Grid</string>
@@ -1112,6 +1121,16 @@
     <string>Onion Skins</string>
    </property>
   </action>
+  <action name="actionReposition_Selection">
+   <property name="text">
+    <string>Reposition Selected frames</string>
+   </property>
+  </action>
+  <action name="actionReposition_Selected_Frames">
+   <property name="text">
+    <string>Reposition Selected Frames</string>
+    </property>
+   </action>
   <action name="actionChangeLayerOpacity">
    <property name="text">
     <string>Layer / Keyframe opacity</string>

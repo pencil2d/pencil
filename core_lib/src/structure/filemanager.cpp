@@ -50,10 +50,10 @@ Object* FileManager::load(const QString& sFileName)
     QString strDataFolder;
 
     // Test file format: new zipped .pclx or old .pcl?
-    bool oldFormat = isOldForamt(sFileName);
-    dd << QString("Is old format: ").append(oldFormat ? "true" : "false");
+    bool isArchive = isArchiveFormat(sFileName);
+    QString isArchiveStr = "Is archive: " + QString(isArchive);
 
-    if (oldFormat)
+    if (!isArchive)
     {
         dd << "Recognized Old Pencil2D File Format (*.pcl) !";
 
@@ -64,7 +64,15 @@ Object* FileManager::load(const QString& sFileName)
     {
         dd << "Recognized New zipped Pencil2D File Format (*.pclx) !";
 
-        unzip(sFileName, obj->workingDir());
+        Status sanityCheck = MiniZ::sanityCheck(sFileName);
+
+        // Let's check if we can read the file before we try to unzip.
+        if (!sanityCheck.ok()) {
+            dd.collect(sanityCheck.details());
+        } else {
+            Status unzipStatus = unzip(sFileName, obj->workingDir());
+            dd.collect(unzipStatus.details());
+        }
 
         strMainXMLFile = QDir(obj->workingDir()).filePath(PFF_XML_FILE_NAME);
         strDataFolder = QDir(obj->workingDir()).filePath(PFF_DATA_DIR);
@@ -198,9 +206,12 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
     return object->loadXML(root, [this] { progressForward(); });
 }
 
-bool FileManager::isOldForamt(const QString& fileName) const
+bool FileManager::isArchiveFormat(const QString& fileName) const
 {
-    return !(MiniZ::isZip(fileName));
+    if (QFileInfo(fileName).suffix().compare(PFF_BIG_LETTER_EXTENSION, Qt::CaseInsensitive) != 0) {
+        return false;
+    }
+    return true;
 }
 
 Status FileManager::save(const Object* object, const QString& sFileName)
@@ -255,8 +266,8 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     QString sMainXMLFile;
     QString sDataFolder;
 
-    const bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
-    if (isOldType)
+    bool isArchive = isArchiveFormat(sFileName);
+    if (!isArchive)
     {
         dd << "Old Pencil2D File Format (*.pcl) !";
 
@@ -266,6 +277,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     else
     {
         dd << "New zipped Pencil2D File Format (*.pclx) !";
+        dd.collect(MiniZ::sanityCheck(sFileName).details());
 
         sTempWorkingFolder = object->workingDir();
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
@@ -311,12 +323,17 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
     progressForward();
 
-    if (!isOldType)
+    if (isArchive)
     {
-        dd << "Miniz";
-
         QString sBackupFile = backupPreviousFile(sFileName);
 
+        if (!saveOk) {
+            return Status(Status::FAIL, dd,
+                          tr("Internal Error"),
+                          tr("An internal error occurred. Your file may not be saved successfully."));
+        }
+
+        dd << "Miniz";
         Status stMiniz = MiniZ::compressFolder(sFileName, sTempWorkingFolder, filesToZip, "application/x-pencil2d-pclx");
         if (!stMiniz.ok())
         {
@@ -541,16 +558,38 @@ void FileManager::handleOpenProjectError(Status::ErrorCode error, const DebugDet
     removePFFTmpDirectory(mstrLastTempFolder);
 }
 
+int FileManager::countExistingBackups(const QString& fileName) const
+{
+    QFileInfo fileInfo(fileName);
+    QDir directory(fileInfo.absoluteDir());
+    const QString& baseName = fileInfo.completeBaseName();
+
+    int backupCount = 0;
+    for (QFileInfo dirFileInfo : directory.entryInfoList(QDir::Filter::Files)) {
+        QString searchFileBaseName = dirFileInfo.completeBaseName();
+        if (baseName.compare(searchFileBaseName) == 0 && searchFileBaseName.contains(PFF_BACKUP_IDENTIFIER)) {
+            backupCount++;
+        }
+    }
+
+    return backupCount;
+}
+
 QString FileManager::backupPreviousFile(const QString& fileName)
 {
     if (!QFile::exists(fileName))
         return "";
 
-    QFileInfo info(fileName);
-    QString sBackupFile = info.completeBaseName() + ".backup." + info.suffix();
-    QString sBackupFileFullPath = QDir(info.absolutePath()).filePath(sBackupFile);
+    QFileInfo fileInfo(fileName);
+    QString baseName = fileInfo.completeBaseName();
 
-    bool ok = QFile::rename(info.absoluteFilePath(), sBackupFileFullPath);
+    int backupCount = countExistingBackups(fileName) + 1; // start index 1
+    QString countStr = QString::number(backupCount);
+
+    QString sBackupFile = baseName + "." + PFF_BACKUP_IDENTIFIER + countStr + "." + fileInfo.suffix();
+    QString sBackupFileFullPath = QDir(fileInfo.absolutePath()).filePath(sBackupFile);
+
+    bool ok = QFile::copy(fileInfo.absoluteFilePath(), sBackupFileFullPath);
     if (!ok)
     {
         FILEMANAGER_LOG("Cannot backup the previous file");
@@ -681,7 +720,7 @@ Status FileManager::writePalette(const Object* object, const QString& dataFolder
     return Status::OK;
 }
 
-void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
+Status FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
 {
     // removes the previous directory first  - better approach
     removePFFTmpDirectory(strUnzipTarget);
@@ -690,6 +729,7 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     Q_ASSERT(s.ok());
 
     mstrLastTempFolder = strUnzipTarget;
+    return s;
 }
 
 QList<ColorRef> FileManager::loadPaletteFile(QString strFilename)

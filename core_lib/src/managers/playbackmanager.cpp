@@ -273,7 +273,7 @@ void PlaybackManager::playSounds(int frame)
     {
         KeyFrame* key = layer->getLastKeyFrameAtPosition(frame);
 
-        if (!layer->getVisibility())
+        if (!layer->visible())
         {
             continue;
         }

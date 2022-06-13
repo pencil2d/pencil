@@ -62,7 +62,9 @@ VectorImage& VectorImage::operator=(const VectorImage& a) {
 
 VectorImage* VectorImage::clone() const
 {
-    return new VectorImage(*this);
+    VectorImage* v = new VectorImage(*this);
+    v->setFileName(""); // don't link to the file of the source vector image
+    return v;
 }
 
 /**

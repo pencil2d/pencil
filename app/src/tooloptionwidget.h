@@ -65,6 +65,7 @@ private:
     void setStabilizerLevel(int);
     void setFillContour(int);
     void setBezier(bool);
+    void setShowSelectionInfo(bool);
 
     void disableAllOptions();
     void createUI();
