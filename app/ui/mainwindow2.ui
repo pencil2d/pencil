@@ -1192,10 +1192,10 @@
   </action>
   <action name="actionPaste_Previous">
    <property name="text">
-    <string>Paste from previous keyframe</string>
+    <string>Paste from Previous Keyframe</string>
    </property>
    <property name="toolTip">
-    <string>Paste from previous keyframe</string>
+    <string>Paste from Previous Keyframe</string>
    </property>
   </action>
  </widget>

@@ -1195,7 +1195,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRedo->setShortcut(cmdKeySeq(CMD_REDO));
     ui->actionCut->setShortcut(cmdKeySeq(CMD_CUT));
     ui->actionCopy->setShortcut(cmdKeySeq(CMD_COPY));
-    ui->actionPaste_Previous->setShortcut(cmdKeySeq(CMD_COPY_PREVIOUS));
+    ui->actionPaste_Previous->setShortcut(cmdKeySeq(CMD_PASTE_FROM_PREVIOUS));
     ui->actionPaste->setShortcut(cmdKeySeq(CMD_PASTE));
     ui->actionClearFrame->setShortcut(cmdKeySeq(CMD_CLEAR_FRAME));
     ui->actionSelect_All->setShortcut(cmdKeySeq(CMD_SELECT_ALL));

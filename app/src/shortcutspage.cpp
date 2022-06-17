@@ -302,7 +302,7 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_ADD_FRAME, ShortcutsPage::tr("Add Frame", "Shortcut")},
         {CMD_CLEAR_FRAME, ShortcutsPage::tr("Clear Frame", "Shortcut")},
         {CMD_COPY, ShortcutsPage::tr("Copy", "Shortcut")},
-        {CMD_COPY_PREVIOUS, ShortcutsPage::tr("Copy Previous", "Shortcut")},
+        {CMD_PASTE_FROM_PREVIOUS, ShortcutsPage::tr("Paste from Previous Keyframe", "Shortcut")},
         {CMD_CUT, ShortcutsPage::tr("Cut", "Shortcut")},
         {CMD_DELETE_CUR_LAYER, ShortcutsPage::tr("Delete Current Layer", "Shortcut")},
         {CMD_DESELECT_ALL, ShortcutsPage::tr("Deselect All", "Shortcut")},

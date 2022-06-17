@@ -560,26 +560,30 @@ void Editor::pasteFromPreviousFrame()
 {
     Layer* currentLayer = layers()->currentLayer();
     int prevFrame = currentLayer->getPreviousKeyFramePosition(mFrame);
-    if (currentLayer->keyExists(mFrame) && prevFrame != mFrame)
+    if (!currentLayer->keyExists(mFrame) || prevFrame == mFrame)
     {
-        if (currentLayer->type() == Layer::BITMAP)
+        return;
+    }
+
+    if (currentLayer->type() == Layer::BITMAP)
+    {
+        backup(tr("Paste from Previous Keyframe"));
+        BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getKeyFrameAt(prevFrame));
+        if (select()->somethingSelected())
         {
-            backup(tr("Paste from previous"));
-            BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getKeyFrameAt(prevFrame));
-            if (select()->somethingSelected())
-            {
-                BitmapImage copy = bitmapImage->copy(select()->mySelectionRect().toRect());
-                pasteToCanvas(&copy, mFrame);
-            }
-            else
-                pasteToCanvas(bitmapImage, mFrame);
+            BitmapImage copy = bitmapImage->copy(select()->mySelectionRect().toRect());
+            pasteToCanvas(&copy, mFrame);
         }
-        else if (currentLayer->type() == Layer::VECTOR)
+        else
         {
-            backup(tr("Paste from previous"));
-            VectorImage* vectorImage = static_cast<VectorImage*>(currentLayer->getKeyFrameAt(prevFrame));
-            pasteToCanvas(vectorImage, mFrame);
+            pasteToCanvas(bitmapImage, mFrame);
         }
+    }
+    else if (currentLayer->type() == Layer::VECTOR)
+    {
+        backup(tr("Paste from Previous Keyframe"));
+        VectorImage* vectorImage = static_cast<VectorImage*>(currentLayer->getKeyFrameAt(prevFrame));
+        pasteToCanvas(vectorImage, mFrame);
     }
 }
 
