@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>24</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -113,6 +113,7 @@
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
+    <addaction name="actionPaste_Previous"/>
     <addaction name="actionClearFrame"/>
     <addaction name="separator"/>
     <addaction name="menuSelection"/>
@@ -1187,6 +1188,14 @@
    </property>
    <property name="text">
     <string>Status Bar</string>
+   </property>
+  </action>
+  <action name="actionPaste_Previous">
+   <property name="text">
+    <string>Paste from Previous Keyframe</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste from Previous Keyframe</string>
    </property>
   </action>
  </widget>

@@ -277,6 +277,7 @@ void MainWindow2::createMenus()
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
+    connect(ui->actionPaste_Previous, &QAction::triggered, mEditor, &Editor::pasteFromPreviousFrame);
     connect(ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste);
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
@@ -1194,6 +1195,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRedo->setShortcut(cmdKeySeq(CMD_REDO));
     ui->actionCut->setShortcut(cmdKeySeq(CMD_CUT));
     ui->actionCopy->setShortcut(cmdKeySeq(CMD_COPY));
+    ui->actionPaste_Previous->setShortcut(cmdKeySeq(CMD_PASTE_FROM_PREVIOUS));
     ui->actionPaste->setShortcut(cmdKeySeq(CMD_PASTE));
     ui->actionClearFrame->setShortcut(cmdKeySeq(CMD_CLEAR_FRAME));
     ui->actionSelect_All->setShortcut(cmdKeySeq(CMD_SELECT_ALL));

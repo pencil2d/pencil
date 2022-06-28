@@ -129,6 +129,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_CUT "CmdCut"
 #define CMD_COPY "CmdCopy"
 #define CMD_PASTE "CmdPaste"
+#define CMD_PASTE_FROM_PREVIOUS "CmdPasteFromPrevious"
 #define CMD_SELECT_ALL "CmdSelectAll"
 #define CMD_DESELECT_ALL "CmdDeselectAll"
 #define CMD_CLEAR_FRAME "CmdClearFrame"

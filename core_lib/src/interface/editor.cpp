@@ -50,7 +50,6 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "util.h"
 
-
 Editor::Editor(QObject* parent) : QObject(parent)
 {
     mBackupIndex = -1;
@@ -554,6 +553,37 @@ void Editor::copyAndCut()
     if (currentLayer->type() == Layer::BITMAP || currentLayer->type() == Layer::VECTOR) {
         mScribbleArea->deleteSelection();
         deselectAll();
+    }
+}
+
+void Editor::pasteFromPreviousFrame()
+{
+    Layer* currentLayer = layers()->currentLayer();
+    int prevFrame = currentLayer->getPreviousKeyFramePosition(mFrame);
+    if (!currentLayer->keyExists(mFrame) || prevFrame == mFrame)
+    {
+        return;
+    }
+
+    if (currentLayer->type() == Layer::BITMAP)
+    {
+        backup(tr("Paste from Previous Keyframe"));
+        BitmapImage* bitmapImage = static_cast<BitmapImage*>(currentLayer->getKeyFrameAt(prevFrame));
+        if (select()->somethingSelected())
+        {
+            BitmapImage copy = bitmapImage->copy(select()->mySelectionRect().toRect());
+            pasteToCanvas(&copy, mFrame);
+        }
+        else
+        {
+            pasteToCanvas(bitmapImage, mFrame);
+        }
+    }
+    else if (currentLayer->type() == Layer::VECTOR)
+    {
+        backup(tr("Paste from Previous Keyframe"));
+        VectorImage* vectorImage = static_cast<VectorImage*>(currentLayer->getKeyFrameAt(prevFrame));
+        pasteToCanvas(vectorImage, mFrame);
     }
 }
 
