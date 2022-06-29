@@ -557,18 +557,6 @@ void MainWindow2::closeEvent(QCloseEvent* event)
     m2ndCloseEvent = true;
 }
 
-void MainWindow2::showEvent(QShowEvent*)
-{
-    static bool firstShowEvent = true;
-    if (!firstShowEvent)
-    {
-        return;
-    }
-    firstShowEvent = false;
-    if (tryRecoverUnsavedProject() || loadMostRecent() || tryLoadPreset()) { return; }
-    newObject();
-}
-
 void MainWindow2::tabletEvent(QTabletEvent* event)
 {
     event->ignore();
@@ -603,6 +591,21 @@ bool MainWindow2::saveAsNewDocument()
         return false;
     }
     return saveObject(fileName);
+}
+
+void MainWindow2::openStartupFile(const QString& filename)
+{
+    if (tryRecoverUnsavedProject())
+    {
+        return;
+    }
+
+    if (!filename.isEmpty() && openObject(filename))
+    {
+        return;
+    }
+
+    loadMostRecent() || tryLoadPreset();
 }
 
 void MainWindow2::openFile(const QString& filename)

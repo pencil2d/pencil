@@ -100,21 +100,19 @@ public:
     void setOpacity(int opacity);
     void preferences();
 
+    void openStartupFile(const QString& filename);
     void openFile(const QString& filename);
 
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
 signals:
-    void updateRecentFilesList(bool b);
-
     /** Emitted when window regains focus */
     void windowActivated();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
-    void showEvent(QShowEvent*) override;
     bool event(QEvent*) override;
 
 private slots:

@@ -151,8 +151,5 @@ void Pencil2D::prepareGuiStartup(const QString& inputPath)
     connect(this, &Pencil2D::openFileRequested, mainWindow.get(), &MainWindow2::openFile);
     mainWindow->show();
 
-    if (!inputPath.isEmpty())
-    {
-        mainWindow->openFile(inputPath);
-    }
+    mainWindow->openStartupFile(inputPath);
 }
