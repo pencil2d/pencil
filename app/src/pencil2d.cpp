@@ -69,6 +69,12 @@ Status Pencil2D::handleCommandLineOptions()
     CommandLineParser parser;
     parser.process(arguments());
 
+#ifndef QT_DEBUG
+    if (isInstanceOpen()) {
+        return Status::SAFE;
+    }
+#endif
+
     QString inputPath = parser.inputPath();
     QStringList outputPaths = parser.outputPaths();
 

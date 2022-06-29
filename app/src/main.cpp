@@ -39,12 +39,6 @@ int main(int argc, char* argv[])
 
     Pencil2D app(argc, argv);
 
-    #ifndef QT_DEBUG
-    if (app.isInstanceOpen()) {
-        return EXIT_SUCCESS;
-    }
-    #endif
-
     switch (app.handleCommandLineOptions().code())
     {
         case Status::OK:
