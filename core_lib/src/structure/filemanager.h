@@ -65,10 +65,10 @@ private:
     Status writeMainXml(const Object* obj, const QString& mainXmlPath, QStringList& filesWritten);
     Status writePalette(const Object* obj, const QString& dataFolder, QStringList& filesWritten);
 
-    ObjectData* loadProjectData(const QDomElement& element);
+    ObjectData loadProjectData(const QDomElement& element);
     QDomElement saveProjectData(const ObjectData*, QDomDocument& xmlDoc);
 
-    void extractProjectData(const QDomElement& element, ObjectData* data);
+    void extractProjectData(const QDomElement& element, ObjectData& data);
     void handleOpenProjectError(Status::ErrorCode, const DebugDetails&);
 
     QString backupPreviousFile(const QString& fileName);
