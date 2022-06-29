@@ -273,6 +273,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
+    connect(mEditor, &Editor::updateBackup, this, &MainWindow2::undoActSetText);
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
@@ -425,9 +426,6 @@ void MainWindow2::createMenus()
     ui->menuFile->insertMenu(ui->actionSave, mRecentFileMenu);
 
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
-
-    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
-    connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
 void MainWindow2::setOpacity(int opacity)
@@ -659,6 +657,7 @@ bool MainWindow2::openObject(const QString& strFilePath)
     progress.setValue(progress.maximum());
 
     updateSaveState();
+    undoActSetText();
 
     if (!QFileInfo(strFilePath).isWritable())
     {
@@ -1058,6 +1057,7 @@ void MainWindow2::newObject()
     closeDialogs();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
+    undoActSetText();
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
@@ -1082,6 +1082,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
     updateSaveState();
+    undoActSetText();
 
     return true;
 }
@@ -1332,12 +1333,6 @@ void MainWindow2::undoActSetText()
         ui->actionRedo->setText(tr("Redo", "Menu item text"));
         ui->actionRedo->setEnabled(false);
     }
-}
-
-void MainWindow2::undoActSetEnabled()
-{
-    ui->actionUndo->setEnabled(true);
-    ui->actionRedo->setEnabled(true);
 }
 
 void MainWindow2::exportPalette()
@@ -1625,6 +1620,7 @@ void MainWindow2::startProjectRecovery(int result)
     Q_ASSERT(o);
     mEditor->setObject(o);
     updateSaveState();
+    undoActSetText();
 
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");

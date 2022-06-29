@@ -68,7 +68,6 @@ public:
 
 public slots:
     void undoActSetText();
-    void undoActSetEnabled();
     void updateSaveState();
     void openPegAlignDialog();
     void openRepositionDialog();
