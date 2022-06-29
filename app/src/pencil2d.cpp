@@ -102,7 +102,7 @@ bool Pencil2D::isInstanceOpen()
     mProcessLock.reset(new QLockFile(appDir.absoluteFilePath("pencil2d-process.lock")));
     if (!mProcessLock->tryLock(10))
     {
-        QMessageBox::StandardButton clickedButton = QMessageBox::warning(nullptr, QObject::tr("Warning"), QObject::tr("An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior."), QMessageBox::Close | QMessageBox::Open, QMessageBox::Close);
+        QMessageBox::StandardButton clickedButton = QMessageBox::warning(nullptr, tr("Warning"), tr("An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior."), QMessageBox::Close | QMessageBox::Open, QMessageBox::Close);
         if (clickedButton != QMessageBox::Open)
         {
             return true;
