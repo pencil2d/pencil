@@ -136,6 +136,14 @@ void Pencil2D::installTranslators()
     QLocale locale = userLocale.isEmpty() ? QLocale::system() : QLocale(userLocale);
     QLocale::setDefault(locale);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    // In versions prior to 5.14, Qt's DOM implementation erroneously used
+    // locale-dependent string conversion for double attributes (QTBUG-80068).
+    // To work around this, we override the numeric locale category to use the
+    // C locale.
+    std::setlocale(LC_NUMERIC, "C");
+#endif
+
     std::unique_ptr<QTranslator> qtTranslator(new QTranslator(this));
     if (qtTranslator->load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
     {

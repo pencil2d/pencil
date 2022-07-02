@@ -15,8 +15,6 @@ GNU General Public License for more details.
 
 */
 
-#include <clocale>
-
 #include "log.h"
 #include "pencil2d.h"
 #include "pencilerror.h"
@@ -28,11 +26,6 @@ GNU General Public License for more details.
  */
 int main(int argc, char* argv[])
 {
-    // iss #940
-    // Force dot separator on numbers because some localizations
-    // use comma as separator.
-    std::setlocale(LC_NUMERIC, "en_US.UTF-8");
-
     Q_INIT_RESOURCE(core_lib);
     PlatformHandler::initialise();
     initCategoryLogging();
