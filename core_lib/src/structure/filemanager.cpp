@@ -177,8 +177,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
         }
         else if (element.tagName() == "editor" || element.tagName() == "projectdata")
         {
-            ObjectData* projectData = loadProjectData(element);
-            object->setData(projectData);
+            object->setData(loadProjectData(element));
         }
         else if (element.tagName() == "version")
         {
@@ -384,9 +383,9 @@ Status FileManager::writeToWorkingFolder(const Object* object)
     return Status(errorCode, dd);
 }
 
-ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
+ObjectData FileManager::loadProjectData(const QDomElement& docElem)
 {
-    ObjectData* data = new ObjectData;
+    ObjectData data;
     if (docElem.isNull())
     {
         return data;
@@ -468,14 +467,12 @@ QDomElement FileManager::saveProjectData(const ObjectData* data, QDomDocument& x
     return rootTag;
 }
 
-void FileManager::extractProjectData(const QDomElement& element, ObjectData* data)
+void FileManager::extractProjectData(const QDomElement& element, ObjectData& data)
 {
-    Q_ASSERT(data);
-
     QString strName = element.tagName();
     if (strName == "currentFrame")
     {
-        data->setCurrentFrame(element.attribute("value").toInt());
+        data.setCurrentFrame(element.attribute("value").toInt());
     }
     else  if (strName == "currentColor")
     {
@@ -484,11 +481,11 @@ void FileManager::extractProjectData(const QDomElement& element, ObjectData* dat
         int b = element.attribute("b", "255").toInt();
         int a = element.attribute("a", "255").toInt();
 
-        data->setCurrentColor(QColor(r, g, b, a));
+        data.setCurrentColor(QColor(r, g, b, a));
     }
     else if (strName == "currentLayer")
     {
-        data->setCurrentLayer(element.attribute("value", "0").toInt());
+        data.setCurrentLayer(element.attribute("value", "0").toInt());
     }
     else if (strName == "currentView")
     {
@@ -499,27 +496,27 @@ void FileManager::extractProjectData(const QDomElement& element, ObjectData* dat
         double dx = element.attribute("dx", "0").toDouble();
         double dy = element.attribute("dy", "0").toDouble();
 
-        data->setCurrentView(QTransform(m11, m12, m21, m22, dx, dy));
+        data.setCurrentView(QTransform(m11, m12, m21, m22, dx, dy));
     }
     else if (strName == "fps" || strName == "currentFps")
     {
-        data->setFrameRate(element.attribute("value", "12").toInt());
+        data.setFrameRate(element.attribute("value", "12").toInt());
     }
     else if (strName == "isLoop")
     {
-        data->setLooping(element.attribute("value", "false") == "true");
+        data.setLooping(element.attribute("value", "false") == "true");
     }
     else if (strName == "isRangedPlayback")
     {
-        data->setRangedPlayback((element.attribute("value", "false") == "true"));
+        data.setRangedPlayback((element.attribute("value", "false") == "true"));
     }
     else if (strName == "markInFrame")
     {
-        data->setMarkInFrameNumber(element.attribute("value", "0").toInt());
+        data.setMarkInFrameNumber(element.attribute("value", "0").toInt());
     }
     else if (strName == "markOutFrame")
     {
-        data->setMarkOutFrameNumber(element.attribute("value", "15").toInt());
+        data.setMarkOutFrameNumber(element.attribute("value", "15").toInt());
     }
 }
 

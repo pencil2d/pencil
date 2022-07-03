@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
 {
-    setName(QObject::tr("Bitmap Layer"));
+    setName(tr("Bitmap Layer"));
 }
 
 LayerBitmap::~LayerBitmap()

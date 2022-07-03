@@ -69,6 +69,12 @@ Status Pencil2D::handleCommandLineOptions()
     CommandLineParser parser;
     parser.process(arguments());
 
+#ifndef QT_DEBUG
+    if (isInstanceOpen()) {
+        return Status::SAFE;
+    }
+#endif
+
     QString inputPath = parser.inputPath();
     QStringList outputPaths = parser.outputPaths();
 
@@ -102,7 +108,7 @@ bool Pencil2D::isInstanceOpen()
     mProcessLock.reset(new QLockFile(appDir.absoluteFilePath("pencil2d-process.lock")));
     if (!mProcessLock->tryLock(10))
     {
-        QMessageBox::StandardButton clickedButton = QMessageBox::warning(nullptr, QObject::tr("Warning"), QObject::tr("An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior."), QMessageBox::Close | QMessageBox::Open, QMessageBox::Close);
+        QMessageBox::StandardButton clickedButton = QMessageBox::warning(nullptr, tr("Warning"), tr("An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior."), QMessageBox::Close | QMessageBox::Open, QMessageBox::Close);
         if (clickedButton != QMessageBox::Open)
         {
             return true;
@@ -130,6 +136,14 @@ void Pencil2D::installTranslators()
     QLocale locale = userLocale.isEmpty() ? QLocale::system() : QLocale(userLocale);
     QLocale::setDefault(locale);
 
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    // In versions prior to 5.14, Qt's DOM implementation erroneously used
+    // locale-dependent string conversion for double attributes (QTBUG-80068).
+    // To work around this, we override the numeric locale category to use the
+    // C locale.
+    std::setlocale(LC_NUMERIC, "C");
+#endif
+
     std::unique_ptr<QTranslator> qtTranslator(new QTranslator(this));
     if (qtTranslator->load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
     {
@@ -151,8 +165,5 @@ void Pencil2D::prepareGuiStartup(const QString& inputPath)
     connect(this, &Pencil2D::openFileRequested, mainWindow.get(), &MainWindow2::openFile);
     mainWindow->show();
 
-    if (!inputPath.isEmpty())
-    {
-        mainWindow->openFile(inputPath);
-    }
+    mainWindow->openStartupFile(inputPath);
 }
