@@ -190,13 +190,8 @@ Status ActionCommands::importSound(FileType type)
     {
         mEditor->removeKey();
         emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
-    }
-    else
-    {
-        int clipCount = mEditor->sound()->soundClipCount();
-        if (clipCount >= MovieExporter::MAX_SOUND_FRAMES) {
-            showSoundClipWarning(clipCount);
-        }
+    } else {
+        showSoundClipWarningIfNeeded();
     }
 
     return st;
@@ -737,10 +732,7 @@ void ActionCommands::duplicateKey()
     if (layer->type() == Layer::SOUND)
     {
         mEditor->sound()->processSound(dynamic_cast<SoundClip*>(dupKey));
-        int clipCount = mEditor->sound()->soundClipCount();
-        if (clipCount >= MovieExporter::MAX_SOUND_FRAMES) {
-            showSoundClipWarning(clipCount);
-        }
+        showSoundClipWarningIfNeeded();
     }
     else
     {
@@ -951,11 +943,13 @@ void ActionCommands::about()
     aboutBox->exec();
 }
 
-void ActionCommands::showSoundClipWarning(int clipCount)
+void ActionCommands::showSoundClipWarningIfNeeded()
 {
-    if (mSuppressSoundWarning) return;
-
-    QMessageBox::warning(mParent, tr("Warning"), tr("You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding 63 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.").arg(clipCount));
-
-    mSuppressSoundWarning = true;
+    int clipCount = mEditor->sound()->soundClipCount();
+    if (clipCount >= MovieExporter::MAX_SOUND_FRAMES && !mSuppressSoundWarning) {
+        QMessageBox::warning(mParent, tr("Warning"), tr("You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.").arg(clipCount).arg(MovieExporter::MAX_SOUND_FRAMES));
+        mSuppressSoundWarning = true;
+    } else {
+        mSuppressSoundWarning = false;
+    }
 }

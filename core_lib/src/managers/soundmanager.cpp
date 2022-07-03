@@ -172,10 +172,12 @@ Status SoundManager::processSound(SoundClip* soundClip)
     return Status::OK;
 }
 
-int SoundManager::soundClipCount()
+int SoundManager::soundClipCount() const
 {
     LayerManager *layerManager = editor()->layers();
     int totalCount = 0;
+
+
     for (int i = 0; i < layerManager->count(); ++i)
     {
         Layer* layer = layerManager->getLayer(i);

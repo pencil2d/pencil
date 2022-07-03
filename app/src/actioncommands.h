@@ -98,7 +98,7 @@ public:
     void about();
 
 private:
-    void showSoundClipWarning(int clipCount);
+    void showSoundClipWarningIfNeeded();
 
     void exposeSelectedFrames(int offset);
 
