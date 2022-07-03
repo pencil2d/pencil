@@ -172,6 +172,25 @@ Status SoundManager::processSound(SoundClip* soundClip)
     return Status::OK;
 }
 
+int SoundManager::soundClipCount() const
+{
+    LayerManager *layerManager = editor()->layers();
+    int totalCount = 0;
+
+
+    for (int i = 0; i < layerManager->count(); ++i)
+    {
+        Layer* layer = layerManager->getLayer(i);
+        if (layer->type() != Layer::SOUND)
+        {
+            continue;
+        }
+
+        totalCount += layer->keyFrameCount();
+    }
+    return totalCount;
+}
+
 void SoundManager::onDurationChanged(SoundPlayer* player, int64_t duration)
 {
     SoundClip* clip = player->clip();

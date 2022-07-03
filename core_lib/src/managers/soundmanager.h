@@ -42,6 +42,8 @@ public:
     Status loadSound(SoundClip* soundClip, QString strSoundFile);
     Status processSound(SoundClip* soundClip);
 
+    int soundClipCount() const;
+
 signals:
     void soundClipDurationChanged();
 
