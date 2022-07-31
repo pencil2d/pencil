@@ -334,5 +334,5 @@ void PencilTool::paintVectorStroke(Layer* layer)
 
     // TODO: selection doesn't apply on enter
 
-    mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+    mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

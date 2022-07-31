@@ -27,18 +27,6 @@ GNU General Public License for more details.
 void BackupBitmapElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->findLayerById(this->layerId);
-    auto selectMan = editor->select();
-    selectMan->setSelection(mySelection, true);
-    selectMan->setTransformedSelectionRect(myTransformedSelection);
-    selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
-    selectMan->setRotation(rotationAngle);
-    selectMan->setSomethingSelected(somethingSelected);
-
-    if (editor->currentFrame() != this->frame) {
-        editor->scrubTo(this->frame);
-    }
-    editor->frameModified(this->frame);
-
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
         editor->restoreKey();
@@ -54,18 +42,26 @@ void BackupBitmapElement::restore(Editor* editor)
             }
         }
     }
+
+    auto selectMan = editor->select();
+    selectMan->setSelection(mySelection, true);
+    selectMan->setTransformAnchor(selectionAnchor);
+    selectMan->setRotation(rotationAngle);
+    selectMan->setSomethingSelected(somethingSelected);
+    selectMan->setScale(scaleX, scaleY);
+    selectMan->setTranslation(translation);
+
+    selectMan->calculateSelectionTransformation();
+
+    if (editor->currentFrame() != this->frame) {
+        editor->scrubTo(this->frame);
+    }
+    editor->frameModified(this->frame);
 }
 
 void BackupVectorElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->findLayerById(this->layerId);
-    auto selectMan = editor->select();
-    selectMan->setSelection(mySelection, false);
-    selectMan->setTransformedSelectionRect(myTransformedSelection);
-    selectMan->setTempTransformedSelectionRect(myTempTransformedSelection);
-    selectMan->setRotation(rotationAngle);
-    selectMan->setSomethingSelected(somethingSelected);
-
     for (int i = 0; i < editor->object()->getLayerCount(); i++)
     {
         Layer* layer = editor->object()->getLayer(i);
@@ -98,6 +94,15 @@ void BackupVectorElement::restore(Editor* editor)
             }
         }
     }
+
+    auto selectMan = editor->select();
+    selectMan->setSelection(mySelection, false);
+    selectMan->setTransformAnchor(selectionAnchor);
+    selectMan->setRotation(rotationAngle);
+    selectMan->setSomethingSelected(somethingSelected);
+    selectMan->setScale(scaleX, scaleY);
+    selectMan->setTranslation(translation);
+    selectMan->calculateSelectionTransformation();
 }
 
 void BackupSoundElement::restore(Editor* editor)

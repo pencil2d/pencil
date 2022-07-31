@@ -457,6 +457,10 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
     // Paint buffer pasted on top of vector image:
     // fixes polyline not being rendered properly
     rasterizedVectorImage.paintImage(painter);
+
+    if (mRenderTransform && !mSelectionTransform.isIdentity()) {
+        vectorImage->setSelectionTransformation(mSelectionTransform);
+    }
 }
 
 void CanvasPainter::paintTransformedSelection(QPainter& painter)

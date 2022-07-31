@@ -64,7 +64,7 @@ QCursor MoveTool::cursor()
     MoveMode mode = MoveMode::NONE;
     if (mEditor->select()->somethingSelected())
     {
-        mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
+        mode = mEditor->select()->getMoveMode();
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
     if (mEditor->overlays()->isPerspOverlaysActive())
@@ -98,9 +98,6 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
 
     if (mEditor->select()->somethingSelected())
     {
-        mEditor->select()->updatePolygons();
-
-        setAnchorToLastPoint();
         beginInteraction(event->modifiers(), mCurrentLayer);
     }
     if (mEditor->overlays()->isPerspOverlaysActive())
@@ -109,14 +106,15 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         mEditor->overlays()->setMoveMode(mPerspMode);
         mEditor->overlays()->updatePerspOverlay(point);
     }
+    mOffset = getCurrentPoint();
+
+    mEditor->frameModified(mEditor->currentFrame());
 }
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
 {
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
-
-    mEditor->select()->updatePolygons();
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
@@ -131,20 +129,16 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     {
         // the user is moving the mouse without pressing it
         // update cursor to reflect selection corner interaction
+        mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
         mScribbleArea->updateToolCursor();
 
         if (mCurrentLayer->type() == Layer::VECTOR)
         {
             storeClosestVectorCurve(mCurrentLayer);
         }
-        if (mEditor->overlays()->isPerspOverlaysActive())
-        {
-//            QPointF mapped = mEditor->view()->mapScreenToCanvas(event->pos());
-//            mEditor->overlays()->updatePerspOverlay(mapped);
-        }
         mEditor->getScribbleArea()->prepOverlays();
     }
-    mScribbleArea->updateCurrentFrame();
+    mEditor->frameModified(mEditor->currentFrame());
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
@@ -159,30 +153,10 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     if (!selectMan->somethingSelected())
         return;
 
-    mRotatedAngle = selectMan->myRotation();
-    updateTransformation();
-
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::VECTOR) {
-        applyTransformation();
-    }
-
-    selectMan->updatePolygons();
+    mOffset = getCurrentPoint();
 
     mScribbleArea->updateToolCursor();
-    mScribbleArea->updateCurrentFrame();
-}
-
-void MoveTool::updateTransformation()
-{
-    auto selectMan = mEditor->select();
-    selectMan->updateTransformedSelection();
-
-    // make sure transform is correct
-    selectMan->calculateSelectionTransformation();
-
-    // paint the transformation
-    paintTransformedSelection();
+    mEditor->frameModified(mEditor->currentFrame());
 }
 
 void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
@@ -193,16 +167,16 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
 
         QPointF offset = offsetFromPressPos();
 
-        // maintain aspect ratio
-        if (keyMod == Qt::ShiftModifier)
-        {
-            offset = selectMan->offsetFromAspectRatio(offset.x(), offset.y());
-        }
-
         int rotationIncrement = 0;
         if (selectMan->getMoveMode() == MoveMode::ROTATION && keyMod & Qt::ShiftModifier)
         {
             rotationIncrement = mRotationIncrement;
+        }
+
+        if (keyMod == Qt::ShiftModifier) {
+            selectMan->maintainAspectRatio(true);
+        } else {
+            selectMan->maintainAspectRatio(false);
         }
 
         if(layer->type() == Layer::BITMAP)
@@ -210,11 +184,17 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
             offset = offset.toPoint();
         }
 
-        selectMan->adjustSelection(getCurrentPoint(), offset.x(), offset.y(), mRotatedAngle, rotationIncrement);
+        qreal newAngle = 0;
+        if (selectMan->getMoveMode() == MoveMode::ROTATION) {
+            QPointF anchorPoint = selectMan->currentTransformAnchor();
+            newAngle = selectMan->angleFromPoint(getCurrentPoint(), anchorPoint) - mRotatedAngle;
+            mPreviousAngle = newAngle;
+        }
 
-        selectMan->calculateSelectionTransformation();
-        paintTransformedSelection();
+        selectMan->adjustSelection(getCurrentPoint(), mOffset.x(), mOffset.y(), newAngle, rotationIncrement);
 
+        mOffset = getCurrentPoint();
+        mEditor->frameModified(mEditor->currentFrame());
     }
     else // there is nothing selected
     {
@@ -225,7 +205,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
 void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
 {
     auto selectMan = mEditor->select();
-    QRectF selectionRect = selectMan->myTransformedSelectionRect();
+    QRectF selectionRect = selectMan->mySelectionRect();
     if (!selectionRect.isNull())
     {
         mEditor->backup(typeName());
@@ -240,7 +220,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
         }
     }
 
-    if (selectMan->validateMoveMode(getLastPoint()) == MoveMode::MIDDLE)
+    if (selectMan->getMoveMode() == MoveMode::MIDDLE)
     {
         if (keyMod == Qt::ControlModifier) // --- rotation
         {
@@ -253,10 +233,9 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
         createVectorSelection(keyMod, layer);
     }
 
+    mEditor->select()->setTransformAnchor(mEditor->select()->getSelectionAnchorPoint());
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
-        QPointF curPoint = getCurrentPoint();
-        QPointF anchorPoint = selectionRect.center();
-        mRotatedAngle = qRadiansToDegrees(MathUtils::getDifferenceAngle(anchorPoint, curPoint)) - selectMan->myRotation();
+        mRotatedAngle = selectMan->angleFromPoint(getCurrentPoint(), selectMan->currentTransformAnchor()) - mPreviousAngle;
     }
 }
 
@@ -280,7 +259,6 @@ void MoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
     {
         setAreaSelected(vectorImage, keyMod);
     }
-    mScribbleArea->update();
 }
 
 void MoveTool::setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod)
@@ -335,22 +313,12 @@ void MoveTool::cancelChanges()
     mEditor->deselectAll();
 }
 
-void MoveTool::applySelectionChanges()
-{
-    mEditor->select()->setRotation(0);
-    mRotatedAngle = 0;
-
-    mScribbleArea->applySelectionChanges();
-}
-
 void MoveTool::applyTransformation()
 {
     mScribbleArea->applyTransformedSelection();
-}
-
-void MoveTool::paintTransformedSelection()
-{
-    mScribbleArea->paintTransformedSelection();
+    mEditor->select()->setSelection(mEditor->select()->mapToSelection(QPolygonF(mEditor->select()->mySelectionRect())).boundingRect());
+    mRotatedAngle = 0;
+    mPreviousAngle = 0;
 }
 
 bool MoveTool::leavingThisTool()
@@ -359,47 +327,10 @@ bool MoveTool::leavingThisTool()
     {
         switch (mCurrentLayer->type())
         {
-        case Layer::BITMAP: applySelectionChanges(); break;
+        case Layer::BITMAP: applyTransformation(); break;
         case Layer::VECTOR: applyTransformation(); break;
         default: break;
         }
-    }
-    return true;
-}
-
-bool MoveTool::switchingLayer()
-{
-    auto selectMan = mEditor->select();
-    if (!selectMan->transformHasBeenModified())
-    {
-        mEditor->deselectAll();
-        return true;
-    }
-
-    int returnValue = showTransformWarning();
-
-    if (returnValue == QMessageBox::Yes)
-    {
-        if (mCurrentLayer->type() == Layer::BITMAP)
-        {
-            applySelectionChanges();
-        }
-        else if (mCurrentLayer->type() == Layer::VECTOR)
-        {
-            applyTransformation();
-        }
-
-        mEditor->deselectAll();
-        return true;
-    }
-    else if (returnValue == QMessageBox::No)
-    {
-        cancelChanges();
-        return true;
-    }
-    else if (returnValue == QMessageBox::Cancel)
-    {
-        return false;
     }
     return true;
 }

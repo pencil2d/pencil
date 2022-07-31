@@ -162,6 +162,9 @@ public: //slots
     */
     void updateFrame(int frameNumber);
 
+    void setModified(const Layer* layer, int frameNumber);
+    void setModified(int layerNumber, int frameNumber);
+
     void clearCurrentFrame();
 
     bool importImage(const QString& filePath);

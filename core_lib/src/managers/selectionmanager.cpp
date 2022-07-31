@@ -60,15 +60,12 @@ void SelectionManager::workingLayerChanged(Layer *)
 
 void SelectionManager::resetSelectionTransformProperties()
 {
-    mOffset = QPointF(0, 0);
     mRotatedAngle = 0;
+    mTranslation = QPointF(0, 0);
+    mScaleX = 1;
+    mScaleY = 1;
+    mAnchorPoint = QPoint();
     mSelectionTransform.reset();
-}
-
-void SelectionManager::updatePolygons()
-{
-    mCurrentSelectionPolygonF = mTempTransformedSelection;
-    mLastSelectionPolygonF = mTransformedSelection;
 }
 
 void SelectionManager::resetSelectionTransform()
@@ -76,20 +73,14 @@ void SelectionManager::resetSelectionTransform()
     mSelectionTransform.reset();
 }
 
-bool SelectionManager::isOutsideSelectionArea(const QPointF point)
+bool SelectionManager::isOutsideSelectionArea(QPointF point)
 {
-    return (!mTransformedSelection.contains(point)
-            && validateMoveMode(point) == MoveMode::NONE);
+    return (!mSelectionTransform.map(mSelectionPolygon).containsPoint(point, Qt::WindingFill)) && mMoveMode == MoveMode::NONE;
 }
 
-bool SelectionManager::transformHasBeenModified() const
+bool SelectionManager::transformHasBeenModified()
 {
-    return (mSelection != mTempTransformedSelection) || rotationHasBeenModified();
-}
-
-bool SelectionManager::rotationHasBeenModified() const
-{
-    return !qFuzzyCompare(mRotatedAngle, 0);
+    return mSelectionTransform.isIdentity();
 }
 
 void SelectionManager::deleteSelection()
@@ -97,180 +88,188 @@ void SelectionManager::deleteSelection()
     emit needDeleteSelection();
 }
 
-void SelectionManager::clearCurves()
-{
-    mClosestCurves.clear();
-}
-
-void SelectionManager::clearVertices()
-{
-    mClosestVertices.clear();
-}
-
 qreal SelectionManager::selectionTolerance() const
 {
-    return qAbs(mSelectionTolerance * editor()->view()->getViewScaleInverse());
+    return 10;
 }
 
-MoveMode SelectionManager::validateMoveMode(const QPointF pos)
+QPointF SelectionManager::getSelectionAnchorPoint() const
 {
-    return moveModeForAnchorInRange(pos);
+    QPointF anchorPoint;
+    if (mSelectionPolygon.count() < 3) { return anchorPoint; }
+
+    if (mMoveMode == MoveMode::BOTTOMRIGHT)
+    {
+        anchorPoint = mSelectionPolygon[0];
+    }
+    else if (mMoveMode == MoveMode::BOTTOMLEFT)
+    {
+        anchorPoint = mSelectionPolygon[1];
+    }
+    else if (mMoveMode == MoveMode::TOPLEFT)
+    {
+        anchorPoint = mSelectionPolygon[2];
+    }
+    else if (mMoveMode == MoveMode::TOPRIGHT)
+    {
+        anchorPoint = mSelectionPolygon[3];
+    } else {
+        anchorPoint = QLineF(mSelectionPolygon[0], mSelectionPolygon[2]).center();
+    }
+    return anchorPoint;
 }
 
-MoveMode SelectionManager::moveModeForAnchorInRange(const QPointF lastPos)
+
+void SelectionManager::setMoveModeForAnchorInRange(QPointF point)
 {
-    const QRectF transformRect = mTempTransformedSelection;
-    const QPointF lastPoint = lastPos;
+    if (mSelectionPolygon.count() < 3) { return; }
+
+    QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
 
     const double calculatedSelectionTol = selectionTolerance();
 
     MoveMode mode;
-    if (QLineF(lastPoint, transformRect.topLeft()).length() < calculatedSelectionTol)
+    if (QLineF(point, projectedPolygon[0]).length() < calculatedSelectionTol)
     {
         mode = MoveMode::TOPLEFT;
     }
-    else if (QLineF(lastPoint, transformRect.topRight()).length() < calculatedSelectionTol)
+    else if (QLineF(point, projectedPolygon[1]).length() < calculatedSelectionTol)
     {
         mode = MoveMode::TOPRIGHT;
     }
-    else if (QLineF(lastPoint, transformRect.bottomLeft()).length() < calculatedSelectionTol)
-    {
-        mode = MoveMode::BOTTOMLEFT;
-
-    }
-    else if (QLineF(lastPoint, transformRect.bottomRight()).length() < calculatedSelectionTol)
+    else if (QLineF(point, projectedPolygon[2]).length() < calculatedSelectionTol)
     {
         mode = MoveMode::BOTTOMRIGHT;
     }
-    else if (mTransformedSelection.contains(lastPoint))
+    else if (QLineF(point, projectedPolygon[3]).length() < calculatedSelectionTol)
+    {
+        mode = MoveMode::BOTTOMLEFT;
+    }
+    else if (projectedPolygon.containsPoint(point, Qt::WindingFill))
     {
         mode = MoveMode::MIDDLE;
     }
     else {
         mode = MoveMode::NONE;
     }
+
     mMoveMode = mode;
-    return mode;
-}
-
-MoveMode SelectionManager::getMoveModeForSelectionAnchor(const QPointF pos) const
-{
-    const double calculatedSelectionTol = selectionTolerance();
-
-    if (mCurrentSelectionPolygonF.count() < 4) { return MoveMode::NONE; }
-
-    QPointF topLeftCorner = mCurrentSelectionPolygonF[0];
-
-    QPointF topRightCorner = mCurrentSelectionPolygonF[1];
-
-    QPointF bottomRightCorner = mCurrentSelectionPolygonF[2];
-
-    QPointF bottomLeftCorner = mCurrentSelectionPolygonF[3];
-
-    QPointF currentPos = pos;
-
-    if (QLineF(currentPos, topLeftCorner).length() < calculatedSelectionTol)
-    {
-        return MoveMode::TOPLEFT;
-    }
-    else if (QLineF(currentPos, topRightCorner).length() < calculatedSelectionTol)
-    {
-        return MoveMode::TOPRIGHT;
-    }
-    else if (QLineF(currentPos, bottomLeftCorner).length() < calculatedSelectionTol)
-    {
-        return MoveMode::BOTTOMLEFT;
-
-    }
-    else if (QLineF(currentPos, bottomRightCorner).length() < calculatedSelectionTol)
-    {
-        return MoveMode::BOTTOMRIGHT;
-    }
-    else if (mTempTransformedSelection.contains(currentPos))
-    {
-        return MoveMode::MIDDLE;
-    }
-
-    return MoveMode::NONE;
-}
-
-QPointF SelectionManager::whichAnchorPoint(const QPointF currentPoint) const
-{
-    QPointF anchorPoint;
-    MoveMode mode = getMoveModeForSelectionAnchor(currentPoint);
-    if (mode == MoveMode::TOPLEFT)
-    {
-        anchorPoint = mSelection.bottomRight();
-    }
-    else if (mode == MoveMode::TOPRIGHT)
-    {
-        anchorPoint = mSelection.bottomLeft();
-    }
-    else if (mode == MoveMode::BOTTOMLEFT)
-    {
-        anchorPoint = mSelection.topRight();
-    }
-    else if (mode == MoveMode::BOTTOMRIGHT)
-    {
-        anchorPoint = mSelection.topLeft();
-    }
-    return anchorPoint;
 }
 
 void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement)
 {
-    offsetX = qRound(offsetX);
-    offsetY = qRound(offsetY);
-    QRectF& transformedSelection = mTransformedSelection;
+    QPointF offset(offsetX, offsetY);
 
-    switch (mMoveMode)
+    MoveMode moveMode = mMoveMode;
+    switch (moveMode)
     {
-    case MoveMode::MIDDLE:
-    {
-        mTempTransformedSelection = transformedSelection.translated(QPointF(offsetX, offsetY));
-        break;
-    }
-    case MoveMode::TOPRIGHT:
-    {
-        mTempTransformedSelection = transformedSelection.adjusted(0, offsetY, offsetX, 0);
+    case MoveMode::MIDDLE: {
+        translate(currentPoint - offset);
         break;
     }
     case MoveMode::TOPLEFT:
-    {
-        mTempTransformedSelection = transformedSelection.adjusted(offsetX, offsetY, 0, 0);
-        break;
-    }
-    case MoveMode::BOTTOMLEFT:
-    {
-        mTempTransformedSelection = transformedSelection.adjusted(offsetX, 0, 0, offsetY);
-        break;
-    }
+    case MoveMode::TOPRIGHT:
     case MoveMode::BOTTOMRIGHT:
-    {
-        mTempTransformedSelection = transformedSelection.adjusted(0, 0, offsetX, offsetY);
-        break;
+    case MoveMode::BOTTOMLEFT: {
 
-    }
-    case MoveMode::ROTATION:
-    {
-        mTempTransformedSelection = transformedSelection;
-        QPointF anchorPoint = transformedSelection.center();
-        qreal rotatedAngle = qRadiansToDegrees(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
-        if (rotationIncrement > 0) {
-            mRotatedAngle = constrainRotationToAngle(rotatedAngle, rotationIncrement);
+        QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
+        QVector2D currentPVec = QVector2D(currentPoint);
+
+        qreal originWidth = mSelectionPolygon[1].x() - mSelectionPolygon[0].x();
+        qreal originHeight = mSelectionPolygon[3].y() - mSelectionPolygon[0].y();
+
+        QVector2D staticXAnchor;
+        QVector2D staticYAnchor;
+        QVector2D movingAnchor;
+        if (moveMode == MoveMode::TOPLEFT) {
+            movingAnchor = QVector2D(projectedPolygon[0]);
+            staticXAnchor = QVector2D(projectedPolygon[1]);
+            staticYAnchor = QVector2D(projectedPolygon[3]);
+        } else if (moveMode == MoveMode::TOPRIGHT) {
+            movingAnchor = QVector2D(projectedPolygon[1]);
+            staticXAnchor = QVector2D(projectedPolygon[0]);
+            staticYAnchor = QVector2D(projectedPolygon[2]);
+        } else if (moveMode == MoveMode::BOTTOMRIGHT) {
+            movingAnchor = QVector2D(projectedPolygon[2]);
+            staticXAnchor = QVector2D(projectedPolygon[3]);
+            staticYAnchor = QVector2D(projectedPolygon[1]);
         } else {
-            mRotatedAngle = rotatedAngle;
+            movingAnchor = QVector2D(projectedPolygon[3]);
+            staticXAnchor = QVector2D(projectedPolygon[2]);
+            staticYAnchor = QVector2D(projectedPolygon[0]);
         }
+
+        QVector2D directionVecX = staticXAnchor - currentPVec;
+        QVector2D directionVecY = staticYAnchor - currentPVec;
+
+        // Calculates the signed distance
+        qreal distanceX = QVector2D::dotProduct(directionVecX,  (staticXAnchor - movingAnchor).normalized());
+        qreal distanceY = QVector2D::dotProduct(directionVecY, (staticYAnchor - movingAnchor).normalized());
+
+        qreal scaleX = distanceX / originWidth;
+        qreal scaleY = distanceY / originHeight;
+        if (mAspectRatioFixed) {
+            scaleY = scaleX;
+        }
+
+        scale(scaleX, scaleY);
+
+        break;
+    }
+    case MoveMode::ROTATION: {
+        rotate(rotationOffset, rotationIncrement);
         break;
     }
     default:
         break;
     }
+    calculateSelectionTransformation();
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const
+void SelectionManager::translate(QPointF newPos)
+{
+    mTranslation += newPos;
+}
+
+void SelectionManager::rotate(qreal angle, qreal lockedAngle)
+{
+    if (lockedAngle > 0) {
+        mRotatedAngle = constrainRotationToAngle(angle, lockedAngle);
+    } else {
+        mRotatedAngle = angle;
+    }
+}
+
+void SelectionManager::scale(qreal sX, qreal sY)
+{
+    // Enforce negative scaling
+    if (mScaleX < 0) {
+        sX = -sX;
+    } else if (qFuzzyIsNull(sX)) {
+        // Scale must not become 0
+        sX = 0.0001;
+    }
+
+    // Enforce negative scaling
+    if (mScaleY < 0) {
+        sY = -sY;
+    } else if (qFuzzyIsNull(sY)) {
+        // Scale must not become 0
+        sY = 0.0001;
+    }
+
+    mScaleX = sX;
+    mScaleY = sY;
+}
+
+int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
+}
+
+qreal SelectionManager::angleFromPoint(QPointF point, QPointF anchorPoint) const
+{
+    return qRadiansToDegrees(MathUtils::getDifferenceAngle(mSelectionTransform.map(anchorPoint), point));
 }
 
 void SelectionManager::setSelection(QRectF rect, bool roundPixels)
@@ -278,55 +277,49 @@ void SelectionManager::setSelection(QRectF rect, bool roundPixels)
     resetSelectionTransformProperties();
     if (roundPixels)
     {
-        rect = QRect(rect.topLeft().toPoint(), rect.bottomRight().toPoint() - QPoint(1,1));
+        rect = rect.toAlignedRect();
     }
-    mSelection = rect;
-    mTransformedSelection = rect;
-    mTempTransformedSelection = rect;
-    mSomethingSelected = (mSelection.isNull() ? false : true);
+    mSelectionPolygon = rect;
+    mOriginalRect = rect;
+    mSomethingSelected = (rect.isValid() ? true : false);
+    mScaleX = 1;
+    mScaleY = 1;
+    mRotatedAngle = 0;
 
     emit selectionChanged();
 }
 
+void SelectionManager::setTransformAnchor(QPointF point)
+{
+    QPointF newPos = mapToSelection(point);
+    QPointF oldPos = mapToSelection(mAnchorPoint);
+
+    // Adjust translation based on anchor point to avoid moving the selection
+    mTranslation = mTranslation - oldPos + newPos;
+    mAnchorPoint = point;
+}
+
 void SelectionManager::calculateSelectionTransformation()
 {
-    QVector<QPointF> centerPoints = calcSelectionCenterPoints();
+    QPointF anchorPoint = mAnchorPoint;
+    QTransform t;
+    t.translate(-anchorPoint.x(), -anchorPoint.y());
+    QTransform t2;
+    t2.translate(mTranslation.x(), mTranslation.y());
 
-    mSelectionTransform.reset();
-
-    mSelectionTransform.translate(centerPoints[0].x(), centerPoints[0].y());
-    mSelectionTransform.rotate(mRotatedAngle);
-
-    if (mSelection.width() > 0 && mSelection.height() > 0) // can't divide by 0
-    {
-        qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
-        qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
-        mSelectionTransform.scale(scaleX, scaleY);
-    }
-    mSelectionTransform.translate(-centerPoints[1].x(), -centerPoints[1].y());
+    QTransform r;
+    r.rotate(mRotatedAngle);
+    QTransform s;
+    s.scale(mScaleX, mScaleY);
+    mSelectionTransform = t * s * r * t2;
 }
 
-QVector<QPointF> SelectionManager::calcSelectionCenterPoints() const
+QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 {
-    QVector<QPointF> centerPoints;
-    qreal selectionCenterX,
-        selectionCenterY,
-        tempSelectionCenterX,
-        tempSelectionCenterY;
-
-    tempSelectionCenterX = mTempTransformedSelection.center().x();
-    tempSelectionCenterY = mTempTransformedSelection.center().y();
-    selectionCenterX = mSelection.center().x();
-    selectionCenterY = mSelection.center().y();
-    centerPoints.append(QPointF(tempSelectionCenterX, tempSelectionCenterY));
-    centerPoints.append(QPointF(selectionCenterX, selectionCenterY));
-    return centerPoints;
-}
-
-
-QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY) const
-{
-    qreal factor = mTransformedSelection.width() / mTransformedSelection.height();
+    QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
+    qreal width = QLineF(projectedPolygon[0], projectedPolygon[1]).dx();
+    qreal height = QLineF(projectedPolygon[0], projectedPolygon[3]).dy();
+    qreal factor = width / height;
 
     if (mMoveMode == MoveMode::TOPLEFT || mMoveMode == MoveMode::BOTTOMRIGHT)
     {
@@ -356,54 +349,20 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY) co
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
-    if (flipVertical)
-    {
-        editor()->backup(tr("Flip selection vertically"));
-    }
-    else
-    {
-        editor()->backup(tr("Flip selection horizontally"));
-    }
-
-    qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
-    qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
-    QVector<QPointF> centerPoints = calcSelectionCenterPoints();
-
-    QTransform translate = QTransform::fromTranslate(centerPoints[0].x(), centerPoints[0].y());
-    QTransform _translate = QTransform::fromTranslate(-centerPoints[1].x(), -centerPoints[1].y());
-    QTransform scale = QTransform::fromScale(-scaleX, scaleY);
+    mScaleX = -mScaleX;
 
     if (flipVertical)
     {
-        scale = QTransform::fromScale(scaleX, -scaleY);
+        mScaleY = -mScaleY;
     }
-
-    // reset transformation for vector selections
-    mSelectionTransform.reset();
-    mSelectionTransform *= _translate * scale * translate;
-
-    emit needPaintAndApply();
-}
-
-void SelectionManager::translate(QPointF point)
-{
-    mTempTransformedSelection.translate(point);
-    mTransformedSelection = mTempTransformedSelection;
     calculateSelectionTransformation();
 }
 
 void SelectionManager::resetSelectionProperties()
 {
     resetSelectionTransformProperties();
-    mSelection = QRectF();
-    mTransformedSelection = QRectF();
-    mTempTransformedSelection = QRectF();
-    mCurrentSelectionPolygonF = QPolygonF();
-    mLastSelectionPolygonF = QPolygonF();
-
+    mSelectionPolygon = QPolygonF();
     mSomethingSelected = false;
-    vectorSelection.clear();
-    emit selectionReset();
     emit selectionChanged();
 }
 

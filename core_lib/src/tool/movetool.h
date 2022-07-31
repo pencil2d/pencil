@@ -22,6 +22,8 @@ GNU General Public License for more details.
 #include "movemode.h"
 #include "preferencemanager.h"
 
+#include <QTransform>
+
 class Layer;
 class VectorImage;
 
@@ -40,7 +42,6 @@ public:
     void pointerMoveEvent(PointerEvent*) override;
 
     bool leavingThisTool() override;
-    bool switchingLayer() override;
 
     void resetToDefault() override;
     void setShowSelectionInfo(const bool b) override;
@@ -48,10 +49,7 @@ public:
 private:
     void cancelChanges();
     void applyTransformation();
-    void applySelectionChanges();
-    void paintTransformedSelection();
     void setAnchorToLastPoint();
-    void updateTransformation();
     void updateSettings(const SETTING setting);
 
     int showTransformWarning();
@@ -71,8 +69,10 @@ private:
     QPointF anchorOriginPoint;
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;
+    qreal mPreviousAngle = 0.0;
     int mRotationIncrement = 0;
     MoveMode mPerspMode;
+    QPointF mOffset;
 };
 
 #endif
