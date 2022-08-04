@@ -75,10 +75,6 @@ void BackupVectorElement::restore(Editor* editor)
         }
     }
 
-    if (editor->currentFrame() != this->frame) {
-        editor->scrubTo(this->frame);
-    }
-    editor->frameModified(this->frame);
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
         editor->restoreKey();
@@ -103,6 +99,12 @@ void BackupVectorElement::restore(Editor* editor)
     selectMan->setScale(scaleX, scaleY);
     selectMan->setTranslation(translation);
     selectMan->calculateSelectionTransformation();
+
+    if (editor->currentFrame() != this->frame) {
+        editor->scrubTo(this->frame);
+    }
+    editor->frameModified(this->frame);
+
 }
 
 void BackupSoundElement::restore(Editor* editor)

@@ -421,6 +421,11 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
     }
 
     QImage* strokeImage = new QImage(mCanvas->size(), QImage::Format_ARGB32_Premultiplied);
+
+    if (mRenderTransform) {
+        vectorImage->setSelectionTransformation(mSelectionTransform);
+    }
+
     vectorImage->outputImage(strokeImage, mViewTransform, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
 
     // Go through a Bitmap image to paint the onion skin colour
@@ -457,10 +462,6 @@ void CanvasPainter::paintVectorFrame(QPainter& painter,
     // Paint buffer pasted on top of vector image:
     // fixes polyline not being rendered properly
     rasterizedVectorImage.paintImage(painter);
-
-    if (mRenderTransform && !mSelectionTransform.isIdentity()) {
-        vectorImage->setSelectionTransformation(mSelectionTransform);
-    }
 }
 
 void CanvasPainter::paintTransformedSelection(QPainter& painter)

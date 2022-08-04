@@ -463,15 +463,6 @@ void Editor::undo()
         mBackupList[mBackupIndex]->restore(this);
         mBackupIndex--;
 
-        Layer* layer = layers()->currentLayer();
-        if (layer == nullptr) { return; }
-
-        if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage *vectorImage = static_cast<VectorImage*>(layer->getKeyFrameAt(mFrame));
-            vectorImage->calculateSelectionRect();
-            select()->setSelection(vectorImage->getSelectionRect(), false);
-        }
         emit updateBackup();
     }
 }
