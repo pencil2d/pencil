@@ -124,6 +124,7 @@ void Editor::makeConnections()
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
     // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
     connect(mLayerManager, &LayerManager::layerDeleted, this, &Editor::sanitizeBackupElementsAfterLayerDeletion);
+    connect(mLayerManager, &LayerManager::currentLayerWillChange, this, &Editor::onCurrentLayerWillChange);
 }
 
 void Editor::settingUpdated(SETTING setting)
@@ -149,6 +150,22 @@ void Editor::settingUpdated(SETTING setting)
         break;
     default:
         break;
+    }
+}
+
+void Editor::onCurrentLayerWillChange(int index)
+{
+    Layer* newLayer = layers()->getLayer(index);
+    Layer* currentLayer = layers()->currentLayer();
+    if (newLayer != nullptr && currentLayer != nullptr && currentLayer->type() != newLayer->type()) {
+        // We apply transform changes upon leaving a layer and deselect all
+        mScribbleArea->applyTransformedSelection();
+
+        if (currentLayer->type() == Layer::VECTOR) {
+            static_cast<VectorImage*>(currentLayer->getKeyFrameAt(mFrame))->deselectAll();
+        }
+
+        select()->resetSelectionProperties();
     }
 }
 

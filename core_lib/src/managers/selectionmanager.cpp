@@ -281,7 +281,6 @@ void SelectionManager::setSelection(QRectF rect, bool roundPixels)
     }
     mSelectionPolygon = rect;
     mOriginalRect = rect;
-    mSomethingSelected = (rect.isValid() ? true : false);
     mScaleX = 1;
     mScaleY = 1;
     mRotatedAngle = 0;
@@ -362,7 +361,7 @@ void SelectionManager::resetSelectionProperties()
 {
     resetSelectionTransformProperties();
     mSelectionPolygon = QPolygonF();
-    mSomethingSelected = false;
+    mOriginalRect = QRectF();
     emit selectionChanged();
 }
 

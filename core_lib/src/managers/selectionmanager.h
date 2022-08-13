@@ -59,7 +59,7 @@ public:
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode(MoveMode moveMode) { mMoveMode = moveMode; }
 
-    bool somethingSelected() const { return mSomethingSelected; }
+    bool somethingSelected() const { return mOriginalRect.isValid(); }
 
     void adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement=0);
 
@@ -88,7 +88,6 @@ public:
     QPointF currentTransformAnchor() const { return mAnchorPoint; }
     QPointF getSelectionAnchorPoint() const;
 
-    void setSomethingSelected(bool selected) { mSomethingSelected = selected; }
     void setTransformAnchor(QPointF point);
 
     const QRectF& mySelectionRect() { return mOriginalRect; }
@@ -132,7 +131,6 @@ signals:
 private:
     int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
 
-    bool mSomethingSelected = false;
     bool mAspectRatioFixed = false;
     QPolygonF mSelectionPolygon;
     QRectF mOriginalRect;

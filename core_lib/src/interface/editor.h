@@ -196,6 +196,8 @@ public: //slots
      *          (see #1412).
      */
     void sanitizeBackupElementsAfterLayerDeletion(int layerIndex);
+
+    void onCurrentLayerWillChange(int index);
     void undo();
     void redo();
 

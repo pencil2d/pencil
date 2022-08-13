@@ -47,7 +47,6 @@ void BackupBitmapElement::restore(Editor* editor)
     selectMan->setSelection(mySelection, true);
     selectMan->setTransformAnchor(selectionAnchor);
     selectMan->setRotation(rotationAngle);
-    selectMan->setSomethingSelected(somethingSelected);
     selectMan->setScale(scaleX, scaleY);
     selectMan->setTranslation(translation);
 
@@ -95,7 +94,6 @@ void BackupVectorElement::restore(Editor* editor)
     selectMan->setSelection(mySelection, false);
     selectMan->setTransformAnchor(selectionAnchor);
     selectMan->setRotation(rotationAngle);
-    selectMan->setSomethingSelected(somethingSelected);
     selectMan->setScale(scaleX, scaleY);
     selectMan->setTranslation(translation);
     selectMan->calculateSelectionTransformation();
