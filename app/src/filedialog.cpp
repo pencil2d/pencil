@@ -83,13 +83,13 @@ QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QS
     QFileInfo info(filePath);
     if (info.suffix().isEmpty() && strSelectedFilter.isEmpty())
     {
-        filePath += addDefaultExtensionSuffix(fileType);
+        filePath += getDefaultExtensionByFileType(fileType);
     }
 
     return filePath;
 }
 
-QString FileDialog::addDefaultExtensionSuffix(const FileType fileType)
+QString FileDialog::getDefaultExtensionByFileType(const FileType fileType)
 {
     switch (fileType)
     {
@@ -98,8 +98,8 @@ QString FileDialog::addDefaultExtensionSuffix(const FileType fileType)
     case FileType::IMAGE_SEQUENCE: return PFF_DEFAULT_IMAGE_SEQ_EXT;
     case FileType::GIF: return PFF_DEFAULT_ANIMATED_EXT;
     case FileType::PALETTE: return PFF_DEFAULT_PALETTE_EXT;
-    default:
-        return "";
+    case FileType::MOVIE: return PFF_DEFAULT_MOVIE_EXT;
+    case FileType::SOUND: return PFF_DEFAULT_SOUND_EXT;
     }
 }
 
@@ -115,7 +115,7 @@ void FileDialog::setLastOpenPath(FileType fileType, const QString& openPath)
     QSettings setting(PENCIL2D, PENCIL2D);
     setting.beginGroup("LastOpenPath");
 
-    setting.setValue(toSettingKey(FileType::ANIMATION), QFileInfo(openPath).absolutePath());
+    setting.setValue(toSettingKey(fileType), QFileInfo(openPath).absolutePath());
 }
 
 QString FileDialog::getLastSavePath(FileType fileType)
