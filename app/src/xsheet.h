@@ -57,8 +57,8 @@ private:
     int mCurrentFrame;
     int mTimeLineLength;
     bool mFirstUpdate = true;
-    QTableWidget* mTableXsheet;
-    QTableWidgetItem* mTableItem;
+    QTableWidget* mXsheet;
+    QTableWidgetItem* mXsheetItem;
 };
 
 #endif // XSHEET_H
