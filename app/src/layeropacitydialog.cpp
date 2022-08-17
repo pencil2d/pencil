@@ -69,7 +69,7 @@ void LayerOpacityDialog::updateUI()
         KeyFrame* keyframe = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
         canAdjust = keyframe != nullptr;
     } else if (ui->rbSelectedKeyframes->isChecked()) {
-        canAdjust = !currentLayer->getSelectedFrameList().isEmpty();
+        canAdjust = !currentLayer->getSelectedFramesByPos().isEmpty();
     } else if (ui->rbActiveLayer->isChecked()) {
         canAdjust = true;
     }
@@ -144,7 +144,7 @@ void LayerOpacityDialog::fade(OpacityFadeType fadeType)
 
     if (currentLayer->type() != Layer::BITMAP && currentLayer->type() != Layer::VECTOR) { return; }
 
-    QList<int> selectedKeys = currentLayer->getSelectedFrameList();
+    QList<int> selectedKeys = currentLayer->getSelectedFramesByPos();
 
     if (selectedKeys.count() < mMinSelectedFrames) { return; }
 
@@ -228,7 +228,7 @@ void LayerOpacityDialog::onSelectedFramesChanged()
     Layer* currentLayer = mLayerManager->currentLayer();
     if (currentLayer == nullptr) { return; }
 
-    QList<int> frames = currentLayer->getSelectedFrameList();
+    QList<int> frames = currentLayer->getSelectedFramesByPos();
 
     ui->groupBoxFade->setEnabled(frames.count() >= mMinSelectedFrames);
     updateUI();
@@ -286,7 +286,7 @@ void LayerOpacityDialog::setOpacityForSelectedKeyframes()
     Layer* currentLayer = mLayerManager->currentLayer();
     if (currentLayer == nullptr) { return; }
 
-    QList<int> frames = currentLayer->getSelectedFrameList();
+    QList<int> frames = currentLayer->getSelectedFramesByPos();
 
     if (frames.isEmpty()) { return; }
 

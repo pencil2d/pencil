@@ -35,7 +35,7 @@ class BitmapBucket
 {
 public:
     explicit BitmapBucket();
-    explicit BitmapBucket(Editor* editor, QColor color, QRectF maxFillRegion, QPointF fillPoint, Properties properties);
+    explicit BitmapBucket(Editor* editor, QColor color, QRect maxFillRegion, QPointF fillPoint, Properties properties);
 
     /** Will paint at the given point, given that it makes sense.. canUse is always called prior to painting
      *
@@ -71,7 +71,7 @@ private:
     QRgb mAppliedColor = 0;
 
     QPointF mBucketStartPoint;
-    QRectF mMaxFillRegion;
+    QRect mMaxFillRegion;
 
     int mTargetFillToLayerIndex = -1;
 

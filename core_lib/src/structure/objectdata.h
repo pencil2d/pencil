@@ -59,10 +59,7 @@ public:
 private:
     int mCurrentFrame = 1;
     QColor mCurrentColor{ 0, 0, 0, 255 };
-    int mCurrentLayer = 2; // Layers are counted bottom up
-                           // 0 - Camera Layer
-                           // 1 - Vector Layer
-                           // 2 - Bitmap Layer
+    int mCurrentLayer = 0;
     // view manager
     QTransform mCurrentView;
 

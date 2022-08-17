@@ -18,7 +18,6 @@ GNU General Public License for more details.
 
 #include "object.h"
 #include "qpainter.h"
-#include "layermanager.h"
 #include "basetool.h"
 
 
@@ -30,7 +29,9 @@ void SelectionPainter::paint(QPainter& painter,
                              const Object* object,
                              int layerIndex,
                              BaseTool* tool,
-                             TransformParameters& tParams)
+                             TransformParameters& tParams,
+                             QPolygonF original,
+                             QPolygonF currentNotMapped)
 {
     Layer* layer = object->getLayer(layerIndex);
 
@@ -81,6 +82,18 @@ void SelectionPainter::paint(QPainter& painter,
                                                tParams.currentSelectionPolygonF[3].y() - radius,
                                                width, width);
         painter.drawRect(bottomLeftCorner);
+
+        if (tool->properties.showSelectionInfo)
+        {
+            int diffX = static_cast<int>(currentNotMapped.boundingRect().x() - original.boundingRect().x());
+            int diffY = static_cast<int>(currentNotMapped.boundingRect().y() - original.boundingRect().y());
+            painter.drawText(static_cast<int>(tParams.currentSelectionPolygonF[0].x()),
+                    static_cast<int>(tParams.currentSelectionPolygonF[0].y() - width),
+                    QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(currentNotMapped.boundingRect().width()),
+                                                              QString::number(currentNotMapped.boundingRect().height()),
+                                                              QString::number(diffX),
+                                                              QString::number(diffY)));
+        }
 
         painter.setBrush(QColor(0, 255, 0, 50));
         painter.setPen(Qt::green);

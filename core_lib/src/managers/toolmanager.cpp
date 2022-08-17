@@ -37,8 +37,6 @@ ToolManager::ToolManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 
 bool ToolManager::init()
 {
-    mIsSwitchedToEraser = false;
-
     mToolSetHash.insert(PEN, new PenTool(this));
     mToolSetHash.insert(PENCIL, new PencilTool(this));
     mToolSetHash.insert(BRUSH, new BrushTool(this));
@@ -71,6 +69,19 @@ Status ToolManager::save(Object*)
     return Status::OK;
 }
 
+BaseTool* ToolManager::currentTool()
+{
+    if (mTemporaryTool != nullptr)
+    {
+        return mTemporaryTool;
+    }
+    else if (mTabletEraserTool != nullptr)
+    {
+        return mTabletEraserTool;
+    }
+    return mCurrentTool;
+}
+
 BaseTool* ToolManager::getTool(ToolType eToolType)
 {
     return mToolSetHash[eToolType];
@@ -83,23 +94,27 @@ void ToolManager::setDefaultTool()
     ToolType defaultToolType = PENCIL;
 
     setCurrentTool(defaultToolType);
-    meTabletBackupTool = defaultToolType;
+    mTabletEraserTool = nullptr;
+    mTemporaryTool = nullptr;
 }
 
 void ToolManager::setCurrentTool(ToolType eToolType)
 {
     if (mCurrentTool != nullptr)
     {
-       leavingThisTool();
+       mCurrentTool->leavingThisTool();
     }
 
     mCurrentTool = getTool(eToolType);
-    emit toolChanged(eToolType);
+    if (mTemporaryTool == nullptr && mTabletEraserTool == nullptr)
+    {
+        emit toolChanged(eToolType);
+    }
 }
 
 bool ToolManager::leavingThisTool()
 {
-    return mCurrentTool->leavingThisTool();
+    return currentTool()->leavingThisTool();
 }
 
 void ToolManager::cleanupAllToolsData()
@@ -251,6 +266,10 @@ void ToolManager::setUseFillContour(bool useFillContour)
     emit toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
+void ToolManager::setShowSelectionInfo(bool b)
+{
+    currentTool()->setShowSelectionInfo(b);
+}
 
 // Switches on/off two actions
 // eg. if x = true, then y = false
@@ -274,24 +293,93 @@ int ToolManager::propertySwitch(bool condition, int tool)
 
 void ToolManager::tabletSwitchToEraser()
 {
-    if (!mIsSwitchedToEraser)
+    mTabletEraserTool = getTool(ERASER);
+    if (mTemporaryTool == nullptr)
     {
-        mIsSwitchedToEraser = true;
-
-        meTabletBackupTool = mCurrentTool->type();
-        setCurrentTool(ERASER);
+        emit toolChanged(ERASER);
     }
 }
 
 void ToolManager::tabletRestorePrevTool()
 {
-    if (mIsSwitchedToEraser)
+    mTabletEraserTool = nullptr;
+    if (mTemporaryTool == nullptr)
     {
-        mIsSwitchedToEraser = false;
-        if (meTabletBackupTool == INVALID_TOOL)
-        {
-            meTabletBackupTool = PENCIL;
-        }
-        setCurrentTool(meTabletBackupTool);
+        emit toolChanged(currentTool()->type());
     }
+}
+
+bool ToolManager::setTemporaryTool(ToolType eToolType, QFlags<Qt::Key> keys, Qt::KeyboardModifiers modifiers)
+{
+    if (mTemporaryTool != nullptr) return false;
+    mTemporaryTriggerKeys = keys;
+    mTemporaryTriggerModifiers = modifiers;
+    mTemporaryTriggerMouseButtons = Qt::NoButton;
+    setTemporaryTool(eToolType);
+    return true;
+}
+
+bool ToolManager::setTemporaryTool(ToolType eToolType, Qt::MouseButtons buttons)
+{
+    if (mTemporaryTool != nullptr) return false;
+    mTemporaryTriggerKeys = {};
+    mTemporaryTriggerModifiers = Qt::NoModifier;
+    mTemporaryTriggerMouseButtons = buttons;
+    setTemporaryTool(eToolType);
+    return true;
+}
+
+bool ToolManager::tryClearTemporaryTool(Qt::Key key)
+{
+    Qt::KeyboardModifier modifier = Qt::NoModifier;
+    switch(key)
+    {
+    case Qt::Key_Control:
+        modifier = Qt::ControlModifier;
+        break;
+    case Qt::Key_Shift:
+        modifier = Qt::ShiftModifier;
+        break;
+    case Qt::Key_Alt:
+        modifier = Qt::AltModifier;
+        break;
+    case Qt::Key_Meta:
+        modifier = Qt::MetaModifier;
+        break;
+    default:
+        break;
+    }
+
+    if (mTemporaryTriggerKeys.testFlag(key) ||
+        mTemporaryTriggerModifiers.testFlag(modifier))
+    {
+        clearTemporaryTool();
+        return true;
+    }
+    return false;
+}
+
+bool ToolManager::tryClearTemporaryTool(Qt::MouseButton button)
+{
+    if (mTemporaryTriggerMouseButtons != Qt::NoButton && mTemporaryTriggerMouseButtons.testFlag(button))
+    {
+        clearTemporaryTool();
+        return true;
+    }
+    return false;
+}
+
+void ToolManager::setTemporaryTool(ToolType eToolType)
+{
+    mTemporaryTool = getTool(eToolType);
+    emit toolChanged(eToolType);
+}
+
+void ToolManager::clearTemporaryTool()
+{
+    mTemporaryTool = nullptr;
+    mTemporaryTriggerKeys = {};
+    mTemporaryTriggerModifiers = Qt::NoModifier;
+    mTemporaryTriggerMouseButtons = Qt::NoButton;
+    emit toolChanged(currentTool()->type());
 }

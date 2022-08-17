@@ -33,7 +33,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 #include "util.h"
-#include "editor.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "fileformat.h"
@@ -42,7 +41,6 @@ GNU General Public License for more details.
 
 Object::Object()
 {
-    setData(new ObjectData());
     mActiveFramePool.reset(new ActiveFramePool);
 }
 
@@ -206,14 +204,6 @@ void Object::setWorkingDir(const QString& path)
     QDir dir(path);
     Q_ASSERT(dir.exists());
     mWorkingDirPath = path;
-}
-
-void Object::createDefaultLayers()
-{
-    // default layers
-    addNewCameraLayer();
-    addNewVectorLayer();
-    addNewBitmapLayer();
 }
 
 int Object::getMaxLayerID()
@@ -861,10 +851,9 @@ int Object::getLayerCount() const
     return mLayers.size();
 }
 
-void Object::setData(const ObjectData* d)
+void Object::setData(const ObjectData& d)
 {
-    Q_ASSERT(d != nullptr);
-    mData = *d;
+    mData = d;
 }
 
 int Object::totalKeyFrameCount() const
@@ -887,10 +876,13 @@ void Object::updateActiveFrames(int frame) const
 
     for (Layer* layer : mLayers)
     {
-        for (int k = beginFrame; k < endFrame; ++k)
+        if (layer->visible())
         {
-            KeyFrame* key = layer->getKeyFrameAt(k);
-            mActiveFramePool->put(key);
+            for (int k = beginFrame; k < endFrame; ++k)
+            {
+                KeyFrame* key = layer->getKeyFrameAt(k);
+                mActiveFramePool->put(key);
+            }
         }
     }
 }

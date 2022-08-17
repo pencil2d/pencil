@@ -28,6 +28,7 @@ EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_da.ts \
 	$$PWD/../translations/pencil_de.ts \
 	$$PWD/../translations/pencil_el.ts \
+	$$PWD/../translations/pencil_en.ts \
 	$$PWD/../translations/pencil_es.ts \
 	$$PWD/../translations/pencil_et.ts \
 	$$PWD/../translations/pencil_fr.ts \
@@ -104,6 +105,8 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
+    src/presetdialog.h     \
+    src/repositionframesdialog.h \
     src/presetdialog.h \
     src/commandlineparser.h \
     src/commandlineexporter.h \
@@ -150,6 +153,7 @@ SOURCES += \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
     src/presetdialog.cpp \
+    src/repositionframesdialog.cpp \
     src/app_util.cpp \
     src/commandlineparser.cpp \
     src/commandlineexporter.cpp \
@@ -164,6 +168,7 @@ FORMS += \
     ui/mainwindow2.ui \
     ui/onionskin.ui \
     ui/pegbaralignmentdialog.ui \
+    ui/repositionframesdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \

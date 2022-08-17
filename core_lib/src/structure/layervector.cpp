@@ -24,7 +24,7 @@ GNU General Public License for more details.
 
 LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
 {
-    setName(QObject::tr("Vector Layer"));
+    setName(tr("Vector Layer"));
 }
 
 LayerVector::~LayerVector()

@@ -56,6 +56,9 @@ public:
 
     void cancel() { mCanceled = true; }
 
+    // The maximum number of sound frames that can be successfully rendered
+    static const int MAX_SOUND_FRAMES = 63;
+
     static Status executeFFmpeg(const QString& cmd, const QStringList& args, std::function<bool(int)> progress);
 private:
     Status assembleAudio(const Object* obj, QString ffmpegPath, std::function<void(float)> progress);
