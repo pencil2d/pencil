@@ -21,8 +21,7 @@ GNU General Public License for more details.
 
 void hideQuestionMark(QDialog& dlg)
 {
-    Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint;
-    dlg.setWindowFlags(eFlags);
+    dlg.setWindowFlags(dlg.windowFlags() & ~Qt::WindowContextHelpButtonHint);
 }
 
 void setMenuActionChecked(QAction* action, bool checked)

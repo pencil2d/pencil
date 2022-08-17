@@ -106,6 +106,8 @@ HEADERS += \
     src/colorslider.h \
     src/xsheet.h \
     src/checkupdatesdialog.h \
+    src/presetdialog.h     \
+    src/repositionframesdialog.h \
     src/presetdialog.h \
     src/commandlineparser.h \
     src/commandlineexporter.h \
@@ -153,6 +155,7 @@ SOURCES += \
     src/xsheet.cpp \
     src/checkupdatesdialog.cpp \
     src/presetdialog.cpp \
+    src/repositionframesdialog.cpp \
     src/app_util.cpp \
     src/commandlineparser.cpp \
     src/commandlineexporter.cpp \
@@ -167,6 +170,7 @@ FORMS += \
     ui/mainwindow2.ui \
     ui/onionskin.ui \
     ui/pegbaralignmentdialog.ui \
+    ui/repositionframesdialog.ui \
     ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \

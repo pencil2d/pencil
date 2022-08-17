@@ -37,7 +37,7 @@ Layer::Layer(Object* object, LAYER_TYPE eType)
 
     mObject = object;
     meType = eType;
-    mName = QString(QObject::tr("Undefined Layer"));
+    mName = QString(tr("Undefined Layer"));
 
     mId = object->getUniqueLayerID();
 }

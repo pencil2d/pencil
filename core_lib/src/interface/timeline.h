@@ -59,6 +59,7 @@ signals:
 
     void insertKeyClick();
     void removeKeyClick();
+    void duplicateLayerClick();
     void duplicateKeyClick();
 
     void newBitmapLayer();

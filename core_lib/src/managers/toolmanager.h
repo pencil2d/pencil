@@ -80,6 +80,7 @@ public slots:
     void setBucketFillReferenceMode(int referenceMode);
     void setBucketFillExpand(int);
     void setUseFillContour(bool);
+    void setShowSelectionInfo(bool b);
 
 private:
     void setTemporaryTool(ToolType eToolType);

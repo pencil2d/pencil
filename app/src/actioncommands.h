@@ -67,6 +67,7 @@ public:
     /** Will insert a keyframe at the current position and push connected frames to the right */
     Status insertKeyFrameAtCurrentPosition();
     void removeKey();
+    void duplicateLayer();
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
@@ -98,6 +99,7 @@ public:
     void about();
 
 private:
+    void showSoundClipWarningIfNeeded();
 
     void exposeSelectedFrames(int offset);
 
@@ -105,6 +107,8 @@ private:
 
     Editor* mEditor = nullptr;
     QWidget* mParent = nullptr;
+
+    bool mSuppressSoundWarning = false;
 };
 
 #endif // COMMANDCENTER_H

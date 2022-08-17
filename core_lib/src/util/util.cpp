@@ -102,3 +102,19 @@ quint64 imageSize(const QImage& img)
     return img.byteCount();
 #endif
 }
+
+QString uniqueString(int len)
+{
+    static const char alphanum[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+    const int alphanum_len = sizeof(alphanum);
+
+    if (len > 128) len = 128;
+
+    char s[128 + 1];
+    for (int i = 0; i < len; ++i)
+    {
+        s[i] = alphanum[rand() % (alphanum_len - 1)];
+    }
+    s[len] = 0;
+    return QString::fromUtf8(s);
+}

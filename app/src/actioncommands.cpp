@@ -189,6 +189,8 @@ Status ActionCommands::importSound(FileType type)
     {
         mEditor->removeKey();
         emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
+    } else {
+        showSoundClipWarningIfNeeded();
     }
 
     return st;
@@ -233,6 +235,15 @@ Status ActionCommands::exportGif()
 Status ActionCommands::exportMovie(bool isGif)
 {
     FileType fileType = (isGif) ? FileType::GIF : FileType::MOVIE;
+
+    int clipCount = mEditor->sound()->soundClipCount();
+    if (fileType == FileType::MOVIE && clipCount >= MovieExporter::MAX_SOUND_FRAMES)
+    {
+        ErrorDialog errorDialog(tr("Something went wrong"), tr("You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.").arg(clipCount).arg(MovieExporter::MAX_SOUND_FRAMES), QString(), mParent);
+        errorDialog.exec();
+        return Status::FAIL;
+    }
+
     ExportMovieDialog* dialog = new ExportMovieDialog(mParent, ImportExportDialog::Export, fileType);
     OnScopeExit(dialog->deleteLater());
 
@@ -615,8 +626,8 @@ void ActionCommands::exposeSelectedFrames(int offset)
     }
 
     currentLayer->setExposureForSelectedFrames(offset);
-    mEditor->updateTimeLine();
-    mEditor->framesModified();
+    emit mEditor->updateTimeLine();
+    emit mEditor->framesModified();
 
     // Remember to deselect frame again so we don't show it being visually selected.
     // B:
@@ -678,7 +689,7 @@ void ActionCommands::reverseSelectedFrames()
     if (currentLayer->type() == Layer::CAMERA) {
         mEditor->view()->forceUpdateViewTransform();
     }
-    mEditor->framesModified();
+    emit mEditor->framesModified();
 };
 
 void ActionCommands::removeKey()
@@ -691,6 +702,29 @@ void ActionCommands::removeKey()
     {
         layer->addNewKeyFrameAt(1);
     }
+}
+
+void ActionCommands::duplicateLayer()
+{
+    LayerManager* layerMgr = mEditor->layers();
+    Layer* fromLayer = layerMgr->currentLayer();
+    int currFrame = mEditor->currentFrame();
+
+    Layer* toLayer = layerMgr->createLayer(fromLayer->type(), tr("%1 (copy)", "Default duplicate layer name").arg(fromLayer->name()));
+    toLayer->removeKeyFrame(1);
+    fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
+        key = key->clone();
+        toLayer->addKeyFrame(key->pos(), key);
+        if (toLayer->type() == Layer::SOUND)
+        {
+            mEditor->sound()->processSound(static_cast<SoundClip*>(key));
+        }
+        else
+        {
+            key->modification();
+        }
+    });
+    mEditor->scrubTo(currFrame);
 }
 
 void ActionCommands::duplicateKey()
@@ -720,6 +754,7 @@ void ActionCommands::duplicateKey()
     if (layer->type() == Layer::SOUND)
     {
         mEditor->sound()->processSound(dynamic_cast<SoundClip*>(dupKey));
+        showSoundClipWarningIfNeeded();
     }
     else
     {
@@ -928,4 +963,15 @@ void ActionCommands::about()
     aboutBox->setAttribute(Qt::WA_DeleteOnClose);
     aboutBox->init();
     aboutBox->exec();
+}
+
+void ActionCommands::showSoundClipWarningIfNeeded()
+{
+    int clipCount = mEditor->sound()->soundClipCount();
+    if (clipCount >= MovieExporter::MAX_SOUND_FRAMES && !mSuppressSoundWarning) {
+        QMessageBox::warning(mParent, tr("Warning"), tr("You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.").arg(clipCount).arg(MovieExporter::MAX_SOUND_FRAMES));
+        mSuppressSoundWarning = true;
+    } else {
+        mSuppressSoundWarning = false;
+    }
 }

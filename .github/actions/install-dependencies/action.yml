@@ -6,10 +6,12 @@ inputs:
 runs:
   using: composite
   steps:
-    # XXX: Should use github.action_path here, but it’s currently broken in
-    #      container builds, see https://github.com/actions/runner/issues/716
-  - run: .github/actions/install-dependencies/install-dependencies.sh
+  - run: ${GITHUB_ACTION_PATH}/install-dependencies.sh
     shell: bash
     env:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
+  - if: runner.os == 'Windows'
+    uses: jurplel/install-qt-action@v2
+    with:
+      arch: ${{inputs.arch}}

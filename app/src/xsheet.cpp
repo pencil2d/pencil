@@ -407,7 +407,7 @@ void Xsheet::initXsheet()
     mLayerIndexes->clear();
     for (int i = 0; i < mEditor->layers()->count(); i++)
     {   // count Bitmap and Vector layers
-        bool visi = mEditor->layers()->getLayer(i)->getVisibility();
+        bool visi = mEditor->layers()->getLayer(i)->visible();
         if (visi && (mEditor->layers()->getLayer(i)->type() == 1 || mEditor->layers()->getLayer(i)->type() == 2))
         {
             mLayerCount++;

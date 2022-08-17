@@ -94,7 +94,7 @@ void TimeLineCells::loadSetting(SETTING setting)
 void TimeLineCells::setHold(int frame)
 {
     LayerCamera* curLayer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-    QList<int> frames = curLayer->getListOfSelectedFrames();
+    QList<int> frames = curLayer->getSelectedFramesByPos();
     if (!frames.empty())
     {
         for (int pos:frames)
@@ -118,7 +118,7 @@ void TimeLineCells::setHold(int frame)
 void TimeLineCells::setCameraEasing(CameraEasingType type, int frame)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(mEditor->layers()->currentLayer());
-    QList<int> frames = layer->getListOfSelectedFrames();
+    QList<int> frames = layer->getSelectedFramesByPos();
     if (!frames.empty())
     {
         for (int pos:frames)
@@ -285,13 +285,13 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         subOther->addAction(tr("Linear interpolation"), [=] { this->setCameraEasing(CameraEasingType::LINEAR, frameNumber); });
     }
 
-    if (curLayer->getListOfSelectedFrames().empty() && !curLayer->keyExists(frameNumber)) {
+    if (curLayer->getSelectedFramesByPos().empty() && !curLayer->keyExists(frameNumber)) {
         return;
     }
 
-    if (curLayer->getListOfSelectedFrames().size() > 1)
+    if (curLayer->getSelectedFramesByPos().size() > 1)
     {
-        QList<int> frameList = curLayer->getListOfSelectedFrames();
+        QList<int> frameList = curLayer->getSelectedFramesByPos();
         QString keyNumbers = "";
         for (int pos:frameList)
         {

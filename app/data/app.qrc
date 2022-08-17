@@ -35,6 +35,10 @@
         <file>icons/exit.png</file>
         <file>icons/cut.png</file>
         <file>icons/prefs-shortcuts.png</file>
+		<file>icons/grid.png</file>
+		<file>icons/zoom-in.png</file>
+		<file>icons/zoom-out.png</file>
+		<file>icons/zoom-reset.png</file>
         <file>background/checkerboard.png</file>
         <file>icons/controls/stop.png</file>
         <file>icons/controls/sound-disabled.png</file>
