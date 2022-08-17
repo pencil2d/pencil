@@ -4,9 +4,7 @@
 #include "basedockwidget.h"
 
 #include <QDialog>
-#include "layermanager.h"
 #include "editor.h"
-#include "qdebug.h"
 #include <QTableWidget>
 #include <QTableWidgetItem>
 
@@ -59,7 +57,7 @@ private:
     int mCurrentFrame;
     int mTimeLineLength;
     bool mFirstUpdate = true;
-    QTableWidget* mTableWidget;
+    QTableWidget* mTableXsheet;
     QTableWidgetItem* mTableItem;
 };
 
