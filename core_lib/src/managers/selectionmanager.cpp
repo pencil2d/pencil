@@ -1,4 +1,21 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #include "selectionmanager.h"
+#include "viewmanager.h"
 #include "editor.h"
 
 #include "layerbitmap.h"
@@ -13,16 +30,7 @@
 //#endif
 
 
-SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor),
-    mSelection(QRectF()),
-    mTempTransformedSelection(QRectF()),
-    mTransformedSelection(QRectF()),
-    mRotatedAngle(0),
-    mSomethingSelected(false),
-    mLastSelectionPolygonF(QPolygonF()),
-    mCurrentSelectionPolygonF(QPolygonF()),
-    mOffset(QPointF()),
-    mMoveMode(MoveMode::NONE)
+SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -37,6 +45,7 @@ bool SelectionManager::init()
 
 Status SelectionManager::load(Object*)
 {
+    resetSelectionProperties();
     return Status::OK;
 }
 
@@ -67,20 +76,20 @@ void SelectionManager::resetSelectionTransform()
     mSelectionTransform.reset();
 }
 
-bool SelectionManager::isOutsideSelectionArea(QPointF point)
+bool SelectionManager::isOutsideSelectionArea(const QPointF point)
 {
     return (!mTransformedSelection.contains(point)
             && validateMoveMode(point) == MoveMode::NONE);
 }
 
-bool SelectionManager::transformHasBeenModified()
+bool SelectionManager::transformHasBeenModified() const
 {
     return (mSelection != mTempTransformedSelection) || rotationHasBeenModified();
 }
 
-bool SelectionManager::rotationHasBeenModified()
+bool SelectionManager::rotationHasBeenModified() const
 {
-    return !qFuzzyCompare(mRotatedAngle,0);
+    return !qFuzzyCompare(mRotatedAngle, 0);
 }
 
 void SelectionManager::deleteSelection()
@@ -100,18 +109,18 @@ void SelectionManager::clearVertices()
 
 qreal SelectionManager::selectionTolerance() const
 {
-    return qAbs(mSelectionTolerance * editor()->viewScaleInversed());
+    return qAbs(mSelectionTolerance * editor()->view()->getViewScaleInverse());
 }
 
-MoveMode SelectionManager::validateMoveMode(QPointF pos)
+MoveMode SelectionManager::validateMoveMode(const QPointF pos)
 {
     return moveModeForAnchorInRange(pos);
 }
 
-MoveMode SelectionManager::moveModeForAnchorInRange(QPointF lastPos)
+MoveMode SelectionManager::moveModeForAnchorInRange(const QPointF lastPos)
 {
-    QRectF transformRect = mTempTransformedSelection;
-    QPointF lastPoint = lastPos;
+    const QRectF transformRect = mTempTransformedSelection;
+    const QPointF lastPoint = lastPos;
 
     const double calculatedSelectionTol = selectionTolerance();
 
@@ -144,7 +153,7 @@ MoveMode SelectionManager::moveModeForAnchorInRange(QPointF lastPos)
     return mode;
 }
 
-MoveMode SelectionManager::getMoveModeForSelectionAnchor(QPointF pos)
+MoveMode SelectionManager::getMoveModeForSelectionAnchor(const QPointF pos) const
 {
     const double calculatedSelectionTol = selectionTolerance();
 
@@ -185,7 +194,7 @@ MoveMode SelectionManager::getMoveModeForSelectionAnchor(QPointF pos)
     return MoveMode::NONE;
 }
 
-QPointF SelectionManager::whichAnchorPoint(QPointF currentPoint)
+QPointF SelectionManager::whichAnchorPoint(const QPointF currentPoint) const
 {
     QPointF anchorPoint;
     MoveMode mode = getMoveModeForSelectionAnchor(currentPoint);
@@ -210,6 +219,8 @@ QPointF SelectionManager::whichAnchorPoint(QPointF currentPoint)
 
 void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement)
 {
+    offsetX = qRound(offsetX);
+    offsetY = qRound(offsetY);
     QRectF& transformedSelection = mTransformedSelection;
 
     switch (mMoveMode)
@@ -244,7 +255,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     {
         mTempTransformedSelection = transformedSelection;
         QPointF anchorPoint = transformedSelection.center();
-        qreal rotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
+        qreal rotatedAngle = qRadiansToDegrees(MathUtils::getDifferenceAngle(anchorPoint, currentPoint)) - rotationOffset;
         if (rotationIncrement > 0) {
             mRotatedAngle = constrainRotationToAngle(rotatedAngle, rotationIncrement);
         } else {
@@ -257,14 +268,18 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
     }
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
+int SelectionManager::constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
 
-void SelectionManager::setSelection(QRectF rect)
+void SelectionManager::setSelection(QRectF rect, bool roundPixels)
 {
     resetSelectionTransformProperties();
+    if (roundPixels)
+    {
+        rect = QRect(rect.topLeft().toPoint(), rect.bottomRight().toPoint() - QPoint(1,1));
+    }
     mSelection = rect;
     mTransformedSelection = rect;
     mTempTransformedSelection = rect;
@@ -291,7 +306,7 @@ void SelectionManager::calculateSelectionTransformation()
     mSelectionTransform.translate(-centerPoints[1].x(), -centerPoints[1].y());
 }
 
-QVector<QPointF> SelectionManager::calcSelectionCenterPoints()
+QVector<QPointF> SelectionManager::calcSelectionCenterPoints() const
 {
     QVector<QPointF> centerPoints;
     qreal selectionCenterX,
@@ -309,7 +324,7 @@ QVector<QPointF> SelectionManager::calcSelectionCenterPoints()
 }
 
 
-QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
+QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY) const
 {
     qreal factor = mTransformedSelection.width() / mTransformedSelection.height();
 
@@ -341,6 +356,15 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
+    if (flipVertical)
+    {
+        editor()->backup(tr("Flip selection vertically"));
+    }
+    else
+    {
+        editor()->backup(tr("Flip selection horizontally"));
+    }
+
     qreal scaleX = mTempTransformedSelection.width() / mSelection.width();
     qreal scaleY = mTempTransformedSelection.height() / mSelection.height();
     QVector<QPointF> centerPoints = calcSelectionCenterPoints();
@@ -379,5 +403,7 @@ void SelectionManager::resetSelectionProperties()
 
     mSomethingSelected = false;
     vectorSelection.clear();
+    emit selectionReset();
+    emit selectionChanged();
 }
 

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,11 +20,13 @@ GNU General Public License for more details.
 
 #include <QDialog>
 #include <QGroupBox>
-#include "filedialogex.h"
+#include "filetype.h"
 
 namespace Ui {
 class ImportExportDialog;
 }
+
+class QDialogButtonBox;
 
 class ImportExportDialog : public QDialog
 {
@@ -34,31 +36,41 @@ public:
     enum Mode { Import, Export };
 
     explicit ImportExportDialog(QWidget* parent, Mode eMode, FileType eFileType);
-    ~ImportExportDialog();
+    ~ImportExportDialog() override;
 
     void init();
     QString getFilePath() const;
     QString getAbsolutePath();
     QStringList getFilePaths();
+    int getPosIndex() { return mPosIndex; }
 
 signals:
     void filePathsChanged(QStringList filePaths);
 
 protected:
     QGroupBox* getOptionsGroupBox();
-    void setFileExtension(QString extension);
+    QGroupBox* getPreviewGroupBox();
+    QDialogButtonBox* getDialogButtonBox();
+
+    void setFileExtension(const QString& extension);
+    void hideOptionsGroupBox(bool hide);
+    void hidePreviewGroupBox(bool hide);
+    void hideInstructionsLabel(bool hide);
+
+    void setInstructionsLabel(const QString& text);
 
 private slots:
     void browse();
+    void setPosIndex(int index) { mPosIndex = index; }
 
 private:
     Ui::ImportExportDialog* ui = nullptr;
 
-    FileDialog* m_fileDialog = nullptr;
     QStringList m_filePaths;
 
     FileType mFileType = FileType::ANIMATION;
     Mode mMode = Import;
+    int mPosIndex = 0;
 };
 
 #endif // IMPORTEXPORTDIALOG_H

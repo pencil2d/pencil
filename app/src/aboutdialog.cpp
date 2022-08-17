@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -23,6 +23,7 @@ GNU General Public License for more details.
 
 #include "pencildef.h"
 
+
 AboutDialog::AboutDialog(QWidget* parent) :
     QDialog(parent),
     ui(new Ui::AboutDialog)
@@ -39,15 +40,24 @@ AboutDialog::~AboutDialog()
 
 void AboutDialog::init()
 {
-	QStringList devText;
-	devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
-#if defined(GIT_EXISTS) && defined(NIGHTLY_BUILD)
+    QStringList devText;
+
+#if defined(PENCIL2D_RELEASE_BUILD)
+    devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+    devText << "Nightly Build " __DATE__;
+#else
+    devText << "Development Build " __DATE__;
+#endif
+
+    devText << ""; // An empty line
+
+#if defined(GIT_EXISTS)
     devText << "commit: " S__GIT_COMMIT_HASH
-            << "date: " S__GIT_TIMESTAMP;
+            << "date: " S__GIT_TIMESTAMP
+            << "";
 #endif
-#if !defined(PENCIL2D_RELEASE)
-    devText << "Development build";
-#endif
+
     devText << QString("Operating System: %1").arg(QSysInfo::prettyProductName())
             << QString("CPU Architecture: %1").arg(QSysInfo::buildCpuArchitecture());
     if(QString(qVersion()) == QT_VERSION_STR)
@@ -61,10 +71,10 @@ void AboutDialog::init()
     }
     ui->devInfoText->setText(devText.join("<br>"));
 
-	QPushButton* copyToClipboardButton = new QPushButton(tr("Copy to clipboard", "Copy system info from About Dialog"));
-	connect(copyToClipboardButton, &QPushButton::clicked, this, [devText] 
-	{
-		QApplication::clipboard()->setText(devText.join("\n"));
-	});
+    QPushButton* copyToClipboardButton = new QPushButton(tr("Copy to clipboard", "Copy system info from About Dialog"));
+    connect(copyToClipboardButton, &QPushButton::clicked, this, [devText]
+    {
+        QApplication::clipboard()->setText(devText.join("\n"));
+    });
     ui->buttonBox->addButton(copyToClipboardButton, QDialogButtonBox::ActionRole);
 }

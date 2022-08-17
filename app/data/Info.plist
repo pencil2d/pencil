@@ -16,7 +16,7 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>mac_pcl_icon.icns</string>
 			<key>CFBundleTypeName</key>
-			<string>Pencil Animation File</string>
+			<string>Pencil2D Animation File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -34,7 +34,7 @@
 			<key>CFBundleTypeIconFile</key>
 			<string>mac_pclx_icon.icns</string>
 			<key>CFBundleTypeName</key>
-			<string>New Pencil Animation File</string>
+			<string>New Pencil2D Animation File</string>
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>LSHandlerRank</key>
@@ -79,7 +79,7 @@
 				<string>public.xml</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>Pencil Animation File</string>
+			<string>Pencil2D Animation File</string>
 			<key>UTTypeIconFile</key>
 			<string>mac_pcl_icon.icns</string>
 			<key>UTTypeIdentifier</key>
@@ -98,7 +98,7 @@
 				<string>public.zip-archive</string>
 			</array>
 			<key>UTTypeDescription</key>
-			<string>New Pencil Animation File</string>
+			<string>New Pencil2D Animation File</string>
 			<key>UTTypeIconFile</key>
 			<string>mac_pclx_icon.icns</string>
 			<key>UTTypeIdentifier</key>

@@ -1,9 +1,9 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
 Copyright (C) 2009 Mj Mendoza IV
-Copyright (C) 2013-2017 Matt Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -15,113 +15,50 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#include <QFile>
-#include <QProcess>
-#include <QDir>
-#include <QString>
-#include <QImageWriter>
-#include <QImageReader>
-#include <QProgressDialog>
-#include <QDebug>
-#include <QSettings>
-#include "object.h"
-#include "editor.h"
-#include "layersound.h"
-#include "pencildef.h"
+
 #include "platformhandler.h"
 
-#define MIN(a,b) ((a)>(b)?(b):(a))
+#include <QCoreApplication>
+#include <QDebug>
+#include <QSettings>
+
+#include "pencildef.h"
 
 namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
-}
 
-qint16 safeSum ( qint16 a, qint16 b)
-{
-    if (((int)a + (int)b) > 32767)
-        return 32767;
-    if (((int)a + (int)b) < -32768)
-        return -32768;
-    return a+b;
-}
-
-void initialise()
-{
-    qDebug() << "Initialize linux: <nothing, for now>";
-    // Phonon capabilities
-
-    // QImageReader capabilities
-    QList<QByteArray> formats = QImageReader::supportedImageFormats();
-    foreach (QString format, formats)
-    {qDebug() << "QImageReader capability: " << format;}
-
-    // QImageWriter capabilities
-    formats = QImageWriter::supportedImageFormats();
-    foreach (QString format, formats)
-    {qDebug() << "QImageWriter capability: " << format;}
-}
-
-void Editor::importMovie (QString filePath, int fps)
-{
-
-    int i;
-    QSettings settings( PENCIL2D, PENCIL2D );
-
-    qDebug() << "-------IMPORT VIDEO------" << filePath;
-
-    // --------- Import all the temporary frames ----------
-    QDir::temp().mkdir("pencil");
-    QString tempPath = QDir::temp().absolutePath()+"/pencil/";
-
-    QProgressDialog progress("Importing movie...", "Abort", 0, 100, NULL);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-    progress.setValue(10);
-    QProcess ffmpeg;
-    qDebug() << "ffmpeg -i \"" << filePath << "\" -r " << QString::number(fps) << " -f image2 \"" << tempPath << "tmp_import%4d.png\"";
-    ffmpeg.start("ffmpeg -i \"" + filePath + "\" -r " + QString::number(fps) + " -f image2 \"" + tempPath + "tmp_import%4d.png\"");
-    progress.setValue(20);
-    if (ffmpeg.waitForStarted() == true)
+    void initialise()
     {
-        if (ffmpeg.waitForFinished() == true)
+        /* If running as an AppImage, sets GStreamer environment variables to ensure
+         * the plugins contained in the AppImage are found
+         */
+        QString appDir = QString::fromLocal8Bit(qgetenv("APPDIR"));
+        if (!appDir.isEmpty())
         {
-            QByteArray sErr = ffmpeg.readAllStandardError();
-            if (sErr == "")
-            {qDebug() << "ERROR: Could not execute FFmpeg.";}
-            else
+            bool success = qputenv("GST_PLUGIN_SYSTEM_PATH_1_0",
+                                   QString("%1/usr/lib/gstreamer-1.0:%2")
+                                       .arg(appDir, QString::fromLocal8Bit(qgetenv("GST_PLUGIN_SYSTEM_PATH_1_0")))
+                                       .toLocal8Bit());
+            success = qputenv("GST_PLUGIN_SCANNER_1_0",
+                              QString("%1/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner")
+                                 .arg(appDir).toLocal8Bit()) && success;
+            if (!success)
             {
-                qDebug() << "stderr: " + ffmpeg.readAllStandardOutput();
-                qDebug() << "stdout: " << sErr;
+                qWarning() << "Unable to set up GStreamer environment";
             }
         }
-        else
-        {qDebug() << "ERROR: FFmpeg did not finish executing.";}
-    }
-    else
-    {qDebug() << "Please install FFMPEG: sudo apt-get install ffmpeg";}
-    progress.setValue(50);
-    QDir dir1(tempPath);
-    int nFiles = dir1.entryList().count();
-    i=1;
-    QString frameNumberString = QString::number(i);
-    while( frameNumberString.length() < 4) frameNumberString.prepend("0");
-    while (QFile::exists(tempPath+"tmp_import"+frameNumberString+".png"))
-    {
-        progress.setValue(50+i*50/nFiles);
-        if(i>1) scrubForward();
-        importImage(tempPath+"tmp_import"+frameNumberString+".png");
-        i++;
-        frameNumberString = QString::number(i);
-        while( frameNumberString.length() < 4) frameNumberString.prepend("0");
-    }
-    progress.setValue(100);
-    // --------- Clean up temp directory ---------
-    QDir dir(tempPath);
-    QStringList filtername("*.*");
-    QStringList entries = dir.entryList(filtername,QDir::Files,QDir::Type);
-    for(int i=0; i<entries.size(); i++)
-        dir.remove(entries[i]);
 
+        // Temporary solution for high DPI displays
+        // EnableHighDpiScaling is a just in case mechanism in the event that we
+        // want to disable this without recompiling, see #922
+        QSettings settings(PENCIL2D, PENCIL2D);
+        if (settings.value("EnableHighDpiScaling", "true").toBool())
+        {
+            // Enable auto screen scaling on high dpi display, for example, a 4k monitor
+            // This attr has to be set before the QApplication is constructed
+            // Only works on Windows & X11
+            QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+        }
+    }
 }
-

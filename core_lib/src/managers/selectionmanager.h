@@ -1,3 +1,19 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 #ifndef SELECTIONMANAGER_H
 #define SELECTIONMANAGER_H
 
@@ -26,48 +42,46 @@ public:
     Status save(Object*) override;
     void workingLayerChanged(Layer*) override;
 
-    QVector<QPointF> calcSelectionCenterPoints();
+    QVector<QPointF> calcSelectionCenterPoints() const;
 
     void updatePolygons();
     void updateTransformedSelection() { mTransformedSelection = mTempTransformedSelection; }
 
-    QRectF mappedSelection();
-
-    QPointF whichAnchorPoint(QPointF currentPoint);
-    QPointF getTransformOffset() { return mOffset; }
-    QPointF offsetFromAspectRatio(qreal offsetX, qreal offsetY);
+    QPointF whichAnchorPoint(QPointF currentPoint) const;
+    QPointF getTransformOffset() const { return mOffset; }
+    QPointF offsetFromAspectRatio(qreal offsetX, qreal offsetY) const;
 
     void flipSelection(bool flipVertical);
 
-    void setSelection(QRectF rect);
+    void setSelection(QRectF rect, bool roundPixels=false);
 
     void translate(QPointF point);
 
-    MoveMode getMoveModeForSelectionAnchor(QPointF pos);
-    MoveMode validateMoveMode(QPointF pos);
+    MoveMode getMoveModeForSelectionAnchor(const QPointF pos) const;
+    MoveMode validateMoveMode(const QPointF pos);
     MoveMode getMoveMode() const { return mMoveMode; }
-    void setMoveMode(MoveMode moveMode) { mMoveMode = moveMode; }
+    void setMoveMode(const MoveMode moveMode) { mMoveMode = moveMode; }
 
     bool somethingSelected() const { return mSomethingSelected; }
 
     void calculateSelectionTransformation();
-    void adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement=0);
-    MoveMode moveModeForAnchorInRange(QPointF lastPos);
-    void setCurves(QList<int> curves) { mClosestCurves = curves; }
-    void setVertices(QList<VertexRef> vertices) { mClosestVertices = vertices; }
+    void adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement);
+    MoveMode moveModeForAnchorInRange(const QPointF lastPos);
+    void setCurves(const QList<int>& curves) { mClosestCurves = curves; }
+    void setVertices(const QList<VertexRef>& vertices) { mClosestVertices = vertices; }
 
     void clearCurves();
     void clearVertices();
 
-    const QList<int> closestCurves() { return mClosestCurves; }
-    const QList<VertexRef> closestVertices() { return mClosestVertices; }
+    const QList<int> closestCurves() const { return mClosestCurves; }
+    const QList<VertexRef> closestVertices() const { return mClosestVertices; }
 
-    QTransform selectionTransform() { return mSelectionTransform; }
-    void setSelectionTransform(QTransform transform) { mSelectionTransform = transform; }
+    QTransform selectionTransform() const { return mSelectionTransform; }
+    void setSelectionTransform(const QTransform& transform) { mSelectionTransform = transform; }
     void resetSelectionTransform();
 
-    bool transformHasBeenModified();
-    bool rotationHasBeenModified();
+    bool transformHasBeenModified() const;
+    bool rotationHasBeenModified() const;
 
     /** @brief SelectionManager::resetSelectionTransformProperties
      * should be used whenever translate, rotate, transform, scale
@@ -78,7 +92,7 @@ public:
     void resetSelectionProperties();
     void deleteSelection();
 
-    bool isOutsideSelectionArea(QPointF point);
+    bool isOutsideSelectionArea(const QPointF point);
 
     qreal selectionTolerance() const;
 
@@ -100,22 +114,21 @@ public:
     void setTransformedSelectionRect(const QRectF& rect) { mTransformedSelection = rect; }
     void setRotation(const qreal& rotation) { mRotatedAngle = rotation; }
 
-
 signals:
     void selectionChanged();
+    void selectionReset();
     void needPaintAndApply();
     void needDeleteSelection();
 
 private:
-
-    int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
+    int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
 
     QRectF mSelection;
     QRectF mTempTransformedSelection;
     QRectF mTransformedSelection;
-    qreal mRotatedAngle;
+    qreal mRotatedAngle = 0.0;
 
-    bool mSomethingSelected;
+    bool mSomethingSelected = false;
     QPolygonF mLastSelectionPolygonF;
     QPolygonF mCurrentSelectionPolygonF;
     QPointF mOffset;
@@ -123,10 +136,8 @@ private:
     QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
 
-    MoveMode mMoveMode;
-
+    MoveMode mMoveMode = MoveMode::NONE;
     QTransform mSelectionTransform;
-
     const qreal mSelectionTolerance = 8.0;
 };
 

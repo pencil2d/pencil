@@ -26,6 +26,7 @@ Makefile*
 *-build-*
 .moc
 moc_predefs.h
+*-pch.h.cpp
 
 Makefile
 Makefile.Debug
@@ -71,5 +72,12 @@ ipch
 *.rc
 *.tlog
 
-tests/tests
-bin/*
+/tests/tests
+/bin/*
+/tests/bin
+
+# Visual Studio Code
+.vscode
+
+# Build directory
+build

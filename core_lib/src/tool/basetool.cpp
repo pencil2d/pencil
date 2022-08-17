@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,15 +17,15 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 
-#include "pointerevent.h"
 #include <array>
 #include <QtMath>
+#include <QPixmap>
 #include "editor.h"
 #include "viewmanager.h"
 #include "toolmanager.h"
 #include "scribblearea.h"
 #include "strokemanager.h"
-
+#include "pointerevent.h"
 
 // ---- shared static variables ---- ( only one instance for all the tools )
 qreal BaseTool::msOriginalPropertyValue;  // start value (width, feather ..)
@@ -63,6 +63,7 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(PRESERVEALPHA, false);
     mPropertyEnabled.insert(BEZIER, false);
     mPropertyEnabled.insert(ANTI_ALIASING, false);
+    mPropertyEnabled.insert(FILL_MODE, false);
     mPropertyEnabled.insert(STABILIZATION, false);
 }
 
@@ -210,85 +211,118 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
 
         switch(mode)
         {
-            case MoveMode::MIDDLE:
-            {
-                if (type == SELECT) {
-                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-                } else {
-                    return Qt::ArrowCursor;
-                }
-                break;
+        case MoveMode::PERSP_LEFT:
+        case MoveMode::PERSP_RIGHT:
+        case MoveMode::PERSP_MIDDLE:
+        case MoveMode::PERSP_SINGLE:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            break;
+        }
+        case MoveMode::MIDDLE:
+        {
+            if (type == SELECT) {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            } else {
+                return Qt::ArrowCursor;
             }
-            case MoveMode::TOPLEFT:
-            case MoveMode::BOTTOMRIGHT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-                break;
-            }
-            case MoveMode::TOPRIGHT:
-            case MoveMode::BOTTOMLEFT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-                break;
-            }
-            default:
-                return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
-                break;
+            break;
+        }
+        case MoveMode::TOPLEFT:
+        case MoveMode::BOTTOMRIGHT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+            break;
+        }
+        case MoveMode::TOPRIGHT:
+        case MoveMode::BOTTOMLEFT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+            break;
+        }
+
+        default:
+            return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
+            break;
         }
         cursorPainter.end();
     }
     return QCursor(cursorPixmap);
 }
 
+bool BaseTool::isActive()
+{
+    return strokeManager()->isActive();
+}
+
 /**
  * @brief precision circular cursor: used for drawing stroke size while adjusting
  * @return QPixmap
  */
-QPixmap BaseTool::quickSizeCursor(float brushWidth, float brushFeather, float scalingFac)
+QPixmap BaseTool::quickSizeCursor(qreal scalingFac)
 {
-    float propWidth = qMax(static_cast<float>(0), brushWidth) * scalingFac;
-    float propFeather = qMax(static_cast<float>(0), brushFeather) * scalingFac;
-    float cursorWidth = propWidth + 0.5 * propFeather;
+    qreal propSize = qMax(0., properties.width) * scalingFac;
+    qreal propFeather = qMax(0., properties.feather) * scalingFac;
+    QRectF cursorRect(0, 0, propSize+2, propSize+2);
 
-    if (cursorWidth < 1) { cursorWidth = 1; }
-    float radius = cursorWidth / 2;
-    float xyA = 1 + propFeather / 2;
-    float xyB = 1 + propFeather / 8;
-    float whA = qMax<float>(0, propWidth - xyA - 1);
-    float whB = qMax<float>(0, cursorWidth - propFeather / 4 - 2);
-    QPixmap cursorPixmap = QPixmap(cursorWidth, cursorWidth);
+    QRectF sizeRect = cursorRect.adjusted(1, 1, -1, -1);
+    qreal featherRadius = (1 - propFeather / 100) * propSize / 2.;
+
+    QPixmap cursorPixmap = QPixmap(cursorRect.size().toSize());
     if (!cursorPixmap.isNull())
     {
         cursorPixmap.fill(QColor(255, 255, 255, 0));
         QPainter cursorPainter(&cursorPixmap);
-        cursorPainter.setPen(QColor(0, 0, 0, 255));
-        cursorPainter.drawLine(QPointF(radius - 2, radius), QPointF(radius + 2, radius));
-        cursorPainter.drawLine(QPointF(radius, radius - 2), QPointF(radius, radius + 2));
         cursorPainter.setRenderHints(QPainter::Antialiasing, true);
+
+        // Draw width (outside circle)
+        cursorPainter.setPen(QColor(255, 127, 127, 127));
+        cursorPainter.setBrush(QColor(0, 255, 127, 127));
+        cursorPainter.drawEllipse(sizeRect);
+
+        // Draw feather (inside circle)
+        cursorPainter.setCompositionMode(QPainter::CompositionMode_Darken);
         cursorPainter.setPen(QColor(0, 0, 0, 0));
-        cursorPainter.setBrush(QColor(0, 255, 127, 64));
-        cursorPainter.setCompositionMode(QPainter::CompositionMode_Exclusion);
-        cursorPainter.drawEllipse(QRectF(xyB, xyB, whB, whB)); // outside circle
-        cursorPainter.setBrush(QColor(255, 64, 0, 255));
-        cursorPainter.drawEllipse(QRectF(xyA, xyA, whA, whA)); // inside circle
+        cursorPainter.setBrush(QColor(0, 191, 95, 127));
+        cursorPainter.drawEllipse(cursorRect.center(), featherRadius, featherRadius);
+
+        // Draw cursor in center
+        cursorPainter.setRenderHints(QPainter::Antialiasing, false);
+        cursorPainter.setPen(QColor(0, 0, 0, 255));
+        cursorPainter.drawLine(cursorRect.center() - QPoint(2, 0), cursorRect.center() + QPoint(2, 0));
+        cursorPainter.drawLine(cursorRect.center() - QPoint(0, 2), cursorRect.center() + QPoint(0, 2));
+
         cursorPainter.end();
     }
     return cursorPixmap;
 }
 
-void BaseTool::startAdjusting(ToolPropertyType propertyType, qreal step)
+bool BaseTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal step)
 {
-    msIsAdjusting = true;
-    mAdjustmentStep = step;
-    if (propertyType == WIDTH)
+    if (mQuickSizingProperties.contains(modifiers))
     {
-        msOriginalPropertyValue = properties.width;
+        switch (mQuickSizingProperties.value(modifiers)) {
+        case WIDTH:
+            msOriginalPropertyValue = properties.width;
+            break;
+        case FEATHER:
+            msOriginalPropertyValue = properties.feather;
+            break;
+        case TOLERANCE:
+            msOriginalPropertyValue = properties.tolerance;
+            break;
+        default:
+            qDebug() << "Unhandled quick sizing property for tool" << typeName();
+            Q_ASSERT(false);
+            return false;
+        }
+
+        msIsAdjusting = true;
+        mAdjustmentStep = step;
+        mScribbleArea->updateCanvasCursor();
+        return true;
     }
-    else if (propertyType == FEATHER)
-    {
-        msOriginalPropertyValue = properties.feather;
-    }
-    mScribbleArea->updateCanvasCursor();
+    return false;
 }
 
 void BaseTool::stopAdjusting()
@@ -299,15 +333,10 @@ void BaseTool::stopAdjusting()
     mEditor->getScribbleArea()->updateCanvasCursor();
 }
 
-void BaseTool::adjustCursor(Qt::KeyboardModifiers keyMod)
+void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
 {
-    ToolPropertyType propertyType;
-    propertyType = (keyMod & Qt::ControlModifier) ? FEATHER : WIDTH;
-
     qreal inc = qPow(msOriginalPropertyValue * 100, 0.5);
     qreal newValue = inc + getCurrentPoint().x();
-    int max = (propertyType == FEATHER) ? 200 : 200;
-    int min = (propertyType == FEATHER) ? 2 : 1;
 
     if (newValue < 0)
     {
@@ -317,32 +346,26 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers keyMod)
     newValue = qPow(newValue, 2) / 100;
     if (mAdjustmentStep > 0)
     {
-        int tempValue = (int)(newValue / mAdjustmentStep); // + 0.5 ?
+        int tempValue = static_cast<int>(newValue / mAdjustmentStep); // + 0.5 ?
         newValue = tempValue * mAdjustmentStep;
     }
-    if (newValue < min) // can be optimized for size: min(200,max(0.2,newValueX))
-    {
-        newValue = min;
-    }
-    else if (newValue > max)
-    {
-        newValue = max;
-    }
 
-    switch (propertyType)
+    switch (mQuickSizingProperties.value(modifiers))
     {
-    case FEATHER:
-        if ((type() == BRUSH) || (type() == ERASER) || (this->type() == SMUDGE))
-        {
-            mEditor->tools()->setFeather(newValue);
-        }
-        break;
     case WIDTH:
-        mEditor->tools()->setWidth(newValue);
+        mEditor->tools()->setWidth(qBound(1., newValue, 200.));
+        break;
+    case FEATHER:
+        mEditor->tools()->setFeather(qBound(2., newValue, 200.));
+        break;
+    case TOLERANCE:
+        mEditor->tools()->setTolerance(qBound(0., newValue, 100.));
         break;
     default:
+        qDebug() << "Unhandled quick sizing property for tool" << typeName();
+        Q_ASSERT(false);
         break;
-    };
+    }
 }
 
 QPointF BaseTool::getCurrentPressPixel()
@@ -430,6 +453,11 @@ void BaseTool::setAA(const int useAA)
     properties.useAA = useAA;
 }
 
+void BaseTool::setFillMode(const int mode)
+{
+    properties.fillMode = mode;
+}
+
 void BaseTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
@@ -440,7 +468,39 @@ void BaseTool::setTolerance(const int tolerance)
     properties.tolerance = tolerance;
 }
 
+void BaseTool::setToleranceEnabled(const bool enabled)
+{
+    properties.toleranceEnabled = enabled;
+}
+
+void BaseTool::setFillExpand(const int fillExpandValue)
+{
+    properties.bucketFillExpand = fillExpandValue;
+}
+
+void BaseTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+}
+
+void BaseTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+}
+
+void BaseTool::setFillExpandEnabled(const bool enabled)
+{
+    properties.bucketFillExpandEnabled = enabled;
+}
+
 void BaseTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;
 }
+
+void BaseTool::setShowSelectionInfo(const bool b)
+{
+    properties.showSelectionInfo = b;
+}
+
+

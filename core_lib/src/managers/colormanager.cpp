@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "editor.h"
 
 
-ColorManager::ColorManager(Editor* editor) : BaseManager(editor)
+ColorManager::ColorManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -53,16 +53,15 @@ void ColorManager::workingLayerChanged(Layer* layer)
     mIsWorkingOnVectorLayer = (layer->type() == Layer::VECTOR);
     if (mIsWorkingOnVectorLayer)
     {
-        mCurrentFrontColor = object()->getColour(mCurrentColorIndex).colour;
+        mCurrentFrontColor = object()->getColor(mCurrentColorIndex).color;
         emit colorChanged(mCurrentFrontColor, mCurrentColorIndex);
     }
 }
 
-QColor ColorManager::frontColor()
+QColor ColorManager::frontColor(bool useIndexedColor)
 {
-
-    if (mIsWorkingOnVectorLayer)
-        return object()->getColour(mCurrentColorIndex).colour;
+    if (mIsWorkingOnVectorLayer && useIndexedColor)
+        return object()->getColor(mCurrentColorIndex).color;
     else
         return mCurrentFrontColor;
 }
@@ -73,28 +72,25 @@ void ColorManager::setColorNumber(int n)
 
     mCurrentColorIndex = n;
 
-    QColor currentColor = object()->getColour(mCurrentColorIndex).colour;
+    QColor currentColor = object()->getColor(mCurrentColorIndex).color;
 
     emit colorNumberChanged(mCurrentColorIndex);
-    emit colorChanged(currentColor, mCurrentColorIndex);
+    setFrontColor(currentColor);
 }
 
-void ColorManager::setColor(const QColor& newColor)
+void ColorManager::setFrontColor(const QColor& newFrontColor)
 {
-    if (mCurrentFrontColor != newColor)
-    {
-        mCurrentFrontColor = newColor;
-
-        emit colorChanged(mCurrentFrontColor, mCurrentColorIndex);
-
-        if (mIsWorkingOnVectorLayer)
-        {
-            object()->setColour(mCurrentColorIndex, newColor);
-        }
-    }
+    mCurrentFrontColor = newFrontColor;
+    emit colorChanged(newFrontColor, mCurrentColorIndex);
 }
 
-int ColorManager::frontColorNumber()
+void ColorManager::setIndexedColor(const QColor& newColor)
+{
+    object()->setColor(mCurrentColorIndex, newColor);
+    emit colorChanged(newColor, mCurrentColorIndex);
+}
+
+int ColorManager::frontColorNumber() const
 {
     return mCurrentColorIndex;
 }

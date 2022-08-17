@@ -195,7 +195,21 @@ void PointerEvent::ignore()
     }
 }
 
-QEvent::Type PointerEvent::type() const
+bool PointerEvent::isAccepted()
+{
+    if (mMouseEvent)
+    {
+        return mMouseEvent->isAccepted();
+    }
+    else if (mTabletEvent)
+    {
+        return mTabletEvent->isAccepted();
+    }
+    Q_ASSERT(false);
+    return false;
+}
+
+QEvent::Type PointerEvent::eventType() const
 {
     if (mMouseEvent)
     {
@@ -206,6 +220,18 @@ QEvent::Type PointerEvent::type() const
         return mTabletEvent->type();
     }
     return QEvent::None;
+}
+
+PointerEvent::InputType PointerEvent::inputType() const
+{
+    if (mMouseEvent) {
+        return InputType::Mouse;
+    }
+    else if (mTabletEvent)
+    {
+        return InputType::Tablet;
+    }
+    return InputType::Unknown;
 }
 
 QTabletEvent::TabletDevice PointerEvent::device() const

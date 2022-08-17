@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2013-2018 Matt Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -33,6 +33,7 @@ class QDoubleSpinBox;
 class QGroupBox;
 class Editor;
 class BaseTool;
+class BucketOptionsWidget;
 
 
 class ToolOptionWidget : public BaseDockWidget
@@ -62,15 +63,17 @@ private:
     void setVectorMergeEnabled(int);
     void setAA(int);
     void setStabilizerLevel(int);
-    void setTolerance(int);
     void setFillContour(int);
     void setBezier(bool);
+    void setShowSelectionInfo(bool);
 
     void disableAllOptions();
     void createUI();
 
 private:
     Ui::ToolOptions* ui = nullptr;
+
+    BucketOptionsWidget* mBucketOptionsWidget = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

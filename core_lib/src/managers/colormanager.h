@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -35,12 +35,19 @@ public:
     Status save(Object*) override;
     void workingLayerChanged(Layer*) override;
 
-    QColor frontColor();
-    int frontColorNumber();
-    void setColor(const QColor& color);
-    void setColorNumber(int n);
+    /** frontColor
+     * @param useIndexedColor default true, will only affect vector layer
+     * @return Latest stored color for bitmap or indexed color for vector, unless useIndexedColor is false
+     */
+    QColor frontColor(bool useIndexedColor = true);
+    void setFrontColor(const QColor& newFrontColor);
 
-Q_SIGNALS:
+    /** Set color for current index */
+    void setIndexedColor(const QColor& newColor);
+    void setColorNumber(int n);
+    int frontColorNumber() const;
+
+signals:
     void colorChanged(QColor, int); // new color and color index
     void colorNumberChanged(int);
 

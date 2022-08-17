@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ class ColorInspector : public BaseDockWidget
     Q_OBJECT
 
     friend class ColorSliders;
-    
+
 public:
     explicit ColorInspector(QWidget *parent = nullptr);
     ~ColorInspector() override;
@@ -37,22 +37,20 @@ public:
     void initUI() override;
     void updateUI() override;
 
-protected:
-    void paintEvent(QPaintEvent *) override;
-
 signals:
     void colorChanged(const QColor& c);
-    void modeChange(const bool& isRgb);
+    void colorSpecChanged(const bool& isRgb);
 
 public slots:
     void setColor(QColor newColor);
 
 private slots:
-    void onModeChanged();
+    void onColorSpecChanged();
     void onColorChanged();
-    void onSliderChanged(QColor color);
-    
+    void onColorChanged(const QColor& color);
+
 private:
+    void updateControls();
 
     Ui::ColorInspector* ui = nullptr;
     bool isRgbColors = true;

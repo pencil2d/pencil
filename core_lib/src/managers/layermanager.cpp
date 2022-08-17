@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -25,8 +25,9 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 
+#include <QDebug>
 
-LayerManager::LayerManager(Editor* editor) : BaseManager(editor)
+LayerManager::LayerManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -39,10 +40,11 @@ bool LayerManager::init()
     return true;
 }
 
-Status LayerManager::load(Object* o)
+Status LayerManager::load(Object*)
 {
     mLastCameraLayerIdx = 0;
-    emit layerCountChanged(o->getLayerCount());
+    // Do not emit layerCountChanged here because the editor has not updated to this object yet
+    // Leave that to the caller of this function
     return Status::OK;
 }
 
@@ -78,13 +80,13 @@ Layer* LayerManager::currentLayer()
 
 Layer* LayerManager::currentLayer(int incr)
 {
-    Q_ASSERT(object() != NULL);
+    Q_ASSERT(object() != nullptr);
     return object()->getLayer(editor()->currentLayerIndex() + incr);
 }
 
 Layer* LayerManager::getLayer(int index)
 {
-    Q_ASSERT(object() != NULL);
+    Q_ASSERT(object() != nullptr);
     return object()->getLayer(index);
 }
 
@@ -109,10 +111,16 @@ void LayerManager::setCurrentLayer(int layerIndex)
         return;
     }
 
+    // Deselect frames of previous layer.
+    Layer* previousLayer = object()->getLayer(editor()->currentLayerIndex());
+    if (previousLayer != nullptr) {
+        previousLayer->deselectAll();
+    }
+
     // Do not check if layer index has changed
     // because the current layer may have changed either way
     editor()->setCurrentLayerIndex(layerIndex);
-    Q_EMIT currentLayerChanged(layerIndex);
+    emit currentLayerChanged(layerIndex);
 
     if (object())
     {
@@ -132,8 +140,9 @@ void LayerManager::gotoNextLayer()
 {
     if (editor()->currentLayerIndex() < object()->getLayerCount() - 1)
     {
+        currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
-        Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
+        emit currentLayerChanged(editor()->currentLayerIndex());
     }
 }
 
@@ -141,9 +150,65 @@ void LayerManager::gotoPreviouslayer()
 {
     if (editor()->currentLayerIndex() > 0)
     {
+        currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
-        Q_EMIT currentLayerChanged(editor()->currentLayerIndex());
+        emit currentLayerChanged(editor()->currentLayerIndex());
     }
+}
+
+QString LayerManager::nameSuggestLayer(const QString& name)
+{
+    // if no layers: return name
+    if (count() == 0)
+    {
+        return name;
+    }
+    QVector<QString> sLayers;
+    // fill Vector with layer names
+    for (int i = 0; i < count(); i++)
+    {
+        sLayers.append(getLayer(i)->name());
+    }
+    // if name is not in list, return name
+    if (!sLayers.contains(name))
+    {
+        return name;
+    }
+    int newIndex = 2;
+    QString newName = name;
+    do {
+        newName = QStringLiteral("%1 %2")
+            .arg(name).arg(QString::number(newIndex++));
+    } while (sLayers.contains(newName));
+    return newName;
+}
+
+Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayerName)
+{
+    Layer* layer = nullptr;
+    switch (type) {
+    case Layer::BITMAP:
+        layer = object()->addNewBitmapLayer();
+        break;
+    case Layer::VECTOR:
+        layer = object()->addNewVectorLayer();
+        break;
+    case Layer::SOUND:
+        layer = object()->addNewSoundLayer();
+        break;
+    case Layer::CAMERA:
+        layer = object()->addNewCameraLayer();
+        break;
+    default:
+        Q_ASSERT(true);
+        return nullptr;
+    }
+
+    layer->setName(strLayerName);
+    emit layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
+
+    return layer;
 }
 
 LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
@@ -151,7 +216,8 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
     LayerBitmap* layer = object()->addNewBitmapLayer();
     layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
+    emit layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
@@ -161,7 +227,8 @@ LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
     LayerVector* layer = object()->addNewVectorLayer();
     layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
+    emit layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
@@ -171,7 +238,8 @@ LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
     LayerCamera* layer = object()->addNewCameraLayer();
     layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
+    emit layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
@@ -181,12 +249,13 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
     LayerSound* layer = object()->addNewSoundLayer();
     layer->setName(strLayerName);
 
-    Q_EMIT layerCountChanged(count());
+    emit layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
 
-int LayerManager::LastFrameAtFrame(int frameIndex)
+int LayerManager::lastFrameAtFrame(int frameIndex)
 {
     Object* o = object();
     for (int i = frameIndex; i >= 0; i -= 1)
@@ -267,8 +336,8 @@ Status LayerManager::deleteLayer(int index)
         setCurrentLayer(currentLayerIndex());
     }
 
-    Q_EMIT layerDeleted(index);
-    Q_EMIT layerCountChanged(count());
+    emit layerDeleted(index);
+    emit layerCountChanged(count());
 
     return Status::OK;
 }
@@ -327,7 +396,7 @@ int LayerManager::animationLength(bool includeSounds)
 
 void LayerManager::notifyAnimationLengthChanged()
 {
-    emit animationLengthChanged(animationLength(false));
+    emit animationLengthChanged(animationLength(true));
 }
 
 int LayerManager::getIndex(Layer* layer) const

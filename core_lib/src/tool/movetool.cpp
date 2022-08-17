@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <cassert>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "pointerevent.h"
 #include "editor.h"
@@ -26,6 +27,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "strokemanager.h"
 #include "selectionmanager.h"
+#include "overlaymanager.h"
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
@@ -50,13 +52,27 @@ void MoveTool::loadSettings()
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
+    QSettings settings(PENCIL2D, PENCIL2D);
+    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
+    mPropertyEnabled[SHOWSELECTIONINFO] = true;
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
 }
 
 QCursor MoveTool::cursor()
 {
-    MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
+    MoveMode mode = MoveMode::NONE;
+    if (mEditor->select()->somethingSelected())
+    {
+        mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
+        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
+    if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        mode = mEditor->overlays()->getMoveModeForOverlayAnchor(getCurrentPoint());
+        mPerspMode = mode;
+        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+    }
     return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
 }
 
@@ -80,10 +96,19 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     mCurrentLayer = currentPaintableLayer();
     if (mCurrentLayer == nullptr) return;
 
-    mEditor->select()->updatePolygons();
+    if (mEditor->select()->somethingSelected())
+    {
+        mEditor->select()->updatePolygons();
 
-    setAnchorToLastPoint();
-    beginInteraction(event->modifiers(), mCurrentLayer);
+        setAnchorToLastPoint();
+        beginInteraction(event->modifiers(), mCurrentLayer);
+    }
+    if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        QPointF point = mEditor->view()->mapScreenToCanvas(event->posF());
+        mEditor->overlays()->setMoveMode(mPerspMode);
+        mEditor->overlays()->updatePerspOverlay(point);
+    }
 }
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
@@ -96,6 +121,11 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
+        if (mEditor->overlays()->isPerspOverlaysActive())
+        {
+            QPointF mapped = mEditor->view()->mapScreenToCanvas(event->pos());
+            mEditor->overlays()->updatePerspOverlay(mapped);
+        }
     }
     else
     {
@@ -107,12 +137,24 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         {
             storeClosestVectorCurve(mCurrentLayer);
         }
+        if (mEditor->overlays()->isPerspOverlaysActive())
+        {
+//            QPointF mapped = mEditor->view()->mapScreenToCanvas(event->pos());
+//            mEditor->overlays()->updatePerspOverlay(mapped);
+        }
+        mEditor->getScribbleArea()->prepOverlays();
     }
     mScribbleArea->updateCurrentFrame();
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
+    if (mEditor->overlays()->isPerspOverlaysActive())
+    {
+        mEditor->overlays()->setMoveMode(MoveMode::NONE);
+        mPerspMode = MoveMode::NONE;
+    }
+
     auto selectMan = mEditor->select();
     if (!selectMan->somethingSelected())
         return;
@@ -214,7 +256,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         QPointF curPoint = getCurrentPoint();
         QPointF anchorPoint = selectionRect.center();
-        mRotatedAngle = MathUtils::radToDeg(MathUtils::getDifferenceAngle(anchorPoint, curPoint)) - selectMan->myRotation();
+        mRotatedAngle = qRadiansToDegrees(MathUtils::getDifferenceAngle(anchorPoint, curPoint)) - selectMan->myRotation();
     }
 }
 
@@ -228,6 +270,7 @@ void MoveTool::createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
     assert(layer->type() == Layer::VECTOR);
     LayerVector* vecLayer = static_cast<LayerVector*>(layer);
     VectorImage* vectorImage = vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    if (vectorImage == nullptr) { return; }
 
     if (!mEditor->select()->closestCurves().empty()) // the user clicks near a curve
     {
@@ -250,7 +293,7 @@ void MoveTool::setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers 
             applyTransformation();
         }
         vectorImage->setSelected(selectMan->closestCurves(), true);
-        selectMan->setSelection(vectorImage->getSelectionRect());
+        selectMan->setSelection(vectorImage->getSelectionRect(), false);
     }
 }
 
@@ -264,7 +307,7 @@ void MoveTool::setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers k
             applyTransformation();
         }
         vectorImage->setAreaSelected(areaNumber, true);
-        mEditor->select()->setSelection(vectorImage->getSelectionRect());
+        mEditor->select()->setSelection(vectorImage->getSelectionRect(), false);
     }
 }
 
@@ -277,6 +320,7 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     auto selectMan = mEditor->select();
     auto layerVector = static_cast<LayerVector*>(layer);
     VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    if (pVecImg == nullptr) { return; }
     selectMan->setCurves(pVecImg->getCurvesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
 }
 
@@ -287,9 +331,7 @@ void MoveTool::setAnchorToLastPoint()
 
 void MoveTool::cancelChanges()
 {
-    auto selectMan = mEditor->select();
     mScribbleArea->cancelTransformedSelection();
-    selectMan->resetSelectionProperties();
     mEditor->deselectAll();
 }
 
@@ -360,6 +402,20 @@ bool MoveTool::switchingLayer()
         return false;
     }
     return true;
+}
+
+void MoveTool::resetToDefault()
+{
+    setShowSelectionInfo(false);
+}
+
+void MoveTool::setShowSelectionInfo(const bool b)
+{
+    properties.showSelectionInfo = b;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("ShowSelectionInfo", b);
+
 }
 
 int MoveTool::showTransformWarning()
