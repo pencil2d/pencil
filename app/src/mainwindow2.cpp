@@ -1405,13 +1405,13 @@ void MainWindow2::makeConnections(Editor* editor)
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
 {
-    connect(colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor);
+    connect(colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setFrontColor);
     connect(editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector)
 {
-    connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setColor);
+    connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setFrontColor);
     connect(editor->color(), &ColorManager::colorChanged, colorInspector, &ColorInspector::setColor);
 }
 
@@ -1489,12 +1489,8 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
     ColorManager* pColorManager = pEditor->color();
     ScribbleArea* pScribbleArea = pEditor->getScribbleArea();
 
-    connect(pColorPalette, &ColorPaletteWidget::colorChanged, pColorManager, &ColorManager::setColor);
     connect(pColorPalette, &ColorPaletteWidget::colorNumberChanged, pColorManager, &ColorManager::setColorNumber);
-
-    connect(pColorPalette, &ColorPaletteWidget::colorChanged, pScribbleArea, &ScribbleArea::paletteColorChanged);
-
-    connect(pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor);
+    connect(pColorManager, &ColorManager::colorNumberChanged, pScribbleArea, &ScribbleArea::paletteColorChanged);
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
