@@ -1653,6 +1653,9 @@ void MainWindow2::createToolbars()
     mOverlayToolbar = addToolBar(tr("Overlay Toolbar"));
     mOverlayToolbar->setObjectName("mOverlayToolbar");
     mOverlayToolbar->addAction(ui->actionGrid);
+    mOverlayToolbar->setIconSize(QSize(22,22));
+    mViewToolbar->setIconSize(QSize(22,22));
+    mMainToolbar->setIconSize(QSize(22,22));
 
     mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
 
