@@ -208,7 +208,7 @@ void ColorPaletteWidget::addSwatch(int colorIndex) const
     QPainter painter(&originalColorSwatch);
     painter.drawTiledPixmap(0, 0, mIconSize.width(), mIconSize.height(), QPixmap(":/background/checkerboard.png"));
     painter.end();
-    QPixmap colourSwatch;
+
     QPen borderShadow(QColor(0, 0, 0, 200), 1, Qt::DotLine, Qt::FlatCap, Qt::MiterJoin);
     QVector<qreal> dashPattern{ 4, 4 };
     borderShadow.setDashPattern(dashPattern);
