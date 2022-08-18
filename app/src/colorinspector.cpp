@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -17,16 +17,13 @@ GNU General Public License for more details.
 #include "ui_colorinspector.h"
 
 #include <QSettings>
-#include <QStyleOption>
 #include <QDebug>
-#include <QStylePainter>
-#include <QButtonGroup>
 
 #include "colorslider.h"
 #include "pencildef.h"
 #include "editor.h"
 #include "colormanager.h"
-#include "util/util.h"
+#include "util.h"
 
 
 ColorInspector::ColorInspector(QWidget *parent) :
@@ -53,49 +50,60 @@ void ColorInspector::initUI()
     isRgbColors = settings.value("isRgb").toBool();
 
     if (isRgbColors) {
-        ui->rgbButton->setChecked(true);
+        ui->colorSpecTabWidget->setCurrentWidget(ui->rgbTab);
     } else {
-        ui->hsvButton->setChecked(true);
+        ui->colorSpecTabWidget->setCurrentWidget(ui->hsvTab);
     }
-    onModeChanged();
+    onColorSpecChanged();
 
-    QPalette p1 = ui->colorWrapper->palette(), p2 = ui->color->palette();
+    ui->redSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::RED, mCurrentColor, 0.0, 255.0);
+    ui->greenSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::GREEN, mCurrentColor, 0.0, 255.0);
+    ui->blueSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::BLUE, mCurrentColor, 0.0, 255.0);
+    ui->rgbAlphaSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
+
+    ui->hueSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::HUE, mCurrentColor, 0.0, 359.0);
+    ui->saturationSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::SAT, mCurrentColor, 0.0, 255.0);
+    ui->valueSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::VAL, mCurrentColor, 0.0, 255.0);
+    ui->hsvAlphaSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
+
+    QPalette p1 = ui->colorWrapper->palette();
     p1.setBrush(QPalette::Background, QBrush(QImage(":/background/checkerboard.png")));
-    p2.setColor(QPalette::Background, mCurrentColor);
     ui->colorWrapper->setPalette(p1);
+
+    QPalette p2 = ui->color->palette();
+    p2.setColor(QPalette::Background, mCurrentColor);
     ui->color->setPalette(p2);
 
-    if (isRgbColors)
-    {
-        ui->red_slider->init(ColorSlider::ColorType::RED, mCurrentColor, 0.0, 255.0);
-        ui->green_slider->init(ColorSlider::ColorType::GREEN, mCurrentColor, 0.0, 255.0);
-        ui->blue_slider->init(ColorSlider::ColorType::BLUE, mCurrentColor, 0.0, 255.0);
-        ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
-    }
-    else
-    {
-        ui->red_slider->init(ColorSlider::ColorType::HUE, mCurrentColor, 0.0, 359.0);
-        ui->green_slider->init(ColorSlider::ColorType::SAT, mCurrentColor, 0.0, 255.0);
-        ui->blue_slider->init(ColorSlider::ColorType::VAL, mCurrentColor, 0.0, 255.0);
-        ui->alpha_slider->init(ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
-    }
+    connect(ui->colorSpecTabWidget, &QTabWidget::currentChanged, this, &ColorInspector::onColorSpecChanged);
+
+    auto onColorChangedSlider = static_cast<void(ColorInspector::*)(const QColor&)>(&ColorInspector::onColorChanged);
+    connect(ui->redSlider, &ColorSlider::valueChanged, this, onColorChangedSlider);
+    connect(ui->greenSlider, &ColorSlider::valueChanged, this, onColorChangedSlider);
+    connect(ui->blueSlider, &ColorSlider::valueChanged, this, onColorChangedSlider);
+    connect(ui->rgbAlphaSlider, &ColorSlider::valueChanged, this, onColorChangedSlider);
+    connect(ui->hueSlider, &ColorSlider::valueChanged, this, onColorChangedSlider);
+    connect(ui->saturationSlider, &ColorSlider::valueChanged, this, onColorChangedSlider);
+    connect(ui->valueSlider, &ColorSlider::valueChanged, this, onColorChangedSlider);
+    connect(ui->hsvAlphaSlider, &ColorSlider::valueChanged, this, onColorChangedSlider);
 
     auto spinBoxChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
-    connect(ui->RedspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
-    clearFocusOnFinished(ui->RedspinBox);
-    connect(ui->GreenspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
-    clearFocusOnFinished(ui->GreenspinBox);
-    connect(ui->BluespinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
-    clearFocusOnFinished(ui->BluespinBox);
-    connect(ui->AlphaspinBox, spinBoxChanged, this, &ColorInspector::onColorChanged);
-    clearFocusOnFinished(ui->AlphaspinBox);
-    connect(ui->rgbButton, &QPushButton::clicked, this, &ColorInspector::onModeChanged);
-    connect(ui->hsvButton, &QPushButton::clicked, this, &ColorInspector::onModeChanged);
-
-    connect(ui->red_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
-    connect(ui->green_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
-    connect(ui->blue_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
-    connect(ui->alpha_slider, &ColorSlider::valueChanged, this, &ColorInspector::onSliderChanged);
+    auto onColorChangedSpinBox = static_cast<void(ColorInspector::*)()>(&ColorInspector::onColorChanged);
+    connect(ui->redSpinBox, spinBoxChanged, this, onColorChangedSpinBox);
+    clearFocusOnFinished(ui->redSpinBox);
+    connect(ui->greenSpinBox, spinBoxChanged, this, onColorChangedSpinBox);
+    clearFocusOnFinished(ui->greenSpinBox);
+    connect(ui->blueSpinBox, spinBoxChanged, this, onColorChangedSpinBox);
+    clearFocusOnFinished(ui->blueSpinBox);
+    connect(ui->rgbAlphaSpinBox, spinBoxChanged, this, onColorChangedSpinBox);
+    clearFocusOnFinished(ui->rgbAlphaSpinBox);
+    connect(ui->hueSpinBox, spinBoxChanged, this, onColorChangedSpinBox);
+    clearFocusOnFinished(ui->hueSpinBox);
+    connect(ui->saturationSpinBox, spinBoxChanged, this, onColorChangedSpinBox);
+    clearFocusOnFinished(ui->saturationSpinBox);
+    connect(ui->valueSpinBox, spinBoxChanged, this, onColorChangedSpinBox);
+    clearFocusOnFinished(ui->valueSpinBox);
+    connect(ui->hsvAlphaSpinBox, spinBoxChanged, this, onColorChangedSpinBox);
+    clearFocusOnFinished(ui->hsvAlphaSpinBox);
 
     connect(editor(), &Editor::objectLoaded, this, &ColorInspector::updateUI);
 }
@@ -106,28 +114,8 @@ void ColorInspector::updateUI()
     setColor(newColor);
 }
 
-void ColorInspector::onSliderChanged(QColor color)
-{
-    if (isRgbColors) {
-        ui->red_slider->setRgb(color);
-        ui->green_slider->setRgb(color);
-        ui->blue_slider->setRgb(color);
-        ui->alpha_slider->setRgb(color);
-    } else {
-        ui->red_slider->setHsv(color);
-        ui->green_slider->setHsv(color);
-        ui->blue_slider->setHsv(color);
-        ui->alpha_slider->setHsv(color);
-    }
-
-    emit colorChanged(color);
-}
-
 void ColorInspector::setColor(QColor newColor)
 {
-    // this is a UI update function, never emit any signals
-    // grab the color from color manager, and then update itself, that's it.
-
     // compare under the same color spec
     newColor = (isRgbColors) ? newColor.toRgb() : newColor.toHsv();
 
@@ -136,60 +124,9 @@ void ColorInspector::setColor(QColor newColor)
         return;
     }
 
-    if(isRgbColors)
-    {
-        QSignalBlocker b1(ui->red_slider);
-        QSignalBlocker b2(ui->green_slider);
-        QSignalBlocker b3(ui->blue_slider);
-        QSignalBlocker b4(ui->alpha_slider);
-
-        ui->red_slider->setRgb(newColor);
-        ui->green_slider->setRgb(newColor);
-        ui->blue_slider->setRgb(newColor);
-        ui->alpha_slider->setRgb(newColor);
-
-        QSignalBlocker b5(ui->RedspinBox);
-        QSignalBlocker b6(ui->GreenspinBox);
-        QSignalBlocker b7(ui->BluespinBox);
-        QSignalBlocker b8(ui->AlphaspinBox);
-
-        ui->RedspinBox->setValue(newColor.red());
-        ui->GreenspinBox->setValue(newColor.green());
-        ui->BluespinBox->setValue(newColor.blue());
-        ui->AlphaspinBox->setValue(newColor.alpha());
-    }
-    else
-    {
-        QSignalBlocker b1(ui->red_slider);
-        QSignalBlocker b2(ui->green_slider);
-        QSignalBlocker b3(ui->blue_slider);
-        QSignalBlocker b4(ui->alpha_slider);
-
-        ui->red_slider->setHsv(newColor);
-        ui->green_slider->setHsv(newColor);
-        ui->blue_slider->setHsv(newColor);
-        ui->alpha_slider->setHsv(newColor);
-
-        QSignalBlocker b5(ui->RedspinBox);
-        QSignalBlocker b6(ui->GreenspinBox);
-        QSignalBlocker b7(ui->BluespinBox);
-        QSignalBlocker b8(ui->AlphaspinBox);
-
-        ui->RedspinBox->setValue(newColor.hsvHue());
-        ui->GreenspinBox->setValue(qRound(newColor.hsvSaturation() / 2.55));
-        ui->BluespinBox->setValue(qRound(newColor.value() / 2.55));
-        ui->AlphaspinBox->setValue(qRound(newColor.alpha() / 2.55));
-    }
-
     mCurrentColor = newColor;
 
-    QPalette p1 = ui->colorWrapper->palette(), p2 = ui->color->palette();
-    p1.setBrush(QPalette::Background, QBrush(QImage(":/background/checkerboard.png")));
-    p2.setColor(QPalette::Background, mCurrentColor);
-    ui->colorWrapper->setPalette(p1);
-    ui->color->setPalette(p2);
-
-    update();
+    updateControls();
 }
 
 QColor ColorInspector::color()
@@ -197,133 +134,106 @@ QColor ColorInspector::color()
     return mCurrentColor;
 }
 
-void ColorInspector::paintEvent(QPaintEvent*)
+void ColorInspector::updateControls()
 {
-    // HACK: possible bug in 5.9
-    // title style is not set when window is not docked
-    // this enforces the style again. This is what QDockWidget
-    // should be doing behind the scene
-    if (!this->isFloating())
-    {
-        QStyleOptionDockWidget opt;
-        initStyleOption(&opt);
+    // this is a UI update function, never emit any signals
+    // grab the color from color manager, and then update itself, that's it.
 
-        QStylePainter p(this);
-        p.drawControl(QStyle::CE_DockWidgetTitle, opt);
-    }
+    QSignalBlocker b1(ui->redSlider);
+    QSignalBlocker b2(ui->greenSlider);
+    QSignalBlocker b3(ui->blueSlider);
+    QSignalBlocker b4(ui->rgbAlphaSlider);
+
+    ui->redSlider->setRgb(mCurrentColor);
+    ui->greenSlider->setRgb(mCurrentColor);
+    ui->blueSlider->setRgb(mCurrentColor);
+    ui->rgbAlphaSlider->setRgb(mCurrentColor);
+
+    QSignalBlocker b5(ui->redSpinBox);
+    QSignalBlocker b6(ui->greenSpinBox);
+    QSignalBlocker b7(ui->blueSpinBox);
+    QSignalBlocker b8(ui->rgbAlphaSpinBox);
+
+    ui->redSpinBox->setValue(mCurrentColor.red());
+    ui->greenSpinBox->setValue(mCurrentColor.green());
+    ui->blueSpinBox->setValue(mCurrentColor.blue());
+    ui->rgbAlphaSpinBox->setValue(mCurrentColor.alpha());
+
+    QSignalBlocker b9(ui->hueSlider);
+    QSignalBlocker b10(ui->saturationSlider);
+    QSignalBlocker b11(ui->valueSlider);
+    QSignalBlocker b12(ui->hsvAlphaSlider);
+
+    ui->hueSlider->setHsv(mCurrentColor);
+    ui->saturationSlider->setHsv(mCurrentColor);
+    ui->valueSlider->setHsv(mCurrentColor);
+    ui->hsvAlphaSlider->setHsv(mCurrentColor);
+
+    QSignalBlocker b13(ui->hueSpinBox);
+    QSignalBlocker b14(ui->saturationSpinBox);
+    QSignalBlocker b15(ui->valueSpinBox);
+    QSignalBlocker b16(ui->hsvAlphaSpinBox);
+
+    ui->hueSpinBox->setValue(mCurrentColor.hue());
+    ui->saturationSpinBox->setValue(qRound(mCurrentColor.saturation() / 2.55));
+    ui->valueSpinBox->setValue(qRound(mCurrentColor.value() / 2.55));
+    ui->hsvAlphaSpinBox->setValue(qRound(mCurrentColor.alpha() / 2.55));
+
+    QPalette p = ui->color->palette();
+    p.setColor(QPalette::Background, mCurrentColor);
+    ui->color->setPalette(p);
+
+    update();
 }
 
-void ColorInspector::onModeChanged()
+void ColorInspector::onColorSpecChanged()
 {
     // assume hsv if not checked
-    bool newValue = ui->rgbButton->isChecked();
+    isRgbColors = ui->colorSpecTabWidget->currentWidget() == ui->rgbTab;
 
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("isRgb", newValue);
-
-    isRgbColors = newValue;
+    settings.setValue("isRgb", isRgbColors);
 
     if (isRgbColors)
     {
-        // Spinboxes may emit unwanted valueChanged signals when setting ranges
-        // so block them all first
-        QSignalBlocker b1(ui->RedspinBox);
-        QSignalBlocker b2(ui->GreenspinBox);
-        QSignalBlocker b3(ui->BluespinBox);
-        QSignalBlocker b4(ui->AlphaspinBox);
-
-        ui->red->setText("R");
-        ui->green->setText("G");
-        ui->blue->setText("B");
-        ui->alpha->setText("A");
-
-        ui->RedspinBox->setRange(0,255);
-        ui->RedspinBox->setSuffix("");
-        ui->GreenspinBox->setRange(0,255);
-        ui->GreenspinBox->setSuffix("");
-        ui->BluespinBox->setRange(0,255);
-        ui->BluespinBox->setSuffix("");
-        ui->AlphaspinBox->setRange(0,255);
-        ui->AlphaspinBox->setSuffix("");
-
         mCurrentColor = mCurrentColor.toRgb();
-
-        ui->red_slider->setMax(255);
-        ui->red_slider->setColorType(ColorSlider::ColorType::RED);
-        ui->red_slider->setColorSpecType(ColorSlider::ColorSpecType::RGB);
-        ui->green_slider->setColorSpecType(ColorSlider::ColorSpecType::RGB);
-        ui->green_slider->setColorType(ColorSlider::ColorType::GREEN);
-        ui->blue_slider->setColorSpecType(ColorSlider::ColorSpecType::RGB);
-        ui->blue_slider->setColorType(ColorSlider::ColorType::BLUE);
-        ui->alpha_slider->setColorSpecType(ColorSlider::ColorSpecType::RGB);
-        ui->alpha_slider->setColorType(ColorSlider::ColorType::ALPHA);
-
-        ui->RedspinBox->setValue(mCurrentColor.red());
-        ui->GreenspinBox->setValue(mCurrentColor.green());
-        ui->BluespinBox->setValue(mCurrentColor.blue());
-        ui->AlphaspinBox->setValue(mCurrentColor.alpha());
     }
     else
     {
-        QSignalBlocker b1(ui->RedspinBox);
-        QSignalBlocker b2(ui->GreenspinBox);
-        QSignalBlocker b3(ui->BluespinBox);
-        QSignalBlocker b4(ui->AlphaspinBox);
-
-        ui->red->setText("H");
-        ui->green->setText("S");
-        ui->blue->setText("V");
-        ui->alpha->setText("A");
-
-        ui->red_slider->setMax(359);
-        ui->red_slider->setColorType(ColorSlider::ColorType::HUE);
-        ui->red_slider->setColorSpecType(ColorSlider::ColorSpecType::HSV);
-        ui->green_slider->setColorType(ColorSlider::ColorType::SAT);
-        ui->green_slider->setColorSpecType(ColorSlider::ColorSpecType::HSV);
-        ui->blue_slider->setColorType(ColorSlider::ColorType::VAL);
-        ui->blue_slider->setColorSpecType(ColorSlider::ColorSpecType::HSV);
-        ui->alpha_slider->setColorType(ColorSlider::ColorType::ALPHA);
-        ui->alpha_slider->setColorSpecType(ColorSlider::ColorSpecType::HSV);
-
-        ui->RedspinBox->setRange(0,359);
-        ui->RedspinBox->setSuffix("°");
-        ui->GreenspinBox->setRange(0,100);
-        ui->GreenspinBox->setSuffix("%");
-        ui->BluespinBox->setRange(0,100);
-        ui->BluespinBox->setSuffix("%");
-        ui->AlphaspinBox->setRange(0,100);
-        ui->AlphaspinBox->setSuffix("%");
-
         mCurrentColor = mCurrentColor.toHsv();
-
-        const qreal bound = 100.0 / 255.0; // from 255 to 100
-
-        ui->RedspinBox->setValue(mCurrentColor.hsvHue());
-        ui->GreenspinBox->setValue(qRound(mCurrentColor.hsvSaturation()*bound));
-        ui->BluespinBox->setValue(qRound(mCurrentColor.value()*bound));
-        ui->AlphaspinBox->setValue(qRound(mCurrentColor.alpha()*bound));
     }
 
-    emit modeChange(isRgbColors);
+    updateControls();
+
+    emit colorSpecChanged(isRgbColors);
 }
 
 void ColorInspector::onColorChanged()
 {
-    QColor c;
     if (isRgbColors) {
-        c.setRgb(
-            ui->RedspinBox->value(),
-            ui->GreenspinBox->value(),
-            ui->BluespinBox->value(),
-            ui->AlphaspinBox->value());
-
+        mCurrentColor.setRgb(
+            ui->redSpinBox->value(),
+            ui->greenSpinBox->value(),
+            ui->blueSpinBox->value(),
+            ui->rgbAlphaSpinBox->value());
     } else {
-        c.setHsv(
-            ui->RedspinBox->value(),
-            static_cast<int>(ui->GreenspinBox->value()* 2.55),
-            static_cast<int>(ui->BluespinBox->value()* 2.55),
-            static_cast<int>(ui->AlphaspinBox->value()* 2.55));
+        mCurrentColor.setHsv(
+            ui->hueSpinBox->value(),
+            static_cast<int>(ui->saturationSpinBox->value() * 2.55),
+            static_cast<int>(ui->valueSpinBox->value() * 2.55),
+            static_cast<int>(ui->hsvAlphaSpinBox->value() * 2.55));
     }
 
-    emit colorChanged(c);
+    updateControls();
+
+    emit colorChanged(mCurrentColor);
+}
+
+void ColorInspector::onColorChanged(const QColor& color)
+{
+    mCurrentColor = color;
+
+    updateControls();
+
+    emit colorChanged(color);
 }

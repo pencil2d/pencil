@@ -1,8 +1,8 @@
-/*
+﻿/*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -39,31 +39,35 @@ public:
     Status save(Object*) override;
     void workingLayerChanged(Layer* layer) override;
 
-    QTransform getView();
-    QTransform getViewInverse();
+    QTransform getView() const;
+    QTransform getViewInverse() const;
+    qreal getViewScaleInverse() const;
     void resetView();
 
-    QPointF mapCanvasToScreen(QPointF p);
-    QPointF mapScreenToCanvas(QPointF p);
+    QPointF mapCanvasToScreen(QPointF p) const;
+    QPointF mapScreenToCanvas(QPointF p) const;
 
-    QRectF mapCanvasToScreen(const QRectF& rect);
-    QRectF mapScreenToCanvas(const QRectF& rect);
+    QRectF mapCanvasToScreen(const QRectF& rect) const;
+    QRectF mapScreenToCanvas(const QRectF& rect) const;
 
-    QPolygonF mapPolygonToScreen(const QPolygonF& polygon);
-    QPolygonF mapPolygonToCanvas(const QPolygonF& polygon);
+    QPolygonF mapPolygonToScreen(const QPolygonF& polygon) const;
+    QPolygonF mapPolygonToCanvas(const QPolygonF& polygon) const;
 
-    QPainterPath mapCanvasToScreen(const QPainterPath& path);
-    QPainterPath mapScreenToCanvas(const QPainterPath& path);
+    QPainterPath mapCanvasToScreen(const QPainterPath& path) const;
+    QPainterPath mapScreenToCanvas(const QPainterPath& path) const;
 
-    QPointF translation();
+    QPointF translation() const;
     void translate(float dx, float dy);
     void translate(QPointF offset);
+    void centerView();
 
     float rotation();
     void rotate(float degree);
+    void resetRotation();
 
-    float scaling();
-    void scale(float scaleValue);
+    qreal scaling();
+    void scale(qreal scaleValue);
+    void scaleWithOffset(qreal scaleValue, QPointF offset);
     void scaleUp();
     void scaleDown();
     void scale400();
@@ -76,18 +80,18 @@ public:
 
     void flipHorizontal(bool b);
     void flipVertical(bool b);
+
     void setOverlayCenter(bool b);
     void setOverlayThirds(bool b);
     void setOverlayGoldenRatio(bool b);
     void setOverlaySafeAreas(bool b);
 
-    bool isFlipHorizontal() { return mIsFlipHorizontal; }
-    bool isFlipVertical() { return mIsFlipVertical; }
-    bool getOverlayCenter() { return mOverlayCenter; }
-    bool getOverlayThirds() { return mOverlayThirds; }
-    bool getOverlayGoldenRatio() { return mOverlayGoldenRatio; }
-    bool getOverlaySafeAreas() { return mOverlaySafeAreas; }
-
+    bool isFlipHorizontal() const { return mIsFlipHorizontal; }
+    bool isFlipVertical() const { return mIsFlipVertical; }
+    bool getOverlayCenter() const { return mOverlayCenter; }
+    bool getOverlayThirds() const { return mOverlayThirds; }
+    bool getOverlayGoldenRatio() const { return mOverlayGoldenRatio; }
+    bool getOverlaySafeAreas() const { return mOverlaySafeAreas; }
 
     void setCanvasSize(QSize size);
     void setCameraLayer(Layer* layer);
@@ -98,13 +102,14 @@ public:
     void setImportFollowsCamera(bool b) { mImportFollowsCamera = b; }
     bool getImportFollowsCamera() { return mImportFollowsCamera; }
 
-    void updateViewTransforms();
+    void forceUpdateViewTransform();
 
-    Q_SIGNAL void viewChanged();
-    Q_SIGNAL void viewFlipped();
+signals:
+    void viewChanged();
+    void viewFlipped();
 
 private:
-
+    void updateViewTransforms();
     void onCurrentFrameChanged();
 
     QTransform mView;
@@ -121,12 +126,13 @@ private:
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
+
+    bool mImportFollowsCamera = false;
+
     bool mOverlayCenter = false;
     bool mOverlayThirds = false;
     bool mOverlayGoldenRatio = false;
     bool mOverlaySafeAreas = false;
-
-    bool mImportFollowsCamera = false;
 
     LayerCamera* mCameraLayer = nullptr;
 };

@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -29,7 +29,7 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 
 
-PlaybackManager::PlaybackManager(Editor* editor) : BaseManager(editor)
+PlaybackManager::PlaybackManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -86,6 +86,7 @@ Status PlaybackManager::save(Object* o)
     data->setMarkInFrameNumber(mMarkInFrame);
     data->setMarkOutFrameNumber(mMarkOutFrame);
     data->setFrameRate(mFps);
+    data->setCurrentFrame(editor()->currentFrame());
     return Status::OK;
 }
 
@@ -109,20 +110,6 @@ void PlaybackManager::play()
     {
         editor()->scrubTo(mStartFrame);
         frame = editor()->currentFrame();
-    }
-
-    // get keyframe from layer
-    KeyFrame* key = nullptr;
-    if (!mListOfActiveSoundFrames.isEmpty())
-    {
-        for (int i = 0; i < object()->getLayerCount(); ++i)
-        {
-            Layer* layer = object()->getLayer(i);
-            if (layer->type() == Layer::SOUND)
-            {
-                key = layer->getKeyFrameWhichCovers(frame);
-            }
-        }
     }
 
     mListOfActiveSoundFrames.clear();
@@ -286,7 +273,7 @@ void PlaybackManager::playSounds(int frame)
     {
         KeyFrame* key = layer->getLastKeyFrameAtPosition(frame);
 
-        if (!layer->getVisibility())
+        if (!layer->visible())
         {
             continue;
         }
@@ -359,14 +346,14 @@ bool PlaybackManager::skipFrame()
     //float expectedTime = (mPlayingFrameCounter) * (1000.f / mFps);
     //qDebug("Expected:  %.2f ms", expectedTime);
     //qDebug("Actual:    %d   ms", mElapsedTimer->elapsed());
-    
+
     int t = qRound((mPlayingFrameCounter - 1) * (1000.f / mFps));
     if (mElapsedTimer->elapsed() < t)
     {
         qDebug() << "skip";
         return true;
     }
-    
+
     ++mPlayingFrameCounter;
     return false;
 }
@@ -425,7 +412,7 @@ void PlaybackManager::timerTick()
     if (skipFrame())
         return;
 
-    // keep going 
+    // keep going
     editor()->scrubForward();
 
     int newFrame = editor()->currentFrame();

@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>empty.pclx</file>
+        <file>cjk-test.pclx</file>
+        <file>fill-drag-test/fill-drag-test.pcl</file>
+        <file>fill-drag-test/fill-drag-test.pcl.data/003.001.png</file>
+    </qresource>
+</RCC>

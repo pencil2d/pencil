@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include "pencilerror.h"
+#include "filetype.h"
 
 class Editor;
 class QWidget;
@@ -30,15 +31,14 @@ class ActionCommands : public QObject
     Q_OBJECT
 
 public:
-    explicit ActionCommands(QWidget* parent = nullptr);
+    explicit ActionCommands(QWidget* parent);
     virtual ~ActionCommands();
 
     void setCore(Editor* e) { mEditor = e; }
 
-    // file 
+    // file
     Status importMovieVideo();
-    Status importMovieAudio();
-    Status importSound();
+    Status importSound(FileType type);
     Status exportMovie(bool isGif = false);
     Status exportImageSequence();
     Status exportImage();
@@ -55,9 +55,6 @@ public:
     void ZoomOut();
     void rotateClockwise();
     void rotateCounterClockwise();
-    void toggleMirror();
-    void toggleMirrorV();
-    void showGrid(bool bShow);
 
     // Animation
     void PlayStop();
@@ -66,10 +63,18 @@ public:
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     Status addNewKey();
+
+    /** Will insert a keyframe at the current position and push connected frames to the right */
+    Status insertKeyFrameAtCurrentPosition();
     void removeKey();
+    void duplicateLayer();
     void duplicateKey();
     void moveFrameForward();
     void moveFrameBackward();
+    void removeSelectedFrames();
+    void reverseSelectedFrames();
+    void addExposureToSelectedFrames();
+    void subtractExposureFromSelectedFrames();
 
     // Layer
     Status addNewBitmapLayer();
@@ -94,11 +99,16 @@ public:
     void about();
 
 private:
+    void showSoundClipWarningIfNeeded();
+
+    void exposeSelectedFrames(int offset);
 
     Status convertSoundToWav(const QString& filePath);
 
     Editor* mEditor = nullptr;
     QWidget* mParent = nullptr;
+
+    bool mSuppressSoundWarning = false;
 };
 
 #endif // COMMANDCENTER_H

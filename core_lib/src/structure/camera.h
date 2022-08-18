@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -19,17 +19,17 @@ GNU General Public License for more details.
 
 #include <QTransform>
 #include "keyframe.h"
-
+#include "cameraeasingtype.h"
 
 class Camera : public KeyFrame
 {
 public:
     explicit Camera();
-    explicit Camera(QPointF translation, qreal rotation, qreal scaling);
+    explicit Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type);
     explicit Camera(const Camera&);
     ~Camera() override;
 
-    Camera* clone() override;
+    Camera* clone() const override;
 
     QTransform getView();
     void reset();
@@ -44,17 +44,23 @@ public:
     qreal rotation() { return mRotate; }
 
     void scale(qreal scaleValue);
+    void scaleWithOffset(qreal scaleValue, QPointF offset); // for zooming at the mouse position
     qreal scaling() { return mScale; }
 
     QTransform view;
 
     bool operator==(const Camera& rhs) const;
 
+    void setEasingType(CameraEasingType type) { mEasingType = type; }
+    CameraEasingType getEasingType() const { return mEasingType; }
+
 private:
     QPointF mTranslate;
     qreal mRotate = 0.;
     qreal mScale = 1.;
     bool mNeedUpdateView = true;
+
+    CameraEasingType mEasingType = CameraEasingType::LINEAR;
 };
 
 #endif // CAMERA_H

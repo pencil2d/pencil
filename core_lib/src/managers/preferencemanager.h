@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -39,6 +39,7 @@ enum class SETTING
     DOTTED_CURSOR,
     HIGH_RESOLUTION,
     WINDOW_OPACITY,
+    SHOW_STATUS_BAR,
     CURVE_SMOOTHING,
     BACKGROUND_STYLE,
     AUTO_SAVE,
@@ -70,9 +71,14 @@ enum class SETTING
     OVERLAY_THIRDS,
     OVERLAY_GOLDEN,
     OVERLAY_SAFE,
+    OVERLAY_PERSPECTIVE1,
+    OVERLAY_PERSPECTIVE2,
+    OVERLAY_PERSPECTIVE3,
+    OVERLAY_ANGLE,
     OVERLAY_SAFE_HELPER_TEXT_ON,
     ACTION_SAFE_ON,
     ACTION_SAFE,
+    TIMECODE_TEXT,
     TITLE_SAFE_ON,
     TITLE_SAFE,
     QUICK_SIZING,
@@ -82,7 +88,10 @@ enum class SETTING
     DRAW_ON_EMPTY_FRAME_ACTION,
     FRAME_POOL_SIZE,
     ROTATION_INCREMENT,
+    SHOW_SELECTION_INFO,
     ASK_FOR_PRESET,
+    LOAD_MOST_RECENT,
+    LOAD_DEFAULT_PRESET,
     DEFAULT_PRESET,
     COUNT, // COUNT must always be the last one.
 };
@@ -121,7 +130,7 @@ public:
     int     getInt(SETTING option);
     float getFloat(SETTING option);
 
-Q_SIGNALS:
+signals:
     void optionChanged(SETTING e);
 
 private:

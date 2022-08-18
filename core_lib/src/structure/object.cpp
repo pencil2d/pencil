@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,6 +21,10 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include <QApplication>
 #include <QFile>
+#include <QFileInfo>
+#include <QDir>
+#include <QDebug>
+#include <QDateTime>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -29,17 +33,15 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 #include "util.h"
-#include "editor.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "fileformat.h"
 #include "activeframepool.h"
 
 
-Object::Object(QObject* parent) : QObject(parent)
+Object::Object()
 {
-    setData(new ObjectData());
-    mActiveFramePool.reset(new ActiveFramePool(400));
+    mActiveFramePool.reset(new ActiveFramePool);
 }
 
 Object::~Object()
@@ -55,53 +57,61 @@ Object::~Object()
 
 void Object::init()
 {
-    mData.reset(new ObjectData);
-
     createWorkingDir();
 
     // default palette
     loadDefaultPalette();
 }
 
-QDomElement Object::saveXML(QDomDocument& doc)
+QDomElement Object::saveXML(QDomDocument& doc) const
 {
     QDomElement objectTag = doc.createElement("object");
 
-    for (int i = 0; i < getLayerCount(); i++)
+    for (Layer* layer : mLayers)
     {
-        Layer* layer = getLayer(i);
         QDomElement layerTag = layer->createDomElement(doc);
         objectTag.appendChild(layerTag);
     }
     return objectTag;
 }
 
-bool Object::loadXML(QDomElement docElem, ProgressCallback progressForward)
+bool Object::loadXML(const QDomElement& docElem, ProgressCallback progressForward)
 {
     if (docElem.isNull())
     {
         return false;
     }
-    int layerNumber = -1;
 
     const QString dataDirPath = mDataDirPath;
 
     for (QDomNode node = docElem.firstChild(); !node.isNull(); node = node.nextSibling())
     {
         QDomElement element = node.toElement(); // try to convert the node to an element.
-        if (element.tagName() == "layer")
+        if (element.tagName() != "layer")
         {
-            switch (element.attribute("type").toInt())
-            {
-            case Layer::BITMAP: addNewBitmapLayer(); break;
-            case Layer::VECTOR: addNewVectorLayer(); break;
-            case Layer::SOUND:  addNewSoundLayer();  break;
-            case Layer::CAMERA: addNewCameraLayer(); break;
-            default: Q_ASSERT(false); break;
-            }
-            layerNumber++;
-            getLayer(layerNumber)->loadDomElement(element, dataDirPath, progressForward);
+            continue;
         }
+
+        Layer* newLayer;
+        switch (element.attribute("type").toInt())
+        {
+        case Layer::BITMAP:
+            newLayer = new LayerBitmap(this);
+            break;
+        case Layer::VECTOR:
+            newLayer = new LayerVector(this);
+            break;
+        case Layer::SOUND:
+            newLayer = new LayerSound(this);
+            break;
+        case Layer::CAMERA:
+            newLayer = new LayerCamera(this);
+            break;
+        default:
+            Q_UNREACHABLE();
+        }
+        mLayers.append(newLayer);
+        newLayer->loadDomElement(element, dataDirPath, progressForward);
     }
     return true;
 }
@@ -143,33 +153,30 @@ LayerCamera* Object::addNewCameraLayer()
 
     layerCamera->addNewKeyFrameAt(1);
 
-    connect(layerCamera, &LayerCamera::resolutionChanged, this, &Object::layerViewChanged);
-
     return layerCamera;
 }
 
 void Object::createWorkingDir()
 {
-    QString strFolderName;
+    QString projectName;
     if (mFilePath.isEmpty())
     {
-        strFolderName = "Default";
+        projectName = "Default";
     }
     else
     {
         QFileInfo fileInfo(mFilePath);
-        strFolderName = fileInfo.completeBaseName();
+        projectName = fileInfo.completeBaseName();
     }
     QDir dir(QDir::tempPath());
 
     QString strWorkingDir;
     do
     {
-        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/")
-            .arg(QDir::tempPath())
-            .arg(strFolderName)
-            .arg(PFF_TMP_DECOMPRESS_EXT)
-            .arg(uniqueString(8));
+        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/").arg(QDir::tempPath(),
+                                                             projectName,
+                                                             PFF_TMP_DECOMPRESS_EXT,
+                                                             uniqueString(8));
     }
     while(dir.exists(strWorkingDir));
 
@@ -187,16 +194,16 @@ void Object::deleteWorkingDir() const
     if (!mWorkingDirPath.isEmpty())
     {
         QDir dir(mWorkingDirPath);
-        dir.removeRecursively();
+        bool ok = dir.removeRecursively();
+        Q_ASSERT(ok);
     }
 }
 
-void Object::createDefaultLayers()
+void Object::setWorkingDir(const QString& path)
 {
-    // default layers
-    addNewCameraLayer();
-    addNewVectorLayer();
-    addNewBitmapLayer();
+    QDir dir(path);
+    Q_ASSERT(dir.exists());
+    mWorkingDirPath = path;
 }
 
 int Object::getMaxLayerID()
@@ -227,7 +234,19 @@ Layer* Object::getLayer(int i) const
     return mLayers.at(i);
 }
 
-Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
+Layer* Object::findLayerById(int layerId) const
+{
+    for(Layer* layer : mLayers)
+    {
+        if (layer->id() == layerId)
+        {
+            return layer;
+        }
+    }
+    return nullptr;
+}
+
+Layer* Object::findLayerByName(const QString& strName, Layer::LAYER_TYPE type) const
 {
     bool bCheckType = (type != Layer::UNDEFINED);
     for (Layer* layer : mLayers)
@@ -239,6 +258,27 @@ Layer* Object::findLayerByName(QString strName, Layer::LAYER_TYPE type) const
         }
     }
     return nullptr;
+}
+
+Layer* Object::takeLayer(int layerId)
+{
+    // Removes the layer from this Object and returns it
+    // The ownership of this layer has been transfer to the caller
+    int index = -1;
+    for (int i = 0; i< mLayers.length(); ++i)
+    {
+        Layer* layer = mLayers[i];
+        if (layer->id() == layerId)
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if (index == -1) { return nullptr; }
+
+    Layer* layer = mLayers.takeAt(index);
+    return layer;
 }
 
 bool Object::swapLayers(int i, int j)
@@ -281,17 +321,20 @@ void Object::deleteLayer(Layer* layer)
     }
 }
 
-void Object::addLayer(Layer *layer)
+bool Object::addLayer(Layer* layer)
 {
-    if (layer != nullptr)
+    if (layer == nullptr || mLayers.contains(layer))
     {
-        mLayers.append(layer);
+        return false;
     }
+    layer->setObject(this);
+    mLayers.append(layer);
+    return true;
 }
 
-ColourRef Object::getColour(int index) const
+ColorRef Object::getColor(int index) const
 {
-    ColourRef result(Qt::white, tr("error"));
+    ColorRef result(Qt::white, tr("error"));
     if (index > -1 && index < mPalette.size())
     {
         result = mPalette.at(index);
@@ -299,21 +342,16 @@ ColourRef Object::getColour(int index) const
     return result;
 }
 
-void Object::setColour(int index, QColor newColour)
+void Object::setColor(int index, const QColor& newColor)
 {
     Q_ASSERT(index >= 0);
 
-    mPalette[index].colour = newColour;
+    mPalette[index].color = newColor;
 }
 
-void Object::setColourRef(int index, ColourRef newColourRef)
+void Object::setColorRef(int index, const ColorRef& newColorRef)
 {
-    mPalette[index] = newColourRef;
-}
-
-void Object::addColour(QColor colour)
-{
-    addColour(ColourRef(colour, tr("Colour %1").arg(QString::number(mPalette.size()))));
+    mPalette[index] = newColorRef;
 }
 
 void Object::movePaletteColor(int start, int end)
@@ -323,9 +361,8 @@ void Object::movePaletteColor(int start, int end)
 
 void Object::moveVectorColor(int start, int end)
 {
-    for (int i = 0; i < getLayerCount(); i++)
+    for (Layer* layer : mLayers)
     {
-        Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
             static_cast<LayerVector*>(layer)->moveColor(start, end);
@@ -333,64 +370,60 @@ void Object::moveVectorColor(int start, int end)
     }
 }
 
-void Object::addColourAtIndex(int index, ColourRef newColour)
+void Object::addColorAtIndex(int index, const ColorRef& newColor)
 {
-    mPalette.insert(index, newColour);
+    mPalette.insert(index, newColor);
 }
 
-bool Object::isColourInUse(int index)
+bool Object::isColorInUse(int index) const
 {
-    for (int i = 0; i < getLayerCount(); i++)
+    for (Layer* layer : mLayers)
     {
-        Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
             LayerVector* layerVector = static_cast<LayerVector*>(layer);
 
-            if (layerVector->usesColour(index))
+            if (layerVector->usesColor(index))
             {
                 return true;
             }
         }
     }
     return false;
-
 }
 
-void Object::removeColour(int index)
+void Object::removeColor(int index)
 {
-    for (int i = 0; i < getLayerCount(); i++)
+    for (Layer* layer : mLayers)
     {
-        Layer* layer = getLayer(i);
         if (layer->type() == Layer::VECTOR)
         {
             LayerVector* layerVector = static_cast<LayerVector*>(layer);
-            layerVector->removeColour(index);
+            layerVector->removeColor(index);
         }
     }
 
     mPalette.removeAt(index);
 
-    // update the vector pictures using that colour !
+    // update the vector pictures using that color !
 }
 
-void Object::renameColour(int i, QString text)
+void Object::renameColor(int i, const QString& text)
 {
     mPalette[i].name = text;
 }
 
-QString Object::savePalette(QString dataFolder)
+QString Object::savePalette(const QString& dataFolder) const
 {
-    QString fullPath = QDir(dataFolder).filePath("palette.xml");
+    QString fullPath = QDir(dataFolder).filePath(PFF_PALETTE_FILE);
     bool ok = exportPalette(fullPath);
     if (ok)
         return fullPath;
     return "";
 }
 
-void Object::exportPaletteGPL(QFile& file)
+void Object::exportPaletteGPL(QFile& file) const
 {
-
     QString fileName = QFileInfo(file).baseName();
     QTextStream out(&file);
 
@@ -398,37 +431,36 @@ void Object::exportPaletteGPL(QFile& file)
     out << "Name: " << fileName << "\n";
     out << "#" << "\n";
 
-    for (ColourRef ref : mPalette)
+    for (const ColorRef& ref : mPalette)
     {
-        QColor toRgb = ref.colour.toRgb();
+        QColor toRgb = ref.color.toRgb();
         out << QString("%1 %2 %3").arg(toRgb.red()).arg(toRgb.green()).arg(toRgb.blue());
         out << " " << ref.name << "\n";
     }
 }
 
-void Object::exportPalettePencil(QFile& file)
+void Object::exportPalettePencil(QFile& file) const
 {
     QTextStream out(&file);
 
     QDomDocument doc("PencilPalette");
     QDomElement root = doc.createElement("palette");
     doc.appendChild(root);
-    for (int i = 0; i < mPalette.size(); i++)
+    for (const ColorRef& ref : mPalette)
     {
-        ColourRef ref = mPalette.at(i);
-        QDomElement tag = doc.createElement("Colour");
+        QDomElement tag = doc.createElement("Color");
         tag.setAttribute("name", ref.name);
-        tag.setAttribute("red", ref.colour.red());
-        tag.setAttribute("green", ref.colour.green());
-        tag.setAttribute("blue", ref.colour.blue());
-        tag.setAttribute("alpha", ref.colour.alpha());
+        tag.setAttribute("red", ref.color.red());
+        tag.setAttribute("green", ref.color.green());
+        tag.setAttribute("blue", ref.color.blue());
+        tag.setAttribute("alpha", ref.color.alpha());
         root.appendChild(tag);
     }
     int IndentSize = 2;
     doc.save(out, IndentSize);
 }
 
-bool Object::exportPalette(QString filePath)
+bool Object::exportPalette(const QString& filePath) const
 {
     QFile file(filePath);
     if (!file.open(QFile::WriteOnly | QFile::Text))
@@ -438,11 +470,9 @@ bool Object::exportPalette(QString filePath)
     }
 
     if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
-    {
         exportPaletteGPL(file);
-    } else {
+    else
         exportPalettePencil(file);
-    }
 
     file.close();
     return true;
@@ -454,7 +484,7 @@ bool Object::exportPalette(QString filePath)
  * This should load colors the same as GIMP, with the following intentional exceptions:
  * - Whitespace before and after a name does not appear in the name
  * - The last line is processed, even if there is not a trailing newline
- * - Colours without a name will use our automatic naming system rather than "Untitled"
+ * - Colors without a name will use our automatic naming system rather than "Untitled"
  */
 void Object::importPaletteGPL(QFile& file)
 {
@@ -480,9 +510,9 @@ void Object::importPaletteGPL(QFile& file)
         }
     }
 
-    // Colours inherit the value from the previous colour for missing channels
+    // Colors inherit the value from the previous color for missing channels
     // Some palettes may rely on this behavior so we should try to replicate it
-    QColor prevColour(Qt::black);
+    QColor prevColor(Qt::black);
 
     do
     {
@@ -518,20 +548,20 @@ void Object::importPaletteGPL(QFile& file)
         // trim additional spaces
         name = name.trimmed();
 
-        // Get values from previous colour if necessary
-        if (countInLine < 2) green = prevColour.green();
-        if (countInLine < 3) blue = prevColour.blue();
+        // Get values from previous color if necessary
+        if (countInLine < 2) green = prevColor.green();
+        if (countInLine < 3) blue = prevColor.blue();
 
-        // GIMP assigns colours the name "Untitled" by default now
+        // GIMP assigns colors the name "Untitled" by default now
         // so in addition to missing names, we also use automatic
         // naming for this
         if (name.isEmpty() || name == "Untitled") name = QString();
 
-        QColor colour(red, green, blue);
-        if (colour.isValid())
+        QColor color(red, green, blue);
+        if (color.isValid())
         {
-            mPalette.append(ColourRef(colour, name));
-            prevColour = colour;
+            mPalette.append(ColorRef(color, name));
+            prevColor = color;
         }
     } while (in.readLineInto(&line));
 }
@@ -553,13 +583,13 @@ void Object::importPalettePencil(QFile& file)
             int g = e.attribute("green").toInt();
             int b = e.attribute("blue").toInt();
             int a = e.attribute("alpha", "255").toInt();
-            mPalette.append(ColourRef(QColor(r, g, b, a), name));
+            mPalette.append(ColorRef(QColor(r, g, b, a), name));
         }
         tag = tag.nextSibling();
     }
 }
 
-void Object::openPalette(QString filePath)
+void Object::openPalette(const QString& filePath)
 {
     if (!QFile::exists(filePath))
     {
@@ -573,7 +603,7 @@ void Object::openPalette(QString filePath)
 /*
  * Imports palette, e.g. appends to palette
 */
-bool Object::importPalette(QString filePath)
+bool Object::importPalette(const QString& filePath)
 {
     QFile file(filePath);
 
@@ -596,30 +626,30 @@ bool Object::importPalette(QString filePath)
 void Object::loadDefaultPalette()
 {
     mPalette.clear();
-    addColour(ColourRef(QColor(Qt::black), QString(tr("Black"))));
-    addColour(ColourRef(QColor(Qt::red), QString(tr("Red"))));
-    addColour(ColourRef(QColor(Qt::darkRed), QString(tr("Dark Red"))));
-    addColour(ColourRef(QColor(255, 128, 0), QString(tr("Orange"))));
-    addColour(ColourRef(QColor(128, 64, 0), QString(tr("Dark Orange"))));
-    addColour(ColourRef(QColor(Qt::yellow), QString(tr("Yellow"))));
-    addColour(ColourRef(QColor(Qt::darkYellow), QString(tr("Dark Yellow"))));
-    addColour(ColourRef(QColor(Qt::green), QString(tr("Green"))));
-    addColour(ColourRef(QColor(Qt::darkGreen), QString(tr("Dark Green"))));
-    addColour(ColourRef(QColor(Qt::cyan), QString(tr("Cyan"))));
-    addColour(ColourRef(QColor(Qt::darkCyan), QString(tr("Dark Cyan"))));
-    addColour(ColourRef(QColor(Qt::blue), QString(tr("Blue"))));
-    addColour(ColourRef(QColor(Qt::darkBlue), QString(tr("Dark Blue"))));
-    addColour(ColourRef(QColor(255, 255, 255), QString(tr("White"))));
-    addColour(ColourRef(QColor(220, 220, 229), QString(tr("Very Light Grey"))));
-    addColour(ColourRef(QColor(Qt::lightGray), QString(tr("Light Grey"))));
-    addColour(ColourRef(QColor(Qt::gray), QString(tr("Grey"))));
-    addColour(ColourRef(QColor(Qt::darkGray), QString(tr("Dark Grey"))));
-    addColour(ColourRef(QColor(255, 227, 187), QString(tr("Light Skin"))));
-    addColour(ColourRef(QColor(221, 196, 161), QString(tr("Light Skin \u2013 shade"))));
-    addColour(ColourRef(QColor(255, 214, 156), QString(tr("Skin"))));
-    addColour(ColourRef(QColor(207, 174, 127), QString(tr("Skin \u2013 shade"))));
-    addColour(ColourRef(QColor(255, 198, 116), QString(tr("Dark Skin"))));
-    addColour(ColourRef(QColor(227, 177, 105), QString(tr("Dark Skin \u2013 shade")) ));
+    addColor(ColorRef(QColor(Qt::black), tr("Black")));
+    addColor(ColorRef(QColor(Qt::red), tr("Red")));
+    addColor(ColorRef(QColor(Qt::darkRed), tr("Dark Red")));
+    addColor(ColorRef(QColor(255, 128, 0), tr("Orange")));
+    addColor(ColorRef(QColor(128, 64, 0), tr("Dark Orange")));
+    addColor(ColorRef(QColor(Qt::yellow), tr("Yellow")));
+    addColor(ColorRef(QColor(Qt::darkYellow), tr("Dark Yellow")));
+    addColor(ColorRef(QColor(Qt::green), tr("Green")));
+    addColor(ColorRef(QColor(Qt::darkGreen), tr("Dark Green")));
+    addColor(ColorRef(QColor(Qt::cyan), tr("Cyan")));
+    addColor(ColorRef(QColor(Qt::darkCyan), tr("Dark Cyan")));
+    addColor(ColorRef(QColor(Qt::blue), tr("Blue")));
+    addColor(ColorRef(QColor(Qt::darkBlue), tr("Dark Blue")));
+    addColor(ColorRef(QColor(255, 255, 255), tr("White")));
+    addColor(ColorRef(QColor(220, 220, 229), tr("Very Light Grey")));
+    addColor(ColorRef(QColor(Qt::lightGray), tr("Light Grey")));
+    addColor(ColorRef(QColor(Qt::gray), tr("Grey")));
+    addColor(ColorRef(QColor(Qt::darkGray), tr("Dark Grey")));
+    addColor(ColorRef(QColor(255, 227, 187), tr("Pale Orange Yellow")));
+    addColor(ColorRef(QColor(221, 196, 161), tr("Pale Grayish Orange Yellow")));
+    addColor(ColorRef(QColor(255, 214, 156), tr("Orange Yellow ")));
+    addColor(ColorRef(QColor(207, 174, 127), tr("Grayish Orange Yellow")));
+    addColor(ColorRef(QColor(255, 198, 116), tr("Light Orange Yellow")));
+    addColor(ColorRef(QColor(227, 177, 105), tr("Light Grayish Orange Yellow")));
 }
 
 void Object::paintImage(QPainter& painter,int frameNumber,
@@ -642,36 +672,42 @@ void Object::paintImage(QPainter& painter,int frameNumber,
         painter.setWorldMatrixEnabled(true);
     }
 
-    for (int i = 0; i < getLayerCount(); i++)
+    for (Layer* layer : mLayers)
     {
-        Layer* layer = getLayer(i);
-        if (layer->visible())
+        if (!layer->visible())
         {
-            painter.setOpacity(1.0);
+            continue;
+        }
 
-            // paints the bitmap images
-            if (layer->type() == Layer::BITMAP)
+        painter.setOpacity(1.0);
+
+        if (layer->type() == Layer::BITMAP)
+        {
+
+            LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
+            BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
+            if (bitmap)
             {
-                LayerBitmap* layerBitmap = static_cast<LayerBitmap*>(layer);
-
-                BitmapImage* bitmap = layerBitmap->getLastBitmapImageAtFrame(frameNumber);
-                if (bitmap)
-                    bitmap->paintImage(painter);
-
+                painter.setOpacity(bitmap->getOpacity());
+                bitmap->paintImage(painter);
             }
-            // paints the vector images
-            if (layer->type() == Layer::VECTOR)
+
+        }
+        // paints the vector images
+        if (layer->type() == Layer::VECTOR)
+        {
+            LayerVector* layerVector = static_cast<LayerVector*>(layer);
+            VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
+            if (vec)
             {
-                LayerVector* layerVector = static_cast<LayerVector*>(layer);
-                VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
-                if (vec)
-                    vec->paintImage(painter, false, false, antialiasing);
+                painter.setOpacity(vec->getOpacity());
+                vec->paintImage(painter, false, false, antialiasing);
             }
         }
     }
 }
 
-QString Object::copyFileToDataFolder(QString strFilePath)
+QString Object::copyFileToDataFolder(const QString& strFilePath)
 {
     if (!QFile::exists(strFilePath))
     {
@@ -683,7 +719,6 @@ QString Object::copyFileToDataFolder(QString strFilePath)
     sNewFileName += QDateTime::currentDateTime().toString("yyyyMMdd_HHmmss_zzz.");
     sNewFileName += QFileInfo(strFilePath).suffix();
 
-    QString srcFile = strFilePath;
     QString destFile = QDir(mDataDirPath).filePath(sNewFileName);
 
     if (QFile::exists(destFile))
@@ -691,7 +726,7 @@ QString Object::copyFileToDataFolder(QString strFilePath)
         QFile::remove(destFile);
     }
 
-    bool bCopyOK = QFile::copy(srcFile, destFile);
+    bool bCopyOK = QFile::copy(strFilePath, destFile);
     if (!bCopyOK)
     {
         qDebug() << "[Object] couldn't copy sound file to data folder: " << strFilePath;
@@ -702,20 +737,18 @@ QString Object::copyFileToDataFolder(QString strFilePath)
 }
 
 bool Object::exportFrames(int frameStart, int frameEnd,
-                          LayerCamera* cameraLayer,
+                          const LayerCamera* cameraLayer,
                           QSize exportSize,
                           QString filePath,
                           QString format,
                           bool transparency,
                           bool exportKeyframesOnly,
-                          QString layerName,
+                          const QString& layerName,
                           bool antialiasing,
                           QProgressDialog* progress = nullptr,
-                          int progressMax = 50)
+                          int progressMax = 50) const
 {
     Q_ASSERT(cameraLayer);
-
-    QSettings settings(PENCIL2D, PENCIL2D);
 
     QString extension = "";
     QString formatStr = format;
@@ -792,49 +825,7 @@ bool Object::exportFrames(int frameStart, int frameEnd,
     return true;
 }
 
-bool Object::exportX(int frameStart, int frameEnd, QTransform view, QSize exportSize, QString filePath, bool antialiasing)
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    int page;
-    page = 0;
-    for (int j = frameStart; j <= frameEnd; j = j + 15)
-    {
-        QImage xImg(QSize(2300, 3400), QImage::Format_ARGB32_Premultiplied);
-        QPainter xPainter(&xImg);
-        xPainter.fillRect(0, 0, 2300, 3400, Qt::white);
-        int y = j - 1;
-        for (int i = j; i < 15 + page * 15 && i <= frameEnd; i++)
-        {
-            QRect source = QRect(QPoint(0, 0), exportSize);
-            QRect target = QRect(QPoint((y % 3) * 800 + 30, (y / 3) * 680 + 50 - page * 3400), QSize(640, 480));
-            QTransform thumbView = view * RectMapTransform(source, target);
-            xPainter.setWorldTransform(thumbView);
-            xPainter.setClipRegion(thumbView.inverted().map(QRegion(target)));
-            paintImage(xPainter, i, false, antialiasing);
-            xPainter.resetTransform();
-            xPainter.setClipping(false);
-            xPainter.setPen(Qt::black);
-            xPainter.drawRect(target);
-            xPainter.drawText(QPoint((y % 3) * 800 + 35, (y / 3) * 680 + 65 - page * 3400), QString::number(i));
-            y++;
-        }
-
-        if (filePath.endsWith(".jpg", Qt::CaseInsensitive))
-        {
-            filePath.chop(4);
-        }
-        if (!xImg.save(filePath + QString::number(page) + ".jpg", "JPG", 60))
-        {
-            return false;
-        }
-        page++;
-    }
-
-    return true;
-}
-
-bool Object::exportIm(int frame, QTransform view, QSize cameraSize, QSize exportSize, QString filePath, QString format, bool antialiasing, bool transparency)
+bool Object::exportIm(int frame, const QTransform& view, QSize cameraSize, QSize exportSize, const QString& filePath, const QString& format, bool antialiasing, bool transparency) const
 {
     QImage imageToExport(exportSize, QImage::Format_ARGB32_Premultiplied);
 
@@ -860,22 +851,15 @@ int Object::getLayerCount() const
     return mLayers.size();
 }
 
-ObjectData* Object::data()
+void Object::setData(const ObjectData& d)
 {
-    Q_ASSERT(mData != nullptr);
-    return mData.get();
+    mData = d;
 }
 
-void Object::setData(ObjectData* d)
-{
-    Q_ASSERT(d != nullptr);
-    mData.reset(d);
-}
-
-int Object::totalKeyFrameCount()
+int Object::totalKeyFrameCount() const
 {
     int sum = 0;
-    for (Layer* layer : mLayers)
+    for (const Layer* layer : mLayers)
     {
         sum += layer->keyFrameCount();
     }
@@ -884,20 +868,27 @@ int Object::totalKeyFrameCount()
 
 void Object::updateActiveFrames(int frame) const
 {
-    int beginFrame = std::max(frame - 3, 1);
-    int endFrame = frame + 4;
-    for (int i = 0; i < getLayerCount(); ++i)
+    const int beginFrame = std::max(frame - 3, 1);
+    const int endFrame = frame + 4;
+
+    const int minFrameCount = getLayerCount() * (endFrame - beginFrame);
+    mActiveFramePool->setMinFrameCount(minFrameCount);
+
+    for (Layer* layer : mLayers)
     {
-        Layer* layer = getLayer(i);
-        for (int k = beginFrame; k < endFrame; ++k)
+        if (layer->visible())
         {
-            KeyFrame* key = layer->getKeyFrameAt(k);
-            mActiveFramePool->put(key);
+            for (int k = beginFrame; k < endFrame; ++k)
+            {
+                KeyFrame* key = layer->getKeyFrameAt(k);
+                mActiveFramePool->put(key);
+            }
         }
     }
 }
 
-void Object::setActiveFramePoolSize(int n)
+void Object::setActiveFramePoolSize(int sizeInMB)
 {
-    mActiveFramePool->resize(n);
+    // convert MB to Byte
+    mActiveFramePool->resize(qint64(sizeInMB) * 1024 * 1024);
 }

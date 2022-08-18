@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -30,19 +30,22 @@ public:
     LayerBitmap(Object* object);
     ~LayerBitmap() override;
 
-    QDomElement createDomElement(QDomDocument& doc) override;
-    void loadDomElement(QDomElement element, QString dataDirPath, ProgressCallback progressStep) override;
+    QDomElement createDomElement(QDomDocument& doc) const override;
+    void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
     Status presave(const QString& sDataFolder) override;
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
     BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
+
+    void repositionFrame(QPoint point, int frame);
+    QRect getFrameBounds(int frame);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
     KeyFrame* createKeyFrame(int position, Object*) override;
 
 private:
-    void loadImageAtFrame(QString strFilePath, QPoint topLeft, int frameNumber);
+    void loadImageAtFrame(QString strFilePath, QPoint topLeft, int frameNumber, qreal opacity);
     QString filePath(KeyFrame* key, const QDir& dataFolder) const;
     QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);

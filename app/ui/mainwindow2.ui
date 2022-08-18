@@ -42,14 +42,14 @@
     </item>
    </layout>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
-  <widget class="QMenuBar" name="menubar">
+  <widget class="StatusBar" name="statusBar"/>
+  <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>41</height>
+     <height>26</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -94,7 +94,6 @@
     <addaction name="menuImport"/>
     <addaction name="menuExport"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuEdit">
@@ -114,6 +113,7 @@
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
+    <addaction name="actionPaste_Previous"/>
     <addaction name="actionClearFrame"/>
     <addaction name="separator"/>
     <addaction name="menuSelection"/>
@@ -135,7 +135,6 @@
      </property>
      <addaction name="actionOnionPrev"/>
      <addaction name="actionOnionNext"/>
-     <addaction name="actionMultiLayerOnionSkin"/>
     </widget>
     <widget class="QMenu" name="menuZoom">
      <property name="title">
@@ -158,6 +157,7 @@
      <addaction name="actionVisibilityAll"/>
     </widget>
     <addaction name="actionReset_View"/>
+    <addaction name="actionCenter_View"/>
     <addaction name="separator"/>
     <addaction name="actionZoom_In"/>
     <addaction name="actionZoom_Out"/>
@@ -165,6 +165,7 @@
     <addaction name="separator"/>
     <addaction name="actionRotate_Clockwise"/>
     <addaction name="actionRotate_Anticlockwise"/>
+    <addaction name="actionReset_Rotation"/>
     <addaction name="separator"/>
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
@@ -172,17 +173,26 @@
     <addaction name="menuOnion_Skin"/>
     <addaction name="menuLayer_Visibility"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionGrid"/>
     <addaction name="separator"/>
-    <addaction name="separator"/>
-    <addaction name="separator"/>
     <addaction name="actionPreview"/>
+    <addaction name="separator"/>
+    <addaction name="actionStatusBar"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
      <string>Animation</string>
     </property>
+    <widget class="QMenu" name="menuTimeline_Selection">
+     <property name="title">
+      <string>Timeline Selection</string>
+     </property>
+     <addaction name="actionAdd_Frame_Exposure"/>
+     <addaction name="actionSubtract_Frame_Exposure"/>
+     <addaction name="separator"/>
+     <addaction name="actionReverse_Frames_Order"/>
+     <addaction name="actionRemove_Frames"/>
+    </widget>
     <addaction name="actionPlay"/>
     <addaction name="actionLoop"/>
     <addaction name="actionLoopControl"/>
@@ -201,22 +211,25 @@
     <addaction name="separator"/>
     <addaction name="actionFlip_inbetween"/>
     <addaction name="actionFlip_rolling"/>
+    <addaction name="separator"/>
+    <addaction name="actionReposition_Selected_Frames"/>
+    <addaction name="menuTimeline_Selection"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
      <string>Tools</string>
     </property>
-    <addaction name="actionMove"/>
+    <addaction name="actionPencil"/>
+    <addaction name="actionEraser"/>
     <addaction name="actionSelect"/>
-    <addaction name="actionBrush"/>
-    <addaction name="actionPolyline"/>
-    <addaction name="actionSmudge"/>
+    <addaction name="actionMove"/>
     <addaction name="actionPen"/>
     <addaction name="actionHand"/>
-    <addaction name="actionPencil"/>
+    <addaction name="actionPolyline"/>
     <addaction name="actionBucket"/>
     <addaction name="actionEyedropper"/>
-    <addaction name="actionEraser"/>
+    <addaction name="actionBrush"/>
+    <addaction name="actionSmudge"/>
     <addaction name="separator"/>
     <addaction name="actionResetToolsDefault"/>
    </widget>
@@ -240,6 +253,7 @@
     <addaction name="separator"/>
     <addaction name="menuChange_line_color"/>
     <addaction name="separator"/>
+    <addaction name="actionChangeLayerOpacity"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -262,7 +276,9 @@
     <property name="title">
      <string>Windows</string>
     </property>
-    <addaction name="actionReset_Windows"/>
+    <addaction name="actionResetWindows"/>
+    <addaction name="actionLockWindows"/>
+    <addaction name="separator"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -376,9 +392,6 @@
    </property>
   </action>
   <action name="actionRedo">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/menubar/redo.svg</normaloff>:/icons/menubar/redo.svg</iconset>
@@ -388,6 +401,9 @@
    </property>
   </action>
   <action name="actionCut">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/menubar/cut.svg</normaloff>:/icons/menubar/cut.svg</iconset>
@@ -397,6 +413,9 @@
    </property>
   </action>
   <action name="actionCopy">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/menubar/copy.svg</normaloff>:/icons/menubar/copy.svg</iconset>
@@ -406,6 +425,9 @@
    </property>
   </action>
   <action name="actionPaste">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/menubar/paste.svg</normaloff>:/icons/menubar/paste.svg</iconset>
@@ -451,7 +473,7 @@
     <enum>QAction::PreferencesRole</enum>
    </property>
   </action>
-  <action name="actionReset_Windows">
+  <action name="actionResetWindows">
    <property name="text">
     <string>Reset Windows</string>
    </property>
@@ -485,11 +507,18 @@
    </property>
   </action>
   <action name="actionReset_View">
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/zoom-reset.png</normaloff>:/icons/zoom-reset.png</iconset>
+   </property>
    <property name="text">
-    <string>Reset Zoom/Rotate</string>
+    <string>Reset</string>
    </property>
   </action>
   <action name="actionHorizontal_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/display/mirror-horizontal.svg</normaloff>:/app/icons/display/mirror-horizontal.svg</iconset>
@@ -499,6 +528,9 @@
    </property>
   </action>
   <action name="actionVertical_Flip">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/app/icons/display/mirror-vertical.svg</normaloff>:/app/icons/display/mirror-vertical.svg</iconset>
@@ -518,6 +550,10 @@
   <action name="actionGrid">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/grid.png</normaloff>:/icons/grid.png</iconset>
    </property>
    <property name="text">
     <string>Grid</string>
@@ -825,7 +861,7 @@
     <bool>true</bool>
    </property>
    <property name="text">
-    <string>MultiLayer Onion Skin</string>
+    <string>Multilayer Onion Skin</string>
    </property>
   </action>
   <action name="actionLoopControl">
@@ -1015,11 +1051,6 @@
     <string>Peg bar Alignment</string>
    </property>
   </action>
-  <action name="actionImport_MovieVideo">
-   <property name="text">
-    <string>Movie Video...</string>
-   </property>
-  </action>
   <action name="actionImport_MovieAudio">
    <property name="text">
     <string>Movie Audio...</string>
@@ -1052,20 +1083,29 @@
   </action>
   <action name="actionImportLayers_from_pclx">
    <property name="text">
-    <string>Layers from PCLX...</string>
+    <string>Layers from Project file...</string>
    </property>
   </action>
   <action name="actionVisibilityCurrentLayerOnly">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Current layer only</string>
    </property>
   </action>
   <action name="actionVisibilityRelative">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>Relative</string>
    </property>
   </action>
   <action name="actionVisibilityAll">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
    <property name="text">
     <string>All layers</string>
    </property>
@@ -1081,9 +1121,81 @@
     <string>Onion Skins</string>
    </property>
   </action>
+  <action name="actionReposition_Selection">
+   <property name="text">
+    <string>Reposition Selected frames</string>
+   </property>
+  </action>
+  <action name="actionReposition_Selected_Frames">
+   <property name="text">
+    <string>Reposition Selected Frames</string>
+    </property>
+   </action>
+  <action name="actionChangeLayerOpacity">
+   <property name="text">
+    <string>Layer / Keyframe opacity</string>
+   </property>
+  </action>
   <action name="actionOpen_Temporary_Directory">
    <property name="text">
     <string>Open Temporary Directory</string>
+   </property>
+  </action>
+  <action name="actionLockWindows">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Lock Windows</string>
+   </property>
+  </action>
+  <action name="actionCenter_View">
+   <property name="text">
+    <string>Center</string>
+   </property>
+  </action>
+  <action name="actionReset_Rotation">
+   <property name="text">
+    <string>Reset Rotation</string>
+   </property>
+  </action>
+  <action name="actionAdd_Frame_Exposure">
+   <property name="text">
+    <string>Add Exposure</string>
+   </property>
+  </action>
+  <action name="actionSubtract_Frame_Exposure">
+   <property name="text">
+    <string>Subtract Exposure</string>
+   </property>
+  </action>
+  <action name="actionReverse_Frames_Order">
+   <property name="text">
+    <string>Reverse Frames Order</string>
+   </property>
+  </action>
+  <action name="actionRemove_Frames">
+   <property name="text">
+    <string>Remove Frames</string>
+   </property>
+  </action>
+  <action name="actionStatusBar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Status Bar</string>
+   </property>
+  </action>
+  <action name="actionPaste_Previous">
+   <property name="text">
+    <string>Paste from Previous Keyframe</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste from Previous Keyframe</string>
    </property>
   </action>
  </widget>
@@ -1099,6 +1211,11 @@
    <extends>QWidget</extends>
    <header>scribblearea.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>StatusBar</class>
+   <extends>QStatusBar</extends>
+   <header>statusbar.h</header>
   </customwidget>
  </customwidgets>
  <resources>

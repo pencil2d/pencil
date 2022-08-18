@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -45,17 +45,6 @@ QTransform RectMapTransform( QRectF source, QRectF target )
         matrix.reset();
     }
     return matrix;
-}
-
-SignalBlocker::SignalBlocker( QObject* o )
-    : mObject( o ),
-    mBlocked( o && o->blockSignals( true ) )
-{}
-
-SignalBlocker::~SignalBlocker()
-{
-    if ( mObject )
-        mObject->blockSignals( mBlocked );
 }
 
 void clearFocusOnFinished(QAbstractSpinBox *spinBox)
@@ -103,4 +92,29 @@ QString ffmpegLocation()
     }
     return QStandardPaths::findExecutable("ffmpeg"); // ffmpeg is a standalone project.
 #endif
+}
+
+quint64 imageSize(const QImage& img)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+    return img.sizeInBytes();
+#else
+    return img.byteCount();
+#endif
+}
+
+QString uniqueString(int len)
+{
+    static const char alphanum[] = "0123456789abcdefghijklmnopqrstuvwxyz";
+    const int alphanum_len = sizeof(alphanum);
+
+    if (len > 128) len = 128;
+
+    char s[128 + 1];
+    for (int i = 0; i < len; ++i)
+    {
+        s[i] = alphanum[rand() % (alphanum_len - 1)];
+    }
+    s[len] = 0;
+    return QString::fromUtf8(s);
 }

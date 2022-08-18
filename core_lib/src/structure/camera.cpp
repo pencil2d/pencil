@@ -1,7 +1,7 @@
 /*
 
-Pencil - Traditional Animation Software
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Pencil2D - Traditional Animation Software
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -20,12 +20,13 @@ Camera::Camera()
 {
 }
 
-Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
+Camera::Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type)
 {
     Q_ASSERT(scaling > 0);
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;
+    mEasingType = static_cast<CameraEasingType>(type);
     updateViewTransform();
 }
 
@@ -41,7 +42,7 @@ Camera::~Camera()
 {
 }
 
-Camera* Camera::clone()
+Camera* Camera::clone() const
 {
     return new Camera(*this);
 }
@@ -51,6 +52,7 @@ void Camera::assign(const Camera& rhs)
     mTranslate = rhs.mTranslate;
     mRotate = rhs.mRotate;
     mScale = rhs.mScale;
+    mNeedUpdateView = true;
     updateViewTransform();
     modification();
 }
@@ -126,6 +128,12 @@ void Camera::scale(qreal scaleValue)
 
     mNeedUpdateView = true;
     modification();
+}
+
+void Camera::scaleWithOffset(qreal scaleValue, QPointF offset)
+{
+    mTranslate = (mTranslate + offset) * mScale / scaleValue - offset;
+    scale(scaleValue);
 }
 
 bool Camera::operator==(const Camera& rhs) const

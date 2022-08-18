@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -43,7 +43,7 @@ public:
     void setLoop( bool loop );
     void setRangeState( bool range );
     void setPlaying( bool isPlaying );
-    
+
     int  getLength();
     void setLength(int frame);
     void extendLength(int frame);
@@ -53,11 +53,13 @@ public:
 
     void onObjectLoaded();
 
-Q_SIGNALS:
+signals:
+    void selectionChanged();
     void modification();
 
-    void addKeyClick();
+    void insertKeyClick();
     void removeKeyClick();
+    void duplicateLayerClick();
     void duplicateKeyClick();
 
     void newBitmapLayer();

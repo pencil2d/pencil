@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
+#include <QColor>
 
 #include "beziercurve.h"
 #include "vectorimage.h"
@@ -65,6 +66,9 @@ void BrushTool::loadSettings()
 
     if (properties.width <= 0) { setWidth(15); }
     if (std::isnan(properties.feather)) { setFeather(15); }
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
 void BrushTool::resetToDefault()
@@ -132,21 +136,20 @@ QCursor BrushTool::cursor()
     {
         return QCursor(QPixmap(":icons/brush.svg"), 0, 13);
     }
-    return Qt::CrossCursor;
+    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
 }
 
-void BrushTool::pointerPressEvent(PointerEvent*)
+void BrushTool::pointerPressEvent(PointerEvent *event)
 {
-    mScribbleArea->setAllDirty();
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
-    startStroke();
+    startStroke(event->inputType());
 }
 
 void BrushTool::pointerMoveEvent(PointerEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton)
+    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
         drawStroke();
@@ -155,8 +158,10 @@ void BrushTool::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void BrushTool::pointerReleaseEvent(PointerEvent*)
+void BrushTool::pointerReleaseEvent(PointerEvent *event)
 {
+    if (event->inputType() != mCurrentInputType) return;
+
     Layer* layer = mEditor->layers()->currentLayer();
     mEditor->backup(typeName());
 
@@ -298,7 +303,6 @@ void BrushTool::drawStroke()
 void BrushTool::paintBitmapStroke()
 {
     mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->setAllDirty();
     mScribbleArea->clearBitmapBuffer();
 }
 
@@ -323,7 +327,7 @@ void BrushTool::paintVectorStroke()
         curve.setFilled(false);
         curve.setInvisibility(properties.invisibility);
         curve.setVariableWidth(properties.pressure);
-        curve.setColourNumber(mEditor->color()->frontColorNumber());
+        curve.setColorNumber(mEditor->color()->frontColorNumber());
 
         VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         vectorImage->addCurve(curve, mEditor->view()->scaling(), false);
@@ -336,6 +340,5 @@ void BrushTool::paintVectorStroke()
         vectorImage->setSelected(vectorImage->getLastCurveNumber(), true);
 
         mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-        mScribbleArea->setAllDirty();
     }
 }

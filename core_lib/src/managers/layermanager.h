@@ -1,8 +1,8 @@
 /*
 
-Pencil - Traditional Animation Software
+Pencil2D - Traditional Animation Software
 Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2012-2018 Matthew Chiawen Chang
+Copyright (C) 2012-2020 Matthew Chiawen Chang
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -56,23 +56,27 @@ public:
     void gotoNextLayer();
     void gotoPreviouslayer();
 
+    /** Returns a new Layer with the given LAYER_TYPE */
+    Layer* createLayer(Layer::LAYER_TYPE type, const QString& strLayerName);
     LayerBitmap* createBitmapLayer(const QString& strLayerName);
     LayerVector* createVectorLayer(const QString& strLayerName);
     LayerCamera* createCameraLayer(const QString& strLayerName);
     LayerSound*  createSoundLayer(const QString& strLayerName);
 
     // KeyFrame Management
-    int LastFrameAtFrame(int frameIndex);
+    int lastFrameAtFrame(int frameIndex);
     int firstKeyFrameIndex();
     int lastKeyFrameIndex();
 
     int animationLength(bool includeSounds = true);
+
+    /** This should be emitted whenever the animation length frames, eg. adding, removing, duplicating */
     void notifyAnimationLengthChanged();
 
     QString nameSuggestLayer(const QString& name);
     int getLastLayerIndex() { return count() - 1; }
 
-Q_SIGNALS:
+signals:
     void currentLayerChanged(int index);
     void layerCountChanged(int count);
     void animationLengthChanged(int length);
