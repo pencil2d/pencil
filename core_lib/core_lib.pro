@@ -53,6 +53,7 @@ HEADERS +=  \
     src/interface/backgroundwidget.h \
     src/managers/basemanager.h \
     src/managers/overlaymanager.h \
+    src/managers/clipboardmanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
     src/managers/layermanager.h \
@@ -134,6 +135,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/backgroundwidget.cpp \
     src/managers/basemanager.cpp \
     src/managers/overlaymanager.cpp \
+    src/managers/clipboardmanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
     src/managers/layermanager.cpp \

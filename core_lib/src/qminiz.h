@@ -17,12 +17,14 @@ GNU General Public License for more details.
 #define QMINIZ_H
 
 #include <QString>
+#include "miniz.h"
 #include "pencilerror.h"
 
 namespace MiniZ
 {
-    bool isZip(const QString& sZipFilePath);
-    Status compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList);
+    Status sanityCheck(const QString& sZipFilePath);
+    size_t istreamReadCallback(void *pOpaque, mz_uint64 file_ofs, void * pBuf, size_t n);
+    Status compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList, QString mimetype);
     Status uncompressFolder(QString zipFilePath, QString destPath);
 }
 #endif

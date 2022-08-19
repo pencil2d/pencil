@@ -37,7 +37,7 @@ public:
     ~VectorImage() override;
     VectorImage& operator=(const VectorImage& a);
 
-    VectorImage* clone() override;
+    VectorImage* clone() const override;
 
     void setObject(Object* pObj) { mObject = pObj; }
 
@@ -79,6 +79,8 @@ public:
     void deleteSelection();
     void deleteSelectedPoints();
     void removeVertex(int curve, int vertex);
+
+    bool isEmpty() const { return mCurves.isEmpty(); }
 
     void paste(VectorImage&);
 

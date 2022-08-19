@@ -29,6 +29,9 @@ GNU General Public License for more details.
 #include <QTabletEvent>
 #include <QStandardPaths>
 #include <QDateTime>
+#include <QLabel>
+#include <QClipboard>
+#include <QToolBar>
 
 // core_lib headers
 #include "pencildef.h"
@@ -44,6 +47,7 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -60,6 +64,8 @@ GNU General Public License for more details.
 #include "timeline.h"
 #include "toolbox.h"
 #include "onionskinwidget.h"
+#include "pegbaralignmentdialog.h"
+#include "repositionframesdialog.h"
 
 //#include "preview.h"
 //#include "timeline2.h"
@@ -118,6 +124,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     createDockWidgets();
     createMenus();
+    createToolbars();
     setupKeyboardShortcuts();
 
     readSettings();
@@ -266,10 +273,12 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
+    connect(mEditor, &Editor::updateBackup, this, &MainWindow2::undoActSetText);
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
-    connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::cut);
+    connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
+    connect(ui->actionPaste_Previous, &QAction::triggered, mEditor, &Editor::pasteFromPreviousFrame);
     connect(ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste);
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
@@ -278,6 +287,7 @@ void MainWindow2::createMenus()
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
+    connect(ui->actionReposition_Selected_Frames, &QAction::triggered, this, &MainWindow2::openRepositionDialog);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     //--- Layer Menu ---
@@ -347,8 +357,10 @@ void MainWindow2::createMenus()
     connect(ui->actionFlip_inbetween, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipInBetween);
     connect(ui->actionFlip_rolling, &QAction::triggered, pPlaybackManager, &PlaybackManager::playFlipRoll);
 
-    connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::addNewKey);
+    connect(ui->actionAdd_Frame, &QAction::triggered, mCommands, &ActionCommands::insertKeyFrameAtCurrentPosition);
     connect(ui->actionRemove_Frame, &QAction::triggered, mCommands, &ActionCommands::removeKey);
+    connect(ui->actionAdd_Frame_Exposure, &QAction::triggered, mCommands, &ActionCommands::addExposureToSelectedFrames);
+    connect(ui->actionSubtract_Frame_Exposure, &QAction::triggered, mCommands, &ActionCommands::subtractExposureFromSelectedFrames);
     connect(ui->actionNext_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoNextFrame);
     connect(ui->actionPrevious_Frame, &QAction::triggered, mCommands, &ActionCommands::GotoPrevFrame);
     connect(ui->actionNext_KeyFrame, &QAction::triggered, mCommands, &ActionCommands::GotoNextKeyFrame);
@@ -356,6 +368,9 @@ void MainWindow2::createMenus()
     connect(ui->actionDuplicate_Frame, &QAction::triggered, mCommands, &ActionCommands::duplicateKey);
     connect(ui->actionMove_Frame_Forward, &QAction::triggered, mCommands, &ActionCommands::moveFrameForward);
     connect(ui->actionMove_Frame_Backward, &QAction::triggered, mCommands, &ActionCommands::moveFrameBackward);
+
+    connect(ui->actionReverse_Frames_Order, &QAction::triggered, mCommands, &ActionCommands::reverseSelectedFrames);
+    connect(ui->actionRemove_Frames, &QAction::triggered, mCommands, &ActionCommands::removeSelectedFrames);
 
     //--- Tool Menu ---
     connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
@@ -411,9 +426,6 @@ void MainWindow2::createMenus()
     ui->menuFile->insertMenu(ui->actionSave, mRecentFileMenu);
 
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
-
-    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
-    connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
 void MainWindow2::setOpacity(int opacity)
@@ -427,20 +439,6 @@ void MainWindow2::updateSaveState()
     const bool hasUnsavedChanges = mEditor->currentBackup() != mBackupAtSave;
     setWindowModified(hasUnsavedChanges);
     ui->statusBar->updateModifiedStatus(hasUnsavedChanges);
-}
-
-void MainWindow2::clearRecentFilesList()
-{
-    QStringList recentFilesList = mRecentFileMenu->getRecentFiles();
-    if (!recentFilesList.isEmpty())
-    {
-        mRecentFileMenu->clear();
-        mRecentFileMenu->saveToDisk();
-        QMessageBox::information(this, nullptr,
-                                 tr("\n\n You have successfully cleared the list"),
-                                 QMessageBox::Ok);
-    }
-    getPrefDialog()->updateRecentListBtn(!recentFilesList.isEmpty());
 }
 
 void MainWindow2::openPegAlignDialog()
@@ -489,6 +487,37 @@ void MainWindow2::openLayerOpacityDialog()
     });
 }
 
+void MainWindow2::openRepositionDialog()
+{
+    if (mEditor->layers()->currentLayer()->getSelectedFramesByPos().count() < 2)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Please select at least 2 frames!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+    if (mReposDialog != nullptr)
+    {
+        return;
+    }
+
+    mReposDialog = new RepositionFramesDialog(this);
+    mReposDialog->setAttribute(Qt::WA_DeleteOnClose);
+    mReposDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+    hideQuestionMark(*mReposDialog);
+    mReposDialog->setCore(mEditor);
+    mReposDialog->initUI();
+    mEditor->tools()->setCurrentTool(ToolType::MOVE);
+    connect(mReposDialog, &RepositionFramesDialog::finished, this, &MainWindow2::closeRepositionDialog);
+    mReposDialog->show();
+}
+
+void MainWindow2::closeRepositionDialog()
+{
+    selectionChanged();
+    mReposDialog = nullptr;
+}
+
 void MainWindow2::currentLayerChanged()
 {
     bool isBitmap = (mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
@@ -526,18 +555,6 @@ void MainWindow2::closeEvent(QCloseEvent* event)
     m2ndCloseEvent = true;
 }
 
-void MainWindow2::showEvent(QShowEvent*)
-{
-    static bool firstShowEvent = true;
-    if (!firstShowEvent)
-    {
-        return;
-    }
-    firstShowEvent = false;
-    if (tryRecoverUnsavedProject() || loadMostRecent() || tryLoadPreset()) { return; }
-    newObject();
-}
-
 void MainWindow2::tabletEvent(QTabletEvent* event)
 {
     event->ignore();
@@ -572,6 +589,21 @@ bool MainWindow2::saveAsNewDocument()
         return false;
     }
     return saveObject(fileName);
+}
+
+void MainWindow2::openStartupFile(const QString& filename)
+{
+    if (tryRecoverUnsavedProject())
+    {
+        return;
+    }
+
+    if (!filename.isEmpty() && openObject(filename))
+    {
+        return;
+    }
+
+    loadMostRecent() || tryLoadPreset();
 }
 
 void MainWindow2::openFile(const QString& filename)
@@ -625,6 +657,7 @@ bool MainWindow2::openObject(const QString& strFilePath)
     progress.setValue(progress.maximum());
 
     updateSaveState();
+    undoActSetText();
 
     if (!QFileInfo(strFilePath).isWritable())
     {
@@ -1010,12 +1043,21 @@ void MainWindow2::newObject()
 {
     auto object = new Object();
     object->init();
-    object->createDefaultLayers();
+
+    // default layers
+    object->addNewCameraLayer();
+    object->addNewBitmapLayer();
+    // Layers are counted bottom up
+    // 0 - Camera Layer
+    // 1 - Bitmap Layer
+    object->data()->setCurrentLayer(1);
+
     mEditor->setObject(object);
 
     closeDialogs();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
+    undoActSetText();
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
@@ -1040,6 +1082,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
     updateSaveState();
+    undoActSetText();
 
     return true;
 }
@@ -1156,6 +1199,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRedo->setShortcut(cmdKeySeq(CMD_REDO));
     ui->actionCut->setShortcut(cmdKeySeq(CMD_CUT));
     ui->actionCopy->setShortcut(cmdKeySeq(CMD_COPY));
+    ui->actionPaste_Previous->setShortcut(cmdKeySeq(CMD_PASTE_FROM_PREVIOUS));
     ui->actionPaste->setShortcut(cmdKeySeq(CMD_PASTE));
     ui->actionClearFrame->setShortcut(cmdKeySeq(CMD_CLEAR_FRAME));
     ui->actionSelect_All->setShortcut(cmdKeySeq(CMD_SELECT_ALL));
@@ -1195,6 +1239,10 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionAdd_Frame->setShortcut(cmdKeySeq(CMD_ADD_FRAME));
     ui->actionDuplicate_Frame->setShortcut(cmdKeySeq(CMD_DUPLICATE_FRAME));
     ui->actionRemove_Frame->setShortcut(cmdKeySeq(CMD_REMOVE_FRAME));
+    ui->actionAdd_Frame_Exposure->setShortcut(cmdKeySeq(CMD_SELECTION_ADD_FRAME_EXPOSURE));
+    ui->actionSubtract_Frame_Exposure->setShortcut(cmdKeySeq(CMD_SELECTION_SUBTRACT_FRAME_EXPOSURE));
+    ui->actionReverse_Frames_Order->setShortcut(cmdKeySeq(CMD_REVERSE_SELECTED_FRAMES));
+    ui->actionRemove_Frames->setShortcut(cmdKeySeq(CMD_REMOVE_SELECTED_FRAMES));
     ui->actionMove_Frame_Backward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_BACKWARD));
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
     ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
@@ -1287,12 +1335,6 @@ void MainWindow2::undoActSetText()
     }
 }
 
-void MainWindow2::undoActSetEnabled()
-{
-    ui->actionUndo->setEnabled(true);
-    ui->actionRedo->setEnabled(true);
-}
-
 void MainWindow2::exportPalette()
 {
     QString filePath = FileDialog::getSaveFileName(this, FileType::PALETTE);
@@ -1352,17 +1394,24 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
+    connect(editor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
+    connect(editor, &Editor::canCopyChanged, this, [=](bool canCopy) {
+        ui->actionCopy->setEnabled(canCopy);
+        ui->actionCut->setEnabled(canCopy);
+    });
+    connect(editor, &Editor::canPasteChanged, ui->actionPaste, &QAction::setEnabled);
+
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
 {
-    connect(colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor);
+    connect(colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setFrontColor);
     connect(editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector)
 {
-    connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setColor);
+    connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setFrontColor);
     connect(editor->color(), &ColorManager::colorChanged, colorInspector, &ColorInspector::setColor);
 }
 
@@ -1385,21 +1434,28 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 {
     PlaybackManager* pPlaybackManager = pEditor->playback();
+    connect(pTimeline, &TimeLine::duplicateLayerClick, mCommands, &ActionCommands::duplicateLayer);
     connect(pTimeline, &TimeLine::duplicateKeyClick, mCommands, &ActionCommands::duplicateKey);
 
     connect(pTimeline, &TimeLine::soundClick, pPlaybackManager, &PlaybackManager::enableSound);
     connect(pTimeline, &TimeLine::fpsChanged, pPlaybackManager, &PlaybackManager::setFps);
     connect(pTimeline, &TimeLine::fpsChanged, pEditor, &Editor::setFps);
 
-    connect(pTimeline, &TimeLine::addKeyClick, mCommands, &ActionCommands::addNewKey);
+    connect(pTimeline, &TimeLine::insertKeyClick, mCommands, &ActionCommands::insertKeyFrameAtCurrentPosition);
     connect(pTimeline, &TimeLine::removeKeyClick, mCommands, &ActionCommands::removeKey);
 
     connect(pTimeline, &TimeLine::newBitmapLayer, mCommands, &ActionCommands::addNewBitmapLayer);
     connect(pTimeline, &TimeLine::newVectorLayer, mCommands, &ActionCommands::addNewVectorLayer);
     connect(pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer);
     connect(pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer);
-
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
+
+    // Clipboard state handling
+    connect(QApplication::clipboard(), &QClipboard::dataChanged, mEditor, &Editor::clipboardChanged);
+    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
+    connect(pTimeline, &TimeLine::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
+    connect(this, &MainWindow2::windowActivated, this, &MainWindow2::updateCopyCutPasteEnabled);
+    connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
@@ -1433,12 +1489,8 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
     ColorManager* pColorManager = pEditor->color();
     ScribbleArea* pScribbleArea = pEditor->getScribbleArea();
 
-    connect(pColorPalette, &ColorPaletteWidget::colorChanged, pColorManager, &ColorManager::setColor);
     connect(pColorPalette, &ColorPaletteWidget::colorNumberChanged, pColorManager, &ColorManager::setColorNumber);
-
-    connect(pColorPalette, &ColorPaletteWidget::colorChanged, pScribbleArea, &ScribbleArea::paletteColorChanged);
-
-    connect(pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor);
+    connect(pColorManager, &ColorManager::colorNumberChanged, pScribbleArea, &ScribbleArea::paletteColorChanged);
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
@@ -1449,6 +1501,16 @@ void MainWindow2::makeConnections(Editor* editor, StatusBar *statusBar)
 
     connect(editor->view(), &ViewManager::viewChanged, statusBar, &StatusBar::updateZoomStatus);
     connect(statusBar, &StatusBar::zoomChanged, editor->view(), &ViewManager::scale);
+}
+
+void MainWindow2::updateCopyCutPasteEnabled()
+{
+    bool canCopy = mEditor->canCopy();
+    bool canPaste = mEditor->canPaste();
+
+    ui->actionCopy->setEnabled(canCopy);
+    ui->actionCut->setEnabled(canCopy);
+    ui->actionPaste->setEnabled(canPaste);
 }
 
 void MainWindow2::changePlayState(bool isPlaying)
@@ -1474,6 +1536,15 @@ void MainWindow2::importMovieVideo()
     mCommands->importMovieVideo();
 
     mSuppressAutoSaveDialog = false;
+}
+
+bool MainWindow2::event(QEvent* event)
+{
+    if(event->type() == QEvent::WindowActivate) {
+        emit windowActivated();
+        return true;
+    }
+    return QMainWindow::event(event);
 }
 
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)
@@ -1545,8 +1616,46 @@ void MainWindow2::startProjectRecovery(int result)
     Q_ASSERT(o);
     mEditor->setObject(o);
     updateSaveState();
+    undoActSetText();
 
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
     QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
+}
+
+void MainWindow2::createToolbars()
+{
+    mMainToolbar = addToolBar(tr("Main Toolbar"));
+    mMainToolbar->setObjectName("mMainToolbar");
+    mMainToolbar->addAction(ui->actionNew);
+    mMainToolbar->addAction(ui->actionOpen);
+    mMainToolbar->addAction(ui->actionSave);
+    mMainToolbar->addSeparator();
+    mMainToolbar->addAction(ui->actionUndo);
+    mMainToolbar->addAction(ui->actionRedo);
+    mMainToolbar->addSeparator();
+    mMainToolbar->addAction(ui->actionCut);
+    mMainToolbar->addAction(ui->actionCopy);
+    mMainToolbar->addAction(ui->actionPaste);
+
+    mViewToolbar = addToolBar(tr("View Toolbar"));
+    mViewToolbar->setObjectName("mViewToolbar");
+    mViewToolbar->addAction(ui->actionZoom_In);
+    mViewToolbar->addAction(ui->actionZoom_Out);
+    mViewToolbar->addAction(ui->actionReset_View);
+    mViewToolbar->addAction(ui->actionHorizontal_Flip);
+    mViewToolbar->addAction(ui->actionVertical_Flip);
+
+    mOverlayToolbar = addToolBar(tr("Overlay Toolbar"));
+    mOverlayToolbar->setObjectName("mOverlayToolbar");
+    mOverlayToolbar->addAction(ui->actionGrid);
+
+    mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
+
+    ui->menuWindows->addSeparator();
+    QMenu* toolbarMenu = ui->menuWindows->addMenu(tr("Toolbars"));
+    for (QToolBar* tb : mToolbars)
+    {
+        toolbarMenu->addAction(tb->toggleViewAction());
+    }
 }

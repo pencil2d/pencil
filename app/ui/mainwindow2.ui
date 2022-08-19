@@ -113,6 +113,7 @@
     <addaction name="actionCut"/>
     <addaction name="actionCopy"/>
     <addaction name="actionPaste"/>
+    <addaction name="actionPaste_Previous"/>
     <addaction name="actionClearFrame"/>
     <addaction name="separator"/>
     <addaction name="menuSelection"/>
@@ -182,6 +183,16 @@
     <property name="title">
      <string>Animation</string>
     </property>
+    <widget class="QMenu" name="menuTimeline_Selection">
+     <property name="title">
+      <string>Timeline Selection</string>
+     </property>
+     <addaction name="actionAdd_Frame_Exposure"/>
+     <addaction name="actionSubtract_Frame_Exposure"/>
+     <addaction name="separator"/>
+     <addaction name="actionReverse_Frames_Order"/>
+     <addaction name="actionRemove_Frames"/>
+    </widget>
     <addaction name="actionPlay"/>
     <addaction name="actionLoop"/>
     <addaction name="actionLoopControl"/>
@@ -200,6 +211,9 @@
     <addaction name="separator"/>
     <addaction name="actionFlip_inbetween"/>
     <addaction name="actionFlip_rolling"/>
+    <addaction name="separator"/>
+    <addaction name="actionReposition_Selected_Frames"/>
+    <addaction name="menuTimeline_Selection"/>
    </widget>
    <widget class="QMenu" name="menuTools">
     <property name="title">
@@ -378,9 +392,6 @@
    </property>
   </action>
   <action name="actionRedo">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/redo.png</normaloff>:/icons/redo.png</iconset>
@@ -390,6 +401,9 @@
    </property>
   </action>
   <action name="actionCut">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/cut.png</normaloff>:/icons/cut.png</iconset>
@@ -399,6 +413,9 @@
    </property>
   </action>
   <action name="actionCopy">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/copy.png</normaloff>:/icons/copy.png</iconset>
@@ -408,6 +425,9 @@
    </property>
   </action>
   <action name="actionPaste">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
      <normaloff>:/icons/paste.png</normaloff>:/icons/paste.png</iconset>
@@ -461,7 +481,7 @@
   <action name="actionZoom_In">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
+     <normaloff>:/icons/zoom-in.png</normaloff>:/icons/zoom-in.png</iconset>
    </property>
    <property name="text">
     <string>Zoom In</string>
@@ -470,7 +490,7 @@
   <action name="actionZoom_Out">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/magnify.png</normaloff>:/icons/magnify.png</iconset>
+     <normaloff>:/icons/zoom-out.png</normaloff>:/icons/zoom-out.png</iconset>
    </property>
    <property name="text">
     <string>Zoom Out</string>
@@ -487,6 +507,10 @@
    </property>
   </action>
   <action name="actionReset_View">
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/zoom-reset.png</normaloff>:/icons/zoom-reset.png</iconset>
+   </property>
    <property name="text">
     <string>Reset</string>
    </property>
@@ -526,6 +550,10 @@
   <action name="actionGrid">
    <property name="checkable">
     <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/grid.png</normaloff>:/icons/grid.png</iconset>
    </property>
    <property name="text">
     <string>Grid</string>
@@ -1093,6 +1121,16 @@
     <string>Onion Skins</string>
    </property>
   </action>
+  <action name="actionReposition_Selection">
+   <property name="text">
+    <string>Reposition Selected frames</string>
+   </property>
+  </action>
+  <action name="actionReposition_Selected_Frames">
+   <property name="text">
+    <string>Reposition Selected Frames</string>
+    </property>
+   </action>
   <action name="actionChangeLayerOpacity">
    <property name="text">
     <string>Layer / Keyframe opacity</string>
@@ -1121,6 +1159,26 @@
     <string>Reset Rotation</string>
    </property>
   </action>
+  <action name="actionAdd_Frame_Exposure">
+   <property name="text">
+    <string>Add Exposure</string>
+   </property>
+  </action>
+  <action name="actionSubtract_Frame_Exposure">
+   <property name="text">
+    <string>Subtract Exposure</string>
+   </property>
+  </action>
+  <action name="actionReverse_Frames_Order">
+   <property name="text">
+    <string>Reverse Frames Order</string>
+   </property>
+  </action>
+  <action name="actionRemove_Frames">
+   <property name="text">
+    <string>Remove Frames</string>
+   </property>
+  </action>
   <action name="actionStatusBar">
    <property name="checkable">
     <bool>true</bool>
@@ -1130,6 +1188,14 @@
    </property>
    <property name="text">
     <string>Status Bar</string>
+   </property>
+  </action>
+  <action name="actionPaste_Previous">
+   <property name="text">
+    <string>Paste from Previous Keyframe</string>
+   </property>
+   <property name="toolTip">
+    <string>Paste from Previous Keyframe</string>
    </property>
   </action>
  </widget>

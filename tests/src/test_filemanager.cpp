@@ -309,7 +309,9 @@ TEST_CASE("FileManager File-saving")
         // 1. create a animation with one red frame & save it
         Object* o1 = new Object;
         o1->init();
-        o1->createDefaultLayers();
+        o1->addNewCameraLayer();
+        o1->addNewVectorLayer();
+        o1->addNewBitmapLayer();
 
         LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
         REQUIRE(layer->addNewKeyFrameAt(2));
@@ -350,7 +352,9 @@ TEST_CASE("FileManager File-saving")
         // 1. Create a animation with 150 frames & save it
         Object* o1 = new Object;
         o1->init();
-        o1->createDefaultLayers();
+        o1->addNewCameraLayer();
+        o1->addNewVectorLayer();
+        o1->addNewBitmapLayer();
 
         LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(2));
         for (int i = 100; i < 150; ++i)
@@ -428,7 +432,7 @@ TEST_CASE("Empty Sound Frames")
             REQUIRE(newObj->getLayer(0)->type() == 4);
             REQUIRE(newObj->getLayer(0)->id() == 5);
             REQUIRE(newObj->getLayer(0)->name() == "GoodLayer");
-            REQUIRE(newObj->getLayer(0)->getVisibility() == true);
+            REQUIRE(newObj->getLayer(0)->visible() == true);
             REQUIRE(newObj->getLayer(0)->getKeyFrameAt(1) == nullptr);
 
             delete newObj;

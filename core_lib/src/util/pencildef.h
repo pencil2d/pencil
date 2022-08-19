@@ -58,12 +58,13 @@ enum ToolPropertyType
     FILL_MODE,
     STABILIZATION,
     TOLERANCE,
+    FILLCONTOUR,
+    SHOWSELECTIONINFO,
     USETOLERANCE,
     BUCKETFILLEXPAND,
     USEBUCKETFILLEXPAND,
     BUCKETFILLLAYERMODE,
     BUCKETFILLLAYERREFERENCEMODE,
-    FILLCONTOUR
 };
 
 enum BackgroundStyle
@@ -128,6 +129,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_CUT "CmdCut"
 #define CMD_COPY "CmdCopy"
 #define CMD_PASTE "CmdPaste"
+#define CMD_PASTE_FROM_PREVIOUS "CmdPasteFromPrevious"
 #define CMD_SELECT_ALL "CmdSelectAll"
 #define CMD_DESELECT_ALL "CmdDeselectAll"
 #define CMD_CLEAR_FRAME "CmdClearFrame"
@@ -165,6 +167,10 @@ const static int MaxFramesBound = 9999;
 #define CMD_ADD_FRAME "CmdAddFrame"
 #define CMD_DUPLICATE_FRAME "CmdDuplicateFrame"
 #define CMD_REMOVE_FRAME "CmdRemoveFrame"
+#define CMD_REVERSE_SELECTED_FRAMES "CmdReverseSelectedFrames"
+#define CMD_REMOVE_SELECTED_FRAMES "CmdRemoveSelectedFrames"
+#define CMD_SELECTION_ADD_FRAME_EXPOSURE "CmdSelectionAddFrameExposure"
+#define CMD_SELECTION_SUBTRACT_FRAME_EXPOSURE "CmdSelectionSubtractFrameExposure"
 #define CMD_MOVE_FRAME_BACKWARD "CmdMoveFrameBackward"
 #define CMD_MOVE_FRAME_FORWARD "CmdMoveFrameForward"
 #define CMD_TOOL_MOVE "CmdToolMove"
@@ -231,6 +237,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
+#define SETTING_SHOW_SELECTION_INFO "ShowSelectionInfo"
 #define SETTING_ASK_FOR_PRESET      "AskForPreset"
 #define SETTING_LOAD_MOST_RECENT    "LoadMostRecent"
 #define SETTING_LOAD_DEFAULT_PRESET "LoadDefaultPreset"

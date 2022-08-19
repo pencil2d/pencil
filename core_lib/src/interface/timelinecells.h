@@ -48,25 +48,18 @@ public:
     TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
     ~TimeLineCells() override;
 
-    int getLayerNumber(int y);
-    int getInbetweenLayerNumber(int y);
-    int getLayerY(int layerNumber);
-    int getFrameNumber(int x) const;
-    int getFrameX(int frameNumber) const;
-    int getMouseMoveY() const { return mMouseMoveY; }
     static int getOffsetX() { return mOffsetX; }
     static int getOffsetY() { return mOffsetY; }
     int getLayerHeight() const { return mLayerHeight; }
 
     int getFrameLength() const { return mFrameLength; }
+    int getFrameSize() const { return mFrameSize; }
+
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
-
-    int getFrameSize() const { return mFrameSize; }
     void clearCache() { delete mCache; mCache = new QPixmap( size() ); }
-    void paintLayerGutter(QPainter& painter);
+
     bool didDetachLayer() const;
-    int getCurrentFrame() const { return mCurrentFrame; }
 
     void showCameraMenu(QPoint pos);
 
@@ -74,6 +67,8 @@ signals:
     void mouseMovedY(int);
     void lengthChanged(int);
     void offsetChanged(int);
+    void selectionChanged();
+    void insertNewKeyFrame();
 
 public slots:
     void updateContent();
@@ -83,9 +78,7 @@ public slots:
     void setMouseMoveY(int x);
 
 protected:
-    void trackScrubber();
-    void drawContent();
-    void paintOnionSkin(QPainter& painter);
+    bool event(QEvent *event) override;
     void paintEvent(QPaintEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
@@ -100,8 +93,23 @@ private slots:
     void setCameraEasing(CameraEasingType type, int frame);
 
 private:
+    int getLayerNumber(int y) const;
+    int getInbetweenLayerNumber(int y) const;
+    int getLayerY(int layerNumber) const;
+    int getFrameX(int frameNumber) const;
+    int getFrameNumber(int x) const;
+
+    void onDidLeaveWidget();
+
+    void trackScrubber();
+    void drawContent();
+    void paintTicks(QPainter& painter, const QPalette& palette) const;
+    void paintOnionSkin(QPainter& painter) const;
+    void paintLayerGutter(QPainter& painter) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
-    void paintFrames(QPainter& painter, const Layer* layer, QColor trackCol, int y, int height, bool selected, int frameSize) const;
+    void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
+    void paintFrameCursorOnCurrentLayer(QPainter& painter, int recTop, int recWidth, int recHeight) const;
+    void paintSelectedFrames(QPainter& painter, const Layer* layer, const int layerIndex) const;
     void paintLabel(QPainter& painter, const Layer* layer, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
 
@@ -126,7 +134,7 @@ private:
     int mStartY = 0;
     int mEndY   = 0;
 
-    int mCurrentFrame = 0;
+    int mCurrentLayerNumber = 0;
     int mLastScrubFrame = 0;
 
     int mFromLayer = 0;
@@ -134,6 +142,8 @@ private:
     int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
+
+    // is used to move layers, don't use this to get mousePos;
     int mMouseMoveY = 0;
     int mPrevFrame = 0;
     int mFrameOffset = 0;
@@ -147,6 +157,12 @@ private:
     bool mBoxSelecting   = false;
 
     bool mClickSelecting = false;
+
+    int mFramePosMoveX = 0;
+    int mLayerPosMoveY = 0;
+
+    int mMouseMoveX = 0;
+    int mMousePressX = 0;
 
     const static int mOffsetX = 0;
     const static int mOffsetY = 20;

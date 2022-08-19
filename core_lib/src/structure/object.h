@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define OBJECT_H
 
 #include <memory>
+#include <QCoreApplication>
 #include <QObject>
 #include <QList>
 #include <QColor>
@@ -39,20 +40,20 @@ class ActiveFramePool;
 
 class Object final
 {
+    Q_DECLARE_TR_FUNCTIONS(Object)
 public:
     explicit Object();
     ~Object();
 
 	Object(Object const&) = delete;
 	Object(Object&&) = delete;
-	Object& operator=(Object const&) = default;
+	Object& operator=(Object const&) = delete;
 	Object& operator=(Object&&) = delete;
 
     void init();
     void createWorkingDir();
     void deleteWorkingDir() const;
     void setWorkingDir(const QString& path); // used by crash recovery
-    void createDefaultLayers();
 
     QString filePath() const { return mFilePath; }
     void    setFilePath(const QString& strFileName) { mFilePath = strFileName; }
@@ -140,7 +141,7 @@ public:
 
     ObjectData* data() { return &mData; }
     const ObjectData* data() const { return &mData; }
-    void setData(const ObjectData*);
+    void setData(const ObjectData&);
 
     int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;

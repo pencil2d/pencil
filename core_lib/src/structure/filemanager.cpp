@@ -25,21 +25,6 @@ GNU General Public License for more details.
 #include "object.h"
 #include "layercamera.h"
 
-namespace
-{
-    QString openErrorTitle = QObject::tr("Could not open file");
-    QString openErrorDesc = QObject::tr("There was an error processing your file. This usually means that your project has "
-                             "been at least partially corrupted. You can try again with a newer version of Pencil2D, "
-                             "or you can try to use a backup file if you have one. If you contact us through one of "
-                             "our official channels we may be able to help you. For reporting issues, "
-                             "the best places to reach us are:");
-    QString contactLinks = "<ul>"
-                           "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
-                           "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
-                           "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
-                           "</ul>";
-}
-
 FileManager::FileManager(QObject* parent) : QObject(parent)
 {
     srand(static_cast<uint>(time(nullptr)));
@@ -51,10 +36,8 @@ Object* FileManager::load(const QString& sFileName)
     dd << QString("File name: ").append(sFileName);
     if (!QFile::exists(sFileName))
     {
-        FILEMANAGER_LOG("ERROR - File doesn't exist");
-        return cleanUpWithErrorCode(Status(Status::FILE_NOT_FOUND, dd, tr("Could not open file"),
-                                           tr("The file does not exist, so we are unable to open it. Please check "
-                                           "to make sure the path is correct and that the file is accessible and try again.")));
+        handleOpenProjectError(Status::FILE_NOT_FOUND, dd);
+        return nullptr;
     }
 
     progressForward();
@@ -67,10 +50,10 @@ Object* FileManager::load(const QString& sFileName)
     QString strDataFolder;
 
     // Test file format: new zipped .pclx or old .pcl?
-    bool oldFormat = isOldForamt(sFileName);
-    dd << QString("Is old format: ").append(oldFormat ? "true" : "false");
+    bool isArchive = isArchiveFormat(sFileName);
+    QString isArchiveStr = "Is archive: " + QString(isArchive);
 
-    if (oldFormat)
+    if (!isArchive)
     {
         dd << "Recognized Old Pencil2D File Format (*.pcl) !";
 
@@ -81,7 +64,15 @@ Object* FileManager::load(const QString& sFileName)
     {
         dd << "Recognized New zipped Pencil2D File Format (*.pclx) !";
 
-        unzip(sFileName, obj->workingDir());
+        Status sanityCheck = MiniZ::sanityCheck(sFileName);
+
+        // Let's check if we can read the file before we try to unzip.
+        if (!sanityCheck.ok()) {
+            dd.collect(sanityCheck.details());
+        } else {
+            Status unzipStatus = unzip(sFileName, obj->workingDir());
+            dd.collect(unzipStatus.details());
+        }
 
         strMainXMLFile = QDir(obj->workingDir()).filePath(PFF_XML_FILE_NAME);
         strDataFolder = QDir(obj->workingDir()).filePath(PFF_DATA_DIR);
@@ -102,13 +93,13 @@ Object* FileManager::load(const QString& sFileName)
     if (!file.exists())
     {
         dd << "Main XML file does not exist";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
+        handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
+        return nullptr;
     }
     if (!file.open(QFile::ReadOnly))
     {
-        return cleanUpWithErrorCode(Status(Status::ERROR_FILE_CANNOT_OPEN, dd, tr("Could not open file"),
-                                           tr("This program does not have permission to read the file you have selected. "
-                                              "Please check that you have read permissions for this file and try again.")));
+        handleOpenProjectError(Status::ERROR_FILE_CANNOT_OPEN, dd);
+        return nullptr;
     }
 
     QDomDocument xmlDoc;
@@ -116,7 +107,8 @@ Object* FileManager::load(const QString& sFileName)
     {
         FILEMANAGER_LOG("Couldn't open the main XML file");
         dd << "Error parsing or opening the main XML file";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_XML_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
+        handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
+        return nullptr;
     }
 
     QDomDocumentType type = xmlDoc.doctype();
@@ -124,14 +116,16 @@ Object* FileManager::load(const QString& sFileName)
     {
         FILEMANAGER_LOG("Invalid main XML doctype");
         dd << QString("Invalid main XML doctype: ").append(type.name());
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
+        handleOpenProjectError(Status::ERROR_INVALID_PENCIL_FILE, dd);
+        return nullptr;
     }
 
     QDomElement root = xmlDoc.documentElement();
     if (root.isNull())
     {
         dd << "Main XML root node is null";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, openErrorTitle, openErrorDesc + contactLinks));
+        handleOpenProjectError(Status::ERROR_INVALID_PENCIL_FILE, dd);
+        return nullptr;
     }
 
     loadPalette(obj.get());
@@ -151,7 +145,8 @@ Object* FileManager::load(const QString& sFileName)
     {
         obj.reset();
         dd << "Issue occurred during object loading";
-        return cleanUpWithErrorCode(Status(Status::ERROR_INVALID_PENCIL_FILE, dd, ""));
+        handleOpenProjectError(Status::ERROR_INVALID_PENCIL_FILE, dd);
+        return nullptr;
     }
 
     verifyObject(obj.get());
@@ -182,8 +177,7 @@ bool FileManager::loadObject(Object* object, const QDomElement& root)
         }
         else if (element.tagName() == "editor" || element.tagName() == "projectdata")
         {
-            ObjectData* projectData = loadProjectData(element);
-            object->setData(projectData);
+            object->setData(loadProjectData(element));
         }
         else if (element.tagName() == "version")
         {
@@ -211,9 +205,12 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
     return object->loadXML(root, [this] { progressForward(); });
 }
 
-bool FileManager::isOldForamt(const QString& fileName) const
+bool FileManager::isArchiveFormat(const QString& fileName) const
 {
-    return !(MiniZ::isZip(fileName));
+    if (QFileInfo(fileName).suffix().compare(PFF_BIG_LETTER_EXTENSION, Qt::CaseInsensitive) != 0) {
+        return false;
+    }
+    return true;
 }
 
 Status FileManager::save(const Object* object, const QString& sFileName)
@@ -268,8 +265,8 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     QString sMainXMLFile;
     QString sDataFolder;
 
-    const bool isOldType = sFileName.endsWith(PFF_OLD_EXTENSION);
-    if (isOldType)
+    bool isArchive = isArchiveFormat(sFileName);
+    if (!isArchive)
     {
         dd << "Old Pencil2D File Format (*.pcl) !";
 
@@ -279,6 +276,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     else
     {
         dd << "New zipped Pencil2D File Format (*.pclx) !";
+        dd.collect(MiniZ::sanityCheck(sFileName).details());
 
         sTempWorkingFolder = object->workingDir();
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
@@ -324,13 +322,18 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
     progressForward();
 
-    if (!isOldType)
+    if (isArchive)
     {
-        dd << "Miniz";
-
         QString sBackupFile = backupPreviousFile(sFileName);
 
-        Status stMiniz = MiniZ::compressFolder(sFileName, sTempWorkingFolder, filesToZip);
+        if (!saveOk) {
+            return Status(Status::FAIL, dd,
+                          tr("Internal Error"),
+                          tr("An internal error occurred. Your file may not be saved successfully."));
+        }
+
+        dd << "Miniz";
+        Status stMiniz = MiniZ::compressFolder(sFileName, sTempWorkingFolder, filesToZip, "application/x-pencil2d-pclx");
         if (!stMiniz.ok())
         {
             dd.collect(stMiniz.details());
@@ -380,9 +383,9 @@ Status FileManager::writeToWorkingFolder(const Object* object)
     return Status(errorCode, dd);
 }
 
-ObjectData* FileManager::loadProjectData(const QDomElement& docElem)
+ObjectData FileManager::loadProjectData(const QDomElement& docElem)
 {
-    ObjectData* data = new ObjectData;
+    ObjectData data;
     if (docElem.isNull())
     {
         return data;
@@ -464,14 +467,12 @@ QDomElement FileManager::saveProjectData(const ObjectData* data, QDomDocument& x
     return rootTag;
 }
 
-void FileManager::extractProjectData(const QDomElement& element, ObjectData* data)
+void FileManager::extractProjectData(const QDomElement& element, ObjectData& data)
 {
-    Q_ASSERT(data);
-
     QString strName = element.tagName();
     if (strName == "currentFrame")
     {
-        data->setCurrentFrame(element.attribute("value").toInt());
+        data.setCurrentFrame(element.attribute("value").toInt());
     }
     else  if (strName == "currentColor")
     {
@@ -480,11 +481,11 @@ void FileManager::extractProjectData(const QDomElement& element, ObjectData* dat
         int b = element.attribute("b", "255").toInt();
         int a = element.attribute("a", "255").toInt();
 
-        data->setCurrentColor(QColor(r, g, b, a));
+        data.setCurrentColor(QColor(r, g, b, a));
     }
     else if (strName == "currentLayer")
     {
-        data->setCurrentLayer(element.attribute("value", "0").toInt());
+        data.setCurrentLayer(element.attribute("value", "0").toInt());
     }
     else if (strName == "currentView")
     {
@@ -495,35 +496,80 @@ void FileManager::extractProjectData(const QDomElement& element, ObjectData* dat
         double dx = element.attribute("dx", "0").toDouble();
         double dy = element.attribute("dy", "0").toDouble();
 
-        data->setCurrentView(QTransform(m11, m12, m21, m22, dx, dy));
+        data.setCurrentView(QTransform(m11, m12, m21, m22, dx, dy));
     }
     else if (strName == "fps" || strName == "currentFps")
     {
-        data->setFrameRate(element.attribute("value", "12").toInt());
+        data.setFrameRate(element.attribute("value", "12").toInt());
     }
     else if (strName == "isLoop")
     {
-        data->setLooping(element.attribute("value", "false") == "true");
+        data.setLooping(element.attribute("value", "false") == "true");
     }
     else if (strName == "isRangedPlayback")
     {
-        data->setRangedPlayback((element.attribute("value", "false") == "true"));
+        data.setRangedPlayback((element.attribute("value", "false") == "true"));
     }
     else if (strName == "markInFrame")
     {
-        data->setMarkInFrameNumber(element.attribute("value", "0").toInt());
+        data.setMarkInFrameNumber(element.attribute("value", "0").toInt());
     }
     else if (strName == "markOutFrame")
     {
-        data->setMarkOutFrameNumber(element.attribute("value", "15").toInt());
+        data.setMarkOutFrameNumber(element.attribute("value", "15").toInt());
     }
 }
 
-Object* FileManager::cleanUpWithErrorCode(Status error)
+void FileManager::handleOpenProjectError(Status::ErrorCode error, const DebugDetails& dd)
 {
-    mError = error;
+    QString title = tr("Could not open file");
+    QString errorDesc;
+    QString contactLinks = "<ul>"
+        "<li><a href=\"https://discuss.pencil2d.org/c/bugs\">Pencil2D Forum</a></li>"
+        "<li><a href=\"https://github.com/pencil2d/pencil/issues/new\">Github</a></li>"
+        "<li><a href=\"https://discord.gg/8FxdV2g\">Discord<\a></li>"
+        "</ul>";
+
+    if (error == Status::FILE_NOT_FOUND)
+    {
+        errorDesc = tr("The file does not exist, so we are unable to open it."
+                       "Please check to make sure the path is correct and try again.");
+    }
+    else if (error == Status::ERROR_FILE_CANNOT_OPEN)
+    {
+        errorDesc = tr("No permission to read the file. "
+                       "Please check you have read permissions for this file and try again.");
+    }
+    else
+    {
+        // other cases
+        errorDesc = tr("There was an error processing your file. "
+            "This usually means that your project has been at least partially corrupted. "
+            "Try again with a newer version of Pencil2D, "
+            "or try to use a backup file if you have one. "
+            "If you contact us through one of our official channels we may be able to help you."
+            "For reporting issues, the best places to reach us are:");
+    }
+
+    mError = Status(error, dd, title, errorDesc + contactLinks);
     removePFFTmpDirectory(mstrLastTempFolder);
-    return nullptr;
+}
+
+int FileManager::countExistingBackups(const QString& fileName) const
+{
+    QFileInfo fileInfo(fileName);
+    QDir directory(fileInfo.absoluteDir());
+    const QString& baseName = fileInfo.completeBaseName();
+
+    int backupCount = 0;
+    for (QFileInfo dirFileInfo : directory.entryInfoList(QDir::Filter::Files)) {
+        QString searchFileBaseName = dirFileInfo.completeBaseName();
+        if (baseName.compare(searchFileBaseName) == 0 && searchFileBaseName.contains(PFF_BACKUP_IDENTIFIER)) {
+            backupCount++;
+        }
+    }
+
+    return backupCount;
 }
 
 QString FileManager::backupPreviousFile(const QString& fileName)
@@ -531,11 +577,16 @@ QString FileManager::backupPreviousFile(const QString& fileName)
     if (!QFile::exists(fileName))
         return "";
 
-    QFileInfo info(fileName);
-    QString sBackupFile = info.completeBaseName() + ".backup." + info.suffix();
-    QString sBackupFileFullPath = QDir(info.absolutePath()).filePath(sBackupFile);
+    QFileInfo fileInfo(fileName);
+    QString baseName = fileInfo.completeBaseName();
 
-    bool ok = QFile::rename(info.absoluteFilePath(), sBackupFileFullPath);
+    int backupCount = countExistingBackups(fileName) + 1; // start index 1
+    QString countStr = QString::number(backupCount);
+
+    QString sBackupFile = baseName + "." + PFF_BACKUP_IDENTIFIER + countStr + "." + fileInfo.suffix();
+    QString sBackupFileFullPath = QDir(fileInfo.absolutePath()).filePath(sBackupFile);
+
+    bool ok = QFile::copy(fileInfo.absoluteFilePath(), sBackupFileFullPath);
     if (!ok)
     {
         FILEMANAGER_LOG("Cannot backup the previous file");
@@ -666,7 +717,7 @@ Status FileManager::writePalette(const Object* object, const QString& dataFolder
     return Status::OK;
 }
 
-void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
+Status FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
 {
     // removes the previous directory first  - better approach
     removePFFTmpDirectory(strUnzipTarget);
@@ -675,6 +726,7 @@ void FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget
     Q_ASSERT(s.ok());
 
     mstrLastTempFolder = strUnzipTarget;
+    return s;
 }
 
 QList<ColorRef> FileManager::loadPaletteFile(QString strFilename)
@@ -721,7 +773,7 @@ QStringList FileManager::searchForUnsavedProjects()
     QStringList entries = pencil2DTempDir.entryList(nameFilter, QDir::Dirs | QDir::Readable);
 
     QStringList recoverables;
-    for (const QString path : entries)
+    for (const QString& path : entries)
     {
         QString fullPath = pencil2DTempDir.filePath(path);
         if (isProjectRecoverable(fullPath))

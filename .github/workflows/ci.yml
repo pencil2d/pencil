@@ -30,21 +30,17 @@ jobs:
           #      working inside Docker, however so far I haven’t been able to
           #      figure out precisely *which* privileges are needed.
           container: { image: "ubuntu:16.04", options: --privileged }
-          upload-parent: linux_x86_64_parent
         - name: macOS x86_64
           os: macos-10.15
           container:
-          upload-parent: macos_x86_64_parent
         - name: Windows x86
           os: windows-2019
           arch: win32_msvc2019
           container:
-          upload-parent: windows_x86_parent
         - name: Windows x86_64
           os: windows-2019
           arch: win64_msvc2019_64
           container:
-          upload-parent: windows_x86_64_parent
 
     name: ${{matrix.name}}
     runs-on: ${{matrix.os}}
@@ -62,12 +58,7 @@ jobs:
         apt-get update -yq
         apt-get install -yq --no-install-suggests --no-install-recommends git
     - name: Check out repository
-      uses: actions/checkout@v2
-    - name: Install Qt (Windows)
-      if: runner.os == 'Windows'
-      uses: jurplel/install-qt-action@v2
-      with:
-        arch: ${{matrix.arch}}
+      uses: actions/checkout@v3
     - name: Install dependencies
       uses: ./.github/actions/install-dependencies
       with:
@@ -78,20 +69,13 @@ jobs:
       with:
         arch: ${{matrix.arch}}
 
-    - name: Create build directory
-      run: mkdir build
-    - name: Configure build (Nightly Build)
-      if: github.ref != 'refs/heads/release'
-      working-directory: build
-      run: qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_NIGHTLY
-    - name: Configure build (Release)
-      if: github.ref == 'refs/heads/release'
-      working-directory: build
-      run: qmake ../ PREFIX=/usr CONFIG+=release CONFIG+=GIT CONFIG+=PENCIL2D_RELEASE
+    - name: Configure build
+      run: mkdir build; qmake -o build PREFIX=/usr CONFIG+=release CONFIG+=GIT
+        CONFIG+=PENCIL2D_${{github.ref == 'refs/heads/release' && 'RELEASE' || 'NIGHTLY'}}
 
     - name: Build Pencil2D
       working-directory: build
-      run: test "${{runner.os}}" != "Windows" && make || nmake
+      run: ${{runner.os != 'Windows' && 'make' || 'nmake'}}
 
     - name: Run tests
       env: { QT_QPA_PLATFORM: minimal }
@@ -104,8 +88,10 @@ jobs:
         arch: ${{matrix.arch}}
 
     - name: Upload package
-      uses: ./.github/actions/upload-package
+      uses: actions/upload-artifact@v3
       with:
-        google-private-key: ${{secrets.google_private_key}}
-        parent: ${{secrets[matrix.upload-parent]}}
-        path: build/${{steps.package.outputs.package-name}}
+        name: ${{steps.package.outputs.output-basename}}
+        path: build/${{steps.package.outputs.output-basename}}*
+    - name: Generate summary
+      shell: bash
+      run: echo "Build will be available for download [here](https://get.pencil2d.org/@${{github.repository_owner}}/${{github.run_id}}/${{steps.package.outputs.output-basename}}) once the run is finished." > "${GITHUB_STEP_SUMMARY}"

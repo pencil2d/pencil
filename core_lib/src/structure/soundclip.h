@@ -31,7 +31,7 @@ public:
     ~SoundClip() override;
     SoundClip& operator=(const SoundClip& a);
 
-    SoundClip* clone() override;
+    SoundClip* clone() const override;
 
     Status init(const QString& strSoundFile);
     bool isValid() const;

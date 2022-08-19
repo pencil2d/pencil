@@ -38,8 +38,8 @@ class PointerEvent;
 class Properties
 {
 public:
-    qreal width = 1.f;
-    qreal feather = 1.f;
+    qreal width = 1.0;
+    qreal feather = 1.0;
     bool  pressure = true;
     int   invisibility = 0;
     int   preserveAlpha = 0;
@@ -56,6 +56,7 @@ public:
     int bucketFillToLayerMode = 0;
     int bucketFillReferenceMode = 0;
     bool  useFillContour = false;
+    bool  showSelectionInfo = true;
 };
 
 const int ON = 1;
@@ -128,6 +129,7 @@ public:
     virtual void setFillToLayer(int layerMode);
     virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
+    virtual void setShowSelectionInfo(const bool b);
 
     virtual bool leavingThisTool() { return true; }
     virtual bool switchingLayer() { return true; } // default state should be true

@@ -33,7 +33,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 #include "util.h"
-#include "editor.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "fileformat.h"
@@ -42,7 +41,6 @@ GNU General Public License for more details.
 
 Object::Object()
 {
-    setData(new ObjectData());
     mActiveFramePool.reset(new ActiveFramePool);
 }
 
@@ -208,14 +206,6 @@ void Object::setWorkingDir(const QString& path)
     mWorkingDirPath = path;
 }
 
-void Object::createDefaultLayers()
-{
-    // default layers
-    addNewCameraLayer();
-    addNewVectorLayer();
-    addNewBitmapLayer();
-}
-
 int Object::getMaxLayerID()
 {
     int maxId = 0;
@@ -344,7 +334,7 @@ bool Object::addLayer(Layer* layer)
 
 ColorRef Object::getColor(int index) const
 {
-    ColorRef result(Qt::white, QObject::tr("error"));
+    ColorRef result(Qt::white, tr("error"));
     if (index > -1 && index < mPalette.size())
     {
         result = mPalette.at(index);
@@ -636,30 +626,30 @@ bool Object::importPalette(const QString& filePath)
 void Object::loadDefaultPalette()
 {
     mPalette.clear();
-    addColor(ColorRef(QColor(Qt::black), QObject::tr("Black")));
-    addColor(ColorRef(QColor(Qt::red), QObject::tr("Red")));
-    addColor(ColorRef(QColor(Qt::darkRed), QObject::tr("Dark Red")));
-    addColor(ColorRef(QColor(255, 128, 0), QObject::tr("Orange")));
-    addColor(ColorRef(QColor(128, 64, 0), QObject::tr("Dark Orange")));
-    addColor(ColorRef(QColor(Qt::yellow), QObject::tr("Yellow")));
-    addColor(ColorRef(QColor(Qt::darkYellow), QObject::tr("Dark Yellow")));
-    addColor(ColorRef(QColor(Qt::green), QObject::tr("Green")));
-    addColor(ColorRef(QColor(Qt::darkGreen), QObject::tr("Dark Green")));
-    addColor(ColorRef(QColor(Qt::cyan), QObject::tr("Cyan")));
-    addColor(ColorRef(QColor(Qt::darkCyan), QObject::tr("Dark Cyan")));
-    addColor(ColorRef(QColor(Qt::blue), QObject::tr("Blue")));
-    addColor(ColorRef(QColor(Qt::darkBlue), QObject::tr("Dark Blue")));
-    addColor(ColorRef(QColor(255, 255, 255), QObject::tr("White")));
-    addColor(ColorRef(QColor(220, 220, 229), QObject::tr("Very Light Grey")));
-    addColor(ColorRef(QColor(Qt::lightGray), QObject::tr("Light Grey")));
-    addColor(ColorRef(QColor(Qt::gray), QObject::tr("Grey")));
-    addColor(ColorRef(QColor(Qt::darkGray), QObject::tr("Dark Grey")));
-    addColor(ColorRef(QColor(255, 227, 187), QObject::tr("Pale Orange Yellow")));
-    addColor(ColorRef(QColor(221, 196, 161), QObject::tr("Pale Grayish Orange Yellow")));
-    addColor(ColorRef(QColor(255, 214, 156), QObject::tr("Orange Yellow ")));
-    addColor(ColorRef(QColor(207, 174, 127), QObject::tr("Grayish Orange Yellow")));
-    addColor(ColorRef(QColor(255, 198, 116), QObject::tr("Light Orange Yellow")));
-    addColor(ColorRef(QColor(227, 177, 105), QObject::tr("Light Grayish Orange Yellow")));
+    addColor(ColorRef(QColor(Qt::black), tr("Black")));
+    addColor(ColorRef(QColor(Qt::red), tr("Red")));
+    addColor(ColorRef(QColor(Qt::darkRed), tr("Dark Red")));
+    addColor(ColorRef(QColor(255, 128, 0), tr("Orange")));
+    addColor(ColorRef(QColor(128, 64, 0), tr("Dark Orange")));
+    addColor(ColorRef(QColor(Qt::yellow), tr("Yellow")));
+    addColor(ColorRef(QColor(Qt::darkYellow), tr("Dark Yellow")));
+    addColor(ColorRef(QColor(Qt::green), tr("Green")));
+    addColor(ColorRef(QColor(Qt::darkGreen), tr("Dark Green")));
+    addColor(ColorRef(QColor(Qt::cyan), tr("Cyan")));
+    addColor(ColorRef(QColor(Qt::darkCyan), tr("Dark Cyan")));
+    addColor(ColorRef(QColor(Qt::blue), tr("Blue")));
+    addColor(ColorRef(QColor(Qt::darkBlue), tr("Dark Blue")));
+    addColor(ColorRef(QColor(255, 255, 255), tr("White")));
+    addColor(ColorRef(QColor(220, 220, 229), tr("Very Light Grey")));
+    addColor(ColorRef(QColor(Qt::lightGray), tr("Light Grey")));
+    addColor(ColorRef(QColor(Qt::gray), tr("Grey")));
+    addColor(ColorRef(QColor(Qt::darkGray), tr("Dark Grey")));
+    addColor(ColorRef(QColor(255, 227, 187), tr("Pale Orange Yellow")));
+    addColor(ColorRef(QColor(221, 196, 161), tr("Pale Grayish Orange Yellow")));
+    addColor(ColorRef(QColor(255, 214, 156), tr("Orange Yellow ")));
+    addColor(ColorRef(QColor(207, 174, 127), tr("Grayish Orange Yellow")));
+    addColor(ColorRef(QColor(255, 198, 116), tr("Light Orange Yellow")));
+    addColor(ColorRef(QColor(227, 177, 105), tr("Light Grayish Orange Yellow")));
 }
 
 void Object::paintImage(QPainter& painter,int frameNumber,
@@ -861,10 +851,9 @@ int Object::getLayerCount() const
     return mLayers.size();
 }
 
-void Object::setData(const ObjectData* d)
+void Object::setData(const ObjectData& d)
 {
-    Q_ASSERT(d != nullptr);
-    mData = *d;
+    mData = d;
 }
 
 int Object::totalKeyFrameCount() const
@@ -887,10 +876,13 @@ void Object::updateActiveFrames(int frame) const
 
     for (Layer* layer : mLayers)
     {
-        for (int k = beginFrame; k < endFrame; ++k)
+        if (layer->visible())
         {
-            KeyFrame* key = layer->getKeyFrameAt(k);
-            mActiveFramePool->put(key);
+            for (int k = beginFrame; k < endFrame; ++k)
+            {
+                KeyFrame* key = layer->getKeyFrameAt(k);
+                mActiveFramePool->put(key);
+            }
         }
     }
 }

@@ -35,15 +35,20 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    BaseTool* currentTool() { return mCurrentTool; }
+    BaseTool* currentTool();
     BaseTool* getTool(ToolType eToolType);
     void setDefaultTool();
     void setCurrentTool(ToolType eToolType);
+    void tabletSwitchToEraser();
+    void tabletRestorePrevTool();
+    bool setTemporaryTool(ToolType eToolType, QFlags<Qt::Key> keys, Qt::KeyboardModifiers modifiers);
+    bool setTemporaryTool(ToolType eToolType, Qt::MouseButtons buttons);
+    bool tryClearTemporaryTool(Qt::Key key);
+    bool tryClearTemporaryTool(Qt::MouseButton button);
+    void clearTemporaryTool();
     void cleanupAllToolsData();
     bool leavingThisTool();
 
-    void tabletSwitchToEraser();
-    void tabletRestorePrevTool();
     int propertySwitch(bool condition, int property);
 
 signals:
@@ -75,11 +80,18 @@ public slots:
     void setBucketFillReferenceMode(int referenceMode);
     void setBucketFillExpand(int);
     void setUseFillContour(bool);
+    void setShowSelectionInfo(bool b);
 
 private:
+    void setTemporaryTool(ToolType eToolType);
+
     BaseTool* mCurrentTool = nullptr;
-    ToolType  meTabletBackupTool = PENCIL;
-    bool mIsSwitchedToEraser = false;
+    BaseTool* mTabletEraserTool = nullptr;
+    BaseTool* mTemporaryTool = nullptr;
+    Qt::KeyboardModifiers mTemporaryTriggerModifiers = Qt::NoModifier;
+    QFlags<Qt::Key> mTemporaryTriggerKeys;
+    Qt::MouseButtons mTemporaryTriggerMouseButtons = Qt::NoButton;
+
     QHash<ToolType, BaseTool*> mToolSetHash;
 
     int mOldValue = 0;

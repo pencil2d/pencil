@@ -17,7 +17,6 @@ GNU General Public License for more details.
 #ifndef BITMAP_IMAGE_H
 #define BITMAP_IMAGE_H
 
-#include <memory>
 #include <QPainter>
 #include "keyframe.h"
 
@@ -31,13 +30,13 @@ public:
     BitmapImage(const QPoint& topLeft, const QImage& image);
     BitmapImage(const QPoint& topLeft, const QString& path);
 
-    ~BitmapImage();
+    ~BitmapImage() override;
     BitmapImage& operator=(const BitmapImage& a);
 
-    BitmapImage* clone() override;
+    BitmapImage* clone() const override;
     void loadFile() override;
     void unloadFile() override;
-    bool isLoaded() override;
+    bool isLoaded() const override;
     quint64 memoryUsage() override;
 
     void paintImage(QPainter& painter);
@@ -75,9 +74,14 @@ public:
     void clear(QRectF rectangle) { clear(rectangle.toRect()); }
 
     static inline bool compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache);
-    static bool floodFill(BitmapImage* replaceImage, BitmapImage* targetImage, QRect cameraRect, QPoint point, QRgb fillColor, int tolerance);
-    static void expandFill(BitmapImage* targetImage, QRgb fillColor, int expand);
-    static QVector<QVector<int> > manhattanDistance(BitmapImage* image, QRgb& searchColor);
+    static bool floodFill(BitmapImage** replaceImage, const BitmapImage* targetImage, const QRect& cameraRect, const QPoint& point, const QRgb& fillColor, int tolerance, const int expandValue);
+    static bool* floodFillPoints(const BitmapImage* targetImage,
+                                QRect searchBounds, const QRect& maxBounds,
+                                QPoint point,
+                                const int tolerance,
+                                QRect& newBounds,
+                                 bool &fillBorder);
+    static void expandFill(bool* fillPixels, const QRect& searchBounds, const QRect& maxBounds, int expand);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
     void drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
@@ -125,8 +129,8 @@ protected:
     void setCompositionModeBounds(QRect sourceBounds, bool isSourceMinBounds, QPainter::CompositionMode cm);
 
 private:
-    std::unique_ptr<QImage> mImage;
-    QRect mBounds;
+    QImage mImage;
+    QRect mBounds{0, 0, 0, 0};
 
     /** @see isMinimallyBounded() */
     bool mMinBound = true;
