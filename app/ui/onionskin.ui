@@ -13,7 +13,7 @@
   <property name="minimumSize">
    <size>
     <width>187</width>
-    <height>121</height>
+    <height>122</height>
    </size>
   </property>
   <property name="floating">
@@ -77,7 +77,7 @@
          <x>0</x>
          <y>0</y>
          <width>213</width>
-         <height>361</height>
+         <height>360</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -136,7 +136,7 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/app/icons/onion/onion-prev.svg</normaloff>:/app/icons/onion/onion-prev.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onion-red.svg</normaloff>:/icons/themes/playful/onion/onion-red.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -190,7 +190,7 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/app/icons/onion/onion-red.svg</normaloff>:/app/icons/onion/onion-red.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onion-prev.svg</normaloff>:/icons/themes/playful/onion/onion-prev.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -243,7 +243,7 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/app/icons/onion/onion-next.svg</normaloff>:/app/icons/onion/onion-next.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onion-blue.svg</normaloff>:/icons/themes/playful/onion/onion-blue.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -309,7 +309,7 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/app/icons/onion/onion-blue.svg</normaloff>:/app/icons/onion/onion-blue.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onion-next.svg</normaloff>:/icons/themes/playful/onion/onion-next.svg</iconset>
              </property>
              <property name="iconSize">
               <size>

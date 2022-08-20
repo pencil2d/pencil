@@ -45,7 +45,7 @@ void HandTool::loadSettings()
 
 QCursor HandTool::cursor()
 {
-    return mIsHeld ? QCursor(QPixmap(":/icons/hand-closed.svg")) : QCursor(QPixmap(":/icons/hand-open.svg"));
+    return mIsHeld ? QCursor(QPixmap(":icons/themes/playful/tools/hand-closed.svg")) : QCursor(QPixmap(":icons/themes/playful/tools/hand.svg"));
 }
 
 void HandTool::pointerPressEvent(PointerEvent*)

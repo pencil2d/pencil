@@ -50,7 +50,7 @@ void TimeControls::initUI()
 
     mFps = mFpsBox->value();
     mTimecodeSelect = new QToolButton(this);
-    mTimecodeSelect->setIcon(QIcon(":app/icons/new/svg/more_options.svg"));
+    mTimecodeSelect->setIcon(QIcon(":icons/themes/playful/tools/more_options.svg"));
     mTimecodeSelect->setPopupMode(QToolButton::InstantPopup);
     mTimecodeSelect->addAction(mNoTimecodeAction = new QAction(tr("No text"), this));
     mTimecodeSelect->addAction(mOnlyFramesAction = new QAction(tr("Frames"), this));
@@ -106,17 +106,17 @@ void TimeControls::initUI()
     mJumpToEndButton = new QPushButton(this);
     mJumpToStartButton = new QPushButton(this);
 
-    mLoopIcon = QIcon(":icons/controls/loop.svg");
+    mLoopIcon = QIcon(":icons/themes/playful/controls/loop.svg");
     mSoundIcon = QIcon();
-    mSoundIcon.addFile(":icons/controls/sound.svg", QSize(), QIcon::Normal, QIcon::On);
-    mSoundIcon.addFile(":icons/controls/sound-disabled.svg", QSize(), QIcon::Normal, QIcon::Off);
+    mSoundIcon.addFile(":icons/themes/playful/controls/sound.svg", QSize(), QIcon::Normal, QIcon::On);
+    mSoundIcon.addFile(":icons/themes/playful/controls/sound-disabled.svg", QSize(), QIcon::Normal, QIcon::Off);
     mSoundScrubIcon = QIcon();
-    mSoundScrubIcon.addFile(":icons/controls/soundscrub.svg", QSize(), QIcon::Normal, QIcon::On);
-    mSoundScrubIcon.addFile(":icons/controls/soundscrub-disabled.svg", QSize(), QIcon::Normal, QIcon::Off);
-    mJumpToEndIcon = QIcon(":icons/controls/endplay.svg");
-    mJumpToStartIcon = QIcon(":icons/controls/startplay.svg");
-    mStartIcon = QIcon(":icons/controls/play.svg");
-    mStopIcon = QIcon(":icons/controls/stop.svg");
+    mSoundScrubIcon.addFile(":icons/themes/playful/controls/soundscrub.svg", QSize(), QIcon::Normal, QIcon::On);
+    mSoundScrubIcon.addFile(":icons/themes/playful/controls/soundscrub-disabled.svg", QSize(), QIcon::Normal, QIcon::Off);
+    mJumpToEndIcon = QIcon(":icons/themes/playful/controls/endplay.svg");
+    mJumpToStartIcon = QIcon(":icons/themes/playful/controls/startplay.svg");
+    mStartIcon = QIcon(":icons/themes/playful/controls/play.svg");
+    mStopIcon = QIcon(":icons/themes/playful/controls/stop.svg");
     mPlayButton->setIcon(mStartIcon);
     mLoopButton->setIcon(mLoopIcon);
     mSoundButton->setIcon(mSoundIcon);

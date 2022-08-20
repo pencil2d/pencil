@@ -47,7 +47,7 @@
          <x>0</x>
          <y>0</y>
          <width>576</width>
-         <height>136</height>
+         <height>133</height>
         </rect>
        </property>
        <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -76,7 +76,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/app/icons/display/mirror-horizontal.svg</normaloff>:/app/icons/display/mirror-horizontal.svg</iconset>
+            <normaloff>:/icons/themes/playful/display/mirror-horizontal.svg</normaloff>:/icons/themes/playful/display/mirror-horizontal.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -108,7 +108,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/app/icons/display/mirror-vertical.svg</normaloff>:/app/icons/display/mirror-vertical.svg</iconset>
+            <normaloff>:/icons/themes/playful/display/mirror-vertical.svg</normaloff>:/icons/themes/playful/display/mirror-vertical.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -140,7 +140,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/app/icons/display/lines-invisible.svg</normaloff>:/app/icons/display/lines-invisible.svg</iconset>
+            <normaloff>:/icons/themes/playful/display/lines-invisible.svg</normaloff>:/icons/themes/playful/display/lines-invisible.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -166,7 +166,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/app/icons/display/lines-outline.svg</normaloff>:/app/icons/display/lines-outline.svg</iconset>
+            <normaloff>:/icons/themes/playful/display/lines-outline.svg</normaloff>:/icons/themes/playful/display/lines-outline.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -192,7 +192,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/display/overlay-center.svg</normaloff>:/icons/display/overlay-center.svg</iconset>
+            <normaloff>:/icons/themes/playful/display/overlay-center.svg</normaloff>:/icons/themes/playful/display/overlay-center.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -218,7 +218,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/display/overlay-golden-ratio.svg</normaloff>:/icons/display/overlay-golden-ratio.svg</iconset>
+            <normaloff>:/icons/themes/playful/display/overlay-golden-ratio.svg</normaloff>:/icons/themes/playful/display/overlay-golden-ratio.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -244,7 +244,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/display/overlay-thirds.svg</normaloff>:/icons/display/overlay-thirds.svg</iconset>
+            <normaloff>:/icons/themes/playful/display/overlay-thirds.svg</normaloff>:/icons/themes/playful/display/overlay-thirds.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -270,7 +270,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/display/overlay-safe.svg</normaloff>:/icons/display/overlay-safe.svg</iconset>
+            <normaloff>:/icons/themes/playful/display/overlay-safe.svg</normaloff>:/icons/themes/playful/display/overlay-safe.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -293,7 +293,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/overlayPerspective1.png</normaloff>:/icons/overlayPerspective1.png</iconset>
+            <normaloff>:/icons/themes/playful/display/perspective-onepoint.svg</normaloff>:/icons/themes/playful/display/perspective-onepoint.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -316,7 +316,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/overlayPerspective2.png</normaloff>:/icons/overlayPerspective2.png</iconset>
+            <normaloff>:/icons/themes/playful/display/perspective-twopoints.svg</normaloff>:/icons/themes/playful/display/perspective-twopoints.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -339,7 +339,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/overlayPerspective3.png</normaloff>:/icons/overlayPerspective3.png</iconset>
+            <normaloff>:/icons/themes/playful/display/perspective-threepoints.svg</normaloff>:/icons/themes/playful/display/perspective-threepoints.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -362,7 +362,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/overlayAngle.png</normaloff>:/icons/overlayAngle.png</iconset>
+            <normaloff>:/icons/themes/playful/display/perspective-angle.svg</normaloff>:/icons/themes/playful/display/perspective-angle.svg</iconset>
           </property>
           <property name="iconSize">
            <size>

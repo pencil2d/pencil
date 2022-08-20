@@ -72,17 +72,17 @@ void TimeLine::initUI()
     layerLabel->setIndent(5);
 
     QToolButton* addLayerButton = new QToolButton(this);
-    addLayerButton->setIcon(QIcon(":icons/controls/layer-add.svg"));
+    addLayerButton->setIcon(QIcon(":icons/themes/playful/controls/layer-add.svg"));
     addLayerButton->setToolTip(tr("Add Layer"));
     addLayerButton->setFixedSize(24, 24);
 
     QToolButton* removeLayerButton = new QToolButton(this);
-    removeLayerButton->setIcon(QIcon(":icons/controls/layer-remove.svg"));
+    removeLayerButton->setIcon(QIcon(":icons/themes/playful/controls/layer-remove.svg"));
     removeLayerButton->setToolTip(tr("Remove Layer"));
     removeLayerButton->setFixedSize(24, 24);
 
     QToolButton* duplicateLayerButton = new QToolButton(this);
-    duplicateLayerButton->setIcon(QIcon(":icons/controls/duplicate.png"));
+    duplicateLayerButton->setIcon(QIcon(":icons/themes/playful/controls/duplicate.png")); // TODO: missing icon
     duplicateLayerButton->setToolTip(tr("Duplicate Layer"));
     duplicateLayerButton->setFixedSize(24, 24);
 
@@ -97,10 +97,10 @@ void TimeLine::initUI()
     leftToolBarLayout->addWidget(layerButtons);
     leftToolBar->setLayout(leftToolBarLayout);
 
-    QAction* newBitmapLayerAct = new QAction(QIcon(":icons/timeline/layer-bitmap-2.svg"), tr("New Bitmap Layer"), this);
-    QAction* newVectorLayerAct = new QAction(QIcon(":icons/timeline/layer-vector-2.svg"), tr("New Vector Layer"), this);
-    QAction* newSoundLayerAct = new QAction(QIcon(":icons/timeline/layer-sound-2.svg"), tr("New Sound Layer"), this);
-    QAction* newCameraLayerAct = new QAction(QIcon(":icons/timeline/layer-camera-2.svg"), tr("New Camera Layer"), this);
+    QAction* newBitmapLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-bitmap.svg"), tr("New Bitmap Layer"), this);
+    QAction* newVectorLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-vector.svg"), tr("New Vector Layer"), this);
+    QAction* newSoundLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-sound.svg"), tr("New Sound Layer"), this);
+    QAction* newCameraLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-camera.svg"), tr("New Camera Layer"), this);
 
     QMenu* layerMenu = new QMenu(tr("&Layer", "Timeline add-layer menu"), this);
     layerMenu->addAction(newBitmapLayerAct);
@@ -124,17 +124,17 @@ void TimeLine::initUI()
     keyLabel->setIndent(5);
 
     QToolButton* addKeyButton = new QToolButton(this);
-    addKeyButton->setIcon(QIcon(":icons/controls/frame-add.svg"));
+    addKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-add.svg"));
     addKeyButton->setToolTip(tr("Add Frame"));
     addKeyButton->setFixedSize(24, 24);
 
     QToolButton* removeKeyButton = new QToolButton(this);
-    removeKeyButton->setIcon(QIcon(":icons/controls/frame-remove.svg"));
+    removeKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-remove.svg"));
     removeKeyButton->setToolTip(tr("Remove Frame"));
     removeKeyButton->setFixedSize(24, 24);
 
     QToolButton* duplicateKeyButton = new QToolButton(this);
-    duplicateKeyButton->setIcon(QIcon(":icons/controls/frame-duplicate.svg"));
+    duplicateKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-duplicate.svg"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
     duplicateKeyButton->setFixedSize(24, 24);
 

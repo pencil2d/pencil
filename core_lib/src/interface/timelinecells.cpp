@@ -700,10 +700,10 @@ void TimeLineCells::paintLabel(QPainter& painter, const Layer* layer,
     painter.drawEllipse(x + 6, y + 4, 9, 9);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
-    if (layer->type() == Layer::BITMAP) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":/icons/timeline/layer-bitmap-2.svg"));
-    if (layer->type() == Layer::VECTOR) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":/icons/timeline/layer-vector-2.svg"));
-    if (layer->type() == Layer::SOUND) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":/icons/timeline/layer-sound-2.svg"));
-    if (layer->type() == Layer::CAMERA) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":/icons/timeline/layer-camera-2.svg"));
+    if (layer->type() == Layer::BITMAP) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":icons/themes/playful/timeline/layer-bitmap.svg"));
+    if (layer->type() == Layer::VECTOR) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":icons/themes/playful/timeline/layer-vector.svg"));
+    if (layer->type() == Layer::SOUND) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":icons/themes/playful/timeline/layer-sound.svg"));
+    if (layer->type() == Layer::CAMERA) painter.drawPixmap(QPoint(22, y + 2), QPixmap(":icons/themes/playful/timeline/layer-camera.svg"));
 
     if (selected)
     {

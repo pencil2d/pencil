@@ -82,7 +82,7 @@ QCursor BucketTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        QPixmap pixmap(":icons/bucket-tool.svg");
+        QPixmap pixmap(":icons/themes/playful/tools/bucket.svg");
         QPainter painter(&pixmap);
         painter.end();
 
@@ -90,7 +90,7 @@ QCursor BucketTool::cursor()
     }
     else
     {
-        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
+        return QCursor(QPixmap(":icons/themes/playful/tools/cross.png"), 10, 10);
     }
 }
 

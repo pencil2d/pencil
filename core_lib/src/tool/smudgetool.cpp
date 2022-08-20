@@ -106,10 +106,10 @@ QCursor SmudgeTool::cursor()
 {
     qDebug() << "smudge tool";
     if (toolMode == 0) { //normal mode
-        return QCursor(QPixmap(":icons/smudge.svg"), 0, 16);
+        return QCursor(QPixmap(":icons/themes/playful/tools/smudge.svg"), 0, 16);
     }
     else { // blured mode
-        return QCursor(QPixmap(":icons/liquify.svg"), -4, 16);
+        return QCursor(QPixmap(":icons/themes/playful/tools/liquify.svg"), -4, 16); // TODO: Missing icon
     }
 }
 

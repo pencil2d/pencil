@@ -56,7 +56,7 @@
          <x>0</x>
          <y>0</y>
          <width>88</width>
-         <height>483</height>
+         <height>480</height>
         </rect>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -91,7 +91,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/clear-frame.svg</normaloff>:/icons/toolsclear-frame.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/clear-frame.svg</normaloff>:/icons/themes/playful/tools/clear-frame.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -120,7 +120,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/pencil.svg</normaloff>:/icons/tools/pencil.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/pencil.svg</normaloff>:/icons/themes/playful/tools/pencil.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -155,7 +155,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/eraser.svg</normaloff>:/icons/tools/eraser.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/eraser.svg</normaloff>:/icons/themes/playful/tools/eraser.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -187,7 +187,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/selection.svg</normaloff>:/icons/tools/selection.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/selection.svg</normaloff>:/icons/themes/playful/tools/selection.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -219,7 +219,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/arrow.svg</normaloff>:/icons/tools/arrow.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/move.svg</normaloff>:/icons/themes/playful/tools/move.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -251,7 +251,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/pen.svg</normaloff>:/icons/tools/pen.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/pen.svg</normaloff>:/icons/themes/playful/tools/pen.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -283,7 +283,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/hand.svg</normaloff>:/icons/tools/hand.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/hand.svg</normaloff>:/icons/themes/playful/tools/hand.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -315,7 +315,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/line.svg</normaloff>:/icons/tools/line.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/line.svg</normaloff>:/icons/themes/playful/tools/line.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -347,7 +347,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/bucket.svg</normaloff>:/icons/tools/bucket.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/bucket.svg</normaloff>:/icons/themes/playful/tools/bucket.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -379,7 +379,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/eyedropper.svg</normaloff>:/icons/tools/eyedropper.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/eyedropper.svg</normaloff>:/icons/themes/playful/tools/eyedropper.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -411,7 +411,7 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/tools/brush.svg</normaloff>:/icons/tools/brush.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/brush.svg</normaloff>:/icons/themes/playful/tools/brush.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -442,7 +442,7 @@
            </size>
           </property>
           <property name="icon">
-           <iconset resource="../data/app.qrc">
+           <iconset>
             <normaloff>:/icons/tools/smudge.svg</normaloff>:/icons/tools/smudge.svg</iconset>
           </property>
           <property name="iconSize">

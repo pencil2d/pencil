@@ -49,11 +49,11 @@ QCursor EyedropperTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/eyedropper.svg"), 0, 15);
+        return QCursor(QPixmap(":icons/themes/playful/tools/eyedropper.svg"), 0, 15);
     }
     else
     {
-        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
+        return QCursor(QPixmap(":icons/themes/playful/tools/cross.png"), 10, 10);
     }
 }
 

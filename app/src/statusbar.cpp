@@ -39,7 +39,7 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
     addWidget(mToolLabel, 1);
 
     mModifiedLabel = new QLabel(this);
-    mModifiedLabel->setPixmap(QPixmap(":/icons/save.png"));
+    mModifiedLabel->setPixmap(QPixmap(":/icons/themes/playful/menubar/save.svg"));
     updateModifiedStatus(false);
     addPermanentWidget(mModifiedLabel);
 
@@ -135,17 +135,17 @@ void StatusBar::updateToolStatus(ToolType tool)
     }
 
     static QPixmap toolIcons[TOOL_TYPE_COUNT]{
-        {":icons/new/svg/pencil_detailed.svg"},
-        {":icons/new/svg/eraser_detailed.svg"},
-        {":icons/new/svg/selection.svg"},
-        {":icons/new/svg/arrow.svg"},
-        {":icons/new/svg/hand_detailed.svg"},
-        {":icons/new/svg/smudge_detailed.svg"},
-        {":icons/new/svg/pen_detailed.svg"},
-        {":icons/new/svg/line.svg"},
-        {":icons/new/svg/bucket_detailed.svg"},
-        {":icons/new/svg/eyedropper_detailed.svg"},
-        {":icons/new/svg/brush_detailed.svg"}
+        {":icons/themes/playful/tools/pencil.svg"},
+        {":icons/themes/playful/tools/eraser.svg"},
+        {":icons/themes/playful/tools/selection.svg"},
+        {":icons/themes/playful/tools/move.svg"},
+        {":icons/themes/playful/tools/hand.svg"},
+        {":icons/themes/playful/tools/smudge.svg"},
+        {":icons/themes/playful/tools/pen.svg"},
+        {":icons/themes/playful/tools/line.svg"},
+        {":icons/themes/playful/tools/bucket.svg"},
+        {":icons/themes/playful/tools/eyedropper.svg"},
+        {":icons/themes/playful/tools/brush.svg"}
     };
     mToolIcon->setPixmap(toolIcons[tool]);
     mToolIcon->setToolTip(BaseTool::TypeName(tool));

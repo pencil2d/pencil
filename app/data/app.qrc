@@ -1,97 +1,96 @@
 <RCC>
     <qresource prefix="/">
-        
-        <file>icons/tools/arrow.svg</file>
-        <file>icons/tools/brush.svg</file>
-        <file>icons/tools/bucket.svg</file>
-        <file>icons/tools/eraser.svg</file>
-        <file>icons/tools/eyedropper.svg</file>
-        <file>icons/tools/hand.svg</file>
-        <file>icons/tools/line.svg</file>
-        <file>icons/tools/pen.svg</file>
-        <file>icons/tools/pencil.svg</file>
-        <file>icons/tools/selection.svg</file>
-        <file>icons/tools/smudge.svg</file>
-        <file>icons/tools/clear-frame.svg</file>
-        <file>icons/tools/checkerboard_smaller</file>
-        <file>icons/tools/arrow-diagonal-left.svg</file>
-        <file>icons/tools/arrow-diagonal-right.svg</file>
-        <file>icons/tools/arrow-horizontal.svg</file>
-        <file>icons/tools/arrow-select-move.svg</file>
-        <file>icons/tools/arrow-vertical.svg</file>
-        <file>icons/tools/camera.svg</file>
-        <file>icons/tools/shape.svg</file>
-        <file>icons/tools/text.svg</file>
-        
-        <file>icons/timeline/layer-vector-2.svg</file>
-        <file>icons/timeline/layer-bitmap-2.svg</file>
-        <file>icons/timeline/layer-sound-2.svg</file>
-        <file>icons/timeline/layer-camera-2.svg</file>
-        
-        <file>icons/controls/remove.svg</file>
-        <file>icons/controls/add.svg</file>
-        <file>icons/controls/stop.svg</file>
-        <file>icons/controls/sound-disabled.svg</file>
-        <file>icons/controls/play.svg</file>
-        <file>icons/controls/loop.svg</file>
-        <file>icons/controls/sound.svg</file>
-        <file>icons/controls/endplay.svg</file>
-        <file>icons/controls/startplay.svg</file>
-        <file>icons/controls/duplicate.svg</file>
-        <file>icons/controls/soundscrub.svg</file>
-        <file>icons/controls/soundscrub-disabled.svg</file>
-        <file>icons/controls/frame-remove.svg</file>
-        <file>icons/controls/frame-add.svg</file>
-        <file>icons/controls/frame-duplicate.svg</file>
-        <file>icons/controls/layer-add.svg</file>
-        <file>icons/controls/layer-remove.svg</file>
-        
-        <file>icons/preferences/preferences-pencil.svg</file>
-        <file>icons/preferences/preferences-timelines.svg</file>
-        <file>icons/preferences/preferences-files.svg</file>
-        <file>icons/preferences/preferences-shortcuts.svg</file>
-        <file>icons/preferences/preferences-tools.svg</file>
-        
-        <file>icons/display/overlay-center.svg</file>
-        <file>icons/display/overlay-golden-ratio.svg</file>
-        <file>icons/display/overlay-safe.svg</file>
-        <file>icons/display/overlay-thirds.svg</file>
-        
-        <file>icons/menubar/open.svg</file>
-        <file>icons/menubar/copy.svg</file>
-        <file>icons/menubar/paste.svg</file>
-        <file>icons/menubar/next.svg</file>
-        <file>icons/menubar/prev.svg</file>
-        <file>icons/menubar/save.svg</file>
-        <file>icons/menubar/save-as.svg</file>
-        <file>icons/menubar/undo.svg</file>
-        <file>icons/menubar/redo.svg</file>
-        <file>icons/menubar/new.svg</file>
-        <file>icons/menubar/exit.svg</file>
-        <file>icons/menubar/cut.svg</file>
-        <file>icons/menubar/clear-frame.svg</file>
-        <file>icons/menubar/magnify.svg</file>
-        
         <file>background/checkerboard.png</file>
         <file>icons/logo.png</file>
         <file>icons/icon.png</file>
         <file>background/weave.jpg</file>
         <file>background/dots.png</file>
         <file>background/grid.jpg</file>
-        
+        <file>icons/themes/playful/controls/loop.svg</file>
+        <file>icons/themes/playful/controls/add.svg</file>
+        <file>icons/themes/playful/controls/duplicate.svg</file>
+        <file>icons/themes/playful/controls/endplay.svg</file>
+        <file>icons/themes/playful/controls/frame-add.svg</file>
+        <file>icons/themes/playful/controls/frame-duplicate.svg</file>
+        <file>icons/themes/playful/controls/frame-remove.svg</file>
+        <file>icons/themes/playful/controls/layer-add.svg</file>
+        <file>icons/themes/playful/controls/layer-remove.svg</file>
+        <file>icons/themes/playful/controls/play.svg</file>
+        <file>icons/themes/playful/controls/remove.svg</file>
+        <file>icons/themes/playful/controls/sound-disabled.svg</file>
+        <file>icons/themes/playful/controls/sound.svg</file>
+        <file>icons/themes/playful/controls/soundscrub-disabled.svg</file>
+        <file>icons/themes/playful/controls/soundscrub.svg</file>
+        <file>icons/themes/playful/controls/startplay.svg</file>
+        <file>icons/themes/playful/controls/stop.svg</file>
+        <file>icons/themes/playful/dialog-error.svg</file>
+        <file>icons/themes/playful/display/perspective-angle.svg</file>
+        <file>icons/themes/playful/display/perspective-onepoint.svg</file>
+        <file>icons/themes/playful/display/perspective-threepoints.svg</file>
+        <file>icons/themes/playful/display/perspective-twopoints.svg</file>
+        <file>icons/themes/playful/display/lines-invisible.svg</file>
+        <file>icons/themes/playful/display/lines-outline.svg</file>
+        <file>icons/themes/playful/display/mirror-horizontal.svg</file>
+        <file>icons/themes/playful/display/mirror-vertical.svg</file>
+        <file>icons/themes/playful/display/overlay-center.svg</file>
+        <file>icons/themes/playful/display/overlay-golden-ratio.svg</file>
+        <file>icons/themes/playful/display/overlay-safe.svg</file>
+        <file>icons/themes/playful/display/overlay-thirds.svg</file>
+        <file>icons/themes/playful/menubar/copy.svg</file>
+        <file>icons/themes/playful/menubar/cut.svg</file>
+        <file>icons/themes/playful/menubar/exit.svg</file>
+        <file>icons/themes/playful/menubar/magnify.svg</file>
+        <file>icons/themes/playful/menubar/new.svg</file>
+        <file>icons/themes/playful/menubar/next.svg</file>
+        <file>icons/themes/playful/menubar/open.svg</file>
+        <file>icons/themes/playful/menubar/paste.svg</file>
+        <file>icons/themes/playful/menubar/prev.svg</file>
+        <file>icons/themes/playful/menubar/redo.svg</file>
+        <file>icons/themes/playful/menubar/save-as.svg</file>
+        <file>icons/themes/playful/menubar/save.svg</file>
+        <file>icons/themes/playful/menubar/undo.svg</file>
+        <file>icons/themes/playful/onion/onion-blue.svg</file>
+        <file>icons/themes/playful/onion/onion-next.svg</file>
+        <file>icons/themes/playful/onion/onion-prev.svg</file>
+        <file>icons/themes/playful/onion/onion-red.svg</file>
+        <file>icons/themes/playful/preferences/preferences-general.svg</file>
+        <file>icons/themes/playful/preferences/preferences-shortcuts-alt-1.svg</file>
+        <file>icons/themes/playful/preferences/preferences-shortcuts-alt-2.svg</file>
+        <file>icons/themes/playful/preferences/preferences-timeline.svg</file>
+        <file>icons/themes/playful/preferences/preferences-files.svg</file>
+        <file>icons/themes/playful/preferences/preferences-shortcuts.svg</file>
+        <file>icons/themes/playful/preferences/preferences-tools.svg</file>
+        <file>icons/themes/playful/timeline/layer-bitmap.svg</file>
+        <file>icons/themes/playful/timeline/layer-camera.svg</file>
+        <file>icons/themes/playful/timeline/layer-sound.svg</file>
+        <file>icons/themes/playful/timeline/layer-vector.svg</file>
+        <file>icons/themes/playful/tools/hand.svg</file>
+        <file>icons/themes/playful/tools/move.svg</file>
+        <file>icons/themes/playful/tools/arrow-diagonal-left.svg</file>
+        <file>icons/themes/playful/tools/arrow-diagonal-right.svg</file>
+        <file>icons/themes/playful/tools/arrow-horizontal.svg</file>
+        <file>icons/themes/playful/tools/arrow-select-move.svg</file>
+        <file>icons/themes/playful/tools/arrow-vertical.svg</file>
+        <file>icons/themes/playful/tools/brush.svg</file>
+        <file>icons/themes/playful/tools/bucket.svg</file>
+        <file>icons/themes/playful/tools/camera.svg</file>
+        <file>icons/themes/playful/tools/checkerboard_smaller</file>
+        <file>icons/themes/playful/tools/clear-frame.svg</file>
+        <file>icons/themes/playful/tools/color-dialog.svg</file>
+        <file>icons/themes/playful/tools/eraser.svg</file>
+        <file>icons/themes/playful/tools/eyedropper.svg</file>
+        <file>icons/themes/playful/tools/hand-closed.svg</file>
+        <file>icons/themes/playful/tools/line.svg</file>
+        <file>icons/themes/playful/tools/more-options.svg</file>
+        <file>icons/themes/playful/tools/pen.svg</file>
+        <file>icons/themes/playful/tools/pencil.svg</file>
+        <file>icons/themes/playful/tools/selection.svg</file>
+        <file>icons/themes/playful/tools/shape.svg</file>
+        <file>icons/themes/playful/tools/text.svg</file>
+        <file>icons/themes/playful/menubar/magnify-decrease.svg</file>
+        <file>icons/themes/playful/menubar/magnify-increase.svg</file>
     </qresource>
     <qresource prefix="/app">
-        <file>icons/onion/onion-blue.svg</file>
-        <file>icons/onion/onion-red.svg</file>
-        <file>icons/onion/onion-next.svg</file>
-        <file>icons/onion/onion-prev.svg</file>
-        <file>icons/display/lines-invisible.svg</file>
-        <file>icons/display/lines-outline.svg</file>
-        <file>icons/display/mirror-horizontal.svg</file>
-        <file>icons/display/mirror-vertical.svg</file>
-        <file>icons/dialog-error.svg</file>
         <file>pencil2d_quick_guide.pdf</file>
-        <file>icons/tools/color-dialog.svg</file>
-        <file>icons/tools/more-options.svg</file>
     </qresource>
 </RCC>

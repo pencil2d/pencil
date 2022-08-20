@@ -366,7 +366,7 @@ void ColorPaletteWidget::palettePreferences()
 
 
     // Add to UI
-    ui->palettePref->setIcon(QIcon(":/app/icons/tools/more-options.svg"));
+    ui->palettePref->setIcon(QIcon(":/icons/themes/playful/tools/more-options.svg"));
     ui->palettePref->setIconSize(QSize(15,15));
     ui->palettePref->setArrowType(Qt::ArrowType::NoArrow);
     ui->palettePref->setStyleSheet(buttonStylesheet);

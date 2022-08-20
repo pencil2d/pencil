@@ -134,9 +134,9 @@ QCursor BrushTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/brush.svg"), 0, 13);
+        return QCursor(QPixmap(":icons/themes/playful/tools/brush.svg"), 0, 13);
     }
-    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
+    return QCursor(QPixmap(":icons/themes/playful/tools/cross.png"), 10, 10); // TODO: missing icon!
 }
 
 void BrushTool::pointerPressEvent(PointerEvent *event)
