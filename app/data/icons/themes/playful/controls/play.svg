@@ -1,24 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
-    <g id="Layer-2" serif:id="Layer 2" transform="matrix(1,0,0,1,0,-7.33333)">
-        <g id="path915" transform="matrix(0.387357,-0.223839,0.223641,0.3877,22.1817,19.0471)">
-            <clipPath id="_clip1">
-                <path d="M-4.099,-4.207L-26.437,-4.207L-48.776,-4.207L-37.607,-23.553L-26.437,-42.898L-15.268,-23.553L-4.099,-4.207Z" clip-rule="nonzero"/>
-            </clipPath>
-            <g clip-path="url(#_clip1)">
-                <g transform="matrix(1.9362,1.11786,-1.11688,1.93449,-29.8653,-47.4563)">
-                    <use xlink:href="#_Image2" x="2.441" y="1" width="17.306px" height="20px" transform="matrix(0.961422,0,0,1.00002,0,0)"/>
+    <g transform="matrix(0.387357,-0.223839,0.223641,0.3877,22.1817,11.7138)">
+        <g id="Layer-2" serif:id="Layer 2">
+            <path d="M-4.099,-4.207L-48.776,-4.207L-37.607,-23.553L-26.437,-42.898L-15.268,-23.553L-4.099,-4.207Z" style="fill:rgb(74,159,241);fill-rule:nonzero;"/>
+            <g>
+                <g transform="matrix(1.9362,1.11787,-1.11688,1.93448,-21.6749,-61.6425)">
+                    <path d="M2.348,8.333L2.348,28.333L10.999,23.333L19.653,18.333L16.799,16.683L9.573,20.859L5.203,23.383L5.203,9.983L2.348,8.333Z" style="fill:rgb(25,112,204);fill-rule:nonzero;"/>
+                </g>
+                <g transform="matrix(1.9362,1.11787,-1.11688,1.93448,-21.6749,-61.6425)">
+                    <path d="M2.348,8.333L2.348,11.19L10.999,16.19L17.181,19.762L19.653,18.333L10.999,13.333L2.348,8.333Z" style="fill:rgb(140,213,255);fill-rule:nonzero;"/>
                 </g>
             </g>
-        </g>
-        <path id="path922" d="M2.348,8.333L2.348,28.333L10.999,23.333L19.653,18.333L16.799,16.683L9.573,20.859L5.203,23.383L5.203,9.983L2.348,8.333Z" style="fill:rgb(25,112,204);fill-rule:nonzero;"/>
-        <path id="path897" d="M2.348,8.333L2.348,11.19L10.999,16.19L17.181,19.762L19.653,18.333L10.999,13.333L2.348,8.333Z" style="fill:rgb(140,213,255);fill-rule:nonzero;"/>
-        <g id="path925" transform="matrix(0.387357,-0.223839,0.223641,0.3877,22.1817,19.0471)">
-            <path d="M-4.099,-4.207L-26.437,-4.207L-48.776,-4.207L-37.607,-23.553L-26.437,-42.898L-15.268,-23.553L-4.099,-4.207Z" style="fill:none;fill-rule:nonzero;stroke:rgb(0,46,153);stroke-width:2.23px;"/>
+            <path d="M-4.099,-4.207L-48.776,-4.207L-37.607,-23.553L-26.437,-42.898L-15.268,-23.553L-4.099,-4.207Z" style="fill:none;fill-rule:nonzero;stroke:rgb(0,46,153);stroke-width:2.23px;"/>
         </g>
     </g>
-    <defs>
-        <image id="_Image2" width="18px" height="20px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAAUCAYAAACAl21KAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAzUlEQVQ4jWOM2/LnPwMOwIhLgoGBYaEPC4o0079//xnIwbGbfqM4gOXfP+wOYmRgYMDpVCyAbBf9+/efIXLdz/8Ig/6Sb9C/f/8Zwtf8+I/Ta4yMpHmLgYGBgTF4+VfsJpEIcAY2qsFkG4QmRoQLiXMRthBDM5xIgwgbToFBqIAqBu1MFWSkyKDd6ULwgGL59xdqEAlJZ2+mMIZqiItIyKH7s0WwWonba2jKD+aK4nUzwTA6XCBGlKdxGnS0SJykDIdh0PESCdJzLAMDAwCuhNMdRh91jQAAAABJRU5ErkJggg=="/>
-    </defs>
 </svg>

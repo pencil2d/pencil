@@ -4,11 +4,8 @@
     <g id="Layer-1" serif:id="Layer 1" transform="matrix(1,0,0,1,0,-1058.52)">
         <g id="path1912" transform="matrix(0.264583,0,0,0.264583,0,1058.52)">
             <path d="M22.478,11.065L22.478,230.551L219.205,230.551L219.205,69.692L160.578,11.065L22.478,11.065Z" style="fill:rgb(243,243,243);fill-rule:nonzero;"/>
-            <clipPath id="_clip1">
-                <path d="M22.478,11.065L22.478,230.551L219.205,230.551L219.205,69.692L160.578,11.065L22.478,11.065Z" clip-rule="nonzero"/>
-            </clipPath>
-            <g clip-path="url(#_clip1)">
-                <rect id="rect1735" x="22.478" y="224.882" width="196.727" height="5.669" style="fill:rgb(126,128,135);fill-rule:nonzero;"/>
+            <g>
+                <rect id="rect1735" x="22.478" y="224.882" width="196.727" height="5.669" style="fill:rgb(126,128,135);"/>
                 <g id="rect1071" transform="matrix(3.77953,0,0,3.77953,0,-4000.7)">
                     <rect x="42.487" y="1076.96" width="15.51" height="3.076" style="fill-opacity:0.25;"/>
                 </g>

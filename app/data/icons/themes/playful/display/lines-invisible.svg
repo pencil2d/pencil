@@ -4,15 +4,11 @@
     <g id="Layer-1" serif:id="Layer 1" transform="matrix(1,0,0,1,0,-1090.52)">
         <rect id="rect1312" x="2" y="1092.52" width="28" height="28" style="fill:url(#_Linear1);"/>
         <g id="rect1327">
-            <rect x="2" y="1092.52" width="28" height="28" style="fill:none;fill-rule:nonzero;"/>
-            <clipPath id="_clip2">
-                <rect x="2" y="1092.52" width="28" height="28" clip-rule="nonzero"/>
-            </clipPath>
-            <g clip-path="url(#_clip2)">
+            <g>
                 <path id="path3669" d="M30,1120.52L2,1092.52" style="fill:none;fill-rule:nonzero;stroke:rgb(32,107,0);stroke-width:2px;"/>
             </g>
         </g>
-        <rect id="rect13271" serif:id="rect1327" x="2" y="1092.52" width="28" height="28" style="fill:none;fill-rule:nonzero;stroke:rgb(32,107,0);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;"/>
+        <rect id="rect13271" serif:id="rect1327" x="2" y="1092.52" width="28" height="28" style="fill:none;stroke:rgb(32,107,0);stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;"/>
         <g id="path4063" transform="matrix(0.264583,0,0,0.264583,0,1090.52)">
             <path d="M16.934,105.103C16.703,105.099 16.471,105.106 16.24,105.125C14.678,105.257 13.212,105.94 12.106,107.052L9.796,109.341C8.705,110.425 8.026,111.856 7.876,113.386L23.172,113.386C23.759,111.122 23.104,108.708 21.452,107.052C20.253,105.846 18.634,105.148 16.934,105.103Z" style="fill:rgb(6,6,6);fill-opacity:0.15;fill-rule:nonzero;"/>
         </g>

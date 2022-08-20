@@ -30,5 +30,20 @@
         <g id="circle1354" transform="matrix(-1,0,0,1,0,0)">
             <path d="M-220.543,597.348C-219.067,597.348 -217.852,598.563 -217.852,600.039" style="fill:none;fill-rule:nonzero;stroke:rgb(250,250,250);stroke-width:2px;stroke-linejoin:round;"/>
         </g>
+        <g id="rect1576" transform="matrix(-1.91432e-16,0.50001,-0.50001,-1.91432e-16,213.697,596.894)">
+            <rect x="15.922" y="-17" width="4.823" height="12" style="fill:url(#_Linear1);"/>
+        </g>
+        <g id="rect2155" transform="matrix(0.375008,0,0,0.375008,213.697,600.561)">
+            <rect x="6.667" y="11.451" width="16" height="2.667" style="fill:rgb(252,148,139);"/>
+        </g>
+        <g id="rect2166" transform="matrix(0.375008,0,0,0.375008,213.697,600.561)">
+            <rect x="6.667" y="15.216" width="16" height="2.667" style="fill:rgb(154,15,14);"/>
+        </g>
+        <g id="rect2177" transform="matrix(-1.91432e-16,0.50001,-0.50001,-1.91432e-16,213.697,596.894)">
+            <rect x="15.922" y="-17" width="4.823" height="12" style="fill:none;stroke:rgb(122,0,0);stroke-width:1px;stroke-linejoin:round;"/>
+        </g>
     </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(9.86147,0,0,9.86147,15.9217,-11)"><stop offset="0" style="stop-color:rgb(198,38,46);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(161,7,5);stop-opacity:1"/></linearGradient>
+    </defs>
 </svg>
