@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
+    <g id="Layer-1" serif:id="Layer 1" transform="matrix(1,0,0,1,0,-1090.52)">
+        <rect id="rect1737" x="2" y="1092.52" width="28" height="28" style="fill:url(#_Linear1);"/>
+        <rect id="rect16859" x="5.839" y="1098.36" width="20.321" height="20.321" style="fill:none;stroke:black;stroke-opacity:0.15;stroke-width:3px;"/>
+        <rect id="rect1749" x="2" y="1092.52" width="28" height="28" style="fill:none;stroke:black;stroke-width:1px;"/>
+        <rect id="rect16861" x="10.572" y="1103.09" width="10.857" height="10.857" style="fill:none;stroke:black;stroke-opacity:0.15;stroke-width:3px;"/>
+        <rect id="rect1753" x="5.839" y="1096.36" width="20.321" height="20.321" style="fill:none;stroke:rgb(250,250,250);stroke-width:3px;"/>
+        <rect id="rect16855" x="5.839" y="1096.36" width="20.321" height="20.321" style="fill:none;stroke:rgb(51,51,51);stroke-width:3px;"/>
+        <rect id="rect16857" x="10.572" y="1101.09" width="10.857" height="10.857" style="fill:none;stroke:rgb(51,51,51);stroke-width:3px;"/>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.42856,40.2675,-40.2675,1.42856,14.9108,1092.52)"><stop offset="0" style="stop-color:rgb(250,250,250);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(212,212,212);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>

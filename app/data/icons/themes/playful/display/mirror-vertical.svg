@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;">
+    <g id="Layer-1" serif:id="Layer 1" transform="matrix(1,0,0,1,0,-1090.52)">
+        <g id="path886" transform="matrix(2.23836,0,0,-2.13365,-1.98577,3466.25)">
+            <clipPath id="_clip1">
+                <path d="M10.922,1112.52L5.149,1112.52L8.036,1107.52L10.922,1112.52Z" clip-rule="nonzero"/>
+            </clipPath>
+            <g clip-path="url(#_clip1)">
+                <g transform="matrix(0.446755,0,0,-0.468681,0.887153,1113.46)">
+                    <use xlink:href="#_Image2" x="9.596" y="2.062" width="12.923px" height="10.668px" transform="matrix(0.994096,0,0,0.969843,0,0)"/>
+                </g>
+            </g>
+        </g>
+        <g id="path1080" transform="matrix(0.264583,0,0,0.264583,0,1090.52)">
+            <path d="M36.053,7.559L48.263,27.719L60.48,47.879L72.689,27.719L84.899,7.559L80.322,7.559L72.689,20.16L60.48,40.32L48.263,20.16L40.63,7.559L36.053,7.559Z" style="fill:rgb(212,142,21);fill-rule:nonzero;"/>
+        </g>
+        <g id="path1056" transform="matrix(0.264583,0,0,0.264583,0,1090.52)">
+            <path d="M36.053,7.559L39.486,13.228L81.467,13.228L84.899,7.559L36.053,7.559Z" style="fill:rgb(255,225,107);fill-rule:nonzero;"/>
+        </g>
+        <g id="path994" transform="matrix(2.23836,0,0,-2.13365,-1.98577,3466.25)">
+            <path d="M10.922,1112.52L5.149,1112.52L8.036,1107.52L10.922,1112.52Z" style="fill:none;fill-rule:nonzero;stroke:rgb(173,95,0);stroke-width:0.46px;"/>
+        </g>
+        <g id="path1006" transform="matrix(2.23836,0,0,2.13365,-1.98577,-1253.21)">
+            <clipPath id="_clip3">
+                <path d="M10.922,1112.52L5.149,1112.52L8.036,1107.52L10.922,1112.52Z" clip-rule="nonzero"/>
+            </clipPath>
+            <g clip-path="url(#_clip3)">
+                <g transform="matrix(0.446755,-0,-0,0.468681,0.887153,1098.46)">
+                    <use xlink:href="#_Image4" x="9.596" y="19.933" width="12.923px" height="10.668px" transform="matrix(0.994096,0,0,0.969843,0,0)"/>
+                </g>
+            </g>
+        </g>
+        <g id="path1082" transform="matrix(0.264583,0,0,0.264583,0,1090.52)">
+            <path d="M39.486,107.717L36.053,113.386L84.899,113.386L81.467,107.717L39.486,107.717Z" style="fill:rgb(212,142,21);fill-rule:nonzero;"/>
+        </g>
+        <g id="path1069" transform="matrix(0.264583,0,0,0.264583,0,1090.52)">
+            <path d="M60.48,73.066L48.263,93.226L36.053,113.386L40.63,113.386L48.263,100.785L60.48,80.625L72.689,100.785L80.322,113.386L84.899,113.386L72.689,93.226L60.48,73.066Z" style="fill:rgb(255,225,107);fill-rule:nonzero;"/>
+        </g>
+        <g id="path1008" transform="matrix(2.23836,0,0,2.13365,-1.98577,-1253.21)">
+            <path d="M10.922,1112.52L5.149,1112.52L8.036,1107.52L10.922,1112.52Z" style="fill:none;fill-rule:nonzero;stroke:rgb(173,95,0);stroke-width:0.46px;"/>
+        </g>
+        <path id="path880-3" d="M2.002,1106.52L6.002,1106.52M10.002,1106.52L14.001,1106.52M18.001,1106.52L22.001,1106.52M26,1106.52L30,1106.52" style="fill:none;fill-rule:nonzero;stroke:black;stroke-width:2px;stroke-linecap:round;stroke-linejoin:miter;"/>
+    </g>
+    <defs>
+        <image id="_Image2" width="13px" height="11px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAYAAACksgdhAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAAOElEQVQokWP8cdj+PwOJgOXf3794pBlxafpHjk3/SNVDyHkMDNicOKich90mcuMJe3zgs4lUixgAOZ4j2T7ZPhYAAAAASUVORK5CYII="/>
+        <image id="_Image4" width="13px" height="11px" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA0AAAALCAYAAACksgdhAAAACXBIWXMAAA7EAAAOxAGVKw4bAAAATElEQVQokZ1QOQ4AIAzShH/5eD/lUnDUqNFWVo5ScqtFKQiI9CmnaNCkI+O59JYPBeiptyQOU2AOyBhf76ueHPVWCjTdHQeAfPykne44/y/bFFnUlQAAAABJRU5ErkJggg=="/>
+    </defs>
+</svg>

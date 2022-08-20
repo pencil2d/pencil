@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
+    <g id="Layer-1" serif:id="Layer 1" transform="matrix(1,0,0,1,0,-1058.52)">
+        <g id="path1912" transform="matrix(0.264583,0,0,0.264583,0,1058.52)">
+            <path d="M22.478,11.065L22.478,230.551L219.205,230.551L219.205,69.692L160.578,11.065L22.478,11.065Z" style="fill:rgb(243,243,243);fill-rule:nonzero;"/>
+            <clipPath id="_clip1">
+                <path d="M22.478,11.065L22.478,230.551L219.205,230.551L219.205,69.692L160.578,11.065L22.478,11.065Z" clip-rule="nonzero"/>
+            </clipPath>
+            <g clip-path="url(#_clip1)">
+                <rect id="rect1735" x="22.478" y="224.882" width="196.727" height="5.669" style="fill:rgb(126,128,135);fill-rule:nonzero;"/>
+                <g id="rect1071" transform="matrix(3.77953,0,0,3.77953,0,-4000.7)">
+                    <rect x="42.487" y="1076.96" width="15.51" height="3.076" style="fill-opacity:0.25;"/>
+                </g>
+            </g>
+            <path d="M22.478,11.065L22.478,230.551L219.205,230.551L219.205,69.692L160.578,11.065L22.478,11.065Z" style="fill:none;fill-rule:nonzero;stroke:rgb(85,87,97);stroke-width:3.78px;"/>
+        </g>
+        <circle id="circle1882" cx="23.292" cy="1086.16" r="9.061" style="fill:rgb(255,140,130);stroke:rgb(122,0,0);stroke-width:1px;"/>
+        <g id="ellipse1880" transform="matrix(0.5,-0.866025,0.866025,0.5,0,0)">
+            <ellipse cx="-930.765" cy="574.296" rx="9.061" ry="9.835" style="fill:rgb(237,83,83);stroke:rgb(122,0,0);stroke-width:1px;"/>
+        </g>
+        <g id="ellipse1878" transform="matrix(0.707107,-0.707107,0.707107,0.707107,0,0)">
+            <ellipse cx="-751.283" cy="807.837" rx="9.061" ry="10.372" style="fill:rgb(198,38,46);stroke:rgb(122,0,0);stroke-width:1px;"/>
+        </g>
+        <path id="path1187" d="M57.997,1076.96L42.487,1076.96L42.487,1061.45L57.997,1076.96Z" style="fill:rgb(250,250,250);fill-rule:nonzero;stroke:rgb(85,87,97);stroke-width:1px;"/>
+    </g>
+</svg>

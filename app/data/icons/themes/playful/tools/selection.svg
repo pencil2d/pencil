@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
+    <g id="Layer-2" serif:id="Layer 2" transform="matrix(1,0,0,1,0,8)">
+        <path id="rect981" d="M7,-0.325L7,-1L7.675,-1M10.825,-1L12.175,-1M15.325,-1L16.675,-1M19.825,-1L21.175,-1M24.325,-1L25,-1L25,-0.325M25,2.825L25,4.175M25,7.325L25,8.675M25,11.825L25,13.175M25,16.325L25,17L24.325,17M21.175,17L19.825,17M16.675,17L15.325,17M12.175,17L10.825,17M7.675,17L7,17L7,16.325M7,13.175L7,11.825M7,8.675L7,7.325M7,4.175L7,2.825M7,-0.325L7,-1" style="fill:none;fill-rule:nonzero;stroke:rgb(85,87,97);stroke-width:2px;"/>
+        <rect id="rect963" x="3.5" y="13.5" width="7" height="7" style="fill:url(#_Linear1);"/>
+        <rect id="rect1032" x="3.5" y="19.213" width="7" height="1.286" style="fill:rgb(126,128,135);fill-rule:nonzero;"/>
+        <rect id="rect965" x="3.5" y="13.5" width="7" height="7" style="fill:none;stroke:rgb(85,87,97);stroke-width:1px;stroke-linecap:butt;"/>
+        <rect id="rect1072" x="3.5" y="-4.5" width="7" height="7" style="fill:url(#_Linear2);"/>
+        <rect id="rect1030" x="3.5" y="1.214" width="7" height="1.286" style="fill:rgb(126,128,135);fill-rule:nonzero;"/>
+        <rect id="rect1076" x="3.5" y="-4.5" width="7" height="7" style="fill:none;stroke:rgb(85,87,97);stroke-width:1px;stroke-linecap:butt;"/>
+        <rect id="rect1082" x="21.5" y="-4.5" width="7" height="7" style="fill:url(#_Linear3);"/>
+        <rect id="rect1034" x="21.5" y="1.214" width="7" height="1.286" style="fill:rgb(126,128,135);fill-rule:nonzero;"/>
+        <rect id="rect1086" x="21.5" y="-4.5" width="7" height="7" style="fill:none;stroke:rgb(85,87,97);stroke-width:1px;stroke-linecap:butt;"/>
+        <rect id="rect1092" x="21.5" y="13.5" width="7" height="7" style="fill:url(#_Linear4);"/>
+        <rect id="rect1036" x="21.5" y="19.213" width="7" height="1.286" style="fill:rgb(126,128,135);fill-rule:nonzero;"/>
+        <rect id="rect1096" x="21.5" y="13.5" width="7" height="7" style="fill:none;stroke:rgb(85,87,97);stroke-width:1px;stroke-linecap:butt;"/>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(-0.104268,11.9083,-11.9083,-0.104268,7,13.5)"><stop offset="0" style="stop-color:rgb(212,212,212);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(171,172,174);stop-opacity:1"/></linearGradient>
+        <linearGradient id="_Linear2" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(7.37368e-16,12.0421,-12.0421,7.37368e-16,7,-4.49996)"><stop offset="0" style="stop-color:rgb(212,212,212);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(171,172,174);stop-opacity:1"/></linearGradient>
+        <linearGradient id="_Linear3" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(7.94773e-16,12.9796,-12.9796,7.94773e-16,25,-4.49996)"><stop offset="0" style="stop-color:rgb(212,212,212);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(171,172,174);stop-opacity:1"/></linearGradient>
+        <linearGradient id="_Linear4" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.0296611,12.3547,-12.3547,0.0296611,25,13.5)"><stop offset="0" style="stop-color:rgb(212,212,212);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(171,172,174);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>
