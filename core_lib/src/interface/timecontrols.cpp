@@ -50,7 +50,8 @@ void TimeControls::initUI()
 
     mFps = mFpsBox->value();
     mTimecodeSelect = new QToolButton(this);
-    mTimecodeSelect->setIcon(QIcon(":icons/themes/playful/tools/more_options.svg"));
+    mTimecodeSelect->setIcon(QIcon(":/icons/themes/playful/controls/more-options.svg"));
+    mTimecodeSelect->setFixedSize(QSize(16,16));
     mTimecodeSelect->setPopupMode(QToolButton::InstantPopup);
     mTimecodeSelect->addAction(mNoTimecodeAction = new QAction(tr("No text"), this));
     mTimecodeSelect->addAction(mOnlyFramesAction = new QAction(tr("Frames"), this));

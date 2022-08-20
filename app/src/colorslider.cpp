@@ -182,7 +182,7 @@ void ColorSlider::drawColorBox(const QColor &color, QSize size)
 
     // draw checkerboard background
     painter.begin(&mBoxPixmapSource);
-    QBrush brush2(QBrush(QPixmap("://icons/new/checkerboard_smaller.png")));
+    QBrush brush2(QBrush(QPixmap(":icons/general/checkerboard_smaller.png")));
 
     painter.setBrush(brush2);
     QPen pen2;

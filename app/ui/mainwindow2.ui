@@ -551,10 +551,6 @@
    <property name="checkable">
     <bool>true</bool>
    </property>
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/grid.png</normaloff>:/icons/grid.png</iconset>
-   </property>
    <property name="text">
     <string>Grid</string>
    </property>
@@ -611,19 +607,11 @@
    </property>
   </action>
   <action name="actionNext_Frame">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/menubar/next.svg</normaloff>:/icons/menubar/next.svg</iconset>
-   </property>
    <property name="text">
     <string>Next Frame</string>
    </property>
   </action>
   <action name="actionPrevious_Frame">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/menubar/prev.svg</normaloff>:/icons/menubar/prev.svg</iconset>
-   </property>
    <property name="text">
     <string>Previous Frame</string>
    </property>
@@ -669,15 +657,6 @@
     <string>Move</string>
    </property>
   </action>
-  <action name="actionClear">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/menubar/clear-frame.svg</normaloff>:/icons/menubar/clear-frame.svg</iconset>
-   </property>
-   <property name="text">
-    <string>Clear Frame</string>
-   </property>
-  </action>
   <action name="actionSelect">
    <property name="icon">
     <iconset resource="../data/app.qrc">
@@ -706,10 +685,6 @@
    </property>
   </action>
   <action name="actionSmudge">
-   <property name="icon">
-    <iconset>
-     <normaloff>:/icons/tools/smudge.svg</normaloff>:/icons/tools/smudge.svg</iconset>
-   </property>
    <property name="text">
     <string>Smudge</string>
    </property>

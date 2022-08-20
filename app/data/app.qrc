@@ -72,14 +72,11 @@
         <file>icons/themes/playful/tools/brush.svg</file>
         <file>icons/themes/playful/tools/bucket.svg</file>
         <file>icons/themes/playful/tools/camera.svg</file>
-        <file>icons/themes/playful/tools/checkerboard_smaller</file>
         <file>icons/themes/playful/tools/clear-frame.svg</file>
-        <file>icons/themes/playful/tools/color-dialog.svg</file>
         <file>icons/themes/playful/tools/eraser.svg</file>
         <file>icons/themes/playful/tools/eyedropper.svg</file>
         <file>icons/themes/playful/tools/hand-closed.svg</file>
         <file>icons/themes/playful/tools/line.svg</file>
-        <file>icons/themes/playful/tools/more-options.svg</file>
         <file>icons/themes/playful/tools/pen.svg</file>
         <file>icons/themes/playful/tools/pencil.svg</file>
         <file>icons/themes/playful/tools/selection.svg</file>
@@ -88,6 +85,9 @@
         <file>icons/themes/playful/menubar/magnify-decrease.svg</file>
         <file>icons/themes/playful/menubar/magnify-increase.svg</file>
         <file>icons/themes/playful/onion/onion-light.svg</file>
+        <file>icons/general/checkerboard_smaller.png</file>
+        <file>icons/themes/playful/controls/more-options.svg</file>
+        <file>icons/themes/playful/controls/color-dialog.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
