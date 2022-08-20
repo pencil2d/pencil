@@ -136,7 +136,7 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/icons/themes/playful/onion/onion-red.svg</normaloff>:/icons/themes/playful/onion/onion-red.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onion-light.svg</normaloff>:/icons/themes/playful/onion/onion-light.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
@@ -243,7 +243,7 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/icons/themes/playful/onion/onion-blue.svg</normaloff>:/icons/themes/playful/onion/onion-blue.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onion-light.svg</normaloff>:/icons/themes/playful/onion/onion-light.svg</iconset>
              </property>
              <property name="iconSize">
               <size>

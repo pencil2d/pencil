@@ -49,10 +49,8 @@
         <file>icons/themes/playful/menubar/save-as.svg</file>
         <file>icons/themes/playful/menubar/save.svg</file>
         <file>icons/themes/playful/menubar/undo.svg</file>
-        <file>icons/themes/playful/onion/onion-blue.svg</file>
         <file>icons/themes/playful/onion/onion-next.svg</file>
         <file>icons/themes/playful/onion/onion-prev.svg</file>
-        <file>icons/themes/playful/onion/onion-red.svg</file>
         <file>icons/themes/playful/preferences/preferences-general.svg</file>
         <file>icons/themes/playful/preferences/preferences-shortcuts-alt-1.svg</file>
         <file>icons/themes/playful/preferences/preferences-shortcuts-alt-2.svg</file>
@@ -89,6 +87,7 @@
         <file>icons/themes/playful/tools/text.svg</file>
         <file>icons/themes/playful/menubar/magnify-decrease.svg</file>
         <file>icons/themes/playful/menubar/magnify-increase.svg</file>
+        <file>icons/themes/playful/onion/onion-light.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
