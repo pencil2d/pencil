@@ -62,9 +62,10 @@ void MoveTool::loadSettings()
 QCursor MoveTool::cursor()
 {
     MoveMode mode = MoveMode::NONE;
-    if (mEditor->select()->somethingSelected())
+    SelectionManager* selectMan = mEditor->select();
+    if (selectMan->somethingSelected())
     {
-        mode = mEditor->select()->getMoveMode();
+        mode = selectMan->getMoveMode();
         return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
     if (mEditor->overlays()->isPerspOverlaysActive())
@@ -233,7 +234,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
         createVectorSelection(keyMod, layer);
     }
 
-    mEditor->select()->setTransformAnchor(mEditor->select()->getSelectionAnchorPoint());
+    selectMan->setTransformAnchor(selectMan->getSelectionAnchorPoint());
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         mRotatedAngle = selectMan->angleFromPoint(getCurrentPoint(), selectMan->currentTransformAnchor()) - mPreviousAngle;
     }
@@ -315,8 +316,12 @@ void MoveTool::cancelChanges()
 
 void MoveTool::applyTransformation()
 {
+    SelectionManager* selectMan = mEditor->select();
     mScribbleArea->applyTransformedSelection();
-    mEditor->select()->setSelection(mEditor->select()->mapToSelection(QPolygonF(mEditor->select()->mySelectionRect())).boundingRect());
+
+    // When the selection has been applied, a new rect is applied based on the bounding box.
+    // This ensures that if the selection has been rotated, it will still fit the bounds of the image.
+    selectMan->setSelection(selectMan->mapToSelection(QPolygonF(selectMan->mySelectionRect())).boundingRect());
     mRotatedAngle = 0;
     mPreviousAngle = 0;
 }
@@ -347,16 +352,6 @@ void MoveTool::setShowSelectionInfo(const bool b)
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("ShowSelectionInfo", b);
 
-}
-
-int MoveTool::showTransformWarning()
-{
-    int returnValue = QMessageBox::warning(nullptr,
-                                           tr("Layer switch", "Windows title of layer switch pop-up."),
-                                           tr("You are about to switch away, do you want to apply the transformation?"),
-                                           QMessageBox::No | QMessageBox::Cancel | QMessageBox::Yes,
-                                           QMessageBox::Yes);
-    return returnValue;
 }
 
 Layer* MoveTool::currentPaintableLayer()

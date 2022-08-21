@@ -52,8 +52,6 @@ private:
     void setAnchorToLastPoint();
     void updateSettings(const SETTING setting);
 
-    int showTransformWarning();
-
     void beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer);
     void createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
     void transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
