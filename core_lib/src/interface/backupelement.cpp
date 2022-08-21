@@ -23,10 +23,18 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "object.h"
 #include "selectionmanager.h"
+#include "layermanager.h"
 
 void BackupBitmapElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->findLayerById(this->layerId);
+
+    if (editor->currentFrame() != this->frame) {
+        editor->scrubTo(this->frame);
+    }
+
+    editor->layers()->setCurrentLayer(layer);
+
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
         editor->restoreKey();
@@ -52,9 +60,6 @@ void BackupBitmapElement::restore(Editor* editor)
 
     selectMan->calculateSelectionTransformation();
 
-    if (editor->currentFrame() != this->frame) {
-        editor->scrubTo(this->frame);
-    }
     editor->frameModified(this->frame);
 }
 
@@ -73,6 +78,12 @@ void BackupVectorElement::restore(Editor* editor)
             }
         }
     }
+
+    if (editor->currentFrame() != this->frame) {
+        editor->scrubTo(this->frame);
+    }
+
+    editor->layers()->setCurrentLayer(layer);
 
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
@@ -98,9 +109,6 @@ void BackupVectorElement::restore(Editor* editor)
     selectMan->setTranslation(translation);
     selectMan->calculateSelectionTransformation();
 
-    if (editor->currentFrame() != this->frame) {
-        editor->scrubTo(this->frame);
-    }
     editor->frameModified(this->frame);
 
 }
@@ -108,6 +116,9 @@ void BackupVectorElement::restore(Editor* editor)
 void BackupSoundElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->findLayerById(this->layerId);
+
+    editor->layers()->setCurrentLayer(layer);
+
     if (editor->currentFrame() != this->frame) {
         editor->scrubTo(this->frame);
     }
