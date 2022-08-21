@@ -91,6 +91,8 @@
         <file>icons/themes/playful/tools/liquify.svg</file>
         <file>icons/general/cross.png</file>
         <file>icons/themes/playful/tools/smudge.svg</file>
+        <file>icons/themes/playful/onion/onion-next-alt.svg</file>
+        <file>icons/themes/playful/onion/onion-prev-alt.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>

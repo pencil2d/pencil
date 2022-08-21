@@ -561,7 +561,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/onion/onion-prev.svg</normaloff>:/icons/themes/playful/onion/onion-prev.svg</iconset>
+     <normaloff>:/icons/themes/playful/onion/onion-prev-alt.svg</normaloff>:/icons/themes/playful/onion/onion-prev-alt.svg</iconset>
    </property>
    <property name="text">
     <string>Previous</string>
@@ -576,7 +576,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/onion/onion-next.svg</normaloff>:/icons/themes/playful/onion/onion-next.svg</iconset>
+     <normaloff>:/icons/themes/playful/onion/onion-next-alt.svg</normaloff>:/icons/themes/playful/onion/onion-next-alt.svg</iconset>
    </property>
    <property name="text">
     <string>Next</string>
