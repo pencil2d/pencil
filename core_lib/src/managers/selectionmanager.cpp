@@ -90,7 +90,7 @@ void SelectionManager::deleteSelection()
 
 qreal SelectionManager::selectionTolerance() const
 {
-    return 10;
+    return 10 * editor()->viewScaleInversed();
 }
 
 QPointF SelectionManager::getSelectionAnchorPoint() const

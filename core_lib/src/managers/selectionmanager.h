@@ -120,6 +120,7 @@ public:
     const QList<int> closestCurves() { return mClosestCurves; }
     const QList<VertexRef> closestVertices() { return mClosestVertices; }
 
+    /// This should be called to update the selection transform
     void calculateSelectionTransformation();
 
 signals:
