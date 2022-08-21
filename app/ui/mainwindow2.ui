@@ -685,6 +685,10 @@
    </property>
   </action>
   <action name="actionSmudge">
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/themes/playful/tools/smudge.svg</normaloff>:/icons/themes/playful/tools/smudge.svg</iconset>
+   </property>
    <property name="text">
     <string>Smudge</string>
    </property>

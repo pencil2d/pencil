@@ -113,7 +113,7 @@ QCursor PenTool::cursor()
     {
         return QCursor(QPixmap(":icons/themes/playful/tools/pen.svg"), 2, 20);
     }
-    return QCursor(QPixmap(":icons/themes/playful/tools/cross.png"), 10, 10);
+    return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
 }
 
 void PenTool::pointerPressEvent(PointerEvent *event)

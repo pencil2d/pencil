@@ -90,7 +90,7 @@ QCursor BucketTool::cursor()
     }
     else
     {
-        return QCursor(QPixmap(":icons/themes/playful/tools/cross.png"), 10, 10);
+        return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
     }
 }
 

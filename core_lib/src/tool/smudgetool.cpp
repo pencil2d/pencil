@@ -109,7 +109,7 @@ QCursor SmudgeTool::cursor()
         return QCursor(QPixmap(":icons/themes/playful/tools/smudge.svg"), 0, 16);
     }
     else { // blured mode
-        return QCursor(QPixmap(":icons/themes/playful/tools/liquify.svg"), -4, 16); // TODO: Missing icon
+        return QCursor(QPixmap(":icons/themes/playful/tools/liquify.svg"), -4, 16);
     }
 }
 

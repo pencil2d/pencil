@@ -1,15 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/brush.svg</file>
-        <file>icons/bucket-tool.svg</file>
-        <file>icons/eyedropper.svg</file>
-        <file>icons/liquify.svg</file>
-        <file>icons/onion-type.svg</file>
-        <file>icons/pen.svg</file>
-        <file>icons/pencil.svg</file>
-        <file>icons/smudge.svg</file>
-        <file>icons/hand-open.svg</file>
-        <file>icons/hand-closed.svg</file>
         <file>resources/kb.ini</file>
     </qresource>
 </RCC>
