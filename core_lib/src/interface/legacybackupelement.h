@@ -42,6 +42,8 @@ class BackupBitmapElement : public LegacyBackupElement
 public:
     explicit BackupBitmapElement(BitmapImage* bi) { bitmapImage = *bi; }
 
+    int layerId = 0;
+
     int layer = 0;
     int frame = 0;
     BitmapImage bitmapImage;
@@ -54,6 +56,9 @@ class BackupVectorElement : public LegacyBackupElement
     Q_OBJECT
 public:
     explicit BackupVectorElement(VectorImage* vi) { vectorImage = *vi; }
+
+    int layerId = 0;
+
     int layer = 0;
     int frame = 0;
     VectorImage vectorImage;
@@ -67,6 +72,9 @@ class BackupSoundElement : public LegacyBackupElement
     Q_OBJECT
 public:
     explicit BackupSoundElement(SoundClip* sound) { clip = *sound; }
+
+    int layerId = 0;
+
     int layer = 0;
     int frame = 0;
     SoundClip clip;

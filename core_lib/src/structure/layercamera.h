@@ -25,8 +25,6 @@ class Camera;
 
 class LayerCamera : public Layer
 {
-    Q_OBJECT
-
 public:
     explicit LayerCamera(Object* object);
     explicit LayerCamera(int layerId, Object* object);
@@ -46,11 +44,6 @@ public:
     QRect getViewRect();
     QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
-
-    void showContextMenu(QPoint point);
-
-signals:
-    void resolutionChanged();
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;

@@ -29,7 +29,7 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 
 
-PlaybackManager::PlaybackManager(Editor* editor) : BaseManager(editor)
+PlaybackManager::PlaybackManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -273,7 +273,7 @@ void PlaybackManager::playSounds(int frame)
     {
         KeyFrame* key = layer->getLastKeyFrameAtPosition(frame);
 
-        if (!layer->getVisibility())
+        if (!layer->visible())
         {
             continue;
         }

@@ -40,6 +40,9 @@ public:
     void replaceLastBitmapAtFrame(const BitmapImage* replaceWithImage);
     void putBitmapIntoFrame(KeyFrame* keyframe, const int& frameIndex);
 
+    void repositionFrame(QPoint point, int frame);
+    QRect getFrameBounds(int frame);
+
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
     KeyFrame* createKeyFrame(int position, Object*) override;

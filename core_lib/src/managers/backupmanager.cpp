@@ -38,7 +38,7 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "camera.h"
 
-BackupManager::BackupManager(Editor* editor) : BaseManager(editor)
+BackupManager::BackupManager(Editor* editor) : BaseManager(editor, "BackupManager")
 {
     qDebug() << "BackupManager: created";
 }
@@ -556,7 +556,7 @@ void BackupManager::saveStates()
     mMoveMode = selectMan->getMoveMode();
     mVectorSelection = selectMan->vectorSelection;
 
-    mFrameIndexes = mLayer->getSelectedFrameList();
+    mFrameIndexes = mLayer->getSelectedFramesByPos();
 
     mLayerName = mLayer->name();
     mLayerIndex = editor()->currentLayerIndex();

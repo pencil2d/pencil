@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "soundplayer.h"
 #include "layermanager.h"
 
-SoundManager::SoundManager(Editor* editor) : BaseManager(editor)
+SoundManager::SoundManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -170,6 +170,25 @@ Status SoundManager::processSound(SoundClip* soundClip)
         return st;
     }
     return Status::OK;
+}
+
+int SoundManager::soundClipCount() const
+{
+    LayerManager *layerManager = editor()->layers();
+    int totalCount = 0;
+
+
+    for (int i = 0; i < layerManager->count(); ++i)
+    {
+        Layer* layer = layerManager->getLayer(i);
+        if (layer->type() != Layer::SOUND)
+        {
+            continue;
+        }
+
+        totalCount += layer->keyFrameCount();
+    }
+    return totalCount;
 }
 
 void SoundManager::onDurationChanged(SoundPlayer* player, int64_t duration)

@@ -40,6 +40,7 @@ TEST_CASE("ColorManager Initial Test")
 TEST_CASE("ColorManager set color tests")
 {
     Object* object = new Object;
+
     Editor* editor = new Editor;
     editor->setObject(object);
     ColorManager* cm = new ColorManager(editor);
@@ -52,20 +53,24 @@ TEST_CASE("ColorManager set color tests")
     layerMgr->init();
 
     layerObj->init();
-    layerObj->createDefaultLayers();    // 0 = camera, 1 = vector, 2 = bitmap
+    // 0 = camera, 1 = vector, 2 = bitmap
+    layerObj->addNewCameraLayer();
+    layerObj->addNewVectorLayer();
+    layerObj->addNewBitmapLayer();
 
 
     SECTION("setColor non vector layer")
     {
         cm->workingLayerChanged(layerObj->getLayer(2));
-        cm->setColor(QColor(255,0,0));
+        cm->setFrontColor(QColor(255,0,0));
         REQUIRE(cm->frontColor() == QColor(255,0,0));
     }
 
     SECTION("setColor vector layer")
     {
+        object->addColorAtIndex(0, QColor(255,255,255));
         cm->workingLayerChanged(layerObj->getLayer(1));
-        cm->setColor(QColor(255,255,255));
+        cm->setIndexedColor(QColor(255,255,255));
         REQUIRE(cm->frontColor() == QColor(255,255,255));
     }
 
@@ -90,7 +95,7 @@ TEST_CASE("Save and Load")
 
     SECTION("load")
     {
-        cm2->setColor(QColor(0,0,0));
+        cm2->setFrontColor(QColor(0,0,0));
         REQUIRE(cm2->frontColor() == QColor(0,0,0));
         REQUIRE(cm2->load(objToLoad) == Status::OK);
         REQUIRE(cm2->frontColor() == QColor(255,255,0));
@@ -98,7 +103,7 @@ TEST_CASE("Save and Load")
 
     SECTION("save")
     {
-        cm2->setColor(QColor(0,255,0));
+        cm2->setFrontColor(QColor(0,255,0));
         REQUIRE(cm2->frontColor() == QColor(0,255,0));
         REQUIRE(objToSave->data()->getCurrentColor() == QColor(45,45,255));
         REQUIRE(cm2->save(objToSave) == Status::OK);

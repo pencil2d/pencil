@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "camera.h"
 #include "layercamera.h"
+#include <QDebug>
 
 const static qreal mMinScale = 0.01;
 const static qreal mMaxScale = 100.0;
@@ -34,13 +35,14 @@ const std::vector<qreal> gZoomLevels
 };
 
 
-ViewManager::ViewManager(Editor* editor) : BaseManager(editor)
+ViewManager::ViewManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
     mDefaultEditorCamera = new Camera;
     mCurrentCamera = mDefaultEditorCamera;
 }
 
-ViewManager::~ViewManager() {
+ViewManager::~ViewManager()
+{
     delete mDefaultEditorCamera;
 }
 
@@ -420,6 +422,12 @@ void ViewManager::setCameraLayer(Layer* layer)
     }
 
     updateViewTransforms();
+}
+
+void ViewManager::forceUpdateViewTransform()
+{
+    updateViewTransforms();
+    emit viewChanged();
 }
 
 void ViewManager::onCurrentFrameChanged()

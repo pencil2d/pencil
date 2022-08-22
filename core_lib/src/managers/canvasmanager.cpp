@@ -6,7 +6,7 @@
 #include "vectorimage.h"
 #include "canvaspainter.h"
 
-CanvasManager::CanvasManager(Editor* editor) : BaseManager(editor), mEditor(editor)
+CanvasManager::CanvasManager(Editor* editor) : BaseManager(editor, "CanvasManager"), mEditor(editor)
 {
     mCanvasPainter = new CanvasPainter();
 }

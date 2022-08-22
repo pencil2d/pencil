@@ -54,10 +54,12 @@ public:
     void onObjectLoaded();
 
 signals:
+    void selectionChanged();
     void modification();
 
-    void addKeyClick();
+    void insertKeyClick();
     void removeKeyClick();
+    void duplicateLayerClick();
     void duplicateKeyClick();
 
     void newBitmapLayer();

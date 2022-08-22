@@ -43,6 +43,8 @@ SOURCES += \
     src/test_object.cpp \
     src/test_filemanager.cpp \
     src/test_bitmapimage.cpp \
+    src/test_bitmapbucket.cpp \
+    src/test_vectorimage.cpp \
     src/test_viewmanager.cpp
 
 # --- core_lib ---

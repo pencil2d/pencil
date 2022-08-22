@@ -38,8 +38,8 @@ class PointerEvent;
 class Properties
 {
 public:
-    qreal width = 1.f;
-    qreal feather = 1.f;
+    qreal width = 1.0;
+    qreal feather = 1.0;
     bool  pressure = true;
     int   invisibility = 0;
     int   preserveAlpha = 0;
@@ -50,7 +50,13 @@ public:
     int   fillMode = 0;
     int   stabilizerLevel = 0;
     qreal tolerance = 0;
+    bool toleranceEnabled = false;
+    int bucketFillExpand = 0;
+    bool bucketFillExpandEnabled = 0;
+    int bucketFillToLayerMode = 0;
+    int bucketFillReferenceMode = 0;
     bool  useFillContour = false;
+    bool  showSelectionInfo = true;
 };
 
 const int ON = 1;
@@ -69,7 +75,7 @@ public:
     QString typeName() { return TypeName(type()); }
 
     void initialize(Editor* editor);
-    
+
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;
     virtual QCursor cursor();
@@ -117,7 +123,13 @@ public:
     virtual void setFillMode(const int mode);
     virtual void setStabilizerLevel(const int level);
     virtual void setTolerance(const int tolerance);
+    virtual void setToleranceEnabled(const bool enabled);
+    virtual void setFillExpand(const int fillExpandValue);
+    virtual void setFillExpandEnabled(const bool enabled);
+    virtual void setFillToLayer(int layerMode);
+    virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
+    virtual void setShowSelectionInfo(const bool b);
 
     virtual bool leavingThisTool() { return true; }
     virtual bool switchingLayer() { return true; } // default state should be true
@@ -135,6 +147,9 @@ public:
 
     bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
+
+signals:
+    bool isActiveChanged(ToolType, bool);
 
 protected:
     StrokeManager* strokeManager() { return mStrokeManager; }

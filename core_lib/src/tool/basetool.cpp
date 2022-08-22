@@ -211,30 +211,39 @@ QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
 
         switch(mode)
         {
-            case MoveMode::MIDDLE:
-            {
-                if (type == SELECT) {
-                    cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-                } else {
-                    return Qt::ArrowCursor;
-                }
-                break;
+        case MoveMode::PERSP_LEFT:
+        case MoveMode::PERSP_RIGHT:
+        case MoveMode::PERSP_MIDDLE:
+        case MoveMode::PERSP_SINGLE:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            break;
+        }
+        case MoveMode::MIDDLE:
+        {
+            if (type == SELECT) {
+                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+            } else {
+                return Qt::ArrowCursor;
             }
-            case MoveMode::TOPLEFT:
-            case MoveMode::BOTTOMRIGHT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-                break;
-            }
-            case MoveMode::TOPRIGHT:
-            case MoveMode::BOTTOMLEFT:
-            {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-                break;
-            }
-            default:
-                return (type == SELECT) ? QCursor(QPixmap(":icons/cross.png"), 10, 10) : Qt::ArrowCursor;
-                break;
+            break;
+        }
+        case MoveMode::TOPLEFT:
+        case MoveMode::BOTTOMRIGHT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+            break;
+        }
+        case MoveMode::TOPRIGHT:
+        case MoveMode::BOTTOMLEFT:
+        {
+            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+            break;
+        }
+
+        default:
+            return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
+            break;
         }
         cursorPainter.end();
     }
@@ -337,7 +346,7 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
     newValue = qPow(newValue, 2) / 100;
     if (mAdjustmentStep > 0)
     {
-        int tempValue = (int)(newValue / mAdjustmentStep); // + 0.5 ?
+        int tempValue = static_cast<int>(newValue / mAdjustmentStep); // + 0.5 ?
         newValue = tempValue * mAdjustmentStep;
     }
 
@@ -356,7 +365,7 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         qDebug() << "Unhandled quick sizing property for tool" << typeName();
         Q_ASSERT(false);
         break;
-    };
+    }
 }
 
 QPointF BaseTool::getCurrentPressPixel()
@@ -459,7 +468,39 @@ void BaseTool::setTolerance(const int tolerance)
     properties.tolerance = tolerance;
 }
 
+void BaseTool::setToleranceEnabled(const bool enabled)
+{
+    properties.toleranceEnabled = enabled;
+}
+
+void BaseTool::setFillExpand(const int fillExpandValue)
+{
+    properties.bucketFillExpand = fillExpandValue;
+}
+
+void BaseTool::setFillToLayer(int layerMode)
+{
+    properties.bucketFillToLayerMode = layerMode;
+}
+
+void BaseTool::setFillReferenceMode(int referenceMode)
+{
+    properties.bucketFillReferenceMode = referenceMode;
+}
+
+void BaseTool::setFillExpandEnabled(const bool enabled)
+{
+    properties.bucketFillExpandEnabled = enabled;
+}
+
 void BaseTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;
 }
+
+void BaseTool::setShowSelectionInfo(const bool b)
+{
+    properties.showSelectionInfo = b;
+}
+
+

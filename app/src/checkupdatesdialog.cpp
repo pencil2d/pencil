@@ -86,7 +86,7 @@ CheckUpdatesDialog::~CheckUpdatesDialog()
 
 void CheckUpdatesDialog::startChecking()
 {
-#ifdef NIGHTLY
+#ifdef PENCIL2D_NIGHTLY_BUILD
     nightlyBuildCheck();
 #else
     regularBuildCheck();

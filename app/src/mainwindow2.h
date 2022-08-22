@@ -19,9 +19,12 @@ GNU General Public License for more details.
 #define MAINWINDOW2_H
 
 #include <QMainWindow>
+#include "preferencemanager.h"
+
 
 template<typename T> class QList;
 class QActionGroup;
+class QToolBar;
 class Object;
 class Editor;
 class ScribbleArea;
@@ -43,8 +46,9 @@ class ImportImageSeqDialog;
 class BackupElement;
 class LegacyBackupElement;
 class LayerOpacityDialog;
-class QLabel;
 class PegBarAlignmentDialog;
+class RepositionFramesDialog;
+class StatusBar;
 enum class SETTING;
 
 
@@ -65,10 +69,10 @@ public:
 
 public slots:
     void undoActSetText();
-    void undoActSetEnabled();
     void updateSaveState();
-    void clearRecentFilesList();
     void openPegAlignDialog();
+    void openRepositionDialog();
+    void closeRepositionDialog();
     void openLayerOpacityDialog();
     void currentLayerChanged();
     void selectionChanged();
@@ -96,21 +100,23 @@ public:
     void setOpacity(int opacity);
     void preferences();
 
+    void openStartupFile(const QString& filename);
     void openFile(const QString& filename);
-
-    PreferencesDialog* getPrefDialog() { return mPrefDialog; }
 
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
 signals:
-    void updateRecentFilesList(bool b);
+    /** Emitted when window regains focus */
+    void windowActivated();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
-    void showEvent(QShowEvent*) override;
+    bool event(QEvent*) override;
 
+private slots:
+    void updateCopyCutPasteEnabled();
 private:
     void newObject();
     bool newObjectFromPresets(int presetIndex);
@@ -122,7 +128,6 @@ private:
     void createMenus();
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
-    void updateZoomLabel();
     bool loadMostRecent();
     bool tryLoadPreset();
 
@@ -145,6 +150,7 @@ private:
     void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
     void makeConnections(Editor*, OnionSkinWidget*);
+    void makeConnections(Editor*, StatusBar*);
 
     bool tryRecoverUnsavedProject();
     void startProjectRecovery(int result);
@@ -162,24 +168,28 @@ private:
     TimeLine*             mTimeLine = nullptr;
     ColorInspector*       mColorInspector = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
+    QToolBar*             mMainToolbar = nullptr;
+    QToolBar*             mViewToolbar = nullptr;
+    QToolBar*             mOverlayToolbar = nullptr;
 
     // backup
     LegacyBackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
+    RepositionFramesDialog* mReposDialog = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;
 
+    void createToolbars();
+private:
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;
+    QList<QToolBar*> mToolbars;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
 
     // a hack for MacOS because closeEvent fires twice
     bool m2ndCloseEvent = false;
-
-    // statusbar widgets
-    QLabel* mZoomLabel = nullptr;
 
     // Whether to suppress the auto save dialog due to internal work
     bool mSuppressAutoSaveDialog = false;

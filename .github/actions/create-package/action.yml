@@ -4,18 +4,17 @@ inputs:
     description: Architecture
     required: true
 outputs:
-  package-name:
-    description: Package name
-    value: ${{steps.create-package.outputs.package-name}}
+  output-basename:
+    description: Output basename
+    value: ${{steps.create-package.outputs.output-basename}}
 runs:
   using: composite
   steps:
   - id: create-package
-    # XXX: Should use github.action_path here, but it’s currently broken in
-    #      container builds, see https://github.com/actions/runner/issues/716
-    run: ../.github/actions/create-package/create-package.sh
+    run: ${GITHUB_ACTION_PATH}/create-package.sh
     working-directory: build
     shell: bash
     env:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
+      IS_RELEASE: ${{ github.ref == 'refs/heads/release' }}

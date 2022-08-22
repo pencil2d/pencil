@@ -33,6 +33,8 @@ public:
     explicit KeyFrame(const KeyFrame& k2);
     virtual ~KeyFrame();
 
+    KeyFrame& operator=(const KeyFrame& k2);
+
     int  pos() const { return mFrame; }
     void setPos(int position) { mFrame = position; }
 
@@ -55,7 +57,7 @@ public:
     virtual KeyFrame* clone() const { return nullptr; }
     virtual void loadFile() {}
     virtual void unloadFile() {}
-    virtual bool isLoaded() { return true; }
+    virtual bool isLoaded() const { return true; }
 
     virtual quint64 memoryUsage() { return 0; }
 

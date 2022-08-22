@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #define OBJECT_H
 
 #include <memory>
+#include <QCoreApplication>
 #include <QObject>
 #include <QList>
 #include <QColor>
@@ -37,19 +38,22 @@ class ObjectData;
 class ActiveFramePool;
 
 
-class Object : public QObject
+class Object final
 {
-    Q_OBJECT
-
+    Q_DECLARE_TR_FUNCTIONS(Object)
 public:
-    explicit Object(QObject* parent = nullptr);
-    ~Object() override;
+    explicit Object();
+    ~Object();
+
+	Object(Object const&) = delete;
+	Object(Object&&) = delete;
+	Object& operator=(Object const&) = delete;
+	Object& operator=(Object&&) = delete;
 
     void init();
     void createWorkingDir();
     void deleteWorkingDir() const;
     void setWorkingDir(const QString& path); // used by crash recovery
-    void createDefaultLayers();
 
     QString filePath() const { return mFilePath; }
     void    setFilePath(const QString& strFileName) { mFilePath = strFileName; }
@@ -107,6 +111,8 @@ public:
     int  getLayerCount() const;
     int  getLastLayerIndex() const;
     Layer* getLayer(int i) const;
+    Layer* findLayerByName(const QString& strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
+    Layer* findLayerById(int layerId) const;
     Layer* takeLayer(int layerId); // Note: transfer ownership of the layer
 
     bool swapLayers(int i, int j);
@@ -114,9 +120,6 @@ public:
     void deleteLayer(Layer*);
     void deleteLayerWithId(int layerId);
     bool addLayer(Layer* layer);
-
-    Layer* findLayerByName(QString strName, Layer::LAYER_TYPE type = Layer::UNDEFINED) const;
-    Layer* findLayerById(int layerId) const;
 
     template<typename T>
     std::vector<T*> getLayersByType() const
@@ -143,15 +146,13 @@ public:
 
     int getUniqueLayerID();
 
-    ObjectData* data() const;
-    void setData(ObjectData*);
+    ObjectData* data() { return &mData; }
+    const ObjectData* data() const { return &mData; }
+    void setData(const ObjectData&);
 
     int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;
     void setActiveFramePoolSize(int sizeInMB);
-
-signals:
-    void layerViewChanged();
 
 private:
     int getMaxLayerID();
@@ -166,7 +167,7 @@ private:
 
     QList<ColorRef> mPalette;
 
-    std::unique_ptr<ObjectData> mData;
+    ObjectData mData;
     mutable std::unique_ptr<ActiveFramePool> mActiveFramePool;
 };
 

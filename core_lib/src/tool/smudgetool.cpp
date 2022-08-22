@@ -121,16 +121,18 @@ bool SmudgeTool::keyPressEvent(QKeyEvent *event)
         mScribbleArea->setCursor(cursor()); // update cursor
         return true;
     }
-    return false;
+    return BaseTool::keyPressEvent(event);
 }
 
-bool SmudgeTool::keyReleaseEvent(QKeyEvent*)
+bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
 {
-
-    toolMode = 0; // default mode
-    mScribbleArea->setCursor(cursor()); // update cursor
-
-    return true;
+    if (event->key() == Qt::Key_Alt)
+    {
+        toolMode = 0; // default mode
+        mScribbleArea->setCursor(cursor()); // update cursor
+        return true;
+    }
+    return BaseTool::keyReleaseEvent(event);
 }
 
 void SmudgeTool::pointerPressEvent(PointerEvent* event)

@@ -67,6 +67,9 @@ public:
     void gotoNextLayer();
     void gotoPreviouslayer();
 
+    /** Returns a new Layer with the given LAYER_TYPE */
+    Layer* createLayer(Layer::LAYER_TYPE type, const QString& strLayerName);
+
     void createBitmapLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,
                                                             const int layerId,
                                                             const int layerIndex,

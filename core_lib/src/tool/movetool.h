@@ -42,6 +42,9 @@ public:
     bool leavingThisTool() override;
     bool switchingLayer() override;
 
+    void resetToDefault() override;
+    void setShowSelectionInfo(const bool b) override;
+
 private:
     void cancelChanges();
     void applyTransformation();
@@ -69,6 +72,7 @@ private:
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;
     int mRotationIncrement = 0;
+    MoveMode mPerspMode;
 };
 
 #endif

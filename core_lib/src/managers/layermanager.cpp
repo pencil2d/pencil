@@ -25,8 +25,9 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 
+#include <QDebug>
 
-LayerManager::LayerManager(Editor* editor) : BaseManager(editor)
+LayerManager::LayerManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
@@ -79,13 +80,13 @@ Layer* LayerManager::currentLayer()
 
 Layer* LayerManager::currentLayer(int incr)
 {
-    Q_ASSERT(object() != NULL);
+    Q_ASSERT(object() != nullptr);
     return object()->getLayer(editor()->currentLayerIndex() + incr);
 }
 
 Layer* LayerManager::getLayer(int index)
 {
-    Q_ASSERT(object() != NULL);
+    Q_ASSERT(object() != nullptr);
     return object()->getLayer(index);
 }
 
@@ -113,6 +114,12 @@ void LayerManager::setCurrentLayer(int layerIndex)
     {
         Q_ASSERT(false);
         return;
+    }
+
+    // Deselect frames of previous layer.
+    Layer* previousLayer = object()->getLayer(editor()->currentLayerIndex());
+    if (previousLayer != nullptr) {
+        previousLayer->deselectAll();
     }
 
     // Do not check if layer index has changed
@@ -143,6 +150,7 @@ void LayerManager::gotoNextLayer()
 {
     if (editor()->currentLayerIndex() < object()->getLayerCount() - 1)
     {
+        currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
         emit currentLayerChanged(editor()->currentLayerIndex());
     }
@@ -152,6 +160,7 @@ void LayerManager::gotoPreviouslayer()
 {
     if (editor()->currentLayerIndex() > 0)
     {
+        currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
         emit currentLayerChanged(editor()->currentLayerIndex());
     }
@@ -182,6 +191,34 @@ QString LayerManager::nameSuggestLayer(const QString& name)
             .arg(name).arg(QString::number(newIndex++));
     } while (sLayers.contains(newName));
     return newName;
+}
+
+Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayerName)
+{
+    Layer* layer = nullptr;
+    switch (type) {
+    case Layer::BITMAP:
+        layer = object()->addNewBitmapLayer();
+        break;
+    case Layer::VECTOR:
+        layer = object()->addNewVectorLayer();
+        break;
+    case Layer::SOUND:
+        layer = object()->addNewSoundLayer();
+        break;
+    case Layer::CAMERA:
+        layer = object()->addNewCameraLayer();
+        break;
+    default:
+        Q_ASSERT(true);
+        return nullptr;
+    }
+
+    layer->setName(strLayerName);
+    emit layerCountChanged(count());
+    setCurrentLayer(getLastLayerIndex());
+
+    return layer;
 }
 
 void LayerManager::createBitmapLayerContainingKeyFrames(const std::map<int, KeyFrame*, std::greater<int>> keyFrames,

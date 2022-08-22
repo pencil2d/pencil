@@ -1132,7 +1132,7 @@ MoveFramesElement::MoveFramesElement(const int backupLayerId,
 
     layerId = backupLayerId;
     oldSelectedFrameIndexes = selectedFrameIndexes;
-    newSelectedFrameIndexes = editor->layers()->findLayerById(layerId)->getSelectedFrameList();
+    newSelectedFrameIndexes = editor->layers()->findLayerById(layerId)->getSelectedFramesByPos();
 
     framesSelected = wasSelected;
     if (backupOffset < 0) {

@@ -32,6 +32,7 @@ PRECOMPILED_HEADER = src/corelib-pch.h
 
 HEADERS +=  \
     src/corelib-pch.h \
+    src/graphics/bitmap/bitmapbucket.h \
     src/graphics/bitmap/bitmapimage.h \
     src/graphics/vector/bezierarea.h \
     src/graphics/vector/beziercurve.h \
@@ -53,6 +54,8 @@ HEADERS +=  \
     src/interface/backgroundwidget.h \
     src/managers/backupmanager.h \
     src/managers/basemanager.h \
+    src/managers/overlaymanager.h \
+    src/managers/clipboardmanager.h \
     src/managers/canvasmanager.h \
     src/managers/selectionmanager.h \
     src/managers/colormanager.h \
@@ -63,6 +66,7 @@ HEADERS +=  \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
     src/movieimporter.h \
+    src/overlaypainter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -115,6 +119,7 @@ HEADERS +=  \
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
+    src/graphics/bitmap/bitmapbucket.cpp \
     src/graphics/vector/bezierarea.cpp \
     src/graphics/vector/beziercurve.cpp \
     src/graphics/vector/colorref.cpp \
@@ -135,6 +140,8 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/backgroundwidget.cpp \
     src/managers/backupmanager.cpp \
     src/managers/basemanager.cpp \
+    src/managers/overlaymanager.cpp \
+    src/managers/clipboardmanager.cpp \
     src/managers/canvasmanager.cpp \
     src/managers/selectionmanager.cpp \
     src/managers/colormanager.cpp \
@@ -145,6 +152,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/viewmanager.cpp \
     src/managers/soundmanager.cpp \
     src/movieimporter.cpp \
+    src/overlaypainter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \

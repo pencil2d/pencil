@@ -126,11 +126,9 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
 
     int frameNumber = cam->pos();
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
-    camera1->setEasingType(camera1->getEasingType());
 
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
-    camera2->setEasingType(camera2->getEasingType());
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
@@ -175,7 +173,8 @@ qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent)
 {
     QEasingCurve easing;
 
-    switch (type) {
+    switch (type)
+    {
     case CameraEasingType::LINEAR : easing.setType(QEasingCurve::Linear); break;
     case CameraEasingType::INQUAD : easing.setType(QEasingCurve::InQuad); break;
     case CameraEasingType::OUTQUAD : easing.setType(QEasingCurve::OutQuad); break;
@@ -223,7 +222,6 @@ QSize LayerCamera::getViewSize() const
 void LayerCamera::setViewRect(QRect newViewRect)
 {
     viewRect = newViewRect;
-    emit resolutionChanged();
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType type)
