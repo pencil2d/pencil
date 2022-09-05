@@ -41,7 +41,6 @@ QString FileDialog::getOpenFileName(QWidget* parent, FileType fileType, const QS
         setLastOpenPath(fileType, filePath);
     }
 
-
     return filePath;
 }
 
@@ -78,11 +77,13 @@ QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QS
 
     if (filePath.isEmpty()) { return QString(); }
 
-    if (fileType == FileType::ANIMATION) {
+    if (fileType == FileType::ANIMATION)
+    {
         // When we save a new project, change default path for all other filetypes
         QDir projectPath = QFileInfo(filePath).absoluteDir();
         QList<FileType> fileTypes = { FileType::IMAGE, FileType::IMAGE_SEQUENCE, FileType::GIF, FileType::MOVIE, FileType::SOUND, FileType::PALETTE };
-        for (FileType& fileType : fileTypes) {
+        for (FileType& fileType : fileTypes)
+        {
             setLastSavePath(fileType, projectPath.absoluteFilePath(defaultFileName(fileType)));
         }
     }
@@ -234,17 +235,13 @@ QString FileDialog::getFilterForFile(const QString& filters, QString filePath)
 
 QString FileDialog::defaultFileName(FileType fileType)
 {
-    switch (fileType)
+    QString defaultName = "untitled";
+    if (fileType == FileType::ANIMATION)
     {
-    case FileType::ANIMATION: return tr("MyAnimation.pclx");
-    case FileType::IMAGE:
-    case FileType::IMAGE_SEQUENCE: return tr("untitled.png");
-    case FileType::GIF: return tr("untitled.gif");
-    case FileType::MOVIE: return tr("untitled.mp4");
-    case FileType::SOUND: return tr("untitled.wav");
-    case FileType::PALETTE: return tr("untitled.xml");
+        defaultName = "MyAnimation";
     }
-    return "";
+
+    return defaultName.append(getDefaultExtensionByFileType(fileType));
 }
 
 QString FileDialog::toSettingKey(FileType fileType)
