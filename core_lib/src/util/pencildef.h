@@ -201,6 +201,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
 #define CMD_TOGGLE_ONION_SKIN "CmdToggleOnionSkin"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
+#define CMD_TOGGLE_XSHEET "CmdToggleXsheet"
 #define CMD_INCREASE_SIZE "CmdIncreaseSize"
 #define CMD_DECREASE_SIZE "CmdDecreaseSize"
 #define CMD_EXIT "CmdExit"

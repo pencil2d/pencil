@@ -174,6 +174,9 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
+    mXsheet = new Xsheet(mEditor, this);
+    mXsheet->setObjectName("Xsheet");
+
     /*
     mTimeline2 = new Timeline2;
     mTimeline2->setObjectName( "Timeline2" );
@@ -188,7 +191,8 @@ void MainWindow2::createDockWidgets()
         << mDisplayOptionWidget
         << mOnionSkinWidget
         << mToolOptions
-        << mToolBox;
+        << mToolBox
+        << mXsheet;
 
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
@@ -208,6 +212,8 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorBox);
     addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
+    addDockWidget(Qt::RightDockWidgetArea, mXsheet);
+    mXsheet->hide();
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
@@ -386,7 +392,14 @@ void MainWindow2::createMenus()
     connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::eraserOn);
     connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools);
 
-    //--- Window Menu ---
+    /// --- Xsheet update ---
+    connect(mEditor, &Editor::updateTimeLine ,mXsheet, &Xsheet::updateXsheet);
+    connect(mEditor->layers(), &LayerManager::layerCountChanged, mXsheet, &Xsheet::updateXsheet);
+    connect(mEditor, &Editor::scrubbed, mXsheet, &Xsheet::updateScrub);
+    connect(ui->actionNew, &QAction::triggered, mXsheet, &Xsheet::newOpenScene);
+    connect(ui->actionOpen, &QAction::triggered, mXsheet, &Xsheet::newOpenScene);
+
+    /// --- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
     const std::vector<QAction*> actions
     {
@@ -397,6 +410,7 @@ void MainWindow2::createMenus()
         mTimeLine->toggleViewAction(),
         mDisplayOptionWidget->toggleViewAction(),
         mColorInspector->toggleViewAction(),
+        mXsheet->toggleViewAction(),
         mOnionSkinWidget->toggleViewAction()
     };
 
@@ -1291,6 +1305,7 @@ void MainWindow2::setupKeyboardShortcuts()
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
     mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
+    mXsheet->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_XSHEET));
     mOnionSkinWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_ONION_SKIN));
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));

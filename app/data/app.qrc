@@ -59,6 +59,9 @@
         <file>icons/new/arrow-diagonalright.png</file>
         <file>icons/new/arrow-selectmove.png</file>
         <file>icons/new/arrow-vertical.png</file>
+        <file>icons/papagayo.png</file>
+        <file>icons/papagayoNo.png</file>
+        <file>icons/savecsv.png</file>
         <file>icons/overlayCenter.png</file>
         <file>icons/overlayGoldenRatio.png</file>
         <file>icons/overlaySafe.png</file>

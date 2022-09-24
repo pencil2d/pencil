@@ -104,6 +104,7 @@ HEADERS += \
     src/spinslider.h \
     src/doubleprogressdialog.h \
     src/colorslider.h \
+    src/xsheet.h \
     src/checkupdatesdialog.h \
     src/presetdialog.h     \
     src/repositionframesdialog.h \
@@ -151,6 +152,7 @@ SOURCES += \
     src/spinslider.cpp \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
+    src/xsheet.cpp \
     src/checkupdatesdialog.cpp \
     src/presetdialog.cpp \
     src/repositionframesdialog.cpp \
@@ -189,6 +191,7 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
+    ui/xsheet.ui \
     ui/presetdialog.ui
 
 GIT {
