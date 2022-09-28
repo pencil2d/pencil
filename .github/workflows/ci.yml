@@ -31,7 +31,7 @@ jobs:
           #      figure out precisely *which* privileges are needed.
           container: { image: "ubuntu:16.04", options: --privileged }
         - name: macOS x86_64
-          os: macos-10.15
+          os: macos-latest
           container:
         - name: Windows x86
           os: windows-2019

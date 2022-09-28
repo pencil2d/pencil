@@ -1,3 +1,4 @@
+
 /*
 
 Pencil2D - Traditional Animation Software
@@ -14,6 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "pencil2d.h"
 
 #include <memory>
 
@@ -34,7 +36,10 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "platformhandler.h"
 
-#include "pencil2d.h"
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+#include <clocale>
+#endif
 
 Pencil2D::Pencil2D(int& argc, char** argv) :
     QApplication(argc, argv)
