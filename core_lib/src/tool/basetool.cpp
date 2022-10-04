@@ -296,7 +296,7 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
     newValue = qPow(newValue, 2) / 100;
     if (mAdjustmentStep > 0)
     {
-        int tempValue = (int)(newValue / mAdjustmentStep); // + 0.5 ?
+        int tempValue = static_cast<int>(newValue / mAdjustmentStep); // + 0.5 ?
         newValue = tempValue * mAdjustmentStep;
     }
 
@@ -315,7 +315,7 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         qDebug() << "Unhandled quick sizing property for tool" << typeName();
         Q_ASSERT(false);
         break;
-    };
+    }
 }
 
 QPointF BaseTool::getCurrentPressPixel()
@@ -446,6 +446,11 @@ void BaseTool::setFillExpandEnabled(const bool enabled)
 void BaseTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;
+}
+
+void BaseTool::setShowSelectionInfo(const bool b)
+{
+    properties.showSelectionInfo = b;
 }
 
 void BaseTool::setShowCameraPath(const bool showCameraPath)

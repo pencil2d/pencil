@@ -43,6 +43,9 @@ public:
     bool onWillChangeLayer() override;
     bool leavingThisTool() override;
 
+    void resetToDefault() override;
+    void setShowSelectionInfo(const bool b) override;
+
 private:
     void cancelChanges();
     void applyTransformation();

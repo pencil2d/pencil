@@ -59,13 +59,14 @@ enum ToolPropertyType
     FILL_MODE,
     STABILIZATION,
     TOLERANCE,
+    FILLCONTOUR,
+    SHOWSELECTIONINFO,
     USETOLERANCE,
     BUCKETFILLEXPAND,
     USEBUCKETFILLEXPAND,
     BUCKETFILLLAYERMODE,
     BUCKETFILLLAYERREFERENCEMODE,
-    FILLCONTOUR,
-    CAMERAPATH
+    CAMERAPATH,
 };
 
 enum class DotColorType {
@@ -138,6 +139,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_CUT "CmdCut"
 #define CMD_COPY "CmdCopy"
 #define CMD_PASTE "CmdPaste"
+#define CMD_PASTE_FROM_PREVIOUS "CmdPasteFromPrevious"
 #define CMD_SELECT_ALL "CmdSelectAll"
 #define CMD_DESELECT_ALL "CmdDeselectAll"
 #define CMD_CLEAR_FRAME "CmdClearFrame"
@@ -245,6 +247,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_QUICK_SIZING        "QuickSizing"
 #define SETTING_LAYOUT_LOCK         "LayoutLock"
 #define SETTING_ROTATION_INCREMENT  "RotationIncrement"
+#define SETTING_SHOW_SELECTION_INFO "ShowSelectionInfo"
 #define SETTING_ASK_FOR_PRESET      "AskForPreset"
 #define SETTING_LOAD_MOST_RECENT    "LoadMostRecent"
 #define SETTING_LOAD_DEFAULT_PRESET "LoadDefaultPreset"

@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
-    setName(QObject::tr("Camera Layer"));
+    setName(tr("Camera Layer"));
 
     QSettings settings(PENCIL2D, PENCIL2D);
     mFieldW = settings.value("FieldW").toInt();

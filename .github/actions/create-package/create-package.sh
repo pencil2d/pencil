@@ -44,11 +44,7 @@ wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-inte
   mv Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" \
     && sed -i '1,/^$/s/^\(Filename\|URL\): .*$/\1: '"$output_name.AppImage/" "$output_name.AppImage.zsync" \
     || true
-  if [ $IS_RELEASE = "true" ] && [ -e "$output_name.AppImage.zsync" ]; then
-    echo "::set-output name=package-name::$output_name.AppImage $output_name.AppImage.zsync"
-  else
-    echo "::set-output name=package-name::$output_name.AppImage"
-  fi
+  echo "::set-output name=output-basename::$output_name"
   echo "::endgroup::"
 }
 
@@ -85,7 +81,7 @@ create_package_macos() {
   popd >/dev/null
   echo "Create ZIP"
   bsdtar caf "pencil2d-mac-$1-$(date +%F).zip" Pencil2D
-  echo "::set-output name=package-name::pencil2d-mac-$1-$(date +%F).zip"
+  echo "::set-output name=output-basename::pencil2d-mac-$1-$(date +%F)"
 }
 
 create_package_windows() {
@@ -109,7 +105,7 @@ create_package_windows() {
   cp "C:\\Program Files\\OpenSSL\\lib"{ssl,crypto}"-1_1${xbits/-x32/}.dll" Pencil2D/
   echo "Create ZIP"
   "${WINDIR}\\System32\\tar" caf "pencil2d-${platform}-$1-$(date +%F).zip" Pencil2D
-  echo "::set-output name=package-name::pencil2d-${platform}-$1-$(date +%F).zip"
+  echo "::set-output name=output-basename::pencil2d-${platform}-$1-$(date +%F)"
 }
 
 "create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}"

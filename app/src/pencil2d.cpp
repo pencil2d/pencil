@@ -1,3 +1,4 @@
+
 /*
 
 Pencil2D - Traditional Animation Software
@@ -14,6 +15,7 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
+#include "pencil2d.h"
 
 #include <memory>
 
@@ -23,6 +25,10 @@ GNU General Public License for more details.
 #include <QLibraryInfo>
 #include <QSettings>
 #include <QTranslator>
+#include <QLockFile>
+#include <QStandardPaths>
+#include <QDir>
+#include <QMessageBox>
 
 #include "commandlineexporter.h"
 #include "commandlineparser.h"
@@ -30,7 +36,10 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "platformhandler.h"
 
-#include "pencil2d.h"
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+#include <clocale>
+#endif
 
 Pencil2D::Pencil2D(int& argc, char** argv) :
     QApplication(argc, argv)
@@ -65,6 +74,12 @@ Status Pencil2D::handleCommandLineOptions()
     CommandLineParser parser;
     parser.process(arguments());
 
+#ifndef QT_DEBUG
+    if (isInstanceOpen()) {
+        return Status::SAFE;
+    }
+#endif
+
     QString inputPath = parser.inputPath();
     QStringList outputPaths = parser.outputPaths();
 
@@ -91,6 +106,22 @@ Status Pencil2D::handleCommandLineOptions()
     return Status::FAIL;
 }
 
+bool Pencil2D::isInstanceOpen()
+{
+    QDir appDir = QDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)).filePath("Pencil2D");
+    appDir.mkpath(".");
+    mProcessLock.reset(new QLockFile(appDir.absoluteFilePath("pencil2d-process.lock")));
+    if (!mProcessLock->tryLock(10))
+    {
+        QMessageBox::StandardButton clickedButton = QMessageBox::warning(nullptr, tr("Warning"), tr("An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior."), QMessageBox::Close | QMessageBox::Open, QMessageBox::Close);
+        if (clickedButton != QMessageBox::Open)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool Pencil2D::event(QEvent* event)
 {
     if (event->type() == QEvent::FileOpen)
@@ -109,6 +140,14 @@ void Pencil2D::installTranslators()
     QString userLocale = setting.value(SETTING_LANGUAGE).toString();
     QLocale locale = userLocale.isEmpty() ? QLocale::system() : QLocale(userLocale);
     QLocale::setDefault(locale);
+
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
+    // In versions prior to 5.14, Qt's DOM implementation erroneously used
+    // locale-dependent string conversion for double attributes (QTBUG-80068).
+    // To work around this, we override the numeric locale category to use the
+    // C locale.
+    std::setlocale(LC_NUMERIC, "C");
+#endif
 
     std::unique_ptr<QTranslator> qtTranslator(new QTranslator(this));
     if (qtTranslator->load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
@@ -131,8 +170,5 @@ void Pencil2D::prepareGuiStartup(const QString& inputPath)
     connect(this, &Pencil2D::openFileRequested, mainWindow.get(), &MainWindow2::openFile);
     mainWindow->show();
 
-    if (!inputPath.isEmpty())
-    {
-        mainWindow->openFile(inputPath);
-    }
+    mainWindow->openStartupFile(inputPath);
 }

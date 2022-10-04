@@ -58,10 +58,9 @@ void ColorManager::workingLayerChanged(Layer* layer)
     }
 }
 
-QColor ColorManager::frontColor()
+QColor ColorManager::frontColor(bool useIndexedColor)
 {
-
-    if (mIsWorkingOnVectorLayer)
+    if (mIsWorkingOnVectorLayer && useIndexedColor)
         return object()->getColor(mCurrentColorIndex).color;
     else
         return mCurrentFrontColor;
@@ -76,25 +75,22 @@ void ColorManager::setColorNumber(int n)
     QColor currentColor = object()->getColor(mCurrentColorIndex).color;
 
     emit colorNumberChanged(mCurrentColorIndex);
-    emit colorChanged(currentColor, mCurrentColorIndex);
+    setFrontColor(currentColor);
 }
 
-void ColorManager::setColor(const QColor& newColor)
+void ColorManager::setFrontColor(const QColor& newFrontColor)
 {
-    if (mCurrentFrontColor != newColor)
-    {
-        mCurrentFrontColor = newColor;
-
-        emit colorChanged(mCurrentFrontColor, mCurrentColorIndex);
-
-        if (mIsWorkingOnVectorLayer)
-        {
-            object()->setColor(mCurrentColorIndex, newColor);
-        }
-    }
+    mCurrentFrontColor = newFrontColor;
+    emit colorChanged(newFrontColor, mCurrentColorIndex);
 }
 
-int ColorManager::frontColorNumber()
+void ColorManager::setIndexedColor(const QColor& newColor)
+{
+    object()->setColor(mCurrentColorIndex, newColor);
+    emit colorChanged(newColor, mCurrentColorIndex);
+}
+
+int ColorManager::frontColorNumber() const
 {
     return mCurrentColorIndex;
 }

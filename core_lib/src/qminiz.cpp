@@ -23,19 +23,33 @@ GNU General Public License for more details.
 #include "util.h"
 
 
-bool MiniZ::isZip(const QString& sZipFilePath)
+Status MiniZ::sanityCheck(const QString& sZipFilePath)
 {
     mz_zip_archive* mz = new mz_zip_archive;
     OnScopeExit(delete mz);
     mz_zip_zero_struct(mz);
     QByteArray utf8Bytes = sZipFilePath.toUtf8();
-    mz_bool ok = mz_zip_reader_init_file(mz, utf8Bytes.constData(), 0);
-    if (!ok) return false;
+    mz_bool readOk = mz_zip_reader_init_file(mz, utf8Bytes.constData(), 0);
 
-    int num = mz_zip_reader_get_num_files(mz);
+    mz_zip_error read_err = mz_zip_get_last_error(mz);
 
-    mz_zip_reader_end(mz);
-    return (num > 0);
+    mz_bool closeOk = mz_zip_reader_end(mz);
+
+    mz_zip_error close_err = mz_zip_get_last_error(mz);
+
+    if (!readOk || !closeOk) {
+        DebugDetails dd;
+        if (read_err != MZ_ZIP_NO_ERROR) {
+            dd << QString("Miniz found an error while reading the file. - %1, %2").arg(static_cast<int>(read_err)).arg(mz_zip_get_error_string(read_err));
+        }
+        if (close_err != MZ_ZIP_NO_ERROR) {
+            dd << QString("Miniz found an error while closing file file. - %1, %2").arg(static_cast<int>(close_err)).arg(mz_zip_get_error_string(close_err));
+        }
+        return Status(Status::ERROR_MINIZ_FAIL, dd);
+    }
+
+
+    return Status::OK;
 }
 
 size_t MiniZ::istreamReadCallback(void *pOpaque, mz_uint64 file_ofs, void * pBuf, size_t n)

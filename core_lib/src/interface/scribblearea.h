@@ -155,8 +155,10 @@ public:
     void keyEventForSelection(QKeyEvent* event);
 
 signals:
+    void modified(int, int);
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
+    void selectionUpdated();
 
 public slots:
     void clearImage();
@@ -171,6 +173,9 @@ public slots:
     void paletteColorChanged(QColor);
 
     void showLayerNotVisibleWarning();
+    void updateOriginalPolygonF();
+    void setOriginalPolygonF(QPolygonF polygon) { mOriginalPolygonF = polygon; }
+    QPolygonF getOriginalPolygonF() { return mOriginalPolygonF; }
 
 
 protected:
@@ -294,6 +299,8 @@ private:
     OverlayPainter mOverlayPainter;
     SelectionPainter mSelectionPainter;
     CameraPainter mCameraPainter;
+
+    QPolygonF mOriginalPolygonF = QPolygonF();
 
     // Pixmap Cache keys
     QMap<unsigned int, QPixmapCache::Key> mPixmapCacheKeys;

@@ -142,7 +142,7 @@ public:
 
     ObjectData* data() { return &mData; }
     const ObjectData* data() const { return &mData; }
-    void setData(const ObjectData*);
+    void setData(const ObjectData&);
 
     int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;

@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <cassert>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "pointerevent.h"
 #include "editor.h"
@@ -51,10 +52,10 @@ void MoveTool::loadSettings()
     properties.useFeather = false;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
+    QSettings settings(PENCIL2D, PENCIL2D);
+    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
+    mPropertyEnabled[SHOWSELECTIONINFO] = true;
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
 }
@@ -406,6 +407,20 @@ bool MoveTool::onWillChangeLayer()
         return false;
     }
     return true;
+}
+
+void MoveTool::resetToDefault()
+{
+    setShowSelectionInfo(false);
+}
+
+void MoveTool::setShowSelectionInfo(const bool b)
+{
+    properties.showSelectionInfo = b;
+
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("ShowSelectionInfo", b);
+
 }
 
 int MoveTool::showTransformWarning()

@@ -23,11 +23,9 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 
 
-
-
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
 {
-    setName(QObject::tr("Bitmap Layer"));
+    setName(tr("Bitmap Layer"));
 }
 
 LayerBitmap::~LayerBitmap()
@@ -44,6 +42,18 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 {
     Q_ASSERT(frameNumber >= 1);
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+}
+
+void LayerBitmap::repositionFrame(QPoint point, int frame)
+{
+    BitmapImage* image = getBitmapImageAtFrame(frame);
+    image->moveTopLeft(point);
+}
+
+QRect LayerBitmap::getFrameBounds(int frame)
+{
+    BitmapImage* image = getBitmapImageAtFrame(frame);
+    return image->bounds();
 }
 
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber, qreal opacity)

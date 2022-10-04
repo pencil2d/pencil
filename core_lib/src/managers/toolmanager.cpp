@@ -268,6 +268,11 @@ void ToolManager::setUseFillContour(bool useFillContour)
     emit toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
+void ToolManager::setShowSelectionInfo(bool b)
+{
+    currentTool()->setShowSelectionInfo(b);
+}
+
 void ToolManager::setShowCameraPath(bool enabled)
 {
     currentTool()->setShowCameraPath(enabled);

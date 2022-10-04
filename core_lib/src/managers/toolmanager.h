@@ -81,6 +81,7 @@ public slots:
     void setBucketFillReferenceMode(int referenceMode);
     void setBucketFillExpand(int);
     void setUseFillContour(bool);
+    void setShowSelectionInfo(bool b);
     void setShowCameraPath(bool);
     void resetCameraPath();
     void setCameraPathDotColor(int);

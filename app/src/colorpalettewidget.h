@@ -50,8 +50,7 @@ public:
 
     int currentColorNumber();
 
-    void selectColorNumber(int);
-    void setColor(QColor, int);
+    void selectColorNumber(int) const;
     void refreshColorList();
 
     void adjustSwatches();
@@ -59,7 +58,6 @@ public:
     void showContextMenu(const QPoint&);
 
 signals:
-    void colorChanged(QColor);
     void colorNumberChanged(int);
 
 protected:
@@ -90,6 +88,7 @@ private slots:
 private:
     void updateItemColor(int, QColor);
     void updateGridUI();
+    void addSwatch(int colorIndex) const;
 
     Ui::ColorPalette* ui = nullptr;
     QActionGroup* mLayoutModeActionGroup = nullptr;

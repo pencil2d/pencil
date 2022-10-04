@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 #include <cmath>
+#include <QGuiApplication>
 #include <QMessageBox>
 #include <QPixmapCache>
 
@@ -375,6 +376,7 @@ void ScribbleArea::setModified(int layerNumber, int frameNumber)
     if (layer == nullptr) { return; }
 
     setModified(layer, frameNumber);
+    emit modified(layerNumber, frameNumber);
 }
 
 bool ScribbleArea::event(QEvent *event)
@@ -540,12 +542,14 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         return;
     }
 
+    static const bool isX11 = QGuiApplication::platformName() == "xcb";
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
     const QPointF offset = mEditor->view()->mapScreenToCanvas(event->posF());
 
     const qreal currentScale = mEditor->view()->scaling();
-    if (!pixels.isNull())
+    // From the pixelDelta documentation: On X11 this value is driver-specific and unreliable, use angleDelta() instead
+    if (!isX11 && !pixels.isNull())
     {
         // XXX: This pixel-based zooming algorithm currently has some shortcomings compared to the angle-based one:
         //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
@@ -799,6 +803,14 @@ void ScribbleArea::showLayerNotVisibleWarning()
                          tr("You are trying to modify a hidden layer! Please select another layer (or make the current layer visible)."),
                          QMessageBox::Ok,
                          QMessageBox::Ok);
+}
+
+void ScribbleArea::updateOriginalPolygonF()
+{
+    if (mEditor->select()->somethingSelected() && mOriginalPolygonF.isEmpty())
+        mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
+    else
+        mOriginalPolygonF = QPolygonF();
 }
 
 void ScribbleArea::paintBitmapBuffer()
@@ -1209,8 +1221,15 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
     }
     currentSelectionPolygon = editor()->view()->mapPolygonToScreen(currentSelectionPolygon);
 
+    if (mOriginalPolygonF.isEmpty())
+    {
+        mOriginalPolygonF = selectMan->currentSelectionPolygonF();
+    }
+
     TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
-    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
+    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(),
+                            currentTool(), params, mOriginalPolygonF, selectMan->currentSelectionPolygonF());
+    emit selectionUpdated();
 }
 
 BitmapImage* ScribbleArea::currentBitmapImage(Layer* layer) const
@@ -1604,6 +1623,7 @@ void ScribbleArea::cancelTransformedSelection()
         mEditor->select()->setSelection(selectMan->mySelectionRect(), false);
 
         selectMan->resetSelectionProperties();
+        mOriginalPolygonF = QPolygonF();
 
         setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         updateCurrentFrame();

@@ -179,6 +179,7 @@ public: //slots
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
 
+    void onModified(int layer, int frame);
     void backup(const QString& undoText);
     bool backup(int layerNumber, int frameNumber, const QString& undoText);
     /**
@@ -197,6 +198,7 @@ public: //slots
 
     void copy();
     void copyAndCut();
+    void pasteFromPreviousFrame();
     void paste();
 
     bool canCopy() const;
@@ -205,6 +207,7 @@ public: //slots
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void flipSelection(bool flipVertical);
+    void repositionImage(QPoint transform, int frame);
 
     void clearTemporary();
     void addTemporaryDir(QTemporaryDir* dir);
