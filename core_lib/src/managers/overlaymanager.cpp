@@ -16,18 +16,16 @@ GNU General Public License for more details.
 */
 
 #include "editor.h"
-#include "scribblearea.h"
 #include "overlaymanager.h"
-#include "overlaypainter.h"
 
 OverlayManager::OverlayManager(Editor *editor): BaseManager(editor, "OverlayManager")
 {
     mEditor = editor;
 
-    setSinglePerspPoint(QPointF(0.1, 0.1));
-    setLeftPerspPoint(QPointF(-300.0, 0.0));
-    setRightPerspPoint(QPointF(300.0, 0.0));
-    setMiddlePerspPoint(QPointF(0.0, 200.0));
+    setSinglePerspectivePoint(QPointF(0.1, 0.1));
+    setLeftPerspectivePoint(QPointF(-300.0, 0.0));
+    setRightPerspectivePoint(QPointF(300.0, 0.0));
+    setMiddlePerspectivePoint(QPointF(0.0, 200.0));
 }
 
 OverlayManager::~OverlayManager()
@@ -36,7 +34,6 @@ OverlayManager::~OverlayManager()
 
 bool OverlayManager::init()
 {
-    mActivePerspOverlays.clear();
     return true;
 }
 
@@ -54,24 +51,24 @@ void OverlayManager::workingLayerChanged(Layer *)
 {
 }
 
-MoveMode OverlayManager::getMoveModeForPoint(const QPointF& pos, QTransform transform)
+MoveMode OverlayManager::getMoveModeForPoint(const QPointF& pos, const QTransform& transform)
 {
     const double calculatedSelectionTol = selectionTolerance();
     MoveMode mode = MoveMode::NONE;
 
-    if (QLineF(pos, transform.inverted().map(mSinglePerspPoint)).length() < calculatedSelectionTol)
+    if (QLineF(pos, transform.inverted().map(mSinglePerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_SINGLE;
     }
-    else if (QLineF(pos, transform.inverted().map(mLeftPerspPoint)).length() < calculatedSelectionTol)
+    else if (QLineF(pos, transform.inverted().map(mLeftPerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_LEFT;
     }
-    else if (QLineF(pos, transform.inverted().map(mRightPerspPoint)).length() < calculatedSelectionTol)
+    else if (QLineF(pos, transform.inverted().map(mRightPerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_RIGHT;
     }
-    else if (QLineF(pos, transform.inverted().map(mMiddlePerspPoint)).length() < calculatedSelectionTol)
+    else if (QLineF(pos, transform.inverted().map(mMiddlePerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_MIDDLE;
     }
@@ -105,18 +102,18 @@ void OverlayManager::updatePerspective(const QPointF& point)
 {
     switch (mMoveMode) {
     case MoveMode::PERSP_SINGLE:
-        setSinglePerspPoint(point);
+        setSinglePerspectivePoint(point);
         break;
     case MoveMode::PERSP_LEFT:
-        setLeftPerspPoint(point);
-        setRightPerspPoint(QPointF(getRightPerspPoint().x(), point.y()));
+        setLeftPerspectivePoint(point);
+        setRightPerspectivePoint(QPointF(getRightPerspectivePoint().x(), point.y()));
         break;
     case MoveMode::PERSP_RIGHT:
-        setRightPerspPoint(point);
-        setLeftPerspPoint(QPointF(getLeftPerspPoint().x(), point.y()));
+        setRightPerspectivePoint(point);
+        setLeftPerspectivePoint(QPointF(getLeftPerspectivePoint().x(), point.y()));
         break;
     case MoveMode::PERSP_MIDDLE:
-        setMiddlePerspPoint(point);
+        setMiddlePerspectivePoint(point);
         break;
     default:
         break;
@@ -126,28 +123,14 @@ void OverlayManager::updatePerspective(const QPointF& point)
 void OverlayManager::setOnePointPerspectiveEnabled(bool b)
 {
     mOverlayPerspective1 = b;
-    updatePerspOverlayActiveList();
 }
 
 void OverlayManager::setTwoPointPerspectiveEnabled(bool b)
 {
     mOverlayPerspective2 = b;
-    updatePerspOverlayActiveList();
 }
 
 void OverlayManager::setThreePointPerspectiveEnabled(bool b)
 {
     mOverlayPerspective3 = b;
-    updatePerspOverlayActiveList();
-}
-
-void OverlayManager::updatePerspOverlayActiveList()
-{
-    mActivePerspOverlays.clear();
-    if (mOverlayPerspective1)
-        mActivePerspOverlays.append(1);
-    if (mOverlayPerspective2)
-        mActivePerspOverlays.append(2);
-    if (mOverlayPerspective3)
-        mActivePerspOverlays.append(3);
 }

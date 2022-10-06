@@ -25,8 +25,6 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "layercamera.h"
 #include "vectorimage.h"
-#include "util.h"
-#include "camera.h"
 
 CanvasPainter::CanvasPainter()
 {
@@ -200,20 +198,20 @@ void CanvasPainter::paintOnionSkin(QPainter& painter)
 {
     Layer* layer = mObject->getLayer(mCurrentLayerIndex);
 
-    mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPaintOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
+    mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPainterOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
         if (state == OnionSkinPaintState::PREV) {
             switch (layer->type())
             {
-            case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizePrevFrames, false, false); break; }
-            case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizePrevFrames, false, false); break; }
+            case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames, false, false); break; }
+            case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames, false, false); break; }
             default: break;
             }
         }
         if (state == OnionSkinPaintState::NEXT) {
             switch (layer->type())
             {
-            case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizeNextFrames, false, false); break; }
-            case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOnionSkinPaintOptions.colorizeNextFrames, false, false); break; }
+            case Layer::BITMAP: { paintBitmapFrame(painter, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames, false, false); break; }
+            case Layer::VECTOR: { paintVectorFrame(painter, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames, false, false); break; }
             default: break;
             }
         }

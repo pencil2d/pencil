@@ -27,7 +27,6 @@ GNU General Public License for more details.
 #include "util.h"
 #include "layer.h"
 #include "layermanager.h"
-#include "layercamera.h"
 #include "toolmanager.h"
 
 ToolOptionWidget::ToolOptionWidget(QWidget* parent) : BaseDockWidget(parent)
@@ -47,9 +46,9 @@ ToolOptionWidget::~ToolOptionWidget()
 
 void ToolOptionWidget::initUI()
 {
-	mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
+    mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
     mCameraOptionsWidget = new CameraOptionsWidget(editor(), this);
-	ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
+    ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
     ui->horizontalLayout_2->addWidget(mCameraOptionsWidget);
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -67,8 +66,6 @@ void ToolOptionWidget::updateUI()
 {
     BaseTool* currentTool = editor()->tools()->currentTool();
     Q_ASSERT(currentTool);
-
-    disableAllOptions();
 
     setVisibility(currentTool);
 
@@ -158,15 +155,17 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
 void ToolOptionWidget::setVisibility(BaseTool* tool)
 {
     Q_ASSERT(mBucketOptionsWidget);
+    Q_ASSERT(mCameraOptionsWidget);
+
+    disableAllOptions();
+
     if (tool->type() == BUCKET)
     {
-        disableAllOptions();
         mBucketOptionsWidget->setHidden(false);
         return;
     }
     else if (tool->type() == CAMERA)
     {
-        disableAllOptions();
         mCameraOptionsWidget->setHidden(false);
     }
     else

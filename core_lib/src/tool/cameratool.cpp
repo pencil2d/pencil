@@ -21,10 +21,8 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "pointerevent.h"
 #include "layermanager.h"
-#include "toolmanager.h"
 #include "selectionmanager.h"
 #include "viewmanager.h"
-#include "camera.h"
 #include "layercamera.h"
 #include "movemode.h"
 #include "mathutils.h"
@@ -50,8 +48,6 @@ void CameraTool::loadSettings()
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraTool::onDidChangeLayer);
     connect(mEditor, &Editor::objectLoaded, this, &CameraTool::onDidLoadObject);
 
-    QSettings settings(PENCIL2D, PENCIL2D);
-
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &CameraTool::updateSettings);
@@ -59,21 +55,16 @@ void CameraTool::loadSettings()
 
 void CameraTool::onDidLoadObject()
 {
-    Layer* layer = mEditor->layers()->getLayer(mEditor->currentLayerIndex());
-    if (!layer || layer->type() != Layer::CAMERA) { return ; }
-
-    LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
-    properties.cameraPathDotColorType = static_cast<int>(layerCam->getDotColorType());
-    properties.cameraShowPath = layerCam->getShowCameraPath();
+    onDidChangeLayer(mEditor->currentLayerIndex());
 }
 
 void CameraTool::onDidChangeLayer(int index)
 {
     Layer* layer = mEditor->layers()->getLayer(index);
-    if (layer->type() != Layer::CAMERA) { return ; }
+    if (!layer || layer->type() != Layer::CAMERA) { return; }
 
     LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
-    properties.cameraPathDotColorType = static_cast<int>(layerCam->getDotColorType());
+    properties.cameraPathDotColorType = layerCam->getDotColorType();
     properties.cameraShowPath = layerCam->getShowCameraPath();
 }
 
@@ -95,62 +86,62 @@ void CameraTool::updateSettings(const SETTING setting)
 QCursor CameraTool::cursor()
 {
     QPixmap cursorPixmap = QPixmap(24, 24);
-    if (!cursorPixmap.isNull())
-    {
-        cursorPixmap.fill(QColor(255, 255, 255, 0));
-        QPainter cursorPainter(&cursorPixmap);
-        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
 
-        switch(cursorForMoveMode())
-        {
-        case MoveMode::PERSP_LEFT:
-        case MoveMode::PERSP_RIGHT:
-        case MoveMode::PERSP_MIDDLE:
-        case MoveMode::PERSP_SINGLE:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            break;
-        }
-        case MoveMode::TOPLEFT:
-        case MoveMode::BOTTOMRIGHT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-            break;
-        }
-        case MoveMode::TOPRIGHT:
-        case MoveMode::BOTTOMLEFT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-            break;
-        }
-        case MoveMode::ROTATIONLEFT:
-        case MoveMode::ROTATIONRIGHT:
-        case MoveMode::ROTATION:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
-            break;
-        }
-        case MoveMode::MIDDLE:
-        case MoveMode::CENTER:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            break;
-        }
-        default:
-            return Qt::ArrowCursor;
-        }
-        cursorPainter.end();
+    cursorPixmap.fill(QColor(255, 255, 255, 0));
+    QPainter cursorPainter(&cursorPixmap);
+    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+    switch(moveMode())
+    {
+    case MoveMode::PERSP_LEFT:
+    case MoveMode::PERSP_RIGHT:
+    case MoveMode::PERSP_MIDDLE:
+    case MoveMode::PERSP_SINGLE:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+        break;
     }
+    case MoveMode::TOPLEFT:
+    case MoveMode::BOTTOMRIGHT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+        break;
+    }
+    case MoveMode::TOPRIGHT:
+    case MoveMode::BOTTOMLEFT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+        break;
+    }
+    case MoveMode::ROTATIONLEFT:
+    case MoveMode::ROTATIONRIGHT:
+    case MoveMode::ROTATION:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
+        break;
+    }
+    case MoveMode::MIDDLE:
+    case MoveMode::CENTER:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+        break;
+    }
+    default:
+        return Qt::ArrowCursor;
+    }
+    cursorPainter.end();
+
     return QCursor(cursorPixmap);
 }
 
-MoveMode CameraTool::cursorForMoveMode()
+MoveMode CameraTool::moveMode()
 {
     Layer* layer = mEditor->layers()->currentLayer();
     MoveMode mode = MoveMode::NONE;
     qreal selectionTolerance = mEditor->select()->selectionTolerance();
     QPointF currentPoint = getCurrentPoint();
 
+    Q_ASSERT(layer->type() == Layer::CAMERA);
     LayerCamera* cam = static_cast<LayerCamera*>(layer);
     if (layer->keyExists(mEditor->currentFrame()))
     {
@@ -192,13 +183,12 @@ void CameraTool::setShowCameraPath(const bool showCameraPath)
     properties.cameraShowPath = showCameraPath;
 }
 
-void CameraTool::setPathDotColorType(const int pathDotColor)
+void CameraTool::setPathDotColorType(const DotColorType pathDotColor)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
-    DotColorType color = static_cast<DotColorType>(pathDotColor);
-    layer->setDotColorType(color);
+    layer->setDotColorType(pathDotColor);
 }
 
 void CameraTool::resetCameraPath()
@@ -216,11 +206,12 @@ void CameraTool::resetTransform(CameraFieldOption option)
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     layer->resetCameraAtFrame(option, mEditor->currentFrame());
-    mEditor->frameModified(mEditor->currentFrame());
+    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
 {
+    Q_ASSERT(editor()->layers()->currentLayer()->type() == Layer::CAMERA);
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
     QRectF viewRect = layer->getViewAtFrame(mEditor->currentFrame()).inverted().mapRect(layer->getViewRect());
@@ -232,15 +223,16 @@ void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
 
     layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mTransformOffset, -angle, mEditor->currentFrame());
 
-    mEditor->frameModified(mEditor->currentFrame());
+    emit mEditor->frameModified(mEditor->currentFrame());
     mTransformOffset = getCurrentPoint();
 }
 
 void CameraTool::transformCameraPath()
 {
+    Q_ASSERT(editor()->layers()->currentLayer()->type() == Layer::CAMERA);
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     layer->updatePathControlPointAtFrame(getCurrentPoint(), mDragPathFrame);
-    mEditor->frameModified(mEditor->currentFrame());
+    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 int CameraTool::constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const
@@ -262,8 +254,8 @@ void CameraTool::pointerPressEvent(PointerEvent*)
 
 void CameraTool::pointerMoveEvent(PointerEvent* event)
 {
+    Q_ASSERT(editor()->layers()->currentLayer()->type() == Layer::CAMERA);
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
-    if (layer == nullptr) return;
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {

@@ -4,8 +4,6 @@
 #include "camera.h"
 #include "layer.h"
 
-#include "pencildef.h"
-
 Q_CONSTEXPR static qreal LINELENGTHFACTOR = 2.0;
 Q_CONSTEXPR static int LEFTANGLEOFFSET = 90;
 Q_CONSTEXPR static int RIGHTANGLEOFFSET = -90;
@@ -21,14 +19,14 @@ void OverlayPainter::initializePainter(QPainter& painter)
     QPen pen(QColor(180, 220, 255));
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
 }
 
-void OverlayPainter::preparePainter(Layer* cameraLayer, QPalette palette)
+void OverlayPainter::preparePainter(const Layer* cameraLayer, const QPalette& palette)
 {
     mPalette = palette;
-    mCameraLayer = static_cast<LayerCamera*>(cameraLayer);
+    Q_ASSERT(!cameraLayer || cameraLayer->type() == Layer::CAMERA);
+    mCameraLayer = static_cast<const LayerCamera*>(cameraLayer);
 }
 
 void OverlayPainter::setViewTransform(const QTransform view)
@@ -38,67 +36,57 @@ void OverlayPainter::setViewTransform(const QTransform view)
 
 void OverlayPainter::paint(QPainter &painter)
 {
-    LayerCamera* cameraLayer = mCameraLayer;
-
-    if (cameraLayer == nullptr) { return; }
+    if (mCameraLayer == nullptr) { return; }
 
     painter.save();
     initializePainter(painter);
 
-    painter.setWorldMatrixEnabled(false);
+    QTransform camTransform = mCameraLayer->getViewAtFrame(mOptions.nFrameIndex);
+    QRect cameraRect = mCameraLayer->getViewRect();
+    Camera* camera = mCameraLayer->getLastCameraAtFrame(mOptions.nFrameIndex, 0);
+    Q_ASSERT(camera);
 
-    QTransform camTransform = cameraLayer->getViewAtFrame(mOptions.nFrameIndex);
-    QRect cameraRect = cameraLayer->getViewRect();
-    Camera* camera = cameraLayer->getLastCameraAtFrame(mOptions.nFrameIndex, 0);
 
-
+    painter.setWorldTransform(mViewTransform);
     if (mOptions.bCenter)
     {
-        painter.setWorldTransform(mViewTransform);
         paintOverlayCenter(painter, camTransform, cameraRect);
     }
     if (mOptions.bThirds)
     {
-        painter.setWorldTransform(mViewTransform);
         paintOverlayThirds(painter, camTransform, cameraRect);
     }
     if (mOptions.bGoldenRatio)
     {
-        painter.setWorldTransform(mViewTransform);
         paintOverlayGolden(painter, camTransform, cameraRect);
     }
     if (mOptions.bSafeArea)
     {
-        painter.setWorldTransform(mViewTransform);
-        paintOverlaySafeAreas(painter, camTransform, cameraRect, camera);
+        paintOverlaySafeAreas(painter, *camera, camTransform, cameraRect);
     }
 
     if (mOptions.bPerspective1)
     {
-        painter.setWorldTransform(mViewTransform);
         paintOverlayPerspectiveOnePoint(painter, camTransform, cameraRect);
     }
     if (mOptions.bPerspective2)
     {
-        painter.setWorldTransform(mViewTransform);
-        paintOverlayPerspectiveTwoPoints(painter, camera, camTransform, cameraRect);
+        paintOverlayPerspectiveTwoPoints(painter, *camera, camTransform, cameraRect);
     }
     if (mOptions.bPerspective3)
     {
-        painter.setWorldTransform(mViewTransform);
-        paintOverlayPerspectiveThreePoints(painter, camera, camTransform, cameraRect);
+        paintOverlayPerspectiveThreePoints(painter, *camera, camTransform, cameraRect);
     }
 
     if (mOptions.bGrid)
     {
-        painter.setWorldTransform(mViewTransform);
         paintGrid(painter);
     }
 
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayCenter(QPainter &painter, QTransform& camTransform, QRect& camRect) const
+void OverlayPainter::paintOverlayCenter(QPainter &painter, const QTransform& camTransform, const QRect& camRect) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -110,7 +98,6 @@ void OverlayPainter::paintOverlayCenter(QPainter &painter, QTransform& camTransf
     pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -127,7 +114,7 @@ void OverlayPainter::paintOverlayCenter(QPainter &painter, QTransform& camTransf
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayThirds(QPainter &painter, QTransform& camTransform, QRect& camRect) const
+void OverlayPainter::paintOverlayThirds(QPainter &painter, const QTransform& camTransform, const QRect& camRect) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -139,7 +126,6 @@ void OverlayPainter::paintOverlayThirds(QPainter &painter, QTransform& camTransf
     pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -156,7 +142,7 @@ void OverlayPainter::paintOverlayThirds(QPainter &painter, QTransform& camTransf
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransform, QRect& camRect) const
+void OverlayPainter::paintOverlayGolden(QPainter &painter, const QTransform& camTransform, const QRect& camRect) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -168,7 +154,6 @@ void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransf
     pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);
 
@@ -185,7 +170,7 @@ void OverlayPainter::paintOverlayGolden(QPainter &painter, QTransform& camTransf
     painter.restore();
 }
 
-void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTransform, QRect& camRect, Camera* camera) const
+void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const
 {
     painter.save();
     painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
@@ -196,7 +181,6 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
     pen.setDashPattern(dashes);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::TextAntialiasing, true);
 
@@ -222,8 +206,8 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
             QPointF topLeft = topLeftCrossLine.pointAt((action / 2.0) / 100 ).toPoint();
 
             QTransform trans = QTransform::fromTranslate(topLeft.x(), topLeft.y());
-            QTransform rot = QTransform().rotate(-camera->rotation());
-            QTransform scale = QTransform::fromScale(camera->scaling(), camera->scaling());
+            QTransform rot = QTransform().rotate(-camera.rotation());
+            QTransform scale = QTransform::fromScale(camera.scaling(), camera.scaling());
 
             QTransform t = scale.inverted() * rot * trans;
             painter.setTransform(t, true);
@@ -249,8 +233,8 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
             painter.save();
 
             QTransform trans = QTransform::fromTranslate(bottomLeft.x(), bottomLeft.y());
-            QTransform rot = QTransform().rotate(-camera->rotation());
-            QTransform scale = QTransform::fromScale(camera->scaling(), camera->scaling());
+            QTransform rot = QTransform().rotate(-camera.rotation());
+            QTransform scale = QTransform::fromScale(camera.scaling(), camera.scaling());
 
             QTransform t = scale.inverted() * rot * trans;
             painter.setTransform(t, true);
@@ -261,7 +245,7 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, QTransform& camTra
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, QTransform& camTransform, QRect& camRect) const
+void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
 {
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -274,7 +258,8 @@ void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, QTransfo
     QPointF singlePoint = camTransform.inverted().map(mOptions.mSinglePerspPoint);
     if (singlePoint == QPointF(0, 0))
     {
-        singlePoint += QPointF(0.1, 0.1);
+        // TODO: bug in Qt prevents points from being (0,0)...
+        singlePoint = QPointF(0.1, 0.1);
     }
 
     angleLine.setP1(singlePoint);
@@ -302,7 +287,7 @@ void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, QTransfo
 
 }
 
-void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const Camera* camera, QTransform& camTransform, QRect& camRect) const
+void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const
 {
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -315,12 +300,14 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const C
     QPointF rightPoint = camTransform.inverted().map(mOptions.mRightPerspPoint);
     if (leftPoint == QPointF(0.0, 0.0))
     {
-        leftPoint += QPointF(0.1, 0.1);
+        // TODO: bug in Qt prevents points from being (0,0)...
+        leftPoint = QPointF(0.1, 0.1);
     }
 
     if (rightPoint == QPointF(0.0, 0.0))
     {
-        rightPoint += QPointF(0.1, 0.1);
+        // TODO: bug in Qt prevents points from being (0,0)...
+        rightPoint = QPointF(0.1, 0.1);
     }
 
     QLineF angleLineLeft;
@@ -334,8 +321,8 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const C
     QVector<QLineF> lines;
     for (int i = 0; i <= repeats; i++)
     {
-        angleLineLeft.setAngle((LEFTANGLEOFFSET - i * degrees) + camera->rotation());
-        angleLineRight.setAngle((RIGHTANGLEOFFSET - i * degrees) + camera->rotation());
+        angleLineLeft.setAngle((LEFTANGLEOFFSET - i * degrees) + camera.rotation());
+        angleLineRight.setAngle((RIGHTANGLEOFFSET - i * degrees) + camera.rotation());
         lines.append(angleLineRight);
         lines.append(angleLineLeft);
     }
@@ -358,7 +345,7 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const C
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const Camera* camera, QTransform& camTransform, QRect& camRect) const
+void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const
 {
     if (!mOptions.bPerspective2)
         paintOverlayPerspectiveTwoPoints(painter, camera, camTransform, camRect);
@@ -373,7 +360,8 @@ void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const
     QPointF middlePoint = camTransform.inverted().map(mOptions.mMiddlePerspPoint);
     if (middlePoint == QPointF(0.0, 0.0))
     {
-        middlePoint += QPointF(0.1, 0.1);
+        // TODO: bug in Qt prevents points from being (0,0)...
+        middlePoint = QPointF(0.1, 0.1);
     }
 
     const int middleAngleOffset = mOptions.mLeftPerspPoint.y() < mOptions.mMiddlePerspPoint.y() ? 180 : 0;
@@ -381,11 +369,11 @@ void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const
     QLineF angleLine;
     angleLine.setAngle(middleAngleOffset);
     angleLine.setP1(middlePoint);
+    angleLine.setLength(camRect.width() * LINELENGTHFACTOR);
     QVector<QLineF> lines;
     for (int i = 0; i <= repeats; i++)
     {
-        angleLine.setAngle((middleAngleOffset - i * degrees) + camera->rotation());
-        angleLine.setLength(camRect.width() * LINELENGTHFACTOR);
+        angleLine.setAngle((middleAngleOffset - i * degrees) + camera.rotation());
         lines.append(angleLine);
     }
     painter.drawLines(lines);
@@ -421,7 +409,6 @@ void OverlayPainter::paintGrid(QPainter& painter) const
     QPen pen(Qt::lightGray);
     pen.setCosmetic(true);
     painter.setPen(pen);
-    painter.setWorldMatrixEnabled(true);
     painter.setBrush(Qt::NoBrush);
     painter.setRenderHint(QPainter::Antialiasing, false);
     // draw vertical grid lines

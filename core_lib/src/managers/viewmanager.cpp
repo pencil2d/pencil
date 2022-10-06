@@ -183,12 +183,11 @@ qreal ViewManager::scaling()
 
 void ViewManager::scaleUp()
 {
-    for (int i = 0; i < gZoomLevels.size(); i++)
+    for (size_t i = 0; i < gZoomLevels.size(); i++)
     {
         if (mScaling < gZoomLevels[i])
         {
-            mScaling = gZoomLevels[i];
-            scale(mScaling);
+            scale(gZoomLevels[i]);
             return;
         }
     }
@@ -198,12 +197,11 @@ void ViewManager::scaleUp()
 
 void ViewManager::scaleDown()
 {
-    for (int i = gZoomLevels.size() - 1; i > 0; i--)
+    for (size_t i = gZoomLevels.size() - 1; i >= 0; --i)
     {
         if (mScaling > gZoomLevels[i])
         {
-            mScaling = gZoomLevels[i];
-            scale(mScaling);
+            scale(gZoomLevels[i]);
             return;
         }
     }
@@ -263,7 +261,7 @@ void ViewManager::scale(qreal scaleValue)
     emit viewChanged();
 }
 
-void ViewManager::scaleWithOffset(qreal scaleValue, QPointF offset)
+void ViewManager::scaleAtOffset(qreal scaleValue, QPointF offset)
 {
     if (scaleValue < mMinScale)
     {

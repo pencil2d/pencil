@@ -103,7 +103,7 @@ void StatusBar::updateToolStatus(ToolType tool)
             mToolLabel->setText(tr("Click and drag to move an object. Hold Ctrl to rotate."));
             break;
         case CAMERA:
-            mToolLabel->setText(tr("Click and drag to move the camera. While on in-between frames, drag handle to change interpolation"));
+            mToolLabel->setText(tr("Click and drag to move the camera. While on in-between frames, drag handle to change interpolation."));
             break;
         case HAND:
             mToolLabel->setText(tr("Click and drag to pan. Hold Ctrl to zoom or Alt to rotate."));

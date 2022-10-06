@@ -38,7 +38,7 @@ public:
     void updateUI();
 
     void setShowCameraPath(bool showCameraPath);
-    void setPathDotColorType(int index);
+    void setPathDotColorType(DotColorType index);
     void onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType);
 
 private:

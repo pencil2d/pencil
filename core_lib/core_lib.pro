@@ -178,6 +178,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tool/strokemanager.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp \
+    src/util/cameraeasingtype.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \

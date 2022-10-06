@@ -65,6 +65,7 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(ANTI_ALIASING, false);
     mPropertyEnabled.insert(FILL_MODE, false);
     mPropertyEnabled.insert(STABILIZATION, false);
+    mPropertyEnabled.insert(CAMERAPATH, false);
 }
 
 QCursor BaseTool::cursor()
@@ -458,7 +459,7 @@ void BaseTool::setShowCameraPath(const bool showCameraPath)
     properties.cameraShowPath = showCameraPath;
 }
 
-void BaseTool::setPathDotColorType(const int dotColorType)
+void BaseTool::setPathDotColorType(const DotColorType dotColorType)
 {
     properties.cameraPathDotColorType = dotColorType;
 }

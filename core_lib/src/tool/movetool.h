@@ -34,7 +34,7 @@ public:
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;
-    QCursor cursor(MoveMode mode);
+    QCursor cursor(MoveMode mode) const;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
@@ -69,14 +69,10 @@ private:
 
     Layer* currentPaintableLayer();
 
-    MoveMode mCamMoveMode = MoveMode::NONE;
-    MoveMode mCamPathMoveMode = MoveMode::NONE;
-
     QPointF anchorOriginPoint;
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;
     int mRotationIncrement = 0;
-    int mDragPathFrame = 1;
     MoveMode mPerspMode;
 };
 

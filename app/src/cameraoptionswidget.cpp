@@ -17,13 +17,9 @@ GNU General Public License for more details.
 #include "cameraoptionswidget.h"
 #include "ui_cameraoptionswidget.h"
 
-#include <QDebug>
-
 #include "editor.h"
 #include "toolmanager.h"
 #include "layermanager.h"
-#include "layercamera.h"
-#include "cameratool.h"
 
 CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
     QWidget(parent),
@@ -33,7 +29,7 @@ CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
 
     auto toolMan = mEditor->tools();
     connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, toolMan, &ToolManager::setShowCameraPath);
-    connect(ui->pathColorComboBox, QOverload<int>::of(&QComboBox::currentIndexChanged), toolMan, &ToolManager::setCameraPathDotColor);
+    connect(ui->pathColorComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), toolMan, &ToolManager::setCameraPathDotColor);
     connect(ui->btnResetPath, &QPushButton::clicked, toolMan, &ToolManager::resetCameraPath);
 
     connect(ui->resetAllButton, &QPushButton::clicked, toolMan, [=] {
@@ -51,7 +47,7 @@ CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
 
     connect(toolMan, &ToolManager::toolPropertyChanged, this, &CameraOptionsWidget::onToolPropertyChanged);
 
-    connect(mEditor->layers(), &LayerManager::notifyLayerChanged, this, &CameraOptionsWidget::updateUI);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraOptionsWidget::updateUI);
 }
 
 CameraOptionsWidget::~CameraOptionsWidget()
@@ -88,8 +84,8 @@ void CameraOptionsWidget::setShowCameraPath(bool showCameraPath)
     ui->showCameraPathCheckBox->setChecked(showCameraPath);
 }
 
-void CameraOptionsWidget::setPathDotColorType(int index)
+void CameraOptionsWidget::setPathDotColorType(DotColorType index)
 {
     QSignalBlocker b(ui->pathColorComboBox);
-    ui->pathColorComboBox->setCurrentIndex(index);
+    ui->pathColorComboBox->setCurrentIndex(static_cast<int>(index));
 }

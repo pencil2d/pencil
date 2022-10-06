@@ -26,7 +26,6 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 
 class PointerEvent;
-class Editor;
 
 class CameraTool : public BaseTool
 {
@@ -36,7 +35,7 @@ public:
     ~CameraTool() override;
 
     QCursor cursor() override;
-    MoveMode cursorForMoveMode();
+    MoveMode moveMode();
     ToolType type() override { return ToolType::CAMERA; }
     void loadSettings() override;
     void onDidChangeLayer(int index);
@@ -48,7 +47,7 @@ public:
 
     void setShowCameraPath(const bool showCameraPath) override;
     void resetCameraPath() override;
-    void setPathDotColorType(const int pathDotColor) override;
+    void setPathDotColorType(const DotColorType pathDotColor) override;
     void resetTransform(CameraFieldOption option);
 
 private:
@@ -62,7 +61,6 @@ private:
     MoveMode mCamPathMoveMode = MoveMode::NONE;
     int mDragPathFrame = 1;
     int mRotationIncrement = 0;
-    MoveMode mPerspMode;
 };
 
 #endif // CAMERATOOL_H

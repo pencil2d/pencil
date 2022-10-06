@@ -209,54 +209,54 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     cameraInterpolationMenu->addSeparator();
     QMenu* subOther = cameraInterpolationMenu->addMenu(tr("Other"));
 
-    subSine->addAction(tr("Slow Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INSINE, frameNumber); });
-    subSine->addAction(tr("Slow  Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTSINE, frameNumber); });
-    subSine->addAction(tr("Slow  Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTSINE, frameNumber); });
-    subSine->addAction(tr("Slow  Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINSINE, frameNumber); });
-    subQuad->addAction(tr("Normal Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INQUAD, frameNumber); });
-    subQuad->addAction(tr("Normal Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTQUAD, frameNumber); });
-    subQuad->addAction(tr("Normal Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTQUAD, frameNumber); });
-    subQuad->addAction(tr("Normal Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINQUAD, frameNumber); });
-    subCubic->addAction(tr("Quick Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INCUBIC, frameNumber); });
-    subCubic->addAction(tr("Quick Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTCUBIC, frameNumber); });
-    subCubic->addAction(tr("Quick Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTCUBIC, frameNumber); });
-    subCubic->addAction(tr("Quick Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINCUBIC, frameNumber); });
-    subQuart->addAction(tr("Fast Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INQUART, frameNumber); });
-    subQuart->addAction(tr("Fast Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTQUART, frameNumber); });
-    subQuart->addAction(tr("Fast Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTQUART, frameNumber); });
-    subQuart->addAction(tr("Fast Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINQUART, frameNumber); });
-    subQuint->addAction(tr("Faster Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INQUINT, frameNumber); });
-    subQuint->addAction(tr("Faster Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTQUINT, frameNumber); });
-    subQuint->addAction(tr("Faster Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTQUINT, frameNumber); });
-    subQuint->addAction(tr("Faster Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINQUINT, frameNumber); });
-    subExpo->addAction(tr("Fastest Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INEXPO, frameNumber); });
-    subExpo->addAction(tr("Fastest Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTEXPO, frameNumber); });
-    subExpo->addAction(tr("Fastest Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTEXPO, frameNumber); });
-    subExpo->addAction(tr("Fastest Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINEXPO, frameNumber); });
-    subCirc->addAction(tr("Circle-based Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INCIRC, frameNumber); });
-    subCirc->addAction(tr("Circle-based Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTCIRC, frameNumber); });
-    subCirc->addAction(tr("Circle-based Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTCIRC, frameNumber); });
-    subCirc->addAction(tr("Circle-based Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINCIRC, frameNumber); });
-    subBack->addAction(tr("Overshoot Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INBACK, frameNumber); });
-    subBack->addAction(tr("Overshoot Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTBACK, frameNumber); });
-    subBack->addAction(tr("Overshoot Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTBACK, frameNumber); });
-    subBack->addAction(tr("Overshoot Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINBACK, frameNumber); });
-    subElast->addAction(tr("Elastic Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INELASTIC, frameNumber); });
-    subElast->addAction(tr("Elastic Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTELASTIC, frameNumber); });
-    subElast->addAction(tr("Elastic Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTELASTIC, frameNumber); });
-    subElast->addAction(tr("Elastic Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINELASTIC, frameNumber); });
-    subBounc->addAction(tr("Bounce Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INBOUNCE, frameNumber); });
-    subBounc->addAction(tr("Bounce Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTBOUNCE, frameNumber); });
-    subBounc->addAction(tr("Bounce Ease-in - Ease-out"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTBOUNCE, frameNumber); });
-    subBounc->addAction(tr("Bounce Ease-out - Ease-in"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINBOUNCE, frameNumber); });
-    subOther->addAction(tr("Linear interpolation"), [=] { layer->setCameraEasingAtFrame(CameraEasingType::LINEAR, frameNumber); });
+    subSine->addAction(getInterpolationText(CameraEasingType::INSINE), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INSINE, frameNumber); });
+    subSine->addAction(getInterpolationText(CameraEasingType::OUTSINE), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTSINE, frameNumber); });
+    subSine->addAction(getInterpolationText(CameraEasingType::INOUTSINE), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTSINE, frameNumber); });
+    subSine->addAction(getInterpolationText(CameraEasingType::OUTINSINE), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINSINE, frameNumber); });
+    subQuad->addAction(getInterpolationText(CameraEasingType::INQUAD), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INQUAD, frameNumber); });
+    subQuad->addAction(getInterpolationText(CameraEasingType::OUTQUAD), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTQUAD, frameNumber); });
+    subQuad->addAction(getInterpolationText(CameraEasingType::INOUTQUAD), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTQUAD, frameNumber); });
+    subQuad->addAction(getInterpolationText(CameraEasingType::OUTINQUAD), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINQUAD, frameNumber); });
+    subCubic->addAction(getInterpolationText(CameraEasingType::INCUBIC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INCUBIC, frameNumber); });
+    subCubic->addAction(getInterpolationText(CameraEasingType::OUTCUBIC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTCUBIC, frameNumber); });
+    subCubic->addAction(getInterpolationText(CameraEasingType::INOUTCUBIC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTCUBIC, frameNumber); });
+    subCubic->addAction(getInterpolationText(CameraEasingType::OUTINCUBIC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINCUBIC, frameNumber); });
+    subQuart->addAction(getInterpolationText(CameraEasingType::INQUART), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INQUART, frameNumber); });
+    subQuart->addAction(getInterpolationText(CameraEasingType::OUTQUART), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTQUART, frameNumber); });
+    subQuart->addAction(getInterpolationText(CameraEasingType::INOUTQUART), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTQUART, frameNumber); });
+    subQuart->addAction(getInterpolationText(CameraEasingType::OUTINQUART), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINQUART, frameNumber); });
+    subQuint->addAction(getInterpolationText(CameraEasingType::INQUINT), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INQUINT, frameNumber); });
+    subQuint->addAction(getInterpolationText(CameraEasingType::OUTQUINT), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTQUINT, frameNumber); });
+    subQuint->addAction(getInterpolationText(CameraEasingType::INOUTQUINT), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTQUINT, frameNumber); });
+    subQuint->addAction(getInterpolationText(CameraEasingType::OUTINQUINT), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINQUINT, frameNumber); });
+    subExpo->addAction(getInterpolationText(CameraEasingType::INEXPO), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INEXPO, frameNumber); });
+    subExpo->addAction(getInterpolationText(CameraEasingType::OUTEXPO), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTEXPO, frameNumber); });
+    subExpo->addAction(getInterpolationText(CameraEasingType::INOUTEXPO), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTEXPO, frameNumber); });
+    subExpo->addAction(getInterpolationText(CameraEasingType::OUTINEXPO), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINEXPO, frameNumber); });
+    subCirc->addAction(getInterpolationText(CameraEasingType::INCIRC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INCIRC, frameNumber); });
+    subCirc->addAction(getInterpolationText(CameraEasingType::OUTCIRC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTCIRC, frameNumber); });
+    subCirc->addAction(getInterpolationText(CameraEasingType::INOUTCIRC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTCIRC, frameNumber); });
+    subCirc->addAction(getInterpolationText(CameraEasingType::OUTINCIRC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINCIRC, frameNumber); });
+    subBack->addAction(getInterpolationText(CameraEasingType::INBACK), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INBACK, frameNumber); });
+    subBack->addAction(getInterpolationText(CameraEasingType::OUTBACK), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTBACK, frameNumber); });
+    subBack->addAction(getInterpolationText(CameraEasingType::INOUTBACK), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTBACK, frameNumber); });
+    subBack->addAction(getInterpolationText(CameraEasingType::OUTINBACK), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINBACK, frameNumber); });
+    subElast->addAction(getInterpolationText(CameraEasingType::INELASTIC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INELASTIC, frameNumber); });
+    subElast->addAction(getInterpolationText(CameraEasingType::OUTELASTIC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTELASTIC, frameNumber); });
+    subElast->addAction(getInterpolationText(CameraEasingType::INOUTELASTIC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTELASTIC, frameNumber); });
+    subElast->addAction(getInterpolationText(CameraEasingType::OUTINELASTIC), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINELASTIC, frameNumber); });
+    subBounc->addAction(getInterpolationText(CameraEasingType::INBOUNCE), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INBOUNCE, frameNumber); });
+    subBounc->addAction(getInterpolationText(CameraEasingType::OUTBOUNCE), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTBOUNCE, frameNumber); });
+    subBounc->addAction(getInterpolationText(CameraEasingType::INOUTBOUNCE), [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTBOUNCE, frameNumber); });
+    subBounc->addAction(getInterpolationText(CameraEasingType::OUTINBOUNCE), [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINBOUNCE, frameNumber); });
+    subOther->addAction(getInterpolationText(CameraEasingType::LINEAR), [=] { layer->setCameraEasingAtFrame(CameraEasingType::LINEAR, frameNumber); });
 
     QMenu* cameraFieldMenu = cameraMenu->addMenu(tr("Camera field"));
     cameraFieldMenu->addAction(tr("Reset camera field to default"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_FIELD, frameNumber); });
     cameraFieldMenu->addSeparator();
-    cameraFieldMenu->addAction(tr("Reset camera position to center (0,0)"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_TRANSLATION, frameNumber); });
-    cameraFieldMenu->addAction(tr("Reset camera scaling to 1:1"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_SCALING, frameNumber); });
-    cameraFieldMenu->addAction(tr("Reset camera rotation to 0"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_ROTATION, frameNumber); });
+    cameraFieldMenu->addAction(tr("Reset camera position to center"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_TRANSLATION, frameNumber); });
+    cameraFieldMenu->addAction(tr("Reset camera scaling to 100%"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_SCALING, frameNumber); });
+    cameraFieldMenu->addAction(tr("Reset camera rotation to 0°"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_ROTATION, frameNumber); });
     cameraFieldMenu->addSeparator();
     cameraFieldMenu->addAction(tr("Align keyframe %1 horizontally").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_HORIZONTAL, frameNumber); });
     cameraFieldMenu->addAction(tr("Align keyframe %1 vertically").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
@@ -952,18 +952,19 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                             {
                                 // Add/remove from already selected
                                 currentLayer->toggleFrameSelected(frameNumber, true);
-                                mEditor->selectedFramesChanged();
+                                emit mEditor->selectedFramesChanged();
                             }
                             else if (event->modifiers() == Qt::ShiftModifier)
                             {
                                 // Select a range from the last selected
                                 currentLayer->extendSelectionTo(frameNumber);
-                                mEditor->selectedFramesChanged();
+                                emit mEditor->selectedFramesChanged();
                             }
-                            else if (event->button() == Qt::LeftButton)
+                            else
                             {
                                 // Only select if left button clicked
                                 currentLayer->toggleFrameSelected(frameNumber, false);
+                                emit mEditor->selectedFramesChanged();
                             }
                         }
 

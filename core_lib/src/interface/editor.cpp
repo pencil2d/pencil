@@ -972,6 +972,7 @@ bool Editor::importImage(const QString& filePath)
     if (view()->getImportFollowsCamera())
     {
         LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
+        Q_ASSERT(camera);
         QTransform transform = camera->getViewAtFrame(currentFrame());
         view()->setImportView(transform);
     }

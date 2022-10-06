@@ -126,7 +126,6 @@ void DisplayOptionWidget::prepareOverlayManager()
         editor()->overlays()->setThreePointPerspectiveEnabled(true);
         editor()->overlays()->updatePerspective(3);
     }
-    editor()->overlays()->updatePerspOverlayActiveList();
 }
 
 void DisplayOptionWidget::clearPreviousAngle(int angle)

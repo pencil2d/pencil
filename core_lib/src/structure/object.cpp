@@ -242,17 +242,17 @@ Layer* Object::getFirstVisibleLayer(int i, Layer::LAYER_TYPE type) const
     {
         return layer;
     }
-    else
+
+    for (int i = 0; i < getLayerCount(); ++i)
     {
-        for (int i = 0; i < getLayerCount(); ++i)
+        Layer* layerCheck = getLayer(i);
+        Q_ASSERT(layerCheck);
+        if (layerCheck->type() == type && layerCheck->visible())
         {
-            Layer* layerCheck = getLayer(i);
-            if (layerCheck && layerCheck->type() == type && layerCheck->visible())
-            {
-                return layerCheck;
-            }
+            return layerCheck;
         }
     }
+
     return nullptr;
 }
 

@@ -52,7 +52,6 @@ public:
 public slots:
     void onToolPropertyChanged(ToolType, ToolPropertyType);
     void onToolChanged(ToolType);
-    void setVisibility(BaseTool*);
 
 private:
     void setPenWidth(qreal);
@@ -69,6 +68,7 @@ private:
     void setShowSelectionInfo(bool);
 
     void disableAllOptions();
+    void setVisibility(BaseTool*);
     void createUI();
 
 private:

@@ -131,7 +131,7 @@ public:
     void onToolPropertyUpdated(ToolType, ToolPropertyType);
 
     /** Tool changed, invalidate cache and frame if needed */
-    void onToolChanged(ToolType toolType);
+    void onToolChanged(ToolType);
 
     /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
@@ -226,11 +226,11 @@ public:
 
 private:
 
-    /** Invalidate the layer pixmap cache.
+    /** Invalidate the layer pixmap and camera painter caches.
      * Call this in most situations where the layer rendering order is affected.
      * Peviously known as setAllDirty.
     */
-    void invalidateLayerPixmapCache();
+    void invalidateCaches();
 
     /** Invalidate cache for the given frame */
     void invalidateCacheForFrame(int frameNumber);

@@ -86,7 +86,8 @@ void ImportPositionDialog::changeImportView()
     else if (mImportOption == ImportPosition::Type::CenterOfCamera)
     {
         LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
-        QRectF cameraRect = layerCam ? layerCam->getViewRect() : QRectF();
+        Q_ASSERT(layerCam);
+        QRectF cameraRect = layerCam->getViewRect();
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
         mEditor->view()->setImportView(transform);
         QSettings settings(PENCIL2D, PENCIL2D);
@@ -94,6 +95,7 @@ void ImportPositionDialog::changeImportView()
         return;
     }
 
+    Q_ASSERT(mImportOption == ImportPosition::Type::CenterOfCameraFollowed);
     mEditor->view()->setImportFollowsCamera(true);
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());

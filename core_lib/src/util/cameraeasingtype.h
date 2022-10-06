@@ -62,4 +62,6 @@ enum class CameraEasingType {
     OUTINBOUNCE
 };
 
+QString getInterpolationText(CameraEasingType type);
+
 #endif // CAMERAEASINGTYPE_H

@@ -31,7 +31,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
-#include "camera.h"
 
 #include "onionskinpainteroptions.h"
 
@@ -118,9 +117,8 @@ void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
     }
 }
 
-void ScribbleArea::onToolChanged(ToolType toolType)
+void ScribbleArea::onToolChanged(ToolType)
 {
-    Q_UNUSED(toolType);
     prepOverlays();
     renderOverlays();
 }
@@ -192,13 +190,13 @@ void ScribbleArea::updateToolCursor()
 void ScribbleArea::setCurveSmoothing(int newSmoothingLevel)
 {
     mCurveSmoothingLevel = newSmoothingLevel / 20.0;
-    invalidateLayerPixmapCache();
+    invalidateCaches();
 }
 
 void ScribbleArea::setEffect(SETTING e, bool isOn)
 {
     mPrefs->set(e, isOn);
-    invalidateLayerPixmapCache();
+    invalidateCaches();
 }
 
 /************************************************************************************/
@@ -271,7 +269,7 @@ void ScribbleArea::invalidateAllCache()
 {
     QPixmapCache::clear();
     mPixmapCacheKeys.clear();
-    invalidateLayerPixmapCache();
+    invalidateCaches();
     mEditor->layers()->currentLayer()->clearDirtyFrames();
 
     update();
@@ -288,7 +286,7 @@ void ScribbleArea::invalidateCacheForFrame(int frameNumber)
     }
 }
 
-void ScribbleArea::invalidateLayerPixmapCache()
+void ScribbleArea::invalidateCaches()
 {
     mCameraPainter.resetCache();
     mCanvasPainter.resetLayerCache();
@@ -300,7 +298,7 @@ void ScribbleArea::onPlayStateChanged()
     int currentFrame = mEditor->currentFrame();
     if (mPrefs->isOn(SETTING::PREV_ONION) ||
         mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateLayerPixmapCache();
+        invalidateCaches();
     }
 
     updateFrame(currentFrame);
@@ -308,7 +306,7 @@ void ScribbleArea::onPlayStateChanged()
 
 void ScribbleArea::onScrubbed(int frameNumber)
 {
-    invalidateLayerPixmapCache();
+    invalidateCaches();
     updateFrame(frameNumber);
 }
 
@@ -316,7 +314,7 @@ void ScribbleArea::onFramesModified()
 {
     invalidateCacheForDirtyFrames();
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateLayerPixmapCache();
+        invalidateCaches();
     }
     update();
 }
@@ -330,7 +328,7 @@ void ScribbleArea::onFrameModified(int frameNumber)
 {
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
         invalidateOnionSkinsCacheAround(frameNumber);
-        invalidateLayerPixmapCache();
+        invalidateCaches();
     }
     invalidateCacheForFrame(frameNumber);
     updateFrame(frameNumber);
@@ -556,14 +554,14 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
         const int delta = pixels.y();
         const qreal newScale = currentScale * (1 + (delta * 0.01));
-        mEditor->view()->scaleWithOffset(newScale, offset);
+        mEditor->view()->scaleAtOffset(newScale, offset);
     }
     else if (!angle.isNull())
     {
         const int delta = angle.y();
         // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
         const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
-        mEditor->view()->scaleWithOffset(newScale, offset);
+        mEditor->view()->scaleAtOffset(newScale, offset);
     }
     updateCanvasCursor();
     event->accept();
@@ -794,7 +792,7 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
     mEditor->view()->setCanvasSize(size());
 
     invalidateCacheForFrame(mEditor->currentFrame());
-    invalidateLayerPixmapCache();
+    invalidateCaches();
 }
 
 void ScribbleArea::showLayerNotVisibleWarning()
@@ -1261,7 +1259,7 @@ void ScribbleArea::prepCameraPainter(int frame)
     // TODO: figure out a way to avoid duplicating paint options..
     OnionSkinPainterOptions onionSkinOptions;
     onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
-    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying();
     onionSkinOptions.isAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     onionSkinOptions.skinPrevFrames = mPrefs->isOn(SETTING::PREV_ONION);
     onionSkinOptions.skinNextFrames = mPrefs->isOn(SETTING::NEXT_ONION);
@@ -1272,7 +1270,7 @@ void ScribbleArea::prepCameraPainter(int frame)
     onionSkinOptions.maxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
     onionSkinOptions.minOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
 
-    mCameraPainter.setOnionSkinPaintOptions(onionSkinOptions);
+    mCameraPainter.setOnionSkinPainterOptions(onionSkinOptions);
     mCameraPainter.setCanvas(&mCanvas);
 }
 
@@ -1291,7 +1289,7 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
 
     OnionSkinPainterOptions onionSkinOptions;
     onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
-    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying() ? true : false;
+    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying();
     onionSkinOptions.isAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     onionSkinOptions.skinPrevFrames = mPrefs->isOn(SETTING::PREV_ONION);
     onionSkinOptions.skinNextFrames = mPrefs->isOn(SETTING::NEXT_ONION);
@@ -1410,10 +1408,10 @@ void ScribbleArea::prepOverlays()
     o.nOverlayAngle = mPrefs->getInt(SETTING::OVERLAY_ANGLE);
     o.bShowHandle = mEditor->tools()->currentTool()->type() == MOVE && mEditor->layers()->currentLayer()->type() != Layer::CAMERA;
 
-    o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspPoint();
-    o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspPoint();
-    o.mRightPerspPoint = mEditor->overlays()->getRightPerspPoint();
-    o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspPoint();
+    o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspectivePoint();
+    o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspectivePoint();
+    o.mRightPerspPoint = mEditor->overlays()->getRightPerspectivePoint();
+    o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspectivePoint();
 
     o.nFrameIndex = mEditor->currentFrame();
 

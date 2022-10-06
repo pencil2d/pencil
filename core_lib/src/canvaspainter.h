@@ -27,12 +27,12 @@ GNU General Public License for more details.
 
 #include "layer.h"
 
+#include "onionskinpainteroptions.h"
 #include "onionskinsubpainter.h"
 
 class Object;
 class BitmapImage;
 class ViewManager;
-class LayerCamera;
 
 struct CanvasPainterOptions
 {
@@ -43,7 +43,7 @@ struct CanvasPainterOptions
     float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
-    OnionSkinPainterOptions mOptionSkinOptions;
+    OnionSkinPainterOptions mOnionSkinOptions;
 };
 
 class CanvasPainter
@@ -56,7 +56,7 @@ public:
     void setCanvas(QPixmap* canvas);
     void setViewTransform(const QTransform view, const QTransform viewInverse);
 
-    void setOnionSkinOptions(const OnionSkinPainterOptions& onionSkinOptions) { mOnionSkinPaintOptions = onionSkinOptions;}
+    void setOnionSkinOptions(const OnionSkinPainterOptions& onionSkinOptions) { mOnionSkinPainterOptions = onionSkinOptions;}
     void setOptions(const CanvasPainterOptions& p) { mOptions = p; }
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
@@ -122,7 +122,7 @@ private:
     std::unique_ptr<QPixmap> mPreLayersCache, mPostLayersCache;
 
     OnionSkinSubPainter mOnionSkinSubPainter;
-    OnionSkinPainterOptions mOnionSkinPaintOptions;
+    OnionSkinPainterOptions mOnionSkinPainterOptions;
 
     const static int OVERLAY_SAFE_CENTER_CROSS_SIZE = 25;
 };

@@ -47,37 +47,36 @@ QCursor SelectTool::cursor()
     MoveMode mode = mEditor->select()->getMoveModeForSelectionAnchor(getCurrentPoint());
 
     QPixmap cursorPixmap = QPixmap(24, 24);
-    if (!cursorPixmap.isNull())
-    {
-        cursorPixmap.fill(QColor(255, 255, 255, 0));
-        QPainter cursorPainter(&cursorPixmap);
-        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
 
-        switch(mode)
-        {
-        case MoveMode::TOPLEFT:
-        case MoveMode::BOTTOMRIGHT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-            break;
-        }
-        case MoveMode::TOPRIGHT:
-        case MoveMode::BOTTOMLEFT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-            break;
-        }
-        case MoveMode::MIDDLE:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            break;
-        }
-        default:
-            return Qt::CrossCursor;
-            break;
-        }
-        cursorPainter.end();
+    cursorPixmap.fill(QColor(255, 255, 255, 0));
+    QPainter cursorPainter(&cursorPixmap);
+    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+    switch(mode)
+    {
+    case MoveMode::TOPLEFT:
+    case MoveMode::BOTTOMRIGHT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+        break;
     }
+    case MoveMode::TOPRIGHT:
+    case MoveMode::BOTTOMLEFT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+        break;
+    }
+    case MoveMode::MIDDLE:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+        break;
+    }
+    default:
+        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
+        break;
+    }
+    cursorPainter.end();
+
     return QCursor(cursorPixmap);
 }
 

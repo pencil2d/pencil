@@ -15,7 +15,10 @@ GNU General Public License for more details.
 */
 #include "onionskinsubpainter.h"
 
+#include <QPainter>
+
 #include "layer.h"
+#include "onionskinpainteroptions.h"
 
 OnionSkinSubPainter::OnionSkinSubPainter()
 {

@@ -169,7 +169,6 @@ public:
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
 signals:
-    void selectedFramesChanged();
     void keyframeDeleted(int frame);
     void keyframeAdded(int frame);
 

@@ -34,7 +34,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "mathutils.h"
 #include "vectorimage.h"
-#include "pencilsettings.h"
 
 MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
@@ -69,9 +68,10 @@ QCursor MoveTool::cursor()
     {
         mode = mEditor->select()->getMoveModeForSelectionAnchor(currentPoint);
     }
-    else if (mEditor->overlays()->isPerspOverlaysActive())
+    else if (mEditor->overlays()->isPerspectiveOverlaysActive())
     {
         LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+        Q_ASSERT(layerCam);
         mode = mEditor->overlays()->getMoveModeForPoint(currentPoint, layerCam->getViewAtFrame(mEditor->currentFrame()));
         mPerspMode = mode;
     }
@@ -106,11 +106,12 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         setAnchorToLastPoint();
         beginInteraction(event->modifiers(), mCurrentLayer);
     }
-    if (mEditor->overlays()->isPerspOverlaysActive())
+    if (mEditor->overlays()->isPerspectiveOverlaysActive())
     {
         mEditor->overlays()->setMoveMode(mPerspMode);
 
         LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+        Q_ASSERT(layerCam);
 
         QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()).toPoint();
         mEditor->overlays()->updatePerspective(mapped);
@@ -128,9 +129,10 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
 
-        if (mEditor->overlays()->isPerspOverlaysActive())
+        if (mEditor->overlays()->isPerspectiveOverlaysActive())
         {
             LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+            Q_ASSERT(layerCam);
             mEditor->overlays()->updatePerspective(layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()));
         }
         if (mEditor->select()->somethingSelected())
@@ -153,8 +155,8 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
-{   
-    if (mEditor->overlays()->isPerspOverlaysActive())
+{
+    if (mEditor->overlays()->isPerspectiveOverlaysActive())
     {
         mEditor->overlays()->setMoveMode(MoveMode::NONE);
         mPerspMode = MoveMode::NONE;
@@ -438,8 +440,6 @@ Layer* MoveTool::currentPaintableLayer()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr)
         return nullptr;
-    if (layer->type() == Layer::CAMERA)
-        return layer;   // ONLY for movetool!
     if (!layer->isPaintable())
         return nullptr;
     return layer;
@@ -451,55 +451,54 @@ QPointF MoveTool::offsetFromPressPos()
 }
 
 
-QCursor MoveTool::cursor(MoveMode mode)
+QCursor MoveTool::cursor(MoveMode mode) const
 {
     QPixmap cursorPixmap = QPixmap(24, 24);
-    if (!cursorPixmap.isNull())
-    {
-        cursorPixmap.fill(QColor(255, 255, 255, 0));
-        QPainter cursorPainter(&cursorPixmap);
-        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
 
-        switch(mode)
-        {
-        case MoveMode::PERSP_LEFT:
-        case MoveMode::PERSP_RIGHT:
-        case MoveMode::PERSP_MIDDLE:
-        case MoveMode::PERSP_SINGLE:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            break;
-        }
-        case MoveMode::TOPLEFT:
-        case MoveMode::BOTTOMRIGHT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-            break;
-        }
-        case MoveMode::TOPRIGHT:
-        case MoveMode::BOTTOMLEFT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-            break;
-        }
-        case MoveMode::ROTATIONLEFT:
-        case MoveMode::ROTATIONRIGHT:
-        case MoveMode::ROTATION:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
-            break;
-        }
-        case MoveMode::MIDDLE:
-        case MoveMode::CENTER:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            break;
-        }
-        default:
-            return Qt::ArrowCursor;
-            break;
-        }
-        cursorPainter.end();
+    cursorPixmap.fill(QColor(255, 255, 255, 0));
+    QPainter cursorPainter(&cursorPixmap);
+    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+    switch(mode)
+    {
+    case MoveMode::PERSP_LEFT:
+    case MoveMode::PERSP_RIGHT:
+    case MoveMode::PERSP_MIDDLE:
+    case MoveMode::PERSP_SINGLE:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+        break;
     }
+    case MoveMode::TOPLEFT:
+    case MoveMode::BOTTOMRIGHT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+        break;
+    }
+    case MoveMode::TOPRIGHT:
+    case MoveMode::BOTTOMLEFT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+        break;
+    }
+    case MoveMode::ROTATIONLEFT:
+    case MoveMode::ROTATIONRIGHT:
+    case MoveMode::ROTATION:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
+        break;
+    }
+    case MoveMode::MIDDLE:
+    case MoveMode::CENTER:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+        break;
+    }
+    default:
+        return Qt::ArrowCursor;
+        break;
+    }
+    cursorPainter.end();
+
     return QCursor(cursorPixmap);
 }

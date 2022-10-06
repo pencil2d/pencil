@@ -43,7 +43,7 @@ public:
 
     void workingLayerChanged(Layer *) override;
 
-    MoveMode getMoveModeForPoint(const QPointF& pos, QTransform transform);
+    MoveMode getMoveModeForPoint(const QPointF& pos, const QTransform& transform);
     double selectionTolerance();
 
     void updatePerspective(const int persp);
@@ -59,25 +59,24 @@ public:
 
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode(MoveMode mode) { mMoveMode = mode; }
-    void setSinglePerspPoint(QPointF point) { mSinglePerspPoint = point; }
-    QPointF getSinglePerspPoint() const { return mSinglePerspPoint; }
-    void setLeftPerspPoint(QPointF point) { mLeftPerspPoint = point; }
-    QPointF getLeftPerspPoint() const { return mLeftPerspPoint; }
-    void setRightPerspPoint(QPointF point) { mRightPerspPoint = point; }
-    QPointF getRightPerspPoint() const { return mRightPerspPoint; }
-    void setMiddlePerspPoint(QPointF point) { mMiddlePerspPoint = point; }
-    QPointF getMiddlePerspPoint() const { return mMiddlePerspPoint; }
+    void setSinglePerspectivePoint(const QPointF& point) { mSinglePerspectivePoint = point; }
+    QPointF getSinglePerspectivePoint() const { return mSinglePerspectivePoint; }
+    void setLeftPerspectivePoint(const QPointF& point) { mLeftPerspectivePoint = point; }
+    QPointF getLeftPerspectivePoint() const { return mLeftPerspectivePoint; }
+    void setRightPerspectivePoint(const QPointF& point) { mRightPerspectivePoint = point; }
+    QPointF getRightPerspectivePoint() const { return mRightPerspectivePoint; }
+    void setMiddlePerspectivePoint(const QPointF& point) { mMiddlePerspectivePoint = point; }
+    QPointF getMiddlePerspectivePoint() const { return mMiddlePerspectivePoint; }
 
-    bool isPerspOverlaysActive() const { return !mActivePerspOverlays.isEmpty(); }
-    void updatePerspOverlayActiveList();
+    bool isPerspectiveOverlaysActive() const { return mOverlayPerspective1 || mOverlayPerspective2 || mOverlayPerspective3; }
 
 private:
     Editor* mEditor = nullptr;
 
-    QPointF mSinglePerspPoint;   // for single point perspective.
-    QPointF mLeftPerspPoint;
-    QPointF mRightPerspPoint;    // Left, right and middle are for
-    QPointF mMiddlePerspPoint;   // two and three point perspective
+    QPointF mSinglePerspectivePoint;   // for single point perspective.
+    QPointF mLeftPerspectivePoint;
+    QPointF mRightPerspectivePoint;    // Left, right and middle are for
+    QPointF mMiddlePerspectivePoint;   // two and three point perspective
 
     MoveMode mMoveMode = MoveMode::NONE;
 
@@ -89,7 +88,6 @@ private:
     bool mOverlayPerspective2 = false;
     bool mOverlayPerspective3 = false;
 
-    QList<int> mActivePerspOverlays;
     const qreal mSelectionTolerance = 8.0;
 };
 

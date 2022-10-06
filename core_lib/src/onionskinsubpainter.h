@@ -16,20 +16,20 @@ GNU General Public License for more details.
 #ifndef ONIONSKINSUBPAINTER_H
 #define ONIONSKINSUBPAINTER_H
 
-#include <QPainter>
 #include "onionskinpaintstate.h"
-#include "onionskinpainteroptions.h"
 
 class Layer;
+struct OnionSkinPainterOptions;
+class QPainter;
 
 /// A Sub Painter class is meant to be used in existing painter classes
 /// It does not and should not cary the same responsibility as a Painter class
 /// It works as a sort of utility class for functionality that makes sense to reuse
-/// Eg. OninoSkinSubPainter is used by CanvasPainter and CameraPainter
+/// Eg. OnionSkinSubPainter is used by CanvasPainter and CameraPainter
 class OnionSkinSubPainter
 {
 public:
-    OnionSkinSubPainter();
+    explicit OnionSkinSubPainter();
     void paint(QPainter& painter, const Layer* layer, const OnionSkinPainterOptions& options, int frameIndex, const std::function<void(OnionSkinPaintState, int)>& state) const;
 };
 

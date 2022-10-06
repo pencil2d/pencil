@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QCursor>
 #include <QPointF>
 #include <QHash>
-#include "movemode.h"
 #include "pencildef.h"
 
 class QPixmap;
@@ -58,7 +57,7 @@ public:
     bool  useFillContour = false;
     bool  showSelectionInfo = true;
     bool  cameraShowPath = true;
-    int   cameraPathDotColorType = 0;
+    DotColorType cameraPathDotColorType = DotColorType::RED;
 };
 
 const int ON = 1;
@@ -132,7 +131,7 @@ public:
     virtual void setUseFillContour(const bool useFillContour);
     virtual void setShowSelectionInfo(const bool b);
     virtual void setShowCameraPath(const bool showCameraPath);
-    virtual void setPathDotColorType(const int dotColorType);
+    virtual void setPathDotColorType(const DotColorType dotColorType);
     virtual void resetCameraPath();
 
     virtual bool onWillChangeLayer() { return true; } // default state should be true

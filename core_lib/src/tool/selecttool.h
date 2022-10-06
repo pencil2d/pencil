@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define SELECTTOOL_H
 
 #include "basetool.h"
+#include "movemode.h"
 
 class Layer;
 class SelectionManager;

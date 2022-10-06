@@ -54,7 +54,7 @@ Status LayerManager::save(Object* o)
     return Status::OK;
 }
 
-Layer* LayerManager::getFirstVisibleLayer(int layerIndex, Layer::LAYER_TYPE type)
+Layer* LayerManager::getFirstVisibleLayer(int layerIndex, Layer::LAYER_TYPE type) const
 {
     return object()->getFirstVisibleLayer(layerIndex, type);
 }

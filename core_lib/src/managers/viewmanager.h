@@ -62,7 +62,7 @@ public:
 
     qreal scaling();
     void scale(qreal scaleValue);
-    void scaleWithOffset(qreal scaleValue, QPointF offset);
+    void scaleAtOffset(qreal scaleValue, QPointF offset);
     void scaleUp();
     void scaleDown();
     void scale400();
