@@ -503,7 +503,7 @@ void MainWindow2::openRepositionDialog()
 
     mReposDialog = new RepositionFramesDialog(this);
     mReposDialog->setAttribute(Qt::WA_DeleteOnClose);
-    mReposDialog->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mReposDialog->setWindowFlags(mReposDialog->windowFlags() | Qt::WindowStaysOnTopHint);
     hideQuestionMark(*mReposDialog);
     mReposDialog->setCore(mEditor);
     mReposDialog->initUI();
