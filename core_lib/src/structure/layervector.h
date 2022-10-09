@@ -28,6 +28,7 @@ class LayerVector : public Layer
 
 public:
     LayerVector(Object* object);
+    LayerVector(int id, Object* object);
     ~LayerVector();
 
     // method from layerImage
@@ -38,6 +39,8 @@ public:
 
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
+    void replaceLastVectorAtFrame(const VectorImage *replaceWithVector);
+    void putVectorImageIntoFrame(KeyFrame *keyframe, const int frameIndex);
 
     bool usesColor(int index);
     void removeColor(int index);

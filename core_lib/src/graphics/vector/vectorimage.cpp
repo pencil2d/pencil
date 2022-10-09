@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include <QXmlStreamWriter>
 #include "object.h"
 
-
 VectorImage::VectorImage()
 {
     deselectAll();
@@ -676,6 +675,28 @@ void VectorImage::setSelected(QList<VertexRef> vertexList, bool YesOrNo)
         setSelected(vertexList.at(i), YesOrNo);
     }
 }
+
+void VectorImage::setSelected(const QList<int> curveList, const QList<VertexRef> vertexList, const bool YesOrNo)
+{
+    for (int curveI = 0; curveI < curveList.size(); curveI++)
+    {
+        int curveNumber = curveList.at(curveI);
+
+        if (vertexList.isEmpty())
+        {
+            setSelected(curveNumber, YesOrNo);
+        }
+        else
+        {
+            for (int i = 0; i < vertexList.size(); i++)
+            {
+                setSelected(curveNumber, vertexList.at(i).vertexNumber, YesOrNo);
+            }
+        }
+    }
+}
+
+
 
 /**
  * @brief VectorImage::setAreaSelected

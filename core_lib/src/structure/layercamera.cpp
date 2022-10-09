@@ -39,6 +39,14 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
 }
 
+/** Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerCamera::LayerCamera(int layerId, Object* object) : LayerCamera(object)
+{
+    setId(layerId);
+}
+
 LayerCamera::~LayerCamera()
 {
 }
@@ -52,6 +60,13 @@ Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment)
 {
     return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
+
+void LayerCamera::putCameraIntoFrame(KeyFrame *keyframe, int frameIndex)
+{
+    Camera* oldCamera = static_cast<Camera*>(keyframe);
+    getCameraAtFrame(frameIndex)->assign(*oldCamera);
+}
+
 
 QTransform LayerCamera::getViewAtFrame(int frameNumber) const
 {

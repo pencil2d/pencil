@@ -44,6 +44,7 @@ class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
+class LegacyBackupElement;
 class LayerOpacityDialog;
 class PegBarAlignmentDialog;
 class RepositionFramesDialog;
@@ -172,7 +173,7 @@ private:
     QToolBar*             mOverlayToolbar = nullptr;
 
     // backup
-    BackupElement* mBackupAtSave = nullptr;
+    LegacyBackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
     RepositionFramesDialog* mReposDialog = nullptr;

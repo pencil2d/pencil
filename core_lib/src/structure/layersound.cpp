@@ -29,6 +29,14 @@ LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
     setName(tr("Sound Layer"));
 }
 
+/** Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerSound::LayerSound(int layerId, Object* object) : LayerSound(object)
+{
+    setId(layerId);
+}
+
 LayerSound::~LayerSound()
 {
 }

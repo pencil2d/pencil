@@ -27,7 +27,8 @@ class LayerSound : public Layer
     Q_OBJECT
 
 public:
-    LayerSound( Object* object );
+    LayerSound(Object* object);
+    LayerSound(int id, Object* object);
     ~LayerSound();
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;

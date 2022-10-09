@@ -387,6 +387,14 @@ bool Layer::isFrameSelected(int position) const
     return frameFound;
 }
 
+void Layer::setFramesSelected(QList<int> frameIndexes, const bool selected)
+{
+    for (int frame : frameIndexes)
+    {
+        setFrameSelected(frame, selected);
+    }
+}
+
 void Layer::setFrameSelected(int position, bool isSelected)
 {
     KeyFrame* keyFrame = getKeyFrameWhichCovers(position);

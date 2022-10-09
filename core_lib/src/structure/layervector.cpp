@@ -27,6 +27,14 @@ LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
     setName(tr("Vector Layer"));
 }
 
+/** Add a new layer with a given id
+ * This should only be used to restore a layer with id
+ */
+LayerVector::LayerVector(int layerId, Object* object) : LayerVector(object)
+{
+    setId(layerId);
+}
+
 LayerVector::~LayerVector()
 {
 }
@@ -195,4 +203,17 @@ VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber) const
 VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increment) const
 {
     return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+}
+
+void LayerVector::replaceLastVectorAtFrame(const VectorImage *replaceWithVector)
+{
+    *static_cast<VectorImage*>(getLastKeyFrameAtPosition(replaceWithVector->pos())) = *replaceWithVector;
+}
+
+void LayerVector::putVectorImageIntoFrame(KeyFrame *keyframe, const int frameIndex)
+{
+    VectorImage* currentVectorImg = getVectorImageAtFrame(frameIndex);
+
+    VectorImage newVectorImg = *static_cast<VectorImage*>(keyframe);
+    static_cast<VectorImage*>(currentVectorImg)->paste(newVectorImg);
 }
