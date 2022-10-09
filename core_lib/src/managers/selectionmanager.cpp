@@ -333,11 +333,13 @@ QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY) co
 */
 void SelectionManager::flipSelection(bool flipVertical)
 {
-    mScaleX = -mScaleX;
-
     if (flipVertical)
     {
         mScaleY = -mScaleY;
+    }
+    else
+    {
+        mScaleX = -mScaleX;
     }
     setTransformAnchor(mOriginalRect.center());
     calculateSelectionTransformation();
