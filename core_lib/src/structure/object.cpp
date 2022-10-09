@@ -236,13 +236,6 @@ Layer* Object::getLayer(int i) const
 
 Layer* Object::getFirstVisibleLayer(int i, Layer::LAYER_TYPE type) const
 {
-    Layer* layer = getLayer(i);
-
-    if (layer && layer->type() == type && layer->visible())
-    {
-        return layer;
-    }
-
     for (int i = 0; i < getLayerCount(); ++i)
     {
         Layer* layerCheck = getLayer(i);
