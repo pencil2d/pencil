@@ -254,7 +254,12 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
             if (!keyExistsOnCurrentFrame)
             {
                 cameraPathPoint = mViewTransform.map(cameraLayer->getPathControlPointAtFrame(frame + 1));
-                paintPath(painter, cameraLayer, frame, cameraPathPoint);
+
+                int distance = nextFrame - frame;
+                // It makes no sense to paint the path when there's no interpolation.
+                if (distance >= 2) {
+                    paintPath(painter, cameraLayer, frame, cameraPathPoint);
+                }
             }
 
             QColor color = cameraDotColor;
