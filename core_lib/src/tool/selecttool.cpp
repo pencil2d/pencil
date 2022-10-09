@@ -19,13 +19,11 @@ GNU General Public License for more details.
 #include "pointerevent.h"
 #include "vectorimage.h"
 #include "editor.h"
-#include "strokemanager.h"
 #include "layervector.h"
 #include "scribblearea.h"
 #include "layermanager.h"
 #include "toolmanager.h"
 #include "selectionmanager.h"
-#include "viewmanager.h"
 
 SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
 {

@@ -15,19 +15,13 @@ GNU General Public License for more details.
 
 */
 #include "selectionmanager.h"
-#include "viewmanager.h"
 #include "editor.h"
 
-#include "layerbitmap.h"
 #include "vectorimage.h"
-#include "bitmapimage.h"
 
-#include "layervector.h"
 #include "mathutils.h"
 
-//#ifdef QT_DEBUG
-#include <QDebug>
-//#endif
+#include <QVector2D>
 
 
 SelectionManager::SelectionManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
@@ -73,14 +67,9 @@ void SelectionManager::resetSelectionTransform()
     mSelectionTransform.reset();
 }
 
-bool SelectionManager::isOutsideSelectionArea(QPointF point)
+bool SelectionManager::isOutsideSelectionArea(const QPointF& point) const
 {
     return (!mSelectionTransform.map(mSelectionPolygon).containsPoint(point, Qt::WindingFill)) && mMoveMode == MoveMode::NONE;
-}
-
-bool SelectionManager::transformHasBeenModified()
-{
-    return mSelectionTransform.isIdentity();
 }
 
 void SelectionManager::deleteSelection()
@@ -90,7 +79,7 @@ void SelectionManager::deleteSelection()
 
 qreal SelectionManager::selectionTolerance() const
 {
-    return 10 * editor()->viewScaleInversed();
+    return qAbs(mSelectionTolerance * editor()->viewScaleInversed());
 }
 
 QPointF SelectionManager::getSelectionAnchorPoint() const
@@ -120,7 +109,7 @@ QPointF SelectionManager::getSelectionAnchorPoint() const
 }
 
 
-void SelectionManager::setMoveModeForAnchorInRange(QPointF point)
+void SelectionManager::setMoveModeForAnchorInRange(const QPointF& point)
 {
     if (mSelectionPolygon.count() < 3) { return; }
 
@@ -156,12 +145,9 @@ void SelectionManager::setMoveModeForAnchorInRange(QPointF point)
     mMoveMode = mode;
 }
 
-void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offsetX, qreal offsetY, qreal rotationOffset, int rotationIncrement)
+void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPointF& offset, qreal rotationOffset, int rotationIncrement)
 {
-    QPointF offset(offsetX, offsetY);
-
-    MoveMode moveMode = mMoveMode;
-    switch (moveMode)
+    switch (mMoveMode)
     {
     case MoveMode::MIDDLE: {
         translate(currentPoint - offset);
@@ -181,15 +167,15 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
         QVector2D staticXAnchor;
         QVector2D staticYAnchor;
         QVector2D movingAnchor;
-        if (moveMode == MoveMode::TOPLEFT) {
+        if (mMoveMode == MoveMode::TOPLEFT) {
             movingAnchor = QVector2D(projectedPolygon[0]);
             staticXAnchor = QVector2D(projectedPolygon[1]);
             staticYAnchor = QVector2D(projectedPolygon[3]);
-        } else if (moveMode == MoveMode::TOPRIGHT) {
+        } else if (mMoveMode == MoveMode::TOPRIGHT) {
             movingAnchor = QVector2D(projectedPolygon[1]);
             staticXAnchor = QVector2D(projectedPolygon[0]);
             staticYAnchor = QVector2D(projectedPolygon[2]);
-        } else if (moveMode == MoveMode::BOTTOMRIGHT) {
+        } else if (mMoveMode == MoveMode::BOTTOMRIGHT) {
             movingAnchor = QVector2D(projectedPolygon[2]);
             staticXAnchor = QVector2D(projectedPolygon[3]);
             staticYAnchor = QVector2D(projectedPolygon[1]);
@@ -203,7 +189,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, qreal offset
         QVector2D directionVecY = staticYAnchor - currentPVec;
 
         // Calculates the signed distance
-        qreal distanceX = QVector2D::dotProduct(directionVecX,  (staticXAnchor - movingAnchor).normalized());
+        qreal distanceX = QVector2D::dotProduct(directionVecX, (staticXAnchor - movingAnchor).normalized());
         qreal distanceY = QVector2D::dotProduct(directionVecY, (staticYAnchor - movingAnchor).normalized());
 
         qreal scaleX = distanceX / originWidth;
@@ -267,7 +253,7 @@ int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const 
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
 
-qreal SelectionManager::angleFromPoint(QPointF point, QPointF anchorPoint) const
+qreal SelectionManager::angleFromPoint(const QPointF& point, const QPointF& anchorPoint) const
 {
     return qRadiansToDegrees(MathUtils::getDifferenceAngle(mSelectionTransform.map(anchorPoint), point));
 }
@@ -288,7 +274,7 @@ void SelectionManager::setSelection(QRectF rect, bool roundPixels)
     emit selectionChanged();
 }
 
-void SelectionManager::setTransformAnchor(QPointF point)
+void SelectionManager::setTransformAnchor(const QPointF& point)
 {
     QPointF newPos = mapToSelection(point);
     QPointF oldPos = mapToSelection(mAnchorPoint);
@@ -300,9 +286,8 @@ void SelectionManager::setTransformAnchor(QPointF point)
 
 void SelectionManager::calculateSelectionTransformation()
 {
-    QPointF anchorPoint = mAnchorPoint;
     QTransform t;
-    t.translate(-anchorPoint.x(), -anchorPoint.y());
+    t.translate(-mAnchorPoint.x(), -mAnchorPoint.y());
     QTransform t2;
     t2.translate(mTranslation.x(), mTranslation.y());
 
@@ -313,7 +298,7 @@ void SelectionManager::calculateSelectionTransformation()
     mSelectionTransform = t * s * r * t2;
 }
 
-QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY)
+QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY) const
 {
     QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
     qreal width = QLineF(projectedPolygon[0], projectedPolygon[1]).dx();

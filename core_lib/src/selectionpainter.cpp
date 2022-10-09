@@ -80,10 +80,12 @@ void SelectionPainter::paint(QPainter& painter,
         painter.drawRect(bottomLeftCorner);
     }
 
-    paintSelectionInfo(painter, transform, tParams.viewTransform, tParams.originalSelectionRectF, projectedSelectionPolygon);
+    if (tool->properties.showSelectionInfo) {
+        paintSelectionInfo(painter, transform, tParams.viewTransform, tParams.originalSelectionRectF, projectedSelectionPolygon);
+    }
 }
 
-void SelectionPainter::paintSelectionInfo(QPainter& painter, const QTransform& mergedTransform, const QTransform& viewTransform, const QRectF& selectionRect, const QPolygonF projectedPolygonF)
+void SelectionPainter::paintSelectionInfo(QPainter& painter, const QTransform& mergedTransform, const QTransform& viewTransform, const QRectF& selectionRect, const QPolygonF& projectedPolygonF)
 {
     QRect projectedSelectionRect = mergedTransform.mapRect(selectionRect).toAlignedRect();
     QRect originalSelectionRect = viewTransform.mapRect(selectionRect).toAlignedRect();

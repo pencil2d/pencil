@@ -107,10 +107,6 @@ public:
     /** Frame modified, invalidate cache for frame if any */
     void onFrameModified(int frameNumber);
 
-    /** Current frame modified, invalidate current frame cache if any.
-     * Convenient function that does the same as onFrameModified */
-    void onCurrentFrameModified();
-
     /** Layer changed, invalidate relevant cache */
     void onLayerChanged();
 

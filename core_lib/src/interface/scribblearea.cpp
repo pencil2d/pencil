@@ -294,11 +294,6 @@ void ScribbleArea::onFramesModified()
     update();
 }
 
-void ScribbleArea::onCurrentFrameModified()
-{
-    onFrameModified(mEditor->currentFrame());
-}
-
 void ScribbleArea::onFrameModified(int frameNumber)
 {
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
@@ -1160,12 +1155,13 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
 
     auto selectMan = mEditor->select();
 
-    if (selectMan->mySelectionRect().isEmpty()) { return; }
-
     QRectF currentSelectionRect = selectMan->mySelectionRect();
+
+    if (currentSelectionRect.isEmpty()) { return; }
 
     TransformParameters params = { currentSelectionRect, editor()->view()->getView(), selectMan->selectionTransform() };
     mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
+    emit selectionUpdated();
 }
 
 BitmapImage* ScribbleArea::currentBitmapImage(Layer* layer) const

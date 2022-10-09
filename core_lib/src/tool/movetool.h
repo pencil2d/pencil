@@ -22,8 +22,6 @@ GNU General Public License for more details.
 #include "movemode.h"
 #include "preferencemanager.h"
 
-#include <QTransform>
-
 class Layer;
 class VectorImage;
 

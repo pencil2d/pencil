@@ -174,11 +174,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
             rotationIncrement = mRotationIncrement;
         }
 
-        if (keyMod == Qt::ShiftModifier) {
-            selectMan->maintainAspectRatio(true);
-        } else {
-            selectMan->maintainAspectRatio(false);
-        }
+        selectMan->maintainAspectRatio(keyMod == Qt::ShiftModifier);
 
         if(layer->type() == Layer::BITMAP)
         {
@@ -192,10 +188,10 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
             mPreviousAngle = newAngle;
         }
 
-        selectMan->adjustSelection(getCurrentPoint(), mOffset.x(), mOffset.y(), newAngle, rotationIncrement);
+        selectMan->adjustSelection(getCurrentPoint(), mOffset, newAngle, rotationIncrement);
 
         mOffset = getCurrentPoint();
-        mEditor->frameModified(mEditor->currentFrame());
+        emit mEditor->frameModified(mEditor->currentFrame());
     }
     else // there is nothing selected
     {

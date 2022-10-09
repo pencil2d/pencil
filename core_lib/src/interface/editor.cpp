@@ -157,7 +157,8 @@ void Editor::onCurrentLayerWillChange(int index)
 {
     Layer* newLayer = layers()->getLayer(index);
     Layer* currentLayer = layers()->currentLayer();
-    if (newLayer != nullptr && currentLayer != nullptr && currentLayer->type() != newLayer->type()) {
+    Q_ASSERT(newLayer && currentLayer);
+    if (currentLayer->type() != newLayer->type()) {
         // We apply transform changes upon leaving a layer and deselect all
         mScribbleArea->applyTransformedSelection();
 
@@ -739,11 +740,7 @@ void Editor::setModified(const Layer* layer, int frameNumber)
 
 void Editor::setModified(int layerNumber, int frameNumber)
 {
-    Layer* layer = object()->getLayer(layerNumber);
-    if (layer == nullptr) { return; }
-
-    setModified(layer, frameNumber);
-    emit frameModified(frameNumber);
+    setModified(object()->getLayer(layerNumber), frameNumber);
 }
 
 void Editor::clipboardChanged()
