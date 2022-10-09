@@ -710,7 +710,12 @@ void Editor::paste()
 }
 
 void Editor::flipSelection(bool flipVertical)
-{
+{   
+    if (flipVertical) {
+        backup(tr("Flip Y"));
+    } else {
+        backup(tr("Flip X"));
+    }
     mScribbleArea->flipSelection(flipVertical);
 }
 
