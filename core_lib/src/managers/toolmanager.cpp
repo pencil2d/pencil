@@ -63,6 +63,7 @@ bool ToolManager::init()
 
 Status ToolManager::load(Object*)
 {
+    setDefaultTool();
     return Status::OK;
 }
 
