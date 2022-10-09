@@ -339,7 +339,9 @@ void SelectionManager::flipSelection(bool flipVertical)
     {
         mScaleY = -mScaleY;
     }
+    setTransformAnchor(mOriginalRect.center());
     calculateSelectionTransformation();
+    emit selectionChanged();
 }
 
 void SelectionManager::resetSelectionProperties()
