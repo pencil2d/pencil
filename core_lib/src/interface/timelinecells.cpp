@@ -195,6 +195,8 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 
     QMenu* cameraInterpolationMenu = cameraMenu->addMenu(tr("Camera interpolation frame %1 to %2").arg( QString::number(frameNumber), QString::number(nextFrame)));
 
+    cameraInterpolationMenu->setEnabled(curLayer->getMaxKeyFramePosition() != frameNumber);
+
     QMenu* subSine  = cameraInterpolationMenu->addMenu(tr("Slow"));
     QMenu* subQuad  = cameraInterpolationMenu->addMenu(tr("Normal"));
     QMenu* subCubic = cameraInterpolationMenu->addMenu(tr("Quick"));
