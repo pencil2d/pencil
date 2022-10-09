@@ -109,7 +109,7 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     }
     mOffset = getCurrentPoint();
 
-    mEditor->frameModified(mEditor->currentFrame());
+    mEditor->updateCurrentFrame();
 }
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
@@ -139,7 +139,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         }
         mEditor->getScribbleArea()->prepOverlays();
     }
-    mEditor->frameModified(mEditor->currentFrame());
+    mEditor->updateCurrentFrame();
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
@@ -191,7 +191,6 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
         selectMan->adjustSelection(getCurrentPoint(), mOffset, newAngle, rotationIncrement);
 
         mOffset = getCurrentPoint();
-        emit mEditor->frameModified(mEditor->currentFrame());
     }
     else // there is nothing selected
     {
