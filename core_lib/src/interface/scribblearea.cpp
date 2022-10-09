@@ -316,7 +316,9 @@ void ScribbleArea::onLayerChanged()
 
 void ScribbleArea::onSelectionChanged()
 {
-    update();
+    int currentFrame = mEditor->currentFrame();
+    invalidateCacheForFrame(currentFrame);
+    updateFrame(currentFrame);
 }
 
 void ScribbleArea::onOnionSkinTypeChanged()
