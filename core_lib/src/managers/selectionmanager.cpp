@@ -228,18 +228,22 @@ void SelectionManager::rotate(qreal angle, qreal lockedAngle)
 
 void SelectionManager::scale(qreal sX, qreal sY)
 {
-    // Enforce negative scaling
+    // Enforce negative scaling when
+    // deliberately trying to transform in negative space
     if (mScaleX < 0) {
         sX = -sX;
-    } else if (qFuzzyIsNull(sX)) {
+    }
+    if (qFuzzyIsNull(sX)) {
         // Scale must not become 0
         sX = 0.0001;
     }
 
-    // Enforce negative scaling
+    // Enforce negative scaling when
+    // deliberately trying to transform in negative space
     if (mScaleY < 0) {
         sY = -sY;
-    } else if (qFuzzyIsNull(sY)) {
+    }
+    if (qFuzzyIsNull(sY)) {
         // Scale must not become 0
         sY = 0.0001;
     }
