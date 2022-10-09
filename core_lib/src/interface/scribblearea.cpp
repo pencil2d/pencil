@@ -1255,8 +1255,6 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   mEditor->playback()->isPlaying(),
                                   palette());
 
-
-    // TODO: figure out a way to avoid duplicating paint options..
     OnionSkinPainterOptions onionSkinOptions;
     onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
     onionSkinOptions.isPlaying = mEditor->playback()->isPlaying();

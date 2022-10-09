@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "overlaymanager.h"
 
-OverlayManager::OverlayManager(Editor *editor): BaseManager(editor, "OverlayManager")
+OverlayManager::OverlayManager(Editor *editor): BaseManager(editor, __FUNCTION__)
 {
     mEditor = editor;
 
