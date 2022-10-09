@@ -26,6 +26,8 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "movemode.h"
 #include "mathutils.h"
+#include "layercamera.h"
+#include "camera.h"
 
 #include "scribblearea.h"
 
@@ -145,17 +147,19 @@ MoveMode CameraTool::moveMode()
     LayerCamera* cam = static_cast<LayerCamera*>(layer);
     if (layer->keyExists(mEditor->currentFrame()))
     {
-        mode = cam->getMoveModeForCamera(mEditor->currentFrame(),
-                                         currentPoint,
-                                         selectionTolerance);
+        mode = getCameraMoveMode(cam,
+                           mEditor->currentFrame(),
+                           currentPoint,
+                           selectionTolerance);
         mCamMoveMode = mode;
     } else {
         int keyPos = cam->firstKeyFramePosition();
         while (keyPos <= cam->getMaxKeyFramePosition())
         {
-            mode = cam->getMoveModeForCameraPath(keyPos,
-                                                 currentPoint,
-                                                 selectionTolerance);
+            mode = getPathMoveMode(cam,
+                                   keyPos,
+                                   currentPoint,
+                                   selectionTolerance);
             mCamPathMoveMode = mode;
             if (mode != MoveMode::NONE && !cam->hasSameTranslation(keyPos, cam->getPreviousKeyFramePosition(keyPos)))
             {
@@ -221,7 +225,7 @@ void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
         angle = constrainedRotation(angle, mRotationIncrement);
     }
 
-    layer->transformCameraView(mCamMoveMode, getCurrentPoint(), mTransformOffset, -angle, mEditor->currentFrame());
+    transformView(layer, mCamMoveMode, getCurrentPoint(), mTransformOffset, -angle, mEditor->currentFrame());
 
     emit mEditor->frameModified(mEditor->currentFrame());
     mTransformOffset = getCurrentPoint();
@@ -293,3 +297,107 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
         mEditor->updateCurrentFrame();
     }
 }
+
+MoveMode CameraTool::getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const
+{
+    QTransform curCam = layerCamera->getViewAtFrame(frameNumber);
+    QPolygon camPoly = curCam.inverted().mapToPolygon(layerCamera->getViewRect());
+    if (QLineF(point, camPoly.at(0)).length() < tolerance)
+    {
+        return MoveMode::TOPLEFT;
+    }
+    else if (QLineF(point, camPoly.at(1)).length() < tolerance)
+    {
+        return MoveMode::TOPRIGHT;
+    }
+    else if (QLineF(point, camPoly.at(2)).length() < tolerance)
+    {
+        return MoveMode::BOTTOMRIGHT;
+    }
+    else if (QLineF(point, camPoly.at(3)).length() < tolerance)
+    {
+        return MoveMode::BOTTOMLEFT;
+    }
+    else if (QLineF(point, QPoint(camPoly.at(1) + (camPoly.at(2) - camPoly.at(1)) / 2)).length() < tolerance)
+    {
+        return MoveMode::ROTATIONRIGHT;
+    }
+    else if (QLineF(point, QPoint(camPoly.at(0) + (camPoly.at(3) - camPoly.at(0)) / 2)).length() < tolerance)
+    {
+        return MoveMode::ROTATIONLEFT;
+    }
+    else if (camPoly.containsPoint(point.toPoint(), Qt::FillRule::OddEvenFill))
+    {
+        return MoveMode::CENTER;
+    }
+    return MoveMode::NONE;
+}
+
+MoveMode CameraTool::getPathMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const
+{
+    int prev = layerCamera->getPreviousKeyFramePosition(frameNumber);
+    int next = layerCamera->getNextKeyFramePosition(frameNumber);
+    if (layerCamera->hasSameTranslation(prev, next))
+        return MoveMode::NONE;
+
+    Camera* camera = layerCamera->getCameraAtFrame(prev);
+    Q_ASSERT(camera);
+
+    if (QLineF(camera->getPathControlPoint(), point).length() < tolerance)
+        return MoveMode::MIDDLE;
+    return MoveMode::NONE;
+}
+
+void CameraTool::transformView(LayerCamera* layerCamera, MoveMode mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const
+{
+    QPolygon curPoly = layerCamera->getViewAtFrame(frameNumber).inverted().mapToPolygon(layerCamera->getViewRect());
+    QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5).toPoint();
+    QLineF lineOld(curCenter, point);
+    QLineF lineNew(curCenter, point);
+    Camera* curCam = layerCamera->getCameraAtFrame(frameNumber);
+
+    switch (mode)
+    {
+    case MoveMode::CENTER: {
+        curCam->translate(curCam->translation() - (point - offset));
+
+        int prevFrame = layerCamera->getPreviousKeyFramePosition(frameNumber);
+        Camera* prevCam = layerCamera->getCameraAtFrame(prevFrame);
+
+        // Only center a control points if it hasn't been moved
+        if (!curCam->pathControlPointMoved()) {
+            curCam->setPathControlPoint(layerCamera->getNewPathControlPointAtFrame(frameNumber));
+        }
+        if (!prevCam->pathControlPointMoved()) {
+            prevCam->setPathControlPoint(layerCamera->getNewPathControlPointAtFrame(prevFrame));
+        }
+        break;
+    }
+    case MoveMode::TOPLEFT:
+        lineOld.setP2(curPoly.at(0));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
+    case MoveMode::TOPRIGHT:
+        lineOld.setP2(curPoly.at(1));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
+    case MoveMode::BOTTOMRIGHT:
+        lineOld.setP2(curPoly.at(2));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
+    case MoveMode::BOTTOMLEFT:
+        lineOld.setP2(curPoly.at(3));
+        curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
+        break;
+    case MoveMode::ROTATIONRIGHT:
+    case MoveMode::ROTATIONLEFT: {
+        curCam->rotate(angle);
+        break;
+    }
+    default:
+        break;
+    }
+    curCam->updateViewTransform();
+    curCam->modification();
+}
+

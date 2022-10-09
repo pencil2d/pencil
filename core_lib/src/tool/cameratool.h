@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 
 class PointerEvent;
+class LayerCamera;
 
 class CameraTool : public BaseTool
 {
@@ -50,11 +51,16 @@ public:
     void setPathDotColorType(const DotColorType pathDotColor) override;
     void resetTransform(CameraFieldOption option);
 
+    void transformView(LayerCamera* layerCamera, MoveMode mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const;
+
 private:
     void transformCamera(Qt::KeyboardModifiers keyMod);
     void transformCameraPath();
     void updateSettings(const SETTING setting);
     int constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const;
+
+    MoveMode getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
+    MoveMode getPathMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
 
     QPointF mTransformOffset;
     MoveMode mCamMoveMode = MoveMode::NONE;

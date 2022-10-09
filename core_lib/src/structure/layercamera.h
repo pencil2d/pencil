@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QRect>
 #include <QColor>
 #include "layer.h"
-#include "movemode.h"
 #include "camerafieldoption.h"
 #include "cameraeasingtype.h"
 
@@ -40,10 +39,6 @@ public:
     Camera* getCameraAtFrame(int frameNumber) const;
     Camera* getLastCameraAtFrame(int frameNumber, int increment) const;
     QTransform getViewAtFrame(int frameNumber) const;
-    MoveMode getMoveModeForCamera(int frameNumber, const QPointF& point, qreal tolerance) const;
-    MoveMode getMoveModeForCameraPath(int frameNumber, const QPointF& point, qreal tolerance) const;
-
-    void transformCameraView(MoveMode mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const;
 
     QRect getViewRect() const;
     QSize getViewSize() const;

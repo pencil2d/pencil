@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "camera.h"
 #include "object.h"
+#include "cameratool.h"
 
 #include "filemanager.h"
 
@@ -61,10 +62,12 @@ SCENARIO("Add a second keyframe and see that the path point of the first keyfram
         layer->addNewKeyFrameAt(1);
         layer->addNewKeyFrameAt(5);
 
+        CameraTool tool(nullptr);
+
         WHEN("Transforming the second keyframe")
         {
             Camera* camera = camLayer->getCameraAtFrame(1);
-            camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
+            tool.transformView(camLayer, MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
             THEN("The camera path mid point of the previous frame is updated to the center of the the path between the two keyframes")
             {
                 Camera* camera2 = camLayer->getCameraAtFrame(5);
@@ -86,10 +89,12 @@ SCENARIO("Add keyframe after having interpolated the previous keyframe and see t
         Layer* layer = new LayerCamera(object);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
+        CameraTool tool(nullptr);
+
         layer->addNewKeyFrameAt(1);
 
         Camera* camera = camLayer->getCameraAtFrame(1);
-        camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 1);
+        tool.transformView(camLayer, MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 1);
         WHEN("Adding a new keyframe after the previous frame was interpolated")
         {
             layer->addNewKeyFrameAt(5);
@@ -113,11 +118,13 @@ SCENARIO("Remove a camera keyframe and see that the path is properly reset")
         Layer* layer = new LayerCamera(object);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
+        CameraTool tool(nullptr);
+
         layer->addNewKeyFrameAt(1);
         layer->addNewKeyFrameAt(5);
 
         Camera* camera = camLayer->getCameraAtFrame(1);
-        camLayer->transformCameraView(MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
+        tool.transformView(camLayer, MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
         REQUIRE(camera->translation() != camera->getPathControlPoint());
 
         WHEN("Removing the last keyframe with transformation applied")
