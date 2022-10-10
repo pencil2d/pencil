@@ -316,7 +316,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
         return;
     }
 
-    BitmapImage paintToImage;
+    BitmapImage paintToImage = BitmapImage(paintedImage->bounds(), Qt::transparent);
     paintToImage.paste(paintedImage);
 
     painter.setOpacity(paintedImage->getOpacity() - (1.0-painter.opacity()));
