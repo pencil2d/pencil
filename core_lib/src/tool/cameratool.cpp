@@ -87,8 +87,10 @@ void CameraTool::updateSettings(const SETTING setting)
 
 QCursor CameraTool::cursor()
 {
-    QPixmap cursorPixmap = QPixmap(24, 24);
+    // When pointer is in use, we can't change state, so keep the last image.
+    if (mScribbleArea->isPointerInUse()) { return cursorCache; }
 
+    QPixmap cursorPixmap = QPixmap(24, 24);
     cursorPixmap.fill(QColor(255, 255, 255, 0));
     QPainter cursorPainter(&cursorPixmap);
     cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
@@ -133,7 +135,9 @@ QCursor CameraTool::cursor()
     }
     cursorPainter.end();
 
-    return QCursor(cursorPixmap);
+    cursorCache = QCursor(cursorPixmap);
+
+    return cursorCache;
 }
 
 MoveMode CameraTool::moveMode()

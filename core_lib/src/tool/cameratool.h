@@ -67,6 +67,8 @@ private:
     MoveMode mCamPathMoveMode = MoveMode::NONE;
     int mDragPathFrame = 1;
     int mRotationIncrement = 0;
+
+    QCursor cursorCache;
 };
 
 #endif // CAMERATOOL_H
