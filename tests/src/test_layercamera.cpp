@@ -67,7 +67,7 @@ SCENARIO("Add a second keyframe and see that the path point of the first keyfram
         WHEN("Transforming the second keyframe")
         {
             Camera* camera = camLayer->getCameraAtFrame(1);
-            tool.transformView(camLayer, MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
+            tool.transformView(camLayer, CameraMoveType::CENTER, camera->translation(), QPoint(300,300), 0, 5);
             THEN("The camera path mid point of the previous frame is updated to the center of the the path between the two keyframes")
             {
                 Camera* camera2 = camLayer->getCameraAtFrame(5);
@@ -94,7 +94,7 @@ SCENARIO("Add keyframe after having interpolated the previous keyframe and see t
         layer->addNewKeyFrameAt(1);
 
         Camera* camera = camLayer->getCameraAtFrame(1);
-        tool.transformView(camLayer, MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 1);
+        tool.transformView(camLayer, CameraMoveType::CENTER, camera->translation(), QPoint(300,300), 0, 1);
         WHEN("Adding a new keyframe after the previous frame was interpolated")
         {
             layer->addNewKeyFrameAt(5);
@@ -124,7 +124,7 @@ SCENARIO("Remove a camera keyframe and see that the path is properly reset")
         layer->addNewKeyFrameAt(5);
 
         Camera* camera = camLayer->getCameraAtFrame(1);
-        tool.transformView(camLayer, MoveMode::CENTER, camera->translation(), QPoint(300,300), 0, 5);
+        tool.transformView(camLayer, CameraMoveType::CENTER, camera->translation(), QPoint(300,300), 0, 5);
         REQUIRE(camera->translation() != camera->getPathControlPoint());
 
         WHEN("Removing the last keyframe with transformation applied")

@@ -20,10 +20,21 @@ GNU General Public License for more details.
 
 #include <QCursor>
 
-#include "movemode.h"
 #include "basetool.h"
 #include "camerafieldoption.h"
 #include "preferencemanager.h"
+
+enum class CameraMoveType {
+    PATH,
+    TOPLEFT,
+    TOPRIGHT,
+    BOTTOMLEFT,
+    BOTTOMRIGHT,
+    ROTATIONLEFT,
+    ROTATIONRIGHT,
+    CENTER,
+    NONE
+};
 
 class PointerEvent;
 class LayerCamera;
@@ -36,8 +47,8 @@ public:
     ~CameraTool() override;
 
     QCursor cursor() override;
-    MoveMode moveMode();
     ToolType type() override { return ToolType::CAMERA; }
+
     void loadSettings() override;
     void onDidChangeLayer(int index);
     void onDidLoadObject();
@@ -51,20 +62,21 @@ public:
     void setPathDotColorType(const DotColorType pathDotColor) override;
     void resetTransform(CameraFieldOption option);
 
-    void transformView(LayerCamera* layerCamera, MoveMode mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const;
+    void transformView(LayerCamera* layerCamera, CameraMoveType mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const;
 
 private:
+    CameraMoveType moveMode();
     void transformCamera(Qt::KeyboardModifiers keyMod);
     void transformCameraPath();
     void updateSettings(const SETTING setting);
     int constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const;
 
-    MoveMode getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
-    MoveMode getPathMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
+    CameraMoveType getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
+    CameraMoveType getPathMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
 
     QPointF mTransformOffset;
-    MoveMode mCamMoveMode = MoveMode::NONE;
-    MoveMode mCamPathMoveMode = MoveMode::NONE;
+    CameraMoveType mCamMoveMode = CameraMoveType::NONE;
+    CameraMoveType mCamPathMoveMode = CameraMoveType::NONE;
     int mDragPathFrame = 1;
     int mRotationIncrement = 0;
 

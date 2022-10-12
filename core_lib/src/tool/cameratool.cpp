@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "viewmanager.h"
 #include "layercamera.h"
-#include "movemode.h"
 #include "mathutils.h"
 #include "layercamera.h"
 #include "camera.h"
@@ -97,35 +96,26 @@ QCursor CameraTool::cursor()
 
     switch(moveMode())
     {
-    case MoveMode::PERSP_LEFT:
-    case MoveMode::PERSP_RIGHT:
-    case MoveMode::PERSP_MIDDLE:
-    case MoveMode::PERSP_SINGLE:
-    {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-        break;
-    }
-    case MoveMode::TOPLEFT:
-    case MoveMode::BOTTOMRIGHT:
+    case CameraMoveType::TOPLEFT:
+    case CameraMoveType::BOTTOMRIGHT:
     {
         cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
         break;
     }
-    case MoveMode::TOPRIGHT:
-    case MoveMode::BOTTOMLEFT:
+    case CameraMoveType::TOPRIGHT:
+    case CameraMoveType::BOTTOMLEFT:
     {
         cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
         break;
     }
-    case MoveMode::ROTATIONLEFT:
-    case MoveMode::ROTATIONRIGHT:
-    case MoveMode::ROTATION:
+    case CameraMoveType::ROTATIONLEFT:
+    case CameraMoveType::ROTATIONRIGHT:
     {
         cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
         break;
     }
-    case MoveMode::MIDDLE:
-    case MoveMode::CENTER:
+    case CameraMoveType::PATH:
+    case CameraMoveType::CENTER:
     {
         cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
         break;
@@ -140,10 +130,10 @@ QCursor CameraTool::cursor()
     return cursorCache;
 }
 
-MoveMode CameraTool::moveMode()
+CameraMoveType CameraTool::moveMode()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    MoveMode mode = MoveMode::NONE;
+    CameraMoveType mode = CameraMoveType::NONE;
     qreal selectionTolerance = mEditor->select()->selectionTolerance();
     QPointF currentPoint = getCurrentPoint();
 
@@ -165,7 +155,7 @@ MoveMode CameraTool::moveMode()
                                    currentPoint,
                                    selectionTolerance);
             mCamPathMoveMode = mode;
-            if (mode != MoveMode::NONE && !cam->hasSameTranslation(keyPos, cam->getPreviousKeyFramePosition(keyPos)))
+            if (mode != CameraMoveType::NONE && !cam->hasSameTranslation(keyPos, cam->getPreviousKeyFramePosition(keyPos)))
             {
                 mDragPathFrame = keyPos;
                 break;
@@ -223,9 +213,9 @@ void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
     QRectF viewRect = layer->getViewAtFrame(mEditor->currentFrame()).inverted().mapRect(layer->getViewRect());
-    qreal angleRad = mCamMoveMode == MoveMode::ROTATIONLEFT ? MathUtils::getDifferenceAngle(getCurrentPoint(),viewRect.center()) : MathUtils::getDifferenceAngle(viewRect.center(), getCurrentPoint());
+    qreal angleRad = mCamMoveMode == CameraMoveType::ROTATIONLEFT ? MathUtils::getDifferenceAngle(getCurrentPoint(),viewRect.center()) : MathUtils::getDifferenceAngle(viewRect.center(), getCurrentPoint());
     qreal angle = qRadiansToDegrees(angleRad);
-    if (keyMod == Qt::ShiftModifier && (mCamMoveMode == MoveMode::ROTATIONLEFT || mCamMoveMode == MoveMode::ROTATIONRIGHT)) {
+    if (keyMod == Qt::ShiftModifier && (mCamMoveMode == CameraMoveType::ROTATIONLEFT || mCamMoveMode == CameraMoveType::ROTATIONRIGHT)) {
         angle = constrainedRotation(angle, mRotationIncrement);
     }
 
@@ -270,7 +260,7 @@ void CameraTool::pointerMoveEvent(PointerEvent* event)
         if (layer->keyExists(mEditor->currentFrame())) {
             transformCamera(event->modifiers());
         }
-        else if (mCamPathMoveMode == MoveMode::MIDDLE)
+        else if (mCamPathMoveMode == CameraMoveType::CENTER)
         {
             transformCameraPath();
         }
@@ -294,7 +284,7 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
         transformCamera(event->modifiers());
         mEditor->view()->forceUpdateViewTransform();
         mEditor->updateCurrentFrame();
-    } else if (mCamPathMoveMode == MoveMode::MIDDLE) {
+    } else if (mCamPathMoveMode == CameraMoveType::CENTER) {
         transformCameraPath();
         layer->setPathMovedAtFrame(mEditor->currentFrame(), true);
         mEditor->view()->forceUpdateViewTransform();
@@ -302,57 +292,58 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
     }
 }
 
-MoveMode CameraTool::getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const
+CameraMoveType CameraTool::getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const
 {
     QTransform curCam = layerCamera->getViewAtFrame(frameNumber);
     QPolygon camPoly = curCam.inverted().mapToPolygon(layerCamera->getViewRect());
     if (QLineF(point, camPoly.at(0)).length() < tolerance)
     {
-        return MoveMode::TOPLEFT;
+        return CameraMoveType::TOPLEFT;
     }
     else if (QLineF(point, camPoly.at(1)).length() < tolerance)
     {
-        return MoveMode::TOPRIGHT;
+        return CameraMoveType::TOPRIGHT;
     }
     else if (QLineF(point, camPoly.at(2)).length() < tolerance)
     {
-        return MoveMode::BOTTOMRIGHT;
+        return CameraMoveType::BOTTOMRIGHT;
     }
     else if (QLineF(point, camPoly.at(3)).length() < tolerance)
     {
-        return MoveMode::BOTTOMLEFT;
+        return CameraMoveType::BOTTOMLEFT;
     }
     else if (QLineF(point, QPoint(camPoly.at(1) + (camPoly.at(2) - camPoly.at(1)) / 2)).length() < tolerance)
     {
-        return MoveMode::ROTATIONRIGHT;
+        return CameraMoveType::ROTATIONRIGHT;
     }
     else if (QLineF(point, QPoint(camPoly.at(0) + (camPoly.at(3) - camPoly.at(0)) / 2)).length() < tolerance)
     {
-        return MoveMode::ROTATIONLEFT;
+        return CameraMoveType::ROTATIONLEFT;
     }
     else if (camPoly.containsPoint(point.toPoint(), Qt::FillRule::OddEvenFill))
     {
-        return MoveMode::CENTER;
+        return CameraMoveType::CENTER;
     }
-    return MoveMode::NONE;
+    return CameraMoveType::NONE;
 }
 
-MoveMode CameraTool::getPathMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const
+CameraMoveType CameraTool::getPathMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const
 {
     int prev = layerCamera->getPreviousKeyFramePosition(frameNumber);
     int next = layerCamera->getNextKeyFramePosition(frameNumber);
     if (layerCamera->hasSameTranslation(prev, next))
-        return MoveMode::NONE;
+        return CameraMoveType::NONE;
 
     Camera* camera = layerCamera->getCameraAtFrame(prev);
     Q_ASSERT(camera);
 
-    if (QLineF(camera->getPathControlPoint(), point).length() < tolerance)
-        return MoveMode::MIDDLE;
-    return MoveMode::NONE;
+    if (QLineF(camera->getPathControlPoint(), point).length() < tolerance) {
+        return CameraMoveType::PATH;
+    }
+    return CameraMoveType::NONE;
 }
 
-void CameraTool::transformView(LayerCamera* layerCamera, MoveMode mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const
+void CameraTool::transformView(LayerCamera* layerCamera, CameraMoveType mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const
 {
     QPolygon curPoly = layerCamera->getViewAtFrame(frameNumber).inverted().mapToPolygon(layerCamera->getViewRect());
     QPoint curCenter = QLineF(curPoly.at(0), curPoly.at(2)).pointAt(0.5).toPoint();
@@ -362,7 +353,7 @@ void CameraTool::transformView(LayerCamera* layerCamera, MoveMode mode, const QP
 
     switch (mode)
     {
-    case MoveMode::CENTER: {
+    case CameraMoveType::CENTER: {
         curCam->translate(curCam->translation() - (point - offset));
 
         int prevFrame = layerCamera->getPreviousKeyFramePosition(frameNumber);
@@ -377,24 +368,24 @@ void CameraTool::transformView(LayerCamera* layerCamera, MoveMode mode, const QP
         }
         break;
     }
-    case MoveMode::TOPLEFT:
+    case CameraMoveType::TOPLEFT:
         lineOld.setP2(curPoly.at(0));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
-    case MoveMode::TOPRIGHT:
+    case CameraMoveType::TOPRIGHT:
         lineOld.setP2(curPoly.at(1));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
-    case MoveMode::BOTTOMRIGHT:
+    case CameraMoveType::BOTTOMRIGHT:
         lineOld.setP2(curPoly.at(2));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
-    case MoveMode::BOTTOMLEFT:
+    case CameraMoveType::BOTTOMLEFT:
         lineOld.setP2(curPoly.at(3));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
-    case MoveMode::ROTATIONRIGHT:
-    case MoveMode::ROTATIONLEFT: {
+    case CameraMoveType::ROTATIONRIGHT:
+    case CameraMoveType::ROTATIONLEFT: {
         curCam->rotate(angle);
         break;
     }
