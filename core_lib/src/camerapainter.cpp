@@ -99,14 +99,14 @@ void CameraPainter::paintVisuals(QPainter& painter) const
     if (cameraLayer == mObject->getLayer(mCurrentLayerIndex)) {
         paintInterpolations(painter, cameraLayer);
 
-        if (!mIsPlaying && cameraLayer->keyExists(mFrameIndex)) {
+        if (!mIsPlaying) {
             int frame = cameraLayer->getPreviousKeyFramePosition(mFrameIndex);
             Camera* cam = cameraLayer->getLastCameraAtFrame(qMax(frame, mFrameIndex), 0);
             Q_ASSERT(cam);
             qreal scale = cam->scaling();
             qreal rotation = cam->rotation();
 
-            paintHandles(painter, camTransform, cameraRect, scale, rotation);
+            paintHandles(painter, camTransform, cameraRect, scale, rotation, !cameraLayer->keyExists(mFrameIndex));
         }
     }
 
@@ -149,7 +149,7 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     painter.restore();
 }
 
-void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const qreal scale, const qreal rotation) const
+void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const qreal scale, const qreal rotation, bool hollowHandles) const
 {
     painter.save();
 
@@ -182,7 +182,11 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     painter.drawText(nonScaledCamPoly[0]-QPoint(0, 2), "100%");
 
     painter.setPen(mHighlightedTextColor);
-    painter.setBrush(mHighlightColor);
+    if (hollowHandles) {
+        painter.setBrush(Qt::NoBrush);
+    } else {
+        painter.setBrush(mHighlightColor);
+    }
     int handleW = HANDLE_WIDTH;
     int radius = handleW / 2;
 
@@ -230,8 +234,6 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
     QPolygon cameraViewPoly = cameraLayer->getViewRect();
     QPen onionSkinPen;
 
-    bool keyExistsOnCurrentFrame = cameraLayer->keyExists(mFrameIndex);
-
     cameraLayer->foreachKeyFrame([&] (KeyFrame* keyframe) {
         int frame = keyframe->pos();
         int nextFrame = cameraLayer->getNextKeyFramePosition(frame);
@@ -251,15 +253,12 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
             cameraPathPoint = mViewTransform.map(cameraLayer->getViewAtFrame(mFrameIndex).inverted().map(QRectF(cameraLayer->getViewRect()).center()));
             painter.drawEllipse(cameraPathPoint, DOT_WIDTH/2., DOT_WIDTH/2.);
 
-            if (!keyExistsOnCurrentFrame)
-            {
-                cameraPathPoint = mViewTransform.map(cameraLayer->getPathControlPointAtFrame(frame + 1));
+            cameraPathPoint = mViewTransform.map(cameraLayer->getPathControlPointAtFrame(frame + 1));
 
-                int distance = nextFrame - frame;
-                // It makes no sense to paint the path when there's no interpolation.
-                if (distance >= 2) {
-                    paintPath(painter, cameraLayer, frame, cameraPathPoint);
-                }
+            int distance = nextFrame - frame;
+            // It makes no sense to paint the path when there's no interpolation.
+            if (distance >= 2) {
+                paintPath(painter, cameraLayer, frame, cameraPathPoint);
             }
 
             QColor color = cameraDotColor;
