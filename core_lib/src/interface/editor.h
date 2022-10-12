@@ -162,6 +162,9 @@ public: //slots
     */
     void updateFrame(int frameNumber);
 
+    void setModified(const Layer* layer, int frameNumber);
+    void setModified(int layerNumber, int frameNumber);
+
     void clearCurrentFrame();
 
     bool importImage(const QString& filePath);
@@ -193,6 +196,8 @@ public: //slots
      *          (see #1412).
      */
     void sanitizeBackupElementsAfterLayerDeletion(int layerIndex);
+
+    void onCurrentLayerWillChange(int index);
     void undo();
     void redo();
 

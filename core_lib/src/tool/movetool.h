@@ -40,7 +40,6 @@ public:
     void pointerReleaseEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
 
-    bool onWillChangeLayer() override;
     bool leavingThisTool() override;
 
     void resetToDefault() override;
@@ -49,13 +48,8 @@ public:
 private:
     void cancelChanges();
     void applyTransformation();
-    void applySelectionChanges();
-    void paintTransformedSelection();
     void setAnchorToLastPoint();
-    void updateTransformation();
     void updateSettings(const SETTING setting);
-
-    int showTransformWarning();
 
     void beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer);
     void createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
@@ -72,8 +66,10 @@ private:
     QPointF anchorOriginPoint;
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;
+    qreal mPreviousAngle = 0.0;
     int mRotationIncrement = 0;
     MoveMode mPerspMode;
+    QPointF mOffset;
 };
 
 #endif

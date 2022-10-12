@@ -67,10 +67,8 @@ public:
     Editor* editor() const { return mEditor; }
 
     void deleteSelection();
-    void applySelectionChanges();
     void displaySelectionProperties();
 
-    void paintTransformedSelection();
     void applyTransformedSelection();
     void cancelTransformedSelection();
 
@@ -109,10 +107,6 @@ public:
 
     /** Frame modified, invalidate cache for frame if any */
     void onFrameModified(int frameNumber);
-
-    /** Current frame modified, invalidate current frame cache if any.
-     * Convenient function that does the same as onFrameModified */
-    void onCurrentFrameModified();
 
     /** Layer changed, invalidate relevant cache */
     void onLayerChanged();
@@ -155,7 +149,6 @@ public:
     void keyEventForSelection(QKeyEvent* event);
 
 signals:
-    void modified(int, int);
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
     void selectionUpdated();
@@ -173,10 +166,6 @@ public slots:
     void paletteColorChanged(QColor);
 
     void showLayerNotVisibleWarning();
-    void updateOriginalPolygonF();
-    void setOriginalPolygonF(QPolygonF polygon) { mOriginalPolygonF = polygon; }
-    QPolygonF getOriginalPolygonF() { return mOriginalPolygonF; }
-
 
 protected:
     bool event(QEvent *event) override;
