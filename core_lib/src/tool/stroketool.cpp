@@ -100,7 +100,7 @@ void StrokeTool::endStroke()
 
     enableCoalescing();
 
-    mScribbleArea->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
+    mEditor->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
 }
 
 void StrokeTool::drawStroke()

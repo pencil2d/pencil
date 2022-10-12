@@ -56,7 +56,7 @@ void RepositionFramesDialog::initUI()
     connect(mEditor->getScribbleArea(), &ScribbleArea::selectionUpdated, this, &RepositionFramesDialog::updateDialogText);
     connect(mEditor->select(), &SelectionManager::selectionReset, this, &RepositionFramesDialog::closeClicked);
     mEndPoint = mStartPoint = QPoint(0,0);
-    mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
+    mOriginalPolygonF = mEditor->select()->mySelectionRect();
     updateDialogSelectedFrames();
     updateDialogText();
 }
@@ -65,9 +65,9 @@ void RepositionFramesDialog::updateDialogText()
 {
     if (mOriginalPolygonF.boundingRect().isEmpty())
     {
-        mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
+        mOriginalPolygonF = mEditor->select()->mySelectionRect();
     }
-    mCurrentPolygonF = mEditor->select()->currentSelectionPolygonF();
+    mCurrentPolygonF = mEditor->select()->selectionTransform().map(mEditor->select()->mySelectionRect());
     QPoint point = getRepositionPoint();
     ui->labRepositioned->setText(tr("Repositioned: ( %1, %2 )").arg(point.x()).arg(point.y()));
 }
@@ -94,7 +94,6 @@ void RepositionFramesDialog::repositionFrames()
         return;
     }
 
-    mEditor->getScribbleArea()->updateOriginalPolygonF();
     QList<int> frames = mEditor->layers()->currentLayer()->getSelectedFramesByPos();
     for (int i = 0; i < frames.size(); i++)
     {
@@ -147,7 +146,7 @@ void RepositionFramesDialog::repositionFrames()
             layerManager->setCurrentLayer(currLayer);
         }
     }
-    mEditor->getScribbleArea()->applySelectionChanges();
+    mEditor->getScribbleArea()->applyTransformedSelection();
     mEditor->select()->resetSelectionProperties();
     mEditor->scrubTo(mRepositionFrame);
     

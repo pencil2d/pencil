@@ -77,6 +77,7 @@ public:
     int getLastLayerIndex() { return count() - 1; }
 
 signals:
+    void currentLayerWillChange(int index);
     void currentLayerChanged(int index);
     void layerCountChanged(int count);
     void animationLengthChanged(int length);

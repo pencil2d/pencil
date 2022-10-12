@@ -1400,7 +1400,6 @@ void MainWindow2::makeConnections(Editor* editor)
         ui->actionCut->setEnabled(canCopy);
     });
     connect(editor, &Editor::canPasteChanged, ui->actionPaste, &QAction::setEnabled);
-
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)

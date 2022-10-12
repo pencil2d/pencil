@@ -66,7 +66,6 @@ bool ScribbleArea::init()
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
 
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::onSelectionChanged);
-    connect(mEditor->select(), &SelectionManager::needPaintAndApply, this, &ScribbleArea::applySelectionChanges);
     connect(mEditor->select(), &SelectionManager::needDeleteSelection, this, &ScribbleArea::deleteSelection);
 
     mDoubleClickTimer->setInterval(50);
@@ -295,11 +294,6 @@ void ScribbleArea::onFramesModified()
     update();
 }
 
-void ScribbleArea::onCurrentFrameModified()
-{
-    onFrameModified(mEditor->currentFrame());
-}
-
 void ScribbleArea::onFrameModified(int frameNumber)
 {
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
@@ -322,7 +316,9 @@ void ScribbleArea::onLayerChanged()
 
 void ScribbleArea::onSelectionChanged()
 {
-    update();
+    int currentFrame = mEditor->currentFrame();
+    invalidateCacheForFrame(currentFrame);
+    updateFrame(currentFrame);
 }
 
 void ScribbleArea::onOnionSkinTypeChanged()
@@ -333,24 +329,6 @@ void ScribbleArea::onOnionSkinTypeChanged()
 void ScribbleArea::onObjectLoaded()
 {
     invalidateAllCache();
-}
-
-void ScribbleArea::setModified(const Layer* layer, int frameNumber)
-{
-    if (layer == nullptr) { return; }
-
-    layer->setModified(frameNumber, true);
-
-    onFrameModified(frameNumber);
-}
-
-void ScribbleArea::setModified(int layerNumber, int frameNumber)
-{
-    Layer* layer = mEditor->object()->getLayer(layerNumber);
-    if (layer == nullptr) { return; }
-
-    setModified(layer, frameNumber);
-    emit modified(layerNumber, frameNumber);
 }
 
 bool ScribbleArea::event(QEvent *event)
@@ -408,19 +386,23 @@ void ScribbleArea::keyEventForSelection(QKeyEvent* event)
     {
     case Qt::Key_Right:
         selectMan->translate(QPointF(1, 0));
-        paintTransformedSelection();
+        selectMan->calculateSelectionTransformation();
+        mEditor->frameModified(mEditor->currentFrame());
         return;
     case Qt::Key_Left:
         selectMan->translate(QPointF(-1, 0));
-        paintTransformedSelection();
+        selectMan->calculateSelectionTransformation();
+        mEditor->frameModified(mEditor->currentFrame());
         return;
     case Qt::Key_Up:
         selectMan->translate(QPointF(0, -1));
-        paintTransformedSelection();
+        selectMan->calculateSelectionTransformation();
+        mEditor->frameModified(mEditor->currentFrame());
         return;
     case Qt::Key_Down:
         selectMan->translate(QPointF(0, 1));
-        paintTransformedSelection();
+        selectMan->calculateSelectionTransformation();
+        mEditor->frameModified(mEditor->currentFrame());
         return;
     case Qt::Key_Return:
         applyTransformedSelection();
@@ -777,14 +759,6 @@ void ScribbleArea::showLayerNotVisibleWarning()
                          tr("You are trying to modify a hidden layer! Please select another layer (or make the current layer visible)."),
                          QMessageBox::Ok,
                          QMessageBox::Ok);
-}
-
-void ScribbleArea::updateOriginalPolygonF()
-{
-    if (mEditor->select()->somethingSelected() && mOriginalPolygonF.isEmpty())
-        mOriginalPolygonF = mEditor->select()->currentSelectionPolygonF();
-    else
-        mOriginalPolygonF = QPolygonF();
 }
 
 void ScribbleArea::paintBitmapBuffer()
@@ -1158,6 +1132,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         mCanvasPainter.renderGrid(painter);
         mOverlayPainter.renderOverlays(painter, editor()->overlays()->getMoveMode());
 
+
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
         {
@@ -1181,27 +1156,13 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
     Object* object = mEditor->object();
 
     auto selectMan = mEditor->select();
-    selectMan->updatePolygons();
 
-    if (selectMan->currentSelectionPolygonF().isEmpty()) { return; }
-    if (selectMan->currentSelectionPolygonF().count() < 4) { return; }
+    QRectF currentSelectionRect = selectMan->mySelectionRect();
 
-    QPolygonF lastSelectionPolygon = editor()->view()->mapPolygonToScreen(selectMan->lastSelectionPolygonF());
-    QPolygonF currentSelectionPolygon = selectMan->currentSelectionPolygonF();
-    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP)
-    {
-        currentSelectionPolygon = currentSelectionPolygon.toPolygon();
-    }
-    currentSelectionPolygon = editor()->view()->mapPolygonToScreen(currentSelectionPolygon);
+    if (currentSelectionRect.isEmpty()) { return; }
 
-    if (mOriginalPolygonF.isEmpty())
-    {
-        mOriginalPolygonF = selectMan->currentSelectionPolygonF();
-    }
-
-    TransformParameters params = { lastSelectionPolygon, currentSelectionPolygon };
-    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(),
-                            currentTool(), params, mOriginalPolygonF, selectMan->currentSelectionPolygonF());
+    TransformParameters params = { currentSelectionRect, editor()->view()->getView(), selectMan->selectionTransform() };
+    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
     emit selectionUpdated();
 }
 
@@ -1251,7 +1212,9 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     mCanvasPainter.setCanvas(&mCanvas);
 
     ViewManager* vm = mEditor->view();
+    SelectionManager* sm = mEditor->select();
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
+    mCanvasPainter.setTransformedSelection(sm->mySelectionRect().toRect(), sm->selectionTransform());
 
     mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, mBufferImg);
 }
@@ -1320,7 +1283,6 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, 
 void ScribbleArea::flipSelection(bool flipVertical)
 {
     mEditor->select()->flipSelection(flipVertical);
-    paintTransformedSelection();
 }
 
 void ScribbleArea::renderOverlays()
@@ -1452,55 +1414,6 @@ QPointF ScribbleArea::getCentralPoint()
     return mEditor->view()->mapScreenToCanvas(QPointF(width() / 2, height() / 2));
 }
 
-void ScribbleArea::paintTransformedSelection()
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) { return; }
-
-    auto selectMan = mEditor->select();
-    if (selectMan->somethingSelected())    // there is something selected
-    {
-        if (layer->type() == Layer::BITMAP)
-        {
-            mCanvasPainter.setTransformedSelection(selectMan->mySelectionRect().toRect(), selectMan->selectionTransform());
-        }
-        else if (layer->type() == Layer::VECTOR)
-        {
-            // vector transformation
-            VectorImage* vectorImage = currentVectorImage(layer);
-            if (vectorImage == nullptr) { return; }
-            vectorImage->setSelectionTransformation(selectMan->selectionTransform());
-
-        }
-        setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-    }
-    updateCurrentFrame();
-}
-
-void ScribbleArea::applySelectionChanges()
-{
-    // we haven't applied our last modifications yet
-    // therefore apply the transformed selection first.
-    applyTransformedSelection();
-
-    auto selectMan = mEditor->select();
-
-    // make sure the current transformed selection is valid
-    if (!selectMan->myTempTransformedSelectionRect().isValid())
-    {
-        const QRectF& normalizedRect = selectMan->myTempTransformedSelectionRect().normalized();
-        selectMan->setTempTransformedSelectionRect(normalizedRect);
-    }
-    selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), false);
-    paintTransformedSelection();
-
-    // Calculate the new transformation based on the new selection
-    selectMan->calculateSelectionTransformation();
-
-    // apply the transformed selection to make the selection modification absolute.
-    applyTransformedSelection();
-}
-
 void ScribbleArea::applyTransformedSelection()
 {
     mCanvasPainter.ignoreTransformedSelection();
@@ -1520,6 +1433,7 @@ void ScribbleArea::applyTransformedSelection()
             if (bitmapImage == nullptr) { return; }
             BitmapImage transformedImage = bitmapImage->transformed(selectMan->mySelectionRect().toRect(), selectMan->selectionTransform(), true);
 
+
             bitmapImage->clear(selectMan->mySelectionRect());
             bitmapImage->paste(&transformedImage, QPainter::CompositionMode_SourceOver);
         }
@@ -1530,11 +1444,11 @@ void ScribbleArea::applyTransformedSelection()
             //handleDrawingOnEmptyFrame();
             VectorImage* vectorImage = currentVectorImage(layer);
             if (vectorImage == nullptr) { return; }
+
             vectorImage->applySelectionTransformation();
-            selectMan->setSelection(selectMan->myTempTransformedSelectionRect(), false);
         }
 
-        setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+        mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     }
 
     update();
@@ -1564,7 +1478,7 @@ void ScribbleArea::cancelTransformedSelection()
         selectMan->resetSelectionProperties();
         mOriginalPolygonF = QPolygonF();
 
-        setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+        mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         updateCurrentFrame();
     }
 }
@@ -1655,6 +1569,7 @@ void ScribbleArea::setCurrentTool(ToolType eToolMode)
     // change cursor
     setCursor(currentTool()->cursor());
     updateCanvasCursor();
+    updateCurrentFrame();
 }
 
 void ScribbleArea::deleteSelection()
@@ -1682,7 +1597,7 @@ void ScribbleArea::deleteSelection()
             Q_CHECK_PTR(bitmapImage);
             bitmapImage->clear(selectMan->mySelectionRect());
         }
-        setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
+        mEditor->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
     }
 }
 
@@ -1715,7 +1630,7 @@ void ScribbleArea::clearImage()
     {
         return; // skip updates when nothing changes
     }
-    setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+    mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }
 
 void ScribbleArea::paletteColorChanged(QColor color)

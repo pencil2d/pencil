@@ -267,7 +267,7 @@ void BucketTool::paintBitmap()
         }
         else if (progress == BucketState::DidFillTarget)
         {
-            mScribbleArea->setModified(layerIndex, frameIndex);
+            mEditor->setModified(layerIndex, frameIndex);
 
             // Need to invalidate layer pixmap cache when filling anything else but current layer
             // otherwise dragging won't show until release event
@@ -297,7 +297,7 @@ void BucketTool::paintVector(Layer* layer)
 
     applyChanges();
 
-    mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+    mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }
 
 void BucketTool::applyChanges()
