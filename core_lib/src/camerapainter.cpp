@@ -307,7 +307,9 @@ void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer,
     // draw movemode in text
     painter.setPen(Qt::black);
     QString pathType = cameraLayer->getInterpolationTextAtFrame(frameIndex);
-    painter.drawText(pathPoint - QPoint(0, 10), pathType);
+
+    // Space text according to path point so it doesn't overlap
+    painter.drawText(pathPoint - QPoint(0, HANDLE_WIDTH), pathType);
     painter.restore();
 
     // if active path, draw bezier help lines for active path
