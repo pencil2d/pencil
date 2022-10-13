@@ -33,13 +33,20 @@ CameraPainter::CameraPainter()
 
 }
 
-void CameraPainter::preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, const QPalette& palette)
+void CameraPainter::preparePainter(const Object* object,
+                                   int layerIndex,
+                                   int frameIndex,
+                                   const QTransform& transform,
+                                   bool isPlaying,
+                                   bool showHandles,
+                                   const QPalette& palette)
 {
     mObject = object;
     mCurrentLayerIndex = layerIndex;
     mFrameIndex = frameIndex;
     mViewTransform = transform;
     mIsPlaying = isPlaying;
+    mShowHandles = showHandles;
 
     mHighlightColor = palette.color(QPalette::Highlight);
     mHighlightedTextColor = palette.color(QPalette::HighlightedText);
@@ -106,7 +113,9 @@ void CameraPainter::paintVisuals(QPainter& painter) const
             qreal scale = cam->scaling();
             qreal rotation = cam->rotation();
 
-            paintHandles(painter, camTransform, cameraRect, scale, rotation, !cameraLayer->keyExists(mFrameIndex));
+            if (mShowHandles) {
+                paintHandles(painter, camTransform, cameraRect, scale, rotation, !cameraLayer->keyExists(mFrameIndex));
+            }
         }
     }
 
@@ -303,14 +312,6 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
 
 void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint) const
 {
-    painter.save();
-    // draw movemode in text
-    painter.setPen(Qt::black);
-    QString pathType = cameraLayer->getInterpolationTextAtFrame(frameIndex);
-
-    // Space text according to path point so it doesn't overlap
-    painter.drawText(pathPoint - QPoint(0, HANDLE_WIDTH), pathType);
-    painter.restore();
 
     // if active path, draw bezier help lines for active path
     QList<QPointF> points = cameraLayer->getBezierPointsAtFrame(frameIndex + 1);
@@ -330,13 +331,24 @@ void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer,
         painter.restore();
     }
 
-    // if active path, draw move handle
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing, false);
-    painter.setPen(mHighlightedTextColor);
-    painter.setBrush(mHighlightColor);
-    painter.drawRect(static_cast<int>(pathPoint.x() - HANDLE_WIDTH/2),
-                     static_cast<int>(pathPoint.y() - HANDLE_WIDTH/2),
-                     HANDLE_WIDTH, HANDLE_WIDTH);
-    painter.restore();
+    if (mShowHandles) {
+        painter.save();
+        // draw movemode in text
+        painter.setPen(Qt::black);
+        QString pathType = cameraLayer->getInterpolationTextAtFrame(frameIndex);
+
+        // Space text according to path point so it doesn't overlap
+        painter.drawText(pathPoint - QPoint(0, HANDLE_WIDTH), pathType);
+        painter.restore();
+
+        // if active path, draw move handle
+        painter.save();
+        painter.setRenderHint(QPainter::Antialiasing, false);
+        painter.setPen(mHighlightedTextColor);
+        painter.setBrush(mHighlightColor);
+        painter.drawRect(static_cast<int>(pathPoint.x() - HANDLE_WIDTH/2),
+                         static_cast<int>(pathPoint.y() - HANDLE_WIDTH/2),
+                         HANDLE_WIDTH, HANDLE_WIDTH);
+        painter.restore();
+    }
 }

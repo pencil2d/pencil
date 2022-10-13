@@ -118,8 +118,11 @@ void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
 
 void ScribbleArea::onToolChanged(ToolType)
 {
-    prepOverlays();
-    renderOverlays();
+    int frame = mEditor->currentFrame();
+    prepOverlays(frame);
+    prepCameraPainter(frame);
+    invalidateCacheForFrame(frame);
+    updateCurrentFrame();
 }
 
 void ScribbleArea::settingUpdated(SETTING setting)
@@ -1052,7 +1055,8 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     {
         prepCanvas(currentFrame, event->rect());
         prepCameraPainter(currentFrame);
-        prepOverlays();
+        prepOverlays(currentFrame);
+
         mCanvasPainter.paintCached();
         mCameraPainter.paintCached();
     }
@@ -1214,6 +1218,7 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   frame,
                                   mEditor->view()->getView(),
                                   mEditor->playback()->isPlaying(),
+                                  mEditor->tools()->currentTool()->type() == CAMERA,
                                   palette());
 
     OnionSkinPainterOptions onionSkinOptions;
@@ -1278,9 +1283,9 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     mCanvas.setDevicePixelRatio(mDevicePixelRatio);
     prepCanvas(frame, rect);
     prepCameraPainter(frame);
+    prepOverlays(frame);
     mCanvasPainter.paint();
     mCameraPainter.paint();
-    prepOverlays();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset)
@@ -1340,12 +1345,7 @@ void ScribbleArea::flipSelection(bool flipVertical)
     mEditor->select()->flipSelection(flipVertical);
 }
 
-void ScribbleArea::renderOverlays()
-{
-    updateCurrentFrame();
-}
-
-void ScribbleArea::prepOverlays()
+void ScribbleArea::prepOverlays(int frame)
 {
     OverlayPainterOptions o;
 
@@ -1373,7 +1373,7 @@ void ScribbleArea::prepOverlays()
     o.mRightPerspPoint = mEditor->overlays()->getRightPerspectivePoint();
     o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspectivePoint();
 
-    o.nFrameIndex = mEditor->currentFrame();
+    o.nFrameIndex = frame;
 
     mOverlayPainter.setOptions(o);
     mOverlayPainter.preparePainter(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA), palette());

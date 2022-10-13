@@ -41,7 +41,7 @@ public:
 
     void setOnionSkinPainterOptions(const OnionSkinPainterOptions& options) { mOnionSkinOptions = options; }
     void setCanvas(QPixmap* canvas);
-    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, const QPalette& palette);
+    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, bool showHandles, const QPalette& palette);
     void resetCache();
 
 private:
@@ -65,6 +65,7 @@ private:
     int mCurrentLayerIndex = 0;
 
     bool mIsPlaying = false;
+    bool mShowHandles = false;
 
     QColor mHighlightColor;
     QColor mHighlightedTextColor;

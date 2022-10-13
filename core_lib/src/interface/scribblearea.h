@@ -130,8 +130,6 @@ public:
     /** Set frame on layer to modified and invalidate current frame cache */
     void setModified(int layerNumber, int frameNumber);
     void setModified(const Layer* layer, int frameNumber);
-    void renderOverlays();
-    void prepOverlays();
 
     void flipSelection(bool flipVertical);
 
@@ -234,6 +232,7 @@ private:
     /** invalidate onion skin cache around frame */
     void invalidateOnionSkinsCacheAround(int frame);
 
+    void prepOverlays(int frame);
     void prepCameraPainter(int frame);
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
