@@ -103,7 +103,7 @@ QPointF SelectionManager::getSelectionAnchorPoint() const
     {
         anchorPoint = mSelectionPolygon[3];
     } else {
-        anchorPoint = QLineF(mSelectionPolygon[0], mSelectionPolygon[2]).center();
+        anchorPoint = QLineF(mSelectionPolygon[0], mSelectionPolygon[2]).pointAt(.5);
     }
     return anchorPoint;
 }
