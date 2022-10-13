@@ -197,8 +197,6 @@ bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
     pKeyFrame->setPos(position);
     mKeyFrames.insert(std::make_pair(position, pKeyFrame));
 
-    emit keyframeAdded(position);
-
     markFrameAsDirty(position);
 
     return true;
@@ -228,7 +226,6 @@ bool Layer::removeKeyFrame(int position)
         }
         mKeyFrames.erase(frame->pos());
         markFrameAsDirty(frame->pos());
-        emit keyframeDeleted(frame->pos());
         delete frame;
     }
     return true;

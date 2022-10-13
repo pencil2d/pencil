@@ -36,6 +36,9 @@ public:
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
+    bool addKeyFrame(int position, KeyFrame* pKeyFrame) override;
+    bool removeKeyFrame(int position) override;
+
     Camera* getCameraAtFrame(int frameNumber) const;
     Camera* getLastCameraAtFrame(int frameNumber, int increment) const;
     QTransform getViewAtFrame(int frameNumber) const;

@@ -35,13 +35,24 @@ LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
         mFieldH = 600;
     }
     viewRect = QRect(QPoint(-mFieldW / 2, -mFieldH / 2), QSize(mFieldW, mFieldH));
-
-    connect(this, &LayerCamera::keyframeDeleted, this, &LayerCamera::updateControlPointOnDeleteFrame);
-    connect(this, &LayerCamera::keyframeAdded, this, &LayerCamera::updateControlPointsOnAddFrame);
 }
 
 LayerCamera::~LayerCamera()
 {
+}
+
+bool LayerCamera::addKeyFrame(int position, KeyFrame *pKeyFrame)
+{
+    bool keyAdded = Layer::addKeyFrame(position, pKeyFrame);
+    updateControlPointsOnAddFrame(position);
+    return keyAdded;
+}
+
+bool LayerCamera::removeKeyFrame(int position)
+{
+    bool keyRemoved = Layer::removeKeyFrame(position);
+    updateControlPointOnDeleteFrame(position);
+    return keyRemoved;
 }
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber) const
