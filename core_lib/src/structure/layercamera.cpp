@@ -61,11 +61,9 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     }
 
     Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
-    camera1->setEasingType(camera1->getEasingType());
 
     int nextFrame = getNextKeyFramePosition(frameNumber);
     Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
-    camera2->setEasingType(camera2->getEasingType());
 
     if (camera1 == nullptr && camera2 == nullptr)
     {
