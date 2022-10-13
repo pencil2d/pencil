@@ -260,7 +260,7 @@ void CameraTool::pointerMoveEvent(PointerEvent* event)
         if (layer->keyExists(mEditor->currentFrame())) {
             transformCamera(event->modifiers());
         }
-        else if (mCamPathMoveMode == CameraMoveType::CENTER)
+        else if (mCamPathMoveMode == CameraMoveType::PATH)
         {
             transformCameraPath();
         }
