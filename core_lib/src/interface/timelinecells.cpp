@@ -266,8 +266,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     cameraFieldMenu->addAction(tr("Hold to keyframe %1").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::HOLD_FRAME, frameNumber); });
 
     cameraMenu->exec(pos);
-    mEditor->scrubTo(mEditor->currentFrame());
-    updateContent();
 }
 
 void TimeLineCells::drawContent()
