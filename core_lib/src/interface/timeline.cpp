@@ -81,9 +81,15 @@ void TimeLine::initUI()
     removeLayerButton->setToolTip(tr("Remove Layer"));
     removeLayerButton->setFixedSize(24, 24);
 
+    QToolButton* duplicateLayerButton = new QToolButton(this);
+    duplicateLayerButton->setIcon(QIcon(":icons/controls/duplicate.png"));
+    duplicateLayerButton->setToolTip(tr("Duplicate Layer"));
+    duplicateLayerButton->setFixedSize(24, 24);
+
     layerButtons->addWidget(layerLabel);
     layerButtons->addWidget(addLayerButton);
     layerButtons->addWidget(removeLayerButton);
+    layerButtons->addWidget(duplicateLayerButton);
     layerButtons->setFixedHeight(30);
 
     QHBoxLayout* leftToolBarLayout = new QHBoxLayout();
@@ -201,6 +207,7 @@ void TimeLine::initUI()
 
     connect(addKeyButton, &QToolButton::clicked, this, &TimeLine::insertKeyClick);
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
+    connect(duplicateLayerButton, &QToolButton::clicked, this , &TimeLine::duplicateLayerClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
     connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
 

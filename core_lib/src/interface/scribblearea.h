@@ -66,10 +66,8 @@ public:
     Editor* editor() const { return mEditor; }
 
     void deleteSelection();
-    void applySelectionChanges();
     void displaySelectionProperties();
 
-    void paintTransformedSelection();
     void applyTransformedSelection();
     void cancelTransformedSelection();
 
@@ -109,10 +107,6 @@ public:
     /** Frame modified, invalidate cache for frame if any */
     void onFrameModified(int frameNumber);
 
-    /** Current frame modified, invalidate current frame cache if any.
-     * Convenient function that does the same as onFrameModified */
-    void onCurrentFrameModified();
-
     /** Layer changed, invalidate relevant cache */
     void onLayerChanged();
 
@@ -125,10 +119,6 @@ public:
 
     /** Object updated, invalidate all cache */
     void onObjectLoaded();
-
-    /** Set frame on layer to modified and invalidate current frame cache */
-    void setModified(int layerNumber, int frameNumber);
-    void setModified(const Layer* layer, int frameNumber);
 
     void flipSelection(bool flipVertical);
     void renderOverlays();
@@ -150,6 +140,7 @@ public:
 signals:
     void multiLayerOnionSkinChanged(bool);
     void refreshPreview();
+    void selectionUpdated();
 
 public slots:
     void clearImage();
@@ -164,7 +155,6 @@ public slots:
     void paletteColorChanged(QColor);
 
     void showLayerNotVisibleWarning();
-
 
 protected:
     bool event(QEvent *event) override;
@@ -285,6 +275,8 @@ private:
     CanvasPainter mCanvasPainter;
     OverlayPainter mOverlayPainter;
     SelectionPainter mSelectionPainter;
+
+    QPolygonF mOriginalPolygonF = QPolygonF();
 
     // Pixmap Cache keys
     QMap<unsigned int, QPixmapCache::Key> mPixmapCacheKeys;

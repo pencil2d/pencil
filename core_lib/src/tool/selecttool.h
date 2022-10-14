@@ -20,6 +20,8 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 
+#include <QRectF>
+
 class Layer;
 class SelectionManager;
 
@@ -28,10 +30,13 @@ class SelectTool : public BaseTool
     Q_OBJECT
 
 public:
-    explicit SelectTool(QObject* parent = 0);
+    explicit SelectTool(QObject* parent = nullptr);
     ToolType type() override { return SELECT; }
     void loadSettings() override;
     QCursor cursor() override;
+
+    void resetToDefault() override;
+    void setShowSelectionInfo(const bool b) override;
 
 private:
 
@@ -56,6 +61,8 @@ private:
     // the selection rectangle in mousePressEvent.
     QPointF mAnchorOriginPoint;
     MoveMode mMoveMode;
+    MoveMode mStartMoveMode = MoveMode::NONE;
+    QRectF mSelectionRect;
     Layer* mCurrentLayer = nullptr;
 };
 

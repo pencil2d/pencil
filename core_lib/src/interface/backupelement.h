@@ -34,7 +34,11 @@ public:
     QString undoText;
     bool somethingSelected = false;
     qreal rotationAngle = 0.0;
-    QRectF mySelection, myTransformedSelection, myTempTransformedSelection;
+    qreal scaleX = 1.0;
+    qreal scaleY = 1.0;
+    QPointF translation;
+    QRectF mySelection;
+    QPointF selectionAnchor;
 
     virtual int type() { return UNDEFINED; }
     virtual void restore(Editor*) { Q_ASSERT(false); }

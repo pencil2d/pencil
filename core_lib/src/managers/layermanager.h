@@ -56,6 +56,8 @@ public:
     void gotoNextLayer();
     void gotoPreviouslayer();
 
+    /** Returns a new Layer with the given LAYER_TYPE */
+    Layer* createLayer(Layer::LAYER_TYPE type, const QString& strLayerName);
     LayerBitmap* createBitmapLayer(const QString& strLayerName);
     LayerVector* createVectorLayer(const QString& strLayerName);
     LayerCamera* createCameraLayer(const QString& strLayerName);
@@ -78,6 +80,7 @@ public:
     int getLastLayerIndex() { return count() - 1; }
 
 signals:
+    void currentLayerWillChange(int index);
     void currentLayerChanged(int index);
     void layerCountChanged(int count);
     void animationLengthChanged(int length);

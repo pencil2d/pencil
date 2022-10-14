@@ -18,9 +18,7 @@ GNU General Public License for more details.
 
 #include "object.h"
 #include "qpainter.h"
-#include "layermanager.h"
 #include "basetool.h"
-
 
 SelectionPainter::SelectionPainter()
 {
@@ -36,53 +34,70 @@ void SelectionPainter::paint(QPainter& painter,
 
     if (layer == nullptr) { return; }
 
+    QTransform transform = tParams.selectionTransform * tParams.viewTransform;
+    QPolygonF projectedSelectionPolygon = transform.map(tParams.originalSelectionRectF);
+
     if (layer->type() == Layer::BITMAP)
     {
         painter.setBrush(Qt::NoBrush);
         painter.setPen(QPen(Qt::DashLine));
 
-        // Draw previous selection
-        painter.drawPolygon(tParams.lastSelectionPolygonF.toPolygon());
-
         // Draw current selection
-        painter.drawPolygon(tParams.currentSelectionPolygonF.toPolygon());
+        painter.drawPolygon(projectedSelectionPolygon.toPolygon());
 
     }
     if (layer->type() == Layer::VECTOR)
     {
         painter.setBrush(QColor(0, 0, 0, 20));
         painter.setPen(Qt::gray);
-        painter.drawPolygon(tParams.currentSelectionPolygonF);
+        painter.drawPolygon(projectedSelectionPolygon);
     }
 
-    if (layer->type() != Layer::VECTOR || tool->type() != SELECT)
+    if (tool->type() == SELECT || tool->type() == MOVE)
     {
         painter.setPen(Qt::SolidLine);
         painter.setBrush(QBrush(Qt::gray));
-        int width = 6;
-        int radius = width / 2;
+        int radius = HANDLE_WIDTH / 2;
 
-        const QRectF topLeftCorner = QRectF(tParams.currentSelectionPolygonF[0].x() - radius,
-                                            tParams.currentSelectionPolygonF[0].y() - radius,
-                                            width, width);
+        const QRectF topLeftCorner = QRectF(projectedSelectionPolygon[0].x() - radius,
+                                            projectedSelectionPolygon[0].y() - radius,
+                                            HANDLE_WIDTH, HANDLE_WIDTH);
         painter.drawRect(topLeftCorner);
 
-        const QRectF topRightCorner = QRectF(tParams.currentSelectionPolygonF[1].x() - radius,
-                                             tParams.currentSelectionPolygonF[1].y() - radius,
-                                             width, width);
+        const QRectF topRightCorner = QRectF(projectedSelectionPolygon[1].x() - radius,
+                                             projectedSelectionPolygon[1].y() - radius,
+                                             HANDLE_WIDTH, HANDLE_WIDTH);
         painter.drawRect(topRightCorner);
 
-        const QRectF bottomRightCorner = QRectF(tParams.currentSelectionPolygonF[2].x() - radius,
-                                                tParams.currentSelectionPolygonF[2].y() - radius,
-                                                width, width);
+        const QRectF bottomRightCorner = QRectF(projectedSelectionPolygon[2].x() - radius,
+                                                projectedSelectionPolygon[2].y() - radius,
+                                                HANDLE_WIDTH, HANDLE_WIDTH);
         painter.drawRect(bottomRightCorner);
 
-        const QRectF bottomLeftCorner = QRectF(tParams.currentSelectionPolygonF[3].x() - radius,
-                                               tParams.currentSelectionPolygonF[3].y() - radius,
-                                               width, width);
+        const QRectF bottomLeftCorner = QRectF(projectedSelectionPolygon[3].x() - radius,
+                                               projectedSelectionPolygon[3].y() - radius,
+                                               HANDLE_WIDTH, HANDLE_WIDTH);
         painter.drawRect(bottomLeftCorner);
-
-        painter.setBrush(QColor(0, 255, 0, 50));
-        painter.setPen(Qt::green);
     }
+
+    if (tool->properties.showSelectionInfo) {
+        paintSelectionInfo(painter, transform, tParams.viewTransform, tParams.originalSelectionRectF, projectedSelectionPolygon);
+    }
+}
+
+void SelectionPainter::paintSelectionInfo(QPainter& painter, const QTransform& mergedTransform, const QTransform& viewTransform, const QRectF& selectionRect, const QPolygonF& projectedPolygonF)
+{
+    QRect projectedSelectionRect = mergedTransform.mapRect(selectionRect).toAlignedRect();
+    QRect originalSelectionRect = viewTransform.mapRect(selectionRect).toAlignedRect();
+    QPolygon projectedPolygon = projectedPolygonF.toPolygon();
+
+    QPoint projectedCenter = projectedSelectionRect.center();
+    QPoint originalCenter = originalSelectionRect.center();
+    int diffX = static_cast<int>(projectedCenter.x() - originalCenter.x());
+    int diffY = static_cast<int>(originalCenter.y() - projectedCenter.y());
+    painter.drawText(projectedPolygon[0] - QPoint(HANDLE_WIDTH, HANDLE_WIDTH),
+                    QString("Size: %1x%2. Diff: %3, %4.").arg(QString::number(selectionRect.width()),
+                                                      QString::number(selectionRect.height()),
+                                                      QString::number(diffX),
+                                                      QString::number(diffY)));
 }

@@ -25,6 +25,7 @@ GNU General Public License for more details.
 
 template<typename T> class QList;
 class QActionGroup;
+class QToolBar;
 class Object;
 class Editor;
 class ScribbleArea;
@@ -47,6 +48,7 @@ class ImportImageSeqDialog;
 class BackupElement;
 class LayerOpacityDialog;
 class PegBarAlignmentDialog;
+class RepositionFramesDialog;
 class StatusBar;
 enum class SETTING;
 
@@ -68,9 +70,10 @@ public:
 
 public slots:
     void undoActSetText();
-    void undoActSetEnabled();
     void updateSaveState();
     void openPegAlignDialog();
+    void openRepositionDialog();
+    void closeRepositionDialog();
     void openLayerOpacityDialog();
     void openAddTranspToPaperDialog();
     void currentLayerChanged();
@@ -99,21 +102,19 @@ public:
     void setOpacity(int opacity);
     void preferences();
 
+    void openStartupFile(const QString& filename);
     void openFile(const QString& filename);
 
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
 signals:
-    void updateRecentFilesList(bool b);
-
     /** Emitted when window regains focus */
     void windowActivated();
 
 protected:
     void tabletEvent(QTabletEvent*) override;
     void closeEvent(QCloseEvent*) override;
-    void showEvent(QShowEvent*) override;
     bool event(QEvent*) override;
 
 private slots:
@@ -170,16 +171,23 @@ private:
     ColorInspector*       mColorInspector = nullptr;
     BitmapColoring*       mBitmapColoring = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
+    QToolBar*             mMainToolbar = nullptr;
+    QToolBar*             mViewToolbar = nullptr;
+    QToolBar*             mOverlayToolbar = nullptr;
 
     // backup
     BackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
+    RepositionFramesDialog* mReposDialog = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;
     AddTransparencyToPaperDialog* mAddTranspToPaper = nullptr;
 
+    void createToolbars();
+private:
     ActionCommands* mCommands = nullptr;
     QList<BaseDockWidget*> mDockWidgets;
+    QList<QToolBar*> mToolbars;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
