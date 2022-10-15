@@ -112,9 +112,10 @@ void CameraPainter::paintVisuals(QPainter& painter) const
             Q_ASSERT(cam);
             qreal scale = cam->scaling();
             qreal rotation = cam->rotation();
+            QPointF translation = cam->translation();
 
             if (mShowHandles) {
-                paintHandles(painter, camTransform, cameraRect, scale, rotation, !cameraLayer->keyExists(mFrameIndex));
+                paintHandles(painter, camTransform, cameraRect, translation, scale, rotation, !cameraLayer->keyExists(mFrameIndex));
             }
         }
     }
@@ -158,7 +159,7 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     painter.restore();
 }
 
-void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const qreal scale, const qreal rotation, bool hollowHandles) const
+void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const QPointF translation, const qreal scale, const qreal rotation, bool hollowHandles) const
 {
     painter.save();
 
@@ -182,7 +183,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     painter.setPen(QColor(0, 0, 0, 100));
 
     QTransform scaleT;
-    scaleT.translate(camTransform.m31() / scale, camTransform.m32() / scale);
+    scaleT.translate(translation.x(), translation.y());
     scaleT.rotate(rotation);
     scaleT.scale(1, 1);
 
