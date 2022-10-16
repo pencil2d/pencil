@@ -19,7 +19,8 @@ GNU General Public License for more details.
 
 enum OnionSkinPaintState {
     PREV,
-    NEXT
+    NEXT,
+    CURRENT
 };
 
 #endif // ONIONSKINPAINTSTATE_H

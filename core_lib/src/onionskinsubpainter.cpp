@@ -37,26 +37,21 @@ void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, const Oni
     qreal minOpacity = static_cast<qreal>(options.minOpacity / 100);
     qreal maxOpacity = static_cast<qreal>(options.maxOpacity / 100);
 
-    if (options.skinPrevFrames && frameIndex > 1)
+    if (options.skinPrevFrames && frameIndex >= 1)
     {
         // Paint onion skin before current frame.
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / options.framesToSkinPrev;
         qreal opacity = maxOpacity;
 
-        int onionFrameNumber = frameIndex;
-        if (options.isAbsolute)
-        {
-            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber + 1, true);
-        }
+        int onionFrameNumber = layer->getPreviousFrameNumber(frameIndex + 1, options.isAbsolute);;
 
-        if (onionFrameNumber > 1)
+        if (onionFrameNumber == frameIndex || onionFrameNumber >= 1)
         {
-            onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, options.isAbsolute);
+            state(OnionSkinPaintState::CURRENT, onionFrameNumber);
         }
 
         int onionPosition = 0;
-
-        while (onionPosition < options.framesToSkinPrev && onionFrameNumber > 0)
+        while (onionPosition < options.framesToSkinPrev && onionFrameNumber >= 1)
         {
             painter.setOpacity(opacity);
 
