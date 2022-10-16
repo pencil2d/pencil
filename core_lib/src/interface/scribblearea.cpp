@@ -518,13 +518,6 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
     // Don't change view if tool is in use
     if (isPointerInUse()) return;
 
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::CAMERA && !layer->visible())
-    {
-        showLayerNotVisibleWarning(); // FIXME: crash when using tablets
-        return;
-    }
-
     static const bool isX11 = QGuiApplication::platformName() == "xcb";
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
