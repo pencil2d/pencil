@@ -303,6 +303,9 @@ void ScribbleArea::onPlayStateChanged()
         invalidateCaches();
     }
 
+    prepOverlays(currentFrame);
+    prepCameraPainter(currentFrame);
+    invalidateCacheForFrame(currentFrame);
     updateFrame(currentFrame);
 }
 
