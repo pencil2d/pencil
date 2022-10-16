@@ -109,6 +109,7 @@ private:
     void paintSelectedFrames(QPainter& painter, const Layer* layer, const int layerIndex) const;
     void paintLabel(QPainter& painter, const Layer* layer, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
+    void paintHighlightedFrame(QPainter& painter, int framePos, int recTop, int recWidth, int recHeight) const;
 
     void editLayerProperties(Layer* layer) const;
     void editLayerProperties(LayerCamera *layer) const;
@@ -127,6 +128,8 @@ private:
     int mFrameSize = 0;
     int mFontSize = 10;
     bool mScrubbing = false;
+    bool mHighlightFrameEnabled = false;
+    int mHighlightedFrame = -1;
     int mLayerHeight = 20;
     int mStartY = 0;
     int mEndY   = 0;

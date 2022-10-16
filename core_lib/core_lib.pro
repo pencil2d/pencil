@@ -41,6 +41,7 @@ HEADERS +=  \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
     src/interface/backupelement.h \
+    src/interface/cameracontextmenu.h \
     src/interface/camerapropertiesdialog.h \
     src/interface/editor.h \
     src/interface/flowlayout.h \
@@ -128,6 +129,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
     src/interface/backupelement.cpp \
+    src/interface/cameracontextmenu.cpp \
     src/interface/camerapropertiesdialog.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
