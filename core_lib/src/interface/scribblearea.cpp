@@ -1215,6 +1215,8 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   mEditor->view()->getView(),
                                   mEditor->playback()->isPlaying(),
                                   mEditor->tools()->currentTool()->type() == CAMERA,
+                                  mLayerVisibility,
+                                  mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD),
                                   palette());
 
     OnionSkinPainterOptions onionSkinOptions;
@@ -1372,7 +1374,7 @@ void ScribbleArea::prepOverlays(int frame)
     o.nFrameIndex = frame;
 
     mOverlayPainter.setOptions(o);
-    mOverlayPainter.preparePainter(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA), palette());
+    mOverlayPainter.preparePainter(mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()), palette());
 
     ViewManager* vm = mEditor->view();
     mOverlayPainter.setViewTransform(vm->getView());

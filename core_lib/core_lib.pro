@@ -103,6 +103,7 @@ HEADERS +=  \
     src/util/mathutils.h \
     src/util/onionskinpainteroptions.h \
     src/util/onionskinpaintstate.h \
+    src/util/painterutils.h \
     src/util/pencildef.h \
     src/util/pencilerror.h \
     src/util/pencilsettings.h \

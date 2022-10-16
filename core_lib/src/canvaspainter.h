@@ -95,9 +95,6 @@ private:
     void paintTransformedSelection(QPainter& painter) const;
     void prescale(BitmapImage* bitmapImage);
 
-    /** Calculate layer opacity based on current layer offset */
-    qreal calculateRelativeOpacityForLayer(int layerIndex) const;
-
 private:
 
     CanvasPainterOptions mOptions;

@@ -26,6 +26,8 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "vectorimage.h"
 
+#include "painterutils.h"
+
 CanvasPainter::CanvasPainter()
 {
 }
@@ -447,7 +449,7 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
 
         if (mOptions.eLayerVisibility == LayerVisibility::RELATED && !isCameraLayer)
         {
-            painter.setOpacity(calculateRelativeOpacityForLayer(i));
+            painter.setOpacity(calculateRelativeOpacityForLayer(mCurrentLayerIndex, i, mOptions.fLayerVisibilityThreshold));
         }
 
         CANVASPAINTER_LOG("  Render Layer[%d] %s", i, layer->name());
@@ -458,16 +460,4 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
         default: break;
         }
     }
-}
-
-qreal CanvasPainter::calculateRelativeOpacityForLayer(int layerIndex) const
-{
-    int layerOffset = mCurrentLayerIndex - layerIndex;
-    int absoluteOffset = qAbs(layerOffset);
-    qreal newOpacity = 1.0;
-    if (absoluteOffset != 0)
-    {
-        newOpacity = qPow(static_cast<qreal>(mOptions.fLayerVisibilityThreshold), absoluteOffset);
-    }
-    return newOpacity;
 }

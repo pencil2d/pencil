@@ -25,6 +25,9 @@ GNU General Public License for more details.
 #include "camera.h"
 #include "keyframe.h"
 
+
+#include "painterutils.h"
+
 const int DOT_WIDTH = 6;
 const int HANDLE_WIDTH = 12;
 
@@ -39,6 +42,8 @@ void CameraPainter::preparePainter(const Object* object,
                                    const QTransform& transform,
                                    bool isPlaying,
                                    bool showHandles,
+                                   LayerVisibility layerVisibility,
+                                   float relativeLayerOpacityThreshold,
                                    const QPalette& palette)
 {
     mObject = object;
@@ -47,6 +52,8 @@ void CameraPainter::preparePainter(const Object* object,
     mViewTransform = transform;
     mIsPlaying = isPlaying;
     mShowHandles = showHandles;
+    mLayerVisibility = layerVisibility;
+    mRelativeLayerOpacityThreshold = relativeLayerOpacityThreshold;
 
     mHighlightColor = palette.color(QPalette::Highlight);
     mHighlightedTextColor = palette.color(QPalette::HighlightedText);
@@ -97,30 +104,49 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
 
 void CameraPainter::paintVisuals(QPainter& painter) const
 {
-    LayerCamera* cameraLayer = static_cast<LayerCamera*>(mObject->getFirstVisibleLayer(mCurrentLayerIndex, Layer::CAMERA));
-    if (cameraLayer == nullptr) { return; }
+    auto cameraLayers = mObject->getLayersByType<LayerCamera>();
 
-    QTransform camTransform = cameraLayer->getViewAtFrame(mFrameIndex);
-    QRect cameraRect = cameraLayer->getViewRect();
+    LayerCamera* cameraLayerBelow = static_cast<LayerCamera*>(mObject->getLayerBelow(mCurrentLayerIndex, Layer::CAMERA));
 
-    if (cameraLayer == mObject->getLayer(mCurrentLayerIndex)) {
+    if (cameraLayerBelow == nullptr) { return; }
+
+    int startLayerI = 0;
+    int endLayerI = mObject->getLayerCount() - 1;
+    for (int i = startLayerI; i <= endLayerI; i++) {
+        Layer* layer = mObject->getLayer(i);
+        if (layer->type() != Layer::CAMERA) { continue; }
+
+        LayerCamera* cameraLayer = static_cast<LayerCamera*>(layer);
+
+        bool isCurrentLayer = cameraLayer == cameraLayerBelow;
+
+        if (!cameraLayer->visible() || (mLayerVisibility == LayerVisibility::CURRENTONLY && !isCurrentLayer)) { continue; }
+
+        painter.save();
+        painter.setOpacity(1);
+        if (mLayerVisibility == LayerVisibility::RELATED && !isCurrentLayer) {
+            painter.setOpacity(calculateRelativeOpacityForLayer(mCurrentLayerIndex, i, mRelativeLayerOpacityThreshold));
+        }
+
         paintInterpolations(painter, cameraLayer);
 
-        if (!mIsPlaying) {
-            int frame = cameraLayer->getPreviousKeyFramePosition(mFrameIndex);
-            Camera* cam = cameraLayer->getLastCameraAtFrame(qMax(frame, mFrameIndex), 0);
+        painter.restore();
+    }
+
+    if (!mIsPlaying) {
+        QTransform camTransform = cameraLayerBelow->getViewAtFrame(mFrameIndex);
+        QRect cameraRect = cameraLayerBelow->getViewRect();
+        if (mShowHandles) {
+            int frame = cameraLayerBelow->getPreviousKeyFramePosition(mFrameIndex);
+            Camera* cam = cameraLayerBelow->getLastCameraAtFrame(qMax(frame, mFrameIndex), 0);
             Q_ASSERT(cam);
             qreal scale = cam->scaling();
             qreal rotation = cam->rotation();
             QPointF translation = cam->translation();
-
-            if (mShowHandles) {
-                paintHandles(painter, camTransform, cameraRect, translation, scale, rotation, !cameraLayer->keyExists(mFrameIndex));
-            }
+            paintHandles(painter, camTransform, cameraRect, translation, scale, rotation, !cameraLayerBelow->keyExists(mFrameIndex));
         }
+        paintBorder(painter, camTransform, cameraRect);
     }
-
-    paintBorder(painter, camTransform, cameraRect);
 }
 
 void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const

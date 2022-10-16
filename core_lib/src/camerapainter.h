@@ -24,6 +24,7 @@ GNU General Public License for more details.
 
 #include "onionskinpainteroptions.h"
 #include "onionskinsubpainter.h"
+#include "pencildef.h"
 
 class LayerCamera;
 class Object;
@@ -41,7 +42,7 @@ public:
 
     void setOnionSkinPainterOptions(const OnionSkinPainterOptions& options) { mOnionSkinOptions = options; }
     void setCanvas(QPixmap* canvas);
-    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, bool showHandles, const QPalette& palette);
+    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, bool showHandles, LayerVisibility layerVisibility, float relativeLayerOpacityThreshold, const QPalette& palette);
     void resetCache();
 
 private:
@@ -63,6 +64,8 @@ private:
 
     int mFrameIndex = 0;
     int mCurrentLayerIndex = 0;
+    LayerVisibility mLayerVisibility;
+    float mRelativeLayerOpacityThreshold = 0;
 
     bool mIsPlaying = false;
     bool mShowHandles = false;

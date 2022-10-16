@@ -234,13 +234,13 @@ Layer* Object::getLayer(int i) const
     return mLayers.at(i);
 }
 
-Layer* Object::getFirstVisibleLayer(int i, Layer::LAYER_TYPE type) const
+Layer* Object::getLayerBelow(int i, Layer::LAYER_TYPE type) const
 {
-    for (int i = 0; i < getLayerCount(); ++i)
+    for (; i >= 0; --i)
     {
         Layer* layerCheck = getLayer(i);
         Q_ASSERT(layerCheck);
-        if (layerCheck->type() == type && layerCheck->visible())
+        if (layerCheck->type() == type)
         {
             return layerCheck;
         }

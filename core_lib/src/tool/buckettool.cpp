@@ -191,7 +191,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
     if (targetLayer->type() != Layer::BITMAP) { return; }
 
-    LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+    LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
 
     mBitmapBucket = BitmapBucket(mEditor,
                                  mEditor->color()->frontColor(),

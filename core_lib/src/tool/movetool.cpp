@@ -69,7 +69,7 @@ QCursor MoveTool::cursor()
     }
     else if (mEditor->overlays()->isPerspectiveOverlaysActive())
     {
-        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+        LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
         Q_ASSERT(layerCam);
         mode = mEditor->overlays()->getMoveModeForPoint(getCurrentPoint(), layerCam->getViewAtFrame(mEditor->currentFrame()));
         mPerspMode = mode;
@@ -106,7 +106,7 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     {
         mEditor->overlays()->setMoveMode(mPerspMode);
 
-        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+        LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
         Q_ASSERT(layerCam);
 
         QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()).toPoint();
@@ -128,7 +128,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
         if (mEditor->overlays()->isPerspectiveOverlaysActive())
         {
-            LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+            LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
             Q_ASSERT(layerCam);
             mEditor->overlays()->updatePerspective(layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()));
         }

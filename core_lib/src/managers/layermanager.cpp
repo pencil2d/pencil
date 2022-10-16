@@ -54,9 +54,9 @@ Status LayerManager::save(Object* o)
     return Status::OK;
 }
 
-Layer* LayerManager::getFirstVisibleLayer(int layerIndex, Layer::LAYER_TYPE type) const
+LayerCamera* LayerManager::getCameraLayerBelow(int layerIndex) const
 {
-    return object()->getFirstVisibleLayer(layerIndex, type);
+    return static_cast<LayerCamera*>(object()->getLayerBelow(layerIndex, Layer::CAMERA));
 }
 
 Layer* LayerManager::getLastCameraLayer()

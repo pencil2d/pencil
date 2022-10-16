@@ -36,7 +36,7 @@ ImportPositionDialog::ImportPositionDialog(Editor* editor, QWidget *parent) :
     ui->cbImagePosition->addItem(tr("Center of camera, current frame"));
     ui->cbImagePosition->addItem(tr("Center of camera, follow camera"));
 
-    if (mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA) == nullptr) {
+    if (mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()) == nullptr) {
         auto model = dynamic_cast<QStandardItemModel*>(ui->cbImagePosition->model());
         model->item(2, 0)->setEnabled(false);
         model->item(3, 0)->setEnabled(false);
@@ -85,7 +85,7 @@ void ImportPositionDialog::changeImportView()
     }
     else if (mImportOption == ImportPosition::Type::CenterOfCamera)
     {
-        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getFirstVisibleLayer(mEditor->currentLayerIndex(), Layer::CAMERA));
+        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()));
         Q_ASSERT(layerCam);
         QRectF cameraRect = layerCam->getViewRect();
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
