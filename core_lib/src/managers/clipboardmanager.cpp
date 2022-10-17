@@ -34,10 +34,14 @@ void ClipboardManager::setFromSystemClipboard(const QPointF& pos, const Layer* l
 {
     // We intentially do not call resetStates here because we can only store image changes to the clipboard
     // otherwise we break pasting for vector.
+    // Only bitmap is supported currently...
+    // Only update clipboard data if it was stored by other applications
+    if (layer->type() != Layer::BITMAP || mClipboard->ownsClipboard()) {
+        return;
+    }
 
     QImage image = mClipboard->image(QClipboard::Clipboard);
-    // Only bitmap is supported currently...
-    if (layer->type() == Layer::BITMAP && !image.isNull()) {
+    if (!image.isNull()) {
         mBitmapImage = BitmapImage(pos.toPoint()-QPoint(image.size().width()/2, image.size().height()/2), image);
     }
 }
