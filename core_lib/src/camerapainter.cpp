@@ -209,9 +209,9 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     painter.setPen(QColor(0, 0, 0, 100));
 
     QTransform scaleT;
-    scaleT.translate(translation.x(), translation.y());
-    scaleT.rotate(rotation);
     scaleT.scale(1, 1);
+    scaleT.rotate(rotation);
+    scaleT.translate(translation.x(), translation.y());
 
     QPolygon nonScaledCamPoly = mViewTransform.map(scaleT.inverted().map(QPolygon(cameraRect)));
     painter.drawPolygon(nonScaledCamPoly);
