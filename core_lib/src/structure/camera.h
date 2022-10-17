@@ -56,8 +56,7 @@ public:
     QPointF getPathControlPoint() const { return mPathControlPoint; }
 
     void setPathControlPointMoved(bool pathMoved);
-    bool pathControlPointMoved() const { return mPathControlPointMoved ; }
-
+    bool pathControlPointMoved() const { return mPathControlPointMoved; }
 
 private:
     QTransform mView;

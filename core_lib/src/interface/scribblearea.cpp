@@ -104,27 +104,6 @@ bool ScribbleArea::init()
     return true;
 }
 
-void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
-{
-    switch (type)
-    {
-    case ToolPropertyType::CAMERAPATH:
-        onFrameModified(mEditor->currentFrame());
-        break;
-    default:
-        break;
-    }
-}
-
-void ScribbleArea::onToolChanged(ToolType)
-{
-    int frame = mEditor->currentFrame();
-    prepOverlays(frame);
-    prepCameraPainter(frame);
-    invalidateCacheForFrame(frame);
-    updateCurrentFrame();
-}
-
 void ScribbleArea::settingUpdated(SETTING setting)
 {
     switch (setting)
@@ -294,6 +273,28 @@ void ScribbleArea::invalidateCaches()
     mCanvasPainter.resetLayerCache();
     update();
 }
+
+void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
+{
+    switch (type)
+    {
+    case ToolPropertyType::CAMERAPATH:
+        onFrameModified(mEditor->currentFrame());
+        break;
+    default:
+        break;
+    }
+}
+
+void ScribbleArea::onToolChanged(ToolType)
+{
+    int frame = mEditor->currentFrame();
+    prepOverlays(frame);
+    prepCameraPainter(frame);
+    invalidateCacheForFrame(frame);
+    updateCurrentFrame();
+}
+
 
 void ScribbleArea::onPlayStateChanged()
 {
