@@ -298,15 +298,8 @@ Layer* Object::takeLayer(int layerId)
 
 bool Object::swapLayers(int i, int j)
 {
-    if (i < 0 || i >= mLayers.size())
-    {
-        return false;
-    }
-
-    if (j < 0 || j >= mLayers.size())
-    {
-        return false;
-    }
+    bool canSwap = canSwapLayers(i, j);
+    if (!canSwap) { return false; }
 
     if (i != j)
     {
@@ -314,6 +307,46 @@ bool Object::swapLayers(int i, int j)
         mLayers[i] = mLayers.at(j);
         mLayers[j] = tmp;
     }
+    return true;
+}
+
+bool Object::canSwapLayers(int layerIndexLeft, int layerIndexRight) const
+{
+    if (layerIndexLeft < 0 || layerIndexLeft >= mLayers.size())
+    {
+        return false;
+    }
+
+    if (layerIndexRight < 0 || layerIndexRight >= mLayers.size())
+    {
+        return false;
+    }
+
+    Layer* firstLayer = mLayers.first();
+    Layer* leftLayer = mLayers.at(layerIndexLeft);
+    Layer* rightLayer = mLayers.at(layerIndexRight);
+
+    // The bottom layer can't be swapped!
+    if ((leftLayer->type() == Layer::CAMERA ||
+         rightLayer->type() == Layer::CAMERA) &&
+         (firstLayer == leftLayer || firstLayer == rightLayer)) {
+        return false;
+    }
+    return true;
+}
+
+bool Object::canDeleteLayer(int index) const
+{
+    // We expect the first camera layer to be at the bottom and this layer must not be deleted!
+    if (index == 0) {
+        return false;
+    }
+
+    if (mLayers.at(index) == nullptr)
+    {
+        return false;
+    }
+
     return true;
 }
 

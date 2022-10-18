@@ -111,6 +111,24 @@ public:
     Layer* takeLayer(int layerId); // Note: transfer ownership of the layer
 
     bool swapLayers(int i, int j);
+
+    /** Allows you to check whether two layers can be swappped, before doing the actual operation
+     *
+     *  @param[in] layerIndexLeft The first layer to compare
+     *  @param[in] layerIndexRight The second layer to compare
+     *
+     *  @return true if layers can be swapped, otherwise false
+    */
+    bool canSwapLayers(int layerIndexLeft, int layerIndexRight) const;
+
+    /** Allows you to check whether the layer at the given index can be deleted
+     *
+     *  @param[in] index The layer index to check
+     *
+     *  @return true if the layer can be deleted, otherwise false
+    */
+    bool canDeleteLayer(int index) const;
+
     void deleteLayer(int i);
     void deleteLayer(Layer*);
     bool addLayer(Layer* layer);

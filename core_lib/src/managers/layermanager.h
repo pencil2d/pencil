@@ -50,6 +50,7 @@ public:
     void   setCurrentLayer(Layer* layer);
     int    count();
 
+    bool canDeleteLayer(int index) const;
     Status deleteLayer(int index);
     Status renameLayer(Layer*, const QString& newName);
     void notifyLayerChanged(Layer*);

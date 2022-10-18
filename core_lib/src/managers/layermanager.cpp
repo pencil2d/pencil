@@ -308,6 +308,11 @@ int LayerManager::count()
     return object()->getLayerCount();
 }
 
+bool LayerManager::canDeleteLayer(int index) const
+{
+    return object()->canDeleteLayer(index);
+}
+
 Status LayerManager::deleteLayer(int index)
 {
     Layer* layer = object()->getLayer(index);

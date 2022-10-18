@@ -76,10 +76,10 @@ void TimeLine::initUI()
     addLayerButton->setToolTip(tr("Add Layer"));
     addLayerButton->setFixedSize(24, 24);
 
-    QToolButton* removeLayerButton = new QToolButton(this);
-    removeLayerButton->setIcon(QIcon(":icons/remove.png"));
-    removeLayerButton->setToolTip(tr("Remove Layer"));
-    removeLayerButton->setFixedSize(24, 24);
+    mLayerDeleteButton = new QToolButton(this);
+    mLayerDeleteButton->setIcon(QIcon(":icons/remove.png"));
+    mLayerDeleteButton->setToolTip(tr("Delete Layer"));
+    mLayerDeleteButton->setFixedSize(24, 24);
 
     QToolButton* duplicateLayerButton = new QToolButton(this);
     duplicateLayerButton->setIcon(QIcon(":icons/controls/duplicate.png"));
@@ -88,7 +88,7 @@ void TimeLine::initUI()
 
     layerButtons->addWidget(layerLabel);
     layerButtons->addWidget(addLayerButton);
-    layerButtons->addWidget(removeLayerButton);
+    layerButtons->addWidget(mLayerDeleteButton);
     layerButtons->addWidget(duplicateLayerButton);
     layerButtons->setFixedHeight(30);
 
@@ -222,7 +222,7 @@ void TimeLine::initUI()
     connect(newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer);
     connect(newSoundLayerAct, &QAction::triggered, this, &TimeLine::newSoundLayer);
     connect(newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer);
-    connect(removeLayerButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayer);
+    connect(mLayerDeleteButton, &QPushButton::clicked, this, &TimeLine::onDeleteCurrentLayer);
 
     connect(mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY);
     connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
@@ -235,6 +235,7 @@ void TimeLine::initUI()
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);
+    connect(layer, &LayerManager::currentLayerChanged, this, &TimeLine::onLayerChanged);
     mNumLayers = layer->count();
 
     scrubbing = false;
@@ -292,25 +293,9 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     }
 }
 
-void TimeLine::deleteCurrentLayer()
+void TimeLine::onDeleteCurrentLayer()
 {
-    LayerManager* layerMgr = editor()->layers();
-    QString strLayerName = layerMgr->currentLayer()->name();
-
-    int ret = QMessageBox::warning(this,
-                                   tr("Delete Layer", "Windows title of Delete current layer pop-up."),
-                                   tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(strLayerName),
-                                   QMessageBox::Ok | QMessageBox::Cancel,
-                                   QMessageBox::Ok);
-    if (ret == QMessageBox::Ok)
-    {
-        Status st = layerMgr->deleteLayer(editor()->currentLayerIndex());
-        if (st == Status::ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER)
-        {
-            QMessageBox::information(this, "",
-                                     tr("Please keep at least one camera layer in project"));
-        }
-    }
+    emit deleteCurrentLayer();
 }
 
 void TimeLine::updateFrame(int frameNumber)
@@ -385,4 +370,9 @@ void TimeLine::onObjectLoaded()
 {
     mTimeControls->updateUI();
     updateLayerNumber(editor()->layers()->count());
+}
+
+void TimeLine::onLayerChanged()
+{
+    mLayerDeleteButton->setEnabled(editor()->layers()->canDeleteLayer(editor()->currentLayerIndex()));
 }

@@ -851,6 +851,10 @@ Status ActionCommands::deleteCurrentLayer()
     LayerManager* layerMgr = mEditor->layers();
     QString strLayerName = layerMgr->currentLayer()->name();
 
+    if (!layerMgr->canDeleteLayer(mEditor->currentLayerIndex())) {
+        return Status::CANCELED;
+    }
+
     int ret = QMessageBox::warning(mParent,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),
                                    tr("Are you sure you want to delete layer: %1? This cannot be undone.").arg(strLayerName),
