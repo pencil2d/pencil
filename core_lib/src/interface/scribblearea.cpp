@@ -1218,8 +1218,7 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   mEditor->tools()->currentTool()->type() == CAMERA,
                                   mLayerVisibility,
                                   mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD),
-                                  mEditor->view()->getViewScaleInverse(),
-                                  palette());
+                                  mEditor->view()->getViewScaleInverse());
 
     OnionSkinPainterOptions onionSkinOptions;
     onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);

@@ -42,7 +42,7 @@ public:
 
     void setOnionSkinPainterOptions(const OnionSkinPainterOptions& options) { mOnionSkinOptions = options; }
     void setCanvas(QPixmap* canvas);
-    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, bool showHandles, LayerVisibility layerVisibility, float relativeLayerOpacityThreshold, qreal viewScale, const QPalette& palette);
+    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, bool showHandles, LayerVisibility layerVisibility, float relativeLayerOpacityThreshold, qreal viewScale);
     void resetCache();
 
 private:
@@ -71,8 +71,8 @@ private:
     bool mIsPlaying = false;
     bool mShowHandles = false;
 
-    QColor mHighlightColor;
-    QColor mHighlightedTextColor;
+    QColor mHandleColor;
+    QColor mHandleTextColor;
 };
 
 #endif // CAMERAPAINTER_H

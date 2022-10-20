@@ -44,8 +44,7 @@ void CameraPainter::preparePainter(const Object* object,
                                    bool showHandles,
                                    LayerVisibility layerVisibility,
                                    float relativeLayerOpacityThreshold,
-                                   qreal viewScale,
-                                   const QPalette& palette)
+                                   qreal viewScale)
 {
     mObject = object;
     mCurrentLayerIndex = layerIndex;
@@ -57,8 +56,8 @@ void CameraPainter::preparePainter(const Object* object,
     mRelativeLayerOpacityThreshold = relativeLayerOpacityThreshold;
     mViewScale = viewScale;
 
-    mHighlightColor = palette.color(QPalette::Highlight);
-    mHighlightedTextColor = palette.color(QPalette::HighlightedText);
+    mHandleColor = Qt::gray;
+    mHandleTextColor = QColor(0, 0, 0);
 }
 
 void CameraPainter::paint() const
@@ -208,11 +207,11 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     painter.drawPolygon(nonScaledCamPoly);
     painter.drawText(nonScaledCamPoly[0]-QPoint(0, 2), "100%");
 
-    painter.setPen(mHighlightedTextColor);
+    painter.setPen(mHandleTextColor);
     if (hollowHandles) {
         painter.setBrush(Qt::NoBrush);
     } else {
-        painter.setBrush(mHighlightColor);
+        painter.setBrush(mHandleColor);
     }
     int handleW = HANDLE_WIDTH;
     int radius = handleW / 2;
@@ -350,7 +349,7 @@ void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer,
         QPointF p2 = mViewTransform.map(points.at(2));
 
         painter.save();
-        QPen pen (mHighlightColor, 0.5, Qt::PenStyle::DashLine);
+        QPen pen (mHandleColor, 0.5, Qt::PenStyle::DashLine);
         painter.setPen(pen);
         painter.drawLine(p0, p1);
         painter.drawLine(p1, p2);
@@ -370,8 +369,8 @@ void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer,
         // if active path, draw move handle
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing, false);
-        painter.setPen(mHighlightedTextColor);
-        painter.setBrush(mHighlightColor);
+        painter.setPen(mHandleTextColor);
+        painter.setBrush(mHandleColor);
         painter.drawRect(static_cast<int>(pathPoint.x() - HANDLE_WIDTH/2),
                          static_cast<int>(pathPoint.y() - HANDLE_WIDTH/2),
                          HANDLE_WIDTH, HANDLE_WIDTH);
