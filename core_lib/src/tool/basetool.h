@@ -138,14 +138,14 @@ public:
 
     Properties properties;
 
-    QPointF getCurrentPressPixel();
-    QPointF getCurrentPressPoint();
-    QPointF getCurrentPixel();
-    QPointF getCurrentPoint();
-    QPointF getLastPixel();
-    QPointF getLastPoint();
-    QPointF getLastPressPixel();
-    QPointF getLastPressPoint();
+    QPointF getCurrentPressPixel() const;
+    QPointF getCurrentPressPoint() const;
+    QPointF getCurrentPixel() const;
+    QPointF getCurrentPoint() const;
+    QPointF getLastPixel() const;
+    QPointF getLastPoint() const;
+    QPointF getLastPressPixel() const;
+    QPointF getLastPressPoint() const;
 
     bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
@@ -154,7 +154,7 @@ signals:
     bool isActiveChanged(ToolType, bool);
 
 protected:
-    StrokeManager* strokeManager() { return mStrokeManager; }
+    StrokeManager* strokeManager() const { return mStrokeManager; }
     Editor* editor() { return mEditor; }
 
     QHash<ToolPropertyType, bool> mPropertyEnabled;

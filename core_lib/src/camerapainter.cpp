@@ -44,6 +44,7 @@ void CameraPainter::preparePainter(const Object* object,
                                    bool showHandles,
                                    LayerVisibility layerVisibility,
                                    float relativeLayerOpacityThreshold,
+                                   qreal viewScale,
                                    const QPalette& palette)
 {
     mObject = object;
@@ -54,6 +55,7 @@ void CameraPainter::preparePainter(const Object* object,
     mShowHandles = showHandles;
     mLayerVisibility = layerVisibility;
     mRelativeLayerOpacityThreshold = relativeLayerOpacityThreshold;
+    mViewScale = viewScale;
 
     mHighlightColor = palette.color(QPalette::Highlight);
     mHighlightedTextColor = palette.color(QPalette::HighlightedText);
@@ -170,18 +172,6 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     painter.setClipRegion(rg3);
     painter.drawRect(boundingRect);
 
-    // paint top triangle
-    QPolygon cameraViewPoly = camTransform.inverted().map(QPolygon(camRect));
-    QPointF cameraPathPoint = camTransform.inverted().map(camRect.center());
-
-    QPen trianglePen(Qt::black);
-    QLineF topLine(cameraViewPoly.at(0), cameraViewPoly.at(1));
-    QLineF centerLine(cameraPathPoint, topLine.pointAt(0.5));
-    QPointF points[3] = {centerLine.pointAt(1.1), topLine.pointAt(0.55), topLine.pointAt(0.45)};
-    painter.setPen(trianglePen);
-    painter.setBrush(Qt::NoBrush);
-    painter.drawPolygon(points, 3);
-
     painter.restore();
 }
 
@@ -202,6 +192,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     {
         painter.setPen(QColor(0, 0, 0, 255));
     }
+
     QPolygonF camPolygon = mViewTransform.map(camTransform.inverted().map(QPolygon(cameraRect)));
     painter.drawPolygon(camPolygon);
 
@@ -245,18 +236,18 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
                                             handleW, handleW);
     painter.drawRect(bottomLeftCorner);
 
-    QPointF rotatePointR = QLineF(camPolygon.at(1), camPolygon.at(2)).pointAt(0.5);
-    const QRectF rightSideCircle= QRectF(rotatePointR.x() - radius,
-                                         rotatePointR.y() - radius,
-                                         handleW, handleW);
-    painter.setRenderHint(QPainter::Antialiasing);
-    painter.drawEllipse(rightSideCircle);
+    // Paint rotation handle
+    QPointF topCenter = QLineF(camPolygon.at(0), camPolygon.at(1)).center();
 
-    QPointF rotatePointL = QLineF(camPolygon.at(0), camPolygon.at(3)).pointAt(0.5);
-    const QRectF leftSideCircle= QRectF(rotatePointL.x() - radius,
-                                         rotatePointL.y() - radius,
-                                         handleW, handleW);
-    painter.drawEllipse(leftSideCircle);
+    qreal offsetLimiter = (0.8 * mViewScale);
+    QPointF rotationHandle = mViewTransform.map(camTransform.inverted().map(QPoint(0, (-cameraRect.height()*0.5 - (offsetLimiter) * RotationHandleOffset))));
+
+    painter.drawLine(topCenter, QPoint(rotationHandle.x(),
+                                       (rotationHandle.y())));
+
+    painter.drawEllipse(QRectF((rotationHandle.x() - handleW*0.5),
+                               (rotationHandle.y() - handleW*0.5),
+                               handleW, handleW));
 
     painter.restore();
 }

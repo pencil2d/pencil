@@ -319,42 +319,42 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
     }
 }
 
-QPointF BaseTool::getCurrentPressPixel()
+QPointF BaseTool::getCurrentPressPixel() const
 {
     return strokeManager()->getCurrentPressPixel();
 }
 
-QPointF BaseTool::getCurrentPressPoint()
+QPointF BaseTool::getCurrentPressPoint() const
 {
     return mEditor->view()->mapScreenToCanvas(strokeManager()->getCurrentPressPixel());
 }
 
-QPointF BaseTool::getCurrentPixel()
+QPointF BaseTool::getCurrentPixel() const
 {
     return strokeManager()->getCurrentPixel();
 }
 
-QPointF BaseTool::getCurrentPoint()
+QPointF BaseTool::getCurrentPoint() const
 {
     return mEditor->view()->mapScreenToCanvas(getCurrentPixel());
 }
 
-QPointF BaseTool::getLastPixel()
+QPointF BaseTool::getLastPixel() const
 {
     return strokeManager()->getLastPixel();
 }
 
-QPointF BaseTool::getLastPoint()
+QPointF BaseTool::getLastPoint() const
 {
     return mEditor->view()->mapScreenToCanvas(getLastPixel());
 }
 
-QPointF BaseTool::getLastPressPixel()
+QPointF BaseTool::getLastPressPixel() const
 {
     return strokeManager()->getLastPressPixel();
 }
 
-QPointF BaseTool::getLastPressPoint()
+QPointF BaseTool::getLastPressPoint() const
 {
     return mEditor->view()->mapScreenToCanvas(getLastPressPixel());
 }

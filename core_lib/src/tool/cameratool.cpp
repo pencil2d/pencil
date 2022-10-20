@@ -108,8 +108,7 @@ QCursor CameraTool::cursor()
         cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
         break;
     }
-    case CameraMoveType::ROTATIONLEFT:
-    case CameraMoveType::ROTATIONRIGHT:
+    case CameraMoveType::ROTATION:
     {
         cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
         break;
@@ -212,14 +211,18 @@ void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
     Q_ASSERT(editor()->layers()->currentLayer()->type() == Layer::CAMERA);
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
-    QRectF viewRect = layer->getViewAtFrame(mEditor->currentFrame()).inverted().mapRect(layer->getViewRect());
-    qreal angleRad = mCamMoveMode == CameraMoveType::ROTATIONLEFT ? MathUtils::getDifferenceAngle(getCurrentPoint(),viewRect.center()) : MathUtils::getDifferenceAngle(viewRect.center(), getCurrentPoint());
-    qreal angle = qRadiansToDegrees(angleRad);
-    if (keyMod == Qt::ShiftModifier && (mCamMoveMode == CameraMoveType::ROTATIONLEFT || mCamMoveMode == CameraMoveType::ROTATIONRIGHT)) {
-        angle = constrainedRotation(angle, mRotationIncrement);
+    qreal angleDeg = 0;
+    if (mCamMoveMode == CameraMoveType::ROTATION) {
+        QTransform cameraT = layer->getViewAtFrame(mEditor->currentFrame()).inverted();
+        QRectF viewRect = cameraT.mapRect(layer->getViewRect());
+        angleDeg = qRadiansToDegrees(MathUtils::getDifferenceAngle(getCurrentPoint(), viewRect.center())) - mRotatedAngle;
+        if (keyMod == Qt::ShiftModifier) {
+            angleDeg = constrainedRotation(angleDeg, mRotationIncrement);
+        }
+        mPreviousAngle = angleDeg;
     }
 
-    transformView(layer, mCamMoveMode, getCurrentPoint(), mTransformOffset, -angle, mEditor->currentFrame());
+    transformView(layer, mCamMoveMode, getCurrentPoint(), mTransformOffset, -angleDeg, mEditor->currentFrame());
 
     emit mEditor->frameModified(mEditor->currentFrame());
     mTransformOffset = getCurrentPoint();
@@ -245,6 +248,10 @@ void CameraTool::pointerPressEvent(PointerEvent*)
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     if (!layer->keyExists(mEditor->currentFrame())) { return; }
+
+    QTransform cameraT = layer->getViewAtFrame(mEditor->currentFrame()).inverted();
+    QRectF projectedViewRect = cameraT.mapRect(layer->getViewRect());
+    mRotatedAngle = getAngleBetween(getCurrentPoint(), projectedViewRect.center());
 
     mDragPathFrame = mEditor->currentFrame();
     mTransformOffset = getCurrentPoint();
@@ -292,10 +299,18 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
     }
 }
 
+qreal CameraTool::getAngleBetween(QPointF pos1, QPointF pos2) const
+{
+    return qRadiansToDegrees(MathUtils::getDifferenceAngle(pos1, pos2)) - mPreviousAngle;
+}
+
 CameraMoveType CameraTool::getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const
 {
     QTransform curCam = layerCamera->getViewAtFrame(frameNumber);
-    QPolygon camPoly = curCam.inverted().mapToPolygon(layerCamera->getViewRect());
+    QPolygon camPoly =  curCam.inverted().mapToPolygon(layerCamera->getViewRect());
+
+    float offsetLimiter = (0.8 * mEditor->viewScaleInversed());
+    QPointF rotationHandle = curCam.inverted().map(QPoint(0, (-layerCamera->getViewRect().height()*0.5 - (offsetLimiter) * RotationHandleOffset)));
     if (QLineF(point, camPoly.at(0)).length() < tolerance)
     {
         return CameraMoveType::TOPLEFT;
@@ -312,13 +327,9 @@ CameraMoveType CameraTool::getCameraMoveMode(const LayerCamera* layerCamera, int
     {
         return CameraMoveType::BOTTOMLEFT;
     }
-    else if (QLineF(point, QPoint(camPoly.at(1) + (camPoly.at(2) - camPoly.at(1)) / 2)).length() < tolerance)
+    else if (QLineF(point, rotationHandle).length() < tolerance)
     {
-        return CameraMoveType::ROTATIONRIGHT;
-    }
-    else if (QLineF(point, QPoint(camPoly.at(0) + (camPoly.at(3) - camPoly.at(0)) / 2)).length() < tolerance)
-    {
-        return CameraMoveType::ROTATIONLEFT;
+        return CameraMoveType::ROTATION;
     }
     else if (camPoly.containsPoint(point.toPoint(), Qt::FillRule::OddEvenFill))
     {
@@ -384,11 +395,9 @@ void CameraTool::transformView(LayerCamera* layerCamera, CameraMoveType mode, co
         lineOld.setP2(curPoly.at(3));
         curCam->scale(curCam->scaling() * (lineOld.length() / lineNew.length()));
         break;
-    case CameraMoveType::ROTATIONRIGHT:
-    case CameraMoveType::ROTATIONLEFT: {
+    case CameraMoveType::ROTATION:
         curCam->rotate(angle);
         break;
-    }
     default:
         break;
     }

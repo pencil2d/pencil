@@ -118,6 +118,9 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 // Max frames that can be imported and loaded onto the timeline
 const static int MaxFramesBound = 9999;
 
+// Spacer for rotation handle offset
+const static float RotationHandleOffset = 50;
+
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"

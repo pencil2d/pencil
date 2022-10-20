@@ -42,7 +42,7 @@ public:
 
     void setOnionSkinPainterOptions(const OnionSkinPainterOptions& options) { mOnionSkinOptions = options; }
     void setCanvas(QPixmap* canvas);
-    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, bool showHandles, LayerVisibility layerVisibility, float relativeLayerOpacityThreshold, const QPalette& palette);
+    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, bool showHandles, LayerVisibility layerVisibility, float relativeLayerOpacityThreshold, qreal viewScale, const QPalette& palette);
     void resetCache();
 
 private:
@@ -66,6 +66,7 @@ private:
     int mCurrentLayerIndex = 0;
     LayerVisibility mLayerVisibility;
     float mRelativeLayerOpacityThreshold = 0;
+    qreal mViewScale = 0;
 
     bool mIsPlaying = false;
     bool mShowHandles = false;

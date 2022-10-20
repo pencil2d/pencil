@@ -30,8 +30,7 @@ enum class CameraMoveType {
     TOPRIGHT,
     BOTTOMLEFT,
     BOTTOMRIGHT,
-    ROTATIONLEFT,
-    ROTATIONRIGHT,
+    ROTATION,
     CENTER,
     NONE
 };
@@ -71,6 +70,8 @@ private:
     void updateSettings(const SETTING setting);
     int constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const;
 
+    qreal getAngleBetween(QPointF pos1, QPointF pos2) const;
+
     CameraMoveType getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
     CameraMoveType getPathMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
 
@@ -79,6 +80,9 @@ private:
     CameraMoveType mCamPathMoveMode = CameraMoveType::NONE;
     int mDragPathFrame = 1;
     int mRotationIncrement = 0;
+
+    qreal mRotatedAngle = 0;
+    qreal mPreviousAngle = 0;
 
     QCursor cursorCache;
 };
