@@ -86,51 +86,63 @@ void CameraTool::updateSettings(const SETTING setting)
 
 QCursor CameraTool::cursor()
 {
-    // When pointer is in use, we can't change state, so keep the last image.
-    if (mScribbleArea->isPointerInUse()) { return cursorCache; }
-
     QPixmap cursorPixmap = QPixmap(24, 24);
-    cursorPixmap.fill(QColor(255, 255, 255, 0));
+    cursorPixmap.fill(Qt::transparent);
     QPainter cursorPainter(&cursorPixmap);
-    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
 
+    QImage moveTypeImage;
+    QPoint offset = QPoint(6, 6);
     switch(moveMode())
     {
     case CameraMoveType::TOPLEFT:
     case CameraMoveType::BOTTOMRIGHT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
+        moveTypeImage = QImage("://icons/new/arrow-diagonalleft.png");
         break;
     }
     case CameraMoveType::TOPRIGHT:
     case CameraMoveType::BOTTOMLEFT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
+        moveTypeImage = QImage("://icons/new/arrow-diagonalright.png");
         break;
     }
     case CameraMoveType::ROTATION:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-rotate.png"));
+        moveTypeImage = QImage("://icons/new/arrow-rotate.png");
         break;
     }
     case CameraMoveType::PATH:
     case CameraMoveType::CENTER:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
+        moveTypeImage = QImage("://icons/new/arrow-selectmove.png");
         break;
     }
     default:
         return Qt::ArrowCursor;
     }
+
+    QTransform rotT;
+    QPointF center = QPointF(moveTypeImage.size().width()*0.5, moveTypeImage.size().height()*0.5);
+
+    // rotate around center
+    rotT.translate(center.x() + offset.x(), center.y() + offset.y());
+    rotT.rotate(mCurrentAngle);
+    rotT.translate(-center.x() - offset.x(), -center.y() - offset.y());
+    cursorPainter.setTransform(rotT);
+    cursorPainter.drawImage(offset, moveTypeImage);
     cursorPainter.end();
 
-    cursorCache = QCursor(cursorPixmap);
-
-    return cursorCache;
+    return QCursor(cursorPixmap);
 }
 
 CameraMoveType CameraTool::moveMode()
 {
+
+    if (mScribbleArea->isPointerInUse()) {
+        // Pointer in use, return previous used mode
+        return mCamMoveMode;
+    }
+
     Layer* layer = mEditor->layers()->currentLayer();
     CameraMoveType mode = CameraMoveType::NONE;
     qreal selectionTolerance = mEditor->select()->selectionTolerance();
@@ -215,16 +227,16 @@ void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
     if (mCamMoveMode == CameraMoveType::ROTATION) {
         QTransform cameraT = layer->getViewAtFrame(mEditor->currentFrame()).inverted();
         QRectF viewRect = cameraT.mapRect(layer->getViewRect());
-        angleDeg = qRadiansToDegrees(MathUtils::getDifferenceAngle(getCurrentPoint(), viewRect.center())) - mRotatedAngle;
+        angleDeg = getAngleBetween(getCurrentPoint(), viewRect.center()) - mStartAngle;
         if (keyMod == Qt::ShiftModifier) {
             angleDeg = constrainedRotation(angleDeg, mRotationIncrement);
         }
-        mPreviousAngle = angleDeg;
+        mCurrentAngle = angleDeg;
     }
 
     transformView(layer, mCamMoveMode, getCurrentPoint(), mTransformOffset, -angleDeg, mEditor->currentFrame());
 
-    emit mEditor->frameModified(mEditor->currentFrame());
+    mEditor->updateCurrentFrame();
     mTransformOffset = getCurrentPoint();
 }
 
@@ -251,7 +263,7 @@ void CameraTool::pointerPressEvent(PointerEvent*)
 
     QTransform cameraT = layer->getViewAtFrame(mEditor->currentFrame()).inverted();
     QRectF projectedViewRect = cameraT.mapRect(layer->getViewRect());
-    mRotatedAngle = getAngleBetween(getCurrentPoint(), projectedViewRect.center());
+    mStartAngle = getAngleBetween(getCurrentPoint(), projectedViewRect.center()) - mCurrentAngle;
 
     mDragPathFrame = mEditor->currentFrame();
     mTransformOffset = getCurrentPoint();
@@ -272,12 +284,7 @@ void CameraTool::pointerMoveEvent(PointerEvent* event)
             transformCameraPath();
         }
     }
-    else
-    {
-        // the user is moving the mouse without pressing it
-        // update cursor to reflect selection corner interaction
-        mScribbleArea->updateToolCursor();
-    }
+    mScribbleArea->updateToolCursor();
     mEditor->view()->forceUpdateViewTransform();
     mEditor->updateCurrentFrame();
 }
@@ -301,7 +308,7 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
 
 qreal CameraTool::getAngleBetween(QPointF pos1, QPointF pos2) const
 {
-    return qRadiansToDegrees(MathUtils::getDifferenceAngle(pos1, pos2)) - mPreviousAngle;
+    return qRadiansToDegrees(MathUtils::getDifferenceAngle(pos1, pos2));
 }
 
 CameraMoveType CameraTool::getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const

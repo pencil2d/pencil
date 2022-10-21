@@ -81,10 +81,8 @@ private:
     int mDragPathFrame = 1;
     int mRotationIncrement = 0;
 
-    qreal mRotatedAngle = 0;
-    qreal mPreviousAngle = 0;
-
-    QCursor cursorCache;
+    qreal mStartAngle = 0;
+    qreal mCurrentAngle = 0;
 };
 
 #endif // CAMERATOOL_H
