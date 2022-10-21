@@ -219,7 +219,7 @@ void CameraTool::resetTransform(CameraFieldOption option)
     }
 
     layer->resetCameraAtFrame(option, mEditor->currentFrame());
-    emit mEditor->frameModified(mEditor->currentFrame());
+    mEditor->frameModified(mEditor->currentFrame());
 }
 
 void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
@@ -249,7 +249,7 @@ void CameraTool::transformCameraPath()
     Q_ASSERT(editor()->layers()->currentLayer()->type() == Layer::CAMERA);
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     layer->updatePathControlPointAtFrame(getCurrentPoint(), mDragPathFrame);
-    emit mEditor->frameModified(mEditor->currentFrame());
+    mEditor->updateCurrentFrame();
 }
 
 int CameraTool::constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const
@@ -298,16 +298,16 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
-    if (layer->keyExists(mEditor->currentFrame())) {
+    int frame = mEditor->currentFrame();
+    if (layer->keyExists(frame)) {
         transformCamera(event->modifiers());
         mEditor->view()->forceUpdateViewTransform();
-        mEditor->updateCurrentFrame();
     } else if (mCamPathMoveMode == CameraMoveType::CENTER) {
         transformCameraPath();
-        layer->setPathMovedAtFrame(mEditor->currentFrame(), true);
+        layer->setPathMovedAtFrame(frame, true);
         mEditor->view()->forceUpdateViewTransform();
-        mEditor->updateCurrentFrame();
     }
+    mEditor->frameModified(frame);
 }
 
 qreal CameraTool::getAngleBetween(QPointF pos1, QPointF pos2) const
