@@ -237,8 +237,9 @@ TEST_CASE("Layer::removeKeyFrame()")
         Layer* layer = obj->addNewBitmapLayer();
 
         // there is always a key at position 1 at beginning
-        CHECK(layer->removeKeyFrame(1));
-        REQUIRE(layer->getMaxKeyFramePosition() == 0);
+        // and we prevent deletion of it unless the layer is SOUND!
+        CHECK(layer->removeKeyFrame(1) == false);
+        REQUIRE(layer->getMaxKeyFramePosition() == 1);
 
         for (int i = 2; i <= 20; ++i)
         {
