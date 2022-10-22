@@ -27,7 +27,7 @@ class CameraContextMenu : public QObject
 {
     Q_OBJECT
 public:
-    CameraContextMenu(int frameNumber, QPoint coordinate, Layer* layer);
+    CameraContextMenu(int frameNumber, const QPoint& coordinate, Layer* layer);
     void exec();
 
 signals:

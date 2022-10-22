@@ -303,9 +303,7 @@ bool Object::swapLayers(int i, int j)
 
     if (i != j)
     {
-        Layer* tmp = mLayers.at(i);
-        mLayers[i] = mLayers.at(j);
-        mLayers[j] = tmp;
+        mLayers.swap(i, j);
     }
     return true;
 }

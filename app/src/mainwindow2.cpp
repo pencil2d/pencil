@@ -1444,7 +1444,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer);
     connect(pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer);
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
-    connect(pTimeline, &TimeLine::deleteCurrentLayer, mCommands, &ActionCommands::deleteCurrentLayer);
+    connect(pTimeline, &TimeLine::deleteCurrentLayerClick, mCommands, &ActionCommands::deleteCurrentLayer);
 
     // Clipboard state handling
     connect(QApplication::clipboard(), &QClipboard::dataChanged, mEditor, &Editor::clipboardChanged);

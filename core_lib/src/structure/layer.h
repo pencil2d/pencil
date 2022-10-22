@@ -168,10 +168,6 @@ public:
     /** Clear the list of dirty keyframes */
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
-signals:
-    void keyframeDeleted(int frame);
-    void keyframeAdded(int frame);
-
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;

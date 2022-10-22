@@ -46,23 +46,12 @@ CameraTool::~CameraTool()
 void CameraTool::loadSettings()
 {
     mPropertyEnabled[CAMERAPATH] = true;
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraTool::onDidChangeLayer);
-    connect(mEditor, &Editor::objectLoaded, this, &CameraTool::onDidLoadObject);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraTool::updateProperties);
+    connect(mEditor, &Editor::objectLoaded, this, &CameraTool::updateProperties);
 
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &CameraTool::updateSettings);
-}
-
-void CameraTool::onDidLoadObject()
-{
-    updateProperties();
-}
-
-void CameraTool::onDidChangeLayer(int index)
-{
-    Q_UNUSED(index)
-    updateProperties();
 }
 
 void CameraTool::updateProperties()
@@ -225,7 +214,7 @@ void CameraTool::resetTransform(CameraFieldOption option)
     }
 
     layer->resetCameraAtFrame(option, mEditor->currentFrame());
-    mEditor->frameModified(mEditor->currentFrame());
+    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
@@ -313,10 +302,10 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
         layer->setPathMovedAtFrame(frame, true);
         mEditor->view()->forceUpdateViewTransform();
     }
-    mEditor->frameModified(frame);
+    emit mEditor->frameModified(frame);
 }
 
-qreal CameraTool::getAngleBetween(QPointF pos1, QPointF pos2) const
+qreal CameraTool::getAngleBetween(const QPointF& pos1, const QPointF& pos2) const
 {
     return qRadiansToDegrees(MathUtils::getDifferenceAngle(pos1, pos2));
 }

@@ -49,8 +49,6 @@ public:
     ToolType type() override { return ToolType::CAMERA; }
 
     void loadSettings() override;
-    void onDidChangeLayer(int index);
-    void onDidLoadObject();
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
@@ -72,7 +70,7 @@ private:
 
     void updateProperties();
 
-    qreal getAngleBetween(QPointF pos1, QPointF pos2) const;
+    qreal getAngleBetween(const QPointF& pos1, const QPointF& pos2) const;
 
     CameraMoveType getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;
     CameraMoveType getPathMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;

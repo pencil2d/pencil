@@ -22,11 +22,10 @@ void OverlayPainter::initializePainter(QPainter& painter)
     painter.setBrush(Qt::NoBrush);
 }
 
-void OverlayPainter::preparePainter(const Layer* cameraLayer, const QPalette& palette)
+void OverlayPainter::preparePainter(const LayerCamera* cameraLayer, const QPalette& palette)
 {
     mPalette = palette;
-    Q_ASSERT(!cameraLayer || cameraLayer->type() == Layer::CAMERA);
-    mCameraLayer = static_cast<const LayerCamera*>(cameraLayer);
+    mCameraLayer = cameraLayer;
 }
 
 void OverlayPainter::setViewTransform(const QTransform view)

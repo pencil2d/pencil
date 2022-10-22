@@ -105,8 +105,6 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
 
 void CameraPainter::paintVisuals(QPainter& painter) const
 {
-    auto cameraLayers = mObject->getLayersByType<LayerCamera>();
-
     LayerCamera* cameraLayerBelow = static_cast<LayerCamera*>(mObject->getLayerBelow(mCurrentLayerIndex, Layer::CAMERA));
 
     if (cameraLayerBelow == nullptr) { return; }

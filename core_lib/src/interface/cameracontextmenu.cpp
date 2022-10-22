@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "camera.h"
 
-CameraContextMenu::CameraContextMenu(int frameNumber, QPoint coordinate, Layer* layer) :
+CameraContextMenu::CameraContextMenu(int frameNumber, const QPoint& coordinate, Layer* layer) :
     mFrameNumber(frameNumber), mMouseCoord(coordinate), mCurrentLayer(layer)
 
 {
@@ -45,7 +45,7 @@ void CameraContextMenu::exec()
         emit aboutToClose();
     });
 
-    QMenu* cameraInterpolationMenu = cameraMenu->addMenu(tr("Easing: frame %1 to %2").arg( QString::number(frameNumber), QString::number(nextFrame)));
+    QMenu* cameraInterpolationMenu = cameraMenu->addMenu(tr("Easing: frame %1 to %2").arg(frameNumber).arg(nextFrame));
 
     cameraInterpolationMenu->setEnabled(curLayer->getMaxKeyFramePosition() != frameNumber);
 
@@ -121,10 +121,10 @@ void CameraContextMenu::exec()
     cameraFieldMenu->addAction(tr("Reset scale"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_SCALING, frameNumber); });
     cameraFieldMenu->addAction(tr("Reset rotation"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_ROTATION, frameNumber); });
     cameraFieldMenu->addSeparator();
-    QAction* alignHAction = cameraFieldMenu->addAction(tr("Align horizontally to frame: %1").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_HORIZONTAL, frameNumber); });
-    QAction* alignVAction = cameraFieldMenu->addAction(tr("Align vertically to frame: %1").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
+    QAction* alignHAction = cameraFieldMenu->addAction(tr("Align horizontally to frame %1").arg(nextFrame), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_HORIZONTAL, frameNumber); });
+    QAction* alignVAction = cameraFieldMenu->addAction(tr("Align vertically to frame %1").arg(nextFrame), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
     cameraFieldMenu->addSeparator();
-    QAction* holdAction = cameraFieldMenu->addAction(tr("Hold to keyframe %1").arg(QString::number(nextFrame)), [=] { layer->resetCameraAtFrame(CameraFieldOption::HOLD_FRAME, frameNumber); });
+    QAction* holdAction = cameraFieldMenu->addAction(tr("Hold to keyframe %1").arg(nextFrame), [=] { layer->resetCameraAtFrame(CameraFieldOption::HOLD_FRAME, frameNumber); });
     if (frameNumber == curLayer->getMaxKeyFramePosition()) {
         holdAction->setDisabled(true);
         alignHAction->setDisabled(true);

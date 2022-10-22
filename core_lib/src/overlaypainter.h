@@ -7,7 +7,6 @@
 
 class LayerCamera;
 class Camera;
-class Layer;
 
 struct OverlayPainterOptions
 {
@@ -46,7 +45,7 @@ public:
     void setViewTransform(const QTransform view);
     void setOptions(const OverlayPainterOptions& p) { mOptions = p; }
 
-    void preparePainter(const Layer* cameraLayer, const QPalette& palette);
+    void preparePainter(const LayerCamera* cameraLayer, const QPalette& palette);
 
     void paint(QPainter& painter);
 private:

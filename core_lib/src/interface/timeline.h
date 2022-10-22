@@ -60,7 +60,7 @@ signals:
     void selectionChanged();
     void modification();
 
-    void deleteCurrentLayer();
+    void deleteCurrentLayerClick();
 
     void insertKeyClick();
     void removeKeyClick();
@@ -85,9 +85,6 @@ protected:
     void wheelEvent( QWheelEvent* ) override;
 
 private:
-    void onDeleteCurrentLayer();
-
-
     QScrollBar* mHScrollbar = nullptr;
     QScrollBar* mVScrollbar = nullptr;
     TimeLineCells* mTracks = nullptr;

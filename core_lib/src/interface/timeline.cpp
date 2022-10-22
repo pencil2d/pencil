@@ -222,7 +222,7 @@ void TimeLine::initUI()
     connect(newVectorLayerAct, &QAction::triggered, this, &TimeLine::newVectorLayer);
     connect(newSoundLayerAct, &QAction::triggered, this, &TimeLine::newSoundLayer);
     connect(newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer);
-    connect(mLayerDeleteButton, &QPushButton::clicked, this, &TimeLine::onDeleteCurrentLayer);
+    connect(mLayerDeleteButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayerClick);
 
     connect(mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY);
     connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
@@ -291,11 +291,6 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     {
         mVScrollbar->event(event);
     }
-}
-
-void TimeLine::onDeleteCurrentLayer()
-{
-    emit deleteCurrentLayer();
 }
 
 void TimeLine::updateFrame(int frameNumber)
