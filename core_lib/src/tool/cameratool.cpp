@@ -308,7 +308,7 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
     if (layer->keyExists(frame)) {
         transformCamera(event->modifiers());
         mEditor->view()->forceUpdateViewTransform();
-    } else if (mCamPathMoveMode == CameraMoveType::CENTER) {
+    } else if (mCamPathMoveMode == CameraMoveType::PATH) {
         transformCameraPath();
         layer->setPathMovedAtFrame(frame, true);
         mEditor->view()->forceUpdateViewTransform();
