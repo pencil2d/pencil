@@ -56,12 +56,18 @@ void CameraTool::loadSettings()
 
 void CameraTool::onDidLoadObject()
 {
-    onDidChangeLayer(mEditor->currentLayerIndex());
+    updateProperties();
 }
 
 void CameraTool::onDidChangeLayer(int index)
 {
-    Layer* layer = mEditor->layers()->getLayer(index);
+    Q_UNUSED(index)
+    updateProperties();
+}
+
+void CameraTool::updateProperties()
+{
+    Layer* layer = mEditor->layers()->getLayer(mEditor->currentLayerIndex());
     if (!layer || layer->type() != Layer::CAMERA) { return; }
 
     LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
@@ -197,7 +203,7 @@ void CameraTool::setPathDotColorType(const DotColorType pathDotColor)
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
-    layer->setDotColorType(pathDotColor);
+    layer->updateDotColor(pathDotColor);
 }
 
 void CameraTool::resetCameraPath()

@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "camera.h"
 
 class Editor;
+class CameraTool;
 
 namespace Ui {
 class CameraOptionsWidget;
@@ -44,6 +45,8 @@ public:
 private:
     Ui::CameraOptionsWidget *ui;
     Editor* mEditor = nullptr;
+
+    CameraTool* mCameraTool = nullptr;
 };
 
 #endif // CAMERAOPTIONSWIDGET_H

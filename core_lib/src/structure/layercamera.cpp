@@ -373,7 +373,7 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
     camera->updateViewTransform();
 }
 
-void LayerCamera::setDotColorType(DotColorType color)
+void LayerCamera::updateDotColor(DotColorType color)
 {
     switch (color)
     {
@@ -537,7 +537,7 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
     int width = element.attribute("width").toInt();
     int height = element.attribute("height").toInt();
     mShowPath = element.attribute("showPath").toInt();
-    mDotColorType = static_cast<DotColorType>(element.attribute("pathColorType").toInt());
+    updateDotColor(static_cast<DotColorType>(element.attribute("pathColorType").toInt()));
     viewRect = QRect(-width / 2, -height / 2, width, height);
 
     QDomNode imageTag = element.firstChild();

@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 #include "layermanager.h"
 
+#include "cameratool.h"
+
 CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::CameraOptionsWidget), mEditor(editor)
@@ -48,6 +50,9 @@ CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
     connect(toolMan, &ToolManager::toolPropertyChanged, this, &CameraOptionsWidget::onToolPropertyChanged);
 
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraOptionsWidget::updateUI);
+    connect(mEditor->tools(), &ToolManager::toolChanged, this, &CameraOptionsWidget::updateUI);
+
+    mCameraTool = static_cast<CameraTool*>(mEditor->tools()->getTool(CAMERA));
 }
 
 CameraOptionsWidget::~CameraOptionsWidget()
@@ -57,10 +62,10 @@ CameraOptionsWidget::~CameraOptionsWidget()
 
 void CameraOptionsWidget::updateUI()
 {
-    BaseTool* currentTool = mEditor->tools()->currentTool();
-    Q_ASSERT(currentTool);
 
-    Properties p = currentTool->properties;
+    Q_ASSERT(mCameraTool->type() == CAMERA);
+
+    Properties p = mCameraTool->properties;
 
     setShowCameraPath(p.cameraShowPath);
     setPathDotColorType(p.cameraPathDotColorType);
@@ -68,7 +73,7 @@ void CameraOptionsWidget::updateUI()
 
 void CameraOptionsWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType)
 {
-    const Properties& p = mEditor->tools()->currentTool()->properties;
+    const Properties& p = mCameraTool->properties;
 
     switch (ePropertyType)
     {

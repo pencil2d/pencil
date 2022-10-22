@@ -276,26 +276,29 @@ void ToolManager::setShowSelectionInfo(bool b)
 
 void ToolManager::setShowCameraPath(bool enabled)
 {
-    currentTool()->setShowCameraPath(enabled);
-    emit toolPropertyChanged(currentTool()->type(), CAMERAPATH);
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->setShowCameraPath(enabled);
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
 }
 
 void ToolManager::resetCameraPath()
 {
-    currentTool()->resetCameraPath();
-    emit toolPropertyChanged(currentTool()->type(), CAMERAPATH);
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->resetCameraPath();
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
 }
 
 void ToolManager::resetCameraTransform(CameraFieldOption option)
 {
-    CameraTool* cameraTool = static_cast<CameraTool*>(currentTool());
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
     cameraTool->resetTransform(option);
 }
 
 void ToolManager::setCameraPathDotColor(int dotColorNum)
 {
-    currentTool()->setPathDotColorType(static_cast<DotColorType>(dotColorNum));
-    emit toolPropertyChanged(currentTool()->type(), CAMERAPATH);
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->setPathDotColorType(static_cast<DotColorType>(dotColorNum));
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
 }
 
 // Switches on/off two actions

@@ -70,6 +70,8 @@ private:
     void updateSettings(const SETTING setting);
     int constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const;
 
+    void updateProperties();
+
     qreal getAngleBetween(QPointF pos1, QPointF pos2) const;
 
     CameraMoveType getCameraMoveMode(const LayerCamera* layerCamera, int frameNumber, const QPointF& point, qreal tolerance) const;

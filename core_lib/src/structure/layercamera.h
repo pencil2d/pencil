@@ -52,7 +52,7 @@ public:
     bool getShowCameraPath() const { return mShowPath; }
     void setCameraEasingAtFrame(CameraEasingType type, int frame) const;
     void resetCameraAtFrame(CameraFieldOption type, int frame) const;
-    void setDotColorType(DotColorType color);
+    void updateDotColor(DotColorType color);
     QColor getDotColor() const { return mDotColor; }
     DotColorType getDotColorType() const { return mDotColorType; }
 
