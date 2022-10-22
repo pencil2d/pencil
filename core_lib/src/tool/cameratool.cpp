@@ -163,7 +163,7 @@ CameraMoveType CameraTool::moveMode()
                            currentPoint,
                            selectionTolerance);
         mCamMoveMode = mode;
-    } else {
+    } else if (properties.cameraShowPath) {
         int keyPos = cam->firstKeyFramePosition();
         while (keyPos <= cam->getMaxKeyFramePosition())
         {
