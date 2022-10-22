@@ -209,7 +209,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
 
     painter.setPen(mHandleTextColor);
     if (hollowHandles) {
-        painter.setBrush(Qt::NoBrush);
+        painter.setBrush(Qt::transparent);
     } else {
         painter.setBrush(mHandleColor);
     }
@@ -243,6 +243,11 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
 
     painter.drawLine(topCenter, QPoint(rotationHandle.x(),
                                        (rotationHandle.y())));
+
+    // Make sure the line is not painted inside the circle, while hollow
+    if (hollowHandles) {
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOut);
+    }
 
     painter.drawEllipse(QRectF((rotationHandle.x() - handleW*0.5),
                                (rotationHandle.y() - handleW*0.5),
@@ -284,7 +289,7 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
             int distance = nextFrame - frame;
             // It makes no sense to paint the path when there's no interpolation.
             if (distance >= 2) {
-                paintPath(painter, cameraLayer, frame, cameraPathPoint);
+                paintPath(painter, cameraLayer, frame, cameraPathPoint, cameraLayer->keyExists(mFrameIndex));
             }
 
             QColor color = cameraDotColor;
@@ -335,7 +340,7 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
     });
 }
 
-void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint) const
+void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const
 {
 
     // if active path, draw bezier help lines for active path
@@ -370,7 +375,12 @@ void CameraPainter::paintPath(QPainter& painter, const LayerCamera* cameraLayer,
         painter.save();
         painter.setRenderHint(QPainter::Antialiasing, false);
         painter.setPen(mHandleTextColor);
-        painter.setBrush(mHandleColor);
+
+        if (hollowHandle) {
+            painter.setBrush(Qt::NoBrush);
+        } else {
+            painter.setBrush(mHandleColor);
+        }
         painter.drawRect(static_cast<int>(pathPoint.x() - HANDLE_WIDTH/2),
                          static_cast<int>(pathPoint.y() - HANDLE_WIDTH/2),
                          HANDLE_WIDTH, HANDLE_WIDTH);

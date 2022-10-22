@@ -51,7 +51,7 @@ private:
     void paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
     void paintInterpolations(QPainter& painter, const LayerCamera* cameraLayer) const;
     void paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const QPointF translation, const qreal scale, const qreal rotation, bool hollowHandles) const;
-    void paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint) const;
+    void paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const;
 
     const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;
