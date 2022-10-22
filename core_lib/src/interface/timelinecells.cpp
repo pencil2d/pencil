@@ -199,6 +199,11 @@ void TimeLineCells::showCameraMenu(QPoint pos)
         mHighlightFrameEnabled = false;
         mHighlightedFrame = -1;
         update();
+
+        KeyFrame* key = curLayer->getKeyFrameAt(frameNumber);
+        if (key->isModified()) {
+            mEditor->frameModified(frameNumber);
+        }
     });
 
     // Update needs to happen before executing menu, otherwise paint event might be postponed
