@@ -66,7 +66,7 @@ public:
     void setPathMovedAtFrame(int frame, bool moved) const;
 
     void updateControlPointOnDeleteFrame(int frame) const;
-    void updateControlPointsOnAddFrame(int frame) const;
+    void approximateControlPointFor(int frame) const;
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;

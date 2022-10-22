@@ -45,7 +45,7 @@ bool LayerCamera::addKeyFrame(int position, KeyFrame *pKeyFrame)
 {
     bool keyAdded = Layer::addKeyFrame(position, pKeyFrame);
     if (keyAdded) {
-        updateControlPointsOnAddFrame(position);
+        approximateControlPointFor(position);
     }
     return keyAdded;
 }
@@ -251,17 +251,17 @@ void LayerCamera::updateControlPointOnDeleteFrame(int frame) const
         return;
     }
 
-    centerPathControlPointAtFrame(frameToUpdate);
+    approximateControlPointFor(frameToUpdate);
     setPathMovedAtFrame(frameToUpdate, false);
 }
 
-void LayerCamera::updateControlPointsOnAddFrame(int frame) const
+void LayerCamera::approximateControlPointFor(int frame) const
 {
     int next = getNextKeyFramePosition(frame);
     int prev = getPreviousKeyFramePosition(frame);
 
     // if inbetween frames
-    if (prev < frame)
+    if (frame > prev && (frame > 1) && frame < next)
     {
         Camera* camPrev = getCameraAtFrame(prev);
         Camera* camFrame = getCameraAtFrame(frame);
