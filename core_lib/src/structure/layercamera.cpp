@@ -348,6 +348,9 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
         break;
     }
     case CameraFieldOption::HOLD_FRAME: {
+
+        if (getMaxKeyFramePosition() == camera->pos()) { return; }
+
         QPointF translation = camera->translation();
         qreal rotation = camera->rotation();
         qreal scaling = camera->scaling();
@@ -358,10 +361,6 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
         nextCamera->scale(scaling);
         nextCamera->rotate(rotation);
         nextCamera->setPathControlPoint(-translation);
-        // is there a camera after the hold end-frame?
-        int thirdFrame = getNextKeyFramePosition(frameToModify);
-        if (thirdFrame > frameToModify)
-            nextCamera->setPathControlPoint(getNewPathControlPointAtFrame(frameToModify));
         nextCamera->setPathControlPointMoved(false);
         break;
     }
