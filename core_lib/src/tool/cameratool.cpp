@@ -363,7 +363,8 @@ CameraMoveType CameraTool::getPathMoveMode(const LayerCamera* layerCamera, int f
         return CameraMoveType::NONE;
 
     Camera* camera = layerCamera->getCameraAtFrame(prev);
-    Q_ASSERT(camera);
+
+    if (camera == nullptr) { return CameraMoveType::NONE; }
 
     if (QLineF(camera->getPathControlPoint(), point).length() < tolerance) {
         return CameraMoveType::PATH;

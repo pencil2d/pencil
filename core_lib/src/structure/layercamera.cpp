@@ -244,6 +244,8 @@ QPointF LayerCamera::getBezierPoint(const QPointF& first, const QPointF& last, c
 
 void LayerCamera::updateControlPointOnDeleteFrame(int frame) const
 {
+    Q_ASSERT(keyFrameCount() > 0);
+
     int frameToUpdate = getPreviousKeyFramePosition(frame);
     if (frameToUpdate > frame) {
         return;
@@ -418,7 +420,15 @@ bool LayerCamera::hasSameTranslation(int frame1, int frame2) const
 {
     Camera* camera1 = getCameraAtFrame(frame1);
     Camera* camera2 = getCameraAtFrame(frame2);
-    Q_ASSERT(camera1 && camera2);
+
+    if (camera1 == nullptr)
+    {
+        return false;
+    }
+    else if (camera2 == nullptr)
+    {
+        return false;
+    }
 
     return camera1->translation() == camera2->translation();
 }
@@ -463,6 +473,14 @@ QPointF LayerCamera::getNewPathControlPointAtFrame(int frame) const
     int nextFrame = getNextKeyFramePosition(frame);
     Camera* cam1 = getCameraAtFrame(frame);
     Camera* cam2 = getCameraAtFrame(nextFrame);
+
+    if (cam1 && cam2 == nullptr) {
+        return -cam1->translation();
+    } else if (cam2 && cam1 == nullptr) {
+        return -cam2->translation();
+    } else if (cam1 == nullptr && cam2 == nullptr) {
+        return QPointF();
+    }
     return QLineF(-cam1->translation(), -cam2->translation()).pointAt(0.5);
 }
 
