@@ -44,14 +44,18 @@ LayerCamera::~LayerCamera()
 bool LayerCamera::addKeyFrame(int position, KeyFrame *pKeyFrame)
 {
     bool keyAdded = Layer::addKeyFrame(position, pKeyFrame);
-    updateControlPointsOnAddFrame(position);
+    if (keyAdded) {
+        updateControlPointsOnAddFrame(position);
+    }
     return keyAdded;
 }
 
 bool LayerCamera::removeKeyFrame(int position)
 {
     bool keyRemoved = Layer::removeKeyFrame(position);
-    updateControlPointOnDeleteFrame(position);
+    if (keyRemoved) {
+        updateControlPointOnDeleteFrame(position);
+    }
     return keyRemoved;
 }
 
