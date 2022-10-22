@@ -96,7 +96,7 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
         return camera1->getView();
     }
 
-    if (camera1 == camera2)
+    if (camera1->compare(*camera2))
     {
         return camera1->getView();
     }
@@ -151,7 +151,7 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
         return cam->assign(*camera1);
     }
 
-    if (camera1 == camera2)
+    if (camera1->compare(*camera2))
     {
         return cam->assign(*camera1);
     }

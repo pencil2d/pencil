@@ -158,12 +158,9 @@ void Camera::setPathControlPointMoved(bool moved)
     modification();
 }
 
-bool Camera::operator==(const Camera& rhs) const
+bool Camera::compare(const Camera& rhs) const
 {
-    bool b = (mTranslate == rhs.mTranslate)
+    return ((mTranslate == rhs.mTranslate)
         && qFuzzyCompare(mRotate, rhs.mRotate)
-        && qFuzzyCompare(mScale, rhs.mScale);
-
-    return b;
+        && qFuzzyCompare(mScale, rhs.mScale));
 }
-

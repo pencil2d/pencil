@@ -47,7 +47,7 @@ public:
     void scale(qreal scaleValue);
     qreal scaling() const { return mScale; }
 
-    bool operator==(const Camera& rhs) const;
+    bool compare(const Camera& rhs) const;
 
     void setEasingType(CameraEasingType type);
     CameraEasingType getEasingType() const { return mEasingType; }
