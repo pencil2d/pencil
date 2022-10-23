@@ -317,13 +317,16 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
             QPolygon cameraPoly = mViewTransform.map(cameraLayer->getViewAtFrame(onionSkinNumber).inverted().map(cameraViewPoly));
             if (state == OnionSkinPaintState::PREV) {
 
-                // TODO: should not be fixed colors.. we have preferences for this!
-                onionSkinPen.setColor(Qt::red);
+                if (mOnionSkinOptions.colorizePrevFrames) {
+                    onionSkinPen.setColor(Qt::red);
+                }
 
                 painter.setPen(onionSkinPen);
                 painter.drawPolygon(cameraPoly);
             } else if (state == OnionSkinPaintState::NEXT) {
-                onionSkinPen.setColor(Qt::blue);
+                if (mOnionSkinOptions.colorizeNextFrames) {
+                    onionSkinPen.setColor(Qt::blue);
+                }
 
                 painter.setPen(onionSkinPen);
                 painter.drawPolygon(cameraPoly);
