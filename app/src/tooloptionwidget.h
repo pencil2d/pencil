@@ -34,6 +34,7 @@ class QGroupBox;
 class Editor;
 class BaseTool;
 class BucketOptionsWidget;
+class CameraOptionsWidget;
 
 
 class ToolOptionWidget : public BaseDockWidget
@@ -51,7 +52,6 @@ public:
 public slots:
     void onToolPropertyChanged(ToolType, ToolPropertyType);
     void onToolChanged(ToolType);
-    void setVisibility(BaseTool*);
 
 private:
     void setPenWidth(qreal);
@@ -68,12 +68,14 @@ private:
     void setShowSelectionInfo(bool);
 
     void disableAllOptions();
+    void setVisibility(BaseTool*);
     void createUI();
 
 private:
     Ui::ToolOptions* ui = nullptr;
 
     BucketOptionsWidget* mBucketOptionsWidget = nullptr;
+    CameraOptionsWidget* mCameraOptionsWidget = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

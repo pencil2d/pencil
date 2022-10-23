@@ -34,6 +34,7 @@ public:
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;
+    QCursor cursor(MoveMode mode) const;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;

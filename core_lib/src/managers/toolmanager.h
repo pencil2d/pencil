@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QHash>
 #include "basetool.h"
 #include "basemanager.h"
+#include "camerafieldoption.h"
 
 class ScribbleArea;
 
@@ -81,6 +82,10 @@ public slots:
     void setBucketFillExpand(int);
     void setUseFillContour(bool);
     void setShowSelectionInfo(bool b);
+    void setShowCameraPath(bool);
+    void resetCameraPath();
+    void setCameraPathDotColor(int);
+    void resetCameraTransform(CameraFieldOption option);
 
 private:
     void setTemporaryTool(ToolType eToolType);

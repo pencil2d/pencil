@@ -19,13 +19,12 @@ GNU General Public License for more details.
 
 enum class CameraFieldOption {
     RESET_FIELD,
-    RESET_TRANSITION,
+    RESET_TRANSLATION,
     RESET_SCALING,
     RESET_ROTATION,
-    RESET_HORIZONTAL,
-    RESET_VERTICAL,
-    HOLD_FRAME,
-    SHOW_CAMERA_PATH
+    ALIGN_HORIZONTAL,
+    ALIGN_VERTICAL,
+    HOLD_FRAME
 };
 
 #endif // CAMERAFIELDOPTION_H

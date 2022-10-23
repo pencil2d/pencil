@@ -696,13 +696,6 @@ void ActionCommands::reverseSelectedFrames()
 void ActionCommands::removeKey()
 {
     mEditor->removeKey();
-
-    // Add a new keyframe at the beginning if there are none, unless it is a sound layer which can't have empty keyframes but can be an empty layer
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->keyFrameCount() == 0 && layer->type() != Layer::SOUND)
-    {
-        layer->addNewKeyFrameAt(1);
-    }
 }
 
 void ActionCommands::duplicateLayer()
@@ -850,6 +843,10 @@ Status ActionCommands::deleteCurrentLayer()
 {
     LayerManager* layerMgr = mEditor->layers();
     QString strLayerName = layerMgr->currentLayer()->name();
+
+    if (!layerMgr->canDeleteLayer(mEditor->currentLayerIndex())) {
+        return Status::CANCELED;
+    }
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),

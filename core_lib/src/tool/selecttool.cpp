@@ -43,7 +43,39 @@ void SelectTool::loadSettings()
 QCursor SelectTool::cursor()
 {
     MoveMode mode = mEditor->select()->getMoveMode();
-    return this->selectMoveCursor(mode, type());
+
+    QPixmap cursorPixmap = QPixmap(24, 24);
+
+    cursorPixmap.fill(QColor(255, 255, 255, 0));
+    QPainter cursorPainter(&cursorPixmap);
+    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+    switch(mode)
+    {
+    case MoveMode::TOPLEFT:
+    case MoveMode::BOTTOMRIGHT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-left.svg"));
+        break;
+    }
+    case MoveMode::TOPRIGHT:
+    case MoveMode::BOTTOMLEFT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-right.svg"));
+        break;
+    }
+    case MoveMode::MIDDLE:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
+        break;
+    }
+    default:
+        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
+        break;
+    }
+    cursorPainter.end();
+
+    return QCursor(cursorPixmap);
 }
 
 void SelectTool::resetToDefault()

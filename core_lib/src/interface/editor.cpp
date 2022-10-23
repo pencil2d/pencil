@@ -999,8 +999,9 @@ bool Editor::importImage(const QString& filePath)
 
     if (view()->getImportFollowsCamera())
     {
-        QRectF cameraRect = mScribbleArea->getCameraRect(); // Must be QRectF for the precision of cameraRect.center()
-        QTransform transform = QTransform::fromTranslate(cameraRect.center().x(), cameraRect.center().y());
+        LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
+        Q_ASSERT(camera);
+        QTransform transform = camera->getViewAtFrame(currentFrame());
         view()->setImportView(transform);
     }
     switch (layer->type())
@@ -1232,7 +1233,9 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
 
 void Editor::swapLayers(int i, int j)
 {
-    mObject->swapLayers(i, j);
+    bool didSwapLayer = mObject->swapLayers(i, j);
+    if (!didSwapLayer) { return; }
+
     if (j < i)
     {
         layers()->setCurrentLayer(j + 1);
@@ -1243,6 +1246,11 @@ void Editor::swapLayers(int i, int j)
     }
     emit updateTimeLine();
     mScribbleArea->onLayerChanged();
+}
+
+bool Editor::canSwapLayers(int layerIndexLeft, int layerIndexRight) const
+{
+    return mObject->canSwapLayers(layerIndexLeft, layerIndexRight);
 }
 
 void Editor::prepareSave()

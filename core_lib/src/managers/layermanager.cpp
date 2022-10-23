@@ -54,6 +54,11 @@ Status LayerManager::save(Object* o)
     return Status::OK;
 }
 
+LayerCamera* LayerManager::getCameraLayerBelow(int layerIndex) const
+{
+    return static_cast<LayerCamera*>(object()->getLayerBelow(layerIndex, Layer::CAMERA));
+}
+
 Layer* LayerManager::getLastCameraLayer()
 {
     Layer* layer = object()->getLayer(mLastCameraLayerIdx);
@@ -301,6 +306,11 @@ int LayerManager::lastKeyFrameIndex()
 int LayerManager::count()
 {
     return object()->getLayerCount();
+}
+
+bool LayerManager::canDeleteLayer(int index) const
+{
+    return object()->canDeleteLayer(index);
 }
 
 Status LayerManager::deleteLayer(int index)

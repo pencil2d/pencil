@@ -25,6 +25,7 @@ class Camera : public KeyFrame
 {
 public:
     explicit Camera();
+    explicit Camera(QPointF translation, qreal rotation, qreal scaling);
     explicit Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type);
     explicit Camera(const Camera&);
     ~Camera() override;
@@ -32,35 +33,41 @@ public:
     Camera* clone() const override;
 
     QTransform getView();
-    void reset();
+    void resetTransform();
     void updateViewTransform();
     void assign(const Camera& rhs);
 
     void translate(qreal dx, qreal dy);
     void translate(const QPointF);
-    QPointF translation() { return mTranslate; }
+    QPointF translation() const { return mTranslate; }
 
     void rotate(qreal degree);
-    qreal rotation() { return mRotate; }
+    qreal rotation() const { return mRotate; }
 
     void scale(qreal scaleValue);
-    void scaleWithOffset(qreal scaleValue, QPointF offset); // for zooming at the mouse position
-    qreal scaling() { return mScale; }
+    qreal scaling() const { return mScale; }
 
-    QTransform view;
+    bool compare(const Camera& rhs) const;
 
-    bool operator==(const Camera& rhs) const;
-
-    void setEasingType(CameraEasingType type) { mEasingType = type; }
+    void setEasingType(CameraEasingType type);
     CameraEasingType getEasingType() const { return mEasingType; }
 
+    void setPathControlPoint(QPointF point);
+    QPointF getPathControlPoint() const { return mPathControlPoint; }
+
+    void setPathControlPointMoved(bool pathMoved);
+    bool pathControlPointMoved() const { return mPathControlPointMoved; }
+
 private:
+    QTransform mView;
     QPointF mTranslate;
     qreal mRotate = 0.;
     qreal mScale = 1.;
     bool mNeedUpdateView = true;
 
     CameraEasingType mEasingType = CameraEasingType::LINEAR;
+    QPointF mPathControlPoint = QPointF();
+    bool mPathControlPointMoved = false;
 };
 
 #endif // CAMERA_H

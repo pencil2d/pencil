@@ -21,10 +21,6 @@ GNU General Public License for more details.
 #include <QTransform>
 #include "basemanager.h"
 
-class Layer;
-class LayerCamera;
-class Camera;
-
 
 class ViewManager : public BaseManager
 {
@@ -37,7 +33,6 @@ public:
     bool init() override;
     Status load(Object*) override;
     Status save(Object*) override;
-    void workingLayerChanged(Layer* layer) override;
 
     QTransform getView() const;
     QTransform getViewInverse() const;
@@ -67,7 +62,7 @@ public:
 
     qreal scaling();
     void scale(qreal scaleValue);
-    void scaleWithOffset(qreal scaleValue, QPointF offset);
+    void scaleAtOffset(qreal scaleValue, QPointF offset);
     void scaleUp();
     void scaleDown();
     void scale400();
@@ -94,7 +89,6 @@ public:
     bool getOverlaySafeAreas() const { return mOverlaySafeAreas; }
 
     void setCanvasSize(QSize size);
-    void setCameraLayer(Layer* layer);
 
     QTransform getImportView() { return mImportView; }
     void setImportView(const QTransform& newView) { mImportView = newView; }
@@ -119,22 +113,20 @@ private:
     QTransform mCentre;
     QTransform mImportView;
 
-    Camera* mDefaultEditorCamera = nullptr;
-    Camera* mCurrentCamera = nullptr;
+    QPointF mTranslation = QPointF();
+    qreal mScaling = 1.0;
+    qreal mRotation = 0.0;
 
     QSize mCanvasSize = { 1, 1 };
 
     bool mIsFlipHorizontal = false;
     bool mIsFlipVertical = false;
-
-    bool mImportFollowsCamera = false;
-
     bool mOverlayCenter = false;
     bool mOverlayThirds = false;
     bool mOverlayGoldenRatio = false;
     bool mOverlaySafeAreas = false;
 
-    LayerCamera* mCameraLayer = nullptr;
+    bool mImportFollowsCamera = false;
 };
 
 #endif // VIEWMANAGER_H

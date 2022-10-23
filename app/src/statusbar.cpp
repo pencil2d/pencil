@@ -102,6 +102,9 @@ void StatusBar::updateToolStatus(ToolType tool)
         case MOVE:
             mToolLabel->setText(tr("Click and drag to move an object. Hold Ctrl to rotate."));
             break;
+        case CAMERA:
+            mToolLabel->setText(tr("Click and drag to move the camera. While on in-between frames, drag handle to change interpolation."));
+            break;
         case HAND:
             mToolLabel->setText(tr("Click and drag to pan. Hold Ctrl to zoom or Alt to rotate."));
             break;
@@ -141,6 +144,7 @@ void StatusBar::updateToolStatus(ToolType tool)
         {":icons/new/svg/arrow.svg"},
         {":icons/new/svg/hand_detailed.svg"},
         {":icons/new/svg/smudge_detailed.svg"},
+        {":icons/new/svg/arrow.svg"},
         {":icons/new/svg/pen_detailed.svg"},
         {":icons/new/svg/line.svg"},
         {":icons/new/svg/bucket_detailed.svg"},

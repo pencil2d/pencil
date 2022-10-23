@@ -31,9 +31,9 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
+#include "layercamera.h"
 #include "mathutils.h"
 #include "vectorimage.h"
-
 
 MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
@@ -65,16 +65,17 @@ QCursor MoveTool::cursor()
     SelectionManager* selectMan = mEditor->select();
     if (selectMan->somethingSelected())
     {
-        mode = selectMan->getMoveMode();
-        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+        mode = mEditor->select()->getMoveMode();
     }
-    if (mEditor->overlays()->isPerspOverlaysActive())
+    else if (mEditor->overlays()->isPerspectiveOverlaysActive())
     {
-        mode = mEditor->overlays()->getMoveModeForOverlayAnchor(getCurrentPoint());
+        LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
+        Q_ASSERT(layerCam);
+        mode = mEditor->overlays()->getMoveModeForPoint(getCurrentPoint(), layerCam->getViewAtFrame(mEditor->currentFrame()));
         mPerspMode = mode;
-        return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
     }
-    return mScribbleArea->currentTool()->selectMoveCursor(mode, type());
+
+    return cursor(mode);
 }
 
 void MoveTool::updateSettings(const SETTING setting)
@@ -101,11 +102,15 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     {
         beginInteraction(event->modifiers(), mCurrentLayer);
     }
-    if (mEditor->overlays()->isPerspOverlaysActive())
+    if (mEditor->overlays()->isPerspectiveOverlaysActive())
     {
-        QPointF point = mEditor->view()->mapScreenToCanvas(event->posF());
         mEditor->overlays()->setMoveMode(mPerspMode);
-        mEditor->overlays()->updatePerspOverlay(point);
+
+        LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
+        Q_ASSERT(layerCam);
+
+        QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()).toPoint();
+        mEditor->overlays()->updatePerspective(mapped);
     }
     mOffset = getCurrentPoint();
 
@@ -120,10 +125,16 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
-        if (mEditor->overlays()->isPerspOverlaysActive())
+
+        if (mEditor->overlays()->isPerspectiveOverlaysActive())
         {
-            QPointF mapped = mEditor->view()->mapScreenToCanvas(event->pos());
-            mEditor->overlays()->updatePerspOverlay(mapped);
+            LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
+            Q_ASSERT(layerCam);
+            mEditor->overlays()->updatePerspective(layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()));
+        }
+        if (mEditor->select()->somethingSelected())
+        {
+            transformSelection(event->modifiers(), mCurrentLayer);
         }
     }
     else
@@ -137,14 +148,13 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         {
             storeClosestVectorCurve(mCurrentLayer);
         }
-        mEditor->getScribbleArea()->prepOverlays();
     }
     mEditor->updateCurrentFrame();
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
-    if (mEditor->overlays()->isPerspOverlaysActive())
+    if (mEditor->overlays()->isPerspectiveOverlaysActive())
     {
         mEditor->overlays()->setMoveMode(MoveMode::NONE);
         mPerspMode = MoveMode::NONE;
@@ -362,4 +372,57 @@ Layer* MoveTool::currentPaintableLayer()
 QPointF MoveTool::offsetFromPressPos()
 {
     return getCurrentPoint() - getCurrentPressPoint();
+}
+
+
+QCursor MoveTool::cursor(MoveMode mode) const
+{
+    QPixmap cursorPixmap = QPixmap(24, 24);
+
+    cursorPixmap.fill(QColor(255, 255, 255, 0));
+    QPainter cursorPainter(&cursorPixmap);
+    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+
+    switch(mode)
+    {
+    case MoveMode::PERSP_LEFT:
+    case MoveMode::PERSP_RIGHT:
+    case MoveMode::PERSP_MIDDLE:
+    case MoveMode::PERSP_SINGLE:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
+        break;
+    }
+    case MoveMode::TOPLEFT:
+    case MoveMode::BOTTOMRIGHT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-left.svg"));
+        break;
+    }
+    case MoveMode::TOPRIGHT:
+    case MoveMode::BOTTOMLEFT:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-right.svg"));
+        break;
+    }
+    case MoveMode::ROTATIONLEFT:
+    case MoveMode::ROTATIONRIGHT:
+    case MoveMode::ROTATION:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/cursor-rotate.svg"));
+        break;
+    }
+    case MoveMode::MIDDLE:
+    case MoveMode::CENTER:
+    {
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/cursor-move.svg"));
+        break;
+    }
+    default:
+        return Qt::ArrowCursor;
+        break;
+    }
+    cursorPainter.end();
+
+    return QCursor(cursorPixmap);
 }

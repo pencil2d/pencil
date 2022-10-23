@@ -25,7 +25,6 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "overlaymanager.h"
 #include "layermanager.h"
-#include "scribblearea.h"
 #include "editor.h"
 #include "util.h"
 #include "movemode.h"
@@ -103,42 +102,30 @@ void DisplayOptionWidget::makeConnections()
     connect(ui->overlayPerspective1Button, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayPerspective1);
     connect(ui->overlayPerspective2Button, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayPerspective2);
     connect(ui->overlayPerspective3Button, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOverlayPerspective3);
+    connect(ui->thinLinesButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleThinLines);
+    connect(ui->outLinesButton, &QToolButton::clicked, this, &DisplayOptionWidget::toggleOutlines);
 
-    PreferenceManager* prefs = editor()->preference();
-    ScribbleArea* pScriArea = editor()->getScribbleArea();
-
-    connect(ui->thinLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleThinLines);
-    connect(ui->outLinesButton, &QToolButton::clicked, pScriArea, &ScribbleArea::toggleOutlines);
-    connect(prefs, &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI);
-
-    ViewManager* view = editor()->view();
-    connect(view, &ViewManager::viewFlipped, this, &DisplayOptionWidget::updateUI);
+    connect(editor()->preference(), &PreferenceManager::optionChanged, this, &DisplayOptionWidget::updateUI);
+    connect(editor()->view(), &ViewManager::viewFlipped, this, &DisplayOptionWidget::updateUI);
 }
 
 void DisplayOptionWidget::prepareOverlayManager()
 {
-    editor()->overlays()->initPerspOverlay();
-    editor()->getScribbleArea()->prepOverlays();
-
     if (ui->overlayPerspective1Button->isChecked())
     {
-        editor()->overlays()->setOverlayPerspective1(true);
-        editor()->overlays()->updatePerspOverlay(1);
-        editor()->overlays()->setMoveMode(MoveMode::PERSP_SINGLE);
+        editor()->overlays()->setOnePointPerspectiveEnabled(true);
+        editor()->overlays()->updatePerspective(1);
     }
     if (ui->overlayPerspective2Button->isChecked())
     {
-        editor()->overlays()->setOverlayPerspective2(true);
-        editor()->overlays()->updatePerspOverlay(2);
-        editor()->overlays()->setMoveMode(MoveMode::PERSP_LEFT);
+        editor()->overlays()->setTwoPointPerspectiveEnabled(true);
+        editor()->overlays()->updatePerspective(2);
     }
     if (ui->overlayPerspective3Button->isChecked())
     {
-        editor()->overlays()->setOverlayPerspective3(true);
-        editor()->overlays()->updatePerspOverlay(3);
-        editor()->overlays()->setMoveMode(MoveMode::PERSP_LEFT);
+        editor()->overlays()->setThreePointPerspectiveEnabled(true);
+        editor()->overlays()->updatePerspective(3);
     }
-    editor()->overlays()->updatePerspOverlayActiveList();
 }
 
 void DisplayOptionWidget::clearPreviousAngle(int angle)
@@ -161,8 +148,7 @@ void DisplayOptionWidget::changeAngle(int angle)
 {
     clearPreviousAngle(mOverlayAngle);
     mOverlayAngle = angle;
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("OverlayAngle", angle);
+    editor()->preference()->set(SETTING::OVERLAY_ANGLE, angle);
     emit editor()->view()->viewChanged();
 }
 
@@ -218,6 +204,16 @@ int DisplayOptionWidget::getMinHeightForWidth(int width)
     return ui->innerWidget->layout()->heightForWidth(width);
 }
 
+void DisplayOptionWidget::toggleThinLines(bool isOn)
+{
+    editor()->preference()->set(SETTING::INVISIBLE_LINES, isOn);
+}
+
+void DisplayOptionWidget::toggleOutlines(bool isOn)
+{
+    editor()->preference()->set(SETTING::OUTLINES, isOn);
+}
+
 void DisplayOptionWidget::toggleMirror(bool isOn)
 {
     editor()->view()->flipHorizontal(isOn);
@@ -230,49 +226,49 @@ void DisplayOptionWidget::toggleMirrorV(bool isOn)
 
 void DisplayOptionWidget::toggleOverlayCenter(bool isOn)
 {
-    editor()->overlays()->setOverlayCenter(isOn);
+    editor()->overlays()->setCenterEnabled(isOn);
     editor()->preference()->set(SETTING::OVERLAY_CENTER, isOn);
     emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayThirds(bool isOn)
 {
-    editor()->overlays()->setOverlayThirds(isOn);
+    editor()->overlays()->setThirdsEnabled(isOn);
     editor()->preference()->set(SETTING::OVERLAY_THIRDS, isOn);
     emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayGoldenRatio(bool isOn)
 {
-    editor()->overlays()->setOverlayGoldenRatio(isOn);
+    editor()->overlays()->setGoldenRatioEnabled(isOn);
     editor()->preference()->set(SETTING::OVERLAY_GOLDEN, isOn);
     emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlaySafeAreas(bool isOn)
 {
-    editor()->overlays()->setOverlaySafeAreas(isOn);
+    editor()->overlays()->setSafeAreasEnabled(isOn);
     editor()->preference()->set(SETTING::OVERLAY_SAFE, isOn);
     emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayPerspective1(bool isOn)
 {
-    editor()->overlays()->setOverlayPerspective1(isOn);
+    editor()->overlays()->setOnePointPerspectiveEnabled(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE1, isOn);
     emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayPerspective2(bool isOn)
 {
-    editor()->overlays()->setOverlayPerspective2(isOn);
+    editor()->overlays()->setTwoPointPerspectiveEnabled(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE2, isOn);
     emit editor()->view()->viewChanged();
 }
 
 void DisplayOptionWidget::toggleOverlayPerspective3(bool isOn)
 {
-    editor()->overlays()->setOverlayPerspective3(isOn);
+    editor()->overlays()->setThreePointPerspectiveEnabled(isOn);
     editor()->preference()->set(SETTING::OVERLAY_PERSPECTIVE3, isOn);
     emit editor()->view()->viewChanged();
 }
@@ -312,10 +308,10 @@ void DisplayOptionWidget::anglePreferences()
     default: ui->action15_degrees->setChecked(true);
     }
 
-    connect( ui->action2_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle2degrees);
-    connect( ui->action3_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle3degrees);
-    connect( ui->action5_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle5degrees);
-    connect( ui->action7_5_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle7_5degrees);
+    connect(ui->action2_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle2degrees);
+    connect(ui->action3_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle3degrees);
+    connect(ui->action5_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle5degrees);
+    connect(ui->action7_5_degrees, &QAction::triggered, this,  &DisplayOptionWidget::angle7_5degrees);
     connect(ui->action10_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle10degrees);
     connect(ui->action15_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle15degrees);
     connect(ui->action20_degrees, &QAction::triggered, this, &DisplayOptionWidget::angle20degrees);
