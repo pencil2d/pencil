@@ -31,6 +31,7 @@ class Object;
 class QPalette;
 class QPixmap;
 class QRect;
+class KeyFrame;
 
 class CameraPainter
 {
@@ -49,9 +50,12 @@ private:
     void initializePainter(QPainter& painter, QPixmap& pixmap) const;
     void paintVisuals(QPainter& painter) const;
     void paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
-    void paintInterpolations(QPainter& painter, const LayerCamera* cameraLayer) const;
+    void paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer) const;
+    void paintInterpolations(QPainter& painter, const LayerCamera* cameraLayer, const KeyFrame* keyframe) const;
     void paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const QPointF translation, const qreal scale, const qreal rotation, bool hollowHandles) const;
-    void paintPath(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const;
+    void paintControlPoint(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const;
+
+    bool ignoreLayer(const Layer* cameraLayer, bool isCurrentLayerCamera) const;
 
     const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;
