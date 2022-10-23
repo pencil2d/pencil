@@ -551,7 +551,6 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
                         if (camera->pathControlPointMoved()) {
                             keyTag.setAttribute("pathCPX", camera->getPathControlPoint().x());
                             keyTag.setAttribute("pathCPY", camera->getPathControlPoint().y());
-                            keyTag.setAttribute("pathCPM", camera->pathControlPointMoved());
                         }
                         layerElem.appendChild(keyTag);
                     });
@@ -589,11 +588,17 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 CameraEasingType easing = static_cast<CameraEasingType>(imageElement.attribute("easing", "0").toInt());
                 qreal pathX = imageElement.attribute("pathCPX", "0").toDouble();
                 qreal pathY = imageElement.attribute("pathCPY", "0").toDouble();
-                bool pathMoved = imageElement.attribute("pathCPM", "0").toInt();
+                bool pathMoved = (imageElement.hasAttribute("pathCPX") || imageElement.hasAttribute("pathCPY")) &&
+                                 imageElement.attribute("pathCPM", "1").toInt(); // BC
 
                 loadImageAtFrame(frame, dx, dy, rotate, scale, easing, QPointF(pathX, pathY), pathMoved);
             }
         }
         imageTag = imageTag.nextSibling();
     }
+    foreachKeyFrame([&](KeyFrame* frame) {
+        if (!static_cast<Camera*>(frame)->pathControlPointMoved()) {
+            centerPathControlPointAtFrame(frame->pos());
+        }
+    });
 }
