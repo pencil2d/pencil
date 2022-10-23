@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>229</width>
+    <width>254</width>
     <height>208</height>
    </rect>
   </property>
@@ -51,7 +51,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/transform-scale.svg</normaloff>:/icons/new/svg/transform-scale.svg</iconset>
+          <normaloff>:/icons/new/svg/camera-scale.svg</normaloff>:/icons/new/svg/camera-scale.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -68,7 +68,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/transform-rotate.svg</normaloff>:/icons/new/svg/transform-rotate.svg</iconset>
+          <normaloff>:/icons/new/svg/camera-rotate.svg</normaloff>:/icons/new/svg/camera-rotate.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -92,7 +92,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/transform-translate.svg</normaloff>:/icons/new/svg/transform-translate.svg</iconset>
+          <normaloff>:/icons/new/svg/camera-move.svg</normaloff>:/icons/new/svg/camera-move.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
