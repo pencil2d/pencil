@@ -1541,7 +1541,6 @@ bool MainWindow2::event(QEvent* event)
 {
     if(event->type() == QEvent::WindowActivate) {
         emit windowActivated();
-        return true;
     }
     return QMainWindow::event(event);
 }
