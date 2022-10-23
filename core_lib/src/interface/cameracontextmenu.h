@@ -21,22 +21,22 @@ GNU General Public License for more details.
 #include <QPoint>
 #include <QObject>
 
-class Layer;
+#include <QMenu>
 
-class CameraContextMenu : public QObject
+class LayerCamera;
+
+class CameraContextMenu : public QMenu
 {
     Q_OBJECT
 public:
-    CameraContextMenu(int frameNumber, const QPoint& coordinate, Layer* layer);
-    void exec();
+    CameraContextMenu(int frameNumber, const LayerCamera* layer);
 
 signals:
     void aboutToClose();
 
 private:
     int mFrameNumber;
-    QPoint mMouseCoord;
-    Layer* mCurrentLayer;
+    const LayerCamera* mCurrentLayer;
 };
 
 #endif // CAMERACONTEXTMENU_H

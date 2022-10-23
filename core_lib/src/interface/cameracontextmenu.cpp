@@ -17,37 +17,23 @@ GNU General Public License for more details.
 
 #include "cameracontextmenu.h"
 
-#include <QMenu>
-
 #include "cameraeasingtype.h"
 #include "layercamera.h"
 #include "camera.h"
 
-CameraContextMenu::CameraContextMenu(int frameNumber, const QPoint& coordinate, Layer* layer) :
-    mFrameNumber(frameNumber), mMouseCoord(coordinate), mCurrentLayer(layer)
+CameraContextMenu::CameraContextMenu(int frameNumber, const LayerCamera* layer) :
+    mFrameNumber(frameNumber), mCurrentLayer(layer)
 
 {
-}
+    int nextFrame = layer->getNextKeyFramePosition(frameNumber);
 
-void CameraContextMenu::exec()
-{
-    int frameNumber = mFrameNumber;
-    QPoint pos = mMouseCoord;
-
-    Layer* curLayer = mCurrentLayer;
-
-    LayerCamera* layer = static_cast<LayerCamera*>(curLayer);
-    int nextFrame = curLayer->getNextKeyFramePosition(frameNumber);
-
-    QMenu* cameraMenu = new QMenu();
-
-    connect(cameraMenu, &QMenu::aboutToHide, [=] {
+    connect(this, &QMenu::aboutToHide, [=] {
         emit aboutToClose();
     });
 
-    QMenu* cameraInterpolationMenu = cameraMenu->addMenu(tr("Easing: frame %1 to %2").arg(frameNumber).arg(nextFrame));
+    QMenu* cameraInterpolationMenu = addMenu(tr("Easing: frame %1 to %2").arg(frameNumber).arg(nextFrame));
 
-    cameraInterpolationMenu->setEnabled(curLayer->getMaxKeyFramePosition() != frameNumber);
+    cameraInterpolationMenu->setEnabled(layer->getMaxKeyFramePosition() != frameNumber);
 
     Camera* selectedKey = layer->getCameraAtFrame(frameNumber);
     if (selectedKey != nullptr) {
@@ -114,7 +100,7 @@ void CameraContextMenu::exec()
     inOutMenu->addAction(bounce, [=] { layer->setCameraEasingAtFrame(CameraEasingType::INOUTBOUNCE, frameNumber); });
     outInMenu->addAction(bounce, [=] { layer->setCameraEasingAtFrame(CameraEasingType::OUTINBOUNCE, frameNumber); });
 
-    QMenu* cameraFieldMenu = cameraMenu->addMenu(tr("Transform"));
+    QMenu* cameraFieldMenu = addMenu(tr("Transform"));
     cameraFieldMenu->addAction(tr("Reset all"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_FIELD, frameNumber); });
     cameraFieldMenu->addSeparator();
     cameraFieldMenu->addAction(tr("Reset position"), [=] { layer->resetCameraAtFrame(CameraFieldOption::RESET_TRANSLATION, frameNumber); });
@@ -125,11 +111,9 @@ void CameraContextMenu::exec()
     QAction* alignVAction = cameraFieldMenu->addAction(tr("Align vertically to frame %1").arg(nextFrame), [=] { layer->resetCameraAtFrame(CameraFieldOption::ALIGN_VERTICAL, frameNumber); });
     cameraFieldMenu->addSeparator();
     QAction* holdAction = cameraFieldMenu->addAction(tr("Hold to keyframe %1").arg(nextFrame), [=] { layer->resetCameraAtFrame(CameraFieldOption::HOLD_FRAME, frameNumber); });
-    if (frameNumber == curLayer->getMaxKeyFramePosition()) {
+    if (frameNumber == layer->getMaxKeyFramePosition()) {
         holdAction->setDisabled(true);
         alignHAction->setDisabled(true);
         alignVAction->setDisabled(true);
     }
-
-    cameraMenu->exec(pos);
 }

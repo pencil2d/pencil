@@ -181,7 +181,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 {
     int frameNumber = getFrameNumber(pos.x());
 
-    Layer* curLayer = mEditor->layers()->currentLayer();
+    const Layer* curLayer = mEditor->layers()->currentLayer();
     Q_ASSERT(curLayer);
 
     // only show menu if on camera layer and key exists
@@ -193,7 +193,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     mHighlightFrameEnabled = true;
     mHighlightedFrame = frameNumber;
 
-    CameraContextMenu menu(frameNumber, mapToGlobal(pos), curLayer);
+    CameraContextMenu menu(frameNumber, static_cast<const LayerCamera*>(curLayer));
 
     menu.connect(&menu, &CameraContextMenu::aboutToClose, [=] {
         mHighlightFrameEnabled = false;
@@ -209,7 +209,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
     // Update needs to happen before executing menu, otherwise paint event might be postponed
     update();
 
-    menu.exec();
+    menu.exec(mapToGlobal(pos));
 }
 
 void TimeLineCells::drawContent()
