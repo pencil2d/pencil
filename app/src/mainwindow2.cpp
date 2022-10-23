@@ -1459,11 +1459,11 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     // Menu UI changes
     connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
-    connect(ui->menuLayer, &QMenu::aboutToShow, this, &MainWindow2::onLayerMenuWillShow);
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
 
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
@@ -1512,7 +1512,7 @@ void MainWindow2::updateCopyCutPasteEnabled()
     ui->actionPaste->setEnabled(canPaste);
 }
 
-void MainWindow2::onLayerMenuWillShow()
+void MainWindow2::updateLayerMenu()
 {
     ui->actionDelete_Current_Layer->setEnabled(mEditor->layers()->canDeleteLayer(mEditor->currentLayerIndex()));
 }

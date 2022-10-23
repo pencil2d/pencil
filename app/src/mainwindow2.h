@@ -116,7 +116,7 @@ protected:
 
 private slots:
     void updateCopyCutPasteEnabled();
-    void onLayerMenuWillShow();
+    void updateLayerMenu();
 private:
     void newObject();
     bool newObjectFromPresets(int presetIndex);
