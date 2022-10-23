@@ -31,9 +31,6 @@ class CameraContextMenu : public QMenu
 public:
     CameraContextMenu(int frameNumber, const LayerCamera* layer);
 
-signals:
-    void aboutToClose();
-
 private:
     int mFrameNumber;
     const LayerCamera* mCurrentLayer;

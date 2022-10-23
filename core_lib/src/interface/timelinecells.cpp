@@ -27,15 +27,12 @@ GNU General Public License for more details.
 #include "camerapropertiesdialog.h"
 #include "editor.h"
 #include "keyframe.h"
-#include "camera.h"
-#include "cameraeasingtype.h"
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "object.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
 #include "timeline.h"
-#include "toolmanager.h"
 
 #include "cameracontextmenu.h"
 
@@ -195,7 +192,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 
     CameraContextMenu menu(frameNumber, static_cast<const LayerCamera*>(curLayer));
 
-    menu.connect(&menu, &CameraContextMenu::aboutToClose, [=] {
+    menu.connect(&menu, &CameraContextMenu::aboutToHide, [=] {
         mHighlightFrameEnabled = false;
         mHighlightedFrame = -1;
         update();

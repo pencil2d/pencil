@@ -27,10 +27,6 @@ CameraContextMenu::CameraContextMenu(int frameNumber, const LayerCamera* layer) 
 {
     int nextFrame = layer->getNextKeyFramePosition(frameNumber);
 
-    connect(this, &QMenu::aboutToHide, [=] {
-        emit aboutToClose();
-    });
-
     QMenu* cameraInterpolationMenu = addMenu(tr("Easing: frame %1 to %2").arg(frameNumber).arg(nextFrame));
 
     cameraInterpolationMenu->setEnabled(layer->getMaxKeyFramePosition() != frameNumber);
