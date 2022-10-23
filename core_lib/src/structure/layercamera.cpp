@@ -525,8 +525,14 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
     QDomElement layerElem = createBaseDomElement(doc);
     layerElem.setAttribute("width", viewRect.width());
     layerElem.setAttribute("height", viewRect.height());
-    layerElem.setAttribute("showPath", mShowPath);
-    layerElem.setAttribute("pathColorType", static_cast<int>(mDotColorType));
+
+    if (mShowPath) {
+        layerElem.setAttribute("showPath", mShowPath);
+    }
+
+    if (mDotColorType != DotColorType::RED) {
+        layerElem.setAttribute("pathColorType", static_cast<int>(mDotColorType));
+    }
 
     foreachKeyFrame([&](KeyFrame* pKeyFrame)
                     {
@@ -538,10 +544,15 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
                         keyTag.setAttribute("s", camera->scaling());
                         keyTag.setAttribute("dx", camera->translation().x());
                         keyTag.setAttribute("dy", camera->translation().y());
-                        keyTag.setAttribute("easing", static_cast<int>(camera->getEasingType()));
-                        keyTag.setAttribute("pathCPX", camera->getPathControlPoint().x());
-                        keyTag.setAttribute("pathCPY", camera->getPathControlPoint().y());
-                        keyTag.setAttribute("pathCPM", camera->pathControlPointMoved());
+
+                        if (camera->getEasingType() != CameraEasingType::LINEAR) {
+                            keyTag.setAttribute("easing", static_cast<int>(camera->getEasingType()));
+                        }
+                        if (camera->pathControlPointMoved()) {
+                            keyTag.setAttribute("pathCPX", camera->getPathControlPoint().x());
+                            keyTag.setAttribute("pathCPY", camera->getPathControlPoint().y());
+                            keyTag.setAttribute("pathCPM", camera->pathControlPointMoved());
+                        }
                         layerElem.appendChild(keyTag);
                     });
 
