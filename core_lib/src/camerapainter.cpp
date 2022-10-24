@@ -56,8 +56,15 @@ void CameraPainter::preparePainter(const Object* object,
     mRelativeLayerOpacityThreshold = relativeLayerOpacityThreshold;
     mViewScale = viewScale;
 
-    mHandleColor = Qt::gray;
+    mHandleColor = Qt::white;
+    mHandleDisabledColor = mHandleColor;
+    mHandleDisabledColor.setAlpha(50);
     mHandleTextColor = QColor(0, 0, 0);
+
+    mHandlePen = QPen();
+    mHandlePen.setColor(QColor(0, 0, 0, 255));
+    mHandlePen.setWidth(2);
+
 }
 
 void CameraPainter::paint() const
@@ -207,9 +214,6 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     QPolygonF camPolygon = mViewTransform.map(camTransform.inverted().map(QPolygon(cameraRect)));
     painter.drawPolygon(camPolygon);
 
-
-    painter.setPen(QColor(0, 0, 0, 100));
-
     QTransform scaleT;
     scaleT.scale(1, 1);
     scaleT.rotate(rotation);
@@ -219,10 +223,11 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     painter.drawPolygon(nonScaledCamPoly);
     painter.drawText(nonScaledCamPoly[0]-QPoint(0, 2), "100%");
 
-    painter.setPen(mHandleTextColor);
     if (hollowHandles) {
-        painter.setBrush(Qt::transparent);
+        painter.setPen(mHandleDisabledColor);
+        painter.setBrush(Qt::gray);
     } else {
+        painter.setPen(mHandlePen);
         painter.setBrush(mHandleColor);
     }
     int handleW = HANDLE_WIDTH;
@@ -256,11 +261,6 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     painter.drawLine(topCenter, QPoint(rotationHandle.x(),
                                        (rotationHandle.y())));
 
-    // Make sure the line is not painted inside the circle, while hollow
-    if (hollowHandles) {
-        painter.setCompositionMode(QPainter::CompositionMode_SourceOut);
-    }
-
     painter.drawEllipse(QRectF((rotationHandle.x() - handleW*0.5),
                                (rotationHandle.y() - handleW*0.5),
                                handleW, handleW));
@@ -291,12 +291,7 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
 
         cameraPathPoint = mViewTransform.map(cameraLayer->getPathControlPointAtFrame(frame + 1));
 
-        int distance = nextFrame - frame;
-        // It makes no sense to paint the path when there's no interpolation.
-        if (distance >= 2 && !mIsPlaying) {
-            paintControlPoint(painter, cameraLayer, frame, cameraPathPoint, cameraLayer->keyExists(mFrameIndex));
-        }
-
+        painter.save();
         QColor color = cameraDotColor;
         if (mFrameIndex > frame && mFrameIndex < nextFrame)
             color.setAlphaF(0.5);
@@ -310,6 +305,13 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
             QTransform transform = cameraLayer->getViewAtFrame(frameInBetween);
             QPointF center = mViewTransform.map(transform.inverted().map(QRectF(cameraLayer->getViewRect()).center()));
             painter.drawEllipse(center, DOT_WIDTH/2., DOT_WIDTH/2.);
+        }
+        painter.restore();
+
+        int distance = nextFrame - frame;
+        // It makes no sense to paint the path when there's no interpolation.
+        if (distance >= 2 && !mIsPlaying) {
+            paintControlPoint(painter, cameraLayer, frame, cameraPathPoint, cameraLayer->keyExists(mFrameIndex));
         }
 
         painter.restore();
@@ -355,45 +357,29 @@ void CameraPainter::paintOnionSkinning(QPainter& painter, const LayerCamera* cam
 
 void CameraPainter::paintControlPoint(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const
 {
-    // if active path, draw bezier help lines for active path
-    QList<QPointF> points = cameraLayer->getBezierPointsAtFrame(frameIndex + 1);
+    painter.save();
+    // draw movemode in text
+    painter.setPen(Qt::black);
+    QString pathType = cameraLayer->getInterpolationTextAtFrame(frameIndex);
 
-    if (!points.empty())
-    {
-        Q_ASSERT(points.size() == 3);
-        QPointF p0 = mViewTransform.map(points.at(0));
-        QPointF p1 = mViewTransform.map(points.at(1));
-        QPointF p2 = mViewTransform.map(points.at(2));
+    // Space text according to path point so it doesn't overlap
+    painter.drawText(pathPoint - QPoint(0, HANDLE_WIDTH), pathType);
+    painter.restore();
 
-        painter.save();
-        QPen pen (mHandleColor, 0.5, Qt::PenStyle::DashLine);
-        painter.setPen(pen);
-        painter.drawLine(p0, p1);
-        painter.drawLine(p1, p2);
-        painter.restore();
+    // if active path, draw move handle
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing, false);
+    painter.setPen(mHandleTextColor);
+
+    if (hollowHandle) {
+        painter.setPen(mHandleDisabledColor);
+        painter.setBrush(Qt::gray);
+    } else {
+        painter.setPen(mHandlePen);
+        painter.setBrush(mHandleColor);
     }
-
-        painter.save();
-        // draw movemode in text
-        painter.setPen(Qt::black);
-        QString pathType = cameraLayer->getInterpolationTextAtFrame(frameIndex);
-
-        // Space text according to path point so it doesn't overlap
-        painter.drawText(pathPoint - QPoint(0, HANDLE_WIDTH), pathType);
-        painter.restore();
-
-        // if active path, draw move handle
-        painter.save();
-        painter.setRenderHint(QPainter::Antialiasing, false);
-        painter.setPen(mHandleTextColor);
-
-        if (hollowHandle) {
-            painter.setBrush(Qt::NoBrush);
-        } else {
-            painter.setBrush(mHandleColor);
-        }
-        painter.drawRect(static_cast<int>(pathPoint.x() - HANDLE_WIDTH/2),
-                         static_cast<int>(pathPoint.y() - HANDLE_WIDTH/2),
-                         HANDLE_WIDTH, HANDLE_WIDTH);
-        painter.restore();
+    painter.drawRect(static_cast<int>(pathPoint.x() - HANDLE_WIDTH/2),
+                     static_cast<int>(pathPoint.y() - HANDLE_WIDTH/2),
+                     HANDLE_WIDTH, HANDLE_WIDTH);
+    painter.restore();
 }

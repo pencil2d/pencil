@@ -59,7 +59,6 @@ public:
     QString getInterpolationTextAtFrame(int frame) const;
     QPointF getPathControlPointAtFrame(int frame) const;
     bool hasSameTranslation(int frame1, int frame2) const;
-    QList<QPointF> getBezierPointsAtFrame(int frame) const;
     void centerPathControlPointAtFrame(int frame) const;
     QPointF getNewPathControlPointAtFrame(int frame) const;
     void updatePathControlPointAtFrame(const QPointF& point, int frame) const;

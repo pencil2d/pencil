@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <memory>
 #include <QColor>
 #include <QTransform>
+#include <QPen>
 
 #include "onionskinpainteroptions.h"
 #include "onionskinsubpainter.h"
@@ -75,7 +76,9 @@ private:
     bool mIsPlaying = false;
     bool mShowHandles = false;
 
+    QPen mHandlePen;
     QColor mHandleColor;
+    QColor mHandleDisabledColor;
     QColor mHandleTextColor;
 };
 
