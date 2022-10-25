@@ -156,6 +156,37 @@
      <addaction name="actionVisibilityRelative"/>
      <addaction name="actionVisibilityAll"/>
     </widget>
+    <widget class="QMenu" name="menuOverlays">
+     <property name="title">
+      <string>Overlays</string>
+     </property>
+     <widget class="QMenu" name="menuPerspectiveLinesAngle">
+      <property name="title">
+       <string>Perspective Lines Angle</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/app.qrc">
+        <normaloff>:/icons/overlayAngle.png</normaloff>:/icons/overlayAngle.png</iconset>
+      </property>
+      <addaction name="action2Degrees"/>
+      <addaction name="action3Degrees"/>
+      <addaction name="action5Degrees"/>
+      <addaction name="action7_5Degrees"/>
+      <addaction name="action10Degrees"/>
+      <addaction name="action15Degrees"/>
+      <addaction name="action20Degrees"/>
+      <addaction name="action30Degrees"/>
+     </widget>
+     <addaction name="actionGrid"/>
+     <addaction name="actionCenter"/>
+     <addaction name="actionThirds"/>
+     <addaction name="actionGoldenRatio"/>
+     <addaction name="actionSafeAreas"/>
+     <addaction name="actionOnePointPerspective"/>
+     <addaction name="actionTwoPointPerspective"/>
+     <addaction name="actionThreePointPerspective"/>
+     <addaction name="menuPerspectiveLinesAngle"/>
+    </widget>
     <addaction name="actionReset_View"/>
     <addaction name="actionCenter_View"/>
     <addaction name="separator"/>
@@ -170,14 +201,14 @@
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
     <addaction name="separator"/>
+    <addaction name="menuOverlays"/>
     <addaction name="menuOnion_Skin"/>
     <addaction name="menuLayer_Visibility"/>
     <addaction name="separator"/>
-    <addaction name="actionGrid"/>
+    <addaction name="actionShowInvisibleLines"/>
+    <addaction name="actionShowOutlinesOnly"/>
     <addaction name="separator"/>
     <addaction name="actionPreview"/>
-    <addaction name="separator"/>
-    <addaction name="actionStatusBar"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -276,9 +307,16 @@
     <property name="title">
      <string>Windows</string>
     </property>
+    <widget class="QMenu" name="menuToolbars">
+     <property name="title">
+      <string>Toolbars</string>
+     </property>
+    </widget>
     <addaction name="actionResetWindows"/>
     <addaction name="actionLockWindows"/>
     <addaction name="separator"/>
+    <addaction name="menuToolbars"/>
+    <addaction name="actionStatusBar"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -459,7 +497,7 @@
   <action name="actionClearFrame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
+     <normaloff>:/icons/new/svg/trash_detailed.svg</normaloff>:/icons/new/svg/trash_detailed.svg</iconset>
    </property>
    <property name="text">
     <string>Clear Frame</string>
@@ -1129,8 +1167,8 @@
   <action name="actionReposition_Selected_Frames">
    <property name="text">
     <string>Reposition Selected Frames</string>
-    </property>
-   </action>
+   </property>
+  </action>
   <action name="actionChangeLayerOpacity">
    <property name="text">
     <string>Layer / Keyframe opacity</string>
@@ -1196,6 +1234,178 @@
    </property>
    <property name="toolTip">
     <string>Paste from Previous Keyframe</string>
+   </property>
+  </action>
+  <action name="actionShowInvisibleLines">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/app/icons/thinlines5.png</normaloff>:/app/icons/thinlines5.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show Invisible Lines</string>
+   </property>
+  </action>
+  <action name="actionShowOutlinesOnly">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/app/icons/outlines5.png</normaloff>:/app/icons/outlines5.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show Outlines Only</string>
+   </property>
+  </action>
+  <action name="actionCenter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayCenter.png</normaloff>:/icons/overlayCenter.png</iconset>
+   </property>
+   <property name="text">
+    <string>Center</string>
+   </property>
+  </action>
+  <action name="actionThirds">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayThirds.png</normaloff>:/icons/overlayThirds.png</iconset>
+   </property>
+   <property name="text">
+    <string>Thirds</string>
+   </property>
+  </action>
+  <action name="actionGoldenRatio">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayGoldenRatio.png</normaloff>:/icons/overlayGoldenRatio.png</iconset>
+   </property>
+   <property name="text">
+    <string>Golden Ratio</string>
+   </property>
+  </action>
+  <action name="actionSafeAreas">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlaySafe.png</normaloff>:/icons/overlaySafe.png</iconset>
+   </property>
+   <property name="text">
+    <string>Safe Areas</string>
+   </property>
+  </action>
+  <action name="actionOnePointPerspective">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayPerspective1.png</normaloff>:/icons/overlayPerspective1.png</iconset>
+   </property>
+   <property name="text">
+    <string>One Point Perspective</string>
+   </property>
+  </action>
+  <action name="actionTwoPointPerspective">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayPerspective2.png</normaloff>:/icons/overlayPerspective2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Two Point Perspective</string>
+   </property>
+  </action>
+  <action name="actionThreePointPerspective">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayPerspective3.png</normaloff>:/icons/overlayPerspective3.png</iconset>
+   </property>
+   <property name="text">
+    <string>Three Point Perspective</string>
+   </property>
+  </action>
+  <action name="action2Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>2°</string>
+   </property>
+  </action>
+  <action name="action3Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>3°</string>
+   </property>
+  </action>
+  <action name="action5Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>5°</string>
+   </property>
+  </action>
+  <action name="action7_5Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>7.5°</string>
+   </property>
+  </action>
+  <action name="action10Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>10°</string>
+   </property>
+  </action>
+  <action name="action15Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>15°</string>
+   </property>
+  </action>
+  <action name="action20Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>20°</string>
+   </property>
+  </action>
+  <action name="action30Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>30°</string>
    </property>
   </action>
  </widget>

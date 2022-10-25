@@ -32,6 +32,7 @@ GNU General Public License for more details.
 #include <QLabel>
 #include <QClipboard>
 #include <QToolBar>
+#include <QToolButton>
 
 // core_lib headers
 #include "pencildef.h"
@@ -58,7 +59,6 @@ GNU General Public License for more details.
 #include "colorbox.h"
 #include "colorinspector.h"
 #include "colorpalettewidget.h"
-#include "displayoptionwidget.h"
 #include "tooloptionwidget.h"
 #include "preferencesdialog.h"
 #include "timeline.h"
@@ -130,9 +130,9 @@ MainWindow2::MainWindow2(QWidget* parent) :
     readSettings();
 
     selectionChanged();
+    currentLayerChanged();
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
-    connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
@@ -162,9 +162,6 @@ void MainWindow2::createDockWidgets()
     mColorPalette->setCore(mEditor);
     mColorPalette->setObjectName("ColorPalette");
 
-    mDisplayOptionWidget = new DisplayOptionWidget(this);
-    mDisplayOptionWidget->setObjectName("DisplayOption");
-
     mOnionSkinWidget = new OnionSkinWidget(this);
     mOnionSkinWidget->setObjectName("Onion Skin");
 
@@ -185,7 +182,6 @@ void MainWindow2::createDockWidgets()
         << mColorBox
         << mColorInspector
         << mColorPalette
-        << mDisplayOptionWidget
         << mOnionSkinWidget
         << mToolOptions
         << mToolBox;
@@ -210,7 +206,6 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
-    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     setDockNestingEnabled(true);
@@ -230,7 +225,6 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mColorInspector);
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
-    makeConnections(mEditor, mDisplayOptionWidget);
     makeConnections(mEditor, ui->statusBar);
 
     for (BaseDockWidget* w : mDockWidgets)
@@ -337,9 +331,55 @@ void MainWindow2::createMenus()
     PreferenceManager* prefs = mEditor->preference();
     connect(ui->actionStatusBar, &QAction::triggered, ui->statusBar, &QStatusBar::setVisible);
     bindPreferenceSetting(ui->actionStatusBar, prefs, SETTING::SHOW_STATUS_BAR);
+    bindPreferenceSetting(ui->actionThreePointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE3);
+    bindPreferenceSetting(ui->actionTwoPointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE2);
+    bindPreferenceSetting(ui->actionOnePointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE1);
+    bindPreferenceSetting(ui->actionSafeAreas, prefs, SETTING::OVERLAY_SAFE);
+    bindPreferenceSetting(ui->actionGoldenRatio, prefs, SETTING::OVERLAY_GOLDEN);
+    bindPreferenceSetting(ui->actionThirds, prefs, SETTING::OVERLAY_THIRDS);
+    bindPreferenceSetting(ui->actionCenter, prefs, SETTING::OVERLAY_CENTER);
     bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
+    bindPreferenceSetting(ui->actionShowOutlinesOnly, prefs, SETTING::OUTLINES);
+    bindPreferenceSetting(ui->actionShowInvisibleLines, prefs, SETTING::INVISIBLE_LINES);
     bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
     bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
+
+    bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
+    ui->actionSafeAreas->setEnabled(enableSafeArea);
+
+    auto perspectiveLinesAngleGroup = new QActionGroup(this);
+    perspectiveLinesAngleGroup->setExclusive(true);
+    perspectiveLinesAngleGroup->addAction(ui->action2Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action3Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action5Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action7_5Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action10Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action15Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action20Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action30Degrees);
+    connect(perspectiveLinesAngleGroup, &QActionGroup::triggered, this, [&](QAction* action) {
+        if (action == ui->action2Degrees)        mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 2);
+        else if (action == ui->action3Degrees)   mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 3);
+        else if (action == ui->action5Degrees)   mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 5);
+        else if (action == ui->action7_5Degrees) mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 7);
+        else if (action == ui->action10Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 10);
+        else if (action == ui->action15Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 15);
+        else if (action == ui->action20Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 20);
+        else if (action == ui->action30Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 30);
+        else Q_UNREACHABLE();
+        emit mEditor->view()->viewChanged();
+    });
+
+    switch (prefs->getInt(SETTING::OVERLAY_ANGLE)) {
+    case 2: ui->action2Degrees->setChecked(true); break;
+    case 3: ui->action3Degrees->setChecked(true); break;
+    case 5: ui->action5Degrees->setChecked(true); break;
+    case 7: ui->action7_5Degrees->setChecked(true); break;
+    case 10: ui->action10Degrees->setChecked(true); break;
+    case 15: ui->action15Degrees->setChecked(true); break;
+    case 20: ui->action20Degrees->setChecked(true); break;
+    case 30: ui->action30Degrees->setChecked(true); break;
+    }
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -395,7 +435,6 @@ void MainWindow2::createMenus()
         mColorBox->toggleViewAction(),
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
-        mDisplayOptionWidget->toggleViewAction(),
         mColorInspector->toggleViewAction(),
         mOnionSkinWidget->toggleViewAction()
     };
@@ -403,8 +442,9 @@ void MainWindow2::createMenus()
     for (QAction* action : actions)
     {
         action->setMenuRole(QAction::NoRole);
-        winMenu->addAction(action);
+        winMenu->insertAction(ui->menuToolbars->menuAction(), action);
     }
+    winMenu->insertSeparator(ui->menuToolbars->menuAction());
     connect(ui->actionResetWindows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
     connect(ui->actionLockWindows, &QAction::toggled, this, &MainWindow2::lockWidgets);
     bindPreferenceSetting(ui->actionLockWindows, prefs, SETTING::LAYOUT_LOCK);
@@ -522,6 +562,10 @@ void MainWindow2::currentLayerChanged()
 {
     bool isBitmap = (mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     ui->menuChange_line_color->setEnabled(isBitmap);
+
+    bool isVector = (mEditor->layers()->currentLayer()->type() == Layer::VECTOR);
+    ui->actionShowInvisibleLines->setEnabled(isVector);
+    ui->actionShowOutlinesOnly->setEnabled(isVector);
 }
 
 void MainWindow2::selectionChanged()
@@ -1030,7 +1074,6 @@ void MainWindow2::resetAndDockAllSubWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
-    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 }
@@ -1285,7 +1328,6 @@ void MainWindow2::setupKeyboardShortcuts()
     mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
-    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
     mOnionSkinWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_ONION_SKIN));
 
@@ -1467,11 +1509,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
-void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* displayWidget)
-{
-    connect(editor->layers(), &LayerManager::currentLayerChanged, displayWidget, &DisplayOptionWidget::updateUI);
-}
-
 void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
 {
 }
@@ -1640,25 +1677,39 @@ void MainWindow2::createToolbars()
     mMainToolbar->addAction(ui->actionCut);
     mMainToolbar->addAction(ui->actionCopy);
     mMainToolbar->addAction(ui->actionPaste);
+    mMainToolbar->addAction(ui->actionClearFrame);
 
     mViewToolbar = addToolBar(tr("View Toolbar"));
     mViewToolbar->setObjectName("mViewToolbar");
     mViewToolbar->addAction(ui->actionZoom_In);
     mViewToolbar->addAction(ui->actionZoom_Out);
     mViewToolbar->addAction(ui->actionReset_View);
+    mViewToolbar->addSeparator();
     mViewToolbar->addAction(ui->actionHorizontal_Flip);
     mViewToolbar->addAction(ui->actionVertical_Flip);
+    mViewToolbar->addSeparator();
+    mViewToolbar->addAction(ui->actionShowInvisibleLines);
+    mViewToolbar->addAction(ui->actionShowOutlinesOnly);
 
     mOverlayToolbar = addToolBar(tr("Overlay Toolbar"));
     mOverlayToolbar->setObjectName("mOverlayToolbar");
     mOverlayToolbar->addAction(ui->actionGrid);
+    mOverlayToolbar->addAction(ui->actionCenter);
+    mOverlayToolbar->addAction(ui->actionThirds);
+    mOverlayToolbar->addAction(ui->actionGoldenRatio);
+    mOverlayToolbar->addAction(ui->actionSafeAreas);
+    mOverlayToolbar->addAction(ui->actionOnePointPerspective);
+    mOverlayToolbar->addAction(ui->actionTwoPointPerspective);
+    mOverlayToolbar->addAction(ui->actionThreePointPerspective);
+    QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
+    perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
+    perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);
+    mOverlayToolbar->addWidget(perspectiveLinesAngleButton);
 
     mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
 
-    ui->menuWindows->addSeparator();
-    QMenu* toolbarMenu = ui->menuWindows->addMenu(tr("Toolbars"));
     for (QToolBar* tb : mToolbars)
     {
-        toolbarMenu->addAction(tb->toggleViewAction());
+        ui->menuToolbars->addAction(tb->toggleViewAction());
     }
 }
