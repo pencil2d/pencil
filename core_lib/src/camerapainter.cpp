@@ -57,8 +57,7 @@ void CameraPainter::preparePainter(const Object* object,
     mViewScale = viewScale;
 
     mHandleColor = Qt::white;
-    mHandleDisabledColor = mHandleColor;
-    mHandleDisabledColor.setAlpha(50);
+    mHandleDisabledColor = Qt::black;
     mHandleTextColor = QColor(0, 0, 0);
 
     mHandlePen = QPen();
