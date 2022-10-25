@@ -109,10 +109,6 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
     painter.setWorldMatrixEnabled(false);
 }
 
-bool CameraPainter::ignoreLayer(const Layer* cameraLayer) const {
-    return (!cameraLayer->visible() || (mLayerVisibility == LayerVisibility::CURRENTONLY));
-}
-
 void CameraPainter::paintVisuals(QPainter& painter) const
 {
     LayerCamera* cameraLayerBelow = static_cast<LayerCamera*>(mObject->getLayerBelow(mCurrentLayerIndex, Layer::CAMERA));
@@ -121,7 +117,7 @@ void CameraPainter::paintVisuals(QPainter& painter) const
 
     const Layer* currentLayer = mObject->getLayer(mCurrentLayerIndex);
 
-    if (ignoreLayer(currentLayer)) { return; }
+    if (mLayerVisibility == LayerVisibility::CURRENTONLY && currentLayer->type() != Layer::CAMERA) { return; }
 
     if (!mIsPlaying || mOnionSkinOptions.enabledWhilePlaying) {
 
@@ -146,6 +142,8 @@ void CameraPainter::paintVisuals(QPainter& painter) const
             painter.restore();
         }
     }
+
+    if (!cameraLayerBelow->visible()) { return; }
 
     QTransform camTransform = cameraLayerBelow->getViewAtFrame(mFrameIndex);
     QRect cameraRect = cameraLayerBelow->getViewRect();
