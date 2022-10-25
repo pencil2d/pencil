@@ -56,7 +56,7 @@ private:
     void paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const QPointF translation, const qreal scale, const qreal rotation, bool hollowHandles) const;
     void paintControlPoint(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const;
 
-    bool ignoreLayer(const Layer* cameraLayer, bool isCurrentLayerCamera) const;
+    bool ignoreLayer(const Layer* cameraLayer) const;
 
     const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;

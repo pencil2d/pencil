@@ -109,8 +109,8 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
     painter.setWorldMatrixEnabled(false);
 }
 
-bool CameraPainter::ignoreLayer(const Layer* cameraLayer, bool isCurrentLayerCamera) const {
-    return (!cameraLayer->visible() || (mLayerVisibility == LayerVisibility::CURRENTONLY && !isCurrentLayerCamera));
+bool CameraPainter::ignoreLayer(const Layer* cameraLayer) const {
+    return (!cameraLayer->visible() || (mLayerVisibility == LayerVisibility::CURRENTONLY));
 }
 
 void CameraPainter::paintVisuals(QPainter& painter) const
@@ -119,15 +119,14 @@ void CameraPainter::paintVisuals(QPainter& painter) const
 
     if (cameraLayerBelow == nullptr) { return; }
 
-    int startLayerI = 0;
-    int endLayerI = mObject->getLayerCount() - 1;
-
     const Layer* currentLayer = mObject->getLayer(mCurrentLayerIndex);
 
-    bool isCameraLayer = currentLayer->type() == Layer::CAMERA;
-    if (ignoreLayer(currentLayer, isCameraLayer)) { return; }
+    if (ignoreLayer(currentLayer)) { return; }
 
     if (!mIsPlaying || mOnionSkinOptions.enabledWhilePlaying) {
+
+        int startLayerI = 0;
+        int endLayerI = mObject->getLayerCount() - 1;
         for (int i = startLayerI; i <= endLayerI; i++) {
             Layer* layer = mObject->getLayer(i);
             if (layer->type() != Layer::CAMERA) { continue; }
