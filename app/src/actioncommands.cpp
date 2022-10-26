@@ -177,12 +177,10 @@ Status ActionCommands::importSound(FileType type)
     {
         st = Status::CANCELED;
     }
-    else if (strSoundFile.endsWith(".wav"))
-    {
-        st = mEditor->sound()->loadSound(key, strSoundFile);
-    }
     else
     {
+        // Convert even if it already is a WAV file to strip metadata that the
+        // DirectShow media player backend on Windows can't handle
         st = convertSoundToWav(strSoundFile);
     }
 
