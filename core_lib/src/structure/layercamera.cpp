@@ -432,6 +432,22 @@ bool LayerCamera::hasSameTranslation(int frame1, int frame2) const
     return camera1->translation() == camera2->translation();
 }
 
+QList<QPointF> LayerCamera::getBezierPointsAtFrame(int frame) const
+{
+    QList<QPointF> points;
+    int prevFrame = getPreviousKeyFramePosition(frame);
+    int nextFrame = getNextKeyFramePosition(frame);
+    if (prevFrame < nextFrame)
+    {
+        Camera* prevCam = getCameraAtFrame(prevFrame);
+        Camera* nextCam = getCameraAtFrame(nextFrame);
+        points.append(QPointF(-prevCam->translation()));
+        points.append(QPointF(prevCam->getPathControlPoint()));
+        points.append(QPointF(-nextCam->translation()));
+    }
+    return points;
+}
+
 void LayerCamera::centerPathControlPointAtFrame(int frame) const
 {
     Camera* cam1 = getCameraAtFrame(frame);

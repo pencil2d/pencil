@@ -276,7 +276,6 @@ void CameraPainter::paintInterpolations(QPainter& painter, const LayerCamera* ca
         QPointF cameraPathPoint = mViewTransform.map(cameraLayer->getPathControlPointAtFrame(mFrameIndex));
         painter.setBrush(cameraDotColor);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
-        painter.setRenderHint(QPainter::Antialiasing);
 
         // Highlight current dot
         QPen pen(Qt::black);
@@ -354,6 +353,25 @@ void CameraPainter::paintOnionSkinning(QPainter& painter, const LayerCamera* cam
 void CameraPainter::paintControlPoint(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const
 {
     painter.save();
+
+    // if active path, draw bezier help lines for active path
+    QList<QPointF> points = cameraLayer->getBezierPointsAtFrame(frameIndex + 1);
+
+    if (!points.empty())
+    {
+        Q_ASSERT(points.size() == 3);
+        QPointF p0 = mViewTransform.map(points.at(0));
+        QPointF p1 = mViewTransform.map(points.at(1));
+        QPointF p2 = mViewTransform.map(points.at(2));
+
+        painter.save();
+        QPen pen (Qt::black, 0.5, Qt::PenStyle::DashLine);
+        painter.setPen(pen);
+        painter.drawLine(p0, p1);
+        painter.drawLine(p1, p2);
+        painter.restore();
+    }
+
     // draw movemode in text
     painter.setPen(Qt::black);
     QString pathType = cameraLayer->getInterpolationTextAtFrame(frameIndex);
@@ -364,7 +382,6 @@ void CameraPainter::paintControlPoint(QPainter& painter, const LayerCamera* came
 
     // if active path, draw move handle
     painter.save();
-    painter.setRenderHint(QPainter::Antialiasing, false);
     painter.setPen(mHandleTextColor);
 
     if (hollowHandle) {
