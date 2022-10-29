@@ -16,6 +16,8 @@ GNU General Public License for more details.
 #ifndef ONIONSKINSUBPAINTER_H
 #define ONIONSKINSUBPAINTER_H
 
+#include <functional>
+
 #include "onionskinpaintstate.h"
 
 class Layer;

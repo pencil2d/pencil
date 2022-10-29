@@ -249,7 +249,7 @@ void CameraPainter::paintHandles(QPainter& painter, const QTransform& camTransfo
     painter.drawRect(bottomLeftCorner);
 
     // Paint rotation handle
-    QPointF topCenter = QLineF(camPolygon.at(0), camPolygon.at(1)).center();
+    QPointF topCenter = QLineF(camPolygon.at(0), camPolygon.at(1)).pointAt(.5);
 
     qreal offsetLimiter = (0.8 * mViewScale);
     QPointF rotationHandle = mViewTransform.map(camTransform.inverted().map(QPoint(0, (-cameraRect.height()*0.5 - (offsetLimiter) * RotationHandleOffset))));
