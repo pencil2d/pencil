@@ -1701,6 +1701,7 @@ void MainWindow2::createToolbars()
     mOverlayToolbar->addAction(ui->actionOnePointPerspective);
     mOverlayToolbar->addAction(ui->actionTwoPointPerspective);
     mOverlayToolbar->addAction(ui->actionThreePointPerspective);
+    mOverlayToolbar->setIconSize(QSize(22,22));
     QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
     perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
     perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);
