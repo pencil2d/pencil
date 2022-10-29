@@ -143,6 +143,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::INVISIBLE_LINES:
     case SETTING::OUTLINES:
     case SETTING::ONION_TYPE:
+    case SETTING::ONION_WHILE_PLAYBACK:
         invalidateAllCache();
         break;
     case SETTING::QUICK_SIZING:
