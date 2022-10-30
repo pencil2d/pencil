@@ -72,7 +72,6 @@ void ToolBoxWidget::initUI()
     ui->bucketButton->setStyleSheet(sStyle);
     ui->brushButton->setStyleSheet(sStyle);
     ui->eyedropperButton->setStyleSheet(sStyle);
-    ui->clearButton->setStyleSheet(sStyle);
     ui->smudgeButton->setStyleSheet(sStyle);
 #endif
 
@@ -97,8 +96,6 @@ void ToolBoxWidget::initUI()
     ui->eyedropperButton->setToolTip( tr( "Eyedropper Tool (%1): "
             "Set color from the stage<br>[ALT] for instant access" )
         .arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ) );
-    ui->clearButton->setToolTip( tr( "Clear Frame (%1): Erases content of selected frame" )
-        .arg( GetToolTips( CMD_CLEAR_FRAME ) ) );
     ui->smudgeButton->setToolTip( tr( "Smudge Tool (%1):<br>Edit polyline/curves<br>"
             "Liquify bitmap pixels<br> (%1)+[Alt]: Smooth" )
         .arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
@@ -123,12 +120,9 @@ void ToolBoxWidget::initUI()
         .arg( GetToolTips( CMD_TOOL_BRUSH ) ) );
     ui->eyedropperButton->setWhatsThis( tr( "Eyedropper Tool (%1)" )
         .arg( GetToolTips( CMD_TOOL_EYEDROPPER ) ) );
-    ui->clearButton->setWhatsThis( tr( "Clear Tool (%1)" )
-        .arg( GetToolTips( CMD_CLEAR_FRAME ) ) );
     ui->smudgeButton->setWhatsThis( tr( "Smudge Tool (%1)" )
         .arg( GetToolTips( CMD_TOOL_SMUDGE ) ) );
 
-    connect(ui->clearButton, &QToolButton::clicked, this, &ToolBoxWidget::clearButtonClicked);
     connect(ui->pencilButton, &QToolButton::clicked, this, &ToolBoxWidget::pencilOn);
     connect(ui->eraserButton, &QToolButton::clicked, this, &ToolBoxWidget::eraserOn);
     connect(ui->selectButton, &QToolButton::clicked, this, &ToolBoxWidget::selectOn);
@@ -146,7 +140,6 @@ void ToolBoxWidget::initUI()
 
     FlowLayout* flowlayout = new FlowLayout;
 
-    flowlayout->addWidget(ui->clearButton);
     flowlayout->addWidget(ui->pencilButton);
     flowlayout->addWidget(ui->eraserButton);
     flowlayout->addWidget(ui->selectButton);

@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/clear.png</file>
         <file>icons/remove.png</file>
         <file>icons/add.png</file>
         <file>icons/magnify.png</file>

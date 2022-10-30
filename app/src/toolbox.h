@@ -61,9 +61,6 @@ public slots:
 protected:
     int getMinHeightForWidth(int width) override;
 
-signals:
-    void clearButtonClicked();
-
 private:
     void deselectAllTools();
     bool toolOn(ToolType toolType, QToolButton* toolButton);
