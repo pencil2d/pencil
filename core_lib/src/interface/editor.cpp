@@ -170,12 +170,6 @@ void Editor::onCurrentLayerWillChange(int index)
     }
 }
 
-void Editor::onModified(int layer, int frame)
-{
-    mLastModifiedLayer = layer;
-    mLastModifiedFrame = frame;
-}
-
 BackupElement* Editor::currentBackup()
 {
     if (mBackupIndex >= 0)
@@ -734,18 +728,17 @@ void Editor::repositionImage(QPoint transform, int frame)
     }
 }
 
-void Editor::setModified(const Layer* layer, int frameNumber)
+void Editor::setModified(int layerNumber, int frameNumber)
 {
+    Layer* layer = object()->getLayer(layerNumber);
     if (layer == nullptr) { return; }
 
     layer->setModified(frameNumber, true);
 
-    emit frameModified(frameNumber);
-}
+    mLastModifiedLayer = layerNumber;
+    mLastModifiedFrame = frameNumber;
 
-void Editor::setModified(int layerNumber, int frameNumber)
-{
-    setModified(object()->getLayer(layerNumber), frameNumber);
+    emit frameModified(frameNumber);
 }
 
 void Editor::clipboardChanged()

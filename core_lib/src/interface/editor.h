@@ -162,7 +162,6 @@ public: //slots
     */
     void updateFrame(int frameNumber);
 
-    void setModified(const Layer* layer, int frameNumber);
     void setModified(int layerNumber, int frameNumber);
 
     void clearCurrentFrame();
@@ -183,7 +182,6 @@ public: //slots
     void swapLayers(int i, int j);
     bool canSwapLayers(int layerIndexLeft, int layerIndexRight) const;
 
-    void onModified(int layer, int frame);
     void backup(const QString& undoText);
     bool backup(int layerNumber, int frameNumber, const QString& undoText);
     /**
