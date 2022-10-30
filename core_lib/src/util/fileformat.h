@@ -59,7 +59,7 @@ GNU General Public License for more details.
     QString(".pclx")
 
 #define PFF_DEFAULT_IMAGE_EXT \
-   QString(".png")
+    QString(".png")
 
 #define PFF_DEFAULT_IMAGE_SEQ_EXT \
     QString(".png")

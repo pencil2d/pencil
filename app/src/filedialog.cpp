@@ -95,6 +95,11 @@ QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QS
 
     if (filePath.isEmpty()) { return QString(); }
 
+    if (!hasValidSuffix(strFilter, filePath))
+    {
+        filePath += getDefaultExtensionByFileType(fileType);
+    }
+
     if (fileType == FileType::ANIMATION)
     {
         // When we save a new project, change default path for all other filetypes
@@ -102,12 +107,6 @@ QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QS
     }
 
     setLastSavePath(fileType, filePath);
-
-    QFileInfo info(filePath);
-    if (info.suffix().isEmpty() && strSelectedFilter.isEmpty())
-    {
-        filePath += getDefaultExtensionByFileType(fileType);
-    }
 
     return filePath;
 }
@@ -218,6 +217,22 @@ QString FileDialog::saveFileFilters(FileType fileType)
     case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
     }
     return "";
+}
+
+bool FileDialog::hasValidSuffix(const QString& filters, const QString& filePath)
+{
+    QString fileName = QFileInfo(filePath).fileName();
+    for (const QString& filter : filters.split(";;"))
+    {
+        int start = filter.indexOf("(") + 1;
+        int end = filter.indexOf(")");
+        Q_ASSERT(start >= 1 && end >= 0);
+
+        if (QDir::match(filter.mid(start, end - start), fileName)) {
+            return true;
+        }
+    }
+    return false;
 }
 
 QString FileDialog::getFilterForFile(const QString& filters, QString filePath)
