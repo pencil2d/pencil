@@ -110,6 +110,7 @@ private:
     static QString getDefaultExtensionByFileType(FileType fileType);
 
     static QString toSettingKey( FileType fileType );
+    static void setLastSavePaths(const QString& filePath);
 };
 
 #endif // FILEDIALOG_H

@@ -39,6 +39,12 @@ QString FileDialog::getOpenFileName(QWidget* parent, FileType fileType, const QS
     if (!filePath.isEmpty())
     {
         setLastOpenPath(fileType, filePath);
+
+        if (fileType == FileType::ANIMATION)
+        {
+            // When we open a project, change default export path for all filetypes
+            setLastSavePaths(filePath);
+        }
     }
 
     return filePath;
@@ -63,6 +69,18 @@ QStringList FileDialog::getOpenFileNames(QWidget* parent, FileType fileType, con
     return filePaths;
 }
 
+void FileDialog::setLastSavePaths(const QString& filePath)
+{
+    QFileInfo filePathInfo(filePath);
+    QDir projectPath = filePathInfo.absoluteDir();
+    QString baseName = filePathInfo.baseName();
+    QList<FileType> fileTypes = { FileType::IMAGE, FileType::IMAGE_SEQUENCE, FileType::GIF, FileType::MOVIE, FileType::SOUND, FileType::PALETTE };
+    for (FileType& fileType : fileTypes)
+    {
+        setLastSavePath(fileType, projectPath.absoluteFilePath(defaultFileName(fileType, baseName)));
+    }
+}
+
 QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QString& caption)
 {
     QString strInitialFilePath = getLastSavePath(fileType);
@@ -80,14 +98,7 @@ QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QS
     if (fileType == FileType::ANIMATION)
     {
         // When we save a new project, change default path for all other filetypes
-        QFileInfo filePathInfo(filePath);
-        QDir projectPath = filePathInfo.absoluteDir();
-        QString baseName = filePathInfo.baseName();
-        QList<FileType> fileTypes = { FileType::IMAGE, FileType::IMAGE_SEQUENCE, FileType::GIF, FileType::MOVIE, FileType::SOUND, FileType::PALETTE };
-        for (FileType& fileType : fileTypes)
-        {
-            setLastSavePath(fileType, projectPath.absoluteFilePath(defaultFileName(fileType, baseName)));
-        }
+        setLastSavePaths(filePath);
     }
 
     setLastSavePath(fileType, filePath);
@@ -112,6 +123,8 @@ QString FileDialog::getDefaultExtensionByFileType(const FileType fileType)
     case FileType::PALETTE: return PFF_DEFAULT_PALETTE_EXT;
     case FileType::MOVIE: return PFF_DEFAULT_MOVIE_EXT;
     case FileType::SOUND: return PFF_DEFAULT_SOUND_EXT;
+    default:
+        Q_UNREACHABLE();
     }
 }
 
@@ -237,14 +250,14 @@ QString FileDialog::getFilterForFile(const QString& filters, QString filePath)
 
 QString FileDialog::defaultFileName(FileType fileType, QString baseName)
 {
-    QString defaultName = "untitled";
+    QString defaultName = tr("untitled");
     if (!baseName.isEmpty())
     {
         defaultName = baseName;
     }
     else if (fileType == FileType::ANIMATION)
     {
-        defaultName = "MyAnimation";
+        defaultName = tr("MyAnimation");
     }
 
     return defaultName.append(getDefaultExtensionByFileType(fileType));
