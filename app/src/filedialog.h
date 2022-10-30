@@ -107,6 +107,7 @@ private:
     static QString getFilterForFile( const QString& fileType, QString filePath );
     static QString defaultFileName(FileType fileType , QString baseName = QString());
 
+    static bool hasValidSuffix(const QString& filters, const QString& filePath);
     static QString getDefaultExtensionByFileType(FileType fileType);
 
     static QString toSettingKey( FileType fileType );
