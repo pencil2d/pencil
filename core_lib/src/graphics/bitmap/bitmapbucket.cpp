@@ -74,10 +74,8 @@ BitmapBucket::BitmapBucket(Editor* editor,
     mPixelCache = new QHash<QRgb, bool>();
 }
 
-bool BitmapBucket::allowFill(QPointF checkPoint) const
+bool BitmapBucket::allowFill(const QPoint& checkPoint) const
 {
-    const QPoint point = QPoint(qFloor(checkPoint.x()), qFloor(checkPoint.y()));
-
     if (mProperties.fillMode == 0 && qAlpha(mBucketColor) == 0)
     {
         // Filling in overlay mode with a fully transparent color has no
@@ -90,8 +88,8 @@ bool BitmapBucket::allowFill(QPointF checkPoint) const
 
     if (!targetImage.isLoaded()) { return false; }
 
-    QRgb colorOfReferenceImage = mReferenceImage.constScanLine(point.x(), point.y());
-    QRgb targetPixelColor = targetImage.constScanLine(point.x(), point.y());
+    QRgb colorOfReferenceImage = mReferenceImage.constScanLine(checkPoint.x(), checkPoint.y());
+    QRgb targetPixelColor = targetImage.constScanLine(checkPoint.x(), checkPoint.y());
 
     if (mProperties.fillMode == 2 && colorOfReferenceImage != 0)
     {
@@ -105,10 +103,10 @@ bool BitmapBucket::allowFill(QPointF checkPoint) const
         return true;
     }
 
+    // The remainder applies to drag fill: Ensure that we're only filling on either transparent or same color
+    // and avoid filling the same area repeatedly
+
     QRgb fillToColor = mFillToImageColor;
-
-    // Ensure that when dragging that we're only filling on either transparent or same color
-
     if (mFillToLayerPixelFormat.premultiplied() == QPixelFormat::Premultiplied) {
         fillToColor = qUnpremultiply(fillToColor);
     }
@@ -117,35 +115,23 @@ bool BitmapBucket::allowFill(QPointF checkPoint) const
         colorOfReferenceImage = qUnpremultiply(colorOfReferenceImage);
     }
 
-    if (!BitmapImage::compareColor(targetPixelColor, mAppliedColor, mTolerance, mPixelCache) &&
+    return !BitmapImage::compareColor(targetPixelColor, mAppliedColor, mTolerance, mPixelCache) &&
         BitmapImage::compareColor(targetPixelColor, mFillToImageColor, mTolerance, mPixelCache) &&
-        (BitmapImage::compareColor(colorOfReferenceImage, fillToColor, mTolerance, mPixelCache) || colorOfReferenceImage == 0)) {
-        return true;
-    }
-
-    return false;
+        (BitmapImage::compareColor(colorOfReferenceImage, fillToColor, mTolerance, mPixelCache) || colorOfReferenceImage == 0);
 }
 
 void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketState, int, int)> state)
 {
-    const Layer* targetLayer = mTargetFillToLayer;
-    int targetLayerIndex = mTargetFillToLayerIndex;
-    QRgb fillColor = mBucketColor;
-
     const QPoint point = QPoint(qFloor(updatedPoint.x()), qFloor(updatedPoint.y()));
-    const QRect cameraRect = mMaxFillRegion;
-    const int tolerance = mProperties.toleranceEnabled ? static_cast<int>(mProperties.tolerance) : 0;
     const int currentFrameIndex = mEditor->currentFrame();
-    const QRgb origColor = fillColor;
 
-    if (!allowFill(updatedPoint)) { return; }
+    if (!allowFill(point)) { return; }
 
-    BitmapImage* targetImage = static_cast<BitmapImage*>(targetLayer->getLastKeyFrameAtPosition(currentFrameIndex));
+    BitmapImage* targetImage = static_cast<BitmapImage*>(mTargetFillToLayer->getLastKeyFrameAtPosition(currentFrameIndex));
 
     if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
 
-    BitmapImage referenceImage = mReferenceImage;
-
+    QRgb fillColor = mBucketColor;
     if (mProperties.fillMode == 1)
     {
         // Pass a fully opaque version of the new color to floodFill
@@ -161,11 +147,11 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
 
     int expandValue = mProperties.bucketFillExpandEnabled ? mProperties.bucketFillExpand : 0;
     bool didFloodFill = BitmapImage::floodFill(&replaceImage,
-                           &referenceImage,
-                           cameraRect,
+                           &mReferenceImage,
+                           mMaxFillRegion,
                            point,
                            fillColor,
-                           tolerance,
+                           mTolerance,
                            expandValue);
 
     if (!didFloodFill) {
@@ -174,7 +160,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
     }
     Q_ASSERT(replaceImage != nullptr);
 
-    state(BucketState::WillFillTarget, targetLayerIndex, currentFrameIndex);
+    state(BucketState::WillFillTarget, mTargetFillToLayerIndex, currentFrameIndex);
 
     if (mProperties.fillMode == 0)
     {
@@ -189,7 +175,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
         // fill mode replace
         targetImage->paste(replaceImage, QPainter::CompositionMode_DestinationOut);
         // Reduce the opacity of the fill to match the new color
-        BitmapImage properColor(replaceImage->bounds(), QColor::fromRgba(origColor));
+        BitmapImage properColor(replaceImage->bounds(), QColor::fromRgba(mBucketColor));
         properColor.paste(replaceImage, QPainter::CompositionMode_DestinationIn);
         // Write reduced-opacity fill image on top of target image
         targetImage->paste(&properColor);
@@ -201,7 +187,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
     targetImage->modification();
     delete replaceImage;
 
-    state(BucketState::DidFillTarget, targetLayerIndex, currentFrameIndex);
+    state(BucketState::DidFillTarget, mTargetFillToLayerIndex, currentFrameIndex);
 }
 
 BitmapImage BitmapBucket::flattenBitmapLayersToImage()
