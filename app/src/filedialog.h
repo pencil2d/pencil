@@ -105,11 +105,12 @@ private:
     static QString openFileFilters( FileType fileType );
     static QString saveFileFilters( FileType fileType );
     static QString getFilterForFile( const QString& fileType, QString filePath );
-    static QString defaultFileName( FileType fileType );
+    static QString defaultFileName(FileType fileType , QString baseName = QString());
 
-    static QString addDefaultExtensionSuffix(FileType fileType);
+    static QString getDefaultExtensionByFileType(FileType fileType);
 
     static QString toSettingKey( FileType fileType );
+    static void setLastSavePaths(const QString& filePath);
 };
 
 #endif // FILEDIALOG_H
