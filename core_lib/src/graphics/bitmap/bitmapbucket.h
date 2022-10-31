@@ -80,8 +80,6 @@ private:
     int mTargetFillToLayerIndex = -1;
 
     Properties mProperties;
-
-    bool mFirstPaint = true;
 };
 
 #endif // BITMAPBUCKET_H

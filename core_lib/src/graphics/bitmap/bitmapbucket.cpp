@@ -95,20 +95,16 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
         return false;
     }
 
-    // First paint is allowed with no rules applied
-    if (mFirstPaint)
-    {
-        return true;
-    }
-
     // The remainder applies to drag fill: Ensure that we're only filling on either transparent or same color
     // and avoid filling the same area repeatedly
 
-    QRgb fillToColor = mFillToImageColor;
+    if (targetPixelColor == 0) {
+        // The target pixel color is transparent, so we can fill the pixel
+        return true;
+    }
 
     return !BitmapImage::compareColor(targetPixelColor, mAppliedColor, mTolerance, mPixelCache) &&
-        BitmapImage::compareColor(targetPixelColor, mFillToImageColor, mTolerance, mPixelCache) &&
-        (BitmapImage::compareColor(colorOfReferenceImage, fillToColor, mTolerance, mPixelCache) || colorOfReferenceImage == 0);
+            (BitmapImage::compareColor(colorOfReferenceImage, mFillToImageColor, mTolerance, mPixelCache));
 }
 
 void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketState, int, int)> state)
@@ -173,7 +169,6 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
     }
 
     mAppliedColor = targetImage->constScanLine(point.x(), point.y());
-    mFirstPaint = false;
 
     targetImage->modification();
     delete replaceImage;
