@@ -72,9 +72,6 @@ private:
     QRgb mFillToImageColor = 0;
     QRgb mAppliedColor = 0;
 
-    QPixelFormat mFillToLayerPixelFormat;
-    QPixelFormat mReferenceLayerPixelFormat;
-
     QPointF mBucketStartPoint;
     QRect mMaxFillRegion;
 

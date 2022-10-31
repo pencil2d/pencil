@@ -63,13 +63,11 @@ BitmapBucket::BitmapBucket(Editor* editor,
     {
         mReferenceImage = flattenBitmapLayersToImage();
     }
-    mReferenceLayerPixelFormat = mReferenceImage.image()->pixelFormat();
 
     const QPoint point = QPoint(qFloor(fillPoint.x()), qFloor(fillPoint.y()));
 
     BitmapImage* image = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
     mFillToImageColor = image->constScanLine(point.x(), point.y());
-    mFillToLayerPixelFormat = image->image()->pixelFormat();
 
     mPixelCache = new QHash<QRgb, bool>();
 }
@@ -107,13 +105,6 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
     // and avoid filling the same area repeatedly
 
     QRgb fillToColor = mFillToImageColor;
-    if (mFillToLayerPixelFormat.premultiplied() == QPixelFormat::Premultiplied) {
-        fillToColor = qUnpremultiply(fillToColor);
-    }
-
-    if (mReferenceLayerPixelFormat.premultiplied() == QPixelFormat::Premultiplied) {
-        colorOfReferenceImage = qUnpremultiply(colorOfReferenceImage);
-    }
 
     return !BitmapImage::compareColor(targetPixelColor, mAppliedColor, mTolerance, mPixelCache) &&
         BitmapImage::compareColor(targetPixelColor, mFillToImageColor, mTolerance, mPixelCache) &&
