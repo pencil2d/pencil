@@ -36,6 +36,7 @@ public:
 
     void initUI() override;
     void updateUI() override;
+    void updateUICached();
 
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );
@@ -46,8 +47,6 @@ public:
     void setRangeState( bool range );
     void setPlaying( bool isPlaying );
 
-    int  getLength();
-    void setLength(int frame);
     void extendLength(int frame);
 
     int getRangeLower();

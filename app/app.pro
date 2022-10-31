@@ -75,7 +75,6 @@ HEADERS += \
     src/predefinedsetmodel.h \
     src/pegbaralignmentdialog.h \
     src/shortcutfilter.h \
-    src/timeline2.h \
     src/actioncommands.h \
     src/preferencesdialog.h \
     src/filespage.h \
@@ -84,10 +83,16 @@ HEADERS += \
     src/timelinepage.h \
     src/toolspage.h \
     src/preview.h \
+    src/basedockwidget.h \
     src/colorbox.h \
     src/colorinspector.h \
     src/colorpalettewidget.h \
     src/colorwheel.h \
+    src/timeline.h \
+    src/timelinecells.h \
+    src/timecontrols.h \
+    src/cameracontextmenu.h \
+    src/camerapropertiesdialog.h \
     src/filedialog.h \
     src/pencil2d.h \
     src/exportmoviedialog.h \
@@ -123,7 +128,6 @@ SOURCES += \
     src/predefinedsetmodel.cpp \
     src/pegbaralignmentdialog.cpp \
     src/shortcutfilter.cpp \
-    src/timeline2.cpp \
     src/actioncommands.cpp \
     src/preferencesdialog.cpp \
     src/filespage.cpp \
@@ -132,10 +136,16 @@ SOURCES += \
     src/timelinepage.cpp \
     src/toolspage.cpp \
     src/preview.cpp \
+    src/basedockwidget.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
+    src/timeline.cpp \
+    src/timelinecells.cpp \
+    src/timecontrols.cpp \
+    src/cameracontextmenu.cpp \
+    src/camerapropertiesdialog.cpp \
     src/filedialog.cpp \
     src/pencil2d.cpp \
     src/exportmoviedialog.cpp \
@@ -162,6 +172,7 @@ SOURCES += \
 
 FORMS += \
     ui/cameraoptionswidget.ui \
+    ui/camerapropertiesdialog.ui \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \
@@ -170,7 +181,6 @@ FORMS += \
     ui/onionskin.ui \
     ui/pegbaralignmentdialog.ui \
     ui/repositionframesdialog.ui \
-    ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
     ui/colorpalette.ui \

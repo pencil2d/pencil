@@ -308,16 +308,8 @@ void TimeControls::loopEndValueChanged(int i)
 
 void TimeControls::updateSoundScrubIcon(bool soundScrubEnabled)
 {
-    if (soundScrubEnabled)
-    {
-        mEditor->playback()->setSoundScrubActive(true);
-        mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, true);
-    }
-    else
-    {
-        mEditor->playback()->setSoundScrubActive(false);
-        mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, false);
-    }
+    mEditor->playback()->setSoundScrubActive(soundScrubEnabled);
+    mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, soundScrubEnabled);
 }
 
 void TimeControls::noTimecodeText()
