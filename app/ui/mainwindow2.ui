@@ -474,16 +474,6 @@
     <string>Paste</string>
    </property>
   </action>
-  <action name="actionCrop">
-   <property name="text">
-    <string>Crop</string>
-   </property>
-  </action>
-  <action name="actionCrop_To_Selection">
-   <property name="text">
-    <string>Crop To Selection</string>
-   </property>
-  </action>
   <action name="actionSelect_All">
    <property name="text">
     <string>Select All</string>
@@ -666,11 +656,6 @@
     <string>Previous Frame</string>
    </property>
   </action>
-  <action name="actionExtend_Frame">
-   <property name="text">
-    <string>Extend Frame</string>
-   </property>
-  </action>
   <action name="actionAdd_Frame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
@@ -705,15 +690,6 @@
    </property>
    <property name="text">
     <string>Move</string>
-   </property>
-  </action>
-  <action name="actionClear">
-   <property name="icon">
-    <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/clear.png</normaloff>:/icons/clear.png</iconset>
-   </property>
-   <property name="text">
-    <string>Clear Frame</string>
    </property>
   </action>
   <action name="actionSelect">
@@ -891,17 +867,6 @@
     <string>Previous KeyFrame</string>
    </property>
   </action>
-  <action name="actionMultiLayerOnionSkin">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Multilayer Onion Skin</string>
-   </property>
-  </action>
   <action name="actionLoopControl">
    <property name="checkable">
     <bool>true</bool>
@@ -911,54 +876,6 @@
    </property>
    <property name="text">
     <string>Range</string>
-   </property>
-  </action>
-  <action name="actionToolsWidget">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Tools</string>
-   </property>
-  </action>
-  <action name="actionTimeline">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Timeline</string>
-   </property>
-  </action>
-  <action name="actionOptionsWidget">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Options</string>
-   </property>
-  </action>
-  <action name="actionColorWheel">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Color Wheel</string>
-   </property>
-  </action>
-  <action name="actionColorPalette">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Color Palette</string>
-   </property>
-  </action>
-  <action name="actionDisplayOptions">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Display Options</string>
    </property>
   </action>
   <action name="actionFlip_X">
@@ -1069,21 +986,6 @@
     <string>Flip Rolling</string>
    </property>
   </action>
-  <action name="actionLayerHidden">
-   <property name="text">
-    <string>Current layer only</string>
-   </property>
-  </action>
-  <action name="actionLayerRelative">
-   <property name="text">
-    <string>Relative</string>
-   </property>
-  </action>
-  <action name="actionLayerFull">
-   <property name="text">
-    <string>All Layers</string>
-   </property>
-  </action>
   <action name="actionPegbarAlignment">
    <property name="text">
     <string>Peg bar Alignment</string>
@@ -1102,11 +1004,6 @@
   <action name="actionImport_Replace_Palette">
    <property name="text">
     <string>Replace Palette...</string>
-   </property>
-  </action>
-  <action name="actionExport_Other_Palette_formats">
-   <property name="text">
-    <string>Other Palette format...</string>
    </property>
   </action>
   <action name="actionChangeLineColorCurrent_keyframe">
@@ -1146,22 +1043,6 @@
    </property>
    <property name="text">
     <string>All layers</string>
-   </property>
-  </action>
-  <action name="actionOnionSkins">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Onion Skins</string>
-   </property>
-   <property name="toolTip">
-    <string>Onion Skins</string>
-   </property>
-  </action>
-  <action name="actionReposition_Selection">
-   <property name="text">
-    <string>Reposition Selected frames</string>
    </property>
   </action>
   <action name="actionReposition_Selected_Frames">

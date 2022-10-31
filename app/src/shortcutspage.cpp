@@ -362,7 +362,6 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_TOGGLE_COLOR_INSPECTOR, ShortcutsPage::tr("Toggle Color Inspector Window Visibility", "Shortcut")},
         {CMD_TOGGLE_COLOR_LIBRARY, ShortcutsPage::tr("Toggle Color Palette Window Visibility", "Shortcut")},
         {CMD_TOGGLE_COLOR_WHEEL, ShortcutsPage::tr("Toggle Color Box Window Visibility", "Shortcut")},
-        {CMD_TOGGLE_DISPLAY_OPTIONS, ShortcutsPage::tr("Toggle Display Window Visibility", "Shortcut")},
         {CMD_TOGGLE_ONION_SKIN, ShortcutsPage::tr("Toggle Onion Skins Window Visibility", "Shortcut")},
         {CMD_TOGGLE_TIMELINE, ShortcutsPage::tr("Toggle Timeline Window Visibility", "Shortcut")},
         {CMD_TOGGLE_TOOLBOX, ShortcutsPage::tr("Toggle Tools Window Visibility", "Shortcut")},
