@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 
 class MainWindow2;
+class QLockFile;
 
 /**
  * A pointer to the unique @ref Pencil2D instance.
@@ -59,6 +60,16 @@ public:
      */
     Status handleCommandLineOptions();
 
+    /**
+     * Checks if multiple instances of Pencil2D are open.
+     *
+     * If multiple instances of Pencil2D are open (indicated by a process holding the lock to a specific file in the
+     * application data directory) then the user will be warned of the issues with running multiple instances.
+     *
+     * @return True if there are multiple instances running and the user has not chosen to ignore the warning, false otherwise.
+     */
+    bool isInstanceOpen();
+
     bool event(QEvent* event) override;
 
 signals:
@@ -83,6 +94,8 @@ private:
     void prepareGuiStartup(const QString &inputPath);
 
     std::unique_ptr<MainWindow2> mainWindow;
+
+    std::unique_ptr<QLockFile> mProcessLock;
 };
 
 #endif // PENCIL2D_H

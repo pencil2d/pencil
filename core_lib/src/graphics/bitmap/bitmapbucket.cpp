@@ -202,7 +202,9 @@ BitmapImage BitmapBucket::flattenBitmapLayersToImage()
         if (layer->type() == Layer::BITMAP && layer->visible())
         {
             BitmapImage* image = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(currentFrame);
-            flattenImage.paste(image);
+            if (image) {
+                flattenImage.paste(image);
+            }
         }
     }
     return flattenImage;

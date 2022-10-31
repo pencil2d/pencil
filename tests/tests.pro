@@ -39,11 +39,13 @@ SOURCES += \
     src/main.cpp \
     src/test_colormanager.cpp \
     src/test_layer.cpp \
+    src/test_layercamera.cpp \
     src/test_layermanager.cpp \
     src/test_object.cpp \
     src/test_filemanager.cpp \
     src/test_bitmapimage.cpp \
     src/test_bitmapbucket.cpp \
+    src/test_vectorimage.cpp \
     src/test_viewmanager.cpp
 
 # --- core_lib ---

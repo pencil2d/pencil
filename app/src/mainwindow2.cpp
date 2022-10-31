@@ -31,6 +31,8 @@ GNU General Public License for more details.
 #include <QDateTime>
 #include <QLabel>
 #include <QClipboard>
+#include <QToolBar>
+#include <QToolButton>
 
 // core_lib headers
 #include "pencildef.h"
@@ -46,6 +48,7 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "soundmanager.h"
 #include "viewmanager.h"
+#include "selectionmanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
@@ -56,12 +59,13 @@ GNU General Public License for more details.
 #include "colorbox.h"
 #include "colorinspector.h"
 #include "colorpalettewidget.h"
-#include "displayoptionwidget.h"
 #include "tooloptionwidget.h"
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
 #include "onionskinwidget.h"
+#include "pegbaralignmentdialog.h"
+#include "repositionframesdialog.h"
 
 //#include "preview.h"
 //#include "timeline2.h"
@@ -120,14 +124,15 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     createDockWidgets();
     createMenus();
+    createToolbars();
     setupKeyboardShortcuts();
 
     readSettings();
 
     selectionChanged();
+    currentLayerChanged();
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
-    connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
@@ -157,9 +162,6 @@ void MainWindow2::createDockWidgets()
     mColorPalette->setCore(mEditor);
     mColorPalette->setObjectName("ColorPalette");
 
-    mDisplayOptionWidget = new DisplayOptionWidget(this);
-    mDisplayOptionWidget->setObjectName("DisplayOption");
-
     mOnionSkinWidget = new OnionSkinWidget(this);
     mOnionSkinWidget->setObjectName("Onion Skin");
 
@@ -180,7 +182,6 @@ void MainWindow2::createDockWidgets()
         << mColorBox
         << mColorInspector
         << mColorPalette
-        << mDisplayOptionWidget
         << mOnionSkinWidget
         << mToolOptions
         << mToolBox;
@@ -205,7 +206,6 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
-    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     setDockNestingEnabled(true);
@@ -225,7 +225,6 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mColorInspector);
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
-    makeConnections(mEditor, mDisplayOptionWidget);
     makeConnections(mEditor, ui->statusBar);
 
     for (BaseDockWidget* w : mDockWidgets)
@@ -268,10 +267,12 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
+    connect(mEditor, &Editor::updateBackup, this, &MainWindow2::undoActSetText);
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
+    connect(ui->actionPaste_Previous, &QAction::triggered, mEditor, &Editor::pasteFromPreviousFrame);
     connect(ui->actionPaste, &QAction::triggered, mEditor, &Editor::paste);
     connect(ui->actionClearFrame, &QAction::triggered, mEditor, &Editor::clearCurrentFrame);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
@@ -280,6 +281,7 @@ void MainWindow2::createMenus()
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
+    connect(ui->actionReposition_Selected_Frames, &QAction::triggered, this, &MainWindow2::openRepositionDialog);
     connect(ui->actionPreference, &QAction::triggered, [=] { preferences(); });
 
     //--- Layer Menu ---
@@ -329,9 +331,55 @@ void MainWindow2::createMenus()
     PreferenceManager* prefs = mEditor->preference();
     connect(ui->actionStatusBar, &QAction::triggered, ui->statusBar, &QStatusBar::setVisible);
     bindPreferenceSetting(ui->actionStatusBar, prefs, SETTING::SHOW_STATUS_BAR);
+    bindPreferenceSetting(ui->actionThreePointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE3);
+    bindPreferenceSetting(ui->actionTwoPointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE2);
+    bindPreferenceSetting(ui->actionOnePointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE1);
+    bindPreferenceSetting(ui->actionSafeAreas, prefs, SETTING::OVERLAY_SAFE);
+    bindPreferenceSetting(ui->actionGoldenRatio, prefs, SETTING::OVERLAY_GOLDEN);
+    bindPreferenceSetting(ui->actionThirds, prefs, SETTING::OVERLAY_THIRDS);
+    bindPreferenceSetting(ui->actionCenter, prefs, SETTING::OVERLAY_CENTER);
     bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
+    bindPreferenceSetting(ui->actionShowOutlinesOnly, prefs, SETTING::OUTLINES);
+    bindPreferenceSetting(ui->actionShowInvisibleLines, prefs, SETTING::INVISIBLE_LINES);
     bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
     bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
+
+    bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
+    ui->actionSafeAreas->setEnabled(enableSafeArea);
+
+    auto perspectiveLinesAngleGroup = new QActionGroup(this);
+    perspectiveLinesAngleGroup->setExclusive(true);
+    perspectiveLinesAngleGroup->addAction(ui->action2Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action3Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action5Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action7_5Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action10Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action15Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action20Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action30Degrees);
+    connect(perspectiveLinesAngleGroup, &QActionGroup::triggered, this, [&](QAction* action) {
+        if (action == ui->action2Degrees)        mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 2);
+        else if (action == ui->action3Degrees)   mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 3);
+        else if (action == ui->action5Degrees)   mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 5);
+        else if (action == ui->action7_5Degrees) mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 7);
+        else if (action == ui->action10Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 10);
+        else if (action == ui->action15Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 15);
+        else if (action == ui->action20Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 20);
+        else if (action == ui->action30Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 30);
+        else Q_UNREACHABLE();
+        emit mEditor->view()->viewChanged();
+    });
+
+    switch (prefs->getInt(SETTING::OVERLAY_ANGLE)) {
+    case 2: ui->action2Degrees->setChecked(true); break;
+    case 3: ui->action3Degrees->setChecked(true); break;
+    case 5: ui->action5Degrees->setChecked(true); break;
+    case 7: ui->action7_5Degrees->setChecked(true); break;
+    case 10: ui->action10Degrees->setChecked(true); break;
+    case 15: ui->action15Degrees->setChecked(true); break;
+    case 20: ui->action20Degrees->setChecked(true); break;
+    case 30: ui->action30Degrees->setChecked(true); break;
+    }
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -387,7 +435,6 @@ void MainWindow2::createMenus()
         mColorBox->toggleViewAction(),
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
-        mDisplayOptionWidget->toggleViewAction(),
         mColorInspector->toggleViewAction(),
         mOnionSkinWidget->toggleViewAction()
     };
@@ -395,8 +442,9 @@ void MainWindow2::createMenus()
     for (QAction* action : actions)
     {
         action->setMenuRole(QAction::NoRole);
-        winMenu->addAction(action);
+        winMenu->insertAction(ui->menuToolbars->menuAction(), action);
     }
+    winMenu->insertSeparator(ui->menuToolbars->menuAction());
     connect(ui->actionResetWindows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
     connect(ui->actionLockWindows, &QAction::toggled, this, &MainWindow2::lockWidgets);
     bindPreferenceSetting(ui->actionLockWindows, prefs, SETTING::LAYOUT_LOCK);
@@ -418,9 +466,6 @@ void MainWindow2::createMenus()
     ui->menuFile->insertMenu(ui->actionSave, mRecentFileMenu);
 
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
-
-    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::undoActSetText);
-    connect(ui->menuEdit, &QMenu::aboutToHide, this, &MainWindow2::undoActSetEnabled);
 }
 
 void MainWindow2::setOpacity(int opacity)
@@ -482,10 +527,45 @@ void MainWindow2::openLayerOpacityDialog()
     });
 }
 
+void MainWindow2::openRepositionDialog()
+{
+    if (mEditor->layers()->currentLayer()->getSelectedFramesByPos().count() < 2)
+    {
+        QMessageBox::information(this, nullptr,
+                                 tr("Please select at least 2 frames!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+    if (mReposDialog != nullptr)
+    {
+        return;
+    }
+
+    mReposDialog = new RepositionFramesDialog(this);
+    mReposDialog->setAttribute(Qt::WA_DeleteOnClose);
+    mReposDialog->setWindowFlags(mReposDialog->windowFlags() | Qt::WindowStaysOnTopHint);
+    hideQuestionMark(*mReposDialog);
+    mReposDialog->setCore(mEditor);
+    mReposDialog->initUI();
+    mEditor->tools()->setCurrentTool(ToolType::MOVE);
+    connect(mReposDialog, &RepositionFramesDialog::finished, this, &MainWindow2::closeRepositionDialog);
+    mReposDialog->show();
+}
+
+void MainWindow2::closeRepositionDialog()
+{
+    selectionChanged();
+    mReposDialog = nullptr;
+}
+
 void MainWindow2::currentLayerChanged()
 {
     bool isBitmap = (mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     ui->menuChange_line_color->setEnabled(isBitmap);
+
+    bool isVector = (mEditor->layers()->currentLayer()->type() == Layer::VECTOR);
+    ui->actionShowInvisibleLines->setEnabled(isVector);
+    ui->actionShowOutlinesOnly->setEnabled(isVector);
 }
 
 void MainWindow2::selectionChanged()
@@ -517,18 +597,6 @@ void MainWindow2::closeEvent(QCloseEvent* event)
     writeSettings();
     event->accept();
     m2ndCloseEvent = true;
-}
-
-void MainWindow2::showEvent(QShowEvent*)
-{
-    static bool firstShowEvent = true;
-    if (!firstShowEvent)
-    {
-        return;
-    }
-    firstShowEvent = false;
-    if (tryRecoverUnsavedProject() || loadMostRecent() || tryLoadPreset()) { return; }
-    newObject();
 }
 
 void MainWindow2::tabletEvent(QTabletEvent* event)
@@ -565,6 +633,21 @@ bool MainWindow2::saveAsNewDocument()
         return false;
     }
     return saveObject(fileName);
+}
+
+void MainWindow2::openStartupFile(const QString& filename)
+{
+    if (tryRecoverUnsavedProject())
+    {
+        return;
+    }
+
+    if (!filename.isEmpty() && openObject(filename))
+    {
+        return;
+    }
+
+    loadMostRecent() || tryLoadPreset();
 }
 
 void MainWindow2::openFile(const QString& filename)
@@ -618,6 +701,7 @@ bool MainWindow2::openObject(const QString& strFilePath)
     progress.setValue(progress.maximum());
 
     updateSaveState();
+    undoActSetText();
 
     if (!QFileInfo(strFilePath).isWritable())
     {
@@ -781,10 +865,9 @@ void MainWindow2::importImage()
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
 
-    ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
 
     if (positionDialog->result() != QDialog::Accepted)
@@ -823,10 +906,9 @@ void MainWindow2::importImageSequence()
         return;
     }
 
-    ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -853,10 +935,9 @@ void MainWindow2::importPredefinedImageSet()
         return;
     }
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -887,10 +968,9 @@ void MainWindow2::importGIF()
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
     mSuppressAutoSaveDialog = true;
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -994,7 +1074,6 @@ void MainWindow2::resetAndDockAllSubWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
-    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 }
@@ -1017,6 +1096,7 @@ void MainWindow2::newObject()
     closeDialogs();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
+    undoActSetText();
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
@@ -1041,6 +1121,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
     updateSaveState();
+    undoActSetText();
 
     return true;
 }
@@ -1157,6 +1238,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRedo->setShortcut(cmdKeySeq(CMD_REDO));
     ui->actionCut->setShortcut(cmdKeySeq(CMD_CUT));
     ui->actionCopy->setShortcut(cmdKeySeq(CMD_COPY));
+    ui->actionPaste_Previous->setShortcut(cmdKeySeq(CMD_PASTE_FROM_PREVIOUS));
     ui->actionPaste->setShortcut(cmdKeySeq(CMD_PASTE));
     ui->actionClearFrame->setShortcut(cmdKeySeq(CMD_CLEAR_FRAME));
     ui->actionSelect_All->setShortcut(cmdKeySeq(CMD_SELECT_ALL));
@@ -1246,7 +1328,6 @@ void MainWindow2::setupKeyboardShortcuts()
     mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
-    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
     mOnionSkinWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_ONION_SKIN));
 
@@ -1290,12 +1371,6 @@ void MainWindow2::undoActSetText()
         ui->actionRedo->setText(tr("Redo", "Menu item text"));
         ui->actionRedo->setEnabled(false);
     }
-}
-
-void MainWindow2::undoActSetEnabled()
-{
-    ui->actionUndo->setEnabled(true);
-    ui->actionRedo->setEnabled(true);
 }
 
 void MainWindow2::exportPalette()
@@ -1357,23 +1432,23 @@ void MainWindow2::makeConnections(Editor* editor)
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
+    connect(editor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
     connect(editor, &Editor::canCopyChanged, this, [=](bool canCopy) {
         ui->actionCopy->setEnabled(canCopy);
         ui->actionCut->setEnabled(canCopy);
     });
     connect(editor, &Editor::canPasteChanged, ui->actionPaste, &QAction::setEnabled);
-
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorBox* colorBox)
 {
-    connect(colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setColor);
+    connect(colorBox, &ColorBox::colorChanged, editor->color(), &ColorManager::setFrontColor);
     connect(editor->color(), &ColorManager::colorChanged, colorBox, &ColorBox::setColor);
 }
 
 void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector)
 {
-    connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setColor);
+    connect(colorInspector, &ColorInspector::colorChanged, editor->color(), &ColorManager::setFrontColor);
     connect(editor->color(), &ColorManager::colorChanged, colorInspector, &ColorInspector::setColor);
 }
 
@@ -1411,10 +1486,10 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer);
     connect(pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer);
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
+    connect(pTimeline, &TimeLine::deleteCurrentLayerClick, mCommands, &ActionCommands::deleteCurrentLayer);
 
     // Clipboard state handling
     connect(QApplication::clipboard(), &QClipboard::dataChanged, mEditor, &Editor::clipboardChanged);
-    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(pTimeline, &TimeLine::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(this, &MainWindow2::windowActivated, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
@@ -1424,15 +1499,14 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor->layers(), &LayerManager::animationLengthChanged, pTimeline, &TimeLine::extendLength);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
 
+    // Menu UI changes
+    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
+
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
 
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
-}
-
-void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* displayWidget)
-{
-    connect(editor->layers(), &LayerManager::currentLayerChanged, displayWidget, &DisplayOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
@@ -1451,12 +1525,8 @@ void MainWindow2::makeConnections(Editor* pEditor, ColorPaletteWidget* pColorPal
     ColorManager* pColorManager = pEditor->color();
     ScribbleArea* pScribbleArea = pEditor->getScribbleArea();
 
-    connect(pColorPalette, &ColorPaletteWidget::colorChanged, pColorManager, &ColorManager::setColor);
     connect(pColorPalette, &ColorPaletteWidget::colorNumberChanged, pColorManager, &ColorManager::setColorNumber);
-
-    connect(pColorPalette, &ColorPaletteWidget::colorChanged, pScribbleArea, &ScribbleArea::paletteColorChanged);
-
-    connect(pColorManager, &ColorManager::colorChanged, pColorPalette, &ColorPaletteWidget::setColor);
+    connect(pColorManager, &ColorManager::colorNumberChanged, pScribbleArea, &ScribbleArea::paletteColorChanged);
     connect(pColorManager, &ColorManager::colorNumberChanged, pColorPalette, &ColorPaletteWidget::selectColorNumber);
 }
 
@@ -1477,6 +1547,11 @@ void MainWindow2::updateCopyCutPasteEnabled()
     ui->actionCopy->setEnabled(canCopy);
     ui->actionCut->setEnabled(canCopy);
     ui->actionPaste->setEnabled(canPaste);
+}
+
+void MainWindow2::updateLayerMenu()
+{
+    ui->actionDelete_Current_Layer->setEnabled(mEditor->layers()->canDeleteLayer(mEditor->currentLayerIndex()));
 }
 
 void MainWindow2::changePlayState(bool isPlaying)
@@ -1508,7 +1583,6 @@ bool MainWindow2::event(QEvent* event)
 {
     if(event->type() == QEvent::WindowActivate) {
         emit windowActivated();
-        return true;
     }
     return QMainWindow::event(event);
 }
@@ -1582,8 +1656,61 @@ void MainWindow2::startProjectRecovery(int result)
     Q_ASSERT(o);
     mEditor->setObject(o);
     updateSaveState();
+    undoActSetText();
 
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
     QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
+}
+
+void MainWindow2::createToolbars()
+{
+    mMainToolbar = addToolBar(tr("Main Toolbar"));
+    mMainToolbar->setObjectName("mMainToolbar");
+    mMainToolbar->addAction(ui->actionNew);
+    mMainToolbar->addAction(ui->actionOpen);
+    mMainToolbar->addAction(ui->actionSave);
+    mMainToolbar->addSeparator();
+    mMainToolbar->addAction(ui->actionUndo);
+    mMainToolbar->addAction(ui->actionRedo);
+    mMainToolbar->addSeparator();
+    mMainToolbar->addAction(ui->actionCut);
+    mMainToolbar->addAction(ui->actionCopy);
+    mMainToolbar->addAction(ui->actionPaste);
+    mMainToolbar->addAction(ui->actionClearFrame);
+
+    mViewToolbar = addToolBar(tr("View Toolbar"));
+    mViewToolbar->setObjectName("mViewToolbar");
+    mViewToolbar->addAction(ui->actionZoom_In);
+    mViewToolbar->addAction(ui->actionZoom_Out);
+    mViewToolbar->addAction(ui->actionReset_View);
+    mViewToolbar->addSeparator();
+    mViewToolbar->addAction(ui->actionHorizontal_Flip);
+    mViewToolbar->addAction(ui->actionVertical_Flip);
+    mViewToolbar->addSeparator();
+    mViewToolbar->addAction(ui->actionShowInvisibleLines);
+    mViewToolbar->addAction(ui->actionShowOutlinesOnly);
+
+    mOverlayToolbar = addToolBar(tr("Overlay Toolbar"));
+    mOverlayToolbar->setObjectName("mOverlayToolbar");
+    mOverlayToolbar->addAction(ui->actionGrid);
+    mOverlayToolbar->addAction(ui->actionCenter);
+    mOverlayToolbar->addAction(ui->actionThirds);
+    mOverlayToolbar->addAction(ui->actionGoldenRatio);
+    mOverlayToolbar->addAction(ui->actionSafeAreas);
+    mOverlayToolbar->addAction(ui->actionOnePointPerspective);
+    mOverlayToolbar->addAction(ui->actionTwoPointPerspective);
+    mOverlayToolbar->addAction(ui->actionThreePointPerspective);
+    mOverlayToolbar->setIconSize(QSize(22,22));
+    QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
+    perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
+    perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);
+    mOverlayToolbar->addWidget(perspectiveLinesAngleButton);
+
+    mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
+
+    for (QToolBar* tb : mToolbars)
+    {
+        ui->menuToolbars->addAction(tb->toggleViewAction());
+    }
 }

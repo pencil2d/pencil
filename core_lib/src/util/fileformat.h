@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #define PFF_OLD_BIG_LETTER_EXTENSION	"PCL"
 #define PFF_EXTENSION				    ".pclx"
 #define PFF_BIG_LETTER_EXTENSION	    "PCLX"
+#define PFF_BACKUP_IDENTIFIER           "backup"
 
 #define PFF_OPEN_PROJECT_EXT_FILTER \
     QCoreApplication::translate("FileFormat", "Pencil2D formats") + " (*.pclx *.pcl);;" + QCoreApplication::translate("FileFormat", "Pencil2D Project") + " (*.pclx);;" + QCoreApplication::translate("FileFormat", "Legacy Pencil2D Project") + " (*.pcl)"
@@ -66,8 +67,14 @@ GNU General Public License for more details.
 #define PFF_DEFAULT_ANIMATED_EXT \
     QString(".gif")
 
+#define PFF_DEFAULT_MOVIE_EXT \
+    QString(".mp4")
+
 #define PFF_DEFAULT_PALETTE_EXT \
     QString(".xml")
+
+#define PFF_DEFAULT_SOUND_EXT \
+    QString(".wav")
 
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"
@@ -76,7 +83,6 @@ GNU General Public License for more details.
 #define PFF_PALETTE_FILE        "palette.xml"
 
 bool removePFFTmpDirectory(const QString& dirName);
-QString uniqueString(int len);
 QString retrieveProjectNameFromTempPath(const QString& path);
 
 QString detectFormatByFileNameExtension(const QString& fileName);

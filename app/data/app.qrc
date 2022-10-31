@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>icons/clear.png</file>
         <file>icons/remove.png</file>
         <file>icons/add.png</file>
         <file>icons/magnify.png</file>
@@ -35,6 +34,10 @@
         <file>icons/exit.png</file>
         <file>icons/cut.png</file>
         <file>icons/prefs-shortcuts.png</file>
+        <file>icons/grid.png</file>
+        <file>icons/zoom-in.png</file>
+        <file>icons/zoom-out.png</file>
+        <file>icons/zoom-reset.png</file>
         <file>background/checkerboard.png</file>
         <file>icons/controls/stop.png</file>
         <file>icons/controls/sound-disabled.png</file>
@@ -51,10 +54,6 @@
         <file>icons/new/svg/smudge_detailed.svg</file>
         <file>icons/new/svg/trash_detailed.svg</file>
         <file>icons/new/checkerboard_smaller.png</file>
-        <file>icons/new/arrow-diagonalleft.png</file>
-        <file>icons/new/arrow-diagonalright.png</file>
-        <file>icons/new/arrow-selectmove.png</file>
-        <file>icons/new/arrow-vertical.png</file>
         <file>icons/overlayCenter.png</file>
         <file>icons/overlayGoldenRatio.png</file>
         <file>icons/overlaySafe.png</file>
@@ -65,6 +64,15 @@
         <file>icons/overlayAngle.png</file>
         <file>icons/controls/soundscrub.png</file>
         <file>icons/controls/soundscrub-disabled.png</file>
+        <file>icons/new/svg/cursor-rotate.svg</file>
+        <file>icons/new/svg/cursor-diagonal-left.svg</file>
+        <file>icons/new/svg/cursor-diagonal-right.svg</file>
+        <file>icons/new/svg/cursor-horizontal.svg</file>
+        <file>icons/new/svg/cursor-move.svg</file>
+        <file>icons/new/svg/cursor-vertical.svg</file>
+        <file>icons/new/svg/camera-move.svg</file>
+        <file>icons/new/svg/camera-rotate.svg</file>
+        <file>icons/new/svg/camera-scale.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

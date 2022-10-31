@@ -25,6 +25,10 @@ SoundPlayer::SoundPlayer()
 
 SoundPlayer::~SoundPlayer()
 {
+#ifdef Q_OS_WIN
+    // Qt Multimedia's DirectShow backend segfaults when it is destroyed while paused
+    stop();
+#endif
 }
 
 void SoundPlayer::init(SoundClip* clip)

@@ -17,8 +17,9 @@ GNU General Public License for more details.
 #ifndef SelectionPainter_H
 #define SelectionPainter_H
 
-#include "QRectF"
-#include "QPolygonF"
+#include <QRectF>
+#include <QPolygonF>
+#include <QTransform>
 
 class QPainter;
 class Object;
@@ -26,15 +27,23 @@ class BaseTool;
 
 struct TransformParameters
 {
-    QPolygonF lastSelectionPolygonF;
-    QPolygonF currentSelectionPolygonF;
+    QRectF originalSelectionRectF;
+
+    QTransform viewTransform;
+    QTransform selectionTransform;
 };
 
 class SelectionPainter
 {
 public:
     SelectionPainter();
+
     void paint(QPainter& painter, const Object* object, int layerIndex, BaseTool* tool, TransformParameters& transformParameters);
+
+private:
+    void paintSelectionInfo(QPainter& painter, const QTransform& mergedTransform, const QTransform& viewTransform, const QRectF& selectionRect, const QPolygonF& projectedPolygonF);
+
+    const static int HANDLE_WIDTH = 6;
 };
 
 #endif // SelectionPainter_H

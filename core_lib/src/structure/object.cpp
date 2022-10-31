@@ -33,7 +33,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 
 #include "util.h"
-#include "editor.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "fileformat.h"
@@ -42,7 +41,6 @@ GNU General Public License for more details.
 
 Object::Object()
 {
-    setData(new ObjectData());
     mActiveFramePool.reset(new ActiveFramePool);
 }
 
@@ -236,6 +234,21 @@ Layer* Object::getLayer(int i) const
     return mLayers.at(i);
 }
 
+Layer* Object::getLayerBelow(int i, Layer::LAYER_TYPE type) const
+{
+    for (; i >= 0; --i)
+    {
+        Layer* layerCheck = getLayer(i);
+        Q_ASSERT(layerCheck);
+        if (layerCheck->type() == type)
+        {
+            return layerCheck;
+        }
+    }
+
+    return nullptr;
+}
+
 Layer* Object::findLayerById(int layerId) const
 {
     for(Layer* layer : mLayers)
@@ -285,22 +298,53 @@ Layer* Object::takeLayer(int layerId)
 
 bool Object::swapLayers(int i, int j)
 {
-    if (i < 0 || i >= mLayers.size())
-    {
-        return false;
-    }
-
-    if (j < 0 || j >= mLayers.size())
-    {
-        return false;
-    }
+    bool canSwap = canSwapLayers(i, j);
+    if (!canSwap) { return false; }
 
     if (i != j)
     {
-        Layer* tmp = mLayers.at(i);
-        mLayers[i] = mLayers.at(j);
-        mLayers[j] = tmp;
+        mLayers.swap(i, j);
     }
+    return true;
+}
+
+bool Object::canSwapLayers(int layerIndexLeft, int layerIndexRight) const
+{
+    if (layerIndexLeft < 0 || layerIndexLeft >= mLayers.size())
+    {
+        return false;
+    }
+
+    if (layerIndexRight < 0 || layerIndexRight >= mLayers.size())
+    {
+        return false;
+    }
+
+    Layer* firstLayer = mLayers.first();
+    Layer* leftLayer = mLayers.at(layerIndexLeft);
+    Layer* rightLayer = mLayers.at(layerIndexRight);
+
+    // The bottom layer can't be swapped!
+    if ((leftLayer->type() == Layer::CAMERA ||
+         rightLayer->type() == Layer::CAMERA) &&
+         (firstLayer == leftLayer || firstLayer == rightLayer)) {
+        return false;
+    }
+    return true;
+}
+
+bool Object::canDeleteLayer(int index) const
+{
+    // We expect the first camera layer to be at the bottom and this layer must not be deleted!
+    if (index == 0) {
+        return false;
+    }
+
+    if (mLayers.at(index) == nullptr)
+    {
+        return false;
+    }
+
     return true;
 }
 
@@ -853,10 +897,9 @@ int Object::getLayerCount() const
     return mLayers.size();
 }
 
-void Object::setData(const ObjectData* d)
+void Object::setData(const ObjectData& d)
 {
-    Q_ASSERT(d != nullptr);
-    mData = *d;
+    mData = d;
 }
 
 int Object::totalKeyFrameCount() const

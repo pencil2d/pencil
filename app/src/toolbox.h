@@ -45,6 +45,7 @@ public:
 
 public slots:
     void onToolSetActive(ToolType toolType);
+    void onLayerDidChange(int index);
     void pencilOn();
     void eraserOn();
     void selectOn();
@@ -59,9 +60,6 @@ public slots:
 
 protected:
     int getMinHeightForWidth(int width) override;
-
-signals:
-    void clearButtonClicked();
 
 private:
     void deselectAllTools();

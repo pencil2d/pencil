@@ -45,7 +45,6 @@ QDialogButtonBox* ImportExportDialog::getDialogButtonBox()
     return ui->buttonBox;
 }
 
-
 QString ImportExportDialog::getFilePath() const
 {
     return m_filePaths.isEmpty() ? QString() : m_filePaths.first();

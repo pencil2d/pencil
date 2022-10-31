@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <cmath>
 #include <QDebug>
 #include <QFile>
+#include <QFileInfo>
 #include <QPainterPath>
 #include "util.h"
 
@@ -49,7 +50,7 @@ BitmapImage::BitmapImage(const QPoint& topLeft, const QImage& image)
 {
     mBounds = QRect(topLeft, image.size());
     mMinBound = true;
-    mImage = image;
+    mImage = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
 }
 
 BitmapImage::BitmapImage(const QPoint& topLeft, const QString& path)
@@ -68,7 +69,7 @@ BitmapImage::~BitmapImage()
 
 void BitmapImage::setImage(QImage* img)
 {
-    Q_ASSERT(img);
+    Q_ASSERT(img && img->format() == QImage::Format_ARGB32_Premultiplied);
     mImage = *img;
     mMinBound = false;
 
@@ -93,14 +94,37 @@ BitmapImage& BitmapImage::operator=(const BitmapImage& a)
 
 BitmapImage* BitmapImage::clone() const
 {
-    return new BitmapImage(*this);
+    BitmapImage* b = new BitmapImage(*this);
+    b->setFileName(""); // don't link to the file of the source bitmap image
+
+    const bool validKeyFrame = !fileName().isEmpty();
+    if (validKeyFrame && !isLoaded()) 
+    {
+        // This bitmapImage is temporarily unloaded.
+        // since it's not in the memory, we need to copy the linked png file to prevent data loss.
+        QFileInfo finfo(fileName());
+        Q_ASSERT(finfo.isAbsolute());
+        Q_ASSERT(QFile::exists(fileName()));
+
+        QString newFileName = QString("%1/%2-%3.%4")
+            .arg(finfo.canonicalPath())
+            .arg(finfo.completeBaseName())
+            .arg(uniqueString(12))
+            .arg(finfo.suffix());
+        b->setFileName(newFileName);
+
+        bool ok = QFile::copy(fileName(), newFileName);
+        Q_ASSERT(ok);
+        qDebug() << "COPY>" << fileName();
+    }
+    return b;
 }
 
 void BitmapImage::loadFile()
 {
     if (!fileName().isEmpty() && !isLoaded())
     {
-        mImage = QImage(fileName());
+        mImage = QImage(fileName()).convertToFormat(QImage::Format_ARGB32_Premultiplied);
         mBounds.setSize(mImage.size());
         mMinBound = false;
     }
@@ -156,13 +180,6 @@ BitmapImage BitmapImage::copy(QRect rectangle)
     if (rectangle.isEmpty() || mBounds.isEmpty()) return BitmapImage();
 
     QRect intersection2 = rectangle.translated(-mBounds.topLeft());
-
-    // If the region goes out of bounds, make sure the image is formatted in ARGB
-    // so that the area beyond the image bounds is transparent.
-    if (!mBounds.contains(rectangle) && !image()->hasAlphaChannel())
-    {
-        mImage = mImage.convertToFormat(QImage::Format_ARGB32);
-    }
 
     BitmapImage result(rectangle.topLeft(), image()->copy(intersection2));
     return result;

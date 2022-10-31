@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "polylinetool.h"
 #include "selecttool.h"
 #include "smudgetool.h"
+#include "cameratool.h"
 #include "editor.h"
 
 
@@ -48,6 +49,7 @@ bool ToolManager::init()
     mToolSetHash.insert(POLYLINE, new PolylineTool(this));
     mToolSetHash.insert(SELECT, new SelectTool(this));
     mToolSetHash.insert(SMUDGE, new SmudgeTool(this));
+    mToolSetHash.insert(CAMERA, new CameraTool(this));
 
     foreach(BaseTool* pTool, mToolSetHash.values())
     {
@@ -61,6 +63,7 @@ bool ToolManager::init()
 
 Status ToolManager::load(Object*)
 {
+    setDefaultTool();
     return Status::OK;
 }
 
@@ -266,6 +269,37 @@ void ToolManager::setUseFillContour(bool useFillContour)
     emit toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
+void ToolManager::setShowSelectionInfo(bool b)
+{
+    currentTool()->setShowSelectionInfo(b);
+}
+
+void ToolManager::setShowCameraPath(bool enabled)
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->setShowCameraPath(enabled);
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
+}
+
+void ToolManager::resetCameraPath()
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->resetCameraPath();
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
+}
+
+void ToolManager::resetCameraTransform(CameraFieldOption option)
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->resetTransform(option);
+}
+
+void ToolManager::setCameraPathDotColor(int dotColorNum)
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->setPathDotColorType(static_cast<DotColorType>(dotColorNum));
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
+}
 
 // Switches on/off two actions
 // eg. if x = true, then y = false
