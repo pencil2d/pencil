@@ -725,7 +725,7 @@ void ScribbleArea::tabletReleaseEventFired()
     // prior to this fix, the event queue would look like this:
     // eg: TabletPress -> TabletRelease -> MousePress
     // The following will filter mouse events created after a tablet release event.
-    mTabletReleaseMillisAgo += 100;
+    mTabletReleaseMillisAgo += 50;
 
     if (mTabletReleaseMillisAgo >= MOUSE_FILTER_THRESHOLD) {
         mTabletReleaseMillisAgo = 0;
