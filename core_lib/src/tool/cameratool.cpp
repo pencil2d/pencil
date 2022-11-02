@@ -284,7 +284,6 @@ void CameraTool::pointerPressEvent(PointerEvent*)
     updateUIAssists(mEditor->layers()->currentLayer());
 
     mStartAngle = getAngleBetween(getCurrentPoint(), mCameraRect.center()) - mCurrentAngle;
-    mDragPathFrame = mEditor->currentFrame();
     mTransformOffset = getCurrentPoint();
 }
 
