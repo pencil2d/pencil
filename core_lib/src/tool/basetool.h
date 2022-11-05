@@ -134,6 +134,8 @@ public:
     virtual void setPathDotColorType(const DotColorType dotColorType);
     virtual void resetCameraPath();
 
+    virtual void paint(QPainter& painter) { Q_UNUSED(painter) };
+
     virtual bool leavingThisTool() { return true; }
 
     Properties properties;

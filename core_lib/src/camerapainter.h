@@ -44,7 +44,7 @@ public:
 
     void setOnionSkinPainterOptions(const OnionSkinPainterOptions& options) { mOnionSkinOptions = options; }
     void setCanvas(QPixmap* canvas);
-    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, bool showHandles, LayerVisibility layerVisibility, float relativeLayerOpacityThreshold, qreal viewScale);
+    void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, LayerVisibility layerVisibility, float relativeLayerOpacityThreshold, qreal viewScale);
     void resetCache();
 
 private:
@@ -52,9 +52,6 @@ private:
     void paintVisuals(QPainter& painter) const;
     void paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
     void paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer) const;
-    void paintInterpolations(QPainter& painter, const LayerCamera* cameraLayer, const KeyFrame* keyframe) const;
-    void paintHandles(QPainter& painter, const QTransform& camTransform, const QRect& cameraRect, const QPointF translation, const qreal scale, const qreal rotation, bool hollowHandles) const;
-    void paintControlPoint(QPainter& painter, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const;
 
     const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;
@@ -72,12 +69,6 @@ private:
     qreal mViewScale = 0;
 
     bool mIsPlaying = false;
-    bool mShowHandles = false;
-
-    QPen mHandlePen;
-    QColor mHandleColor;
-    QColor mHandleDisabledColor;
-    QColor mHandleTextColor;
 };
 
 #endif // CAMERAPAINTER_H
