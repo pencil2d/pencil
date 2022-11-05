@@ -485,10 +485,11 @@ QPointF LayerCamera::getNewPathControlPointAtFrame(int frame) const
 
 void LayerCamera::updatePathControlPointAtFrame(const QPointF& point, int frame) const
 {
-    Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
+    Camera* camera = getLastCameraAtFrame(frame, 0);
     Q_ASSERT(camera);
 
     camera->setPathControlPoint(point);
+    camera->setPathControlPointMoved(true);
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, const QPointF& pathPoint, bool pathMoved)
