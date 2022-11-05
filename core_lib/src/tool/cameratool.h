@@ -42,6 +42,7 @@ enum class CameraMoveType {
 class PointerEvent;
 class LayerCamera;
 class KeyFrame;
+class Camera;
 
 class CameraTool : public BaseTool
 {
@@ -74,7 +75,7 @@ private:
     QPointF worldRotationHandlePoint(const QPoint& origin, const QTransform& localT, const qreal objectScale, const QTransform& worldT, float worldScale) const;
 
     void paintHandles(QPainter& painter, const QTransform& worldTransform, const QTransform& camTransform, const QRect& cameraRect, const QPointF translation, const qreal scale, const qreal rotation, bool hollowHandles) const;
-    void paintInterpolations(QPainter& painter, const QTransform& worldTransform, int currentFrame, const LayerCamera* cameraLayer, const KeyFrame* keyframe, bool isPlaying) const;
+    void paintInterpolations(QPainter& painter, const QTransform& worldTransform, int currentFrame, const LayerCamera* cameraLayer, const Camera* keyframe, bool isPlaying) const;
     void paintControlPoint(QPainter& painter, const QTransform& worldTransform, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const;
 
     CameraMoveType moveMode();
