@@ -89,12 +89,6 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
     QRgb colorOfReferenceImage = mReferenceImage.constScanLine(checkPoint.x(), checkPoint.y());
     QRgb targetPixelColor = targetImage.constScanLine(checkPoint.x(), checkPoint.y());
 
-    if (mProperties.fillMode == 2 && colorOfReferenceImage != 0)
-    {
-        // don't try to fill because we won't be able to see it anyway...
-        return false;
-    }
-
     // The remainder applies to drag fill: Ensure that we're only filling on either transparent or same color
     // and avoid filling the same area repeatedly
 
