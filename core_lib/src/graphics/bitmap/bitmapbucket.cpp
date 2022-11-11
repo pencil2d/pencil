@@ -63,8 +63,8 @@ BitmapBucket::BitmapBucket(Editor* editor,
     {
         mReferenceImage = flattenBitmapLayersToImage();
     }
-
     const QPoint point = QPoint(qFloor(fillPoint.x()), qFloor(fillPoint.y()));
+    mStartReferenceColor = mReferenceImage.constScanLine(point.x(), point.y());
 
     BitmapImage* image = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
     mFillToImageColor = image->constScanLine(point.x(), point.y());
@@ -92,13 +92,19 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
     // The remainder applies to drag fill: Ensure that we're only filling on either transparent or same color
     // and avoid filling the same area repeatedly
 
-    if (targetPixelColor == 0) {
-        // The target pixel color is transparent, so we can fill the pixel
+    // Rule 1: allow filling if the reference pixel is transparent and the target pixel is transparent
+    if (mStartReferenceColor == 0 && colorOfReferenceImage == 0 && targetPixelColor == 0)
+    {
         return true;
     }
 
-    return !BitmapImage::compareColor(targetPixelColor, mAppliedColor, mTolerance, mPixelCache) &&
-            (BitmapImage::compareColor(colorOfReferenceImage, mFillToImageColor, mTolerance, mPixelCache));
+    if ((BitmapImage::compareColor(colorOfReferenceImage, targetPixelColor, mTolerance, mPixelCache) &&
+         BitmapImage::compareColor(mStartReferenceColor, targetPixelColor, mTolerance, mPixelCache)) ||
+         (BitmapImage::compareColor(colorOfReferenceImage, mStartReferenceColor, mTolerance, mPixelCache) && targetPixelColor == 0)) {
+        return true;
+    }
+
+    return false;
 }
 
 void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketState, int, int)> state)
@@ -161,8 +167,6 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
         // Write reduced-opacity fill image on top of target image
         targetImage->paste(&properColor);
     }
-
-    mAppliedColor = targetImage->constScanLine(point.x(), point.y());
 
     targetImage->modification();
     delete replaceImage;

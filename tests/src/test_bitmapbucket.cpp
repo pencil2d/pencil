@@ -47,16 +47,6 @@ void verifyOnlyPixelsInsideSegmentsAreFilled(QPoint referencePoint, const Bitmap
     REQUIRE(image->constScanLine(referencePoint.x()+6, referencePoint.y()) != fillColor);
 }
 
-void verifyAllPixelsInsideSegmentsAreFilled(QPoint referencePoint, const BitmapImage* image, QRgb fillColor)
-{
-    REQUIRE(image->constScanLine(referencePoint.x(), referencePoint.y()) == fillColor);
-
-    REQUIRE(image->constScanLine(referencePoint.x()+4, referencePoint.y()) == fillColor);
-    REQUIRE(image->constScanLine(referencePoint.x()+5, referencePoint.y()) == fillColor);
-    REQUIRE(image->constScanLine(referencePoint.x()+6, referencePoint.y()) == fillColor);
-}
-
-
 /**
  *    Ascii representation of test project
  *    The "*" represent black strokes.
@@ -180,14 +170,14 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         SECTION("When reference is current layer, then all pixels not matching the fill color are filled once")
         {
             properties.bucketFillReferenceMode = 0;
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 12);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
             // Verify that colors are correct on layer below
             BitmapImage* image = static_cast<LayerBitmap*>(fillLayer)->getLastBitmapImageAtFrame(1);
 
             image->writeFile(resultsPath + "test4a.png");
 
-            verifyAllPixelsInsideSegmentsAreFilled(pressPoint, image, qPremultiply(fillColor.rgba()));
+            verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, qPremultiply(fillColor.rgba()));
         }
 
 
@@ -195,13 +185,13 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         {
             properties.bucketFillReferenceMode = 1;
 
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 12);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
             BitmapImage* image = static_cast<LayerBitmap*>(fillLayer)->getLastBitmapImageAtFrame(1);
 
-            image->writeFile(resultsPath + "test5b.png");
+            image->writeFile(resultsPath + "test5a.png");
 
-            verifyAllPixelsInsideSegmentsAreFilled(pressPoint, image, qPremultiply(fillColor.rgba()));
+            verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, qPremultiply(fillColor.rgba()));
         }
     }
 
@@ -217,7 +207,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
             Layer* fillLayer = editor->layers()->currentLayer(-1);
 
             // Because the layer is blank, all pixels will be filled once
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 12);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
             BitmapImage* image1 = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
             image1->writeFile(resultsPath + "test6a-first.png");
 

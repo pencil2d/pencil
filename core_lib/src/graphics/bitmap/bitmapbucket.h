@@ -70,7 +70,7 @@ private:
     BitmapImage mReferenceImage;
     QRgb mBucketColor = 0;
     QRgb mFillToImageColor = 0;
-    QRgb mAppliedColor = 0;
+    QRgb mStartReferenceColor = 0;
 
     QPointF mBucketStartPoint;
     QRect mMaxFillRegion;
