@@ -142,7 +142,7 @@
      </property>
      <property name="icon">
       <iconset resource="../data/app.qrc">
-       <normaloff>:/icons/themes/playful/menubar/magnify.svg</normaloff>:/icons/themes/playful/menubar/magnify.svg</iconset>
+       <normaloff>:/icons/themes/playful/menubar/zoom-select.svg</normaloff>:/icons/themes/playful/menubar/zoom-select.svg</iconset>
      </property>
      <addaction name="actionZoom400"/>
      <addaction name="actionZoom300"/>
@@ -513,7 +513,7 @@
   <action name="actionZoom_In">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/magnify-increase.svg</normaloff>:/icons/themes/playful/menubar/magnify-increase.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/zoom-in.svg</normaloff>:/icons/themes/playful/menubar/zoom-in.svg</iconset>
    </property>
    <property name="text">
     <string>Zoom In</string>
@@ -522,7 +522,7 @@
   <action name="actionZoom_Out">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/magnify-decrease.svg</normaloff>:/icons/themes/playful/menubar/magnify-decrease.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/zoom-out.svg</normaloff>:/icons/themes/playful/menubar/zoom-out.svg</iconset>
    </property>
    <property name="text">
     <string>Zoom Out</string>
@@ -539,6 +539,10 @@
    </property>
   </action>
   <action name="actionReset_View">
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/themes/playful/menubar/view-reset.svg</normaloff>:/icons/themes/playful/menubar/view-reset.svg</iconset>
+   </property>
    <property name="text">
     <string>Reset</string>
    </property>

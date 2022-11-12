@@ -39,7 +39,6 @@
         <file>icons/themes/playful/menubar/copy.svg</file>
         <file>icons/themes/playful/menubar/cut.svg</file>
         <file>icons/themes/playful/menubar/exit.svg</file>
-        <file>icons/themes/playful/menubar/magnify.svg</file>
         <file>icons/themes/playful/menubar/new.svg</file>
         <file>icons/themes/playful/menubar/next.svg</file>
         <file>icons/themes/playful/menubar/open.svg</file>
@@ -81,8 +80,6 @@
         <file>icons/themes/playful/tools/selection.svg</file>
         <file>icons/themes/playful/tools/shape.svg</file>
         <file>icons/themes/playful/tools/text.svg</file>
-        <file>icons/themes/playful/menubar/magnify-decrease.svg</file>
-        <file>icons/themes/playful/menubar/magnify-increase.svg</file>
         <file>icons/themes/playful/onion/onion-light.svg</file>
         <file>icons/general/checkerboard_smaller.png</file>
         <file>icons/themes/playful/controls/more-options.svg</file>
@@ -102,6 +99,10 @@
         <file>icons/general/cursor-move.svg</file>
         <file>icons/general/cursor-rotate.svg</file>
         <file>icons/general/cursor-vertical.svg</file>
+        <file>icons/themes/playful/menubar/zoom-in.svg</file>
+        <file>icons/themes/playful/menubar/zoom-out.svg</file>
+        <file>icons/themes/playful/menubar/zoom-select.svg</file>
+        <file>icons/themes/playful/menubar/view-reset.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
