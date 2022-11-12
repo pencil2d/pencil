@@ -51,7 +51,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/camera-scale.svg</normaloff>:/icons/new/svg/camera-scale.svg</iconset>
+          <normaloff>:/icons/themes/classic/tools/camera-scale.svg</normaloff>:/icons/themes/classic/tools/camera-scale.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -68,7 +68,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/camera-rotate.svg</normaloff>:/icons/new/svg/camera-rotate.svg</iconset>
+          <normaloff>:/icons/themes/classic/tools/camera-rotate.svg</normaloff>:/icons/themes/classic/tools/camera-rotate.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -92,7 +92,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/camera-move.svg</normaloff>:/icons/new/svg/camera-move.svg</iconset>
+          <normaloff>:/icons/themes/classic/tools/camera-move.svg</normaloff>:/icons/themes/classic/tools/camera-move.svg</iconset>
         </property>
         <property name="iconSize">
          <size>

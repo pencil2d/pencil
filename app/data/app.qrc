@@ -93,6 +93,9 @@
         <file>icons/themes/playful/onion/onion-next-alt.svg</file>
         <file>icons/themes/playful/onion/onion-prev-alt.svg</file>
         <file>icons/themes/playful/display/overlay-grid.svg</file>
+        <file>icons/themes/classic/tools/camera-move.svg</file>
+        <file>icons/themes/classic/tools/camera-rotate.svg</file>
+        <file>icons/themes/classic/tools/camera-scale.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
