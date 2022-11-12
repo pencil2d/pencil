@@ -110,10 +110,8 @@ void TimeControls::initUI()
     mLoopIcon = QIcon(":icons/themes/playful/controls/loop.svg");
     mSoundIcon = QIcon();
     mSoundIcon.addFile(":icons/themes/playful/controls/sound.svg", QSize(), QIcon::Normal, QIcon::On);
-    mSoundIcon.addFile(":icons/themes/playful/controls/sound-disabled.svg", QSize(), QIcon::Normal, QIcon::Off);
     mSoundScrubIcon = QIcon();
     mSoundScrubIcon.addFile(":icons/themes/playful/controls/soundscrub.svg", QSize(), QIcon::Normal, QIcon::On);
-    mSoundScrubIcon.addFile(":icons/themes/playful/controls/soundscrub-disabled.svg", QSize(), QIcon::Normal, QIcon::Off);
     mJumpToEndIcon = QIcon(":icons/themes/playful/controls/endplay.svg");
     mJumpToStartIcon = QIcon(":icons/themes/playful/controls/startplay.svg");
     mStartIcon = QIcon(":icons/themes/playful/controls/play.svg");
