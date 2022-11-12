@@ -390,32 +390,32 @@ QCursor MoveTool::cursor(MoveMode mode) const
     case MoveMode::PERSP_MIDDLE:
     case MoveMode::PERSP_SINGLE:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-move.svg"));
         break;
     }
     case MoveMode::TOPLEFT:
     case MoveMode::BOTTOMRIGHT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-left.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-diagonal-left.svg"));
         break;
     }
     case MoveMode::TOPRIGHT:
     case MoveMode::BOTTOMLEFT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-right.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-diagonal-right.svg"));
         break;
     }
     case MoveMode::ROTATIONLEFT:
     case MoveMode::ROTATIONRIGHT:
     case MoveMode::ROTATION:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/cursor-rotate.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-rotate.svg"));
         break;
     }
     case MoveMode::MIDDLE:
     case MoveMode::CENTER:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/cursor-move.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-move.svg"));
         break;
     }
     default:

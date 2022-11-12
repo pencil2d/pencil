@@ -96,6 +96,12 @@
         <file>icons/themes/classic/tools/camera-move.svg</file>
         <file>icons/themes/classic/tools/camera-rotate.svg</file>
         <file>icons/themes/classic/tools/camera-scale.svg</file>
+        <file>icons/general/cursor-diagonal-left.svg</file>
+        <file>icons/general/cursor-diagonal-right.svg</file>
+        <file>icons/general/cursor-horizontal.svg</file>
+        <file>icons/general/cursor-move.svg</file>
+        <file>icons/general/cursor-rotate.svg</file>
+        <file>icons/general/cursor-vertical.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
