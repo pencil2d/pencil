@@ -51,7 +51,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/themes/playful/controls/add.svg</normaloff>:/icons/themes/playful/controls/add.svg</iconset>
+          <normaloff>:/icons/themes/playful/misc/add-color.svg</normaloff>:/icons/themes/playful/misc/add-color.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -80,7 +80,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/themes/playful/controls/remove.svg</normaloff>:/icons/themes/playful/controls/remove.svg</iconset>
+          <normaloff>:/icons/themes/playful/misc/remove-color.svg</normaloff>:/icons/themes/playful/misc/remove-color.svg</iconset>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -134,7 +134,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/themes/playful/controls/color-dialog.svg</normaloff>:/icons/themes/playful/controls/color-dialog.svg</iconset>
+          <normaloff>:/icons/themes/playful/misc/color-dialog.svg</normaloff>:/icons/themes/playful/misc/color-dialog.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
