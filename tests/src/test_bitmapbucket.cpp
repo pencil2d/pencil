@@ -90,7 +90,7 @@ TEST_CASE("BitmapBucket - Fill drag logic")
 
         image->writeFile(resultsPath + "test1.png");
 
-        verifyPixels(pressPoint, image, fillColor.rgba());
+        verifyPixels(pressPoint, image, qPremultiply(fillColor.rgba()));
     }
 
     SECTION("FillTo: Layer below - reference: current layer")
@@ -133,6 +133,6 @@ TEST_CASE("BitmapBucket - Fill drag logic")
 
         image->writeFile(resultsPath + "test4.png");
 
-        verifyPixels(pressPoint, image, fillColor.rgba());
+        verifyPixels(pressPoint, image, qPremultiply(fillColor.rgba()));
     }
 }

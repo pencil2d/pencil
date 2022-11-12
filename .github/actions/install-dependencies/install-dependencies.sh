@@ -23,11 +23,7 @@ setup_linux() {
     qt515xmlpatterns qt515wayland libgl1-mesa-dev bsdtar ffmpeg \
     gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
     gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-alsa \
-    gstreamer1.0-pulseaudio git curl libfuse2 python3 python3-pip
-  echo "::endgroup::"
-
-  echo "::group::Install Python packages"
-  pip3 install --upgrade oauth2client 'google-api-python-client<2' 'setuptools<58.4' 'pyparsing<3' 'rsa<4.8'
+    gstreamer1.0-pulseaudio git curl libfuse2
   echo "::endgroup::"
 }
 
@@ -40,10 +36,6 @@ setup_macos() {
   brew link qt@5 --force
   echo "/usr/local/opt/libarchive/bin" >> "${GITHUB_PATH}"
   echo "::endgroup::"
-
-  echo "::group::Install Python packages"
-  sudo pip3 install --upgrade oauth2client google-api-python-client
-  echo "::endgroup::"
 }
 
 setup_windows() {
@@ -53,10 +45,6 @@ setup_windows() {
     choco install openssl.light --force --x86
     echo "::endgroup::"
   fi
-
-  echo "::group::Install Python packages"
-  pip install --upgrade oauth2client google-api-python-client
-  echo "::endgroup::"
 }
 
 "setup_$(echo "${RUNNER_OS}" | tr '[A-Z]' '[a-z]')"

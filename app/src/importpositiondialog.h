@@ -56,10 +56,8 @@ class ImportPositionDialog : public QDialog
     };
 
 public:
-    explicit ImportPositionDialog(QWidget *parent = nullptr);
+    explicit ImportPositionDialog(Editor* editor, QWidget *parent = nullptr);
     ~ImportPositionDialog();
-
-    void setCore(Editor* editor) { mEditor = editor; }
 
 private slots:
     void didChangeComboBoxIndex(const int index);

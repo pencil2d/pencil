@@ -282,5 +282,5 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     }
 
     mScribbleArea->clearBitmapBuffer();
-    mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+    mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

@@ -41,6 +41,7 @@ HEADERS +=  \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
     src/interface/backupelement.h \
+    src/interface/cameracontextmenu.h \
     src/interface/camerapropertiesdialog.h \
     src/interface/editor.h \
     src/interface/flowlayout.h \
@@ -63,7 +64,9 @@ HEADERS +=  \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
     src/movieimporter.h \
+    src/onionskinsubpainter.h \
     src/overlaypainter.h \
+    src/camerapainter.h \
     src/structure/camera.h \
     src/structure/keyframe.h \
     src/structure/layer.h \
@@ -79,6 +82,7 @@ HEADERS +=  \
     src/tool/basetool.h \
     src/tool/brushtool.h \
     src/tool/buckettool.h \
+    src/tool/cameratool.h \
     src/tool/erasertool.h \
     src/tool/eyedroppertool.h \
     src/tool/handtool.h \
@@ -97,6 +101,9 @@ HEADERS +=  \
     src/util/fileformat.h \
     src/util/filetype.h \
     src/util/mathutils.h \
+    src/util/onionskinpainteroptions.h \
+    src/util/onionskinpaintstate.h \
+    src/util/painterutils.h \
     src/util/pencildef.h \
     src/util/pencilerror.h \
     src/util/pencilsettings.h \
@@ -123,6 +130,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
     src/interface/backupelement.cpp \
+    src/interface/cameracontextmenu.cpp \
     src/interface/camerapropertiesdialog.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
@@ -145,7 +153,6 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/viewmanager.cpp \
     src/managers/soundmanager.cpp \
     src/movieimporter.cpp \
-    src/overlaypainter.cpp \
     src/structure/camera.cpp \
     src/structure/keyframe.cpp \
     src/structure/layer.cpp \
@@ -161,6 +168,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tool/basetool.cpp \
     src/tool/brushtool.cpp \
     src/tool/buckettool.cpp \
+    src/tool/cameratool.cpp \
     src/tool/erasertool.cpp \
     src/tool/eyedroppertool.cpp \
     src/tool/handtool.cpp \
@@ -173,6 +181,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tool/strokemanager.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp \
+    src/util/cameraeasingtype.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \
@@ -180,6 +189,9 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/util.cpp \
     src/util/pointerevent.cpp \
     src/canvaspainter.cpp \
+    src/overlaypainter.cpp \
+    src/onionskinsubpainter.cpp \
+    src/camerapainter.cpp \
     src/soundplayer.cpp \
     src/movieexporter.cpp \
     src/miniz.cpp \

@@ -218,14 +218,16 @@ bool Layer::insertExposureAt(int position)
 
 bool Layer::removeKeyFrame(int position)
 {
+    if (keyFrameCount() == 1 && this->type() != SOUND) { return false; }
     auto frame = getKeyFrameWhichCovers(position);
+
     if (frame)
     {
         if (frame->isSelected()) {
             removeFromSelectionList(frame->pos());
         }
         mKeyFrames.erase(frame->pos());
-        markFrameAsDirty(position);
+        markFrameAsDirty(frame->pos());
         delete frame;
     }
     return true;

@@ -19,6 +19,9 @@ GNU General Public License for more details.
 #define SELECTTOOL_H
 
 #include "basetool.h"
+#include "movemode.h"
+
+#include <QRectF>
 
 class Layer;
 class SelectionManager;
@@ -59,6 +62,8 @@ private:
     // the selection rectangle in mousePressEvent.
     QPointF mAnchorOriginPoint;
     MoveMode mMoveMode;
+    MoveMode mStartMoveMode = MoveMode::NONE;
+    QRectF mSelectionRect;
     Layer* mCurrentLayer = nullptr;
 };
 

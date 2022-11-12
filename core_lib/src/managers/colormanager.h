@@ -35,10 +35,17 @@ public:
     Status save(Object*) override;
     void workingLayerChanged(Layer*) override;
 
-    QColor frontColor();
-    int frontColorNumber();
-    void setColor(const QColor& color);
+    /** frontColor
+     * @param useIndexedColor default true, will only affect vector layer
+     * @return Latest stored color for bitmap or indexed color for vector, unless useIndexedColor is false
+     */
+    QColor frontColor(bool useIndexedColor = true);
+    void setFrontColor(const QColor& newFrontColor);
+
+    /** Set color for current index */
+    void setIndexedColor(const QColor& newColor);
     void setColorNumber(int n);
+    int frontColorNumber() const;
 
 signals:
     void colorChanged(QColor, int); // new color and color index

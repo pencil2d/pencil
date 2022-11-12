@@ -89,7 +89,6 @@ HEADERS += \
     src/colorpalettewidget.h \
     src/colorwheel.h \
     src/filedialog.h \
-    src/displayoptionwidget.h \
     src/pencil2d.h \
     src/exportmoviedialog.h \
     src/app_util.h \
@@ -111,7 +110,8 @@ HEADERS += \
     src/commandlineparser.h \
     src/commandlineexporter.h \
     src/statusbar.h \
-    src/elidedlabel.h
+    src/elidedlabel.h \
+    src/cameraoptionswidget.h
 
 SOURCES += \
     src/importlayersdialog.cpp \
@@ -137,7 +137,6 @@ SOURCES += \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
     src/filedialog.cpp \
-    src/displayoptionwidget.cpp \
     src/pencil2d.cpp \
     src/exportmoviedialog.cpp \
     src/errordialog.cpp \
@@ -158,9 +157,11 @@ SOURCES += \
     src/commandlineparser.cpp \
     src/commandlineexporter.cpp \
     src/statusbar.cpp \
-    src/elidedlabel.cpp
+    src/elidedlabel.cpp \
+    src/cameraoptionswidget.cpp
 
 FORMS += \
+    ui/cameraoptionswidget.ui \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \
@@ -173,7 +174,6 @@ FORMS += \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
-    ui/displayoption.ui \
     ui/errordialog.ui \
     ui/importexportdialog.ui \
     ui/exportmovieoptions.ui \

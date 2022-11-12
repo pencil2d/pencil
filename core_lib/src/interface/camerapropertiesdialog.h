@@ -36,6 +36,7 @@ public:
     void setWidth(int);
     int getHeight();
     void setHeight(int);
+
 private:
     Ui::CameraPropertiesDialog* ui = nullptr;
 };

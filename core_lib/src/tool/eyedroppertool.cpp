@@ -131,7 +131,7 @@ void EyedropperTool::updateFrontColor()
         QColor pickedColor = getBitmapColor(static_cast<LayerBitmap*>(layer));
         if (pickedColor.isValid())
         {
-            mEditor->color()->setColor(pickedColor);
+            mEditor->color()->setFrontColor(pickedColor);
         }
     }
     else if (layer->type() == Layer::VECTOR)

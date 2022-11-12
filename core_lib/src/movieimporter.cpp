@@ -342,7 +342,7 @@ Status MovieImporter::importMovieAudio(const QString& filePath, std::function<bo
 
     QString audioPath = QDir(mTempDir->path()).filePath("audio.wav");
 
-    QStringList args{ "-i", filePath, audioPath };
+    QStringList args{ "-i", filePath, "-map_metadata", "-1", "-bitexact", audioPath };
 
     status = MovieExporter::executeFFmpeg(ffmpegLocation(), args, [&progress, this] (int frame) {
         Q_UNUSED(frame)

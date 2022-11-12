@@ -19,7 +19,7 @@ win32-g++ {
 
 win32-msvc* {
     QMAKE_CXXFLAGS += /MP /utf-8 
-    CONFIG(release) {
+    CONFIG(release,debug|release) {
         QMAKE_CXXFLAGS += /Gy /GL 
         CONFIG += ltcg
         CONFIG += force_debug_info

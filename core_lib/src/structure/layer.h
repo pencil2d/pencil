@@ -99,8 +99,8 @@ public:
     bool insertExposureAt(int position);
 
     bool addNewKeyFrameAt(int position);
-    bool addKeyFrame(int position, KeyFrame*);
-    bool removeKeyFrame(int position);
+    virtual bool addKeyFrame(int position, KeyFrame*);
+    virtual bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);
     bool moveKeyFrame(int position, int offset);
     bool loadKey(KeyFrame*);

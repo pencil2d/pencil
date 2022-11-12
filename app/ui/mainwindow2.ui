@@ -160,6 +160,37 @@
      <addaction name="actionVisibilityRelative"/>
      <addaction name="actionVisibilityAll"/>
     </widget>
+    <widget class="QMenu" name="menuOverlays">
+     <property name="title">
+      <string>Overlays</string>
+     </property>
+     <widget class="QMenu" name="menuPerspectiveLinesAngle">
+      <property name="title">
+       <string>Perspective Lines Angle</string>
+      </property>
+      <property name="icon">
+       <iconset resource="../data/app.qrc">
+        <normaloff>:/icons/overlayAngle.png</normaloff>:/icons/overlayAngle.png</iconset>
+      </property>
+      <addaction name="action2Degrees"/>
+      <addaction name="action3Degrees"/>
+      <addaction name="action5Degrees"/>
+      <addaction name="action7_5Degrees"/>
+      <addaction name="action10Degrees"/>
+      <addaction name="action15Degrees"/>
+      <addaction name="action20Degrees"/>
+      <addaction name="action30Degrees"/>
+     </widget>
+     <addaction name="actionGrid"/>
+     <addaction name="actionCenter"/>
+     <addaction name="actionThirds"/>
+     <addaction name="actionGoldenRatio"/>
+     <addaction name="actionSafeAreas"/>
+     <addaction name="actionOnePointPerspective"/>
+     <addaction name="actionTwoPointPerspective"/>
+     <addaction name="actionThreePointPerspective"/>
+     <addaction name="menuPerspectiveLinesAngle"/>
+    </widget>
     <addaction name="actionReset_View"/>
     <addaction name="actionCenter_View"/>
     <addaction name="separator"/>
@@ -174,14 +205,14 @@
     <addaction name="actionHorizontal_Flip"/>
     <addaction name="actionVertical_Flip"/>
     <addaction name="separator"/>
+    <addaction name="menuOverlays"/>
     <addaction name="menuOnion_Skin"/>
     <addaction name="menuLayer_Visibility"/>
     <addaction name="separator"/>
-    <addaction name="actionGrid"/>
+    <addaction name="actionShowInvisibleLines"/>
+    <addaction name="actionShowOutlinesOnly"/>
     <addaction name="separator"/>
     <addaction name="actionPreview"/>
-    <addaction name="separator"/>
-    <addaction name="actionStatusBar"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -280,9 +311,16 @@
     <property name="title">
      <string>Windows</string>
     </property>
+    <widget class="QMenu" name="menuToolbars">
+     <property name="title">
+      <string>Toolbars</string>
+     </property>
+    </widget>
     <addaction name="actionResetWindows"/>
     <addaction name="actionLockWindows"/>
     <addaction name="separator"/>
+    <addaction name="menuToolbars"/>
+    <addaction name="actionStatusBar"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuEdit"/>
@@ -438,16 +476,6 @@
    </property>
    <property name="text">
     <string>Paste</string>
-   </property>
-  </action>
-  <action name="actionCrop">
-   <property name="text">
-    <string>Crop</string>
-   </property>
-  </action>
-  <action name="actionCrop_To_Selection">
-   <property name="text">
-    <string>Crop To Selection</string>
    </property>
   </action>
   <action name="actionSelect_All">
@@ -614,11 +642,6 @@
   <action name="actionPrevious_Frame">
    <property name="text">
     <string>Previous Frame</string>
-   </property>
-  </action>
-  <action name="actionExtend_Frame">
-   <property name="text">
-    <string>Extend Frame</string>
    </property>
   </action>
   <action name="actionAdd_Frame">
@@ -836,17 +859,6 @@
     <string>Previous KeyFrame</string>
    </property>
   </action>
-  <action name="actionMultiLayerOnionSkin">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="checked">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Multilayer Onion Skin</string>
-   </property>
-  </action>
   <action name="actionLoopControl">
    <property name="checkable">
     <bool>true</bool>
@@ -856,54 +868,6 @@
    </property>
    <property name="text">
     <string>Range</string>
-   </property>
-  </action>
-  <action name="actionToolsWidget">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Tools</string>
-   </property>
-  </action>
-  <action name="actionTimeline">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Timeline</string>
-   </property>
-  </action>
-  <action name="actionOptionsWidget">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Options</string>
-   </property>
-  </action>
-  <action name="actionColorWheel">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Color Wheel</string>
-   </property>
-  </action>
-  <action name="actionColorPalette">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Color Palette</string>
-   </property>
-  </action>
-  <action name="actionDisplayOptions">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Display Options</string>
    </property>
   </action>
   <action name="actionFlip_X">
@@ -1014,21 +978,6 @@
     <string>Flip Rolling</string>
    </property>
   </action>
-  <action name="actionLayerHidden">
-   <property name="text">
-    <string>Current layer only</string>
-   </property>
-  </action>
-  <action name="actionLayerRelative">
-   <property name="text">
-    <string>Relative</string>
-   </property>
-  </action>
-  <action name="actionLayerFull">
-   <property name="text">
-    <string>All Layers</string>
-   </property>
-  </action>
   <action name="actionPegbarAlignment">
    <property name="text">
     <string>Peg bar Alignment</string>
@@ -1047,11 +996,6 @@
   <action name="actionImport_Replace_Palette">
    <property name="text">
     <string>Replace Palette...</string>
-   </property>
-  </action>
-  <action name="actionExport_Other_Palette_formats">
-   <property name="text">
-    <string>Other Palette format...</string>
    </property>
   </action>
   <action name="actionChangeLineColorCurrent_keyframe">
@@ -1091,22 +1035,6 @@
    </property>
    <property name="text">
     <string>All layers</string>
-   </property>
-  </action>
-  <action name="actionOnionSkins">
-   <property name="checkable">
-    <bool>true</bool>
-   </property>
-   <property name="text">
-    <string>Onion Skins</string>
-   </property>
-   <property name="toolTip">
-    <string>Onion Skins</string>
-   </property>
-  </action>
-  <action name="actionReposition_Selection">
-   <property name="text">
-    <string>Reposition Selected frames</string>
    </property>
   </action>
   <action name="actionReposition_Selected_Frames">
@@ -1179,6 +1107,178 @@
    </property>
    <property name="toolTip">
     <string>Paste from Previous Keyframe</string>
+   </property>
+  </action>
+  <action name="actionShowInvisibleLines">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/app/icons/thinlines5.png</normaloff>:/app/icons/thinlines5.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show Invisible Lines</string>
+   </property>
+  </action>
+  <action name="actionShowOutlinesOnly">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/app/icons/outlines5.png</normaloff>:/app/icons/outlines5.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show Outlines Only</string>
+   </property>
+  </action>
+  <action name="actionCenter">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayCenter.png</normaloff>:/icons/overlayCenter.png</iconset>
+   </property>
+   <property name="text">
+    <string>Center</string>
+   </property>
+  </action>
+  <action name="actionThirds">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayThirds.png</normaloff>:/icons/overlayThirds.png</iconset>
+   </property>
+   <property name="text">
+    <string>Thirds</string>
+   </property>
+  </action>
+  <action name="actionGoldenRatio">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayGoldenRatio.png</normaloff>:/icons/overlayGoldenRatio.png</iconset>
+   </property>
+   <property name="text">
+    <string>Golden Ratio</string>
+   </property>
+  </action>
+  <action name="actionSafeAreas">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlaySafe.png</normaloff>:/icons/overlaySafe.png</iconset>
+   </property>
+   <property name="text">
+    <string>Safe Areas</string>
+   </property>
+  </action>
+  <action name="actionOnePointPerspective">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayPerspective1.png</normaloff>:/icons/overlayPerspective1.png</iconset>
+   </property>
+   <property name="text">
+    <string>One Point Perspective</string>
+   </property>
+  </action>
+  <action name="actionTwoPointPerspective">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayPerspective2.png</normaloff>:/icons/overlayPerspective2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Two Point Perspective</string>
+   </property>
+  </action>
+  <action name="actionThreePointPerspective">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/overlayPerspective3.png</normaloff>:/icons/overlayPerspective3.png</iconset>
+   </property>
+   <property name="text">
+    <string>Three Point Perspective</string>
+   </property>
+  </action>
+  <action name="action2Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>2°</string>
+   </property>
+  </action>
+  <action name="action3Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>3°</string>
+   </property>
+  </action>
+  <action name="action5Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>5°</string>
+   </property>
+  </action>
+  <action name="action7_5Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>7.5°</string>
+   </property>
+  </action>
+  <action name="action10Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>10°</string>
+   </property>
+  </action>
+  <action name="action15Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>15°</string>
+   </property>
+  </action>
+  <action name="action20Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>20°</string>
+   </property>
+  </action>
+  <action name="action30Degrees">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>30°</string>
    </property>
   </action>
  </widget>

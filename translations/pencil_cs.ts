@@ -67,10 +67,10 @@
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="146"/>
-        <location filename="../app/src/actioncommands.cpp" line="765"/>
-        <location filename="../app/src/actioncommands.cpp" line="778"/>
-        <location filename="../app/src/actioncommands.cpp" line="791"/>
-        <location filename="../app/src/actioncommands.cpp" line="804"/>
+        <location filename="../app/src/actioncommands.cpp" line="788"/>
+        <location filename="../app/src/actioncommands.cpp" line="801"/>
+        <location filename="../app/src/actioncommands.cpp" line="814"/>
+        <location filename="../app/src/actioncommands.cpp" line="827"/>
         <source>Layer name:</source>
         <translation>Název vrstvy:</translation>
     </message>
@@ -118,7 +118,7 @@
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="500"/>
-        <location filename="../app/src/actioncommands.cpp" line="919"/>
+        <location filename="../app/src/actioncommands.cpp" line="942"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -139,57 +139,63 @@
         <translation>Opravdu chcete odstranit vybrané snímky? Tento krok je v současnosti nevratný!</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="764"/>
-        <location filename="../app/src/actioncommands.cpp" line="777"/>
-        <location filename="../app/src/actioncommands.cpp" line="803"/>
+        <location filename="../app/src/actioncommands.cpp" line="703"/>
+        <source>%1 (copy)</source>
+        <comment>Default duplicate layer name</comment>
+        <translation>%1 (kopie)</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="787"/>
+        <location filename="../app/src/actioncommands.cpp" line="800"/>
+        <location filename="../app/src/actioncommands.cpp" line="826"/>
         <source>Layer Properties</source>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="766"/>
+        <location filename="../app/src/actioncommands.cpp" line="789"/>
         <source>Bitmap Layer</source>
         <translation>Bitmapová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="779"/>
+        <location filename="../app/src/actioncommands.cpp" line="802"/>
         <source>Vector Layer</source>
         <translation>Vektorová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="790"/>
+        <location filename="../app/src/actioncommands.cpp" line="813"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="792"/>
+        <location filename="../app/src/actioncommands.cpp" line="815"/>
         <source>Camera Layer</source>
         <translation>Kamerová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="805"/>
+        <location filename="../app/src/actioncommands.cpp" line="828"/>
         <source>Sound Layer</source>
         <translation>Zvuková vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="820"/>
+        <location filename="../app/src/actioncommands.cpp" line="843"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Smazat vrstvu</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="821"/>
+        <location filename="../app/src/actioncommands.cpp" line="844"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
         <translation>Opravdu chcete smazat vrstvu: %1? Toto nelze vrátit zpět.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="830"/>
+        <location filename="../app/src/actioncommands.cpp" line="853"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Ponechejte, prosím, v projektu alespoň jednu vrstvu s kamerou</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="919"/>
+        <location filename="../app/src/actioncommands.cpp" line="942"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
         <translation>Dočasný adresář je určen pouze pro použití Pencil2D. Neměňte jej, pokud nevíte, co děláte.</translation>
     </message>
@@ -2320,41 +2326,46 @@
         <translation>Vložit</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="737"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="746"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="755"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="787"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="680"/>
+        <source>Reposition frame</source>
+        <translation>Přemístění snímku</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="753"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="762"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="771"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="803"/>
         <source>Could not open file</source>
         <translation>Nepodařilo se otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="738"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="754"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>Soubor, jejž jste vybral, je adresář, takže jej nelze otevřít. Pokud se pokoušíte o otevření projektu, který používá starou stavbu, otevřete, prosím, soubor končící na .pcl, ne složku s daty.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="747"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="763"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>Soubor, jejž jste vybral, není, takže jej nelze otevřít. Ujistěte se, prosím, že jste zadal správnou cestu a že je soubor přístupný a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="756"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="772"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Tento program nemá oprávnění ke čtení vybraného souboru. Ověřte, prosím, že máte oprávnění k tomuto souboru a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="788"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="804"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>Při pokusu o nahrání souboru se vyskytla neznámá chyba. Soubor nelze nahrát.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="876"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="909"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="892"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="925"/>
         <source>Import Image</source>
         <translation>Zavést obrázek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1116"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1132"/>
         <source>Remove frame</source>
         <translation>Odstranit snímek</translation>
     </message>
@@ -2680,55 +2691,55 @@
 <context>
     <name>FileFormat</name>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
         <source>Pencil2D formats</source>
         <translation>Formáty Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="34"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
         <source>Pencil2D Project</source>
         <translation>Projekt Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="34"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
         <source>Legacy Pencil2D Project</source>
         <translation>Starší verze projektu Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="37"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
         <source>Movie formats</source>
         <translation>Filmové formáty</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="42"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="45"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="43"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="46"/>
         <source>Image formats</source>
         <translation>Obrázkové formáty</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>Palette formats</source>
         <translation>Formáty palet</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>Pencil2D Palette</source>
         <translation>Paleta Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>GIMP Palette</source>
         <translation>Paleta GIMP</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="51"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="52"/>
         <source>Animated GIF</source>
         <translation>Animovaný GIF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="54"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="55"/>
         <source>Sound formats</source>
         <translation>Zvukové formáty</translation>
     </message>
@@ -2736,97 +2747,99 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="220"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="235"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="243"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="250"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="254"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
         <source>Invalid Save Path</source>
         <translation>Neplatná ukládací cesta</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="221"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="232"/>
         <source>The path is empty.</source>
         <translation>Cesta je prázdná.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="236"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="247"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Cesta (&quot;%1&quot;) ukazuje na adresář.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="244"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="255"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Adresář (&quot;%1&quot;) neexistuje.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="251"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="262"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Cesta (&quot;%1&quot;) není zapisovatelná.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="287"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="296"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="299"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="308"/>
         <source>Cannot Create Data Directory</source>
         <translation>Nelze vytvořit adresář s daty</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="288"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="300"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>Nepodařilo se vytvořit adresář &quot;%1&quot;. Ujistěte se, prosím, že máte dostatečná oprávnění.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="297"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="309"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; je soubor. Smažte, prosím, soubor a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="325"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="342"/>
         <source>Miniz Error</source>
         <translation>Chyba Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="326"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="341"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="333"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="343"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="358"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Vyskytla se vnitřní chyba. Soubor se nemuselo podařit uložit úspěšně.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="340"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="332"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="357"/>
         <source>Internal Error</source>
         <translation>Vnitřní chyba</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="511"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="528"/>
         <source>Could not open file</source>
         <translation>Nepodařilo se otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="521"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="538"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
         <translation>Soubor není, takže jej nelze otevřít. Podívejte se, prosím, a ujistěte se, že je cesta správná a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="526"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="543"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
         <translation>Nemáte oprávnění číst soubor. Ověřte, prosím, že máte oprávnění k tomuto souboru a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="532"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="549"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
         <translation>Při zpracování souboru se vyskytla chyba. Obyčejně to znamená, že váš projekt byl alespoň částečně poškozen. Zkuste to znovu s novou verzí Pencil2D, nebo vyzkoušejte použití záložního souboru, pokud nějaký máte. Pokud se s námi spojíte přes jeden z našich veřejných kanálů, můžeme vám být schopni pomoci. Pro hlášení potíží jsou nejlepšími místy, jak nás dosáhnout:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="940"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="980"/>
         <source>Bitmap Layer %1</source>
         <translation>Bitmapová vrstva %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="942"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="982"/>
         <source>Vector Layer %1</source>
         <translation>Vektorová vrstva %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="944"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="984"/>
         <source>Sound Layer %1</source>
         <translation>Zvuková vrstva %1</translation>
     </message>
@@ -3523,782 +3536,797 @@ Přečtěte si pokyny a zkuste to znovu</translation>
         <translation>Výběr časové osy</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="218"/>
-        <location filename="../app/ui/mainwindow2.ui" line="873"/>
+        <location filename="../app/ui/mainwindow2.ui" line="219"/>
+        <location filename="../app/ui/mainwindow2.ui" line="874"/>
         <source>Tools</source>
         <translation>Nástroje</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="236"/>
+        <location filename="../app/ui/mainwindow2.ui" line="237"/>
         <source>Layer</source>
         <translation>Vrstva</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="240"/>
+        <location filename="../app/ui/mainwindow2.ui" line="241"/>
         <source>Change line color</source>
         <translation>Změnit barvu čáry</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="258"/>
-        <location filename="../app/ui/mainwindow2.ui" line="804"/>
+        <location filename="../app/ui/mainwindow2.ui" line="259"/>
+        <location filename="../app/ui/mainwindow2.ui" line="805"/>
         <source>Help</source>
         <translation>Nápověda</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="275"/>
+        <location filename="../app/ui/mainwindow2.ui" line="276"/>
         <source>Windows</source>
         <translation>Okno</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="296"/>
+        <location filename="../app/ui/mainwindow2.ui" line="297"/>
         <source>New</source>
         <translation>Nový</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="305"/>
+        <location filename="../app/ui/mainwindow2.ui" line="306"/>
         <source>Open</source>
         <translation>Otevřít</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="314"/>
+        <location filename="../app/ui/mainwindow2.ui" line="315"/>
         <source>Save</source>
         <translation>Uložit</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="323"/>
+        <location filename="../app/ui/mainwindow2.ui" line="324"/>
         <source>Save As...</source>
         <translation>Uložit jako...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="332"/>
+        <location filename="../app/ui/mainwindow2.ui" line="333"/>
         <source>Exit</source>
         <translation>Ukončit</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="337"/>
-        <location filename="../app/ui/mainwindow2.ui" line="365"/>
+        <location filename="../app/ui/mainwindow2.ui" line="338"/>
+        <location filename="../app/ui/mainwindow2.ui" line="366"/>
         <source>Image Sequence...</source>
         <translation>Řada obrázků...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="342"/>
-        <location filename="../app/ui/mainwindow2.ui" line="360"/>
+        <location filename="../app/ui/mainwindow2.ui" line="343"/>
+        <location filename="../app/ui/mainwindow2.ui" line="361"/>
         <source>Image...</source>
         <translation>Obrázek...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="347"/>
+        <location filename="../app/ui/mainwindow2.ui" line="348"/>
         <source>Movie...</source>
         <translation>Film...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="355"/>
+        <location filename="../app/ui/mainwindow2.ui" line="356"/>
         <source>Palette</source>
         <translation>Paleta</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="370"/>
+        <location filename="../app/ui/mainwindow2.ui" line="371"/>
         <source>Movie Video...</source>
         <translation>Obraz filmu...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="375"/>
+        <location filename="../app/ui/mainwindow2.ui" line="376"/>
         <source>Sound...</source>
         <translation>Zvuk...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="380"/>
+        <location filename="../app/ui/mainwindow2.ui" line="381"/>
         <source>Image Predefined set...</source>
         <translation>Předem stanovená obrázková řada...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="389"/>
+        <location filename="../app/ui/mainwindow2.ui" line="390"/>
         <source>Undo</source>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="398"/>
+        <location filename="../app/ui/mainwindow2.ui" line="399"/>
         <source>Redo</source>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="410"/>
+        <location filename="../app/ui/mainwindow2.ui" line="411"/>
         <source>Cut</source>
         <translation>Vyjmout</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="422"/>
+        <location filename="../app/ui/mainwindow2.ui" line="423"/>
         <source>Copy</source>
         <translation>Kopírovat</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="434"/>
+        <location filename="../app/ui/mainwindow2.ui" line="435"/>
         <source>Paste</source>
         <translation>Vložit</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="439"/>
+        <location filename="../app/ui/mainwindow2.ui" line="440"/>
         <source>Crop</source>
         <translation>Oříznout</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="444"/>
+        <location filename="../app/ui/mainwindow2.ui" line="445"/>
         <source>Crop To Selection</source>
         <translation>Oříznout k výběru</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="449"/>
+        <location filename="../app/ui/mainwindow2.ui" line="450"/>
         <source>Select All</source>
         <translation>Vybrat vše</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="454"/>
+        <location filename="../app/ui/mainwindow2.ui" line="455"/>
         <source>Deselect All</source>
         <translation>Zrušit výběr všeho</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="463"/>
-        <location filename="../app/ui/mainwindow2.ui" line="668"/>
+        <location filename="../app/ui/mainwindow2.ui" line="464"/>
+        <location filename="../app/ui/mainwindow2.ui" line="669"/>
         <source>Clear Frame</source>
         <translation>Vyprázdnit snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="468"/>
+        <location filename="../app/ui/mainwindow2.ui" line="469"/>
         <source>Preferences</source>
         <translation>Nastavení</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="476"/>
+        <location filename="../app/ui/mainwindow2.ui" line="477"/>
         <source>Reset Windows</source>
         <translation>Obnovit výchozí okna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="485"/>
+        <location filename="../app/ui/mainwindow2.ui" line="486"/>
         <source>Zoom In</source>
         <translation>Přiblížit</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="494"/>
+        <location filename="../app/ui/mainwindow2.ui" line="495"/>
         <source>Zoom Out</source>
         <translation>Oddálit</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="499"/>
+        <location filename="../app/ui/mainwindow2.ui" line="500"/>
         <source>Rotate Clockwise</source>
         <translation>Otočit po směru hodinových ručiček</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="504"/>
+        <location filename="../app/ui/mainwindow2.ui" line="505"/>
         <source>Rotate Anticlockwise</source>
         <translation>Otočit proti směru hodinových ručiček</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="509"/>
+        <location filename="../app/ui/mainwindow2.ui" line="510"/>
         <source>Reset</source>
         <translation>Obnovit výchozí</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="521"/>
+        <location filename="../app/ui/mainwindow2.ui" line="522"/>
         <source>Horizontal Flip</source>
         <translation>Převrátit vodorovně</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="533"/>
+        <location filename="../app/ui/mainwindow2.ui" line="534"/>
         <source>Vertical Flip</source>
         <translation>Převrátit svisle</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="541"/>
+        <location filename="../app/ui/mainwindow2.ui" line="542"/>
         <source>Preview</source>
         <translation>Náhled</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="549"/>
+        <location filename="../app/ui/mainwindow2.ui" line="550"/>
         <source>Grid</source>
         <translation>Mřížka</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="561"/>
+        <location filename="../app/ui/mainwindow2.ui" line="562"/>
         <source>Previous</source>
         <translation>Předchozí</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="564"/>
+        <location filename="../app/ui/mainwindow2.ui" line="565"/>
         <source>Show previous onion skin</source>
         <translation>Zobrazit předchozí cibulovou slupku</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="576"/>
+        <location filename="../app/ui/mainwindow2.ui" line="577"/>
         <source>Next</source>
         <translation>Další</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="579"/>
+        <location filename="../app/ui/mainwindow2.ui" line="580"/>
         <source>Show next onion skin</source>
         <translation>Ukázat následující cibulovou slupku</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="588"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1490"/>
+        <location filename="../app/ui/mainwindow2.ui" line="589"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1527"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="600"/>
+        <location filename="../app/ui/mainwindow2.ui" line="601"/>
         <source>Loop</source>
         <translation>Smyčka</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="609"/>
+        <location filename="../app/ui/mainwindow2.ui" line="610"/>
         <source>Next Frame</source>
         <translation>Další snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="618"/>
+        <location filename="../app/ui/mainwindow2.ui" line="619"/>
         <source>Previous Frame</source>
         <translation>Předchozí snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="623"/>
+        <location filename="../app/ui/mainwindow2.ui" line="624"/>
         <source>Extend Frame</source>
         <translation>Rozšířit snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="632"/>
+        <location filename="../app/ui/mainwindow2.ui" line="633"/>
         <source>Add Frame</source>
         <translation>Přidat snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="641"/>
+        <location filename="../app/ui/mainwindow2.ui" line="642"/>
         <source>Duplicate Frame</source>
         <translation>Zdvojit snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="650"/>
+        <location filename="../app/ui/mainwindow2.ui" line="651"/>
         <source>Remove Frame</source>
         <translation>Odstranit snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="659"/>
+        <location filename="../app/ui/mainwindow2.ui" line="660"/>
         <source>Move</source>
         <translation>Posun</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="677"/>
+        <location filename="../app/ui/mainwindow2.ui" line="678"/>
         <source>Select</source>
         <translation>Výběr</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="686"/>
+        <location filename="../app/ui/mainwindow2.ui" line="687"/>
         <source>Brush</source>
         <translation>Štětec</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="695"/>
+        <location filename="../app/ui/mainwindow2.ui" line="696"/>
         <source>Polyline</source>
         <translation>Lomená čára</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="704"/>
+        <location filename="../app/ui/mainwindow2.ui" line="705"/>
         <source>Smudge</source>
         <translation>Šmouha</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="713"/>
+        <location filename="../app/ui/mainwindow2.ui" line="714"/>
         <source>Pen</source>
         <translation>Pero</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="722"/>
+        <location filename="../app/ui/mainwindow2.ui" line="723"/>
         <source>Hand</source>
         <translation>Ruka</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="731"/>
+        <location filename="../app/ui/mainwindow2.ui" line="732"/>
         <source>Pencil</source>
         <translation>Tužka</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="740"/>
+        <location filename="../app/ui/mainwindow2.ui" line="741"/>
         <source>Bucket</source>
         <translation>Plechovka</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="749"/>
+        <location filename="../app/ui/mainwindow2.ui" line="750"/>
         <source>Eyedropper</source>
         <translation>Kapátko</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="758"/>
+        <location filename="../app/ui/mainwindow2.ui" line="759"/>
         <source>Eraser</source>
         <translation>Guma</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="767"/>
+        <location filename="../app/ui/mainwindow2.ui" line="768"/>
         <source>New Bitmap Layer</source>
         <translation>Nová bitmapová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="776"/>
+        <location filename="../app/ui/mainwindow2.ui" line="777"/>
         <source>New Vector Layer</source>
         <translation>Nová vektorová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="785"/>
+        <location filename="../app/ui/mainwindow2.ui" line="786"/>
         <source>New Sound Layer</source>
         <translation>Nová zvuková vrstva</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="794"/>
+        <location filename="../app/ui/mainwindow2.ui" line="795"/>
         <source>New Camera Layer</source>
         <translation>Nová kamerová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="799"/>
+        <location filename="../app/ui/mainwindow2.ui" line="800"/>
         <source>Delete Current Layer</source>
         <translation>Smazat nynější vrstvu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="809"/>
+        <location filename="../app/ui/mainwindow2.ui" line="810"/>
         <source>About</source>
         <translation>O programu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="814"/>
-        <location filename="../app/ui/mainwindow2.ui" line="817"/>
+        <location filename="../app/ui/mainwindow2.ui" line="815"/>
+        <location filename="../app/ui/mainwindow2.ui" line="818"/>
         <source>Reset to default</source>
         <translation>Obnovit výchozí nastavení</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="827"/>
-        <location filename="../app/ui/mainwindow2.ui" line="830"/>
+        <location filename="../app/ui/mainwindow2.ui" line="828"/>
+        <location filename="../app/ui/mainwindow2.ui" line="831"/>
         <source>Next Keyframe</source>
         <translation>Další klíčový snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="840"/>
-        <location filename="../app/ui/mainwindow2.ui" line="843"/>
+        <location filename="../app/ui/mainwindow2.ui" line="841"/>
+        <location filename="../app/ui/mainwindow2.ui" line="844"/>
         <source>Previous KeyFrame</source>
         <translation>Předchozí klíčový snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="854"/>
+        <location filename="../app/ui/mainwindow2.ui" line="855"/>
         <source>Multilayer Onion Skin</source>
         <translation>Vícevrstvý cibulový vzhled</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="865"/>
+        <location filename="../app/ui/mainwindow2.ui" line="866"/>
         <source>Range</source>
         <translation>Rozsah</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="881"/>
+        <location filename="../app/ui/mainwindow2.ui" line="882"/>
         <source>Timeline</source>
         <translation>Časová osa</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="889"/>
+        <location filename="../app/ui/mainwindow2.ui" line="890"/>
         <source>Options</source>
         <translation>Volby</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="897"/>
+        <location filename="../app/ui/mainwindow2.ui" line="898"/>
         <source>Color Wheel</source>
         <translation>Kolo barev</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="905"/>
+        <location filename="../app/ui/mainwindow2.ui" line="906"/>
         <source>Color Palette</source>
         <translation>Paleta barev</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="913"/>
+        <location filename="../app/ui/mainwindow2.ui" line="914"/>
         <source>Display Options</source>
         <translation>Nastavení zobrazení</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="918"/>
+        <location filename="../app/ui/mainwindow2.ui" line="919"/>
         <source>Flip X</source>
         <translation>Převrátit vodorovně</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="923"/>
+        <location filename="../app/ui/mainwindow2.ui" line="924"/>
         <source>Flip Y</source>
         <translation>Převrátit svisle</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="928"/>
+        <location filename="../app/ui/mainwindow2.ui" line="929"/>
         <source>Move Frame Forward</source>
         <translation>Posunout snímek dopředu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="933"/>
+        <location filename="../app/ui/mainwindow2.ui" line="934"/>
         <source>Move Frame Backward</source>
         <translation>Posunout snímek dozadu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="938"/>
+        <location filename="../app/ui/mainwindow2.ui" line="939"/>
         <source>Pencil2D Website</source>
         <translation>Stránka Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="943"/>
+        <location filename="../app/ui/mainwindow2.ui" line="944"/>
         <source>Report a Bug</source>
         <translation>Nahlásit chybu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="948"/>
+        <location filename="../app/ui/mainwindow2.ui" line="949"/>
         <source>Quick Reference Guide</source>
         <translation>Rychlý odborný průvodce</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="951"/>
+        <location filename="../app/ui/mainwindow2.ui" line="952"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="956"/>
-        <location filename="../app/ui/mainwindow2.ui" line="961"/>
+        <location filename="../app/ui/mainwindow2.ui" line="957"/>
+        <location filename="../app/ui/mainwindow2.ui" line="962"/>
         <source>Animated GIF...</source>
         <translation>Animovaný GIF...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="966"/>
+        <location filename="../app/ui/mainwindow2.ui" line="967"/>
         <source>Check for Updates</source>
         <translation>Zkontrolovat aktualizace</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="971"/>
+        <location filename="../app/ui/mainwindow2.ui" line="972"/>
         <source>Pencil2D Forum</source>
         <translation>Fórum pro Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="976"/>
+        <location filename="../app/ui/mainwindow2.ui" line="977"/>
         <source>Pencil2D Discord</source>
         <translation>Discord Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="981"/>
+        <location filename="../app/ui/mainwindow2.ui" line="982"/>
         <source>200%</source>
         <translation>200 %</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="986"/>
+        <location filename="../app/ui/mainwindow2.ui" line="987"/>
         <source>300%</source>
         <translation>300 %</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="991"/>
+        <location filename="../app/ui/mainwindow2.ui" line="992"/>
         <source>400%</source>
         <translation>400 %</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="996"/>
+        <location filename="../app/ui/mainwindow2.ui" line="997"/>
         <source>50%</source>
         <translation>50 %</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1001"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1002"/>
         <source>33%</source>
         <translation>33 %</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1006"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1007"/>
         <source>25%</source>
         <translation>25 %</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1011"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1012"/>
         <source>100%</source>
         <translation>100 %</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1016"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1017"/>
         <source>Flip In-Between</source>
         <translation>Listování mezi</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1021"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1022"/>
         <source>Flip Rolling</source>
         <translation>Listování snímek za snímkem</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1026"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1084"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1027"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1085"/>
         <source>Current layer only</source>
         <translation>Pouze nynější vrstva</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1031"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1092"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1032"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1093"/>
         <source>Relative</source>
         <translation>Poměrně</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1036"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1037"/>
         <source>All Layers</source>
         <translation>Všechny vrstvy</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1041"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1042"/>
         <source>Peg bar Alignment</source>
         <translation>Zarovnání příložníku</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1046"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1047"/>
         <source>Movie Audio...</source>
         <translation>Zvuk filmu...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1051"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1052"/>
         <source>Append to Palette...</source>
         <translation>Připojit k paletě...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1056"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1057"/>
         <source>Replace Palette...</source>
         <translation>Nahradit paletu...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1061"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1062"/>
         <source>Other Palette format...</source>
         <translation>Jiný formát palety...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1066"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1067"/>
         <source>Current keyframe</source>
         <translation>Nynější klíčový snímek</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1071"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1072"/>
         <source>All keyframes on layer</source>
         <translation>Všechny klíčové snímky ve vrstvě</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1076"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1077"/>
         <source>Layers from Project file...</source>
         <translation>Vrstvy ze souboru s projektem...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1100"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1101"/>
         <source>All layers</source>
         <translation>Všechny vrstvy</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1108"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1111"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1109"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1112"/>
         <source>Onion Skins</source>
         <translation>Cibulové slupky</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1116"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1117"/>
+        <source>Reposition Selected frames</source>
+        <translation>Přemístění vybraných snímků</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1122"/>
+        <source>Reposition Selected Frames</source>
+        <translation>Přemístění vybraných snímků</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1127"/>
         <source>Layer / Keyframe opacity</source>
         <translation>Neprůhlednost vrstvy/klíčového snímku</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1121"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1132"/>
         <source>Open Temporary Directory</source>
         <translation>Otevřít dočasný adresář</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1129"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1140"/>
         <source>Lock Windows</source>
         <translation>Zamknout okna</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1134"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1145"/>
         <source>Center</source>
         <translation>Střed</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1139"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1150"/>
         <source>Reset Rotation</source>
         <translation>Obnovit výchozí otočení</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1144"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1155"/>
         <source>Add Exposure</source>
         <translation>Přidat osvit</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1149"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1160"/>
         <source>Subtract Exposure</source>
         <translation>Odečíst osvit</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1154"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1165"/>
         <source>Reverse Frames Order</source>
         <translation>Obrátit pořadí snímků</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1159"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1170"/>
         <source>Remove Frames</source>
         <translation>Odstranit snímky</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1170"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1181"/>
         <source>Status Bar</source>
         <translation>Stavový řádek</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="149"/>
+        <location filename="../app/src/mainwindow2.cpp" line="152"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Paleta barev:&lt;br&gt;použijte přepínač &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;v poloze ukazatele</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="153"/>
+        <location filename="../app/src/mainwindow2.cpp" line="156"/>
         <source>Color inspector</source>
         <translation>Správce barev</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="416"/>
+        <location filename="../app/src/mainwindow2.cpp" line="420"/>
         <source>Open Recent</source>
         <translation>Otevřít nedávné</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="444"/>
-        <location filename="../app/src/mainwindow2.cpp" line="468"/>
+        <location filename="../app/src/mainwindow2.cpp" line="448"/>
+        <location filename="../app/src/mainwindow2.cpp" line="472"/>
         <source>Dialog is already open!</source>
         <translation>Dialog již je otevřen!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="580"/>
+        <location filename="../app/src/mainwindow2.cpp" line="494"/>
+        <source>Please select at least 2 frames!</source>
+        <translation>Vyberte, prosím, alespoň 2 snímky!</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="615"/>
         <source>Opening document...</source>
         <translation>Otevírá se dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="580"/>
-        <location filename="../app/src/mainwindow2.cpp" line="636"/>
-        <location filename="../app/src/mainwindow2.cpp" line="903"/>
+        <location filename="../app/src/mainwindow2.cpp" line="615"/>
+        <location filename="../app/src/mainwindow2.cpp" line="671"/>
+        <location filename="../app/src/mainwindow2.cpp" line="938"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="624"/>
-        <location filename="../app/src/mainwindow2.cpp" line="726"/>
-        <location filename="../app/src/mainwindow2.cpp" line="799"/>
-        <location filename="../app/src/mainwindow2.cpp" line="924"/>
+        <location filename="../app/src/mainwindow2.cpp" line="659"/>
+        <location filename="../app/src/mainwindow2.cpp" line="761"/>
+        <location filename="../app/src/mainwindow2.cpp" line="834"/>
+        <location filename="../app/src/mainwindow2.cpp" line="959"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="625"/>
+        <location filename="../app/src/mainwindow2.cpp" line="660"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Tento program nyní nemá oprávnění k zapsání vybraného souboru. Ujistěte se, prosím, před pokusem o jeho uložení, že máte oprávnění k tomuto souboru. Náhradním způsobem je použití volby v nabídce Uložit jako... pro zápis do zapisovatelného umístění.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="636"/>
+        <location filename="../app/src/mainwindow2.cpp" line="671"/>
         <source>Saving document...</source>
         <translation>Ukládá se dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="679"/>
+        <location filename="../app/src/mainwindow2.cpp" line="714"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Vyskytla se chyba, a tak soubor nemusí být úspěšně uložen. Pokud si myslíte, že potíže souvisí s Pencil2D, vytvořte, prosím, nové téma na:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Ujistěte se, prosím, že do záznamu o problému zahrnete následující podrobnosti:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="727"/>
+        <location filename="../app/src/mainwindow2.cpp" line="762"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Tato animace byla změněna.
 Přejete si uložit změny?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="750"/>
+        <location filename="../app/src/mainwindow2.cpp" line="785"/>
         <source>AutoSave Reminder</source>
         <translation>Připomínka automatického uložení</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="751"/>
+        <location filename="../app/src/mainwindow2.cpp" line="786"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Animace ještě není uložena.
 Chcete ji uložit nyní?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="752"/>
+        <location filename="../app/src/mainwindow2.cpp" line="787"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Už se znovu neptat</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="800"/>
+        <location filename="../app/src/mainwindow2.cpp" line="835"/>
         <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
         <translation>Obrázek nelze zavést.&lt;br&gt;&lt;b&gt;Rada:&lt;/b&gt; K zavedení bitmap použijte bitmapovou vrstvu.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="903"/>
+        <location filename="../app/src/mainwindow2.cpp" line="938"/>
         <source>Importing Animated GIF...</source>
         <translation>Zavádí se animovaný GIF...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="925"/>
+        <location filename="../app/src/mainwindow2.cpp" line="960"/>
         <source>was unable to import %1</source>
         <translation>nebylo možno zavést %1</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1270"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1275"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1305"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1310"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1283"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1290"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1318"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1325"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1332"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1367"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>Otevření palety nahradí starou paletu.
 Touto činností se změní barva(y) v tazích!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1334"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1369"/>
         <source>Open Palette</source>
         <translation>Otevřít paletu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1485"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1522"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1535"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1572"/>
         <source>Restore Project?</source>
         <translation>Obnovit projekt?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1536"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1573"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D se nezavřel správně. Chcete projekt obnovit?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1541"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1578"/>
         <source>Restore project</source>
         <translation>Obnovit projekt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1575"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1612"/>
         <source>Recovery Failed.</source>
         <translation>Nepodařilo se obnovit.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1576"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1613"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>Promiňte! Pencil2D nemůže obnovit váš projekt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1585"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1622"/>
         <source>Recovery Succeeded!</source>
         <translation>Podařilo se obnovit.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1586"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1623"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>Okamžitě, prosím, uložte svou práci, abyste zabránili ztrátě dat</translation>
     </message>
@@ -4306,13 +4334,13 @@ Touto činností se změní barva(y) v tazích!</translation>
 <context>
     <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="406"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="424"/>
         <source>Layer switch</source>
         <comment>Windows title of layer switch pop-up.</comment>
         <translation>Přepnutí vrstev</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="407"/>
+        <location filename="../core_lib/src/tool/movetool.cpp" line="425"/>
         <source>You are about to switch away, do you want to apply the transformation?</source>
         <translation>Chystáte se přepnout pryč. Chcete použít proměnu?</translation>
     </message>
@@ -4840,7 +4868,7 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
         <translation>Nestanovená vrstva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/layerbitmap.cpp" line="30"/>
+        <location filename="../core_lib/src/structure/layerbitmap.cpp" line="28"/>
         <source>Bitmap Layer</source>
         <translation>Bitmapová vrstva</translation>
     </message>
@@ -4881,6 +4909,65 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
     </message>
 </context>
 <context>
+    <name>RepositionFramesDialog</name>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="14"/>
+        <source>Reposition Frames</source>
+        <translation>Přemístění snímků</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="30"/>
+        <source>(Please move selection to desired destination.)</source>
+        <translation>(Přesuňte, prosím, výběr na požadované místo určení.)</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="43"/>
+        <source>Reposition (x,y): </source>
+        <translation>Přemístění snímků (x,y): </translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="50"/>
+        <source>Reposition on other layers?</source>
+        <translation>Přemístění do jiných vrstev?</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="57"/>
+        <source>Same keyframes as selected</source>
+        <translation>Stejné klíčové snímky jako vybrané</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="64"/>
+        <source>All keyframes on layer</source>
+        <translation>Všechny klíčové snímky ve vrstvě</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="93"/>
+        <source>Cancel</source>
+        <translation>Zrušit</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="100"/>
+        <source>Reposition</source>
+        <translation>Přemístění</translation>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="72"/>
+        <source>Repositioned: ( %1, %2 )</source>
+        <translation>Přemístěno: ( %1, %2 )</translation>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="78"/>
+        <source>Selected on Layer: %1</source>
+        <translation>Vybráno ve vrstvě: %1</translation>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="91"/>
+        <source>Please move selection to desired destination
+or cancel</source>
+        <translation>Přesuňte, prosím, výběr na požadované místo určení nebo zrušte</translation>
+    </message>
+</context>
+<context>
     <name>ScribbleArea</name>
     <message>
         <location filename="../core_lib/src/interface/scribblearea.cpp" line="772"/>
@@ -4893,53 +4980,53 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
         <translation>Pokoušíte se změnit skrytou vrstvu! Vyberte, prosím, jinou vrstvu (nebo nynější vrstvu udělejte viditelnou).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1650"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1666"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Smazat výběr</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1676"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1688"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1692"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1704"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Smazat obrázek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1724"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1740"/>
         <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
         <translation>Ve vaší kresbě je mezera (nebo jste možná provedl moc velké přiblížení).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1727"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1743"/>
         <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
         <translation>Promiňte. Toto vždy nepracuje. Zkuste to, prosím, znovu (trošku přibližte pohled, klepněte na jíné místo... )&lt;br&gt; Pokud toto nepracuje, trošku přibližte pohled, a ověřte, že jsou cesty spojeny, stisknutím F1.).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1732"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1748"/>
         <source>Out of bound.</source>
         <comment>Bucket tool fill error message</comment>
         <translation>Mimo hranice.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1733"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1749"/>
         <source>Could not find a closed path.</source>
         <comment>Bucket tool fill error message</comment>
         <translation>Nepodařilo se najít zavřenou cestu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1734"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1750"/>
         <source>Could not find the root index.</source>
         <comment>Bucket tool fill error message</comment>
         <translation>Nepodařilo se najít kořenový rejstřík.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1735"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1751"/>
         <source>Flood fill error</source>
         <translation>Chyba výplně</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1735"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1751"/>
         <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
         <translation>%1&lt;br&gt;&lt;br&gt;Chyba: %2</translation>
     </message>
@@ -5806,74 +5893,79 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
         <translation>Odstranit vrstvu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="86"/>
+        <source>Duplicate Layer</source>
+        <translation>Zdvojit vrstvu</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="100"/>
         <source>New Bitmap Layer</source>
         <translation>Nová bitmapová vrstva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="101"/>
         <source>New Vector Layer</source>
         <translation>Nová vektorová vrstva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="102"/>
         <source>New Sound Layer</source>
         <translation>Nová zvuková vrstva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="97"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="103"/>
         <source>New Camera Layer</source>
         <translation>Nová kamerová vrstva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="99"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="105"/>
         <source>&amp;Layer</source>
         <comment>Timeline add-layer menu</comment>
         <translation>&amp;Vrstva</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="117"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="123"/>
         <source>Keys:</source>
         <translation>Klíče:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="122"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="128"/>
         <source>Add Frame</source>
         <translation>Přidat snímek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="127"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="133"/>
         <source>Remove Frame</source>
         <translation>Odstranit snímek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="132"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="138"/>
         <source>Duplicate Frame</source>
         <translation>Zdvojit snímek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="135"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="141"/>
         <source>Zoom:</source>
         <translation>Zvětšení:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="142"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="148"/>
         <source>Adjust frame width</source>
         <translation>Přizpůsobit šířku snímku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="294"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="301"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Smazat vrstvu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="302"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
         <translation>Opravdu chcete smazat vrstvu: %1? Toto nelze vrátit zpět.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="304"/>
+        <location filename="../core_lib/src/interface/timeline.cpp" line="311"/>
         <source>Please keep at least one camera layer in project</source>
         <translation>Ponechejte, prosím, v projektu alespoň jednu vrstvu s kamerou</translation>
     </message>
@@ -6373,7 +6465,7 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
     </message>
     <message>
         <location filename="../app/src/tooloptionwidget.cpp" line="53"/>
-        <location filename="../app/src/tooloptionwidget.cpp" line="200"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="205"/>
         <source>Width</source>
         <translation>Šířka</translation>
     </message>
@@ -6411,131 +6503,136 @@ Prověřte výběr a zkuste to, prosím, znovu.</translation>
         <translation>Použít stopu</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="135"/>
+        <location filename="../app/ui/tooloptions.ui" line="136"/>
+        <source>Show Size and Diff.</source>
+        <translation>Zobrazit velikost a rozdíl.</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="159"/>
         <source>Contour will be filled</source>
         <translation>Obrys k vyplnění</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="138"/>
+        <location filename="../app/ui/tooloptions.ui" line="162"/>
         <source>Fill Contour</source>
         <translation>Vyplnit obrys</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="145"/>
+        <location filename="../app/ui/tooloptions.ui" line="169"/>
         <source>Use Bézier curves to create curved lines</source>
         <translation>Použít Bézierovy křivky k vytvoření zakřivených čar</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="148"/>
+        <location filename="../app/ui/tooloptions.ui" line="172"/>
         <source>Bézier</source>
         <comment>Tool options</comment>
         <translation>Bézier</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="155"/>
+        <location filename="../app/ui/tooloptions.ui" line="179"/>
         <source>Vary strokes based on pressure when drawing on a tablet</source>
         <translation>Při kreslení na tabletu se různé tahy liší podle tlaku</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="158"/>
+        <location filename="../app/ui/tooloptions.ui" line="182"/>
         <source>Pressure</source>
         <comment>Tool options</comment>
         <translation>Tlak</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="165"/>
+        <location filename="../app/ui/tooloptions.ui" line="189"/>
         <source>Use anti-aliasing to create smooth edges</source>
         <translation>Použít vyhlazování na vytvoření hladkých okrajů</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="168"/>
+        <location filename="../app/ui/tooloptions.ui" line="192"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
         <translation>Vyhlazování</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="175"/>
+        <location filename="../app/ui/tooloptions.ui" line="199"/>
         <source>Make invisible</source>
         <translation>Zneviditelnit</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="178"/>
+        <location filename="../app/ui/tooloptions.ui" line="202"/>
         <source>Invisible</source>
         <comment>Tool options</comment>
         <translation>Neviditelná</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="185"/>
+        <location filename="../app/ui/tooloptions.ui" line="209"/>
         <source>Preserve Alpha</source>
         <translation>Zachovat alfa kanál</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="188"/>
+        <location filename="../app/ui/tooloptions.ui" line="212"/>
         <source>Alpha</source>
         <comment>Tool options</comment>
         <translation>Alfa kanál</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="195"/>
+        <location filename="../app/ui/tooloptions.ui" line="219"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Sloučit vektorové čáry, když jsou blízko u sebe</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="198"/>
+        <location filename="../app/ui/tooloptions.ui" line="222"/>
         <source>Merge</source>
         <comment>Vector line merge (Tool options)</comment>
         <translation>Sloučit</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="220"/>
+        <location filename="../app/ui/tooloptions.ui" line="244"/>
         <source>Transparency</source>
         <translation>Průhlednost</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="233"/>
+        <location filename="../app/ui/tooloptions.ui" line="257"/>
         <source>Defines how the fill will behave when the new color is not opaque</source>
         <translation>Určuje, jak se výplň bude chovat, když nová barva není neprůhledná</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="237"/>
+        <location filename="../app/ui/tooloptions.ui" line="261"/>
         <source>Overlay</source>
         <translation>Překrytí</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="242"/>
+        <location filename="../app/ui/tooloptions.ui" line="266"/>
         <source>Replace</source>
         <translation>Nahradit</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="261"/>
+        <location filename="../app/ui/tooloptions.ui" line="285"/>
         <source>Stabilizer</source>
         <translation>Ustalovač</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="268"/>
+        <location filename="../app/ui/tooloptions.ui" line="292"/>
         <source>Use stabilizer to interpolate strokes</source>
         <translation>Použít stabilizátor k interpolaci tahů</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="271"/>
+        <location filename="../app/ui/tooloptions.ui" line="295"/>
         <source>None</source>
         <comment>Stablizer level</comment>
         <translation>Žádná</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="275"/>
+        <location filename="../app/ui/tooloptions.ui" line="299"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
         <translation>Žádná</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="280"/>
+        <location filename="../app/ui/tooloptions.ui" line="304"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
         <translation>Jednoduchá</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="285"/>
+        <location filename="../app/ui/tooloptions.ui" line="309"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
         <translation>Silná</translation>

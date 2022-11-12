@@ -36,6 +36,7 @@ enum ToolType : int
     MOVE,
     HAND,
     SMUDGE,
+    CAMERA,
     PEN,
     POLYLINE,
     BUCKET,
@@ -65,6 +66,15 @@ enum ToolPropertyType
     USEBUCKETFILLEXPAND,
     BUCKETFILLLAYERMODE,
     BUCKETFILLLAYERREFERENCEMODE,
+    CAMERAPATH,
+};
+
+enum class DotColorType {
+    RED,
+    BLUE,
+    GREEN,
+    BLACK,
+    WHITE
 };
 
 enum BackgroundStyle
@@ -107,6 +117,9 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 
 // Max frames that can be imported and loaded onto the timeline
 const static int MaxFramesBound = 9999;
+
+// Spacer for rotation handle offset
+const static float RotationHandleOffset = 50;
 
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
@@ -198,7 +211,6 @@ const static int MaxFramesBound = 9999;
 #define CMD_TOGGLE_COLOR_WHEEL "CmdToggleColorWheel"
 #define CMD_TOGGLE_COLOR_INSPECTOR "CmdToggleColorInspector"
 #define CMD_TOGGLE_COLOR_LIBRARY "CmdToggleColorLibrary"
-#define CMD_TOGGLE_DISPLAY_OPTIONS "CmdToggleDisplayOptions"
 #define CMD_TOGGLE_ONION_SKIN "CmdToggleOnionSkin"
 #define CMD_TOGGLE_TIMELINE "CmdToggleTimeline"
 #define CMD_INCREASE_SIZE "CmdIncreaseSize"
@@ -287,7 +299,6 @@ const static int MaxFramesBound = 9999;
 #define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
 #define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
 
-// Ideally this should also BucketTolerance eg.. but for compatibility sake, i'm not changing it now
 #define SETTING_BUCKET_TOLERANCE "Tolerance"
 #define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
 #define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"

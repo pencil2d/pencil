@@ -112,6 +112,6 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
     {
         float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
         qreal scaleValue = viewMgr->scaling() * (1 + delta);
-        viewMgr->scaleWithOffset(scaleValue, mStartPoint);
+        viewMgr->scaleAtOffset(scaleValue, mStartPoint);
     }
 }

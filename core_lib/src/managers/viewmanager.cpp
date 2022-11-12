@@ -19,9 +19,6 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "editor.h"
 #include "object.h"
-#include "camera.h"
-#include "layercamera.h"
-#include <QDebug>
 
 const static qreal mMinScale = 0.01;
 const static qreal mMaxScale = 100.0;
@@ -37,13 +34,9 @@ const std::vector<qreal> gZoomLevels
 
 ViewManager::ViewManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
-    mDefaultEditorCamera = new Camera;
-    mCurrentCamera = mDefaultEditorCamera;
 }
 
-ViewManager::~ViewManager()
-{
-    delete mDefaultEditorCamera;
+ViewManager::~ViewManager() {
 }
 
 bool ViewManager::init()
@@ -54,9 +47,6 @@ bool ViewManager::init()
 
 Status ViewManager::load(Object*)
 {
-    mCameraLayer = nullptr;
-    mCurrentCamera = mDefaultEditorCamera;
-    mCurrentCamera->reset();
     updateViewTransforms();
 
     return Status::OK;
@@ -66,18 +56,6 @@ Status ViewManager::save(Object* o)
 {
     o->data()->setCurrentView(mView);
     return Status::OK;
-}
-
-void ViewManager::workingLayerChanged(Layer* layer)
-{
-    if (layer->type() == Layer::CAMERA)
-    {
-        setCameraLayer(layer);
-    }
-    else
-    {
-        setCameraLayer(nullptr);
-    }
 }
 
 QPointF ViewManager::mapCanvasToScreen(QPointF p) const
@@ -137,24 +115,16 @@ qreal ViewManager::getViewScaleInverse() const
 
 void ViewManager::updateViewTransforms()
 {
-    if (mCameraLayer)
-    {
-        int frame = editor()->currentFrame();
-        mCurrentCamera = mCameraLayer->getCameraAtFrame(frame);
-        if (mCurrentCamera)
-        {
-            mCurrentCamera->updateViewTransform();
-        }
-        mView = mCameraLayer->getViewAtFrame(frame);
-    }
-    else
-    {
-        mCurrentCamera = mDefaultEditorCamera;
-        mCurrentCamera->updateViewTransform();
+    QTransform t;
+    t.translate(mTranslation.x(), mTranslation.y());
 
-        mView = mCurrentCamera->getView();
-    }
+    QTransform r;
+    r.rotate(mRotation);
 
+    QTransform s;
+    s.scale(mScaling, mScaling);
+
+    mView = t * r * s;
     mViewInverse = mView.inverted();
 
     float flipX = mIsFlipHorizontal ? -1.f : 1.f;
@@ -167,22 +137,15 @@ void ViewManager::updateViewTransforms()
 
 QPointF ViewManager::translation() const
 {
-    if (mCurrentCamera)
-    {
-        return mCurrentCamera->translation();
-    }
-    return QPointF(0, 0);
+    return mTranslation;
 }
 
 void ViewManager::translate(float dx, float dy)
 {
-    if (mCurrentCamera)
-    {
-        mCurrentCamera->translate(static_cast<qreal>(dx), static_cast<qreal>(dy));
-        updateViewTransforms();
+    mTranslation = QPointF(dx, dy);
+    updateViewTransforms();
 
-        emit viewChanged();
-    }
+    emit viewChanged();
 }
 
 void ViewManager::translate(QPointF offset)
@@ -197,22 +160,15 @@ void ViewManager::centerView()
 
 float ViewManager::rotation()
 {
-    if (mCurrentCamera)
-    {
-        return static_cast<float>(mCurrentCamera->rotation());
-    }
-    return 0.0f;
+    return mRotation;
 }
 
 void ViewManager::rotate(float degree)
 {
-    if (mCurrentCamera)
-    {
-        mCurrentCamera->rotate(static_cast<qreal>(degree));
-        updateViewTransforms();
+    mRotation = degree;
+    updateViewTransforms();
 
-        emit viewChanged();
-    }
+    emit viewChanged();
 }
 
 void ViewManager::resetRotation()
@@ -222,39 +178,35 @@ void ViewManager::resetRotation()
 
 qreal ViewManager::scaling()
 {
-    if (mCurrentCamera)
-    {
-        return mCurrentCamera->scaling();
-    }
-    return 0.0;
+    return mScaling;
 }
 
 void ViewManager::scaleUp()
 {
     for (size_t i = 0; i < gZoomLevels.size(); i++)
     {
-        if (gZoomLevels[i] > scaling())
+        if (mScaling < gZoomLevels[i])
         {
             scale(gZoomLevels[i]);
             return;
         }
     }
 
-    // out of pre-defined zoom levels
-    scale(scaling() * 1.18);
+    scale(mScaling * 1.25);
 }
 
 void ViewManager::scaleDown()
 {
-    for (int i = static_cast<int>(gZoomLevels.size()) - 1; i >= 0; --i)
+    for (size_t i = gZoomLevels.size() - 1; i >= 0; --i)
     {
-        if (gZoomLevels[static_cast<unsigned>(i)] < scaling())
+        if (mScaling > gZoomLevels[i])
         {
-            scale(gZoomLevels[static_cast<unsigned>(i)]);
+            scale(gZoomLevels[i]);
             return;
         }
     }
-    scale(scaling() * 0.8333);
+
+    scale(mScaling * 0.8);
 }
 
 void ViewManager::scale100()
@@ -303,16 +255,13 @@ void ViewManager::scale(qreal scaleValue)
         scaleValue = mMaxScale;
     }
 
-    if (mCurrentCamera)
-    {
-        mCurrentCamera->scale(scaleValue);
-        updateViewTransforms();
+    mScaling = scaleValue;
+    updateViewTransforms();
 
-        emit viewChanged();
-    }
+    emit viewChanged();
 }
 
-void ViewManager::scaleWithOffset(qreal scaleValue, QPointF offset)
+void ViewManager::scaleAtOffset(qreal scaleValue, QPointF offset)
 {
     if (scaleValue < mMinScale)
     {
@@ -322,14 +271,11 @@ void ViewManager::scaleWithOffset(qreal scaleValue, QPointF offset)
     {
         scaleValue = mMaxScale;
     }
+    mTranslation = (mTranslation + offset) * mScaling / scaleValue - offset;
+    mScaling = scaleValue;
+    updateViewTransforms();
 
-    if (mCurrentCamera)
-    {
-        mCurrentCamera->scaleWithOffset(scaleValue, offset);
-        updateViewTransforms();
-
-        emit viewChanged();
-    }
+    emit viewChanged();
 }
 
 void ViewManager::flipHorizontal(bool b)
@@ -405,25 +351,6 @@ void ViewManager::setCanvasSize(QSize size)
     emit viewChanged();
 }
 
-void ViewManager::setCameraLayer(Layer* layer)
-{
-    if (layer != nullptr)
-    {
-        if (layer->type() != Layer::CAMERA)
-        {
-            Q_ASSERT(false && "Only camera layers allowed pls");
-            return;
-        }
-        mCameraLayer = static_cast<LayerCamera*>(layer);
-    }
-    else
-    {
-        mCameraLayer = nullptr;
-    }
-
-    updateViewTransforms();
-}
-
 void ViewManager::forceUpdateViewTransform()
 {
     updateViewTransforms();
@@ -432,22 +359,18 @@ void ViewManager::forceUpdateViewTransform()
 
 void ViewManager::onCurrentFrameChanged()
 {
-    if (mCameraLayer)
-    {
-        updateViewTransforms();
-    }
-
-    // emit changes either way because of potential camera interpolation changes
+    // emit because of potential camera interpolation changes
     emit viewChanged();
 }
 
 void ViewManager::resetView()
 {
-    if (mCurrentCamera)
-    {
-        mCurrentCamera->reset();
-        updateViewTransforms();
-        emit viewChanged();
-        emit viewFlipped();
-    }
+    mTranslation = QPointF(0,0);
+    mScaling = 1.0;
+    mRotation = 0.0;
+
+    updateViewTransforms();
+    emit viewChanged();
+    emit viewFlipped();
+
 }

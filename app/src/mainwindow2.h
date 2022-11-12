@@ -30,7 +30,6 @@ class Editor;
 class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
-class DisplayOptionWidget;
 class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
@@ -116,6 +115,7 @@ protected:
 
 private slots:
     void updateCopyCutPasteEnabled();
+    void updateLayerMenu();
 private:
     void newObject();
     bool newObjectFromPresets(int presetIndex);
@@ -146,7 +146,6 @@ private:
     void makeConnections(Editor*, ScribbleArea*);
     void makeConnections(Editor*, ColorPaletteWidget*);
     void makeConnections(Editor*, TimeLine*);
-    void makeConnections(Editor*, DisplayOptionWidget*);
     void makeConnections(Editor*, ToolOptionWidget*);
     void makeConnections(Editor*, OnionSkinWidget*);
     void makeConnections(Editor*, StatusBar*);
@@ -157,7 +156,6 @@ private:
     // UI: Dock widgets
     ColorBox*             mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
-    DisplayOptionWidget*  mDisplayOptionWidget = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
     ToolBoxWidget*        mToolBox = nullptr;
     //Timeline2*          mTimeline2 = nullptr;

@@ -309,7 +309,7 @@ void EraserTool::removeVectorPaint()
         // Clear the temporary pixel path
         vectorImage->deleteSelectedPoints();
 
-        mScribbleArea->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+        mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     }
 }
 
