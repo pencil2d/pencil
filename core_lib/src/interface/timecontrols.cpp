@@ -112,10 +112,10 @@ void TimeControls::initUI()
     mSoundIcon.addFile(":icons/themes/playful/controls/sound.svg", QSize(), QIcon::Normal, QIcon::On);
     mSoundScrubIcon = QIcon();
     mSoundScrubIcon.addFile(":icons/themes/playful/controls/soundscrub.svg", QSize(), QIcon::Normal, QIcon::On);
-    mJumpToEndIcon = QIcon(":icons/themes/playful/controls/endplay.svg");
-    mJumpToStartIcon = QIcon(":icons/themes/playful/controls/startplay.svg");
-    mStartIcon = QIcon(":icons/themes/playful/controls/play.svg");
-    mStopIcon = QIcon(":icons/themes/playful/controls/stop.svg");
+    mJumpToEndIcon = QIcon(":icons/themes/playful/controls/control-endplay.svg");
+    mJumpToStartIcon = QIcon(":icons/themes/playful/controls/control-startplay.svg");
+    mStartIcon = QIcon(":icons/themes/playful/controls/control-play.svg");
+    mStopIcon = QIcon(":icons/themes/playful/controls/control-stop.svg");
     mPlayButton->setIcon(mStartIcon);
     mLoopButton->setIcon(mLoopIcon);
     mSoundButton->setIcon(mSoundIcon);
