@@ -170,7 +170,7 @@
       </property>
       <property name="icon">
        <iconset resource="../data/app.qrc">
-        <normaloff>:/icons/overlayAngle.png</normaloff>:/icons/overlayAngle.png</iconset>
+        <normaloff>:/icons/themes/playful/display/perspective-angle.svg</normaloff>:/icons/themes/playful/display/perspective-angle.svg</iconset>
       </property>
       <addaction name="action2Degrees"/>
       <addaction name="action3Degrees"/>
@@ -1115,7 +1115,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/app/icons/thinlines5.png</normaloff>:/app/icons/thinlines5.png</iconset>
+     <normaloff>:/icons/themes/playful/display/lines-invisible.svg</normaloff>:/icons/themes/playful/display/lines-invisible.svg</iconset>
    </property>
    <property name="text">
     <string>Show Invisible Lines</string>
@@ -1127,7 +1127,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/app/icons/outlines5.png</normaloff>:/app/icons/outlines5.png</iconset>
+     <normaloff>:/icons/themes/playful/display/lines-outline.svg</normaloff>:/icons/themes/playful/display/lines-outline.svg</iconset>
    </property>
    <property name="text">
     <string>Show Outlines Only</string>
@@ -1139,7 +1139,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/overlayCenter.png</normaloff>:/icons/overlayCenter.png</iconset>
+     <normaloff>:/icons/themes/playful/display/overlay-center.svg</normaloff>:/icons/themes/playful/display/overlay-center.svg</iconset>
    </property>
    <property name="text">
     <string>Center</string>
@@ -1151,7 +1151,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/overlayThirds.png</normaloff>:/icons/overlayThirds.png</iconset>
+     <normaloff>:/icons/themes/playful/display/overlay-thirds.svg</normaloff>:/icons/themes/playful/display/overlay-thirds.svg</iconset>
    </property>
    <property name="text">
     <string>Thirds</string>
@@ -1163,7 +1163,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/overlayGoldenRatio.png</normaloff>:/icons/overlayGoldenRatio.png</iconset>
+     <normaloff>:/icons/themes/playful/display/overlay-golden-ratio.svg</normaloff>:/icons/themes/playful/display/overlay-golden-ratio.svg</iconset>
    </property>
    <property name="text">
     <string>Golden Ratio</string>
@@ -1175,7 +1175,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/overlaySafe.png</normaloff>:/icons/overlaySafe.png</iconset>
+     <normaloff>:/icons/themes/playful/display/overlay-safe.svg</normaloff>:/icons/themes/playful/display/overlay-safe.svg</iconset>
    </property>
    <property name="text">
     <string>Safe Areas</string>
@@ -1187,7 +1187,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/overlayPerspective1.png</normaloff>:/icons/overlayPerspective1.png</iconset>
+     <normaloff>:/icons/themes/playful/display/perspective-onepoint.svg</normaloff>:/icons/themes/playful/display/perspective-onepoint.svg</iconset>
    </property>
    <property name="text">
     <string>One Point Perspective</string>
@@ -1199,7 +1199,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/overlayPerspective2.png</normaloff>:/icons/overlayPerspective2.png</iconset>
+     <normaloff>:/icons/themes/playful/display/perspective-twopoints.svg</normaloff>:/icons/themes/playful/display/perspective-twopoints.svg</iconset>
    </property>
    <property name="text">
     <string>Two Point Perspective</string>
@@ -1211,7 +1211,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/overlayPerspective3.png</normaloff>:/icons/overlayPerspective3.png</iconset>
+     <normaloff>:/icons/themes/playful/display/perspective-threepoints.svg</normaloff>:/icons/themes/playful/display/perspective-threepoints.svg</iconset>
    </property>
    <property name="text">
     <string>Three Point Perspective</string>
