@@ -102,7 +102,7 @@ void TimeLine::initUI()
     QAction* newSoundLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-sound.svg"), tr("New Sound Layer"), this);
     QAction* newCameraLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-camera.svg"), tr("New Camera Layer"), this);
 
-    QMenu* layerMenu = new QMenu(tr("&Layer", "Timeline add-layer menu"), this);
+    QMenu* layerMenu = new QMenu(tr("Layer", "Timeline add-layer menu"), this);
     layerMenu->addAction(newBitmapLayerAct);
     layerMenu->addAction(newVectorLayerAct);
     layerMenu->addAction(newSoundLayerAct);

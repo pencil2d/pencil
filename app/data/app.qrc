@@ -6,14 +6,11 @@
         <file>background/weave.jpg</file>
         <file>background/dots.png</file>
         <file>background/grid.jpg</file>
-        <file>icons/themes/playful/controls/loop.svg</file>
         <file>icons/themes/playful/controls/frame-add.svg</file>
         <file>icons/themes/playful/controls/frame-duplicate.svg</file>
         <file>icons/themes/playful/controls/frame-remove.svg</file>
         <file>icons/themes/playful/controls/layer-add.svg</file>
         <file>icons/themes/playful/controls/layer-remove.svg</file>
-        <file>icons/themes/playful/controls/sound.svg</file>
-        <file>icons/themes/playful/controls/soundscrub.svg</file>
         <file>icons/themes/playful/dialog-error.svg</file>
         <file>icons/themes/playful/display/perspective-angle.svg</file>
         <file>icons/themes/playful/display/perspective-onepoint.svg</file>
@@ -100,6 +97,9 @@
         <file>icons/themes/playful/controls/control-play.svg</file>
         <file>icons/themes/playful/controls/control-startplay.svg</file>
         <file>icons/themes/playful/controls/control-stop.svg</file>
+        <file>icons/themes/playful/controls/control-loop.svg</file>
+        <file>icons/themes/playful/controls/control-sound-enable.svg</file>
+        <file>icons/themes/playful/controls/control-sound-scrub.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>

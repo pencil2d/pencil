@@ -19,6 +19,9 @@ GNU General Public License for more details.
 
 #include "basedockwidget.h"
 
+#include <QPushButton>
+#include <QToolButton>
+
 class QScrollBar;
 class Editor;
 class TimeLineCells;
