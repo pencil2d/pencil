@@ -623,7 +623,7 @@
   </action>
   <action name="actionPlay">
    <property name="icon">
-    <iconset resource="../data/app.qrc">
+    <iconset>
      <normaloff>:/icons/themes/playful/controls/play.svg</normaloff>:/icons/themes/playful/controls/play.svg</iconset>
    </property>
    <property name="text">
@@ -635,7 +635,7 @@
     <bool>true</bool>
    </property>
    <property name="icon">
-    <iconset resource="../data/app.qrc">
+    <iconset>
      <normaloff>:/icons/themes/playful/controls/loop.svg</normaloff>:/icons/themes/playful/controls/loop.svg</iconset>
    </property>
    <property name="text">
@@ -781,7 +781,7 @@
   <action name="actionNew_Bitmap_Layer">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/timeline/layer-bitmap.svg</normaloff>:/icons/themes/playful/timeline/layer-bitmap.svg</iconset>
+     <normaloff>:/icons/themes/playful/timeline/cell-bitmap.svg</normaloff>:/icons/themes/playful/timeline/cell-bitmap.svg</iconset>
    </property>
    <property name="text">
     <string>New Bitmap Layer</string>
@@ -790,7 +790,7 @@
   <action name="actionNew_Vector_Layer">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/timeline/layer-vector.svg</normaloff>:/icons/themes/playful/timeline/layer-vector.svg</iconset>
+     <normaloff>:/icons/themes/playful/timeline/cell-vector.svg</normaloff>:/icons/themes/playful/timeline/cell-vector.svg</iconset>
    </property>
    <property name="text">
     <string>New Vector Layer</string>
@@ -799,7 +799,7 @@
   <action name="actionNew_Sound_Layer">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/timeline/layer-sound.svg</normaloff>:/icons/themes/playful/timeline/layer-sound.svg</iconset>
+     <normaloff>:/icons/themes/playful/timeline/cell-sound.svg</normaloff>:/icons/themes/playful/timeline/cell-sound.svg</iconset>
    </property>
    <property name="text">
     <string>New Sound Layer</string>
@@ -808,7 +808,7 @@
   <action name="actionNew_Camera_Layer">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/camera.svg</normaloff>:/icons/themes/playful/tools/camera.svg</iconset>
+     <normaloff>:/icons/themes/playful/timeline/cell-camera.svg</normaloff>:/icons/themes/playful/timeline/cell-camera.svg</iconset>
    </property>
    <property name="text">
     <string>New Camera Layer</string>

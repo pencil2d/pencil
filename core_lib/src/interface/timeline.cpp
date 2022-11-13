@@ -97,10 +97,10 @@ void TimeLine::initUI()
     leftToolBarLayout->addWidget(layerButtons);
     leftToolBar->setLayout(leftToolBarLayout);
 
-    QAction* newBitmapLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-bitmap.svg"), tr("New Bitmap Layer"), this);
-    QAction* newVectorLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-vector.svg"), tr("New Vector Layer"), this);
-    QAction* newSoundLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-sound.svg"), tr("New Sound Layer"), this);
-    QAction* newCameraLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/layer-camera.svg"), tr("New Camera Layer"), this);
+    QAction* newBitmapLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/cell-bitmap.svg"), tr("New Bitmap Layer"), this);
+    QAction* newVectorLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/cell-vector.svg"), tr("New Vector Layer"), this);
+    QAction* newSoundLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/cell-sound.svg"), tr("New Sound Layer"), this);
+    QAction* newCameraLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/cell-camera.svg"), tr("New Camera Layer"), this);
 
     QMenu* layerMenu = new QMenu(tr("Layer", "Timeline add-layer menu"), this);
     layerMenu->addAction(newBitmapLayerAct);

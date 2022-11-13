@@ -45,10 +45,6 @@
         <file>icons/themes/playful/preferences/preferences-files.svg</file>
         <file>icons/themes/playful/preferences/preferences-shortcuts.svg</file>
         <file>icons/themes/playful/preferences/preferences-tools.svg</file>
-        <file>icons/themes/playful/timeline/layer-bitmap.svg</file>
-        <file>icons/themes/playful/timeline/layer-camera.svg</file>
-        <file>icons/themes/playful/timeline/layer-sound.svg</file>
-        <file>icons/themes/playful/timeline/layer-vector.svg</file>
         <file>icons/themes/playful/tools/hand.svg</file>
         <file>icons/themes/playful/tools/move.svg</file>
         <file>icons/themes/playful/tools/arrow-diagonal-left.svg</file>
@@ -100,6 +96,10 @@
         <file>icons/themes/playful/controls/control-loop.svg</file>
         <file>icons/themes/playful/controls/control-sound-enable.svg</file>
         <file>icons/themes/playful/controls/control-sound-scrub.svg</file>
+        <file>icons/themes/playful/timeline/cell-bitmap.svg</file>
+        <file>icons/themes/playful/timeline/cell-camera.svg</file>
+        <file>icons/themes/playful/timeline/cell-sound.svg</file>
+        <file>icons/themes/playful/timeline/cell-vector.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
