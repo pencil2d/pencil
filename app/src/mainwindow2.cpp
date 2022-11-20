@@ -1708,6 +1708,7 @@ void MainWindow2::createToolbars()
     QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
     perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
     perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);
+    perspectiveLinesAngleButton->setStyleSheet("::menu-indicator{ image: none; }");
     mOverlayToolbar->addWidget(perspectiveLinesAngleButton);
 
     mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };

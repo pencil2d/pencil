@@ -100,6 +100,15 @@
         <file>icons/themes/playful/timeline/cell-camera.svg</file>
         <file>icons/themes/playful/timeline/cell-sound.svg</file>
         <file>icons/themes/playful/timeline/cell-vector.svg</file>
+        <file>icons/themes/playful/menubar/menu-clear.svg</file>
+        <file>icons/themes/playful/menubar/menu-copy.svg</file>
+        <file>icons/themes/playful/menubar/menu-cut.svg</file>
+        <file>icons/themes/playful/menubar/menu-new.svg</file>
+        <file>icons/themes/playful/menubar/menu-open.svg</file>
+        <file>icons/themes/playful/menubar/menu-paste.svg</file>
+        <file>icons/themes/playful/menubar/menu-redo.svg</file>
+        <file>icons/themes/playful/menubar/menu-save.svg</file>
+        <file>icons/themes/playful/menubar/menu-undo.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
