@@ -24,6 +24,8 @@ GNU General Public License for more details.
 
 #include <QPointF>
 
+#include "preferencesdef.h"
+
 class Editor;
 
 class OverlayManager : public BaseManager
@@ -38,6 +40,8 @@ public:
     Status load(Object *o) override;
     Status save(Object *o) override;
 
+    void settingsUpdated(SETTING setting, bool state);
+
     void workingLayerChanged(Layer *) override;
 
     MoveMode getMoveModeForPoint(const QPointF& pos, const QTransform& transform);
@@ -48,14 +52,12 @@ public:
 
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode(MoveMode mode) { mMoveMode = mode; }
-    void setSinglePerspectivePoint(const QPointF& point) { mSinglePerspectivePoint = point; }
     QPointF getSinglePerspectivePoint() const { return mSinglePerspectivePoint; }
-    void setLeftPerspectivePoint(const QPointF& point) { mLeftPerspectivePoint = point; }
     QPointF getLeftPerspectivePoint() const { return mLeftPerspectivePoint; }
-    void setRightPerspectivePoint(const QPointF& point) { mRightPerspectivePoint = point; }
     QPointF getRightPerspectivePoint() const { return mRightPerspectivePoint; }
-    void setMiddlePerspectivePoint(const QPointF& point) { mMiddlePerspectivePoint = point; }
     QPointF getMiddlePerspectivePoint() const { return mMiddlePerspectivePoint; }
+
+    bool anyOverlayEnabled() const { return mSinglePerspectiveEnabled || mTwoPointPerspectiveEnabled || mThreePointPerspectiveEnabled; }
 
 private:
     Editor* mEditor = nullptr;
@@ -66,6 +68,10 @@ private:
     QPointF mMiddlePerspectivePoint;   // two and three point perspective
 
     MoveMode mMoveMode = MoveMode::NONE;
+
+    bool mSinglePerspectiveEnabled = false;
+    bool mTwoPointPerspectiveEnabled = false;
+    bool mThreePointPerspectiveEnabled = false;
 
     const qreal mSelectionTolerance = 8.0;
 };

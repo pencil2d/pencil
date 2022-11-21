@@ -70,8 +70,6 @@ private:
     int mRotationIncrement = 0;
     MoveMode mPerspMode;
     QPointF mOffset;
-
-    bool mPerspectiveOverlayEnabled = false;
 };
 
 #endif
