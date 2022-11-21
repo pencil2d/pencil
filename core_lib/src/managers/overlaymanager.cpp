@@ -18,6 +18,8 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "overlaymanager.h"
 
+#include <QTransform>
+
 OverlayManager::OverlayManager(Editor *editor): BaseManager(editor, __FUNCTION__)
 {
     mEditor = editor;
@@ -118,19 +120,4 @@ void OverlayManager::updatePerspective(const QPointF& point)
     default:
         break;
     }
-}
-
-void OverlayManager::setOnePointPerspectiveEnabled(bool b)
-{
-    mOverlayPerspective1 = b;
-}
-
-void OverlayManager::setTwoPointPerspectiveEnabled(bool b)
-{
-    mOverlayPerspective2 = b;
-}
-
-void OverlayManager::setThreePointPerspectiveEnabled(bool b)
-{
-    mOverlayPerspective3 = b;
 }

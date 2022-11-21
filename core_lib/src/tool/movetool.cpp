@@ -67,7 +67,7 @@ QCursor MoveTool::cursor()
     {
         mode = mEditor->select()->getMoveMode();
     }
-    else if (mEditor->overlays()->isPerspectiveOverlaysActive())
+    else if (mOverlayEnabled)
     {
         LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
         Q_ASSERT(layerCam);
@@ -83,13 +83,15 @@ void MoveTool::updateSettings(const SETTING setting)
     switch (setting)
     {
     case SETTING::ROTATION_INCREMENT:
-    {
         mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
         break;
-    }
+    case SETTING::OVERLAY_PERSPECTIVE1:
+    case SETTING::OVERLAY_PERSPECTIVE2:
+    case SETTING::OVERLAY_PERSPECTIVE3:
+        mOverlayEnabled = true;
+        break;
     default:
         break;
-
     }
 }
 
@@ -102,7 +104,7 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     {
         beginInteraction(event->modifiers(), mCurrentLayer);
     }
-    if (mEditor->overlays()->isPerspectiveOverlaysActive())
+    if (mOverlayEnabled)
     {
         mEditor->overlays()->setMoveMode(mPerspMode);
 
@@ -126,7 +128,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     {
         transformSelection(event->modifiers(), mCurrentLayer);
 
-        if (mEditor->overlays()->isPerspectiveOverlaysActive())
+        if (mOverlayEnabled)
         {
             LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
             Q_ASSERT(layerCam);
@@ -154,7 +156,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
-    if (mEditor->overlays()->isPerspectiveOverlaysActive())
+    if (mOverlayEnabled)
     {
         mEditor->overlays()->setMoveMode(MoveMode::NONE);
         mPerspMode = MoveMode::NONE;
