@@ -180,6 +180,7 @@ private:
     int        mId = 0;
     bool       mVisible = true;
     QString    mName;
+    int        mDistance = 10000;   // Distance camera -> layer in millimeters
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 
