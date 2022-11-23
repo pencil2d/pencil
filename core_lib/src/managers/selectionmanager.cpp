@@ -150,7 +150,12 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPoint
     switch (mMoveMode)
     {
     case MoveMode::MIDDLE: {
-        translate(currentPoint - offset);
+        QPointF newOffset = currentPoint - offset;
+
+        if (mLockAxis) {
+            newOffset = constrainOffsetToAxis(newOffset.x(), newOffset.y());
+        }
+        translate(newOffset);
         break;
     }
     case MoveMode::TOPLEFT:
@@ -252,7 +257,7 @@ void SelectionManager::scale(qreal sX, qreal sY)
     mScaleY = sY;
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
+int SelectionManager::constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
@@ -302,33 +307,25 @@ void SelectionManager::calculateSelectionTransformation()
     mSelectionTransform = t * s * r * t2;
 }
 
-QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY) const
+QPointF SelectionManager::constrainOffsetToAxis(const qreal offsetX, const qreal offsetY) const
 {
-    QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
-    qreal width = QLineF(projectedPolygon[0], projectedPolygon[1]).dx();
-    qreal height = QLineF(projectedPolygon[0], projectedPolygon[3]).dy();
-    qreal factor = width / height;
+    qreal x = 0;
+    qreal y = 0;
 
-    if (mMoveMode == MoveMode::TOPLEFT || mMoveMode == MoveMode::BOTTOMRIGHT)
-    {
-        offsetY = offsetX / factor;
-    }
-    else if (mMoveMode == MoveMode::TOPRIGHT || mMoveMode == MoveMode::BOTTOMLEFT)
-    {
-        offsetY = -(offsetX / factor);
-    }
-    else if (mMoveMode == MoveMode::MIDDLE)
-    {
-        qreal absX = offsetX;
-        if (absX < 0) { absX = -absX; }
+    qreal absX =  offsetX;
+    qreal absY = offsetY;
 
-        qreal absY = offsetY;
-        if (absY < 0) { absY = -absY; }
+    if (absX < 0) { absX = -absX; }
+    if (absY < 0) { absY = -absY; }
 
-        if (absX > absY) { offsetY = 0; }
-        if (absY > absX) { offsetX = 0; }
+    if (absX > absY + mLockAxisThreshold) {
+        x = offsetX;
     }
-    return QPointF(offsetX, offsetY);
+    else if (absY > absX + mLockAxisThreshold) {
+        y = offsetY;
+    }
+
+    return QPointF(x, y);
 }
 
 /**

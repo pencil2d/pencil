@@ -41,8 +41,6 @@ public:
     Status save(Object*) override;
     void workingLayerChanged(Layer*) override;
 
-    QPointF offsetFromAspectRatio(qreal offsetX, qreal offsetY) const;
-
     void flipSelection(bool flipVertical);
 
     void setSelection(QRectF rect, bool roundPixels=false);
@@ -51,6 +49,10 @@ public:
     void rotate(qreal angle, qreal lockedAngle);
     void scale(qreal sX, qreal sY);
     void maintainAspectRatio(bool state) { mAspectRatioFixed = state; }
+
+    /** @brief Locks movement either horizontally or vertically depending on drag direction
+     *  @param state */
+    void constrainOffsetToAxis(bool state) { mLockAxis = state; }
 
     void setMoveModeForAnchorInRange(const QPointF& point);
     MoveMode getMoveMode() const { return mMoveMode; }
@@ -124,9 +126,17 @@ signals:
     void needDeleteSelection();
 
 private:
-    int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
+    /** @brief Constrains the input offset to the nearest axis.
+     *  Eg. draggin along the x axis, will keep the selection to that axis.
+     * @param offsetX the x offset
+     * @param offsetY the y offset
+     * @return The constrained offset as a point
+     */
+    QPointF constrainOffsetToAxis(const qreal offsetX, const qreal offsetY) const;
+    int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
 
     bool mAspectRatioFixed = false;
+    bool mLockAxis = false;
     QPolygonF mSelectionPolygon;
     QRectF mOriginalRect;
 
@@ -141,6 +151,8 @@ private:
     MoveMode mMoveMode = MoveMode::NONE;
     QTransform mSelectionTransform;
     const qreal mSelectionTolerance = 10.0;
+
+    Q_CONSTEXPR static qreal mLockAxisThreshold = 10;
 
     QPointF mAnchorPoint;
 };

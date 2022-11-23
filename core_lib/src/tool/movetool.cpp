@@ -185,6 +185,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
         }
 
         selectMan->maintainAspectRatio(keyMod == Qt::ShiftModifier);
+        selectMan->constrainOffsetToAxis(keyMod == Qt::ShiftModifier);
 
         if(layer->type() == Layer::BITMAP)
         {
