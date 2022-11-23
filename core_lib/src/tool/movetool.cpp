@@ -410,13 +410,13 @@ QCursor MoveTool::cursor(MoveMode mode) const
     case MoveMode::ROTATIONRIGHT:
     case MoveMode::ROTATION:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/cursor-rotate.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-rotate.svg"));
         break;
     }
     case MoveMode::MIDDLE:
     case MoveMode::CENTER:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/cursor-move.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
         break;
     }
     default:
