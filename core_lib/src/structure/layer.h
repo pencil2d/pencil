@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QString>
 #include <QDomElement>
 #include "pencilerror.h"
-#include "pencildef.h"
 
 class QMouseEvent;
 class QPainter;
@@ -180,7 +179,7 @@ private:
     int        mId = 0;
     bool       mVisible = true;
     QString    mName;
-    int        mDistance = 10000;   // Distance camera -> layer in millimeters
+    int        mDistance = 10000;   // Distance camera -> layer in millimeters (default 10 metres)
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 
