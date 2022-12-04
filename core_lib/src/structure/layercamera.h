@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QRect>
 #include <QColor>
 #include "layer.h"
+#include "pencildef.h"
 #include "camerafieldoption.h"
 #include "cameraeasingtype.h"
 

@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include <QString>
 #include <QWidget>
 #include "layercamera.h"
+#include "layerbitmap.h"
+#include "layervector.h"
 
 class Layer;
 enum class LayerVisibility;
@@ -69,6 +71,7 @@ signals:
     void offsetChanged(int);
     void selectionChanged();
     void insertNewKeyFrame();
+    void layerDistanceChanged() const;
 
 public slots:
     void updateContent();
@@ -111,7 +114,8 @@ private:
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
     void paintHighlightedFrame(QPainter& painter, int framePos, int recTop, int recWidth, int recHeight) const;
 
-    void editLayerProperties(Layer* layer) const;
+    void editLayerProperties(LayerBitmap* layer) const;
+    void editLayerProperties(LayerVector* layer) const;
     void editLayerProperties(LayerCamera *layer) const;
     void editLayerName(Layer* layer) const;
 

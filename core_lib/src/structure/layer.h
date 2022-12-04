@@ -167,9 +167,15 @@ public:
     /** Clear the list of dirty keyframes */
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
+    void setDistance(int distance) { mDistance = distance; }
+    int getDistance() const { return mDistance; }
+
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
+
+signals:
+    void layerDistanceChanged(int LayerId);
 
 private:
     void removeFromSelectionList(int position);

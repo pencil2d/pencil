@@ -23,10 +23,13 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QSettings>
 #include <QMenu>
-
+#include <QDebug>
 #include "camerapropertiesdialog.h"
+#include "layerpropertiesdialog.h"
 #include "editor.h"
 #include "keyframe.h"
+#include "layerbitmap.h"
+#include "layervector.h"
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "object.h"
@@ -1133,23 +1136,79 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
         {
-            editLayerProperties(layer);
+            if (layer->type() == Layer::CAMERA)
+            {
+                auto cameraLayer = static_cast<LayerCamera*>(layer);
+                Q_ASSERT(cameraLayer);
+                editLayerProperties(cameraLayer);
+            }
+            else if (layer->type() == Layer::SOUND)
+            {
+                editLayerName(layer);
+            }
+            else if (layer->type() == Layer::BITMAP)
+            {
+                auto bitmapLayer = static_cast<LayerBitmap*>(layer);
+                Q_ASSERT(bitmapLayer);
+                editLayerProperties(bitmapLayer);
+            }
+            else if (layer->type() == Layer::VECTOR)
+            {
+                auto vectorLayer = static_cast<LayerVector*>(layer);
+                Q_ASSERT(vectorLayer);
+                editLayerProperties(vectorLayer);
+            }
         }
     }
     QWidget::mouseDoubleClickEvent(event);
 }
 
-void TimeLineCells::editLayerProperties(Layer *layer) const
+void TimeLineCells::editLayerProperties(LayerBitmap* layer) const
 {
-    if (layer->type() != Layer::CAMERA)
+    QRegExp regex("([\\xFFEF-\\xFFFF])+");
+
+    int dist = layer->getDistance();
+    Q_ASSERT(layer->type() == Layer::BITMAP);
+    LayerPropertiesDialog dialog(layer->name(), dist);
+
+    if (dialog.exec() != QDialog::Accepted)
     {
-        editLayerName(layer);
         return;
     }
+    QString name = dialog.getName().replace(regex, "");
+    if (!name.isEmpty())
+    {
+        mEditor->layers()->renameLayer(layer, name);
+    }
+    if (dist != dialog.getDistance())
+    {
+        layer->setDistance(dialog.getDistance());
+        emit layerDistanceChanged();
+    }
+}
 
-    auto cameraLayer = dynamic_cast<LayerCamera*>(layer);
-    Q_ASSERT(cameraLayer);
-    editLayerProperties(cameraLayer);
+void TimeLineCells::editLayerProperties(LayerVector *layer) const
+{
+    QRegExp regex("([\\xFFEF-\\xFFFF])+");
+
+    int dist = layer->getDistance();
+    Q_ASSERT(layer->type() == Layer::VECTOR);
+    LayerPropertiesDialog dialog(layer->name(), dist);
+
+    if (dialog.exec() != QDialog::Accepted)
+    {
+        return;
+    }
+    QString name = dialog.getName().replace(regex, "");
+    if (!name.isEmpty())
+    {
+        mEditor->layers()->renameLayer(layer, name);
+    }
+    if (dist != dialog.getDistance())
+    {
+        layer->setDistance(dialog.getDistance());
+        emit layerDistanceChanged();
+    }
 }
 
 void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const

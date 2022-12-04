@@ -707,6 +707,7 @@ QDomElement Layer::createBaseDomElement(QDomDocument& doc) const
     layerTag.setAttribute("name", name());
     layerTag.setAttribute("visibility", visible());
     layerTag.setAttribute("type", type());
+    layerTag.setAttribute("distance", getDistance());
     return layerTag;
 }
 
@@ -719,4 +720,5 @@ void Layer::loadBaseDomElement(const QDomElement& elem)
     }
     setName(elem.attribute("name", "untitled"));
     setVisible(elem.attribute("visibility", "1").toInt());
+    setDistance(elem.attribute("distance", "10000").toInt());
 }
