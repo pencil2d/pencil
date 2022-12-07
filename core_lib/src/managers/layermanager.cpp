@@ -174,9 +174,52 @@ QString LayerManager::nameSuggestLayer(const QString& name)
     QString newName = name;
     do {
         newName = QStringLiteral("%1 %2")
-            .arg(name).arg(QString::number(newIndex++));
+            .arg(name, QString::number(newIndex++));
     } while (sLayers.contains(newName));
     return newName;
+}
+
+void LayerManager::LayerGotNewDistance(int id)
+{
+    qDebug() << "Lag: " << object()->getLayerList();
+}
+
+void LayerManager::sortLayerStack()
+{
+    QList<Layer*> dists;
+    QList<Layer*> sounds;
+    for (int i = 0; i < object()->getLayerCount(); ++i)
+    {
+        Layer* layer = object()->getLayer(i);
+        if (layer->type() == Layer::SOUND)
+            sounds.append(layer);
+        else
+            dists.append(layer);
+    }
+
+    int swaps = 0;
+    do {
+        for (int i = 0; i < dists.count(); ++i)
+        {
+            Layer* layer1 = dists.at(i);
+            Layer* layer2 = dists.at(i + 1);
+            if (layer1->type() == Layer::CAMERA && i > 0)
+            {
+                dists.swapItemsAt(i, 0);
+                swaps++;
+            }
+            else if (layer1->getDistance() > layer2->getDistance())
+            {
+                dists.swapItemsAt(i, i + 1);
+                swaps++;
+            }
+        }
+    } while (swaps > 0);
+
+    for (int i = 0; i < sounds.count(); ++i)
+    {
+        dists.append(sounds.at(i));
+    }
 }
 
 Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayerName)

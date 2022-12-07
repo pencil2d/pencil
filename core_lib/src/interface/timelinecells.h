@@ -71,7 +71,7 @@ signals:
     void offsetChanged(int);
     void selectionChanged();
     void insertNewKeyFrame();
-    void layerDistanceChanged() const;
+    void layerDistanceChanged(int id);
 
 public slots:
     void updateContent();
@@ -93,6 +93,7 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
+    Layer* getLayerUnderCursor(int y) const;
     int getLayerNumber(int y) const;
     int getInbetweenLayerNumber(int y) const;
     int getLayerY(int layerNumber) const;
@@ -114,8 +115,8 @@ private:
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
     void paintHighlightedFrame(QPainter& painter, int framePos, int recTop, int recWidth, int recHeight) const;
 
-    void editLayerProperties(LayerBitmap* layer) const;
-    void editLayerProperties(LayerVector* layer) const;
+    void editLayerProperties(LayerBitmap* layer);
+    void editLayerProperties(LayerVector* layer);
     void editLayerProperties(LayerCamera *layer) const;
     void editLayerName(Layer* layer) const;
 

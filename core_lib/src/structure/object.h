@@ -24,9 +24,9 @@ GNU General Public License for more details.
 #include <QColor>
 #include "layer.h"
 #include "colorref.h"
-#include "pencilerror.h"
-#include "pencildef.h"
 #include "objectdata.h"
+#include "pencildef.h"
+#include "pencilerror.h"
 
 class QProgressDialog;
 class QFile;
@@ -165,6 +165,9 @@ public:
     int totalKeyFrameCount() const;
     void updateActiveFrames(int frame) const;
     void setActiveFramePoolSize(int sizeInMB);
+
+    // temporary function...?
+    QList<Layer*> getLayerList() { return mLayers; }
 
 private:
     int getMaxLayerID();

@@ -77,6 +77,8 @@ public:
 
     QString nameSuggestLayer(const QString& name);
     int getLastLayerIndex() { return count() - 1; }
+    void LayerGotNewDistance(int id);
+    void sortLayerStack();
 
 signals:
     void currentLayerWillChange(int index);

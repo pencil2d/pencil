@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QSettings>
 #include <QMenu>
+#include <QToolTip>
 #include <QDebug>
 #include "camerapropertiesdialog.h"
 #include "layerpropertiesdialog.h"
@@ -58,6 +59,7 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setMouseTracking(true);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
+    connect(this, &TimeLineCells::layerDistanceChanged, mEditor->layers() , &LayerManager::LayerGotNewDistance);
 }
 
 TimeLineCells::~TimeLineCells()
@@ -108,6 +110,16 @@ void TimeLineCells::setFrameSize(int size)
     mFrameSize = size;
     mPrefs->set(SETTING::FRAME_SIZE, mFrameSize);
     updateContent();
+}
+
+Layer* TimeLineCells::getLayerUnderCursor(int y) const
+{
+    int layerNumber = mLayerOffset + (y - mOffsetY) / mLayerHeight;
+    QList<Layer*> layers = mEditor->object()->getLayerList();
+    if (layerNumber < 0 || layerNumber >= layers.size())
+        return nullptr;
+
+    return layers.at(layers.count() - 1 - layerNumber);
 }
 
 int TimeLineCells::getLayerNumber(int y) const
@@ -996,6 +1008,18 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
             mEndY = event->pos().y();
             emit mouseMovedY(mEndY - mStartY);
         }
+        else {
+            Layer* layer = getLayerUnderCursor(event->pos().y());
+            if (layer == nullptr)
+                return;
+            if (layer->type() == Layer::BITMAP
+                    || layer->type() == Layer::VECTOR
+                    || layer->type() == Layer::CAMERA)
+            {
+                double dist = layer->getDistance()/1000.0;
+                setToolTip("'" + layer->name() +"' Distance: " + QString::number(dist) + " m.");
+            }
+        }
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
@@ -1163,7 +1187,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     QWidget::mouseDoubleClickEvent(event);
 }
 
-void TimeLineCells::editLayerProperties(LayerBitmap* layer) const
+void TimeLineCells::editLayerProperties(LayerBitmap* layer)
 {
     QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
@@ -1183,11 +1207,12 @@ void TimeLineCells::editLayerProperties(LayerBitmap* layer) const
     if (dist != dialog.getDistance())
     {
         layer->setDistance(dialog.getDistance());
-        emit layerDistanceChanged();
+        emit layerDistanceChanged(layer->id());
+        qDebug() << "dist changed: " << layer->id();
     }
 }
 
-void TimeLineCells::editLayerProperties(LayerVector *layer) const
+void TimeLineCells::editLayerProperties(LayerVector *layer)
 {
     QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
@@ -1207,7 +1232,7 @@ void TimeLineCells::editLayerProperties(LayerVector *layer) const
     if (dist != dialog.getDistance())
     {
         layer->setDistance(dialog.getDistance());
-        emit layerDistanceChanged();
+        emit layerDistanceChanged(layer->id());
     }
 }
 

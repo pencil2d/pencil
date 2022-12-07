@@ -174,9 +174,6 @@ protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
 
-signals:
-    void layerDistanceChanged(int LayerId);
-
 private:
     void removeFromSelectionList(int position);
 
