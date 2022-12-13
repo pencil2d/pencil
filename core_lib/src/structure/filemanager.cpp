@@ -447,6 +447,11 @@ QDomElement FileManager::saveProjectData(const ObjectData* data, QDomDocument& x
     fpsTag.setAttribute("value", data->getFrameRate());
     rootTag.appendChild(fpsTag);
 
+    // Are Layers sorted? Only done once
+    QDomElement tagIsSorted = xmlDoc.createElement("isSorted");
+    tagIsSorted.setAttribute("value", data->isSortedLayers() ? "true" : "false");
+    rootTag.appendChild(tagIsSorted);
+
     // Current Layer
     QDomElement tagIsLoop = xmlDoc.createElement("isLoop");
     tagIsLoop.setAttribute("value", data->isLooping() ? "true" : "false");
@@ -501,6 +506,10 @@ void FileManager::extractProjectData(const QDomElement& element, ObjectData& dat
     else if (strName == "fps" || strName == "currentFps")
     {
         data.setFrameRate(element.attribute("value", "12").toInt());
+    }
+    else if (strName == "isSorted")
+    {
+        data.setSortedLayers(element.attribute("value", "false") == "true");
     }
     else if (strName == "isLoop")
     {

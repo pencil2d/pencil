@@ -166,8 +166,7 @@ public:
     void updateActiveFrames(int frame) const;
     void setActiveFramePoolSize(int sizeInMB);
 
-    // temporary function...?
-    QList<Layer*> getLayerList() { return mLayers; }
+    void initialLayerSort(); // necessary since we reversed layer order with Camera at top
 
 private:
     int getMaxLayerID();

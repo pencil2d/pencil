@@ -219,6 +219,52 @@ int Object::getMaxLayerID()
     return maxId;
 }
 
+void Object::initialLayerSort()
+{
+    int count = getLayerCount();
+
+    int cameras = 0;
+    // do nothing if more than one Camera!
+    for (int i = 0; i < count; i++)
+    {
+        Layer* layer = getLayer(i);
+        if (layer->type() == Layer::CAMERA)
+            cameras++;
+    }
+    if (cameras > 1)
+        return;
+
+    // First move Camera to top and Sound layers to the bottom...
+    for (int i = 0; i < count - 1; i++)
+    {
+        Layer* layer = getLayer(i);
+        if (layer->type() == Layer::CAMERA)
+            mLayers.swap(i, count - 1);
+        else if (layer->type() == Layer::SOUND)
+            mLayers.swap(i, 0);
+    }
+    // ...then sort Bitmap and Vector layers by mDistance
+    int swaps = 0;
+    do
+    {
+        swaps = 0;
+        for (int i = 1; i < count - 1; i++)
+        {
+            int next = i + 1;
+            Layer* layer = getLayer(i);
+            if (layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR)
+                continue;
+            Layer* layer2 = getLayer(next);
+            if ((layer2->type() == Layer::BITMAP || layer2->type() == Layer::VECTOR)
+                    && layer->getDistance() < layer2->getDistance())
+            {
+                mLayers.swap(next, i);
+                swaps++;
+            }
+        }
+    } while (swaps > 0);
+}
+
 int Object::getUniqueLayerID()
 {
     return 1 + getMaxLayerID();
@@ -320,14 +366,14 @@ bool Object::canSwapLayers(int layerIndexLeft, int layerIndexRight) const
         return false;
     }
 
-    Layer* firstLayer = mLayers.first();
+    Layer* lastLayer = mLayers.last(); // Camera must be upper layer
     Layer* leftLayer = mLayers.at(layerIndexLeft);
     Layer* rightLayer = mLayers.at(layerIndexRight);
 
-    // The bottom layer can't be swapped!
+    // The upper layer can't be swapped!
     if ((leftLayer->type() == Layer::CAMERA ||
          rightLayer->type() == Layer::CAMERA) &&
-         (firstLayer == leftLayer || firstLayer == rightLayer)) {
+         (lastLayer == leftLayer || lastLayer == rightLayer)) {
         return false;
     }
     return true;

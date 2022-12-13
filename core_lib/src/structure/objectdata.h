@@ -43,6 +43,9 @@ public:
     void setFrameRate(int n) { mFps = n; }
     int  getFrameRate() const { return mFps; }
 
+    void setSortedLayers(bool b) { mIdSortedLayers = b; }
+    bool isSortedLayers() const { return mIdSortedLayers; }
+
     void setLooping(bool b) { mIsLoop = b; }
     bool isLooping() const { return mIsLoop; }
 
@@ -64,6 +67,7 @@ private:
 
     // playback manager
     int  mFps = 12;
+    bool mIdSortedLayers = false;
     bool mIsLoop = false;
     bool mIsRangedPlayback = false;
     int  mMarkInFrame = 1;

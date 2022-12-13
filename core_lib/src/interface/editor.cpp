@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include <QDropEvent>
 #include <QMimeData>
 #include <QTemporaryDir>
-
+#include <QDebug>
 #include "object.h"
 #include "vectorimage.h"
 #include "bitmapimage.h"
@@ -892,6 +892,13 @@ Status Editor::setObject(Object* newObject)
         m->load(mObject.get());
     }
     emit objectLoaded();
+
+    if (!mObject->data()->isSortedLayers())
+    {
+        mObject->initialLayerSort();
+        mObject->data()->setSortedLayers(true);
+        mObject->modification();
+    }
 
     return Status::OK;
 }

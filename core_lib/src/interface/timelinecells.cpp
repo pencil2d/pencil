@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QMenu>
 #include <QToolTip>
-#include <QDebug>
+
 #include "camerapropertiesdialog.h"
 #include "layerpropertiesdialog.h"
 #include "editor.h"
@@ -59,7 +59,7 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setMouseTracking(true);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
-    connect(this, &TimeLineCells::layerDistanceChanged, mEditor->layers() , &LayerManager::LayerGotNewDistance);
+    connect(this, &TimeLineCells::layerDistanceChanged, mEditor->layers() , &LayerManager::sortLayersByDistance);
 }
 
 TimeLineCells::~TimeLineCells()
@@ -115,11 +115,10 @@ void TimeLineCells::setFrameSize(int size)
 Layer* TimeLineCells::getLayerUnderCursor(int y) const
 {
     int layerNumber = mLayerOffset + (y - mOffsetY) / mLayerHeight;
-    QList<Layer*> layers = mEditor->object()->getLayerList();
-    if (layerNumber < 0 || layerNumber >= layers.size())
+    int count = mEditor->object()->getLayerCount();
+    if (layerNumber < 0 || layerNumber >= mEditor->object()->getLayerCount())
         return nullptr;
-
-    return layers.at(layers.count() - 1 - layerNumber);
+    return mEditor->object()->getLayer(count - 1 - layerNumber);
 }
 
 int TimeLineCells::getLayerNumber(int y) const
@@ -1207,8 +1206,7 @@ void TimeLineCells::editLayerProperties(LayerBitmap* layer)
     if (dist != dialog.getDistance())
     {
         layer->setDistance(dialog.getDistance());
-        emit layerDistanceChanged(layer->id());
-        qDebug() << "dist changed: " << layer->id();
+        emit layerDistanceChanged();
     }
 }
 
@@ -1232,7 +1230,7 @@ void TimeLineCells::editLayerProperties(LayerVector *layer)
     if (dist != dialog.getDistance())
     {
         layer->setDistance(dialog.getDistance());
-        emit layerDistanceChanged(layer->id());
+        emit layerDistanceChanged();
     }
 }
 
