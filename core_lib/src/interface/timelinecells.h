@@ -71,7 +71,7 @@ signals:
     void offsetChanged(int);
     void selectionChanged();
     void insertNewKeyFrame();
-    void layerDistanceChanged();
+    void layerDistanceChanged(int id);
 
 public slots:
     void updateContent();

@@ -109,17 +109,21 @@ void LayerManager::setCurrentLayer(int layerIndex)
 {
     Q_ASSERT(layerIndex >= 0);
     Q_ASSERT(layerIndex < object()->getLayerCount());
-
+qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 1: " << editor()->currentLayerIndex();
     // Deselect frames of previous layer.
     Layer* previousLayer = currentLayer();
     previousLayer->deselectAll();
 
     emit currentLayerWillChange(layerIndex);
+qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 2: " << editor()->currentLayerIndex();
 
     // Do not check if layer index has changed
     // because the current layer may have changed either way
+
     editor()->setCurrentLayerIndex(layerIndex);
     emit currentLayerChanged(layerIndex);
+
+qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 3: " << editor()->currentLayerIndex() << "\n";
 
     if (object()->getLayer(layerIndex)->type() == Layer::CAMERA)
     {
@@ -179,7 +183,7 @@ QString LayerManager::nameSuggestLayer(const QString& name)
     return newName;
 }
 
-void LayerManager::sortLayersByDistance()
+void LayerManager::sortLayersByDistance(int index)
 {
     int swaps;
     do
@@ -197,12 +201,18 @@ void LayerManager::sortLayersByDistance()
             {
                 if (editor()->object()->canSwapLayers(next, i))
                 {
-                    editor()->object()->swapLayers(next, i);
+                    editor()->swapLayers(next, i);
+ //                   editor()->setLayerMovedByCode(true);
                     swaps++;
                 }
             }
         }
     } while (swaps > 0);
+/*
+    Layer* current = editor()->object()->getLayer(index);
+    index = getIndex(current);
+    setCurrentLayer(index);
+    */
 }
 
 Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayerName)

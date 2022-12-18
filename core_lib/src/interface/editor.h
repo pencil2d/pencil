@@ -221,6 +221,8 @@ public: //slots
     void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
     bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
+    void setLayerMovedByCode(bool b) { mIsLayerMovedByCode = b; }
+    bool getLayerMovedByCode() const { return mIsLayerMovedByCode; }
 
 private:
     bool importBitmapImage(const QString&, int space = 0);
@@ -259,6 +261,7 @@ private:
     int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
     bool mAutosaveNeverAskAgain = false;
+    bool mIsLayerMovedByCode = false;
 
     void makeConnections();
     KeyFrame* addKeyFrame(int layerNumber, int frameNumber);

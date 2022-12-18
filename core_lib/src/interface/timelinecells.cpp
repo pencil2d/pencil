@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QMenu>
 #include <QToolTip>
-
+#include <QDebug>
 #include "camerapropertiesdialog.h"
 #include "layerpropertiesdialog.h"
 #include "editor.h"
@@ -244,6 +244,7 @@ void TimeLineCells::drawContent()
     Q_ASSERT(object != nullptr);
 
     const Layer* currentLayer = mEditor->layers()->currentLayer();
+//    qDebug() << currentLayer->name();
     if (currentLayer == nullptr) return;
 
     // grey background of the view
@@ -306,6 +307,7 @@ void TimeLineCells::drawContent()
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks)
         {
+//            qDebug() << "currentlayerindex: " << mEditor->layers()->currentLayerIndex();
             paintTrack(painter,
                        currentLayer,
                        mOffsetX,
@@ -857,7 +859,8 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
             {
                 mEditor->switchVisibilityOfLayer(layerNumber);
             }
-            else if (mEditor->currentLayerIndex() != layerNumber)
+            else if (mEditor->currentLayerIndex() != layerNumber
+                     && event->button() == Qt::LeftButton)
             {
                 mEditor->layers()->setCurrentLayer(layerNumber);
                 mEditor->layers()->currentLayer()->deselectAll();
@@ -1015,8 +1018,20 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                     || layer->type() == Layer::VECTOR
                     || layer->type() == Layer::CAMERA)
             {
-                double dist = layer->getDistance()/1000.0;
-                setToolTip("'" + layer->name() +"' Distance: " + QString::number(dist) + " m.");
+//                double dist = layer->getDistance()/1000.0;
+                QString tip = "";
+                for (int i = mEditor->object()->getLayerCount() - 1; i > -1; i--)
+                {
+                    Layer* current = mEditor->object()->getLayer(i);
+                    if (current->type() == Layer::BITMAP
+                            || current->type() == Layer::VECTOR
+                            || current->type() == Layer::CAMERA)
+                    {
+                        tip += ("'" + current->name() +"' Distance: " + QString::number(current->getDistance()/1000.0) + " m.\n");
+                    }
+                }
+                tip.chop(2);
+                setToolTip(tip);
             }
         }
     }
@@ -1183,7 +1198,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
             }
         }
     }
-    QWidget::mouseDoubleClickEvent(event);
+//    QWidget::mouseDoubleClickEvent(event);
 }
 
 void TimeLineCells::editLayerProperties(LayerBitmap* layer)
@@ -1205,8 +1220,10 @@ void TimeLineCells::editLayerProperties(LayerBitmap* layer)
     }
     if (dist != dialog.getDistance())
     {
+        int preMove = mEditor->currentLayerIndex();
         layer->setDistance(dialog.getDistance());
-        emit layerDistanceChanged();
+        emit layerDistanceChanged(layer->id());
+
     }
 }
 
@@ -1230,7 +1247,7 @@ void TimeLineCells::editLayerProperties(LayerVector *layer)
     if (dist != dialog.getDistance())
     {
         layer->setDistance(dialog.getDistance());
-        emit layerDistanceChanged();
+        emit layerDistanceChanged(layer->id());
     }
 }
 
