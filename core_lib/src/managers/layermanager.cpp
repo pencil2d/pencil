@@ -109,13 +109,13 @@ void LayerManager::setCurrentLayer(int layerIndex)
 {
     Q_ASSERT(layerIndex >= 0);
     Q_ASSERT(layerIndex < object()->getLayerCount());
-qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 1: " << editor()->currentLayerIndex();
+//qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 1: " << editor()->currentLayerIndex();
     // Deselect frames of previous layer.
     Layer* previousLayer = currentLayer();
     previousLayer->deselectAll();
 
     emit currentLayerWillChange(layerIndex);
-qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 2: " << editor()->currentLayerIndex();
+//qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 2: " << editor()->currentLayerIndex();
 
     // Do not check if layer index has changed
     // because the current layer may have changed either way
@@ -123,7 +123,7 @@ qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 2
     editor()->setCurrentLayerIndex(layerIndex);
     emit currentLayerChanged(layerIndex);
 
-qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 3: " << editor()->currentLayerIndex() << "\n";
+//qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 3: " << editor()->currentLayerIndex() << "\n";
 
     if (object()->getLayer(layerIndex)->type() == Layer::CAMERA)
     {
@@ -183,8 +183,16 @@ QString LayerManager::nameSuggestLayer(const QString& name)
     return newName;
 }
 
-void LayerManager::sortLayersByDistance(int index)
+void LayerManager::sortLayersByDistance()
 {
+    /*
+    qDebug() << "BEFORE ";
+    for (int i = 1; i < count() - 1; i++)
+    {
+        Layer* lay = editor()->object()->getLayer(i);
+        qDebug() << i << " " << lay->name();
+    }
+*/
     int swaps;
     do
     {
@@ -197,21 +205,25 @@ void LayerManager::sortLayersByDistance(int index)
                 continue;
             Layer* layer2 = editor()->object()->getLayer(next);
             if ((layer2->type() == Layer::BITMAP || layer2->type() == Layer::VECTOR)
-                    && layer->getDistance() < layer2->getDistance())
+                    && (layer->getDistance() < layer2->getDistance()))
             {
-                if (editor()->object()->canSwapLayers(next, i))
+                if (editor()->canSwapLayers(i, next))
                 {
-                    editor()->swapLayers(next, i);
- //                   editor()->setLayerMovedByCode(true);
+                    editor()->swapLayers(i, next);
                     swaps++;
+                    qDebug() << layer->name() << " <-> " << layer2->name();
+                    setCurrentLayer(i);
                 }
             }
         }
     } while (swaps > 0);
 /*
-    Layer* current = editor()->object()->getLayer(index);
-    index = getIndex(current);
-    setCurrentLayer(index);
+    qDebug() << "AFTER";
+    for (int i = 1; i < count() - 1; i++)
+    {
+        Layer* lay = editor()->object()->getLayer(i);
+        qDebug() << i << " " << lay->name();
+    }
     */
 }
 

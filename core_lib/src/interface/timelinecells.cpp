@@ -1018,7 +1018,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                     || layer->type() == Layer::VECTOR
                     || layer->type() == Layer::CAMERA)
             {
-//                double dist = layer->getDistance()/1000.0;
                 QString tip = "";
                 for (int i = mEditor->object()->getLayerCount() - 1; i > -1; i--)
                 {
@@ -1220,10 +1219,8 @@ void TimeLineCells::editLayerProperties(LayerBitmap* layer)
     }
     if (dist != dialog.getDistance())
     {
-        int preMove = mEditor->currentLayerIndex();
         layer->setDistance(dialog.getDistance());
         emit layerDistanceChanged(layer->id());
-
     }
 }
 
