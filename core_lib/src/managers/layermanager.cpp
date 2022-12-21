@@ -205,9 +205,10 @@ void LayerManager::sortLayersByDistance(int id)
                     swaps++;
                 }
             }
-            setCurrentLayer(editor()->object()->findLayerById(id));
         }
     } while (swaps > 0);
+
+    setCurrentLayer(editor()->object()->findLayerById(id));
 }
 
 Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayerName)
