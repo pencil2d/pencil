@@ -212,7 +212,7 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 
         KeyFrame* key = curLayer->getKeyFrameAt(frameNumber);
         if (key->isModified()) {
-            mEditor->frameModified(frameNumber);
+            emit mEditor->frameModified(frameNumber);
         }
     });
 
@@ -902,7 +902,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                     {
                         Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
                         previousLayer->deselectAll();
-                        mEditor->selectedFramesChanged();
+                        emit mEditor->selectedFramesChanged();
                         mEditor->layers()->setCurrentLayer(layerNumber);
                     }
 
@@ -916,7 +916,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         mCanMoveFrame = true;
 
                         currentLayer->selectAllFramesAfter(frameNumber);
-                        mEditor->selectedFramesChanged();
+                        emit mEditor->selectedFramesChanged();
                     }
                     // Check if we are clicking on a non selected frame
                     else if (!currentLayer->isFrameSelected(frameNumber))
@@ -1121,20 +1121,26 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
-            mEditor->selectedFramesChanged();
+            emit mEditor->selectedFramesChanged();
         }
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {
         mToLayer = getInbetweenLayerNumber(event->pos().y());
-        if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
+        if (mToLayer != mFromLayer
+                && mToLayer > -1
+                && mToLayer < mEditor->layers()->count())
         {
             // Bubble the from layer up or down to the to layer
             if (mToLayer < mFromLayer) // bubble up
             {
                 for (int i = mFromLayer - 1; i >= mToLayer; i--)
                 {
-                    mEditor->swapLayers(i, i + 1);
+                    if ((mEditor->layers()->getLayer(i)->type() == Layer::BITMAP
+                            || mEditor->layers()->getLayer(i)->type() == Layer::VECTOR)
+                            && (mEditor->layers()->getLayer(i + 1)->type() == Layer::BITMAP
+                                || mEditor->layers()->getLayer(i + 1)->type() == Layer::VECTOR))
+                        mEditor->swapLayers(i, i + 1);
                 }
                 mEditor->layers()->sortLayersByDistance(mEditor->object()->getLayer(mToLayer)->id());
             }
@@ -1142,7 +1148,11 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             {
                 for (int i = mFromLayer + 1; i <= mToLayer; i++)
                 {
-                    mEditor->swapLayers(i, i - 1);
+                    if ((mEditor->layers()->getLayer(i)->type() == Layer::BITMAP
+                            || mEditor->layers()->getLayer(i)->type() == Layer::VECTOR)
+                            && (mEditor->layers()->getLayer(i + 1)->type() == Layer::BITMAP
+                                || mEditor->layers()->getLayer(i + 1)->type() == Layer::VECTOR))
+                        mEditor->swapLayers(i, i - 1);
                 }
                 mEditor->layers()->sortLayersByDistance(mEditor->object()->getLayer(mToLayer)->id());
             }
