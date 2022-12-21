@@ -119,7 +119,7 @@ bool Object::loadXML(const QDomElement& docElem, ProgressCallback progressForwar
 LayerBitmap* Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap(this);
-    mLayers.append(layerBitmap);
+    mLayers.insert(mLayers.count() - 1, layerBitmap);
 
     layerBitmap->addNewKeyFrameAt(1);
 
@@ -129,7 +129,7 @@ LayerBitmap* Object::addNewBitmapLayer()
 LayerVector* Object::addNewVectorLayer()
 {
     LayerVector* layerVector = new LayerVector(this);
-    mLayers.append(layerVector);
+    mLayers.insert(mLayers.count() - 1, layerVector);
 
     layerVector->addNewKeyFrameAt(1);
 
@@ -139,7 +139,7 @@ LayerVector* Object::addNewVectorLayer()
 LayerSound* Object::addNewSoundLayer()
 {
     LayerSound* layerSound = new LayerSound(this);
-    mLayers.append(layerSound);
+    mLayers.prepend(layerSound);
 
     // No default keyFrame at position 1 for Sound layer.
 
@@ -148,6 +148,7 @@ LayerSound* Object::addNewSoundLayer()
 
 LayerCamera* Object::addNewCameraLayer()
 {
+    // should be disabled! Only one camera in each file.
     LayerCamera* layerCamera = new LayerCamera(this);
     mLayers.append(layerCamera);
 
@@ -381,8 +382,8 @@ bool Object::canSwapLayers(int layerIndexLeft, int layerIndexRight) const
 
 bool Object::canDeleteLayer(int index) const
 {
-    // We expect the first camera layer to be at the bottom and this layer must not be deleted!
-    if (index == 0) {
+    // We expect the (first) camera layer to be at the top and this layer must not be deleted!
+    if (index == getLayerCount() - 1) {
         return false;
     }
 

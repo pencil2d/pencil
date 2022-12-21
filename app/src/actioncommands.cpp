@@ -793,6 +793,7 @@ Status ActionCommands::addNewBitmapLayer()
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createBitmapLayer(text);
+        mEditor->layers()->sortLayersByDistance(mEditor->object()->findLayerByName(text)->id());
     }
     return Status::OK;
 }
@@ -806,6 +807,7 @@ Status ActionCommands::addNewVectorLayer()
     if (ok && !text.isEmpty())
     {
         mEditor->layers()->createVectorLayer(text);
+        mEditor->layers()->sortLayersByDistance(mEditor->object()->findLayerByName(text)->id());
     }
     return Status::OK;
 }

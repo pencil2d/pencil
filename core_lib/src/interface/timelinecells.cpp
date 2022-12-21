@@ -59,7 +59,6 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setMouseTracking(true);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
-    connect(this, &TimeLineCells::layerDistanceChanged, mEditor->layers() , &LayerManager::sortLayersByDistance);
 }
 
 TimeLineCells::~TimeLineCells()
@@ -1023,13 +1022,16 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                 {
                     Layer* current = mEditor->object()->getLayer(i);
                     if (current->type() == Layer::BITMAP
-                            || current->type() == Layer::VECTOR
-                            || current->type() == Layer::CAMERA)
+                            || current->type() == Layer::VECTOR)
                     {
                         tip += ("'" + current->name() +"' Distance: " + QString::number(current->getDistance()/1000.0) + " m.\n");
                     }
+                    else if (current->type() == Layer::CAMERA)
+                    {
+                        tip += ("**" + current->name() +"** Distance: " + QString::number(current->getDistance()/1000.0) + " m.\n");
+                    }
                 }
-                tip.chop(2);
+                tip.chop(2);    // remove new line chars
                 setToolTip(tip);
             }
         }
@@ -1110,7 +1112,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             currentLayer->moveSelectedFrames(offset);
 
             mEditor->layers()->notifyAnimationLengthChanged();
-            mEditor->framesModified();
+            emit mEditor->framesModified();
         }
         else if (!mTimeLine->scrubbing && !mMovingFrames && !mClickSelecting && !mBoxSelecting)
         {
@@ -1131,12 +1133,18 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             if (mToLayer < mFromLayer) // bubble up
             {
                 for (int i = mFromLayer - 1; i >= mToLayer; i--)
+                {
                     mEditor->swapLayers(i, i + 1);
+                }
+                mEditor->layers()->sortLayersByDistance(mEditor->object()->getLayer(mToLayer)->id());
             }
             else // bubble down
             {
                 for (int i = mFromLayer + 1; i <= mToLayer; i++)
+                {
                     mEditor->swapLayers(i, i - 1);
+                }
+                mEditor->layers()->sortLayersByDistance(mEditor->object()->getLayer(mToLayer)->id());
             }
         }
     }
@@ -1220,7 +1228,7 @@ void TimeLineCells::editLayerProperties(LayerBitmap* layer)
     if (dist != dialog.getDistance())
     {
         layer->setDistance(dialog.getDistance());
-        emit layerDistanceChanged(layer->id());
+        mEditor->layers()->sortLayersByDistance(layer->id());
     }
 }
 
@@ -1244,7 +1252,7 @@ void TimeLineCells::editLayerProperties(LayerVector *layer)
     if (dist != dialog.getDistance())
     {
         layer->setDistance(dialog.getDistance());
-        emit layerDistanceChanged(layer->id());
+        mEditor->layers()->sortLayersByDistance(layer->id());
     }
 }
 

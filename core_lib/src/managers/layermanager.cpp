@@ -183,26 +183,18 @@ QString LayerManager::nameSuggestLayer(const QString& name)
     return newName;
 }
 
-void LayerManager::sortLayersByDistance()
+void LayerManager::sortLayersByDistance(int id)
 {
-    /*
-    qDebug() << "BEFORE ";
-    for (int i = 1; i < count() - 1; i++)
-    {
-        Layer* lay = editor()->object()->getLayer(i);
-        qDebug() << i << " " << lay->name();
-    }
-*/
     int swaps;
     do
     {
         swaps = 0;
-        for (int i = 1; i < count() - 1; i++)
+        for (int i = 0; i < count(); i++)
         {
-            int next = i + 1;
             Layer* layer = editor()->object()->getLayer(i);
             if (layer->type() != Layer::BITMAP && layer->type() != Layer::VECTOR)
                 continue;
+            int next = i + 1;
             Layer* layer2 = editor()->object()->getLayer(next);
             if ((layer2->type() == Layer::BITMAP || layer2->type() == Layer::VECTOR)
                     && (layer->getDistance() < layer2->getDistance()))
@@ -211,20 +203,11 @@ void LayerManager::sortLayersByDistance()
                 {
                     editor()->swapLayers(i, next);
                     swaps++;
-                    qDebug() << layer->name() << " <-> " << layer2->name();
-                    setCurrentLayer(i);
                 }
             }
+            setCurrentLayer(editor()->object()->findLayerById(id));
         }
     } while (swaps > 0);
-/*
-    qDebug() << "AFTER";
-    for (int i = 1; i < count() - 1; i++)
-    {
-        Layer* lay = editor()->object()->getLayer(i);
-        qDebug() << i << " " << lay->name();
-    }
-    */
 }
 
 Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayerName)
