@@ -19,11 +19,11 @@ GNU General Public License for more details.
 #include <QtMath>
 #include <QSettings>
 
+#include "log.h"
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "bitmapimage.h"
-#include "layercamera.h"
 #include "vectorimage.h"
 
 #include "painterutils.h"

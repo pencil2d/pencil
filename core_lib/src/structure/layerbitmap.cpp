@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QFile>
 #include "keyframe.h"
 #include "bitmapimage.h"
-
+#include "camera_dof.h"
 
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
 {
@@ -54,6 +54,20 @@ QRect LayerBitmap::getFrameBounds(int frame)
 {
     BitmapImage* image = getBitmapImageAtFrame(frame);
     return image->bounds();
+}
+
+// dist = distance setting on Camera in millimeters
+bool LayerBitmap::isInFocus(qreal dist, int outputWidth, int currFrameWidth, qreal aperture)
+{
+    qreal factor = static_cast<qreal>(outputWidth) / static_cast<qreal>(currFrameWidth);
+    qreal hf_dist = std::getHyperfocalDistance(mStandardFocalLength * factor, aperture);
+    if (hf_dist < dist)
+        return true;
+    qreal dof_near = std::getDOF_Near(hf_dist, mStandardFocalLength * factor, aperture, dist);
+    qreal dof_far = std::getDOF_far(hf_dist, mStandardFocalLength * factor, dist);
+    if (dof_near < dist && dof_far > dist)
+        return true;
+    return false;
 }
 
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber, qreal opacity)
