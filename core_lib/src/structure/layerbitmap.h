@@ -40,7 +40,7 @@ public:
     void repositionFrame(QPoint point, int frame);
     QRect getFrameBounds(int frame);
 
-    bool isInFocus(qreal dist, int outputWidth, int currFrameWidth, qreal aperture);
+    qreal getBlur(qreal dist, int outputWidth, int currFrameWidth, qreal aperture);
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString strPath) override;
@@ -51,7 +51,11 @@ private:
     QString filePath(KeyFrame* key, const QDir& dataFolder) const;
     QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
+
+    // for blur-calculations
     qreal const mStandardFocalLength = 50.0;
+    qreal const mDofNearFactor = 30.0;
+    qreal const mDofFarFactor = 2.5;
 };
 
 #endif

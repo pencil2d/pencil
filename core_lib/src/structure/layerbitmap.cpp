@@ -57,17 +57,25 @@ QRect LayerBitmap::getFrameBounds(int frame)
 }
 
 // dist = distance setting on Camera in millimeters
-bool LayerBitmap::isInFocus(qreal dist, int outputWidth, int currFrameWidth, qreal aperture)
+qreal LayerBitmap::getBlur(qreal dist, int outputWidth, int currFrameWidth, qreal aperture)
 {
     qreal factor = static_cast<qreal>(outputWidth) / static_cast<qreal>(currFrameWidth);
     qreal hf_dist = std::getHyperfocalDistance(mStandardFocalLength * factor, aperture);
-    if (hf_dist < dist)
-        return true;
-    qreal dof_near = std::getDOF_Near(hf_dist, mStandardFocalLength * factor, aperture, dist);
+    if (getDistance() <= hf_dist && hf_dist <= dist)
+        return 0.0;
+    qreal dof_near = std::getDOF_near(hf_dist, mStandardFocalLength * factor, dist);
     qreal dof_far = std::getDOF_far(hf_dist, mStandardFocalLength * factor, dist);
-    if (dof_near < dist && dof_far > dist)
-        return true;
-    return false;
+    if (dof_near <= getDistance() && dof_far >= getDistance())
+        return 0.0;
+    if (dof_near > getDistance())
+    {
+        return qPow(mDofNearFactor,(dof_near - dist)/dof_near);
+    }
+    else if (dof_far < getDistance())
+    {
+        return qPow(qLn(dist - dof_far), mDofFarFactor);
+    }
+    return 0.0;
 }
 
 void LayerBitmap::loadImageAtFrame(QString path, QPoint topLeft, int frameNumber, qreal opacity)

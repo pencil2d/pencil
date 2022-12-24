@@ -63,3 +63,22 @@ void CameraPropertiesDialog::setHeight(int height)
 {
     ui->heightBox->setValue(height);
 }
+
+int CameraPropertiesDialog::getDistance()
+{
+    return static_cast<int>(ui->doubleSpinBoxDistance->value() * 1000);
+}
+
+void CameraPropertiesDialog::setDistance(int dist)
+{
+    ui->doubleSpinBoxDistance->setValue(dist/1000.0);
+}
+
+qreal CameraPropertiesDialog::getAperture()
+{
+    return ui->cbAperture->itemText(ui->cbAperture->currentIndex()).toDouble();
+}
+
+void CameraPropertiesDialog::setAperture(qreal aperture)
+{
+}

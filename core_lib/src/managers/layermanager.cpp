@@ -387,6 +387,15 @@ Status LayerManager::renameLayer(Layer* layer, const QString& newName)
 void LayerManager::notifyLayerChanged(Layer* layer)
 {
     emit currentLayerChanged(getIndex(layer));
+    if (currentLayer()->type() == Layer::BITMAP)
+    {
+        LayerBitmap* layer = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
+        LayerCamera* layerCam = static_cast<LayerCamera*>(editor()->layers()->getLastCameraLayer());
+        qDebug() << "BLUR: " << layer->getBlur(layerCam->getDistance(),
+                                               layerCam->getViewSize().width(),
+                                               layerCam->getViewAtFrame(editor()->currentFrame()).m11() * layerCam->getViewSize().width(),
+                                               layerCam->getViewSize().width());
+    }
 }
 
 /**

@@ -26,13 +26,11 @@ namespace std
      *
      * \param H HyperFocal Distance
      * \param B Focal length (50mm)
-     * \param f f_stop Aperture (1,4 to 22 mm)
      * \param d distance setting on camera in millimeters
      * \return dof_near in millimeters
      */
-    inline qreal getDOF_Near(qreal hf_distance, const qreal B, const qreal f, const qreal d)
+    inline qreal getDOF_near(qreal hf_distance, const qreal B, const qreal d)
     {
-        hf_distance = getHyperfocalDistance(B, f);
         return ((hf_distance - B) * d)/(hf_distance + d - 2*B);
     }
 

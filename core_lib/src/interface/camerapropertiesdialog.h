@@ -37,6 +37,12 @@ public:
     int getHeight();
     void setHeight(int);
 
+    // DOF properties
+    int getDistance();
+    void setDistance(int dist);
+    qreal getAperture();
+    void setAperture(qreal aperture);
+
 private:
     Ui::CameraPropertiesDialog* ui = nullptr;
 };
