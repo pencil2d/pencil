@@ -45,6 +45,8 @@ public:
 
 private:
     Ui::CameraPropertiesDialog* ui = nullptr;
+
+    qreal mDefaultApertureIndex = 4;
 };
 
 #endif // CAMERAPROPERTIESDIALOG_H

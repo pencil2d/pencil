@@ -81,4 +81,13 @@ qreal CameraPropertiesDialog::getAperture()
 
 void CameraPropertiesDialog::setAperture(qreal aperture)
 {
+    for (int i = 0; i < ui->cbAperture->count(); i++)
+    {
+        if (ui->cbAperture->itemText(i).toDouble() == aperture)
+        {
+            ui->cbAperture->setCurrentIndex(i);
+            return;
+        }
+    }
+    ui->cbAperture->setCurrentIndex(mDefaultApertureIndex);
 }

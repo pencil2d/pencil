@@ -69,6 +69,9 @@ public:
     void updateControlPointOnDeleteFrame(int frame) const;
     void approximateControlPointFor(int frame) const;
 
+    qreal getAperture() { return mAperture; }
+    void setAperture(qreal aperture) {mAperture = aperture; }
+
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
     KeyFrame* createKeyFrame(int position, Object*) override;
@@ -78,6 +81,7 @@ private:
     qreal getInterpolationPercent(CameraEasingType type, qreal percent) const;
     QPointF getBezierPoint(const QPointF& first, const QPointF& last, const QPointF& pathPoint, qreal percent) const;
 
+    qreal mAperture = 8;
     int mFieldW = 800;
     int mFieldH = 600;
     QRect viewRect;

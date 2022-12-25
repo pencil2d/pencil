@@ -1282,6 +1282,8 @@ void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
     {
         mEditor->layers()->renameLayer(cameraLayer, name);
     }
+    cameraLayer->setDistance(dialog.getDistance()); // must be on KeyFrame-level!
+    cameraLayer->setAperture(dialog.getAperture());
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_FIELD_W, dialog.getWidth());
     settings.setValue(SETTING_FIELD_H, dialog.getHeight());
