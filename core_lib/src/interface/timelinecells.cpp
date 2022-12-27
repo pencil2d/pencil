@@ -1026,10 +1026,6 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                     {
                         tip += ("'" + current->name() +"' Distance: " + QString::number(current->getDistance()/1000.0) + " m.\n");
                     }
-                    else if (current->type() == Layer::CAMERA)
-                    {
-                        tip += ("**" + current->name() +"** Distance: " + QString::number(current->getDistance()/1000.0) + " m.\n");
-                    }
                 }
                 tip.chop(2);    // remove new line chars
                 setToolTip(tip);
@@ -1271,7 +1267,7 @@ void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
     QRegExp regex("([\\xFFEF-\\xFFFF])+");
 
     CameraPropertiesDialog dialog(cameraLayer->name(), cameraLayer->getViewRect().width(),
-                                  cameraLayer->getViewRect().height());
+                                  cameraLayer->getViewRect().height(), cameraLayer->getAperture());
     if (dialog.exec() != QDialog::Accepted)
     {
         return;
@@ -1282,7 +1278,6 @@ void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
     {
         mEditor->layers()->renameLayer(cameraLayer, name);
     }
-    cameraLayer->setDistance(dialog.getDistance()); // must be on KeyFrame-level!
     cameraLayer->setAperture(dialog.getAperture());
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_FIELD_W, dialog.getWidth());

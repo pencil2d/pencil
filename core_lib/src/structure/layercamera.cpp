@@ -18,6 +18,8 @@ GNU General Public License for more details.
 
 #include <QSettings>
 #include <QEasingCurve>
+#include <QInputDialog>
+#include <QDoubleSpinBox>
 
 #include "camera.h"
 #include "pencildef.h"
@@ -177,10 +179,12 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
     double dy = point.y();
     double r = lerp(camera1->rotation(), camera2->rotation(), percent);
     double s = lerp(camera1->scaling(), camera2->scaling(), percent);
+    double dist = lerp(camera1->getDistance(), camera2->getDistance(), percent);
 
     cam->translate(dx, dy);
     cam->rotate(r);
     cam->scale(s);
+    cam->setDistance(dist);
 }
 
 qreal LayerCamera::getInterpolationPercent(CameraEasingType type, qreal percent) const
@@ -300,6 +304,33 @@ QSize LayerCamera::getViewSize() const
 void LayerCamera::setViewRect(QRect newViewRect)
 {
     viewRect = newViewRect;
+}
+
+void LayerCamera::setCameraDistance(int frame) const
+{
+    Camera* camera = getLastCameraAtFrame(frame, 0);
+    double dist = static_cast<double>(camera->getDistance()/1000.0);
+
+    bool ok;
+    double result = QInputDialog::getDouble(nullptr, tr("Keyframe distance"),
+                                            tr("Set distance:")
+                                            , dist          // dist from mm to m.
+                                            , 0.5           // Minimum dist
+                                            , 10000         // Maximum dist
+                                            , 3             // decimals alllowed
+                                            , &ok);
+    if (!ok)
+    {
+        return;
+    }
+
+    camera->setDistance(result * 1000);
+}
+
+int LayerCamera::getCameraDistance(int frame) const
+{
+    Camera* camera = getLastCameraAtFrame(frame, 0);
+    return camera->getDistance();
 }
 
 void LayerCamera::setCameraEasingAtFrame(CameraEasingType type, int frame) const
@@ -491,7 +522,7 @@ void LayerCamera::updatePathControlPointAtFrame(const QPointF& point, int frame)
     camera->setPathControlPoint(point);
 }
 
-void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, const QPointF& pathPoint, bool pathMoved)
+void LayerCamera::loadImageAtFrame(int frameNumber, int dist, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, const QPointF& pathPoint, bool pathMoved)
 {
     if (keyExists(frameNumber))
     {
@@ -499,6 +530,7 @@ void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal ro
     }
     Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
     camera->setPos(frameNumber);
+    camera->setDistance(dist);
     camera->setEasingType(easing);
     camera->setPathControlPoint(pathPoint);
     camera->setPathControlPointMoved(pathMoved);
@@ -525,6 +557,7 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
     QDomElement layerElem = createBaseDomElement(doc);
     layerElem.setAttribute("width", viewRect.width());
     layerElem.setAttribute("height", viewRect.height());
+    layerElem.setAttribute("aperture", getAperture());
 
     if (mShowPath) {
         layerElem.setAttribute("showPath", mShowPath);
@@ -539,6 +572,7 @@ QDomElement LayerCamera::createDomElement(QDomDocument& doc) const
                         Camera* camera = static_cast<Camera*>(pKeyFrame);
                         QDomElement keyTag = doc.createElement("camera");
                         keyTag.setAttribute("frame", camera->pos());
+                        keyTag.setAttribute("distance", camera->getDistance());
 
                         keyTag.setAttribute("r", camera->rotation());
                         keyTag.setAttribute("s", camera->scaling());
@@ -570,6 +604,8 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
     mShowPath = element.attribute("showPath").toInt();
     updateDotColor(static_cast<DotColorType>(element.attribute("pathColorType").toInt()));
     viewRect = QRect(-width / 2, -height / 2, width, height);
+    double aperture = element.attribute("aperture", "8.0").toDouble();
+    setAperture(aperture);
 
     QDomNode imageTag = element.firstChild();
     while (!imageTag.isNull())
@@ -580,6 +616,7 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
             if (imageElement.tagName() == "camera")
             {
                 int frame = imageElement.attribute("frame").toInt();
+                int dist = imageElement.attribute("distance", "10000").toInt();
 
                 qreal rotate = imageElement.attribute("r", "0").toDouble();
                 qreal scale = imageElement.attribute("s", "1").toDouble();
@@ -591,7 +628,7 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 bool pathMoved = (imageElement.hasAttribute("pathCPX") || imageElement.hasAttribute("pathCPY")) &&
                                  imageElement.attribute("pathCPM", "1").toInt(); // BC
 
-                loadImageAtFrame(frame, dx, dy, rotate, scale, easing, QPointF(pathX, pathY), pathMoved);
+                loadImageAtFrame(frame, dist, dx, dy, rotate, scale, easing, QPointF(pathX, pathY), pathMoved);
             }
         }
         imageTag = imageTag.nextSibling();

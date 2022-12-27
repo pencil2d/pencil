@@ -16,9 +16,10 @@ GNU General Public License for more details.
 */
 
 #include "camerapropertiesdialog.h"
+#include "QtCore/qdebug.h"
 #include "ui_camerapropertiesdialog.h"
 
-CameraPropertiesDialog::CameraPropertiesDialog(const QString& name, int width, int height) :
+CameraPropertiesDialog::CameraPropertiesDialog(const QString& name, int width, int height, double aperture) :
     QDialog(),
     ui(new Ui::CameraPropertiesDialog)
 {
@@ -27,6 +28,9 @@ CameraPropertiesDialog::CameraPropertiesDialog(const QString& name, int width, i
     ui->nameBox->setText(name);
     ui->widthBox->setValue(width);
     ui->heightBox->setValue(height);
+    initComboBox(aperture);
+    setAperture(aperture);
+    connect(ui->cbAperture, &QComboBox::currentTextChanged, this, &CameraPropertiesDialog::updateAperture);
 }
 
 CameraPropertiesDialog::~CameraPropertiesDialog()
@@ -64,22 +68,23 @@ void CameraPropertiesDialog::setHeight(int height)
     ui->heightBox->setValue(height);
 }
 
-int CameraPropertiesDialog::getDistance()
+void CameraPropertiesDialog::updateAperture()
 {
-    return static_cast<int>(ui->doubleSpinBoxDistance->value() * 1000);
+    switch (ui->cbAperture->currentIndex()) {
+    case 0: setAperture(1.4); break;
+    case 1: setAperture(2.0); break;
+    case 2: setAperture(2.8); break;
+    case 3: setAperture(4.0); break;
+    case 4: setAperture(5.6); break;
+    case 5: setAperture(8.0); break;
+    case 6: setAperture(11.0); break;
+    case 7: setAperture(16.0); break;
+    case 8: setAperture(22.0); break;
+    default: setAperture(8.0); break;
+    }
 }
 
-void CameraPropertiesDialog::setDistance(int dist)
-{
-    ui->doubleSpinBoxDistance->setValue(dist/1000.0);
-}
-
-qreal CameraPropertiesDialog::getAperture()
-{
-    return ui->cbAperture->itemText(ui->cbAperture->currentIndex()).toDouble();
-}
-
-void CameraPropertiesDialog::setAperture(qreal aperture)
+void CameraPropertiesDialog::initComboBox(qreal aperture)
 {
     for (int i = 0; i < ui->cbAperture->count(); i++)
     {
@@ -89,5 +94,5 @@ void CameraPropertiesDialog::setAperture(qreal aperture)
             return;
         }
     }
-    ui->cbAperture->setCurrentIndex(mDefaultApertureIndex);
 }
+

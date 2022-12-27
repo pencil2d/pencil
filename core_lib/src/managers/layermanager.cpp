@@ -109,13 +109,12 @@ void LayerManager::setCurrentLayer(int layerIndex)
 {
     Q_ASSERT(layerIndex >= 0);
     Q_ASSERT(layerIndex < object()->getLayerCount());
-//qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 1: " << editor()->currentLayerIndex();
+
     // Deselect frames of previous layer.
     Layer* previousLayer = currentLayer();
     previousLayer->deselectAll();
 
     emit currentLayerWillChange(layerIndex);
-//qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 2: " << editor()->currentLayerIndex();
 
     // Do not check if layer index has changed
     // because the current layer may have changed either way
@@ -123,12 +122,22 @@ void LayerManager::setCurrentLayer(int layerIndex)
     editor()->setCurrentLayerIndex(layerIndex);
     emit currentLayerChanged(layerIndex);
 
-//qDebug() << editor()->object()->getLayer(layerIndex)->name() << " * curr layer 3: " << editor()->currentLayerIndex() << "\n";
-
     if (object()->getLayer(layerIndex)->type() == Layer::CAMERA)
     {
         mLastCameraLayerIdx = layerIndex;
     }
+/*
+    if (currentLayer()->type() == Layer::BITMAP)
+    {
+        LayerBitmap* layerBit = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
+        LayerCamera* layerCam = static_cast<LayerCamera*>(editor()->layers()->getLastCameraLayer());
+        int w = layerCam->getViewRect().width();
+        qDebug() << "BLUR: " << layerBit->getBlur(layerCam->getCameraDistance(editor()->currentFrame()),
+                                      w,
+                                      w / layerCam->getViewAtFrame(editor()->currentFrame()).m11(),
+                                      layerCam->getAperture());
+    }
+*/
 }
 
 void LayerManager::setCurrentLayer(Layer* layer)
@@ -380,22 +389,13 @@ Status LayerManager::renameLayer(Layer* layer, const QString& newName)
     if (newName.isEmpty()) return Status::FAIL;
 
     layer->setName(newName);
-    currentLayerChanged(getIndex(layer));
+    emit currentLayerChanged(getIndex(layer));
     return Status::OK;
 }
 
 void LayerManager::notifyLayerChanged(Layer* layer)
 {
     emit currentLayerChanged(getIndex(layer));
-    if (currentLayer()->type() == Layer::BITMAP)
-    {
-        LayerBitmap* layer = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
-        LayerCamera* layerCam = static_cast<LayerCamera*>(editor()->layers()->getLastCameraLayer());
-        qDebug() << "BLUR: " << layer->getBlur(layerCam->getDistance(),
-                                               layerCam->getViewSize().width(),
-                                               layerCam->getViewAtFrame(editor()->currentFrame()).m11() * layerCam->getViewSize().width(),
-                                               layerCam->getViewSize().width());
-    }
 }
 
 /**

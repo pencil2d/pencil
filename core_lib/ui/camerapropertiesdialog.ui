@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>253</width>
-    <height>222</height>
+    <height>201</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -79,83 +79,65 @@
     </widget>
    </item>
    <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="labDistance">
-       <property name="text">
-        <string>Distance:</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="1">
-      <widget class="QDoubleSpinBox" name="doubleSpinBoxDistance">
-       <property name="suffix">
-        <string> m.</string>
-       </property>
-       <property name="minimum">
-        <double>0.500000000000000</double>
-       </property>
-       <property name="maximum">
-        <double>10000.000000000000000</double>
-       </property>
-       <property name="value">
-        <double>10.000000000000000</double>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
       <widget class="QLabel" name="labAperture">
        <property name="text">
         <string>Aperture (f-stop):</string>
        </property>
       </widget>
      </item>
-     <item row="1" column="1">
+     <item>
       <widget class="QComboBox" name="cbAperture">
        <property name="toolTip">
         <string>Low value -&gt; shallow Depth of field. High value -&gt; Deep Depth of f ield</string>
        </property>
        <property name="currentIndex">
-        <number>4</number>
+        <number>5</number>
        </property>
        <item>
         <property name="text">
-         <string>2</string>
+         <string notr="true">1.4</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>2,8</string>
+         <string notr="true">2</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>4</string>
+         <string notr="true">2.8</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>5,6</string>
+         <string notr="true">4</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>8</string>
+         <string notr="true">5.6</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>11</string>
+         <string notr="true">8</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>16</string>
+         <string notr="true">11</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>22</string>
+         <string notr="true">16</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string notr="true">22</string>
         </property>
        </item>
       </widget>

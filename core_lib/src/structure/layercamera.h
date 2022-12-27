@@ -32,7 +32,7 @@ public:
     explicit LayerCamera(Object* object);
     ~LayerCamera() override;
 
-    void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, const QPointF& pathPoint, bool pathMoved);
+    void loadImageAtFrame(int frame, int dist, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, const QPointF& pathPoint, bool pathMoved);
 
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -47,6 +47,9 @@ public:
     QRect getViewRect() const;
     QSize getViewSize() const;
     void setViewRect(QRect newViewRect);
+
+    void setCameraDistance(int frame) const;
+    int getCameraDistance(int frame) const;
 
     // Functions for camera path
     void setShowCameraPath(bool show) { mShowPath = show; }
@@ -69,7 +72,7 @@ public:
     void updateControlPointOnDeleteFrame(int frame) const;
     void approximateControlPointFor(int frame) const;
 
-    qreal getAperture() { return mAperture; }
+    qreal getAperture() const { return mAperture; }
     void setAperture(qreal aperture) {mAperture = aperture; }
 
 protected:

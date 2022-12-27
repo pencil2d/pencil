@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "keyframe.h"
 #include "bitmapimage.h"
 #include "camera_dof.h"
+#include "math.h"
 
 LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
 {
@@ -61,19 +62,32 @@ qreal LayerBitmap::getBlur(qreal dist, int outputWidth, int currFrameWidth, qrea
 {
     qreal factor = static_cast<qreal>(outputWidth) / static_cast<qreal>(currFrameWidth);
     qreal hf_dist = std::getHyperfocalDistance(mStandardFocalLength * factor, aperture);
-    if (getDistance() <= hf_dist && hf_dist <= dist)
+//    qDebug() << "hf_dist: "  << hf_dist;
+
+    if (hf_dist <= getDistance() && hf_dist <= dist)
         return 0.0;
     qreal dof_near = std::getDOF_near(hf_dist, mStandardFocalLength * factor, dist);
     qreal dof_far = std::getDOF_far(hf_dist, mStandardFocalLength * factor, dist);
-    if (dof_near <= getDistance() && dof_far >= getDistance())
+//    qDebug()<< " HfDist: " << hf_dist  << " Layer-dist: " << getDistance() << " Cam-dist: " << dist << " dof_near: " << dof_near << " dof_far: " << dof_far;
+
+    if (dof_near <= getDistance() && getDistance() <= dof_far)
         return 0.0;
+
     if (dof_near > getDistance())
     {
-        return qPow(mDofNearFactor,(dof_near - dist)/dof_near);
+        qreal expon = ((dof_near - getDistance())/(dof_near - mMinDistance)) * 100;
+        if (expon <= 1.0)
+            expon = 1.1;
+//        qDebug() << "1 log10f " << log10f(expon);
+        return qPow(10, log10f(expon)) / 2.0;
     }
-    else if (dof_far < getDistance())
+    else
     {
-        return qPow(qLn(dist - dof_far), mDofFarFactor);
+        qreal expon = (abs(getDistance() - dof_far)/(mMaxDistance - dof_far)) * 100;
+        if (expon <= 1.0)
+            expon = 1.1;
+//        qDebug() << "2 log10 f" << log10f(expon);
+        return qPow(10, log10f(expon)) / 2.0;
     }
     return 0.0;
 }

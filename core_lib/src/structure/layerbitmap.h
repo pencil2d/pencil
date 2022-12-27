@@ -54,8 +54,10 @@ private:
 
     // for blur-calculations
     qreal const mStandardFocalLength = 50.0;
-    qreal const mDofNearFactor = 30.0;
-    qreal const mDofFarFactor = 2.5;
+    qreal const mDofNearFactor = 20.0;
+    qreal const mDofFarFactor = 2;
+    int const mMaxDistance = 10000000;
+    int const mMinDistance = 500;
 };
 
 #endif

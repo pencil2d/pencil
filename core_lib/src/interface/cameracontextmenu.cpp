@@ -113,4 +113,5 @@ CameraContextMenu::CameraContextMenu(int frameNumber, const LayerCamera* layer) 
         alignVAction->setDisabled(true);
     }
     QMenu* cameraDistanceMenu = addMenu(tr("Set distance"));
+    cameraDistanceMenu->addAction(tr("Set Distance for keyframe"), [=] { layer->setCameraDistance(frameNumber); });
 }

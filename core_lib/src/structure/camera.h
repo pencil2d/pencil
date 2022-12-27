@@ -49,6 +49,9 @@ public:
 
     bool compare(const Camera& rhs) const;
 
+    void setDistance(int dist) { mDistance = dist; }
+    int getDistance() { return mDistance; }
+
     void setEasingType(CameraEasingType type);
     CameraEasingType getEasingType() const { return mEasingType; }
 
@@ -64,6 +67,7 @@ private:
     qreal mRotate = 0.;
     qreal mScale = 1.;
     bool mNeedUpdateView = true;
+    int mDistance = 10000; // 10000 mm = 10 m.
 
     CameraEasingType mEasingType = CameraEasingType::LINEAR;
     QPointF mPathControlPoint = QPointF();

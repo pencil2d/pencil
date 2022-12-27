@@ -112,6 +112,9 @@ public:
 
     void setModified(int position, bool isModified) const;
 
+    void setDistance(int distance) { mDistance = distance; }
+    int getDistance() const { return mDistance; }
+
     // Handle selection
     bool isFrameSelected(int position) const;
     void setFrameSelected(int position, bool isSelected);
@@ -167,9 +170,6 @@ public:
     /** Clear the list of dirty keyframes */
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
-    void setDistance(int distance) { mDistance = distance; }
-    int getDistance() const { return mDistance; }
-
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
@@ -182,7 +182,7 @@ private:
     int        mId = 0;
     bool       mVisible = true;
     QString    mName;
-    int        mDistance = 10000;   // Distance camera -> layer in millimeters (default 10 metres)
+    int mDistance = 10000;   // Distance camera -> layer in millimeters (default 10 metres)
 
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 

@@ -10,6 +10,7 @@ namespace std
 {
 
     qreal hf_distance = 0.0;
+    const double CoC = 0.03; // Circle of Confusion = 0.03 mm
 
     /** Get Hyperfocal distance
       *
@@ -19,7 +20,7 @@ namespace std
      */
     inline qreal getHyperfocalDistance(const qreal B, const qreal f)
     {
-        return (B*B)/(f*0.03) + B;
+        return (B*B)/(f*CoC) + B;
     }
 
     /**  Get the nearest distance, where the object will be i "acceptable" focus
@@ -75,7 +76,7 @@ namespace std
     //!     - https://www.peterkovesi.com/papers/FastGaussianSmoothing.pdf
     //!     - https://github.com/bfraboni/FastGaussianBlur
     //!
-    //! **Note:** The fast gaussian blur algorithm is not accurate on image boundaries.
+    //! **Note:** The fast gaussian blur algorithm is not accurate on image boundaries.
     //! It performs a diffusion of the signal with several independant passes, each pass depending
     //! of the preceding one. Some of the diffused signal is lost near borders and results in a slight
     //! loss of accuracy for next pass. This problem can be solved by increasing the image support of
