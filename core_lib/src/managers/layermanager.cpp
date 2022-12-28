@@ -126,7 +126,7 @@ void LayerManager::setCurrentLayer(int layerIndex)
     {
         mLastCameraLayerIdx = layerIndex;
     }
-/*
+
     if (currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layerBit = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
@@ -137,7 +137,7 @@ void LayerManager::setCurrentLayer(int layerIndex)
                                       w / layerCam->getViewAtFrame(editor()->currentFrame()).m11(),
                                       layerCam->getAperture());
     }
-*/
+
 }
 
 void LayerManager::setCurrentLayer(Layer* layer)
