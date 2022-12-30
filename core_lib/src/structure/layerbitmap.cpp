@@ -16,7 +16,7 @@ GNU General Public License for more details.
 */
 #include "layerbitmap.h"
 
-#include <QDebug>
+//#include <QDebug>
 #include <QDir>
 #include <QFile>
 #include "keyframe.h"
@@ -67,7 +67,7 @@ qreal LayerBitmap::getBlur(qreal dist, int outputWidth, int currFrameWidth, qrea
         return 0.0;
     qreal dof_near = std::getDOF_near(hf_dist, mStandardFocalLength * factor, dist);
     qreal dof_far = std::getDOF_far(hf_dist, mStandardFocalLength * factor, dist);
-    qDebug() << "aperture: " << aperture << " HfDist: " << hf_dist  << " Layer-dist: " << getDistance() << " Cam-dist: " << dist << " dof_near: " << dof_near << " dof_far: " << dof_far;
+//    qDebug() << "aperture: " << aperture << " HfDist: " << hf_dist  << " Layer-dist: " << getDistance() << " Cam-dist: " << dist << " dof_near: " << dof_near << " dof_far: " << dof_far;
 
     if (dof_near <= getDistance() && getDistance() <= dof_far)
         return 0.0;

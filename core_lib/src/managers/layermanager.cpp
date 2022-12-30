@@ -128,6 +128,7 @@ void LayerManager::setCurrentLayer(int layerIndex)
         mLastCameraLayerIdx = layerIndex;
     }
 
+    // TODO : erase the following. Only made to test BLUR calculations!
     if (currentLayer()->type() == Layer::BITMAP)
     {
         LayerBitmap* layerBit = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
