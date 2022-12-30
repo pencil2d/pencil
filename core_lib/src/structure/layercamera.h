@@ -75,6 +75,9 @@ public:
     qreal getAperture() const { return mAperture; }
     void setAperture(qreal aperture) {mAperture = aperture; }
 
+    // for DOF calculations
+    Camera* interpolateCamera(Camera* cam);
+
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
     KeyFrame* createKeyFrame(int position, Object*) override;

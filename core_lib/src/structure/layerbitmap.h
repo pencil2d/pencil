@@ -58,6 +58,7 @@ private:
     qreal const mDofFarFactor = 2;
     int const mMaxDistance = 10000000;
     int const mMinDistance = 500;
+    int const mBaseNumber = 80;
 };
 
 #endif

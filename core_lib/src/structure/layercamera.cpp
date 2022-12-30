@@ -20,9 +20,10 @@ GNU General Public License for more details.
 #include <QEasingCurve>
 #include <QInputDialog>
 #include <QDoubleSpinBox>
-
+#include <QDebug>
 #include "camera.h"
 #include "pencildef.h"
+#include "qmetaobject.h"
 
 LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
 {
@@ -289,6 +290,12 @@ void LayerCamera::approximateControlPointFor(int frame) const
         // if first frame
         centerPathControlPointAtFrame(frame);
     }
+}
+
+Camera *LayerCamera::interpolateCamera(Camera *cam)
+{
+    linearInterpolateTransform(cam);
+    return cam;
 }
 
 QRect LayerCamera::getViewRect() const

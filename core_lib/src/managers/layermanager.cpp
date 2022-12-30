@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "layermanager.h"
 
+#include "camera.h"
 #include "object.h"
 #include "editor.h"
 
@@ -132,10 +133,27 @@ void LayerManager::setCurrentLayer(int layerIndex)
         LayerBitmap* layerBit = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
         LayerCamera* layerCam = static_cast<LayerCamera*>(editor()->layers()->getLastCameraLayer());
         int w = layerCam->getViewRect().width();
-        qDebug() << "BLUR: " << layerBit->getBlur(layerCam->getCameraDistance(editor()->currentFrame()),
-                                      w,
-                                      w / layerCam->getViewAtFrame(editor()->currentFrame()).m11(),
-                                      layerCam->getAperture());
+        int first = layerCam->getPreviousKeyFramePosition(editor()->currentFrame());
+        int last  = layerCam->getNextKeyFramePosition(editor()->currentFrame());
+        bool b;
+        for (int i = first; i <= last; i++)
+        {
+            if (i != first && i != last)
+                b = layerCam->addNewKeyFrameAt(i);
+            else
+                b = true;
+            if (b)
+            {
+                Camera* cam = layerCam->getCameraAtFrame(i);
+                cam = layerCam->interpolateCamera(cam);
+                qDebug() << "FRAME: " << i << " BLUR: " << layerBit->getBlur(cam->getDistance(),
+                                                                             w,
+                                                                             w / cam->scaling(),
+                                                                             layerCam->getAperture());
+            }
+            if (i != first && i != last)
+                layerCam->removeKeyFrame(i);
+        }
     }
 
 }

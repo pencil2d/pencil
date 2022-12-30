@@ -160,7 +160,8 @@ void Camera::setPathControlPointMoved(bool moved)
 
 bool Camera::compare(const Camera& rhs) const
 {
-    return ((mTranslate == rhs.mTranslate)
-        && qFuzzyCompare(mRotate, rhs.mRotate)
-        && qFuzzyCompare(mScale, rhs.mScale));
+    return (mTranslate == rhs.mTranslate
+            && mDistance == rhs.mDistance
+            && qFuzzyCompare(mRotate, rhs.mRotate)
+            && qFuzzyCompare(mScale, rhs.mScale));
 }
