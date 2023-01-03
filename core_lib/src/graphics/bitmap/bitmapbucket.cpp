@@ -34,7 +34,6 @@ BitmapBucket::BitmapBucket(Editor* editor,
                            QPointF fillPoint,
                            Properties properties):
     mEditor(editor),
-    mBucketStartPoint(fillPoint),
     mMaxFillRegion(maxFillRegion),
     mProperties(properties)
 
@@ -66,9 +65,6 @@ BitmapBucket::BitmapBucket(Editor* editor,
     const QPoint point = QPoint(qFloor(fillPoint.x()), qFloor(fillPoint.y()));
     mStartReferenceColor = mReferenceImage.constScanLine(point.x(), point.y());
 
-    BitmapImage* image = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(frameIndex, 0);
-    mFillToImageColor = image->constScanLine(point.x(), point.y());
-
     mPixelCache = new QHash<QRgb, bool>();
 }
 
@@ -89,22 +85,17 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
     QRgb colorOfReferenceImage = mReferenceImage.constScanLine(checkPoint.x(), checkPoint.y());
     QRgb targetPixelColor = targetImage.constScanLine(checkPoint.x(), checkPoint.y());
 
-    // The remainder applies to drag fill: Ensure that we're only filling on either transparent or same color
-    // and avoid filling the same area repeatedly
-
-    // Rule 1: allow filling if the reference pixel is transparent and the target pixel is transparent
-    if (mStartReferenceColor == 0 && colorOfReferenceImage == 0 && targetPixelColor == 0)
+    if (targetPixelColor == mBucketColor &&(mProperties.fillMode == 1 || qAlpha(targetPixelColor) == 255))
     {
-        return true;
+        // Avoid filling if target pixel color matches fill color
+        // to avoid creating numerous seemingly useless undo operations
+        return false;
     }
 
-    if ((BitmapImage::compareColor(colorOfReferenceImage, targetPixelColor, mTolerance, mPixelCache) &&
-         BitmapImage::compareColor(mStartReferenceColor, targetPixelColor, mTolerance, mPixelCache)) ||
-         (BitmapImage::compareColor(colorOfReferenceImage, mStartReferenceColor, mTolerance, mPixelCache) && targetPixelColor == 0)) {
-        return true;
-    }
-
-    return false;
+    // Allow filling if the reference pixel matches the start reference color, and
+    // the target pixel is either transparent or matches the start reference color
+    return BitmapImage::compareColor(colorOfReferenceImage, mStartReferenceColor, mTolerance, mPixelCache) &&
+           (targetPixelColor == 0 || BitmapImage::compareColor(targetPixelColor, mStartReferenceColor, mTolerance, mPixelCache));
 }
 
 void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketState, int, int)> state)
