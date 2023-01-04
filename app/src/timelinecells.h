@@ -57,6 +57,7 @@ public:
 
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
+    void clearCache() { delete mCache; mCache = nullptr; }
 
     bool didDetachLayer() const;
 

@@ -343,19 +343,8 @@ void TimeLineCells::drawContent()
     {
         paintTicks(painter, palette);
 
-        const auto object = mEditor->object();
         for (int i = 0; i < object->getLayerCount(); i++) {
             paintSelectedFrames(painter, object->getLayer(i), i);
-        }
-
-        if (mHighlightFrameEnabled && !mMovingFrames && mLayerPosMoveY == mEditor->currentLayerIndex()) {
-
-            // This is terrible but well...
-            int recTop = getLayerY(mLayerPosMoveY) + 1;
-            int standardWidth = mFrameSize - 2;
-            int recHeight = mLayerHeight - 4;
-
-            paintHighlightedFrame(painter, mHighlightedFrame, recTop, standardWidth, recHeight);
         }
     }
     mRedrawContent = false;
@@ -748,7 +737,16 @@ void TimeLineCells::paintEvent(QPaintEvent*)
 
         if (!mMovingFrames && mLayerPosMoveY != -1 && mLayerPosMoveY == mEditor->currentLayerIndex())
         {
-            paintFrameCursorOnCurrentLayer(painter, getLayerY(mLayerPosMoveY) + 1, mFrameSize - 2, mLayerHeight - 4);
+            // This is terrible but well...
+            int recTop = getLayerY(mLayerPosMoveY) + 1;
+            int standardWidth = mFrameSize - 2;
+            int recHeight = mLayerHeight - 4;
+
+            if (mHighlightFrameEnabled)
+            {
+                paintHighlightedFrame(painter, mHighlightedFrame, recTop, standardWidth, recHeight);
+            }
+            paintFrameCursorOnCurrentLayer(painter, recTop, standardWidth, recHeight);
         }
 
         // --- draw the position of the current frame
@@ -792,8 +790,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
 
 void TimeLineCells::resizeEvent(QResizeEvent* event)
 {
-    delete mCache;
-    mCache = nullptr;
+    clearCache();
     updateContent();
     event->accept();
     emit lengthChanged(getFrameLength());
