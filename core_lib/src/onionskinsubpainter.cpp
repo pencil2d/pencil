@@ -45,9 +45,10 @@ void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, const Oni
         qreal opacity = maxOpacity;
 
         int onionFrameNumber = layer->getPreviousFrameNumber(frameIndex, options.isAbsolute);
+        KeyFrame* currentAbsoluteFrame = layer->getLastKeyFrameAtPosition(frameIndex);
+        int currentAbsoluteFrameNumber = currentAbsoluteFrame ? currentAbsoluteFrame->pos() : -1;
 
         int onionPosition = 0;
-        int currentAbsoluteFrame = layer->getLastKeyFrameAtPosition(frameIndex)->pos();
         while (onionPosition < options.framesToSkinPrev)
         {
             // We've gone below the first frame, stop iterating
@@ -57,8 +58,8 @@ void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, const Oni
             painter.setOpacity(opacity);
 
             // When in absolute mode, we don't skin the current absolute frame
-            // otherwise if absolute is off and the current frame is in range, will be painted
-            if (!options.isAbsolute || onionFrameNumber != currentAbsoluteFrame) {
+            // otherwise, if absolute is off and the current frame is in range, will be painted
+            if (!options.isAbsolute || onionFrameNumber != currentAbsoluteFrameNumber) {
                 state(OnionSkinPaintState::PREV, onionFrameNumber);
                 opacity = opacity - prevOpacityIncrement;
                 onionPosition++;
