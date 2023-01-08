@@ -429,7 +429,7 @@ void BaseTool::setFillExpand(const int fillExpandValue)
     properties.bucketFillExpand = fillExpandValue;
 }
 
-void BaseTool::setFillToLayer(int layerMode)
+void BaseTool::setFillToLayerMode(int layerMode)
 {
     properties.bucketFillToLayerMode = layerMode;
 }

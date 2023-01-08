@@ -76,7 +76,7 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &BucketOptionsWidget::onPropertyChanged);
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &BucketOptionsWidget::onLayerChanged);
 
-    connect(ui->fillToLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setBucketFillToLayer);
+    connect(ui->fillToLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setBucketFillToLayerMode);
     connect(ui->referenceLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setBucketFillReferenceMode);
     connect(ui->blendModeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setFillMode);
 
@@ -123,7 +123,7 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->blendModeComboBox->hide();
         ui->blendModeLabel->hide();
         break;
-    case Layer::BITMAP:
+    case Layer::BITMAP: {
         ui->strokeThicknessSlider->hide();
         ui->strokeThicknessSpinBox->hide();
 
@@ -135,11 +135,11 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->expandCheckbox->show();
         ui->expandSlider->show();
         ui->expandSpinBox->show();
-        ui->referenceLayerComboBox->show();
-        ui->referenceLayerDescLabel->show();
+        disableFillToLayerComboBox(mEditor->tools()->enforceFillToLayerMode(ui->referenceLayerComboBox->currentIndex()));
         ui->blendModeComboBox->show();
         ui->blendModeLabel->show();
         break;
+    }
     default:
         ui->strokeThicknessSlider->hide();
         ui->strokeThicknessSpinBox->hide();
@@ -235,6 +235,13 @@ void BucketOptionsWidget::setFillReferenceMode(int referenceMode)
 {
     QSignalBlocker b(ui->referenceLayerComboBox);
     ui->referenceLayerComboBox->setCurrentIndex(referenceMode);
+    disableFillToLayerComboBox(mEditor->tools()->enforceFillToLayerMode(referenceMode));
+}
+
+void BucketOptionsWidget::disableFillToLayerComboBox(bool state)
+{
+    ui->fillToLayerComboBox->setDisabled(state);
+    ui->fillToDescLabel->setDisabled(state);
 }
 
 void BucketOptionsWidget::setStrokeWidth(qreal value)
