@@ -512,7 +512,7 @@ void TimeLineCells::paintHighlightedFrame(QPainter& painter, int framePos, int r
     painter.setPen(palette.color(QPalette::WindowText));
 
     // Draw a rect slighly smaller than the frame
-    painter.drawRect(recLeft+1, recTop+1, recWidth-2, recHeight-2);
+    painter.drawRect(recLeft+1, recTop+1, recWidth-1, recHeight-1);
     painter.restore();
 }
 
