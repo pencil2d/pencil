@@ -135,7 +135,7 @@ void BucketOptionsWidget::updatePropertyVisibility()
         ui->expandCheckbox->show();
         ui->expandSlider->show();
         ui->expandSpinBox->show();
-        disableFillToLayerComboBox(mEditor->tools()->enforceFillToLayerMode(ui->referenceLayerComboBox->currentIndex()));
+        disableFillToLayerComboBox(mEditor->tools()->bucketReferenceModeIsCurrentLayer(ui->referenceLayerComboBox->currentIndex()));
         ui->blendModeComboBox->show();
         ui->blendModeLabel->show();
         break;
@@ -235,7 +235,7 @@ void BucketOptionsWidget::setFillReferenceMode(int referenceMode)
 {
     QSignalBlocker b(ui->referenceLayerComboBox);
     ui->referenceLayerComboBox->setCurrentIndex(referenceMode);
-    disableFillToLayerComboBox(mEditor->tools()->enforceFillToLayerMode(referenceMode));
+    disableFillToLayerComboBox(mEditor->tools()->bucketReferenceModeIsCurrentLayer(referenceMode));
 }
 
 void BucketOptionsWidget::disableFillToLayerComboBox(bool state)
