@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QString>
 #include <QCursor>
+#include <QPainter>
 #include <QPointF>
 #include <QHash>
 #include "pencildef.h"
