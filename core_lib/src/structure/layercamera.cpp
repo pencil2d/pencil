@@ -308,7 +308,7 @@ void LayerCamera::mergeControlPointIfNeeded(int frame) const
             QPointF mergedCPoint;
             auto intersection = interpolatedLinePC.intersect(interpolatedLineCN, &mergedCPoint);
             // Try to recover the control point if the distance is within the threshold, otherwise do nothing
-            if (intersection == QLineF::IntersectionType::UnboundedIntersection &&
+            if (intersection == QLineF::IntersectType::UnboundedIntersection &&
                 QLineF(camFrame->getPathControlPoint(), mergedCPoint).length() < mControlPointMergeThreshold)
             {
                 camPrev->setPathControlPoint(mergedCPoint);
