@@ -17,14 +17,20 @@ GNU General Public License for more details.
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include <QTransform>
 #include <QPolygonF>
 
+class QTransform;
+
+/**
+ * The Transform class is meant to be used for mapping between the local and world coordinate spaces.
+ * @li mapFrom(...) will take the input and and return the inverted point in the mapped space.
+ * @li mapToWorld(...) functions will take the input and first map it from the local space and then to the world space.
+ *
+ * @note It is assumed that the rect, polygon, point etc... hasn't been transformed when inputted.
+ */
 class Transform
 {
 public:
-    Transform() {};
-
     static QRectF mapFromLocalRect(const QTransform& transform, const QRect& rect);
     static QRectF mapToWorldRect(const QTransform& transform, const QTransform& worldT, const QRect rect);
 

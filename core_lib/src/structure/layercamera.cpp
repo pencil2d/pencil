@@ -264,10 +264,9 @@ void LayerCamera::splitControlPointIfNeeded(int frame) const
         Camera* camNext = getCameraAtFrame(next);
         Q_ASSERT(camPrev && camFrame && camNext);
 
-        qreal t = static_cast<qreal>(frame - prev) / (next - prev);
-
-        QPointF previousControlPoint = camPrev->getPathControlPoint();
         if (camPrev->pathControlPointMoved()) {
+            qreal t = static_cast<qreal>(frame - prev) / (next - prev);
+            QPointF previousControlPoint = camPrev->getPathControlPoint();
 
             // Line from the current control point to the next frame
             QLineF interpolatedLineCN = QLineF(previousControlPoint, -camNext->translation());
@@ -307,15 +306,15 @@ void LayerCamera::mergeControlPointIfNeeded(int frame) const
             const QLineF& interpolatedLinePC = QLineF(-camPrev->translation(), camPrev->getPathControlPoint());
 
             QPointF mergedCPoint;
-            auto intersection = interpolatedLinePC.intersects(interpolatedLineCN, &mergedCPoint);
-            // Try to recover the control point if the distance is within threshold, otherwise dp nothing
-            if (QLineF(camFrame->getPathControlPoint(), mergedCPoint).length() < mControlPointMergeThreshold) {
-                if (intersection == QLineF::IntersectionType::UnboundedIntersection) {
-                    camPrev->setPathControlPoint(mergedCPoint);
-                    camPrev->setPathControlPointMoved(true);
-                } else if (intersection == QLineF::IntersectType::NoIntersection) {
-                    camPrev->setPathControlPointMoved(false);
-                }
+            auto intersection = interpolatedLinePC.intersect(interpolatedLineCN, &mergedCPoint);
+            // Try to recover the control point if the distance is within the threshold, otherwise do nothing
+            if (intersection == QLineF::IntersectionType::UnboundedIntersection &&
+                QLineF(camFrame->getPathControlPoint(), mergedCPoint).length() < mControlPointMergeThreshold)
+            {
+                camPrev->setPathControlPoint(mergedCPoint);
+                camPrev->setPathControlPointMoved(true);
+            } else if (intersection == QLineF::IntersectType::NoIntersection) {
+                camPrev->setPathControlPointMoved(false);
             }
         }
     }

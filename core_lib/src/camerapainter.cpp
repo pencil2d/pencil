@@ -19,7 +19,6 @@ GNU General Public License for more details.
 
 #include <QPainter>
 #include <QPixmap>
-#include <QPalette>
 #include "object.h"
 #include "layercamera.h"
 #include "camera.h"
@@ -163,7 +162,6 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
 
 void CameraPainter::paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer) const
 {
-    QPolygon cameraViewPoly = cameraLayer->getViewRect();
     QPen onionSkinPen;
 
     painter.save();

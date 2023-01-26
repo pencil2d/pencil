@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "layercamera.h"
 #include "mathutils.h"
-#include "layercamera.h"
+#include "transform.h"
 #include "camera.h"
 
 #include "scribblearea.h"

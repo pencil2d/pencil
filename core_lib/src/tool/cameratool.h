@@ -24,8 +24,6 @@ GNU General Public License for more details.
 #include "camerafieldoption.h"
 #include "preferencemanager.h"
 
-#include "transform.h"
-
 #include <QPen>
 
 enum class CameraMoveType {
@@ -41,7 +39,6 @@ enum class CameraMoveType {
 
 class PointerEvent;
 class LayerCamera;
-class KeyFrame;
 class Camera;
 
 class CameraTool : public BaseTool
