@@ -36,7 +36,7 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    BaseTool* currentTool();
+    BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolType);
     void setDefaultTool();
     void setCurrentTool(ToolType eToolType);
@@ -77,7 +77,7 @@ public slots:
     void setTolerance(int);
     void setBucketColorToleranceEnabled(bool enabled);
     void setBucketFillExpandEnabled(bool enabled);
-    void setBucketFillToLayer(int layerIndex);
+    void setBucketFillToLayerMode(int layerMode);
     void setBucketFillReferenceMode(int referenceMode);
     void setBucketFillExpand(int);
     void setUseFillContour(bool);
@@ -86,6 +86,10 @@ public slots:
     void resetCameraPath();
     void setCameraPathDotColor(int);
     void resetCameraTransform(CameraFieldOption option);
+
+    /// Layer mode will be enforced by the the choice the reference mode selected.
+    /// @return Returns true if reference mode is ``current layer`, otherwise false.
+    bool bucketReferenceModeIsCurrentLayer(int referenceMode) const;
 
 private:
     void setTemporaryTool(ToolType eToolType);

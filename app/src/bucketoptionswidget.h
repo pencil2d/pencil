@@ -48,6 +48,7 @@ public:
     void onLayerChanged(int);
 
 private:
+    void disableFillToLayerComboBox(bool state);
     void updatePropertyVisibility();
 
     Ui::BucketOptionsWidget *ui;

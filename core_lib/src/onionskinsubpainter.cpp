@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include <QPainter>
 
+#include "keyframe.h"
 #include "layer.h"
 #include "onionskinpainteroptions.h"
 
@@ -43,25 +44,32 @@ void OnionSkinSubPainter::paint(QPainter& painter, const Layer* layer, const Oni
         qreal prevOpacityIncrement = (maxOpacity - minOpacity) / options.framesToSkinPrev;
         qreal opacity = maxOpacity;
 
-        int onionFrameNumber = layer->getPreviousFrameNumber(frameIndex + 1, options.isAbsolute);;
-
-        if (onionFrameNumber == frameIndex || onionFrameNumber >= 1)
-        {
-            state(OnionSkinPaintState::CURRENT, onionFrameNumber);
-        }
+        int onionFrameNumber = layer->getPreviousFrameNumber(frameIndex, options.isAbsolute);
+        KeyFrame* currentAbsoluteFrame = layer->getLastKeyFrameAtPosition(frameIndex);
+        int currentAbsoluteFrameNumber = currentAbsoluteFrame ? currentAbsoluteFrame->pos() : -1;
 
         int onionPosition = 0;
-        while (onionPosition < options.framesToSkinPrev && onionFrameNumber >= 1)
+        while (onionPosition < options.framesToSkinPrev)
         {
+            // We've gone below the first frame, stop iterating
+            if (onionFrameNumber < 1) {
+                break;
+            }
             painter.setOpacity(opacity);
 
-            state(OnionSkinPaintState::PREV, onionFrameNumber);
-            opacity = opacity - prevOpacityIncrement;
+            // When in absolute mode, we don't skin the current absolute frame
+            // otherwise, if absolute is off and the current frame is in range, will be painted
+            if (!options.isAbsolute || onionFrameNumber != currentAbsoluteFrameNumber) {
+                state(OnionSkinPaintState::PREV, onionFrameNumber);
+                opacity = opacity - prevOpacityIncrement;
+                onionPosition++;
+            }
 
             onionFrameNumber = layer->getPreviousFrameNumber(onionFrameNumber, options.isAbsolute);
-            onionPosition++;
         }
     }
+
+    state(OnionSkinPaintState::CURRENT, frameIndex);
 
     if (options.skinNextFrames)
     {

@@ -74,7 +74,7 @@ void BucketTool::resetToDefault()
     setFillMode(0);
     setFillExpand(2);
     setFillExpandEnabled(true);
-    setFillToLayer(0);
+    setFillToLayerMode(0);
     setToleranceEnabled(false);
     setFillReferenceMode(0);
 }
@@ -163,7 +163,7 @@ void BucketTool::setFillExpand(const int fillExpandValue)
     settings.sync();
 }
 
-void BucketTool::setFillToLayer(int layerMode)
+void BucketTool::setFillToLayerMode(int layerMode)
 {
     properties.bucketFillToLayerMode = layerMode;
 

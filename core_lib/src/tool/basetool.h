@@ -126,7 +126,7 @@ public:
     virtual void setToleranceEnabled(const bool enabled);
     virtual void setFillExpand(const int fillExpandValue);
     virtual void setFillExpandEnabled(const bool enabled);
-    virtual void setFillToLayer(int layerMode);
+    virtual void setFillToLayerMode(int layerMode);
     virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
     virtual void setShowSelectionInfo(const bool b);

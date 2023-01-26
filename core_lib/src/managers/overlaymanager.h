@@ -21,13 +21,12 @@ GNU General Public License for more details.
 #include "pencildef.h"
 #include "movemode.h"
 #include "basemanager.h"
-#include "overlaypainter.h"
 
 #include <QPointF>
-#include <QPainter>
+
+#include "preferencesdef.h"
 
 class Editor;
-class ViewManager;
 
 class OverlayManager : public BaseManager
 {
@@ -41,6 +40,8 @@ public:
     Status load(Object *o) override;
     Status save(Object *o) override;
 
+    void settingsUpdated(SETTING setting, bool state);
+
     void workingLayerChanged(Layer *) override;
 
     MoveMode getMoveModeForPoint(const QPointF& pos, const QTransform& transform);
@@ -49,26 +50,14 @@ public:
     void updatePerspective(const int persp);
     void updatePerspective(const QPointF& point);
 
-    void setCenterEnabled(bool b) { mOverlayCenter = b; }
-    void setThirdsEnabled(bool b) { mOverlayThirds = b; }
-    void setGoldenRatioEnabled(bool b) { mOverlayGoldenRatio = b; }
-    void setSafeAreasEnabled(bool b) { mOverlaySafeAreas = b; }
-    void setOnePointPerspectiveEnabled(bool b);
-    void setTwoPointPerspectiveEnabled(bool b);
-    void setThreePointPerspectiveEnabled(bool b);
-
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode(MoveMode mode) { mMoveMode = mode; }
-    void setSinglePerspectivePoint(const QPointF& point) { mSinglePerspectivePoint = point; }
     QPointF getSinglePerspectivePoint() const { return mSinglePerspectivePoint; }
-    void setLeftPerspectivePoint(const QPointF& point) { mLeftPerspectivePoint = point; }
     QPointF getLeftPerspectivePoint() const { return mLeftPerspectivePoint; }
-    void setRightPerspectivePoint(const QPointF& point) { mRightPerspectivePoint = point; }
     QPointF getRightPerspectivePoint() const { return mRightPerspectivePoint; }
-    void setMiddlePerspectivePoint(const QPointF& point) { mMiddlePerspectivePoint = point; }
     QPointF getMiddlePerspectivePoint() const { return mMiddlePerspectivePoint; }
 
-    bool isPerspectiveOverlaysActive() const { return mOverlayPerspective1 || mOverlayPerspective2 || mOverlayPerspective3; }
+    bool anyOverlayEnabled() const { return mSinglePerspectiveEnabled || mTwoPointPerspectiveEnabled || mThreePointPerspectiveEnabled; }
 
 private:
     Editor* mEditor = nullptr;
@@ -80,13 +69,9 @@ private:
 
     MoveMode mMoveMode = MoveMode::NONE;
 
-    bool mOverlayCenter = false;
-    bool mOverlayThirds = false;
-    bool mOverlayGoldenRatio = false;
-    bool mOverlaySafeAreas = false;
-    bool mOverlayPerspective1 = false;
-    bool mOverlayPerspective2 = false;
-    bool mOverlayPerspective3 = false;
+    bool mSinglePerspectiveEnabled = false;
+    bool mTwoPointPerspectiveEnabled = false;
+    bool mThreePointPerspectiveEnabled = false;
 
     const qreal mSelectionTolerance = 8.0;
 };

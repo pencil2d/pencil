@@ -41,18 +41,9 @@ If you run into any issues, make sure to check out the [FAQ][p2d-faq]
 
 ### Nightly Builds
 
-Nightly builds are the bleeding edge versions of Pencil2D, which contains the most recent fixes and features.
-The link will direct you to Google Drive, please right-click on a file and select Download. The filename is `pencil2d-OS-year-month-date`.
-We currently do not offer legacy mac or 32-bit linux nightly builds. If you have one of these systems, you will have to wait for official releases or build the program from source.
+Nightly builds are the bleeding edge versions of Pencil2D, which contains the most recent fixes and features. We currently do not offer legacy mac or 32-bit linux nightly builds. If you have one of these systems, you will have to wait for official releases or build the program from source.
 
-| Windows 64 bit   | Windows 32 bit    | Mac             | Linux 64 bit      |
-| :--------------: | :---------------: | :-------------: | :---------------: |
-| [Download][4]    | [Download][5]     | [Download][6]   | [Download][7]     |
-
-[4]: https://drive.google.com/drive/folders/0BxdcdOiOmg-CSVlqc3JNQV9hVGs?resourcekey=0-mfeDpkYVm70KrOvKYM7UVw&usp=sharing
-[5]: https://drive.google.com/drive/folders/0BxdcdOiOmg-CcUEwS1R0WFhwM0E?resourcekey=0-7hr0hkLkSBVdEkaeb-okdg&usp=sharing
-[6]: https://drive.google.com/drive/folders/0BxdcdOiOmg-CeVpTY294cXdLZ2c?resourcekey=0-OH02kleYDbtzlw3UbxFMZA&usp=sharing
-[7]: https://drive.google.com/drive/folders/0BxdcdOiOmg-CcU1WOFpCOFBvVXc?resourcekey=0-2L-INjRPsn2ANX4MZIGU0Q&usp=sharing
+[Download Nightly Buildls](https://www.pencil2d.org/download/nightly/)
 
 ## Contributing
 

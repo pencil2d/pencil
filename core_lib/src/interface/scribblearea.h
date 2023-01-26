@@ -263,6 +263,15 @@ private:
     QColor mOnionColor;
 
 private:
+
+    /* Under certain circumstances a mouse press event will fire after a tablet release event.
+       This causes unexpected behaviours for some of the tools, eg. the bucket.
+       The problem only seems to occur on windows and only when tapping.
+       prior to this fix the event queue would look like this:
+       eg: TabletPress -> TabletRelease -> MousePress
+       The following will filter mouse events created after a tablet release event.
+    */
+    void tabletReleaseEventFired();
     bool mKeyboardInUse = false;
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
@@ -276,6 +285,10 @@ private:
     // Microsoft suggests that a double click action should be no more than 500 ms
     const int DOUBLE_CLICK_THRESHOLD = 500;
     QTimer* mDoubleClickTimer = nullptr;
+    int mTabletReleaseMillisAgo;
+    const int MOUSE_FILTER_THRESHOLD = 200;
+
+    QTimer* mMouseFilterTimer = nullptr;
 
     QPoint mCursorCenterPos;
     QPointF mTransformedCursorPos;
