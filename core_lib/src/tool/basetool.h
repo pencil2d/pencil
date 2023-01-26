@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QString>
 #include <QCursor>
+#include <QPainter>
 #include <QPointF>
 #include <QHash>
 #include "pencildef.h"
@@ -133,6 +134,8 @@ public:
     virtual void setShowCameraPath(const bool showCameraPath);
     virtual void setPathDotColorType(const DotColorType dotColorType);
     virtual void resetCameraPath();
+
+    virtual void paint(QPainter& painter) { Q_UNUSED(painter) };
 
     virtual bool leavingThisTool() { return true; }
 

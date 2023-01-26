@@ -5,5 +5,6 @@
         <file>fill-drag-test/fill-drag-test.pcl</file>
         <file>fill-drag-test/fill-drag-test.pcl.data/003.001.png</file>
         <file>camera-path-test.pclx</file>
+        <file>camera-path-test-2.pclx</file>
     </qresource>
 </RCC>
