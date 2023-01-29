@@ -171,7 +171,6 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
         return;
 
     mOffset = getCurrentPoint();
-    selectMan->setAlignToPosition(selectMan->selectionTransform().map(selectMan->getSelectionAnchorPoint()));
 
     mScribbleArea->updateToolCursor();
     mEditor->frameModified(mEditor->currentFrame());
@@ -248,6 +247,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     }
 
     selectMan->setTransformAnchor(selectMan->getSelectionAnchorPoint());
+    selectMan->setAlignToPosition(selectMan->selectionTransform().map(selectMan->getSelectionAnchorPoint()));
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         mRotatedAngle = selectMan->angleFromPoint(getCurrentPoint(), selectMan->currentTransformAnchor()) - mPreviousAngle;
     }

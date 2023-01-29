@@ -310,22 +310,18 @@ void SelectionManager::calculateSelectionTransformation()
 
 QPointF SelectionManager::alignPositionToAxis(QPointF currentPoint) const
 {
-    qreal x = 0;
-    qreal y = 0;
-
-    // Calculate angle from the start selectino anchor point to the current point
+    // Calculate angle from the start selection anchor point to the current point
     // we can't use the transformed point here.
     double angle = qAbs(qRadiansToDegrees(MathUtils::getDifferenceAngle(mAlignToAxisStartPosition, currentPoint)));
+    Q_ASSERT(angle >= 0 && angle <= 180);
 
-    if ((angle >= 0 && angle <= 45) || (angle <= 180 && angle >= 135)) {
-        x = currentPoint.x();
-        y = mAlignToAxisStartPosition.y();
-    } else if ((angle > 45 && angle <= 90) || (angle < 135 && angle >= 90)) {
-        x = mAlignToAxisStartPosition.x();
-        y = currentPoint.y();
+    if (angle > 45 && angle < 135) {
+        // Align to y axis
+        return QPointF(mAlignToAxisStartPosition.x(), currentPoint.y());
     }
 
-    return QPointF(x, y);
+    // Otherwise 0 <= angle <= 45 || 135 <= angle <= 180 --> align to x axis
+    return QPointF(currentPoint.x(), mAlignToAxisStartPosition.y());
 }
 
 /**

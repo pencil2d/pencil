@@ -156,8 +156,6 @@ private:
     QTransform mSelectionTransform;
     const qreal mSelectionTolerance = 10.0;
 
-    Q_CONSTEXPR static qreal mLockAxisThreshold = 10;
-
     QPointF mAnchorPoint;
 };
 
