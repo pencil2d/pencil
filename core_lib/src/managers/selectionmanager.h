@@ -52,7 +52,7 @@ public:
 
     /** @brief Locks movement either horizontally or vertically depending on drag direction
      *  @param state */
-    void constrainOffsetToAxis(bool state) { mLockAxis = state; }
+    void alignPositionToAxis(bool state) { mLockAxis = state; }
 
     void setMoveModeForAnchorInRange(const QPointF& point);
     MoveMode getMoveMode() const { return mMoveMode; }
@@ -104,7 +104,6 @@ public:
     QPolygonF mapToSelection(const QPolygonF& polygon) const { return mSelectionTransform.map(polygon); }
     QPolygonF mapFromLocalSpace(const QPolygonF& polygon) const { return mSelectionTransform.inverted().map(polygon); }
 
-
     // Vector selection
     VectorSelection vectorSelection;
 
@@ -113,6 +112,10 @@ public:
 
     void clearCurves() { mClosestCurves.clear(); };
     void clearVertices() { mClosestVertices.clear(); };
+
+    /// The point from where the dragging will be based of.
+    /// This is only usable in combination with mLockAxis
+    void setAlignToPosition(const QPointF point) { mAlignToAxisStartPosition = point; }
 
     const QList<int> closestCurves() const { return mClosestCurves; }
     const QList<VertexRef> closestVertices() const { return mClosestVertices; }
@@ -126,13 +129,12 @@ signals:
     void needDeleteSelection();
 
 private:
-    /** @brief Constrains the input offset to the nearest axis.
+    /** @brief Aligns the input position to the nearest axis.
      *  Eg. draggin along the x axis, will keep the selection to that axis.
-     * @param offsetX the x offset
-     * @param offsetY the y offset
-     * @return The constrained offset as a point
+     * @param currentPosition the position of the cursor
+     * @return A point that is either horizontally or vertically aligned with the current position.
      */
-    QPointF constrainOffsetToAxis(const qreal offsetX, const qreal offsetY) const;
+    QPointF alignPositionToAxis(QPointF currentPoint) const;
     int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
 
     bool mAspectRatioFixed = false;
@@ -147,6 +149,8 @@ private:
 
     QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
+
+    QPointF mAlignToAxisStartPosition;
 
     MoveMode mMoveMode = MoveMode::NONE;
     QTransform mSelectionTransform;

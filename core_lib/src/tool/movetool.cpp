@@ -171,6 +171,7 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
         return;
 
     mOffset = getCurrentPoint();
+    selectMan->setAlignToPosition(selectMan->selectionTransform().map(selectMan->getSelectionAnchorPoint()));
 
     mScribbleArea->updateToolCursor();
     mEditor->frameModified(mEditor->currentFrame());
@@ -191,7 +192,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
         }
 
         selectMan->maintainAspectRatio(keyMod == Qt::ShiftModifier);
-        selectMan->constrainOffsetToAxis(keyMod == Qt::ShiftModifier);
+        selectMan->alignPositionToAxis(keyMod == Qt::ShiftModifier);
 
         if(layer->type() == Layer::BITMAP)
         {

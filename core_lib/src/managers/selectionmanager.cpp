@@ -153,9 +153,10 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPoint
         QPointF newOffset = currentPoint - offset;
 
         if (mLockAxis) {
-            newOffset = constrainOffsetToAxis(newOffset.x(), newOffset.y());
+            mTranslation = alignPositionToAxis(currentPoint);
+        } else {
+            translate(newOffset);
         }
-        translate(newOffset);
         break;
     }
     case MoveMode::TOPLEFT:
@@ -307,22 +308,21 @@ void SelectionManager::calculateSelectionTransformation()
     mSelectionTransform = t * s * r * t2;
 }
 
-QPointF SelectionManager::constrainOffsetToAxis(const qreal offsetX, const qreal offsetY) const
+QPointF SelectionManager::alignPositionToAxis(QPointF currentPoint) const
 {
     qreal x = 0;
     qreal y = 0;
 
-    qreal absX =  offsetX;
-    qreal absY = offsetY;
+    // Calculate angle from the start selectino anchor point to the current point
+    // we can't use the transformed point here.
+    double angle = qAbs(qRadiansToDegrees(MathUtils::getDifferenceAngle(mAlignToAxisStartPosition, currentPoint)));
 
-    if (absX < 0) { absX = -absX; }
-    if (absY < 0) { absY = -absY; }
-
-    if (absX > absY + mLockAxisThreshold) {
-        x = offsetX;
-    }
-    else if (absY > absX + mLockAxisThreshold) {
-        y = offsetY;
+    if ((angle >= 0 && angle <= 45) || (angle <= 180 && angle >= 135)) {
+        x = currentPoint.x();
+        y = mAlignToAxisStartPosition.y();
+    } else if ((angle > 45 && angle <= 90) || (angle < 135 && angle >= 90)) {
+        x = mAlignToAxisStartPosition.x();
+        y = currentPoint.y();
     }
 
     return QPointF(x, y);
