@@ -742,6 +742,7 @@ void ActionCommands::duplicateKey()
 
     layer->addKeyFrame(nextEmptyFrame, dupKey);
     mEditor->scrubTo(nextEmptyFrame);
+    emit mEditor->frameModified(nextEmptyFrame);
 
     if (layer->type() == Layer::SOUND)
     {

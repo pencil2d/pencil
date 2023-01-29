@@ -135,6 +135,7 @@ signals:
     void selectedFramesChanged();
 
     void updateTimeLine() const;
+    void updateTimeLineCached();
     void updateLayerCount();
     void updateBackup();
 

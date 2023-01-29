@@ -1101,6 +1101,8 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     painter.setWorldMatrixEnabled(false);
     painter.drawPixmap(QPoint(0, 0), mCanvas);
 
+    currentTool()->paint(painter);
+
     Layer* layer = mEditor->layers()->currentLayer();
 
     if (!editor()->playback()->isPlaying())    // we don't need to display the following when the animation is playing
@@ -1238,7 +1240,6 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   frame,
                                   mEditor->view()->getView(),
                                   mEditor->playback()->isPlaying(),
-                                  mEditor->tools()->currentTool()->type() == CAMERA,
                                   mLayerVisibility,
                                   mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD),
                                   mEditor->view()->getViewScaleInverse());

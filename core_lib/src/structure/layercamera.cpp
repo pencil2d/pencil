@@ -45,18 +45,15 @@ bool LayerCamera::addKeyFrame(int position, KeyFrame *pKeyFrame)
 {
     bool keyAdded = Layer::addKeyFrame(position, pKeyFrame);
     if (keyAdded) {
-        approximateControlPointFor(position);
+        splitControlPointIfNeeded(position);
     }
     return keyAdded;
 }
 
 bool LayerCamera::removeKeyFrame(int position)
 {
-    bool keyRemoved = Layer::removeKeyFrame(position);
-    if (keyRemoved) {
-        updateControlPointOnDeleteFrame(position);
-    }
-    return keyRemoved;
+    mergeControlPointIfNeeded(position);
+    return Layer::removeKeyFrame(position);;
 }
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber) const
@@ -114,8 +111,15 @@ QTransform LayerCamera::getViewAtFrame(int frameNumber) const
     {
         return f1 * (1.0 - percent) + f2 * percent;
     };
-    QPointF point = getBezierPoint(camera1->translation(), camera2->translation(),
-                                   -camera1->getPathControlPoint(), percent);
+
+    QPointF controlPoint = camera1->getPathControlPoint();
+    if (!camera1->pathControlPointMoved()) {
+        controlPoint = getCenteredPathPoint(frame1);
+    }
+
+    const QPointF& point = getBezierPoint(camera1->translation(), camera2->translation(),
+                                   -controlPoint, percent);
+
     double dx = point.x();
     double dy = point.y();
     double r = lerp(camera1->rotation(), camera2->rotation(), percent);
@@ -171,8 +175,13 @@ void LayerCamera::linearInterpolateTransform(Camera* cam)
         return f1 * (1.0 - percent) + f2 * percent;
     };
 
+    QPointF controlPoint = camera1->getPathControlPoint();
+    if (!camera1->pathControlPointMoved()) {
+        controlPoint = getCenteredPathPoint(frame1);
+    }
+
     QPointF point = getBezierPoint(camera1->translation(), camera2->translation(),
-                                   -camera1->getPathControlPoint(), percent);
+                                   -controlPoint, percent);
     double dx = point.x();
     double dy = point.y();
     double r = lerp(camera1->rotation(), camera2->rotation(), percent);
@@ -242,20 +251,40 @@ QPointF LayerCamera::getBezierPoint(const QPointF& first, const QPointF& last, c
     return QLineF(line1.pointAt(percent), line2.pointAt(percent)).pointAt(percent);
 }
 
-void LayerCamera::updateControlPointOnDeleteFrame(int frame) const
+void LayerCamera::splitControlPointIfNeeded(int frame) const
 {
-    Q_ASSERT(keyFrameCount() > 0);
+    int next = getNextKeyFramePosition(frame);
+    int prev = getPreviousKeyFramePosition(frame);
 
-    int frameToUpdate = getPreviousKeyFramePosition(frame);
-    if (frameToUpdate > frame) {
-        return;
+    // if inbetween frames
+    if (frame > prev && (frame > 1) && frame < next)
+    {
+        Camera* camFrame = getLastCameraAtFrame(frame, 0);
+        Camera* camPrev = getCameraAtFrame(prev);
+        Camera* camNext = getCameraAtFrame(next);
+        Q_ASSERT(camPrev && camFrame && camNext);
+
+        if (camPrev->pathControlPointMoved()) {
+            qreal t = static_cast<qreal>(frame - prev) / (next - prev);
+            QPointF previousControlPoint = camPrev->getPathControlPoint();
+
+            // Line from the current control point to the next frame
+            QLineF interpolatedLineCN = QLineF(previousControlPoint, -camNext->translation());
+
+            // Line from the previous frame to the current control point
+            QLineF interpolatedLinePC = QLineF(-camPrev->translation(), previousControlPoint);
+            // Place the new control points, so the curve is kept
+            camPrev->setPathControlPoint(interpolatedLinePC.pointAt(t));
+            camFrame->setPathControlPoint(interpolatedLineCN.pointAt(t));
+            camFrame->setPathControlPointMoved(true);
+        }
+    } else {
+        Camera* camPrev = getCameraAtFrame(prev);
+        camPrev->setPathControlPointMoved(false);
     }
-
-    approximateControlPointFor(frameToUpdate);
-    setPathMovedAtFrame(frameToUpdate, false);
 }
 
-void LayerCamera::approximateControlPointFor(int frame) const
+void LayerCamera::mergeControlPointIfNeeded(int frame) const
 {
     int next = getNextKeyFramePosition(frame);
     int prev = getPreviousKeyFramePosition(frame);
@@ -264,26 +293,30 @@ void LayerCamera::approximateControlPointFor(int frame) const
     if (frame > prev && (frame > 1) && frame < next)
     {
         Camera* camPrev = getCameraAtFrame(prev);
-        Camera* camFrame = getCameraAtFrame(frame);
+        Camera* camFrame = getLastCameraAtFrame(frame, 0);
         Camera* camNext = getCameraAtFrame(next);
         Q_ASSERT(camPrev && camFrame && camNext);
 
-        // get center point for new frame
-        QPointF midPoint = camPrev->getPathControlPoint();
-        qreal t = static_cast<qreal>(frame - prev) / (next - prev);
+        if (camPrev->pathControlPointMoved()) {
 
-        // from prev to frame
-        QLineF toMidpoint(-camPrev->translation(), midPoint);
-        camPrev->setPathControlPoint(toMidpoint.pointAt(t));
+            // Line from the current control point to the next frame
+            const QLineF& interpolatedLineCN = QLineF(camFrame->getPathControlPoint(), -camNext->translation());
 
-        // from frame to next
-        toMidpoint = QLineF(midPoint, -camNext->translation());
-        camFrame->setPathControlPoint(toMidpoint.pointAt(t));
-    }
-    else
-    {
-        // if first frame
-        centerPathControlPointAtFrame(frame);
+            // Line from the previous frame translation to previous control point
+            const QLineF& interpolatedLinePC = QLineF(-camPrev->translation(), camPrev->getPathControlPoint());
+
+            QPointF mergedCPoint;
+            auto intersection = interpolatedLinePC.intersect(interpolatedLineCN, &mergedCPoint);
+            // Try to recover the control point if the distance is within the threshold, otherwise do nothing
+            if (intersection == QLineF::IntersectType::UnboundedIntersection &&
+                QLineF(camFrame->getPathControlPoint(), mergedCPoint).length() < mControlPointMergeThreshold)
+            {
+                camPrev->setPathControlPoint(mergedCPoint);
+                camPrev->setPathControlPointMoved(true);
+            } else if (intersection == QLineF::IntersectType::NoIntersection) {
+                camPrev->setPathControlPointMoved(false);
+            }
+        }
     }
 }
 
@@ -335,7 +368,6 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
         qreal otherYCoord = camera->translation().y();
         Camera* nextCam = getCameraAtFrame(getNextKeyFramePosition(frameToModify));
         nextCam->translate(nextCam->translation().x(), otherYCoord);
-        camera->setPathControlPoint(getNewPathControlPointAtFrame(frameToModify));
         camera->setPathControlPointMoved(false);
         break;
     }
@@ -343,7 +375,6 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
         qreal otherXCoord = camera->translation().x();
         Camera* nextCam = getCameraAtFrame(getNextKeyFramePosition(frameToModify));
         nextCam->translate(otherXCoord, nextCam->translation().y());
-        camera->setPathControlPoint(getNewPathControlPointAtFrame(nextCam->pos()));
         camera->setPathControlPointMoved(false);
         break;
     }
@@ -354,13 +385,11 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
         QPointF translation = camera->translation();
         qreal rotation = camera->rotation();
         qreal scaling = camera->scaling();
-        camera->setPathControlPoint(-translation);
         camera->setPathControlPointMoved(false);
         Camera* nextCamera = getLastCameraAtFrame(getNextKeyFramePosition(frame), 0);
         nextCamera->translate(translation);
         nextCamera->scale(scaling);
         nextCamera->rotate(rotation);
-        nextCamera->setPathControlPoint(-translation);
         nextCamera->setPathControlPointMoved(false);
         break;
     }
@@ -370,8 +399,6 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
     }
 
     if (type != CameraFieldOption::RESET_SCALING && type != CameraFieldOption::RESET_ROTATION) {
-        // we reset mid point from previous frame
-        centerPathControlPointAtFrame(frame - 1);
         setPathMovedAtFrame(frame - 1, false);
     }
 
@@ -442,30 +469,17 @@ QList<QPointF> LayerCamera::getBezierPointsAtFrame(int frame) const
         Camera* prevCam = getCameraAtFrame(prevFrame);
         Camera* nextCam = getCameraAtFrame(nextFrame);
         points.append(QPointF(-prevCam->translation()));
-        points.append(QPointF(prevCam->getPathControlPoint()));
+        if (prevCam->pathControlPointMoved()) {
+            points.append(QPointF(prevCam->getPathControlPoint()));
+        } else {
+            points.append(QPointF(getCenteredPathPoint(prevFrame)));
+        }
         points.append(QPointF(-nextCam->translation()));
     }
     return points;
 }
 
-void LayerCamera::centerPathControlPointAtFrame(int frame) const
-{
-    Camera* cam1 = getCameraAtFrame(frame);
-    if (!keyExists(frame)) {
-        cam1 = getCameraAtFrame(getPreviousKeyFramePosition(frame));
-    }
-    cam1->setPathControlPoint(getNewPathControlPointAtFrame(frame));
-}
-
-void LayerCamera::setPathMovedAtFrame(int frame, bool moved) const
-{
-    Camera* cam = getLastCameraAtFrame(frame, 0);
-    Q_ASSERT(cam);
-
-    cam->setPathControlPointMoved(moved);
-}
-
-QPointF LayerCamera::getNewPathControlPointAtFrame(int frame) const
+QPointF LayerCamera::getCenteredPathPoint(int frame) const
 {
     if (!keyExists(frame) || frame == getMaxKeyFramePosition())
         frame = getPreviousKeyFramePosition(frame);
@@ -483,12 +497,21 @@ QPointF LayerCamera::getNewPathControlPointAtFrame(int frame) const
     return QLineF(-cam1->translation(), -cam2->translation()).pointAt(0.5);
 }
 
+void LayerCamera::setPathMovedAtFrame(int frame, bool moved) const
+{
+    Camera* cam = getLastCameraAtFrame(frame, 0);
+    Q_ASSERT(cam);
+
+    cam->setPathControlPointMoved(moved);
+}
+
 void LayerCamera::updatePathControlPointAtFrame(const QPointF& point, int frame) const
 {
-    Camera* camera = getCameraAtFrame(getPreviousKeyFramePosition(frame));
+    Camera* camera = getLastCameraAtFrame(frame, 0);
     Q_ASSERT(camera);
 
     camera->setPathControlPoint(point);
+    camera->setPathControlPointMoved(true);
 }
 
 void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, const QPointF& pathPoint, bool pathMoved)
@@ -500,8 +523,10 @@ void LayerCamera::loadImageAtFrame(int frameNumber, qreal dx, qreal dy, qreal ro
     Camera* camera = new Camera(QPointF(dx, dy), rotate, scale);
     camera->setPos(frameNumber);
     camera->setEasingType(easing);
-    camera->setPathControlPoint(pathPoint);
-    camera->setPathControlPointMoved(pathMoved);
+    if (pathMoved) {
+        camera->setPathControlPoint(pathPoint);
+        camera->setPathControlPointMoved(pathMoved);
+    }
     loadKey(camera);
 }
 
@@ -588,17 +613,12 @@ void LayerCamera::loadDomElement(const QDomElement& element, QString dataDirPath
                 CameraEasingType easing = static_cast<CameraEasingType>(imageElement.attribute("easing", "0").toInt());
                 qreal pathX = imageElement.attribute("pathCPX", "0").toDouble();
                 qreal pathY = imageElement.attribute("pathCPY", "0").toDouble();
-                bool pathMoved = (imageElement.hasAttribute("pathCPX") || imageElement.hasAttribute("pathCPY")) &&
-                                 imageElement.attribute("pathCPM", "1").toInt(); // BC
+
+                bool pathMoved = pathX != 0 || pathY != 0;
 
                 loadImageAtFrame(frame, dx, dy, rotate, scale, easing, QPointF(pathX, pathY), pathMoved);
             }
         }
         imageTag = imageTag.nextSibling();
     }
-    foreachKeyFrame([&](KeyFrame* frame) {
-        if (!static_cast<Camera*>(frame)->pathControlPointMoved()) {
-            centerPathControlPointAtFrame(frame->pos());
-        }
-    });
 }

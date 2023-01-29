@@ -41,16 +41,10 @@ HEADERS +=  \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
     src/interface/backupelement.h \
-    src/interface/cameracontextmenu.h \
-    src/interface/camerapropertiesdialog.h \
     src/interface/editor.h \
     src/interface/flowlayout.h \
     src/interface/recentfilemenu.h \
     src/interface/scribblearea.h \
-    src/interface/timecontrols.h \
-    src/interface/timeline.h \
-    src/interface/timelinecells.h \
-    src/interface/basedockwidget.h \
     src/interface/backgroundwidget.h \
     src/managers/basemanager.h \
     src/managers/overlaymanager.h \
@@ -107,6 +101,8 @@ HEADERS +=  \
     src/util/pencildef.h \
     src/util/pencilerror.h \
     src/util/pencilsettings.h \
+    src/util/preferencesdef.h \
+    src/util/transform.h \
     src/util/util.h \
     src/util/log.h \
     src/util/movemode.h \
@@ -130,16 +126,10 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
     src/interface/backupelement.cpp \
-    src/interface/cameracontextmenu.cpp \
-    src/interface/camerapropertiesdialog.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
     src/interface/recentfilemenu.cpp \
     src/interface/scribblearea.cpp \
-    src/interface/timecontrols.cpp \
-    src/interface/timeline.cpp \
-    src/interface/timelinecells.cpp \
-    src/interface/basedockwidget.cpp \
     src/interface/backgroundwidget.cpp \
     src/managers/basemanager.cpp \
     src/managers/overlaymanager.cpp \
@@ -186,6 +176,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \
     src/util/log.cpp \
+    src/util/transform.cpp \
     src/util/util.cpp \
     src/util/pointerevent.cpp \
     src/canvaspainter.cpp \
@@ -198,9 +189,6 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/qminiz.cpp \
     src/activeframepool.cpp \
     src/selectionpainter.cpp
-
-FORMS += \
-    ui/camerapropertiesdialog.ui
 
 win32 {
     INCLUDEPATH += src/external/win32

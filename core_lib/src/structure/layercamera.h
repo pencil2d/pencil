@@ -60,13 +60,12 @@ public:
     QPointF getPathControlPointAtFrame(int frame) const;
     bool hasSameTranslation(int frame1, int frame2) const;
     QList<QPointF> getBezierPointsAtFrame(int frame) const;
-    void centerPathControlPointAtFrame(int frame) const;
-    QPointF getNewPathControlPointAtFrame(int frame) const;
+    QPointF getCenteredPathPoint(int frame) const;
     void updatePathControlPointAtFrame(const QPointF& point, int frame) const;
     void setPathMovedAtFrame(int frame, bool moved) const;
 
-    void updateControlPointOnDeleteFrame(int frame) const;
-    void approximateControlPointFor(int frame) const;
+    void splitControlPointIfNeeded(int frame) const;
+    void mergeControlPointIfNeeded(int frame) const;
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
@@ -84,6 +83,8 @@ private:
     bool mShowPath = false;
     QColor mDotColor = Qt::red;
     DotColorType mDotColorType = DotColorType::RED;
+
+    const int mControlPointMergeThreshold = 2000;
 };
 
 #endif

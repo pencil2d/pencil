@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QDomElement>
 #include "keyframe.h"
 #include "object.h"
-#include "timelinecells.h"
 
 // Used to sort the selected frames list
 bool sortAsc(int left, int right)

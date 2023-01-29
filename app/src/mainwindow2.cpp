@@ -68,7 +68,6 @@ GNU General Public License for more details.
 #include "repositionframesdialog.h"
 
 //#include "preview.h"
-//#include "timeline2.h"
 #include "errordialog.h"
 #include "filedialog.h"
 #include "importimageseqdialog.h"
@@ -171,12 +170,6 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
-    /*
-    mTimeline2 = new Timeline2;
-    mTimeline2->setObjectName( "Timeline2" );
-    mDockWidgets.append( mTimeline2 );
-    */
-
     mDockWidgets
         << mTimeLine
         << mColorBox
@@ -197,7 +190,6 @@ void MainWindow2::createDockWidgets()
 
         pWidget->setEditor(mEditor);
         pWidget->initUI();
-        pWidget->show();
         qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
@@ -229,8 +221,9 @@ void MainWindow2::createDockWidgets()
 
     for (BaseDockWidget* w : mDockWidgets)
     {
-        w->updateUI();
         w->setFloating(false);
+        w->show();
+        w->updateUI();
     }
 }
 
@@ -1495,7 +1488,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
-    connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::animationLengthChanged, pTimeline, &TimeLine::extendLength);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
 
@@ -1504,6 +1496,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
+    connect(pEditor, &Editor::updateTimeLineCached, pTimeline, &TimeLine::updateUICached);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);

@@ -47,8 +47,6 @@ GNU General Public License for more details.
 #include "clipboardmanager.h"
 
 #include "scribblearea.h"
-#include "timeline.h"
-#include "util.h"
 
 Editor::Editor(QObject* parent) : QObject(parent)
 {
@@ -139,7 +137,7 @@ void Editor::settingUpdated(SETTING setting)
         break;
     case SETTING::ONION_TYPE:
         mScribbleArea->onOnionSkinTypeChanged();
-        emit updateTimeLine();
+        emit updateTimeLineCached();
         break;
     case SETTING::FRAME_POOL_SIZE:
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
@@ -1104,7 +1102,7 @@ void Editor::scrubTo(int frame)
     // Will remove all Timeline related code in Editor class.
     if (mPlaybackManager && !mPlaybackManager->isPlaying())
     {
-        emit updateTimeLine(); // needs to update the timeline to update onion skin positions
+        emit updateTimeLineCached(); // needs to update the timeline to update onion skin positions
     }
     mObject->updateActiveFrames(frame);
 }
