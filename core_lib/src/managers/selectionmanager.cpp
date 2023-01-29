@@ -150,7 +150,13 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPoint
     switch (mMoveMode)
     {
     case MoveMode::MIDDLE: {
-        translate(currentPoint - offset);
+        QPointF newOffset = currentPoint - offset;
+
+        if (mLockAxis) {
+            mTranslation = alignPositionToAxis(currentPoint);
+        } else {
+            translate(newOffset);
+        }
         break;
     }
     case MoveMode::TOPLEFT:
@@ -252,7 +258,7 @@ void SelectionManager::scale(qreal sX, qreal sY)
     mScaleY = sY;
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
+int SelectionManager::constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
@@ -302,33 +308,20 @@ void SelectionManager::calculateSelectionTransformation()
     mSelectionTransform = t * s * r * t2;
 }
 
-QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY) const
+QPointF SelectionManager::alignPositionToAxis(QPointF currentPoint) const
 {
-    QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
-    qreal width = QLineF(projectedPolygon[0], projectedPolygon[1]).dx();
-    qreal height = QLineF(projectedPolygon[0], projectedPolygon[3]).dy();
-    qreal factor = width / height;
+    // Calculate angle from the start selection anchor point to the current point
+    // we can't use the transformed point here.
+    double angle = qAbs(qRadiansToDegrees(MathUtils::getDifferenceAngle(mAlignToAxisStartPosition, currentPoint)));
+    Q_ASSERT(angle >= 0 && angle <= 180);
 
-    if (mMoveMode == MoveMode::TOPLEFT || mMoveMode == MoveMode::BOTTOMRIGHT)
-    {
-        offsetY = offsetX / factor;
+    if (angle > 45 && angle < 135) {
+        // Align to y axis
+        return QPointF(mAlignToAxisStartPosition.x(), currentPoint.y());
     }
-    else if (mMoveMode == MoveMode::TOPRIGHT || mMoveMode == MoveMode::BOTTOMLEFT)
-    {
-        offsetY = -(offsetX / factor);
-    }
-    else if (mMoveMode == MoveMode::MIDDLE)
-    {
-        qreal absX = offsetX;
-        if (absX < 0) { absX = -absX; }
 
-        qreal absY = offsetY;
-        if (absY < 0) { absY = -absY; }
-
-        if (absX > absY) { offsetY = 0; }
-        if (absY > absX) { offsetX = 0; }
-    }
-    return QPointF(offsetX, offsetY);
+    // Otherwise 0 <= angle <= 45 || 135 <= angle <= 180 --> align to x axis
+    return QPointF(currentPoint.x(), mAlignToAxisStartPosition.y());
 }
 
 /**

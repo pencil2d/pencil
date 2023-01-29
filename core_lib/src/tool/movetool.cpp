@@ -191,6 +191,7 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
         }
 
         selectMan->maintainAspectRatio(keyMod == Qt::ShiftModifier);
+        selectMan->alignPositionToAxis(keyMod == Qt::ShiftModifier);
 
         if(layer->type() == Layer::BITMAP)
         {
@@ -246,6 +247,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     }
 
     selectMan->setTransformAnchor(selectMan->getSelectionAnchorPoint());
+    selectMan->setAlignToPosition(selectMan->selectionTransform().map(selectMan->getSelectionAnchorPoint()));
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         mRotatedAngle = selectMan->angleFromPoint(getCurrentPoint(), selectMan->currentTransformAnchor()) - mPreviousAngle;
     }
@@ -415,13 +417,13 @@ QCursor MoveTool::cursor(MoveMode mode) const
     case MoveMode::ROTATIONRIGHT:
     case MoveMode::ROTATION:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/cursor-rotate.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-rotate.svg"));
         break;
     }
     case MoveMode::MIDDLE:
     case MoveMode::CENTER:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/cursor-move.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
         break;
     }
     default:
