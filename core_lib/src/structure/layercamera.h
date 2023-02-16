@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "camerafieldoption.h"
 #include "cameraeasingtype.h"
+#include "pencildef.h"
 
 class Camera;
 
