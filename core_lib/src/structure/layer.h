@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QString>
 #include <QDomElement>
 #include "pencilerror.h"
-#include "pencildef.h"
 
 class QMouseEvent;
 class QPainter;
@@ -99,11 +98,11 @@ public:
     bool insertExposureAt(int position);
 
     bool addNewKeyFrameAt(int position);
-    virtual bool addKeyFrame(int position, KeyFrame*);
+    void addOrReplaceKeyFrame(int position, KeyFrame* pKeyFrame);
+    virtual bool addKeyFrame(int position, KeyFrame* pKeyFrame);
     virtual bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);
     bool moveKeyFrame(int position, int offset);
-    bool loadKey(KeyFrame*);
     KeyFrame* getKeyFrameAt(int position) const;
     KeyFrame* getLastKeyFrameAtPosition(int position) const;
     bool keyExistsWhichCovers(int frameNumber);
@@ -171,6 +170,7 @@ public:
 protected:
     void setId(int LayerId) { mId = LayerId; }
     virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
+    bool loadKey(KeyFrame*);
 
 private:
     void removeFromSelectionList(int position);

@@ -704,7 +704,7 @@ void ActionCommands::duplicateLayer()
     Layer* toLayer = layerMgr->createLayer(fromLayer->type(), tr("%1 (copy)", "Default duplicate layer name").arg(fromLayer->name()));
     fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
         key = key->clone();
-        toLayer->loadKey(key);
+        toLayer->addOrReplaceKeyFrame(key->pos(), key);
         if (toLayer->type() == Layer::SOUND)
         {
             mEditor->sound()->processSound(static_cast<SoundClip*>(key));
