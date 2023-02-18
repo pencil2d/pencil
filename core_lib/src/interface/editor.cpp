@@ -161,7 +161,11 @@ void Editor::onCurrentLayerWillChange(int index)
         mScribbleArea->applyTransformedSelection();
 
         if (currentLayer->type() == Layer::VECTOR) {
-            static_cast<VectorImage*>(currentLayer->getKeyFrameAt(mFrame))->deselectAll();
+            auto keyFrame = static_cast<VectorImage*>(currentLayer->getLastKeyFrameAtPosition(mFrame));
+            if (keyFrame)
+            {
+                keyFrame->deselectAll();
+            }
         }
 
         select()->resetSelectionProperties();
@@ -702,7 +706,7 @@ void Editor::paste()
 }
 
 void Editor::flipSelection(bool flipVertical)
-{   
+{
     if (flipVertical) {
         backup(tr("Flip selection vertically"));
     } else {
