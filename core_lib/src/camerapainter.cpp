@@ -19,7 +19,6 @@ GNU General Public License for more details.
 
 #include <QPainter>
 #include <QPixmap>
-#include <QPainterPath>
 #include "object.h"
 #include "layercamera.h"
 #include "camera.h"
