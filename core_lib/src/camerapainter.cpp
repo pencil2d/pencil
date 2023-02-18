@@ -152,10 +152,10 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     QRect boundingRect = viewInverse.mapRect(viewRect);
 
     QPolygon camPoly = camTransform.inverted().map(QPolygon(camRect));
-    QPolygon outerPoly = boundingRect;
-    QPolygon clipped = outerPoly.subtracted(camPoly);
+    QPolygon boundingRectPoly = boundingRect;
+    QPolygon visibleCanvasPoly = boundingRectPoly.subtracted(camPoly);
 
-    painter.drawPolygon(clipped);
+    painter.drawPolygon(visibleCanvasPoly);
 
     painter.restore();
 }
