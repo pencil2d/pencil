@@ -868,14 +868,11 @@ void MainWindow2::importImage()
         return;
     }
 
-    bool ok = mEditor->importImage(strFilePath);
-    if (!ok)
+    Status st = mEditor->importImage(strFilePath);
+    if (!st.ok())
     {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps."),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+        errorDialog.exec();
         return;
     }
 

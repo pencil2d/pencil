@@ -324,7 +324,7 @@ void ImportImageSeqDialog::importPredefinedSet()
         const QString& filePath = keySet.filePathAt(i);
 
         mEditor->scrubTo(frameIndex);
-        bool ok = mEditor->importImage(filePath);
+        bool ok = mEditor->importImage(filePath).ok();
         imagesImportedSoFar++;
 
         progress.setValue(imagesImportedSoFar);
