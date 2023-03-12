@@ -39,7 +39,6 @@ class PreviewWidget;
 class ColorBox;
 class ColorInspector;
 class RecentFileMenu;
-class Timeline2;
 class ActionCommands;
 class ImportImageSeqDialog;
 class BackupElement;
@@ -158,7 +157,6 @@ private:
     ColorPaletteWidget*   mColorPalette = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
     ToolBoxWidget*        mToolBox = nullptr;
-    //Timeline2*          mTimeline2 = nullptr;
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;

@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include <QInputDialog>
 #include <QPainter>
 #include <QSettings>
-#include <QMenu>
 
 #include "camerapropertiesdialog.h"
 #include "editor.h"
@@ -166,7 +165,7 @@ void TimeLineCells::updateFrame(int frameNumber)
 
 void TimeLineCells::updateContent()
 {
-    drawContent();
+    mRedrawContent = true;
     update();
 }
 
@@ -192,14 +191,14 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 
     CameraContextMenu menu(frameNumber, static_cast<const LayerCamera*>(curLayer));
 
-    menu.connect(&menu, &CameraContextMenu::aboutToHide, [=] {
+    menu.connect(&menu, &CameraContextMenu::aboutToHide, this, [=] {
         mHighlightFrameEnabled = false;
         mHighlightedFrame = -1;
         update();
 
         KeyFrame* key = curLayer->getKeyFrameAt(frameNumber);
         if (key->isModified()) {
-            mEditor->frameModified(frameNumber);
+            emit mEditor->frameModified(frameNumber);
         }
     });
 
@@ -211,8 +210,6 @@ void TimeLineCells::showCameraMenu(QPoint pos)
 
 void TimeLineCells::drawContent()
 {
-    const QPalette palette = QApplication::palette();
-
     if (mCache == nullptr)
     {
         mCache = new QPixmap(size());
@@ -225,22 +222,17 @@ void TimeLineCells::drawContent()
 
     QPainter painter(mCache);
 
-    const Object* object = mEditor->object();
-
-    Q_ASSERT(object != nullptr);
-
-    const Layer* currentLayer = mEditor->layers()->currentLayer();
-    if (currentLayer == nullptr) return;
-
     // grey background of the view
+    const QPalette palette = QApplication::palette();
     painter.setPen(Qt::NoPen);
     painter.setBrush(palette.color(QPalette::Base));
     painter.drawRect(QRect(0, 0, width(), height()));
 
     const int widgetWidth = width();
-    const int layerHeight = mLayerHeight;
 
-    // --- draw layers of the current object
+    // Draw non-current layers
+    const Object* object = mEditor->object();
+    Q_ASSERT(object != nullptr);
     for (int i = 0; i < object->getLayerCount(); i++)
     {
         if (i == mEditor->layers()->currentLayerIndex())
@@ -257,18 +249,20 @@ void TimeLineCells::drawContent()
             case TIMELINE_CELL_TYPE::Tracks:
                 paintTrack(painter, layeri, mOffsetX,
                            layerY, widgetWidth - mOffsetX,
-                           layerHeight, false, mFrameSize);
+                           mLayerHeight, false, mFrameSize);
                 break;
 
             case TIMELINE_CELL_TYPE::Layers:
                 paintLabel(painter, layeri, 0,
                            layerY, widgetWidth - 1,
-                           layerHeight, false, mEditor->layerVisibility());
+                           mLayerHeight, false, mEditor->layerVisibility());
                 break;
             }
         }
     }
 
+    // Draw current layer
+    const Layer* currentLayer = mEditor->layers()->currentLayer();
     if (didDetachLayer())
     {
         int layerYMouseMove = getLayerY(mEditor->layers()->currentLayerIndex()) + mMouseMoveY;
@@ -276,14 +270,14 @@ void TimeLineCells::drawContent()
         {
             paintTrack(painter, currentLayer,
                        mOffsetX, layerYMouseMove,
-                       widgetWidth - mOffsetX, layerHeight,
+                       widgetWidth - mOffsetX, mLayerHeight,
                        true, mFrameSize);
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers)
         {
             paintLabel(painter, currentLayer,
                        0, layerYMouseMove,
-                       widgetWidth - 1, layerHeight, true, mEditor->layerVisibility());
+                       widgetWidth - 1, mLayerHeight, true, mEditor->layerVisibility());
 
             paintLayerGutter(painter);
         }
@@ -297,7 +291,7 @@ void TimeLineCells::drawContent()
                        mOffsetX,
                        getLayerY(mEditor->layers()->currentLayerIndex()),
                        widgetWidth - mOffsetX,
-                       layerHeight,
+                       mLayerHeight,
                        true,
                        mFrameSize);
         }
@@ -308,7 +302,7 @@ void TimeLineCells::drawContent()
                        0,
                        getLayerY(mEditor->layers()->currentLayerIndex()),
                        widgetWidth - 1,
-                       layerHeight,
+                       mLayerHeight,
                        true,
                        mEditor->layerVisibility());
         }
@@ -349,21 +343,11 @@ void TimeLineCells::drawContent()
     {
         paintTicks(painter, palette);
 
-        const auto object = mEditor->object();
         for (int i = 0; i < object->getLayerCount(); i++) {
             paintSelectedFrames(painter, object->getLayer(i), i);
         }
-
-        if (mHighlightFrameEnabled && !mMovingFrames && mLayerPosMoveY == mEditor->currentLayerIndex()) {
-
-            // This is terrible but well...
-            int recTop = getLayerY(mLayerPosMoveY) + 1;
-            int standardWidth = mFrameSize - 2;
-            int recHeight = layerHeight - 4;
-
-            paintHighlightedFrame(painter, mHighlightedFrame, recTop, standardWidth, recHeight);
-        }
     }
+    mRedrawContent = false;
 }
 
 void TimeLineCells::paintTicks(QPainter& painter, const QPalette& palette) const
@@ -473,11 +457,7 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         }
 
         // Paint the frame border
-        if (selected && framePos == mEditor->currentFrame()) {
-            painter.setPen(Qt::white);
-        } else {
-            painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-        }
+        painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
         // Paint the frame contents
         if (selected)
@@ -495,10 +475,15 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
             painter.drawRect(recLeft, recTop, recWidth, recHeight);
         }
     });
+}
 
-    if (!mMovingFrames && selected && mLayerPosMoveY != -1 && mLayerPosMoveY == mEditor->currentLayerIndex()) {
-        paintFrameCursorOnCurrentLayer(painter, recTop, standardWidth, recHeight);
-    }
+void TimeLineCells::paintCurrentFrameBorder(QPainter &painter, int recLeft, int recTop, int recWidth, int recHeight) const
+{
+    painter.save();
+    painter.setBrush(Qt::NoBrush);
+    painter.setPen(Qt::white);
+    painter.drawRect(recLeft, recTop, recWidth, recHeight);
+    painter.restore();
 }
 
 void TimeLineCells::paintFrameCursorOnCurrentLayer(QPainter &painter, int recTop, int recWidth, int recHeight) const
@@ -527,7 +512,7 @@ void TimeLineCells::paintHighlightedFrame(QPainter& painter, int framePos, int r
     painter.setPen(palette.color(QPalette::WindowText));
 
     // Draw a rect slighly smaller than the frame
-    painter.drawRect(recLeft+1, recTop+1, recWidth-2, recHeight-2);
+    painter.drawRect(recLeft+1, recTop+1, recWidth-1, recHeight-1);
     painter.restore();
 }
 
@@ -721,16 +706,11 @@ void TimeLineCells::paintOnionSkin(QPainter& painter) const
 
 void TimeLineCells::paintEvent(QPaintEvent*)
 {
-    Object* object = mEditor->object();
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    Q_ASSUME(object != nullptr && layer != nullptr);
-
     const QPalette palette = QApplication::palette();
     QPainter painter(this);
 
     bool isPlaying = mEditor->playback()->isPlaying();
-    if ((!isPlaying && !mTimeLine->scrubbing) || mCache == nullptr)
+    if (mCache == nullptr || mRedrawContent || trackScrubber())
     {
         drawContent();
     }
@@ -741,27 +721,44 @@ void TimeLineCells::paintEvent(QPaintEvent*)
 
     if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-
-        if (mPrevFrame != mEditor->currentFrame()  || mEditor->playback()->isPlaying())
-        {
-            mPrevFrame = mEditor->currentFrame();
-            trackScrubber();
-        }
-
         if (!isPlaying) {
             paintOnionSkin(painter);
         }
 
+        int currentFrame = mEditor->currentFrame();
+        Layer* currentLayer = mEditor->layers()->currentLayer();
+        KeyFrame* keyFrame = currentLayer->getKeyFrameWhichCovers(currentFrame);
+        if (keyFrame != nullptr && !keyFrame->isSelected())
+        {
+            int recWidth = keyFrame->length() == 1 ? mFrameSize - 2 : mFrameSize * keyFrame->length();
+            int recLeft = getFrameX(keyFrame->pos()) - (mFrameSize - 2);
+            paintCurrentFrameBorder(painter, recLeft, getLayerY(mEditor->currentLayerIndex()) + 1, recWidth, mLayerHeight - 4);
+        }
+
+        if (!mMovingFrames && mLayerPosMoveY != -1 && mLayerPosMoveY == mEditor->currentLayerIndex())
+        {
+            // This is terrible but well...
+            int recTop = getLayerY(mLayerPosMoveY) + 1;
+            int standardWidth = mFrameSize - 2;
+            int recHeight = mLayerHeight - 4;
+
+            if (mHighlightFrameEnabled)
+            {
+                paintHighlightedFrame(painter, mHighlightedFrame, recTop, standardWidth, recHeight);
+            }
+            paintFrameCursorOnCurrentLayer(painter, recTop, standardWidth, recHeight);
+        }
+
         // --- draw the position of the current frame
-        if (mEditor->currentFrame() > mFrameOffset)
+        if (currentFrame > mFrameOffset)
         {
             QColor scrubColor = palette.color(QPalette::Highlight);
             scrubColor.setAlpha(160);
             painter.setBrush(scrubColor);
             painter.setPen(Qt::NoPen);
 
-            int currentFrameStartX = getFrameX(mEditor->currentFrame() - 1) + 1;
-            int currentFrameEndX = getFrameX(mEditor->currentFrame());
+            int currentFrameStartX = getFrameX(currentFrame - 1) + 1;
+            int currentFrameEndX = getFrameX(currentFrame);
             QRect scrubRect;
             scrubRect.setTopLeft(QPoint(currentFrameStartX, 0));
             scrubRect.setBottomRight(QPoint(currentFrameEndX, height()));
@@ -771,7 +768,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             }
             painter.save();
 
-            bool mouseUnderScrubber = mEditor->currentFrame() == mFramePosMoveX;
+            bool mouseUnderScrubber = currentFrame == mFramePosMoveX;
             if (mouseUnderScrubber) {
                 QRect smallScrub = QRect(QPoint(currentFrameStartX, 0), QPoint(currentFrameEndX,19));
                 QPen pen = scrubColor;
@@ -784,9 +781,9 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             painter.restore();
 
             painter.setPen(palette.color(QPalette::HighlightedText));
-            int incr = (mEditor->currentFrame() < 10) ? 4 : 0;
+            int incr = (currentFrame < 10) ? 4 : 0;
             painter.drawText(QPoint(currentFrameStartX + incr, 15),
-                             QString::number(mEditor->currentFrame()));
+                             QString::number(currentFrame));
         }
     }
 }
@@ -886,7 +883,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                     {
                         Layer *previousLayer = mEditor->object()->getLayer(previousLayerNumber);
                         previousLayer->deselectAll();
-                        mEditor->selectedFramesChanged();
+                        emit mEditor->selectedFramesChanged();
                         mEditor->layers()->setCurrentLayer(layerNumber);
                     }
 
@@ -900,7 +897,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
                         mCanMoveFrame = true;
 
                         currentLayer->selectAllFramesAfter(frameNumber);
-                        mEditor->selectedFramesChanged();
+                        emit mEditor->selectedFramesChanged();
                     }
                     // Check if we are clicking on a non selected frame
                     else if (!currentLayer->isFrameSelected(frameNumber))
@@ -1036,32 +1033,29 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             currentLayer->extendSelectionTo(mFramePosMoveX);
                         }
                         mLastFrameNumber = mFramePosMoveX;
+                        updateContent();
                     }
                 }
+                update();
             }
         }
     }
-    mTimeLine->update();
 }
 
 void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 {
     if (event->button() != primaryButton) return;
 
-    primaryButton = Qt::NoButton;
-    mEndY = mStartY;
-    mTimeLine->scrubbing = false;
-
     int frameNumber = getFrameNumber(event->pos().x());
     if (frameNumber < 1) frameNumber = 1;
     int layerNumber = getLayerNumber(event->pos().y());
 
-    if (mCurrentLayerNumber != -1 && mType == TIMELINE_CELL_TYPE::Tracks && primaryButton != Qt::MidButton)
+    if (mType == TIMELINE_CELL_TYPE::Tracks && mCurrentLayerNumber != -1 && primaryButton != Qt::MidButton)
     {
         // We should affect the current layer based on what's selected, not where the mouse currently is.
         Layer* currentLayer = mEditor->layers()->getLayer(mCurrentLayerNumber);
-
         Q_ASSERT(currentLayer);
+
         if (mMovingFrames)
         {
             int posUnderCursor = getFrameNumber(mMousePressX);
@@ -1070,7 +1064,8 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             currentLayer->moveSelectedFrames(offset);
 
             mEditor->layers()->notifyAnimationLengthChanged();
-            mEditor->framesModified();
+            emit mEditor->framesModified();
+            updateContent();
         }
         else if (!mTimeLine->scrubbing && !mMovingFrames && !mClickSelecting && !mBoxSelecting)
         {
@@ -1079,7 +1074,8 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
-            mEditor->selectedFramesChanged();
+            emit mEditor->selectedFramesChanged();
+            updateContent();
         }
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
@@ -1101,9 +1097,14 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
         }
     }
 
-    emit mouseMovedY(0);
-    mTimeLine->updateContent();
+    if (mType == TIMELINE_CELL_TYPE::Layers && event->button() == Qt::LeftButton)
+    {
+        emit mouseMovedY(0);
+    }
 
+    primaryButton = Qt::NoButton;
+    mEndY = mStartY;
+    mTimeLine->scrubbing = false;
     mMovingFrames = false;
 }
 
@@ -1195,32 +1196,36 @@ void TimeLineCells::editLayerName(Layer* layer) const
 void TimeLineCells::hScrollChange(int x)
 {
     mFrameOffset = x;
-    update();
+    updateContent();
 }
 
 void TimeLineCells::vScrollChange(int x)
 {
     mLayerOffset = x;
-    update();
+    updateContent();
 }
 
 void TimeLineCells::setMouseMoveY(int x)
 {
     mMouseMoveY = x;
-    if (x == 0)
-    {
-        update();
-    }
+    updateContent();
 }
 
-void TimeLineCells::trackScrubber()
+bool TimeLineCells::trackScrubber()
 {
+    if (mType != TIMELINE_CELL_TYPE::Tracks ||
+        (mPrevFrame == mEditor->currentFrame() && !mEditor->playback()->isPlaying()))
+    {
+        return false;
+    }
+    mPrevFrame = mEditor->currentFrame();
+
     if (mEditor->currentFrame() <= mFrameOffset)
     {
         // Move the timeline back if the scrubber is offscreen to the left
         mFrameOffset = mEditor->currentFrame() - 1;
         emit offsetChanged(mFrameOffset);
-        mTimeLine->updateContent();
+        return true;
     }
     else if (width() < (mEditor->currentFrame() - mFrameOffset + 1) * mFrameSize)
     {
@@ -1230,8 +1235,9 @@ void TimeLineCells::trackScrubber()
         else
             mFrameOffset = mEditor->currentFrame() - width() / mFrameSize;
         emit offsetChanged(mFrameOffset);
-        mTimeLine->updateContent();
+        return true;
     }
+    return false;
 }
 
 void TimeLineCells::onDidLeaveWidget()

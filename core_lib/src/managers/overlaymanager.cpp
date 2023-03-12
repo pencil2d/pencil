@@ -18,14 +18,16 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "overlaymanager.h"
 
+#include <QTransform>
+
 OverlayManager::OverlayManager(Editor *editor): BaseManager(editor, __FUNCTION__)
 {
     mEditor = editor;
 
-    setSinglePerspectivePoint(QPointF(0.1, 0.1));
-    setLeftPerspectivePoint(QPointF(-300.0, 0.0));
-    setRightPerspectivePoint(QPointF(300.0, 0.0));
-    setMiddlePerspectivePoint(QPointF(0.0, 200.0));
+    mSinglePerspectivePoint = QPointF(0.1, 0.1);
+    mLeftPerspectivePoint = QPointF(-300.0, 0.0);
+    mRightPerspectivePoint = QPointF(300.0, 0.0);
+    mMiddlePerspectivePoint = QPointF(0.0, 200.0);
 }
 
 OverlayManager::~OverlayManager()
@@ -51,24 +53,42 @@ void OverlayManager::workingLayerChanged(Layer *)
 {
 }
 
+void OverlayManager::settingsUpdated(SETTING setting, bool state)
+{
+    switch (setting) {
+        case SETTING::OVERLAY_PERSPECTIVE1:
+            mSinglePerspectiveEnabled = state;
+            break;
+        case SETTING::OVERLAY_PERSPECTIVE2:
+            mTwoPointPerspectiveEnabled = state;
+            break;
+        case SETTING::OVERLAY_PERSPECTIVE3:
+            mThreePointPerspectiveEnabled = state;
+            break;
+        default:
+            // We intentiallly leave everything else out as only overlay settings are important
+            break;
+    }
+}
+
 MoveMode OverlayManager::getMoveModeForPoint(const QPointF& pos, const QTransform& transform)
 {
     const double calculatedSelectionTol = selectionTolerance();
     MoveMode mode = MoveMode::NONE;
 
-    if (QLineF(pos, transform.inverted().map(mSinglePerspectivePoint)).length() < calculatedSelectionTol)
+    if (mSinglePerspectiveEnabled && QLineF(pos, transform.inverted().map(mSinglePerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_SINGLE;
     }
-    else if (QLineF(pos, transform.inverted().map(mLeftPerspectivePoint)).length() < calculatedSelectionTol)
+    else if (mTwoPointPerspectiveEnabled && QLineF(pos, transform.inverted().map(mLeftPerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_LEFT;
     }
-    else if (QLineF(pos, transform.inverted().map(mRightPerspectivePoint)).length() < calculatedSelectionTol)
+    else if (mTwoPointPerspectiveEnabled && QLineF(pos, transform.inverted().map(mRightPerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_RIGHT;
     }
-    else if (QLineF(pos, transform.inverted().map(mMiddlePerspectivePoint)).length() < calculatedSelectionTol)
+    else if (mThreePointPerspectiveEnabled && QLineF(pos, transform.inverted().map(mMiddlePerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_MIDDLE;
     }
@@ -102,35 +122,20 @@ void OverlayManager::updatePerspective(const QPointF& point)
 {
     switch (mMoveMode) {
     case MoveMode::PERSP_SINGLE:
-        setSinglePerspectivePoint(point);
+        mSinglePerspectivePoint = point;
         break;
     case MoveMode::PERSP_LEFT:
-        setLeftPerspectivePoint(point);
-        setRightPerspectivePoint(QPointF(getRightPerspectivePoint().x(), point.y()));
+        mLeftPerspectivePoint = point;
+        mRightPerspectivePoint = QPointF(getRightPerspectivePoint().x(), point.y());
         break;
     case MoveMode::PERSP_RIGHT:
-        setRightPerspectivePoint(point);
-        setLeftPerspectivePoint(QPointF(getLeftPerspectivePoint().x(), point.y()));
+        mRightPerspectivePoint = point;
+        mLeftPerspectivePoint = QPointF(getLeftPerspectivePoint().x(), point.y());
         break;
     case MoveMode::PERSP_MIDDLE:
-        setMiddlePerspectivePoint(point);
+        mMiddlePerspectivePoint = point;
         break;
     default:
         break;
     }
-}
-
-void OverlayManager::setOnePointPerspectiveEnabled(bool b)
-{
-    mOverlayPerspective1 = b;
-}
-
-void OverlayManager::setTwoPointPerspectiveEnabled(bool b)
-{
-    mOverlayPerspective2 = b;
-}
-
-void OverlayManager::setThreePointPerspectiveEnabled(bool b)
-{
-    mOverlayPerspective3 = b;
 }

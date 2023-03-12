@@ -55,7 +55,6 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
-#include "layeropacitydialog.h"
 #include "errordialog.h"
 
 
@@ -703,10 +702,9 @@ void ActionCommands::duplicateLayer()
     int currFrame = mEditor->currentFrame();
 
     Layer* toLayer = layerMgr->createLayer(fromLayer->type(), tr("%1 (copy)", "Default duplicate layer name").arg(fromLayer->name()));
-    toLayer->removeKeyFrame(1);
     fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
         key = key->clone();
-        toLayer->addKeyFrame(key->pos(), key);
+        toLayer->addOrReplaceKeyFrame(key->pos(), key);
         if (toLayer->type() == Layer::SOUND)
         {
             mEditor->sound()->processSound(static_cast<SoundClip*>(key));
@@ -716,6 +714,9 @@ void ActionCommands::duplicateLayer()
             key->modification();
         }
     });
+    if (!fromLayer->keyExists(1)) {
+        toLayer->removeKeyFrame(1);
+    }
     mEditor->scrubTo(currFrame);
 }
 
@@ -742,6 +743,7 @@ void ActionCommands::duplicateKey()
 
     layer->addKeyFrame(nextEmptyFrame, dupKey);
     mEditor->scrubTo(nextEmptyFrame);
+    emit mEditor->frameModified(nextEmptyFrame);
 
     if (layer->type() == Layer::SOUND)
     {
