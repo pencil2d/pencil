@@ -129,7 +129,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/themes/playful/preferences/preferences-shortcuts-alt-1.svg</normaloff>:/icons/themes/playful/preferences/preferences-shortcuts-alt-1.svg</iconset>
+          <normaloff>:/icons/themes/playful/preferences/preferences-shortcuts.svg</normaloff>:/icons/themes/playful/preferences/preferences-shortcuts.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
