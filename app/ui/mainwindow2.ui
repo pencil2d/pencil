@@ -49,7 +49,7 @@
      <x>0</x>
      <y>0</y>
      <width>831</width>
-     <height>22</height>
+     <height>24</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">
@@ -491,7 +491,7 @@
   <action name="actionClearFrame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-clear.svg</normaloff>:/icons/themes/playful/menubar/menu-clear.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/clear-canvas.svg</normaloff>:/icons/themes/playful/menubar/clear-canvas.svg</iconset>
    </property>
    <property name="text">
     <string>Clear Frame</string>

@@ -109,6 +109,7 @@
         <file>icons/themes/playful/menubar/menu-redo.svg</file>
         <file>icons/themes/playful/menubar/menu-save.svg</file>
         <file>icons/themes/playful/menubar/menu-undo.svg</file>
+        <file>icons/themes/playful/menubar/clear-canvas.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
