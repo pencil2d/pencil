@@ -83,11 +83,7 @@ QCursor BucketTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        QPixmap pixmap(":icons/themes/playful/tools/bucket.svg");
-        QPainter painter(&pixmap);
-        painter.end();
-
-        return QCursor(pixmap, 4, 20);
+        return QCursor(QPixmap(":icons/general/cursor-bucket.svg"), -1, 17);
     }
     else
     {

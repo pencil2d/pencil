@@ -108,6 +108,13 @@
         <file>icons/themes/playful/menubar/menu-save.svg</file>
         <file>icons/themes/playful/menubar/menu-undo.svg</file>
         <file>icons/themes/playful/menubar/clear-canvas.svg</file>
+        <file>icons/general/cursor-bucket.svg</file>
+        <file>icons/general/cursor-eyedropper.svg</file>
+        <file>icons/general/cursor-smudge.svg</file>
+        <file>icons/general/cursor-pen.svg</file>
+        <file>icons/general/cursor-brush.svg</file>
+        <file>icons/general/cursor-pencil.svg</file>
+        <file>icons/general/cursor-smudge-liquify.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>

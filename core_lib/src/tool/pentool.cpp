@@ -111,7 +111,7 @@ QCursor PenTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/themes/playful/tools/pen.svg"), 2, 20);
+        return QCursor(QPixmap(":icons/general/cursor-pen.svg"), 5, 14);
     }
     return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
 }

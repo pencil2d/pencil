@@ -134,7 +134,7 @@ QCursor BrushTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        return QCursor(QPixmap(":icons/themes/playful/tools/brush.svg"), 0, 13);
+        return QCursor(QPixmap(":icons/general/cursor-brush.svg"), 4, 14);
     }
     return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
 }
