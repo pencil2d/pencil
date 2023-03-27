@@ -928,25 +928,28 @@ Status Editor::importBitmapImage(const QString& filePath, int space)
     QImage img(reader.size(), QImage::Format_ARGB32_Premultiplied);
     if (img.isNull())
     {
-        dd << QString("QImageReader format: %1").arg(img.format());
+        QString format = reader.format();
+        if (!format.isEmpty())
+        {
+            dd << QString("QImageReader format: %1").arg(format);
+        }
         dd << QString("QImageReader ImageReaderError type: %1").arg(reader.errorString());
 
         QString errorDesc;
         switch(reader.error())
         {
-            case QImageReader::ImageReaderError::UnknownError:
-                errorDesc = QString("We ran into an error while reading this image. Please check if it is valid and try again.");
-                break;
-
-            case QImageReader::ImageReaderError::FileNotFoundError:
-                errorDesc = QString("File not found at path \"%1\". Please check if image is present and try again.").arg(filePath);
-                break;
-
-            default:
-                errorDesc = QString("An ImageReaderError occurred.");
+        case QImageReader::ImageReaderError::FileNotFoundError:
+            errorDesc = tr("File not found at path \"%1\". Please check if image is present and try again.").arg(filePath);
+            break;
+        case QImageReader::UnsupportedFormatError:
+            errorDesc = tr("This image format is not supported. Please try converting it to one of the following formats and try again:\n%1")
+                        .arg((QString)reader.supportedImageFormats().join(", "));
+            break;
+        default:
+            errorDesc = tr("We ran into an error while reading this image. Please check if it is valid and try again.");
         }
 
-        status = Status(Status::FAIL, dd, "Couldn't import image", errorDesc);
+        status = Status(Status::FAIL, dd, tr("Couldn't import image"), errorDesc);
     }
 
     const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
@@ -1011,7 +1014,7 @@ Status Editor::importVectorImage(const QString& filePath)
         backup(tr("Import Image"));
     }
     else {
-        status = Status(Status::FAIL, dd, "Couldn't import image", "Cannot import image into vector layer. Please select a different layer and try again.");
+        status = Status(Status::FAIL, dd, tr("Couldn't import image"), tr("Cannot import image into vector layer. Please select a different layer and try again."));
     }
 
     return status;
@@ -1033,28 +1036,29 @@ Status Editor::importImage(const QString& filePath)
     }
     switch (layer->type())
     {
-        case Layer::BITMAP:
-            return importBitmapImage(filePath);
+    case Layer::BITMAP:
+        return importBitmapImage(filePath);
 
-        case Layer::VECTOR:
-            return importVectorImage(filePath);
+    case Layer::VECTOR:
+        return importVectorImage(filePath);
 
-        default:
-        {
-            dd << QString("Current layer: %1").arg(layer->type());
-            return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, "Couldn't import image.", "Invalid layer type.");
-        }
+    default:
+        dd << QString("Current layer: %1").arg(layer->type());
+        return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, tr("Couldn't import image."), tr("Invalid layer type. You can only import images to a bitmap layer."));
     }
 }
 
-bool Editor::importGIF(const QString& filePath, int numOfImages)
+Status Editor::importGIF(const QString& filePath, int numOfImages)
 {
     Layer* layer = layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP)
+    if (layer->type() != Layer::BITMAP)
     {
-        return importBitmapImage(filePath, numOfImages).ok();
+        DebugDetails dd;
+        dd << QString("Raw file path: %1").arg(filePath);
+        dd << QString("Current layer: %1").arg(layer->type());
+        return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, tr("Couldn't import image."), tr("Invalid layer type. You can only import images to a bitmap layer."));
     }
-    return false;
+    return importBitmapImage(filePath, numOfImages);
 }
 
 void Editor::selectAll() const

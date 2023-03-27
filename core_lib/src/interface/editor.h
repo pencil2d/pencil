@@ -168,7 +168,7 @@ public: //slots
     void clearCurrentFrame();
 
     Status importImage(const QString& filePath);
-    bool importGIF(const QString& filePath, int numOfImages = 0);
+    Status importGIF(const QString& filePath, int numOfImages = 0);
     void restoreKey();
 
     void scrubNextKeyFrame();
