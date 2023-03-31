@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "app_util.h"
 
 #include "editor.h"
+#include "errordialog.h"
 #include "predefinedsetmodel.h"
 #include "layermanager.h"
 #include "viewmanager.h"
@@ -178,52 +179,31 @@ void ImportImageSeqDialog::importArbitrarySequence()
     int imagesImportedSoFar = 0;
     progress.setMaximum(totalImagesToImport);
 
-    QString failedFiles;
-    bool failedImport = false;
     for (const QString& strImgFile : files)
     {
         QString strImgFileLower = strImgFile.toLower();
 
-        if (strImgFileLower.endsWith(".png") ||
-            strImgFileLower.endsWith(".jpg") ||
-            strImgFileLower.endsWith(".jpeg") ||
-            strImgFileLower.endsWith(".bmp") ||
-            strImgFileLower.endsWith(".tif") ||
-            strImgFileLower.endsWith(".tiff"))
+        Status st = mEditor->importImage(strImgFile);
+        if (!st.ok())
         {
-            mEditor->importImage(strImgFile);
-
-            imagesImportedSoFar++;
-            progress.setValue(imagesImportedSoFar);
-            QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-
-            if (progress.wasCanceled())
-            {
-                break;
-            }
+            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+            errorDialog.exec();
+            break;
         }
-        else
+
+        imagesImportedSoFar++;
+        progress.setValue(imagesImportedSoFar);
+        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
+
+        if (progress.wasCanceled())
         {
-            failedFiles += strImgFile + "\n";
-            if (!failedImport)
-            {
-                failedImport = true;
-            }
+            break;
         }
 
         for (int i = 1; i < number; i++)
         {
             mEditor->scrubForward();
         }
-    }
-
-    if (failedImport)
-    {
-        QMessageBox::warning(mParent,
-                             tr("Warning"),
-                             tr("Unable to import") + failedFiles,
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
     }
 
 
@@ -324,7 +304,13 @@ void ImportImageSeqDialog::importPredefinedSet()
         const QString& filePath = keySet.filePathAt(i);
 
         mEditor->scrubTo(frameIndex);
-        bool ok = mEditor->importImage(filePath).ok();
+        Status st = mEditor->importImage(filePath);
+        if (!st.ok())
+        {
+            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+            errorDialog.exec();
+            break;
+        }
         imagesImportedSoFar++;
 
         progress.setValue(imagesImportedSoFar);
@@ -334,8 +320,6 @@ void ImportImageSeqDialog::importPredefinedSet()
         {
             break;
         }
-
-        if (!ok) { return;}
     }
 
     emit notifyAnimationLengthChanged();
