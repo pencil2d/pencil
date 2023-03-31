@@ -191,7 +191,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     QString filterComplex, amergeInput, panChannelLayout;
     QStringList args;
 
-    int wholeLen = qCeil((endFrame - startFrame) * 44100.0 / fps);
+    int wholeLen = qCeil(endFrame * 44100.0 / fps);
     for (auto clip : allSoundClips)
     {
         if (mCanceled)
