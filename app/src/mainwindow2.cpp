@@ -978,7 +978,7 @@ void MainWindow2::importGIF()
     QString strImgFileLower = gifDialog->getFilePath();
     if (!strImgFileLower.toLower().endsWith(".gif"))
     {
-        ErrorDialog errorDialog(tr("Couldn't import image."), tr("Invalid image type. You can only use import files ending with .gif as Animated GIFs."));
+        ErrorDialog errorDialog(tr("Import failed"), tr("You can only import files ending with .gif."));
         errorDialog.exec();
     }
     else

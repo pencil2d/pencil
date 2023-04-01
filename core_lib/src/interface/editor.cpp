@@ -949,7 +949,7 @@ Status Editor::importBitmapImage(const QString& filePath, int space)
             errorDesc = tr("We ran into an error while reading this image. Please check if it is valid and try again.");
         }
 
-        status = Status(Status::FAIL, dd, tr("Couldn't import image"), errorDesc);
+        status = Status(Status::FAIL, dd, tr("Import failed"), errorDesc);
     }
 
     const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
@@ -1014,7 +1014,7 @@ Status Editor::importVectorImage(const QString& filePath)
         backup(tr("Import Image"));
     }
     else {
-        status = Status(Status::FAIL, dd, tr("Couldn't import image"), tr("Cannot import image into vector layer. Please select a different layer and try again."));
+        status = Status(Status::FAIL, dd, tr("Import failed"), tr("You cannot import images into a vector layer."));
     }
 
     return status;
@@ -1044,7 +1044,7 @@ Status Editor::importImage(const QString& filePath)
 
     default:
         dd << QString("Current layer: %1").arg(layer->type());
-        return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, tr("Couldn't import image."), tr("Invalid layer type. You can only import images to a bitmap layer."));
+        return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, tr("Import failed"), tr("You can only import images to a bitmap layer."));
     }
 }
 
@@ -1056,7 +1056,7 @@ Status Editor::importGIF(const QString& filePath, int numOfImages)
         DebugDetails dd;
         dd << QString("Raw file path: %1").arg(filePath);
         dd << QString("Current layer: %1").arg(layer->type());
-        return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, tr("Couldn't import image."), tr("Invalid layer type. You can only import images to a bitmap layer."));
+        return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, tr("Import failed"), tr("You can only import images to a bitmap layer."));
     }
     return importBitmapImage(filePath, numOfImages);
 }
