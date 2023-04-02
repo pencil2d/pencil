@@ -74,8 +74,8 @@ void OnionSkinWidget::makeConnections()
     connect(ui->onionPrevFramesNumBox, spinBoxChanged, this, &OnionSkinWidget::onionPrevFramesNumChange);
     connect(ui->onionNextFramesNumBox, spinBoxChanged, this, &OnionSkinWidget::onionNextFramesNumChange);
 
-    connect(ui->onionPrevButton, &QToolButton::clicked, this, &OnionSkinWidget::onionPrevButtonClicked);
-    connect(ui->onionNextButton, &QToolButton::clicked, this, &OnionSkinWidget::onionNextButtonClicked);
+    connect(ui->prevFramesGroup, &QGroupBox::clicked, this, &OnionSkinWidget::prevFramesGroupClicked);
+    connect(ui->nextFramesGroup, &QGroupBox::clicked, this, &OnionSkinWidget::nextFramesGroupClicked);
     connect(ui->onionBlueButton, &QToolButton::clicked, this, &OnionSkinWidget::onionBlueButtonClicked);
     connect(ui->onionRedButton, &QToolButton::clicked, this, &OnionSkinWidget::onionRedButtonClicked);
 
@@ -91,17 +91,11 @@ void OnionSkinWidget::updateUI()
 {
     PreferenceManager* prefs = editor()->preference();
 
-    QSignalBlocker b1(ui->onionPrevButton);
-    ui->onionPrevButton->setChecked(prefs->isOn(SETTING::PREV_ONION));
-
-    QSignalBlocker b2(ui->onionNextButton);
-    ui->onionNextButton->setChecked(prefs->isOn(SETTING::NEXT_ONION));
+    ui->prevFramesGroup->setChecked(prefs->isOn(SETTING::PREV_ONION));
+    ui->nextFramesGroup->setChecked(prefs->isOn(SETTING::NEXT_ONION));
 
     QSignalBlocker b3(ui->onionBlueButton);
     ui->onionBlueButton->setChecked(prefs->isOn(SETTING::ONION_BLUE));
-
-    ui->onionRedButton->setEnabled(ui->onionPrevButton->isChecked());
-    ui->onionBlueButton->setEnabled(ui->onionNextButton->isChecked());
 
     QSignalBlocker b4(ui->onionRedButton);
     ui->onionRedButton->setChecked(prefs->isOn(SETTING::ONION_RED));
@@ -119,13 +113,13 @@ void OnionSkinWidget::updateUI()
 
 }
 
-void OnionSkinWidget::onionPrevButtonClicked(bool isOn)
+void OnionSkinWidget::prevFramesGroupClicked(bool isOn)
 {
     PreferenceManager* prefs = editor()->preference();
     prefs->set(SETTING::PREV_ONION, isOn);
 }
 
-void OnionSkinWidget::onionNextButtonClicked(bool isOn)
+void OnionSkinWidget::nextFramesGroupClicked(bool isOn)
 {
     PreferenceManager* prefs = editor()->preference();
     prefs->set(SETTING::NEXT_ONION, isOn);
