@@ -118,7 +118,6 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(getCurrentPoint()).toPoint();
         mEditor->overlays()->updatePerspective(mapped);
     }
-    mOffset = getCurrentPoint();
 
     mEditor->updateCurrentFrame();
 }
@@ -130,7 +129,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
-        transformSelection(event->modifiers(), mCurrentLayer);
+        transformSelection(event->modifiers());
 
         if (mEditor->overlays()->anyOverlayEnabled())
         {
@@ -140,7 +139,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         }
         if (mEditor->select()->somethingSelected())
         {
-            transformSelection(event->modifiers(), mCurrentLayer);
+            transformSelection(event->modifiers());
         }
     }
     else
@@ -170,20 +169,15 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
     if (!selectMan->somethingSelected())
         return;
 
-    mOffset = getCurrentPoint();
-
     mScribbleArea->updateToolCursor();
     mEditor->frameModified(mEditor->currentFrame());
 }
 
-void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
+void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod)
 {
     auto selectMan = mEditor->select();
     if (selectMan->somethingSelected())
     {
-
-        QPointF offset = offsetFromPressPos();
-
         int rotationIncrement = 0;
         if (selectMan->getMoveMode() == MoveMode::ROTATION && keyMod & Qt::ShiftModifier)
         {
@@ -193,11 +187,6 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
         selectMan->maintainAspectRatio(keyMod == Qt::ShiftModifier);
         selectMan->alignPositionToAxis(keyMod == Qt::ShiftModifier);
 
-        if(layer->type() == Layer::BITMAP)
-        {
-            offset = offset.toPoint();
-        }
-
         qreal newAngle = 0;
         if (selectMan->getMoveMode() == MoveMode::ROTATION) {
             QPointF anchorPoint = selectMan->currentTransformAnchor();
@@ -206,8 +195,6 @@ void MoveTool::transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer)
         }
 
         selectMan->adjustSelection(getCurrentPoint(), mOffset, newAngle, rotationIncrement);
-
-        mOffset = getCurrentPoint();
     }
     else // there is nothing selected
     {
@@ -247,7 +234,9 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     }
 
     selectMan->setTransformAnchor(selectMan->getSelectionAnchorPoint());
-    selectMan->setAlignToPosition(selectMan->selectionTransform().map(selectMan->getSelectionAnchorPoint()));
+    selectMan->setAlignToPosition(getCurrentPressPoint());
+    mOffset = selectMan->myTranslation();
+
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
         mRotatedAngle = selectMan->angleFromPoint(getCurrentPoint(), selectMan->currentTransformAnchor()) - mPreviousAngle;
     }
@@ -316,11 +305,6 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     selectMan->setCurves(pVecImg->getCurvesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
 }
 
-void MoveTool::setAnchorToLastPoint()
-{
-    anchorOriginPoint = getLastPoint();
-}
-
 void MoveTool::cancelChanges()
 {
     mScribbleArea->cancelTransformedSelection();
@@ -376,12 +360,6 @@ Layer* MoveTool::currentPaintableLayer()
         return nullptr;
     return layer;
 }
-
-QPointF MoveTool::offsetFromPressPos()
-{
-    return getCurrentPoint() - getCurrentPressPoint();
-}
-
 
 QCursor MoveTool::cursor(MoveMode mode) const
 {
