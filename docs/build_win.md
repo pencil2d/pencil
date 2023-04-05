@@ -21,7 +21,7 @@ Pencil2D is built upon Qt, you need to install it before you can compile the pro
 
 ### Official Qt Installer (Recommended)
 
-- Download the Qt Online Installer from [Qt Downloads](https://www.qt.io/download-qt-installer)
+- Download the <b>%Qt Online Installer</b> from [%Qt Downloads](https://www.qt.io/download-qt-installer-oss)
 - Open up the installer, click next.
 - You have to create a free Qt account if you don't have one. Don't worry, it won't cost you a penny.
 - In the next step, choose the Qt version that matches your C++ compiler.
