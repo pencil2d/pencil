@@ -868,14 +868,11 @@ void MainWindow2::importImage()
         return;
     }
 
-    bool ok = mEditor->importImage(strFilePath);
-    if (!ok)
+    Status st = mEditor->importImage(strFilePath);
+    if (!st.ok())
     {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps."),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+        errorDialog.exec();
         return;
     }
 
@@ -979,29 +976,27 @@ void MainWindow2::importGIF()
     progress.show();
 
     QString strImgFileLower = gifDialog->getFilePath();
-    bool importOK = strImgFileLower.toLower().endsWith(".gif");
-
-    if (importOK)
+    if (!strImgFileLower.toLower().endsWith(".gif"))
     {
-        bool ok = mEditor->importGIF(strImgFileLower, space);
-        if (!ok)
-            importOK = false;
+        ErrorDialog errorDialog(tr("Import failed"), tr("You can only import files ending with .gif."));
+        errorDialog.exec();
+    }
+    else
+    {
+        Status st = mEditor->importGIF(strImgFileLower, space);
 
         progress.setValue(50);
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-    }
 
-    if (!importOK)
-    {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("was unable to import %1").arg(strImgFileLower),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
+        progress.setValue(100);
+        progress.close();
 
-    progress.setValue(100);
-    progress.close();
+        if (!st.ok())
+        {
+            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+            errorDialog.exec();
+        }
+    }
 
     mSuppressAutoSaveDialog = false;
 }
