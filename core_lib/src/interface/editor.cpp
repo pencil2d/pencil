@@ -939,14 +939,14 @@ Status Editor::importBitmapImage(const QString& filePath, int space)
         switch(reader.error())
         {
         case QImageReader::ImageReaderError::FileNotFoundError:
-            errorDesc = tr("File not found at path \"%1\". Please check if image is present and try again.").arg(filePath);
+            errorDesc = tr("File not found at path \"%1\". Please check the image is present at the specified location and try again.").arg(filePath);
             break;
         case QImageReader::UnsupportedFormatError:
-            errorDesc = tr("This image format is not supported. Please try converting it to one of the following formats and try again:\n%1")
+            errorDesc = tr("Image format is not supported. Please convert the image file to one of the following formats and try again:\n%1")
                         .arg((QString)reader.supportedImageFormats().join(", "));
             break;
         default:
-            errorDesc = tr("We ran into an error while reading this image. Please check if it is valid and try again.");
+            errorDesc = tr("An error has occurred while reading the image. Please check that the file is a valid image and try again.");
         }
 
         status = Status(Status::FAIL, dd, tr("Import failed"), errorDesc);
