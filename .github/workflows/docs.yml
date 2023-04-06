@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update -yq
-        sudo apt-get install -yq --no-install-suggests --no-install-recommends graphviz
+        sudo apt-get install -yq --no-install-suggests --no-install-recommends graphviz xsltproc
         curl -fsSLO https://www.doxygen.nl/files/doxygen-1.9.6.linux.bin.tar.gz
         tar xf doxygen-1.9.6.linux.bin.tar.gz
         realpath doxygen-1.9.6/bin >> "${GITHUB_PATH}"
@@ -45,6 +45,7 @@ jobs:
           echo "::error::Documentation output was not found"
           exit 1
         fi
+        xsltproc --novalid -o docs/html/404.html util/docs/404.xsl docs/html/index.html
 
     - name: Remove old documentation
       run: |
