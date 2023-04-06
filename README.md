@@ -48,7 +48,7 @@ Nightly builds are the bleeding edge versions of Pencil2D, which contains the mo
 ## Contributing
 
 * [Issue Tracker](https://github.com/pencil2d/pencil/issues) - Report bugs or request features.
-* [Developer Guide](https://github.com/pencil2d/pencil/wiki) - Learn how to compile Pencil2D yourself.
+* [Developer Guide](https://dev.pencil2d.org/) - Learn how to compile Pencil2D yourself.
 * [Transifex](https://www.transifex.com/pencil2d/) - You can help translate Pencil2D, too.
 
 ## Source Code
