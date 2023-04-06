@@ -8,26 +8,24 @@ jobs:
     name: GitHub Pages
     if: github.repository_owner == 'pencil2d'
     runs-on: ubuntu-latest
-    container: ubuntu:14.04
 
     steps:
-    - name: Install dependencies
-      # GitHub runners come with git pre-installed, but our "custom" Linux
-      # container image does not
-      run: |
-        sudo apt-get -yq install software-properties-common
-        sudo apt-add-repository -y ppa:git-core/ppa
-        sudo apt-get update -yq
-        sudo apt-get install -yq --no-install-suggests --no-install-recommends curl git doxygen graphviz
-
     - name: Check out Pencil2D source code
       uses: actions/checkout@v2
-    - name: Check the documentation repository
+    - name: Check out the documentation repository
       uses: actions/checkout@v2
       with:
         repository: pencil2d/pencil-docs
         token: ${{secrets.docs_repo_token}}
         path: gh-pages
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update -yq
+        sudo apt-get install -yq --no-install-suggests --no-install-recommends graphviz
+        curl -fsSLO https://www.doxygen.nl/files/doxygen-1.9.6.linux.bin.tar.gz
+        tar xf doxygen-1.9.6.linux.bin.tar.gz
+        realpath doxygen-1.9.6/bin >> "${GITHUB_PATH}"
 
     - name: Retrieve Qt tagfiles
       working-directory: util/docs
@@ -40,6 +38,7 @@ jobs:
       run: |
         echo PROJECT_NUMBER=${{github.sha}} >> Doxyfile
         echo HTML_HEADER=util/docs/header.html >> Doxyfile
+        echo HTML_FOOTER=util/docs/footer.html >> Doxyfile
         echo HTML_EXTRA_STYLESHEET=util/docs/extra.css >> Doxyfile
         doxygen 2>&1 | tee doxygen.log
         if [ ! -f "docs/html/index.html" ]; then

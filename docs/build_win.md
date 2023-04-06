@@ -38,7 +38,7 @@ Pencil2D is built upon Qt, you need to install it before you can compile the pro
 
 Now it's time to build the application.
 
-### With %Qt Creator (recommended)
+### With Qt Creator (recommended)
 
 - Open up the %Qt Creator.
 - From the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root source folder and open `pencil2d.pro`. 

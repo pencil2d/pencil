@@ -32,9 +32,9 @@ If you prefer to install Xcode by command-line, run the following command in Ter
 
 A dialog should pop up asking if you want to install the command line developer tools. Click *Install* and wait for the installation to complete.
 
-## 2. %Qt SDK
+## 2. Qt SDK
 
-### Official %Qt Installer (Recommended)
+### Official Qt Installer (Recommended)
 
 - Download the <b>%Qt Online Installer for OS X</b> from [%Qt Downloads](https://www.qt.io/download-qt-installer-oss)
 - Opening the file will mount the disk image, and will result in a Finder window appearing with a single file.
@@ -66,7 +66,7 @@ And also run the following commands to install %Qt Creator:
 
 Now it's time to build the application.
 
-### With %Qt Creator (recommended)
+### With Qt Creator (recommended)
 
 - Open up the %Qt Creator application.
 - From the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root source folder and open the `pencil2d.pro` file. 

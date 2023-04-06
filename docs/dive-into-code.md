@@ -3,6 +3,8 @@ Navigating the source code {#code_overview}
 
 This is an overview of Pencil2D code base.
 
+[TOC]
+
 # Projects
 
 The pencil2d project is organized into 3 sub-projects:
@@ -79,7 +81,7 @@ As of writing this the editor holds a property for
 + ToolManager
 + LayerManager
 + PlaybackManager
-+ Viewmanager
++ ViewManager
 + PreferenceManager
 + SoundManager
 

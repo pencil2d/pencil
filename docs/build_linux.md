@@ -9,7 +9,7 @@ This tutorial was made with Ubuntu Xenial Xerus (16.04) and Arch Linux in mind, 
 
 There are a few things that must be installed in order to build Pencil2D. In this section, we will go over the installation of each of these components in detail. For Ubuntu we describe both graphical and command-line methods of installation, choose whichever one you feel more comfortable with (and if you don't know the difference, choose graphical). For Arch Linux we describe only the command-line method since that is what most Arch users are used to.
 
-### Installing %Qt
+### Installing Qt
 
 Pencil2D relies on the %Qt application framework so you must install it before you can successfully build the program.
 
@@ -81,7 +81,7 @@ On most Arch systems, these are installed early on, but if your system does not 
 
 Now it's time to build the application.
 
-### With %Qt Creator (recommended)
+### With Qt Creator (recommended)
 
 - Launch %Qt Creator, and from the menu bar select **File** and then **Open File or Project**. Navigate to Pencil2D's root folder and open the *pencil2d.pro* file.
 - Next, you'll be asked to configure your kits for the project. Kits determine compilers, target environment, and various build settings among other things. The Desktop option should be the only one checked. Click Configure Project to complete the kit selection.
