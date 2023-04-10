@@ -234,7 +234,7 @@ void MoveTool::beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer)
     }
 
     selectMan->setTransformAnchor(selectMan->getSelectionAnchorPoint());
-    selectMan->setAlignToPosition(getCurrentPressPoint());
+    selectMan->setDragOrigin(getCurrentPressPoint());
     mOffset = selectMan->myTranslation();
 
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {

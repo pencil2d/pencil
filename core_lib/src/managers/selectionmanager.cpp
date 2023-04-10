@@ -150,7 +150,7 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPoint
     switch (mMoveMode)
     {
     case MoveMode::MIDDLE: {
-        QPointF newOffset = currentPoint - mAlignToAxisStartPosition;
+        QPointF newOffset = currentPoint - mDragOrigin;
 
         if (mLockAxis) {
             mTranslation = offset + alignPositionToAxis(newOffset);
