@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "bitmapimage.h"
 #include "layercamera.h"
+#include "tiledbuffer.h"
 #include "vectorimage.h"
 
 #include "painterutils.h"
@@ -162,7 +163,7 @@ void CanvasPainter::renderPostLayers(QPainter& painter, const QRect& blitRect)
     }
 }
 
-void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer)
+void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer, TiledBuffer* tiledBuffer)
 {
     Q_UNUSED(rect)
     Q_ASSERT(object);
@@ -172,6 +173,7 @@ void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int
     mCurrentLayerIndex = currentLayer;
     mFrameNumber = frame;
     mBuffer = buffer;
+    mTiledBuffer = tiledBuffer;
 }
 
 void CanvasPainter::paint(const QRect& blitRect)
@@ -282,9 +284,17 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
         currentBitmapPainter.setWorldMatrixEnabled(true);
         currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
 
-        // paint the buffer which hasn't been applied to a bitmapImage yet
-        currentBitmapPainter.setCompositionMode(mOptions.cmBufferBlendMode);
-        currentBitmapPainter.drawImage(mBuffer->topLeft(), *mBuffer->image());
+//        // paint the buffer which hasn't been applied to a bitmapImage yet
+//        currentBitmapPainter.setCompositionMode(mOptions.cmBufferBlendMode);
+//        currentBitmapPainter.drawImage(mBuffer->topLeft(), *mBuffer->image());
+
+        const auto tiles = mTiledBuffer->tiles();
+        for (const Tile* tile : tiles) {
+            QPixmap pixTest = QPixmap(64,64);
+//            pixTest.fill(Qt::green);
+            currentBitmapPainter.drawPixmap(tile->pos(), tile->pixmap());
+//            currentBitmapPainter.drawPixmap(tile->pos(), pixTest);
+        }
 
         painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
     }

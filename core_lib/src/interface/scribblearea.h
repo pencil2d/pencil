@@ -39,6 +39,7 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "selectionpainter.h"
 #include "camerapainter.h"
+#include "tiledbuffer.h"
 
 class Layer;
 class Editor;
@@ -131,6 +132,8 @@ public:
     void setModified(int layerNumber, int frameNumber);
     void setModified(const Layer* layer, int frameNumber);
 
+    void endStroke();
+
     void flipSelection(bool flipVertical);
 
     BaseTool* currentTool() const;
@@ -164,6 +167,7 @@ public slots:
     void paletteColorChanged(QColor);
 
     void showLayerNotVisibleWarning();
+    void updateTile(TiledBuffer* tiledBuffer, Tile* tile);
 
 protected:
     bool event(QEvent *event) override;
@@ -189,9 +193,10 @@ public:
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
-    void paintBitmapBufferRect(const QRect& rect);
+//    void paintBitmapBufferRect(const QRect& rect);
     void paintCanvasCursor(QPainter& painter);
     void clearBitmapBuffer();
+    void clearDrawingBuffer();
     void refreshBitmap(const QRectF& rect, int rad);
     void refreshVector(const QRectF& rect, int rad);
     void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
@@ -207,6 +212,7 @@ public:
     void handleDrawingOnEmptyFrame();
 
     BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
+    TiledBuffer mTiledBuffer;
 
     QPixmap mCursorImg;
     QPixmap mTransCursImg;

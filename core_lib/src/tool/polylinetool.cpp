@@ -125,6 +125,7 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
     {
         if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
+            mEditor->backup(typeName());
             mScribbleArea->handleDrawingOnEmptyFrame();
 
             if (layer->type() == Layer::VECTOR)
@@ -136,9 +137,12 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
                 {
                     mScribbleArea->toggleThinLines();
                 }
+            } else if (layer->type() == Layer::BITMAP) {
+                mScribbleArea->paintBitmapBuffer();
             }
             mPoints << getCurrentPoint();
             emit isActiveChanged(POLYLINE, true);
+
         }
     }
 }
@@ -159,8 +163,6 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
 {
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
-
-    mEditor->backup(typeName());
 
     endPolyline(mPoints);
     clearToolData();
@@ -245,7 +247,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 void PolylineTool::cancelPolyline()
 {
     // Clear the in-progress polyline from the bitmap buffer.
-    mScribbleArea->clearBitmapBuffer();
+    mScribbleArea->clearDrawingBuffer();
     mScribbleArea->updateCurrentFrame();
 }
 
@@ -276,11 +278,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     if (layer->type() == Layer::BITMAP)
     {
         drawPolyline(points, points.last());
-        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-        if (bitmapImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
-        bitmapImage->paste(mScribbleArea->mBufferImg);
     }
-
-    mScribbleArea->clearBitmapBuffer();
+    mScribbleArea->endStroke();
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

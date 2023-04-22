@@ -49,3 +49,20 @@ void BlitRect::extend(const QPoint p)
         if (bottom() < p.y()) { setBottom(p.y()); }
     }
 }
+
+void BlitRect::extend(const QPoint& p, const QSize& size)
+{
+    if (mInitialized == false)
+    {
+        setBottomLeft(p);
+        setTopRight(p);
+        mInitialized = true;
+    }
+    else
+    {
+        if (left() > p.x()) { setLeft(p.x()); }
+        if (top() > p.y()) { setTop(p.y()); }
+        if (right() - size.width() < p.x()) { setRight(p.x() + size.width()); }
+        if (bottom() - size.height() < p.y()) { setBottom(p.y() + size.height()); }
+    }
+}
