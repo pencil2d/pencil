@@ -129,6 +129,8 @@ void BucketOptionsWidget::updatePropertyVisibility()
 
         ui->fillToLayerComboBox->show();
         ui->fillToDescLabel->show();
+        ui->referenceLayerComboBox->show();
+        ui->referenceLayerDescLabel->show();
         ui->colorToleranceCheckbox->show();
         ui->colorToleranceSlider->show();
         ui->colorToleranceSpinbox->show();
