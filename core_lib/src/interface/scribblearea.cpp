@@ -1077,7 +1077,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         prepCameraPainter(currentFrame);
         prepOverlays(currentFrame);
 
-        mCanvasPainter.paintCached();
+        mCanvasPainter.paintCached(event->rect());
         mCameraPainter.paintCached();
     }
 
@@ -1307,7 +1307,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     prepCanvas(frame, rect);
     prepCameraPainter(frame);
     prepOverlays(frame);
-    mCanvasPainter.paint();
+    mCanvasPainter.paint(rect);
     mCameraPainter.paint();
 }
 
