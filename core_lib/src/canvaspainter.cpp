@@ -38,7 +38,6 @@ CanvasPainter::~CanvasPainter()
 void CanvasPainter::setCanvas(QPixmap* canvas)
 {
     Q_ASSERT(canvas);
-    qDebug() << canvas->size();
     if (mCanvas == nullptr || mCanvasSize != canvas->size()) {
 
         mCanvas = canvas;

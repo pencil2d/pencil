@@ -80,6 +80,8 @@ public:
     void deleteSelectedPoints();
     void removeVertex(int curve, int vertex);
 
+    QRectF getBoundsOfTransformedCurves() const;
+
     bool isEmpty() const { return mCurves.isEmpty(); }
 
     void paste(VectorImage&);

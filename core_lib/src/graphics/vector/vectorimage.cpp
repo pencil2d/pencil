@@ -863,6 +863,21 @@ void VectorImage::setSelectionRect(QRectF rectangle)
     select(rectangle);
 }
 
+QRectF VectorImage::getBoundsOfTransformedCurves() const
+{
+    QRectF bounds;
+    for (int i = 0; i < mCurves.size(); i++)
+    {
+        BezierCurve curve;
+        if (mCurves.at(i).isPartlySelected())
+        {
+            curve = mCurves[i].transformed(mSelectionTransformation);
+            bounds |= curve.getBoundingRect();
+        }
+    }
+    return bounds;
+}
+
 /**
  * @brief VectorImage::calculateSelectionRect
  */

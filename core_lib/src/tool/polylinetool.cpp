@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "scribblearea.h"
 
-#include "strokemanager.h"
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
@@ -278,7 +277,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         drawPolyline(points, points.last());
         BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
         if (bitmapImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
-        bitmapImage->paste(mScribbleArea->mBufferImg);
+        bitmapImage->paste(&mScribbleArea->mBufferImg);
     }
 
     mScribbleArea->clearBitmapBuffer();

@@ -215,8 +215,17 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
                 if (vectorImage == nullptr) { return; }
                 // transforms the selection
 
+                BlitRect blit;
+
+                // Use the previous dirty bound and extend it with the current dirty bound
+                // this ensures that we won't get painting artifacts
+                blit.extend(vectorImage->getBoundsOfTransformedCurves().toRect());
                 selectMan->setSelectionTransform(QTransform().translate(offsetFromPressPos().x(), offsetFromPressPos().y()));
                 vectorImage->setSelectionTransformation(selectMan->selectionTransform());
+                blit.extend(vectorImage->getBoundsOfTransformedCurves().toRect());
+
+                // And now tell the widget to update the portion in local coordinates
+                mScribbleArea->update(mEditor->view()->mapCanvasToScreen(blit).toRect().adjusted(-1, -1, 1, 1));
             }
         }
     }
@@ -228,9 +237,9 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
             if (vectorImage == nullptr) { return; }
 
             selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
+            mScribbleArea->update();
         }
     }
-    mEditor->updateCurrentFrame();
 }
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
@@ -304,14 +313,12 @@ void SmudgeTool::drawStroke()
         qreal brushStep = 2;
         qreal distance = QLineF(b, a).length() / 2.0;
         int steps = qRound(distance / brushStep);
-        int rad = qRound(brushWidth / 2.0) + 2;
 
         QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
-            targetImage.paste(mScribbleArea->mBufferImg);
+            targetImage.paste(&mScribbleArea->mBufferImg);
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
-            rect.extend(targetPoint.toPoint());
             mScribbleArea->liquifyBrush(&targetImage,
                                         sourcePoint,
                                         targetPoint,
@@ -324,8 +331,6 @@ void SmudgeTool::drawStroke()
                 mLastBrushPoint = targetPoint;
             }
             sourcePoint = targetPoint;
-            mScribbleArea->paintBitmapBufferRect(rect);
-            mScribbleArea->refreshBitmap(rect, rad);
         }
     }
     else // liquify smooth
@@ -333,12 +338,11 @@ void SmudgeTool::drawStroke()
         qreal brushStep = 2.0;
         qreal distance = QLineF(b, a).length();
         int steps = qRound(distance / brushStep);
-        int rad = qRound(brushWidth / 2.0) + 2;
 
         QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
-            targetImage.paste(mScribbleArea->mBufferImg);
+            targetImage.paste(&mScribbleArea->mBufferImg);
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
             mScribbleArea->blurBrush(&targetImage,
@@ -353,8 +357,6 @@ void SmudgeTool::drawStroke()
                 mLastBrushPoint = targetPoint;
             }
             sourcePoint = targetPoint;
-            mScribbleArea->paintBitmapBufferRect(rect);
-            mScribbleArea->refreshBitmap(rect, rad);
         }
     }
 }
