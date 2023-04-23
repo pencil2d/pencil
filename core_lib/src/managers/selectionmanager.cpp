@@ -150,12 +150,12 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPoint
     switch (mMoveMode)
     {
     case MoveMode::MIDDLE: {
-        QPointF newOffset = currentPoint - offset;
+        QPointF newOffset = currentPoint - mDragOrigin;
 
         if (mLockAxis) {
-            mTranslation = alignPositionToAxis(currentPoint);
+            mTranslation = offset + alignPositionToAxis(newOffset);
         } else {
-            translate(newOffset);
+            mTranslation = offset + newOffset;
         }
         break;
     }
@@ -310,18 +310,13 @@ void SelectionManager::calculateSelectionTransformation()
 
 QPointF SelectionManager::alignPositionToAxis(QPointF currentPoint) const
 {
-    // Calculate angle from the start selection anchor point to the current point
-    // we can't use the transformed point here.
-    double angle = qAbs(qRadiansToDegrees(MathUtils::getDifferenceAngle(mAlignToAxisStartPosition, currentPoint)));
-    Q_ASSERT(angle >= 0 && angle <= 180);
-
-    if (angle > 45 && angle < 135) {
+    if (qAbs(currentPoint.y()) > qAbs(currentPoint.x())) {
         // Align to y axis
-        return QPointF(mAlignToAxisStartPosition.x(), currentPoint.y());
+        return QPointF(0, currentPoint.y());
     }
 
-    // Otherwise 0 <= angle <= 45 || 135 <= angle <= 180 --> align to x axis
-    return QPointF(currentPoint.x(), mAlignToAxisStartPosition.y());
+    // Align to x axis
+    return QPointF(currentPoint.x(), 0);
 }
 
 /**

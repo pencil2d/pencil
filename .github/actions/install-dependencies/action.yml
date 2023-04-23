@@ -12,6 +12,7 @@ runs:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
   - if: runner.os == 'Windows'
-    uses: jurplel/install-qt-action@v2
+    uses: jurplel/install-qt-action@v3
     with:
       arch: ${{inputs.arch}}
+      tools: tools_openssl_x${{endsWith(inputs.arch, '_64') && '64' || '86'}}
