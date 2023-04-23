@@ -1236,26 +1236,6 @@ void VectorImage::paintImage(QPainter& painter,
 }
 
 /**
- * @brief VectorImage::outputImage
- * @param image: QImage*
- * @param myView: QTransform
- * @param simplified: bool
- * @param showThinCurves: bool
- * @param antialiasing: bool
- */
-void VectorImage::outputImage(QImage* image,
-                              QTransform myView,
-                              bool simplified,
-                              bool showThinCurves,
-                              bool antialiasing)
-{
-    image->fill(qRgba(0, 0, 0, 0));
-    QPainter painter(image);
-    painter.setTransform(myView);
-    paintImage(painter, simplified, showThinCurves, antialiasing);
-}
-
-/**
  * @brief VectorImage::clear
  */
 void VectorImage::clear()
