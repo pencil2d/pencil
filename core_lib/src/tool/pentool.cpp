@@ -221,7 +221,7 @@ void PenTool::drawStroke()
         qreal brushWidth = properties.width * pressure;
 
         QPen pen(mEditor->color()->frontColor(),
-                 brushWidth * mEditor->view()->scaling(),
+                 brushWidth,
                  Qt::SolidLine,
                  Qt::RoundCap,
                  Qt::RoundJoin);

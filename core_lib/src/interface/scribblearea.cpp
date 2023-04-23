@@ -869,8 +869,8 @@ void ScribbleArea::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::Composit
 
 void ScribbleArea::drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm)
 {
-    mBufferImg.drawPath(path, pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
-    update(mBufferImg.bounds().adjusted(-1, -1, 1, 1));
+    mBufferImg.drawPath(mEditor->view()->mapScreenToCanvas(path), pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
+    update(mEditor->view()->mapCanvasToScreen(mBufferImg.bounds()).toRect().adjusted(-1, -1, 1, 1));
 }
 
 void ScribbleArea::paintCanvasCursor(QPainter& painter)

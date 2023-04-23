@@ -25,7 +25,6 @@ GNU General Public License for more details.
 
 #include "beziercurve.h"
 #include "vectorimage.h"
-#include "layervector.h"
 #include "editor.h"
 #include "colormanager.h"
 #include "strokemanager.h"
@@ -33,7 +32,6 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "selectionmanager.h"
 #include "scribblearea.h"
-#include "blitrect.h"
 #include "pointerevent.h"
 
 
@@ -264,7 +262,7 @@ void BrushTool::drawStroke()
         qreal brushWidth = properties.width * pressure;
 
         QPen pen(mEditor->color()->frontColor(),
-                 brushWidth * mEditor->view()->scaling(),
+                 brushWidth,
                  Qt::SolidLine,
                  Qt::RoundCap,
                  Qt::RoundJoin);

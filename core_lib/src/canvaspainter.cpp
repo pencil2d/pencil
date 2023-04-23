@@ -353,7 +353,6 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     if (isCurrentLayer) {
         if (isDrawing) {
             currentVectorPainter.setCompositionMode(mOptions.cmBufferBlendMode);
-            currentVectorPainter.setTransform(QTransform());
             currentVectorPainter.drawImage(mBuffer->topLeft(), *mBuffer->image());
         } else if (mRenderTransform) {
             vectorImage->setSelectionTransformation(mSelectionTransform);

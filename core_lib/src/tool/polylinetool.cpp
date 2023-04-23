@@ -223,7 +223,6 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         {
             if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
             {
-                tempPath = mEditor->view()->mapCanvasToScreen(tempPath);
                 if (mScribbleArea->makeInvisible() == true)
                 {
                     pen.setWidth(0);
@@ -231,7 +230,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
                 }
                 else
                 {
-                    pen.setWidth(properties.width * mEditor->view()->scaling());
+                    pen.setWidth(properties.width);
                 }
             }
         }
