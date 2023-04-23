@@ -621,7 +621,8 @@ QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
 
 QRectF BezierCurve::getBoundingRect()
 {
-    return getSimplePath().boundingRect().adjusted(-getWidth(), -getWidth(), getWidth(), getWidth());
+    qreal radius = getWidth() / 2;
+    return getSimplePath().boundingRect().adjusted(-radius, -radius, radius, radius);
 }
 
 void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, bool smooth)
