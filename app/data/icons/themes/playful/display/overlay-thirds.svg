@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;">
-    <g id="Layer-1" serif:id="Layer 1" transform="matrix(1,0,0,1,0,-1090.52)">
-        <rect id="rect1670" x="2.001" y="1092.52" width="28" height="28" style="fill:url(#_Linear1);"/>
-        <path id="path11361" d="M8.693,1094.52L8.693,1101.21L2,1101.21L2,1104.22L8.693,1104.22L8.693,1112.83L2,1112.83L2,1115.82L8.693,1115.82L8.693,1120.52L11.699,1120.52L11.699,1115.82L20.307,1115.82L20.307,1120.52L23.303,1120.52L23.303,1115.82L29.998,1115.82L29.998,1112.83L23.303,1112.83L23.303,1104.22L29.998,1104.22L29.998,1101.21L23.303,1101.21L23.303,1094.52L20.307,1094.52L20.307,1101.21L11.699,1101.21L11.699,1094.52L8.693,1094.52ZM11.699,1104.22L20.307,1104.22L20.307,1112.83L11.699,1112.83L11.699,1104.22Z" style="fill-opacity:0.15;fill-rule:nonzero;"/>
-        <path id="path1674" d="M10.197,1120.52L10.197,1092.52" style="fill:none;fill-rule:nonzero;stroke:rgb(51,51,51);stroke-width:3px;"/>
-        <path id="path1676" d="M2.001,1100.72L30,1100.72" style="fill:none;fill-rule:nonzero;stroke:rgb(51,51,51);stroke-width:3px;"/>
-        <path id="path1678" d="M21.804,1120.52L21.804,1092.52" style="fill:none;fill-rule:nonzero;stroke:rgb(51,51,51);stroke-width:3px;"/>
-        <path id="path1680" d="M2.001,1112.32L30,1112.32" style="fill:none;fill-rule:nonzero;stroke:rgb(51,51,51);stroke-width:3px;"/>
-        <rect id="rect1682" x="2.001" y="1092.52" width="28" height="28" style="fill:none;stroke:black;stroke-width:1px;stroke-linecap:round;stroke-linejoin:round;"/>
-    </g>
-    <defs>
-        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(1.42856,40.2675,-40.2675,1.42856,14.9112,1092.52)"><stop offset="0" style="stop-color:rgb(250,250,250);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(212,212,212);stop-opacity:1"/></linearGradient>
-    </defs>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 32 32" fill-rule="evenodd" xmlns:v="https://vecta.io/nano"><path d="M1.837 2h28v28h-28z" fill="url(#A)"/><path d="M9 2.515l.035 8.175H1.836L1.807 13h7.199l.029 9.31H1.836L1.801 26H9l.035 4h3L12 26h8.108l.035 4h2.996l-.035-4h6.695l.035-3.69h-6.695L23.11 13h6.695l.029-2.31h-6.695V2.515h-2.996v8.175h-8.108L12 2.515H9zM12.006 13h8.108l.029 9.31h-8.108L12.006 13z" fill-opacity=".15" fill-rule="nonzero"/><g fill="none"><g stroke="#333"><g stroke-width="2.97"><path d="M9.5 30V2.5"/><path d="M2.484 9.5h27.35"/></g><g stroke-width="3"><path d="M22.5 30V2"/><path d="M2.484 22.5h27.35"/></g></g><path d="M2.484 2.515H29.5v26.966H2.484z" stroke="#000" stroke-width=".96" stroke-linejoin="round"/></g><defs><linearGradient id="A" x1="14.747" y1="2" x2="16.175" y2="42.268" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fafafa"/><stop offset="1" stop-color="#d4d4d4"/></linearGradient></defs></svg>
