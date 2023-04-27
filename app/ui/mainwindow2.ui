@@ -334,7 +334,7 @@
   <action name="actionNew">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-new.svg</normaloff>:/icons/themes/playful/menubar/menu-new.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/new.svg</normaloff>:/icons/themes/playful/menubar/new.svg</iconset>
    </property>
    <property name="text">
     <string>New</string>
@@ -343,7 +343,7 @@
   <action name="actionOpen">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-open.svg</normaloff>:/icons/themes/playful/menubar/menu-open.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/open.svg</normaloff>:/icons/themes/playful/menubar/open.svg</iconset>
    </property>
    <property name="text">
     <string>Open</string>
@@ -352,7 +352,7 @@
   <action name="actionSave">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-save.svg</normaloff>:/icons/themes/playful/menubar/menu-save.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/save.svg</normaloff>:/icons/themes/playful/menubar/save.svg</iconset>
    </property>
    <property name="text">
     <string>Save</string>
@@ -368,10 +368,6 @@
    </property>
   </action>
   <action name="actionExit">
-   <property name="icon">
-    <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/exit.svg</normaloff>:/icons/themes/playful/menubar/exit.svg</iconset>
-   </property>
    <property name="text">
     <string>Exit</string>
    </property>
@@ -427,7 +423,7 @@
   <action name="actionUndo">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-undo.svg</normaloff>:/icons/themes/playful/menubar/menu-undo.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/undo.svg</normaloff>:/icons/themes/playful/menubar/undo.svg</iconset>
    </property>
    <property name="text">
     <string>Undo</string>
@@ -436,7 +432,7 @@
   <action name="actionRedo">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-redo.svg</normaloff>:/icons/themes/playful/menubar/menu-redo.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/redo.svg</normaloff>:/icons/themes/playful/menubar/redo.svg</iconset>
    </property>
    <property name="text">
     <string>Redo</string>
@@ -448,7 +444,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-cut.svg</normaloff>:/icons/themes/playful/menubar/menu-cut.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/cut.svg</normaloff>:/icons/themes/playful/menubar/cut.svg</iconset>
    </property>
    <property name="text">
     <string>Cut</string>
@@ -460,7 +456,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-copy.svg</normaloff>:/icons/themes/playful/menubar/menu-copy.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/copy.svg</normaloff>:/icons/themes/playful/menubar/copy.svg</iconset>
    </property>
    <property name="text">
     <string>Copy</string>
@@ -472,7 +468,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/menubar/menu-paste.svg</normaloff>:/icons/themes/playful/menubar/menu-paste.svg</iconset>
+     <normaloff>:/icons/themes/playful/menubar/paste.svg</normaloff>:/icons/themes/playful/menubar/paste.svg</iconset>
    </property>
    <property name="text">
     <string>Paste</string>
