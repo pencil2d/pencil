@@ -73,12 +73,12 @@ void TimeLine::initUI()
     QToolButton* addLayerButton = new QToolButton(this);
     addLayerButton->setIcon(QIcon(":icons/themes/playful/controls/layer-add.svg"));
     addLayerButton->setToolTip(tr("Add Layer"));
-    addLayerButton->setFixedSize(24, 24);
+    addLayerButton->setFixedSize(22, 22);
 
     mLayerDeleteButton = new QToolButton(this);
     mLayerDeleteButton->setIcon(QIcon(":icons/themes/playful/controls/layer-remove.svg"));
     mLayerDeleteButton->setToolTip(tr("Delete Layer"));
-    mLayerDeleteButton->setFixedSize(24, 24);
+    mLayerDeleteButton->setFixedSize(22, 22);
 
     QToolButton* duplicateLayerButton = new QToolButton(this);
     duplicateLayerButton->setIcon(QIcon(":icons/themes/playful/controls/duplicate.png")); // TODO: missing icon
