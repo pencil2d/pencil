@@ -1,14 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg width="100%" height="100%" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;">
-    <g id="Layer-2" serif:id="Layer 2" transform="matrix(1,0,0,1,0,-7.33333)">
-        <rect id="rect8106" x="1.375" y="10.333" width="16.25" height="14" style="fill:url(#_Linear1);"/>
-        <rect id="rect8108" x="1.375" y="10.333" width="16.25" height="14" style="fill:none;stroke:rgb(85,87,97);stroke-width:1px;"/>
-        <rect id="rect8064" x="4.375" y="13.333" width="16.25" height="14" style="fill:url(#_Linear2);"/>
-        <rect id="rect8066" x="4.375" y="13.333" width="16.25" height="14" style="fill:none;stroke:rgb(85,87,97);stroke-width:1px;"/>
-    </g>
-    <defs>
-        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.0993024,23.7344,-23.7344,0.0993024,8.8086,10.3333)"><stop offset="0" style="stop-color:rgb(244,244,244);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(219,219,219);stop-opacity:1"/></linearGradient>
-        <linearGradient id="_Linear2" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.0993024,23.7344,-23.7344,0.0993024,11.8086,13.3333)"><stop offset="0" style="stop-color:rgb(244,244,244);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(219,219,219);stop-opacity:1"/></linearGradient>
-    </defs>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 22 22" fill-rule="evenodd" stroke-linecap="round" stroke-linejoin="round" xmlns:v="https://vecta.io/nano"><path d="M1.971 3.966H14V14H1.971z" fill="url(#A)"/><path d="M1.5 3.5h13v11h-13z" fill="none" stroke="#555761"/><path d="M7.971 7.966H20V18H7.971z" fill="url(#B)"/><path d="M7.5 7.5h13v11h-13z" fill="none" stroke="#555761"/><defs><linearGradient id="A" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.0735107,17.0102,-17.5699,0.0711689,7.47347,3.96657)"><stop offset="0" stop-color="#f4f4f4"/><stop offset="1" stop-color="#dbdbdb"/></linearGradient><linearGradient id="B" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(0.0735107,17.0102,-17.5699,0.0711689,13.4735,7.96657)"><stop offset="0" stop-color="#f4f4f4"/><stop offset="1" stop-color="#dbdbdb"/></linearGradient></defs></svg>

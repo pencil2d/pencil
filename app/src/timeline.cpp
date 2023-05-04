@@ -125,17 +125,17 @@ void TimeLine::initUI()
     QToolButton* addKeyButton = new QToolButton(this);
     addKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-add.svg"));
     addKeyButton->setToolTip(tr("Add Frame"));
-    addKeyButton->setFixedSize(24, 24);
+    addKeyButton->setFixedSize(22, 22);
 
     QToolButton* removeKeyButton = new QToolButton(this);
     removeKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-remove.svg"));
     removeKeyButton->setToolTip(tr("Remove Frame"));
-    removeKeyButton->setFixedSize(24, 24);
+    removeKeyButton->setFixedSize(22, 22);
 
     QToolButton* duplicateKeyButton = new QToolButton(this);
     duplicateKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-duplicate.svg"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
-    duplicateKeyButton->setFixedSize(24, 24);
+    duplicateKeyButton->setFixedSize(22, 22);
 
     QLabel* zoomLabel = new QLabel(tr("Zoom:"));
     zoomLabel->setIndent(5);

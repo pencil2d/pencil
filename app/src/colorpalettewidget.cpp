@@ -360,7 +360,7 @@ void ColorPaletteWidget::palettePreferences()
 
 
     // Add to UI
-    ui->palettePref->setIconSize(QSize(15,15));
+    ui->palettePref->setIconSize(QSize(22,22));
     ui->palettePref->setArrowType(Qt::ArrowType::NoArrow);
     ui->palettePref->setStyleSheet(buttonStylesheet);
     ui->palettePref->addAction(ui->listModeAction);

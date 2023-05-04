@@ -95,7 +95,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
-          <height>20</height>
+          <height>22</height>
          </size>
         </property>
        </spacer>
@@ -155,7 +155,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
-          <height>20</height>
+          <height>22</height>
          </size>
         </property>
        </spacer>
@@ -179,12 +179,12 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/themes/playful/controls/more-options.svg</normaloff>:/icons/themes/playful/controls/more-options.svg</iconset>
+          <normaloff>:/icons/themes/playful/misc/more-options.svg</normaloff>:/icons/themes/playful/misc/more-options.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>15</width>
-          <height>15</height>
+          <width>22</width>
+          <height>22</height>
          </size>
         </property>
         <property name="checkable">

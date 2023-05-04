@@ -58,7 +58,6 @@
         <file>icons/themes/playful/tools/text.svg</file>
         <file>icons/themes/playful/onion/onion-light.svg</file>
         <file>icons/general/checkerboard_smaller.png</file>
-        <file>icons/themes/playful/controls/more-options.svg</file>
         <file>icons/themes/playful/tools/liquify.svg</file>
         <file>icons/general/cross.png</file>
         <file>icons/themes/playful/tools/smudge.svg</file>
@@ -81,9 +80,7 @@
         <file>icons/themes/playful/misc/color-dialog.svg</file>
         <file>icons/themes/playful/misc/add-color.svg</file>
         <file>icons/themes/playful/misc/remove-color.svg</file>
-        <file>icons/themes/playful/controls/control-endplay.svg</file>
         <file>icons/themes/playful/controls/control-play.svg</file>
-        <file>icons/themes/playful/controls/control-startplay.svg</file>
         <file>icons/themes/playful/controls/control-stop.svg</file>
         <file>icons/themes/playful/controls/control-loop.svg</file>
         <file>icons/themes/playful/controls/control-sound-enable.svg</file>
@@ -102,6 +99,9 @@
         <file>icons/general/cursor-smudge-liquify.svg</file>
         <file>icons/themes/playful/display/overlay-golden-ratio.svg</file>
         <file>icons/themes/playful/display/overlay-safe.svg</file>
+        <file>icons/themes/playful/controls/control-play-start.svg</file>
+        <file>icons/themes/playful/controls/control-play-end.svg</file>
+        <file>icons/themes/playful/misc/more-options.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
