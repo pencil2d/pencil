@@ -138,17 +138,17 @@ void StatusBar::updateToolStatus(ToolType tool)
     }
 
     static QPixmap toolIcons[TOOL_TYPE_COUNT]{
-        {":icons/themes/playful/tools/pencil.svg"},
-        {":icons/themes/playful/tools/eraser.svg"},
-        {":icons/themes/playful/tools/selection.svg"},
-        {":icons/themes/playful/tools/move.svg"},
-        {":icons/themes/playful/tools/hand.svg"},
-        {":icons/themes/playful/tools/smudge.svg"},
-        {":icons/themes/playful/tools/pen.svg"},
-        {":icons/themes/playful/tools/line.svg"},
-        {":icons/themes/playful/tools/bucket.svg"},
-        {":icons/themes/playful/tools/eyedropper.svg"},
-        {":icons/themes/playful/tools/brush.svg"}
+        {":icons/themes/playful/tools/tool-pencil.svg"},
+        {":icons/themes/playful/tools/tool-eraser.svg"},
+        {":icons/themes/playful/tools/tool-select.svg"},
+        {":icons/themes/playful/tools/tool-move.svg"},
+        {":icons/themes/playful/tools/tool-hand.svg"},
+        {":icons/themes/playful/tools/tool-smudge.svg"},
+        {":icons/themes/playful/tools/tool-pen.svg"},
+        {":icons/themes/playful/tools/tool-polyline.svg"},
+        {":icons/themes/playful/tools/tool-bucket.svg"},
+        {":icons/themes/playful/tools/tool-eyedropper.svg"},
+        {":icons/themes/playful/tools/tool-brush.svg"}
     };
     mToolIcon->setPixmap(toolIcons[tool]);
     mToolIcon->setToolTip(BaseTool::TypeName(tool));
