@@ -136,12 +136,12 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/icons/themes/playful/onion/onion-light.svg</normaloff>:/icons/themes/playful/onion/onion-light.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onionskin-enable.svg</normaloff>:/icons/themes/playful/onion/onionskin-enable.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
-               <width>24</width>
-               <height>24</height>
+               <width>22</width>
+               <height>22</height>
               </size>
              </property>
              <property name="checkable">
@@ -190,12 +190,12 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/icons/themes/playful/onion/onion-prev-alt.svg</normaloff>:/icons/themes/playful/onion/onion-prev-alt.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onionskin-blue.svg</normaloff>:/icons/themes/playful/onion/onionskin-blue.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
-               <width>24</width>
-               <height>24</height>
+               <width>22</width>
+               <height>22</height>
               </size>
              </property>
              <property name="checkable">
@@ -243,12 +243,12 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/icons/themes/playful/onion/onion-light.svg</normaloff>:/icons/themes/playful/onion/onion-light.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onionskin-enable.svg</normaloff>:/icons/themes/playful/onion/onionskin-enable.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
-               <width>24</width>
-               <height>24</height>
+               <width>22</width>
+               <height>22</height>
               </size>
              </property>
              <property name="checkable">
@@ -309,12 +309,12 @@
              </property>
              <property name="icon">
               <iconset resource="../data/app.qrc">
-               <normaloff>:/icons/themes/playful/onion/onion-next-alt.svg</normaloff>:/icons/themes/playful/onion/onion-next-alt.svg</iconset>
+               <normaloff>:/icons/themes/playful/onion/onionskin-red.svg</normaloff>:/icons/themes/playful/onion/onionskin-red.svg</iconset>
              </property>
              <property name="iconSize">
               <size>
-               <width>24</width>
-               <height>24</height>
+               <width>22</width>
+               <height>22</height>
               </size>
              </property>
              <property name="checkable">

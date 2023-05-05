@@ -30,8 +30,6 @@
         <file>icons/themes/playful/menubar/redo.svg</file>
         <file>icons/themes/playful/menubar/save.svg</file>
         <file>icons/themes/playful/menubar/undo.svg</file>
-        <file>icons/themes/playful/onion/onion-next.svg</file>
-        <file>icons/themes/playful/onion/onion-prev.svg</file>
         <file>icons/themes/playful/preferences/preferences-general.svg</file>
         <file>icons/themes/playful/preferences/preferences-timeline.svg</file>
         <file>icons/themes/playful/preferences/preferences-files.svg</file>
@@ -56,13 +54,10 @@
         <file>icons/themes/playful/tools/selection.svg</file>
         <file>icons/themes/playful/tools/shape.svg</file>
         <file>icons/themes/playful/tools/text.svg</file>
-        <file>icons/themes/playful/onion/onion-light.svg</file>
         <file>icons/general/checkerboard_smaller.png</file>
         <file>icons/themes/playful/tools/liquify.svg</file>
         <file>icons/general/cross.png</file>
         <file>icons/themes/playful/tools/smudge.svg</file>
-        <file>icons/themes/playful/onion/onion-next-alt.svg</file>
-        <file>icons/themes/playful/onion/onion-prev-alt.svg</file>
         <file>icons/themes/playful/display/overlay-grid.svg</file>
         <file>icons/themes/classic/tools/camera-move.svg</file>
         <file>icons/themes/classic/tools/camera-rotate.svg</file>
@@ -102,6 +97,9 @@
         <file>icons/themes/playful/controls/control-play-start.svg</file>
         <file>icons/themes/playful/controls/control-play-end.svg</file>
         <file>icons/themes/playful/misc/more-options.svg</file>
+        <file>icons/themes/playful/onion/onionskin-blue.svg</file>
+        <file>icons/themes/playful/onion/onionskin-red.svg</file>
+        <file>icons/themes/playful/onion/onionskin-enable.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
