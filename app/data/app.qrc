@@ -35,29 +35,16 @@
         <file>icons/themes/playful/preferences/preferences-files.svg</file>
         <file>icons/themes/playful/preferences/preferences-shortcuts.svg</file>
         <file>icons/themes/playful/preferences/preferences-tools.svg</file>
-        <file>icons/themes/playful/tools/hand.svg</file>
-        <file>icons/themes/playful/tools/move.svg</file>
         <file>icons/themes/playful/tools/arrow-diagonal-left.svg</file>
         <file>icons/themes/playful/tools/arrow-diagonal-right.svg</file>
         <file>icons/themes/playful/tools/arrow-horizontal.svg</file>
         <file>icons/themes/playful/tools/arrow-select-move.svg</file>
         <file>icons/themes/playful/tools/arrow-vertical.svg</file>
-        <file>icons/themes/playful/tools/brush.svg</file>
-        <file>icons/themes/playful/tools/bucket.svg</file>
-        <file>icons/themes/playful/tools/camera.svg</file>
-        <file>icons/themes/playful/tools/clear-frame.svg</file>
-        <file>icons/themes/playful/tools/eraser.svg</file>
-        <file>icons/themes/playful/tools/eyedropper.svg</file>
-        <file>icons/themes/playful/tools/line.svg</file>
-        <file>icons/themes/playful/tools/pen.svg</file>
-        <file>icons/themes/playful/tools/pencil.svg</file>
-        <file>icons/themes/playful/tools/selection.svg</file>
         <file>icons/themes/playful/tools/shape.svg</file>
         <file>icons/themes/playful/tools/text.svg</file>
         <file>icons/general/checkerboard_smaller.png</file>
         <file>icons/themes/playful/tools/liquify.svg</file>
         <file>icons/general/cross.png</file>
-        <file>icons/themes/playful/tools/smudge.svg</file>
         <file>icons/themes/playful/display/overlay-grid.svg</file>
         <file>icons/themes/classic/tools/camera-move.svg</file>
         <file>icons/themes/classic/tools/camera-rotate.svg</file>
@@ -100,6 +87,17 @@
         <file>icons/themes/playful/onion/onionskin-blue.svg</file>
         <file>icons/themes/playful/onion/onionskin-red.svg</file>
         <file>icons/themes/playful/onion/onionskin-enable.svg</file>
+        <file>icons/themes/playful/tools/tool-smudge.svg</file>
+        <file>icons/themes/playful/tools/tool-pencil.svg</file>
+        <file>icons/themes/playful/tools/tool-bucket.svg</file>
+        <file>icons/themes/playful/tools/tool-hand.svg</file>
+        <file>icons/themes/playful/tools/tool-move.svg</file>
+        <file>icons/themes/playful/tools/tool-brush.svg</file>
+        <file>icons/themes/playful/tools/tool-eraser.svg</file>
+        <file>icons/themes/playful/tools/tool-eyedropper.svg</file>
+        <file>icons/themes/playful/tools/tool-polyline.svg</file>
+        <file>icons/themes/playful/tools/tool-pen.svg</file>
+        <file>icons/themes/playful/tools/tool-select.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>

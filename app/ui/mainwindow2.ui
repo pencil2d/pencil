@@ -678,7 +678,7 @@
   <action name="actionMove">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/move.svg</normaloff>:/icons/themes/playful/tools/move.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-move.svg</normaloff>:/icons/themes/playful/tools/tool-move.svg</iconset>
    </property>
    <property name="text">
     <string>Move</string>
@@ -687,7 +687,7 @@
   <action name="actionSelect">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/selection.svg</normaloff>:/icons/themes/playful/tools/selection.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-select.svg</normaloff>:/icons/themes/playful/tools/tool-select.svg</iconset>
    </property>
    <property name="text">
     <string>Select</string>
@@ -696,7 +696,7 @@
   <action name="actionBrush">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/brush.svg</normaloff>:/icons/themes/playful/tools/brush.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-brush.svg</normaloff>:/icons/themes/playful/tools/tool-brush.svg</iconset>
    </property>
    <property name="text">
     <string>Brush</string>
@@ -705,7 +705,7 @@
   <action name="actionPolyline">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/line.svg</normaloff>:/icons/themes/playful/tools/line.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-polyline.svg</normaloff>:/icons/themes/playful/tools/tool-polyline.svg</iconset>
    </property>
    <property name="text">
     <string>Polyline</string>
@@ -714,7 +714,7 @@
   <action name="actionSmudge">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/smudge.svg</normaloff>:/icons/themes/playful/tools/smudge.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-smudge.svg</normaloff>:/icons/themes/playful/tools/tool-smudge.svg</iconset>
    </property>
    <property name="text">
     <string>Smudge</string>
@@ -723,7 +723,7 @@
   <action name="actionPen">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/pen.svg</normaloff>:/icons/themes/playful/tools/pen.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-pen.svg</normaloff>:/icons/themes/playful/tools/tool-pen.svg</iconset>
    </property>
    <property name="text">
     <string>Pen</string>
@@ -732,7 +732,7 @@
   <action name="actionHand">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/hand.svg</normaloff>:/icons/themes/playful/tools/hand.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-hand.svg</normaloff>:/icons/themes/playful/tools/tool-hand.svg</iconset>
    </property>
    <property name="text">
     <string>Hand</string>
@@ -741,7 +741,7 @@
   <action name="actionPencil">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/pencil.svg</normaloff>:/icons/themes/playful/tools/pencil.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-pencil.svg</normaloff>:/icons/themes/playful/tools/tool-pencil.svg</iconset>
    </property>
    <property name="text">
     <string>Pencil</string>
@@ -750,7 +750,7 @@
   <action name="actionBucket">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/bucket.svg</normaloff>:/icons/themes/playful/tools/bucket.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-bucket.svg</normaloff>:/icons/themes/playful/tools/tool-bucket.svg</iconset>
    </property>
    <property name="text">
     <string>Bucket</string>
@@ -759,7 +759,7 @@
   <action name="actionEyedropper">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/eyedropper.svg</normaloff>:/icons/themes/playful/tools/eyedropper.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-eyedropper.svg</normaloff>:/icons/themes/playful/tools/tool-eyedropper.svg</iconset>
    </property>
    <property name="text">
     <string>Eyedropper</string>
@@ -768,7 +768,7 @@
   <action name="actionEraser">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/tools/eraser.svg</normaloff>:/icons/themes/playful/tools/eraser.svg</iconset>
+     <normaloff>:/icons/themes/playful/tools/tool-eraser.svg</normaloff>:/icons/themes/playful/tools/tool-eraser.svg</iconset>
    </property>
    <property name="text">
     <string>Eraser</string>

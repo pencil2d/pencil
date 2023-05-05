@@ -91,12 +91,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/pencil.svg</normaloff>:/icons/themes/playful/tools/pencil.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-pencil.svg</normaloff>:/icons/themes/playful/tools/tool-pencil.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -126,12 +126,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/eraser.svg</normaloff>:/icons/themes/playful/tools/eraser.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-eraser.svg</normaloff>:/icons/themes/playful/tools/tool-eraser.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -158,12 +158,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/selection.svg</normaloff>:/icons/themes/playful/tools/selection.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-select.svg</normaloff>:/icons/themes/playful/tools/tool-select.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -190,12 +190,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/move.svg</normaloff>:/icons/themes/playful/tools/move.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-move.svg</normaloff>:/icons/themes/playful/tools/tool-move.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -222,12 +222,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/pen.svg</normaloff>:/icons/themes/playful/tools/pen.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-pen.svg</normaloff>:/icons/themes/playful/tools/tool-pen.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -254,12 +254,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/hand.svg</normaloff>:/icons/themes/playful/tools/hand.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-hand.svg</normaloff>:/icons/themes/playful/tools/tool-hand.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -286,12 +286,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/line.svg</normaloff>:/icons/themes/playful/tools/line.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-polyline.svg</normaloff>:/icons/themes/playful/tools/tool-polyline.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -318,12 +318,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/bucket.svg</normaloff>:/icons/themes/playful/tools/bucket.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-bucket.svg</normaloff>:/icons/themes/playful/tools/tool-bucket.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -350,12 +350,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/eyedropper.svg</normaloff>:/icons/themes/playful/tools/eyedropper.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-eyedropper.svg</normaloff>:/icons/themes/playful/tools/tool-eyedropper.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -382,12 +382,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/brush.svg</normaloff>:/icons/themes/playful/tools/brush.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-brush.svg</normaloff>:/icons/themes/playful/tools/tool-brush.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
@@ -417,12 +417,12 @@
           </property>
           <property name="icon">
            <iconset resource="../data/app.qrc">
-            <normaloff>:/icons/themes/playful/tools/smudge.svg</normaloff>:/icons/themes/playful/tools/smudge.svg</iconset>
+            <normaloff>:/icons/themes/playful/tools/tool-smudge.svg</normaloff>:/icons/themes/playful/tools/tool-smudge.svg</iconset>
           </property>
           <property name="iconSize">
            <size>
-            <width>30</width>
-            <height>30</height>
+            <width>22</width>
+            <height>22</height>
            </size>
           </property>
           <property name="checkable">
