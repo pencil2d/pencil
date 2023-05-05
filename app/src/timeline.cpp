@@ -231,6 +231,7 @@ void TimeLine::initUI()
 
     connect(editor(), &Editor::scrubbed, this, &TimeLine::updateFrame);
     connect(editor(), &Editor::frameModified, this, &TimeLine::updateContent);
+    connect(editor(), &Editor::framesModified, this, &TimeLine::updateContent);
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);

@@ -113,9 +113,9 @@ public:
     void clearCurves() { mClosestCurves.clear(); };
     void clearVertices() { mClosestVertices.clear(); };
 
-    /// The point from where the dragging will be based of.
-    /// This is only usable in combination with mLockAxis
-    void setAlignToPosition(const QPointF point) { mAlignToAxisStartPosition = point; }
+    /// The point from where the dragging will be based of inside the selection area.
+    /// Not to be confused with the selection origin
+    void setDragOrigin(const QPointF point) { mDragOrigin = point; }
 
     const QList<int> closestCurves() const { return mClosestCurves; }
     const QList<VertexRef> closestVertices() const { return mClosestVertices; }
@@ -150,7 +150,7 @@ private:
     QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
 
-    QPointF mAlignToAxisStartPosition;
+    QPointF mDragOrigin;
 
     MoveMode mMoveMode = MoveMode::NONE;
     QTransform mSelectionTransform;

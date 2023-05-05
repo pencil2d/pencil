@@ -139,7 +139,7 @@ void CameraPainter::paintVisuals(QPainter& painter) const
 void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
 {
     painter.save();
-    QRectF viewRect = painter.viewport();
+    QRect viewRect = painter.viewport();
 
     painter.setOpacity(1.0);
     painter.setWorldMatrixEnabled(true);
@@ -148,14 +148,13 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
     QTransform viewInverse = mViewTransform.inverted();
-    QRect boundingRect = viewInverse.mapRect(viewRect).toAlignedRect();
+    QRect boundingRect = viewInverse.mapRect(viewRect);
 
-    QRegion rg1(boundingRect);
-    QRegion rg2 = camTransform.inverted().map(QRegion(camRect));
-    QRegion rg3 = rg1.subtracted(rg2);
+    QPolygon camPoly = camTransform.inverted().map(QPolygon(camRect));
+    QPolygon boundingRectPoly = boundingRect;
+    QPolygon visibleCanvasPoly = boundingRectPoly.subtracted(camPoly);
 
-    painter.setClipRegion(rg3);
-    painter.drawRect(boundingRect);
+    painter.drawPolygon(visibleCanvasPoly);
 
     painter.restore();
 }
