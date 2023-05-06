@@ -67,18 +67,19 @@ void TimeLine::initUI()
     // --- left widget ---
     // --------- layer buttons ---------
     QToolBar* layerButtons = new QToolBar(this);
+    layerButtons->setIconSize(QSize(22,22));
     QLabel* layerLabel = new QLabel(tr("Layers:"));
     layerLabel->setIndent(5);
 
     QToolButton* addLayerButton = new QToolButton(this);
     addLayerButton->setIcon(QIcon(":icons/themes/playful/controls/layer-add.svg"));
     addLayerButton->setToolTip(tr("Add Layer"));
-    addLayerButton->setFixedSize(22, 22);
+    addLayerButton->setFixedSize(24, 24);
 
     mLayerDeleteButton = new QToolButton(this);
     mLayerDeleteButton->setIcon(QIcon(":icons/themes/playful/controls/layer-remove.svg"));
     mLayerDeleteButton->setToolTip(tr("Delete Layer"));
-    mLayerDeleteButton->setFixedSize(22, 22);
+    mLayerDeleteButton->setFixedSize(24, 24);
 
     QToolButton* duplicateLayerButton = new QToolButton(this);
     duplicateLayerButton->setIcon(QIcon(":icons/themes/playful/controls/layer-duplicate.svg"));
@@ -119,23 +120,24 @@ void TimeLine::initUI()
     // --- right widget ---
     // --------- key buttons ---------
     QToolBar* timelineButtons = new QToolBar(this);
+    timelineButtons->setIconSize(QSize(22,22));
     QLabel* keyLabel = new QLabel(tr("Keys:"));
     keyLabel->setIndent(5);
 
     QToolButton* addKeyButton = new QToolButton(this);
     addKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-add.svg"));
     addKeyButton->setToolTip(tr("Add Frame"));
-    addKeyButton->setFixedSize(22, 22);
+    addKeyButton->setFixedSize(24, 24);
 
     QToolButton* removeKeyButton = new QToolButton(this);
     removeKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-remove.svg"));
     removeKeyButton->setToolTip(tr("Remove Frame"));
-    removeKeyButton->setFixedSize(22, 22);
+    removeKeyButton->setFixedSize(24, 24);
 
     QToolButton* duplicateKeyButton = new QToolButton(this);
     duplicateKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-duplicate.svg"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
-    duplicateKeyButton->setFixedSize(22, 22);
+    duplicateKeyButton->setFixedSize(24, 24);
 
     QLabel* zoomLabel = new QLabel(tr("Zoom:"));
     zoomLabel->setIndent(5);
@@ -159,6 +161,7 @@ void TimeLine::initUI()
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls(this);
+    mTimeControls->setIconSize(QSize(22,22));
     mTimeControls->setEditor(editor());
     mTimeControls->initUI();
     updateLength();
