@@ -144,6 +144,7 @@ void StatusBar::updateToolStatus(ToolType tool)
         {":icons/themes/playful/tools/tool-move.svg"},
         {":icons/themes/playful/tools/tool-hand.svg"},
         {":icons/themes/playful/tools/tool-smudge.svg"},
+        {""}, // Camera tool does not have an icon
         {":icons/themes/playful/tools/tool-pen.svg"},
         {":icons/themes/playful/tools/tool-polyline.svg"},
         {":icons/themes/playful/tools/tool-bucket.svg"},
