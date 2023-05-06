@@ -74,17 +74,14 @@ void TimeLine::initUI()
     QToolButton* addLayerButton = new QToolButton(this);
     addLayerButton->setIcon(QIcon(":icons/themes/playful/controls/layer-add.svg"));
     addLayerButton->setToolTip(tr("Add Layer"));
-    addLayerButton->setFixedSize(24, 24);
 
     mLayerDeleteButton = new QToolButton(this);
     mLayerDeleteButton->setIcon(QIcon(":icons/themes/playful/controls/layer-remove.svg"));
     mLayerDeleteButton->setToolTip(tr("Delete Layer"));
-    mLayerDeleteButton->setFixedSize(24, 24);
 
     QToolButton* duplicateLayerButton = new QToolButton(this);
     duplicateLayerButton->setIcon(QIcon(":icons/themes/playful/controls/layer-duplicate.svg"));
     duplicateLayerButton->setToolTip(tr("Duplicate Layer"));
-    duplicateLayerButton->setFixedSize(24, 24);
 
     layerButtons->addWidget(layerLabel);
     layerButtons->addWidget(addLayerButton);
@@ -127,17 +124,14 @@ void TimeLine::initUI()
     QToolButton* addKeyButton = new QToolButton(this);
     addKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-add.svg"));
     addKeyButton->setToolTip(tr("Add Frame"));
-    addKeyButton->setFixedSize(24, 24);
 
     QToolButton* removeKeyButton = new QToolButton(this);
     removeKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-remove.svg"));
     removeKeyButton->setToolTip(tr("Remove Frame"));
-    removeKeyButton->setFixedSize(24, 24);
 
     QToolButton* duplicateKeyButton = new QToolButton(this);
     duplicateKeyButton->setIcon(QIcon(":icons/themes/playful/controls/frame-duplicate.svg"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
-    duplicateKeyButton->setFixedSize(24, 24);
 
     QLabel* zoomLabel = new QLabel(tr("Zoom:"));
     zoomLabel->setIndent(5);

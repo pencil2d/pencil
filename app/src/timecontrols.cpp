@@ -53,7 +53,6 @@ void TimeControls::initUI()
 
     QMenu* timeSelectMenu = new QMenu(tr("Display timecode", "Timeline menu for choose a timecode"), this);
     mTimecodeSelect->setIcon(QIcon(":/icons/themes/playful/misc/more-options.svg"));
-    mTimecodeSelect->setFixedSize(QSize(24,24));
 
     timeSelectMenu->addAction(mNoTimecodeAction = new QAction(tr("No text"), this));
     timeSelectMenu->addAction(mOnlyFramesAction = new QAction(tr("Frames"), this));
