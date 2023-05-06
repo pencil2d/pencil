@@ -81,7 +81,7 @@ void TimeLine::initUI()
     mLayerDeleteButton->setFixedSize(22, 22);
 
     QToolButton* duplicateLayerButton = new QToolButton(this);
-    duplicateLayerButton->setIcon(QIcon(":icons/themes/playful/controls/duplicate.png")); // TODO: missing icon
+    duplicateLayerButton->setIcon(QIcon(":icons/themes/playful/controls/layer-duplicate.svg"));
     duplicateLayerButton->setToolTip(tr("Duplicate Layer"));
     duplicateLayerButton->setFixedSize(24, 24);
 
