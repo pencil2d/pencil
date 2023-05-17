@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
+    <width>534</width>
     <height>445</height>
    </rect>
   </property>
@@ -44,18 +44,21 @@
        </property>
        <property name="iconSize">
         <size>
-         <width>96</width>
-         <height>84</height>
+         <width>64</width>
+         <height>64</height>
         </size>
        </property>
        <property name="movement">
         <enum>QListView::Static</enum>
        </property>
        <property name="spacing">
-        <number>5</number>
+        <number>20</number>
        </property>
        <property name="viewMode">
         <enum>QListView::IconMode</enum>
+       </property>
+       <property name="uniformItemSizes">
+        <bool>false</bool>
        </property>
        <property name="currentRow">
         <number>-1</number>
