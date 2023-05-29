@@ -290,7 +290,7 @@ void CanvasPainter::paintBitmapFrame(QPainter& painter,
 
         const auto tiles = mTiledBuffer->tiles();
         for (const Tile* tile : tiles) {
-            QPixmap pixTest = QPixmap(64,64);
+//            QPixmap pixTest = QPixmap(64,64);
 //            pixTest.fill(Qt::green);
             currentBitmapPainter.drawPixmap(tile->pos(), tile->pixmap());
 //            currentBitmapPainter.drawPixmap(tile->pos(), pixTest);

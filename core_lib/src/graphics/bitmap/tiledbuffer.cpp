@@ -44,18 +44,20 @@ TiledBuffer::~TiledBuffer()
     clear();
 }
 
-Tile* TiledBuffer::getTileFromIndex(const QPoint& index)
+Tile* TiledBuffer::getTileFromIndex(int tileX, int tileY)
 {
-    // it's faster to iterate qstring than a qpoint...
-    QString idxString = QString::number(index.x())+"_"+QString::number(index.y());
-    Tile* selectedTile = mTiles.value(idxString, nullptr);
+    TileIndex tileIndex;
+    tileIndex.x = tileX;
+    tileIndex.y = tileY;
+
+    Tile* selectedTile = mTiles.value(tileIndex, nullptr);
 
     if (!selectedTile) {
         // Time to allocate it, update table:
         selectedTile = new Tile(QSize(UNIFORM_TILESIZE, UNIFORM_TILESIZE));
-        mTiles.insert(idxString, selectedTile);
+        mTiles.insert(tileIndex, selectedTile);
 
-        QPoint tilePos (getTilePos(index));
+        const QPoint& tilePos (getTilePos(tileIndex));
         selectedTile->setPos(tilePos);
 
         emit this->onNewTile(this, selectedTile);
@@ -81,7 +83,7 @@ void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, QPen pen, QBru
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
 
-            Tile* tile = getTileFromIndex(QPoint(tileX, tileY));
+            Tile* tile = getTileFromIndex(tileX, tileY);
 
             if (tile)
             {
@@ -138,7 +140,7 @@ void TiledBuffer::drawPath(QPainterPath path, QPen pen, QBrush brush,
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
 
-            Tile* tile = getTileFromIndex(QPoint(tileX, tileY));
+            Tile* tile = getTileFromIndex(tileX, tileY);
 
             if (tile)
             {
@@ -528,7 +530,7 @@ void TiledBuffer::addTileToSurface(const QPixmap& pixmap, const QPoint& pos)
 
 void TiledBuffer::clear()
 {
-    QHashIterator<QString, Tile*> i(mTiles);
+    QHashIterator<TileIndex, Tile*> i(mTiles);
 
     while (i.hasNext()) {
         i.next();
@@ -557,19 +559,16 @@ void TiledBuffer::clear()
 //}
 
 
-QPoint TiledBuffer::getTilePos(const QPoint& idx) const
+QPoint TiledBuffer::getTilePos(const TileIndex& index) const
 {
-    return QPoint(qRound(UNIFORM_TILESIZE*static_cast<qreal>(idx.x())), qRound(UNIFORM_TILESIZE*static_cast<qreal>(idx.y())));
+    return QPoint { qRound(UNIFORM_TILESIZE*static_cast<qreal>(index.x)),
+                    qRound(UNIFORM_TILESIZE*static_cast<qreal>(index.y)) };
 }
 
-QPoint TiledBuffer::getTileIndex(const QPoint& pos) const
+TileIndex TiledBuffer::getTileIndex(const TileIndex& pos) const
 {
-    return QPoint(qRound(static_cast<qreal>(pos.x())/UNIFORM_TILESIZE), qRound(static_cast<qreal>(pos.y())/UNIFORM_TILESIZE));
-}
-
-QPointF TiledBuffer::getTileFIndex(const QPoint& pos) const
-{
-    return QPointF(static_cast<qreal>(pos.x())/UNIFORM_TILESIZE, static_cast<qreal>(pos.y())/UNIFORM_TILESIZE);
+    return { qRound(static_cast<qreal>(pos.x)/UNIFORM_TILESIZE),
+             qRound(static_cast<qreal>(pos.y)/UNIFORM_TILESIZE) };
 }
 
 QRect TiledBuffer::getRectForPoint(const QPoint& point, const QSize size) const

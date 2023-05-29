@@ -11,6 +11,22 @@
 #include "pencilerror.h"
 #include "tile.h"
 
+struct TileIndex {
+    int x;
+    int y;
+};
+
+inline uint qHash(const TileIndex &key, uint seed)
+{
+    return qHash(key.x, seed) ^ key.y;
+}
+
+inline bool operator==(const TileIndex &e1, const TileIndex &e2)
+{
+    return e1.x == e2.x
+           && e1.y == e2.y;
+}
+
 class TiledBuffer: public QObject
 {
     Q_OBJECT
@@ -110,7 +126,7 @@ public:
     void drawPath(QPainterPath path, QPen pen, QBrush brush,
                   QPainter::CompositionMode cm, bool antialiasing);
 
-    QHash<QString, Tile*> tiles() const { return mTiles; }
+    QHash<TileIndex, Tile*> tiles() const { return mTiles; }
 
     const QRect& bounds() const { return mTileBounds; }
 
@@ -123,11 +139,10 @@ signals:
 
 private:
 
-    Tile* getTileFromIndex(const QPoint& index);
+    Tile* getTileFromIndex(int tileX, int tileY);
 
-    inline QPoint getTilePos(const QPoint& idx) const;
-    inline QPoint getTileIndex(const QPoint& pos) const;
-    inline QPointF getTileFIndex(const QPoint& pos) const;
+    inline QPoint getTilePos(const TileIndex& index) const;
+    inline TileIndex getTileIndex(const TileIndex& pos) const;
 
     /**
      * @brief getRectForPoint
@@ -169,7 +184,7 @@ private:
 
     BlitRect mTileBounds;
 
-    QHash<QString, Tile*> mTiles;
+    QHash<TileIndex, Tile*> mTiles;
 
 //    Surface mSurface;
     QImage mCachedSurface;
