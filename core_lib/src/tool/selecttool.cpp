@@ -42,40 +42,47 @@ void SelectTool::loadSettings()
 
 QCursor SelectTool::cursor()
 {
+    // Don't update cursor while we're moving the selection
+    if (mScribbleArea->isPointerInUse()) { return mCursorPixmap; }
+
+    mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
     MoveMode mode = mEditor->select()->getMoveMode();
 
-    QPixmap cursorPixmap = QPixmap(24, 24);
-
-    cursorPixmap.fill(QColor(255, 255, 255, 0));
-    QPainter cursorPainter(&cursorPixmap);
+    mCursorPixmap.fill(QColor(255, 255, 255, 0));
+    QPainter cursorPainter(&mCursorPixmap);
     cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
-
-    switch(mode)
-    {
-    case MoveMode::TOPLEFT:
-    case MoveMode::BOTTOMRIGHT:
-    {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-left.svg"));
-        break;
+    QPoint hotOffset;
+    if (mode != MoveMode::NONE) {
+        QPixmap iconPix;
+        switch(mode)
+        {
+            case MoveMode::TOPLEFT:
+            case MoveMode::BOTTOMRIGHT:
+            {
+                iconPix = QPixmap("://icons/new/svg/cursor-diagonal-left.svg");
+                break;
+            }
+            case MoveMode::TOPRIGHT:
+            case MoveMode::BOTTOMLEFT:
+            {
+                iconPix = QPixmap("://icons/new/svg/cursor-diagonal-right.svg");
+                break;
+            }
+            case MoveMode::MIDDLE:
+            {
+                iconPix = QPixmap("://icons/new/svg/cursor-move.svg");
+                break;
+            }
+            default:
+                break;
+        }
+        cursorPainter.drawPixmap(QPoint(6, 6), iconPix);
+        hotOffset = { -1, -1 };
+    } else {
+        cursorPainter.drawPixmap(QPoint(), QPixmap(":icons/cross.png"));
+        hotOffset = { 10, 10 };
     }
-    case MoveMode::TOPRIGHT:
-    case MoveMode::BOTTOMLEFT:
-    {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-right.svg"));
-        break;
-    }
-    case MoveMode::MIDDLE:
-    {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
-        break;
-    }
-    default:
-        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
-        break;
-    }
-    cursorPainter.end();
-
-    return QCursor(cursorPixmap);
+    return QCursor(mCursorPixmap, hotOffset.x(), hotOffset.y());
 }
 
 void SelectTool::resetToDefault()
