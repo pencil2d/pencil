@@ -111,35 +111,32 @@ QPointF SelectionManager::getSelectionAnchorPoint() const
 
 void SelectionManager::setMoveModeForAnchorInRange(const QPointF& point)
 {
-    if (mSelectionPolygon.count() < 3) { return; }
+    MoveMode mode = MoveMode::NONE;
+    if (mSelectionPolygon.count() > 3) {
+        QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
 
-    QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
+        const double calculatedSelectionTol = selectionTolerance();
 
-    const double calculatedSelectionTol = selectionTolerance();
-
-    MoveMode mode;
-    if (QLineF(point, projectedPolygon[0]).length() < calculatedSelectionTol)
-    {
-        mode = MoveMode::TOPLEFT;
-    }
-    else if (QLineF(point, projectedPolygon[1]).length() < calculatedSelectionTol)
-    {
-        mode = MoveMode::TOPRIGHT;
-    }
-    else if (QLineF(point, projectedPolygon[2]).length() < calculatedSelectionTol)
-    {
-        mode = MoveMode::BOTTOMRIGHT;
-    }
-    else if (QLineF(point, projectedPolygon[3]).length() < calculatedSelectionTol)
-    {
-        mode = MoveMode::BOTTOMLEFT;
-    }
-    else if (projectedPolygon.containsPoint(point, Qt::WindingFill))
-    {
-        mode = MoveMode::MIDDLE;
-    }
-    else {
-        mode = MoveMode::NONE;
+        if (QLineF(point, projectedPolygon[0]).length() < calculatedSelectionTol)
+        {
+            mode = MoveMode::TOPLEFT;
+        }
+        else if (QLineF(point, projectedPolygon[1]).length() < calculatedSelectionTol)
+        {
+            mode = MoveMode::TOPRIGHT;
+        }
+        else if (QLineF(point, projectedPolygon[2]).length() < calculatedSelectionTol)
+        {
+            mode = MoveMode::BOTTOMRIGHT;
+        }
+        else if (QLineF(point, projectedPolygon[3]).length() < calculatedSelectionTol)
+        {
+            mode = MoveMode::BOTTOMLEFT;
+        }
+        else if (projectedPolygon.containsPoint(point, Qt::WindingFill))
+        {
+            mode = MoveMode::MIDDLE;
+        }
     }
 
     mMoveMode = mode;
