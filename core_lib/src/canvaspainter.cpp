@@ -38,7 +38,7 @@ CanvasPainter::~CanvasPainter()
 void CanvasPainter::setCanvas(QPixmap* canvas)
 {
     Q_ASSERT(canvas);
-    if (mCanvas == nullptr || mCanvasSize != canvas->size()) {
+    if (mCanvas == nullptr || mCanvas->size() != canvas->size()) {
 
         mCanvas = canvas;
         mPostLayersPixmap = QPixmap(mCanvas->size());
@@ -50,7 +50,6 @@ void CanvasPainter::setCanvas(QPixmap* canvas)
         mPostLayersPixmap.fill(Qt::transparent);
         mOnionSkinPixmap = QPixmap(mCanvas->size());
         mOnionSkinPixmap.fill(Qt::transparent);
-        mCanvasSize = canvas->size();
     }
 }
 
@@ -85,29 +84,29 @@ void CanvasPainter::ignoreTransformedSelection()
 
 void CanvasPainter::paintCached(const QRect& blitRect)
 {
-    QPainter preLayerPainter;
-    QPainter mainPainter;
-    QPainter postLayerPainter;
-
-    initializePainter(mainPainter, *mCanvas, blitRect);
-
     if (!mPreLayersPixmapCacheValid)
     {
+        QPainter preLayerPainter;
         initializePainter(preLayerPainter, mPreLayersPixmap, blitRect);
         renderPreLayers(preLayerPainter, blitRect);
         preLayerPainter.end();
         mPreLayersPixmapCacheValid = true;
     }
 
+    QPainter mainPainter;
+    initializePainter(mainPainter, *mCanvas, blitRect);
     mainPainter.setWorldMatrixEnabled(false);
     mainPainter.drawPixmap(blitRect, mPreLayersPixmap, blitRect);
     mainPainter.setWorldMatrixEnabled(true);
 
-    renderCurrentFrame(mainPainter, blitRect);
+    paintCurrentFrame(mainPainter, blitRect, mCurrentLayerIndex, mCurrentLayerIndex);
 
     if (!mPostLayersPixmapCacheValid)
     {
+        QPainter postLayerPainter;
+        initializePainter(postLayerPainter, mPostLayersPixmap, blitRect);
         renderPostLayers(postLayerPainter, blitRect);
+        postLayerPainter.end();
         mPostLayersPixmapCacheValid = true;
     }
 
@@ -147,29 +146,6 @@ void CanvasPainter::renderPreLayers(QPainter& painter, const QRect& blitRect)
     painter.setOpacity(1.0);
 }
 
-void CanvasPainter::renderCurrentFrame(QPainter& painter, const QRect& blitRect)
-{
-    int currentLayerIndex = mCurrentLayerIndex;
-    Layer* layer = mObject->getLayer(currentLayerIndex);
-
-    painter.setOpacity(1.0);
-
-    bool isCameraLayer = layer->type() == Layer::CAMERA;
-    if (layer->visible() == false)
-        return;
-
-    if (mOptions.eLayerVisibility == LayerVisibility::RELATED && !isCameraLayer) {
-        painter.setOpacity(calculateRelativeOpacityForLayer(currentLayerIndex, currentLayerIndex, mOptions.fLayerVisibilityThreshold));
-    }
-
-    switch (layer->type())
-    {
-    case Layer::BITMAP: { paintCurrentBitmapFrame(painter, blitRect, layer, true); break; }
-    case Layer::VECTOR: { paintCurrentVectorFrame(painter, blitRect, layer, true); break; }
-    default: break;
-    }
-}
-
 void CanvasPainter::renderPostLayers(QPainter& painter, const QRect& blitRect)
 {
     if (mOptions.eLayerVisibility != LayerVisibility::CURRENTONLY || mObject->getLayer(mCurrentLayerIndex)->type() == Layer::CAMERA)
@@ -206,7 +182,7 @@ void CanvasPainter::paint(const QRect& blitRect)
     mainPainter.drawPixmap(blitRect, mPreLayersPixmap, blitRect);
     mainPainter.setWorldMatrixEnabled(true);
 
-    renderCurrentFrame(mainPainter, blitRect);
+    paintCurrentFrame(mainPainter, blitRect, mCurrentLayerIndex, mCurrentLayerIndex);
 
     initializePainter(postLayerPainter, mPostLayersPixmap, blitRect);
     renderPostLayers(postLayerPainter, blitRect);
@@ -305,7 +281,7 @@ void CanvasPainter::paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPa
 void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer)
 {
     LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(layer);
-    BitmapImage* paintedImage = bitmapLayer->getLastBitmapImageAtFrame(mFrameNumber);;
+    BitmapImage* paintedImage = bitmapLayer->getLastBitmapImageAtFrame(mFrameNumber);
 
     if (paintedImage == nullptr) { return; }
     paintedImage->loadFile(); // Critical! force the BitmapImage to load the image
@@ -368,29 +344,6 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
 }
 
-
-void CanvasPainter::prescale(BitmapImage* bitmapImage)
-{
-    QImage origImage = bitmapImage->image()->copy();
-
-    // copy content of our unmodified qimage
-    // to our (not yet) scaled bitmap
-    mScaledBitmap = origImage.copy();
-
-    if (mOptions.scaling >= 1.0f)
-    {
-        // TODO: Qt doesn't handle huge upscaled qimages well...
-        // possible solution, myPaintLib canvas renderer splits its canvas up in chunks.
-    }
-    else
-    {
-        // map to correct matrix
-        QRect mappedOrigImage = mViewTransform.mapRect(bitmapImage->bounds());
-        mScaledBitmap = mScaledBitmap.scaled(mappedOrigImage.size(),
-                                             Qt::IgnoreAspectRatio, Qt::SmoothTransformation);
-    }
-}
-
 void CanvasPainter::paintTransformedSelection(QPainter& painter, BitmapImage* bitmapImage, const QRect& selection) const
 {
     // Make sure there is something selected
@@ -440,7 +393,7 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, const QRect& blitRect, 
     {
         Layer* layer = mObject->getLayer(i);
 
-        if (layer->visible() == false)
+        if (!layer->visible())
             continue;
 
         if (mOptions.eLayerVisibility == LayerVisibility::RELATED && !isCameraLayer)

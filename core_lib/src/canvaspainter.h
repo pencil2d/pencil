@@ -77,18 +77,14 @@ private:
      */
     void initializePainter(QPainter& painter, QPaintDevice& device, const QRect& blitRect);
 
-    void paintBackground();
     void paintOnionSkin(QPainter& painter, const QRect& blitRect);
 
     void renderPostLayers(QPainter& painter, const QRect& blitRect);
-    void renderCurrentFrame(QPainter& painter, const QRect& blitRect);
-    void renderOnionSkin(QPainter& painter, const QRect& blitRect);
     void renderPreLayers(QPainter& painter, const QRect& blitRect);
 
     void paintCurrentFrame(QPainter& painter, const QRect& blitRect, int startLayer, int endLayer);
 
     void paintTransformedSelection(QPainter& painter, BitmapImage* bitmapImage, const QRect& selection) const;
-    void prescale(BitmapImage* bitmapImage);
 
 private:
     void paintBitmapOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
@@ -102,7 +98,6 @@ private:
 
     const Object* mObject = nullptr;
     QPixmap* mCanvas = nullptr;
-    QSize mCanvasSize;
     QTransform mViewTransform;
     QTransform mViewInverse;
 

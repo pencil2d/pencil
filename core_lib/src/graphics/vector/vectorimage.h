@@ -27,7 +27,6 @@ GNU General Public License for more details.
 class Object;
 class QPainter;
 class QImage;
-class QPixmap;
 
 class VectorImage : public KeyFrame
 {
