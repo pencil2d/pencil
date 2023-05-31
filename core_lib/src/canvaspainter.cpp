@@ -227,6 +227,7 @@ void CanvasPainter::paintBitmapOnionSkinFrame(QPainter& painter, const QRect& bl
     BitmapImage* bitmapImage = bitmapLayer->getBitmapImageAtFrame(nFrame);
 
     if (bitmapImage == nullptr) { return; }
+    bitmapImage->loadFile(); // Critical! force the BitmapImage to load the image
 
     QPainter onionSkinPainter;
     initializePainter(onionSkinPainter, mOnionSkinPixmap, blitRect);
