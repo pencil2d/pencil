@@ -122,24 +122,24 @@ QCursor CameraTool::cursor()
     case CameraMoveType::TOPLEFT:
     case CameraMoveType::BOTTOMRIGHT:
     {
-        moveTypeImage = QImage("://icons/new/svg/cursor-diagonal-left.svg");
+        moveTypeImage = QImage("://icons/general/cursor-diagonal-left.svg");
         break;
     }
     case CameraMoveType::TOPRIGHT:
     case CameraMoveType::BOTTOMLEFT:
     {
-        moveTypeImage = QImage("://icons/new/svg/cursor-diagonal-right.svg");
+        moveTypeImage = QImage("://icons/general/cursor-diagonal-right.svg");
         break;
     }
     case CameraMoveType::ROTATION:
     {
-        moveTypeImage = QImage("://icons/new/svg/cursor-rotate.svg");
+        moveTypeImage = QImage("://icons/general/cursor-rotate.svg");
         break;
     }
     case CameraMoveType::PATH:
     case CameraMoveType::CENTER:
     {
-        moveTypeImage = QImage("://icons/new/svg/cursor-move.svg");
+        moveTypeImage = QImage("://icons/general/cursor-move.svg");
         break;
     }
     default:
