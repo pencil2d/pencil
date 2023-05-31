@@ -593,7 +593,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/onion/onionskin-blue.svg</normaloff>:/icons/themes/playful/onion/onionskin-blue.svg</iconset>
+     <normaloff>:/icons/themes/playful/onion/onionskin-red.svg</normaloff>:/icons/themes/playful/onion/onionskin-red.svg</iconset>
    </property>
    <property name="text">
     <string>Previous</string>
@@ -608,7 +608,7 @@
    </property>
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/onion/onionskin-red.svg</normaloff>:/icons/themes/playful/onion/onionskin-red.svg</iconset>
+     <normaloff>:/icons/themes/playful/onion/onionskin-blue.svg</normaloff>:/icons/themes/playful/onion/onionskin-blue.svg</iconset>
    </property>
    <property name="text">
     <string>Next</string>
