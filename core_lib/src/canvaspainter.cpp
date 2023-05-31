@@ -224,9 +224,10 @@ void CanvasPainter::paintBitmapOnionSkinFrame(QPainter& painter, const QRect& bl
 {
     LayerBitmap* bitmapLayer = static_cast<LayerBitmap*>(layer);
 
-    BitmapImage* bitmapImage = bitmapLayer->getLastBitmapImageAtFrame(nFrame, 0);
+    BitmapImage* bitmapImage = bitmapLayer->getBitmapImageAtFrame(nFrame);
 
     if (bitmapImage == nullptr) { return; }
+
     QPainter onionSkinPainter;
     initializePainter(onionSkinPainter, mOnionSkinPixmap, blitRect);
 
@@ -239,11 +240,9 @@ void CanvasPainter::paintVectorOnionSkinFrame(QPainter& painter, const QRect& bl
     LayerVector* vectorLayer = static_cast<LayerVector*>(layer);
 
     CANVASPAINTER_LOG("Paint Onion skin vector, Frame = %d", nFrame);
-    VectorImage* vectorImage = vectorLayer->getLastVectorImageAtFrame(nFrame, 0);
-    if (vectorImage == nullptr)
-    {
-        return;
-    }
+    VectorImage* vectorImage = vectorLayer->getVectorImageAtFrame(nFrame);
+    if (vectorImage == nullptr) { return; }
+
     QPainter onionSkinPainter;
     initializePainter(onionSkinPainter, mOnionSkinPixmap, blitRect);
 
