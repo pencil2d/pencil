@@ -27,30 +27,26 @@ GNU General Public License for more details.
 
 #include "painterutils.h"
 
-CanvasPainter::CanvasPainter()
+CanvasPainter::CanvasPainter(QPixmap& canvas) : mCanvas(canvas)
 {
+    reset();
 }
 
 CanvasPainter::~CanvasPainter()
 {
 }
 
-void CanvasPainter::setCanvas(QPixmap* canvas)
+void CanvasPainter::reset()
 {
-    Q_ASSERT(canvas);
-    if (mCanvas == nullptr || mCanvas->size() != canvas->size()) {
-
-        mCanvas = canvas;
-        mPostLayersPixmap = QPixmap(mCanvas->size());
-        mPreLayersPixmap = QPixmap(mCanvas->size());
-        mPreLayersPixmap.fill(Qt::transparent);
-        mCanvas->fill(Qt::transparent);
-        mCurrentLayerPixmap = QPixmap(mCanvas->size());
-        mCurrentLayerPixmap.fill(Qt::transparent);
-        mPostLayersPixmap.fill(Qt::transparent);
-        mOnionSkinPixmap = QPixmap(mCanvas->size());
-        mOnionSkinPixmap.fill(Qt::transparent);
-    }
+    mPostLayersPixmap = QPixmap(mCanvas.size());
+    mPreLayersPixmap = QPixmap(mCanvas.size());
+    mPreLayersPixmap.fill(Qt::transparent);
+    mCanvas.fill(Qt::transparent);
+    mCurrentLayerPixmap = QPixmap(mCanvas.size());
+    mCurrentLayerPixmap.fill(Qt::transparent);
+    mPostLayersPixmap.fill(Qt::transparent);
+    mOnionSkinPixmap = QPixmap(mCanvas.size());
+    mOnionSkinPixmap.fill(Qt::transparent);
 }
 
 void CanvasPainter::setViewTransform(const QTransform view, const QTransform viewInverse)
@@ -94,7 +90,7 @@ void CanvasPainter::paintCached(const QRect& blitRect)
     }
 
     QPainter mainPainter;
-    initializePainter(mainPainter, *mCanvas, blitRect);
+    initializePainter(mainPainter, mCanvas, blitRect);
     mainPainter.setWorldMatrixEnabled(false);
     mainPainter.drawPixmap(blitRect, mPreLayersPixmap, blitRect);
     mainPainter.setWorldMatrixEnabled(true);
@@ -114,10 +110,11 @@ void CanvasPainter::paintCached(const QRect& blitRect)
     mainPainter.drawPixmap(blitRect, mPostLayersPixmap, blitRect);
     mainPainter.setWorldMatrixEnabled(true);
 }
+
 void CanvasPainter::resetLayerCache()
 {
     mPreLayersPixmapCacheValid = false;
-    mPreLayersPixmapCacheValid = false;
+    mPostLayersPixmapCacheValid = false;
 }
 
 void CanvasPainter::initializePainter(QPainter& painter, QPaintDevice& device, const QRect& blitRect)
@@ -172,7 +169,7 @@ void CanvasPainter::paint(const QRect& blitRect)
     QPainter mainPainter;
     QPainter postLayerPainter;
 
-    initializePainter(mainPainter, *mCanvas, blitRect);
+    initializePainter(mainPainter, mCanvas, blitRect);
 
     initializePainter(preLayerPainter, mPreLayersPixmap, blitRect);
     renderPreLayers(preLayerPainter, blitRect);

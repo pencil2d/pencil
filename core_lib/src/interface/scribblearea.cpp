@@ -44,7 +44,7 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "overlaymanager.h"
 
-ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent)
+ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent), mCanvasPainter(mCanvas)
 {
     setObjectName("ScribbleArea");
 
@@ -795,6 +795,7 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
 
     invalidateCacheForFrame(mEditor->currentFrame());
     invalidatePainterCaches();
+    mCanvasPainter.reset();
 }
 
 void ScribbleArea::showLayerNotVisibleWarning()
@@ -1226,8 +1227,6 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
 
     mCanvasPainter.setOnionSkinOptions(onionSkinOptions);
     mCanvasPainter.setOptions(o);
-
-    mCanvasPainter.setCanvas(&mCanvas);
 
     ViewManager* vm = mEditor->view();
     SelectionManager* sm = mEditor->select();

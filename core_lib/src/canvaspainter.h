@@ -50,10 +50,10 @@ class CanvasPainter
 {
     Q_DECLARE_TR_FUNCTIONS(CanvasPainter)
 public:
-    explicit CanvasPainter();
+    explicit CanvasPainter(QPixmap& canvas);
     virtual ~CanvasPainter();
 
-    void setCanvas(QPixmap* canvas);
+    void reset();
     void setViewTransform(const QTransform view, const QTransform viewInverse);
 
     void setOnionSkinOptions(const OnionSkinPainterOptions& onionSkinOptions) { mOnionSkinPainterOptions = onionSkinOptions;}
@@ -86,7 +86,6 @@ private:
 
     void paintTransformedSelection(QPainter& painter, BitmapImage* bitmapImage, const QRect& selection) const;
 
-private:
     void paintBitmapOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
     void paintVectorOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
     void paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPainter, const QRect& blitRect, int nFrame, bool colorize, qreal frameOpacity);
@@ -97,7 +96,7 @@ private:
     CanvasPainterOptions mOptions;
 
     const Object* mObject = nullptr;
-    QPixmap* mCanvas = nullptr;
+    QPixmap& mCanvas;
     QTransform mViewTransform;
     QTransform mViewInverse;
 
