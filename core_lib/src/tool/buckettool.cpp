@@ -202,7 +202,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
     // Because we can change layer to on the fly but we do not act reactively on it
     // it's neccesary to invalidate layer cache on press event, otherwise the cache
     // will be drawn until a move event has been initiated.
-    mScribbleArea->invalidateCaches();
+    mScribbleArea->invalidatePainterCaches();
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
@@ -276,7 +276,7 @@ void BucketTool::paintBitmap()
             // otherwise dragging won't show until release event
             if (properties.bucketFillToLayerMode == 1)
             {
-                mScribbleArea->invalidateCaches();
+                mScribbleArea->invalidatePainterCaches();
             }
         }
     });
@@ -339,7 +339,6 @@ void BucketTool::drawStroke()
             QPainterPath path(p[0]);
             path.cubicTo(p[1], p[2], p[3]);
             mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }
