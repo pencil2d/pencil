@@ -52,10 +52,10 @@ class CanvasPainter
 {
     Q_DECLARE_TR_FUNCTIONS(CanvasPainter)
 public:
-    explicit CanvasPainter();
+    explicit CanvasPainter(QPixmap& canvas);
     virtual ~CanvasPainter();
 
-    void setCanvas(QPixmap* canvas);
+    void reset();
     void setViewTransform(const QTransform view, const QTransform viewInverse);
 
     void setOnionSkinOptions(const OnionSkinPainterOptions& onionSkinOptions) { mOnionSkinPainterOptions = onionSkinOptions;}
@@ -79,28 +79,26 @@ private:
      */
     void initializePainter(QPainter& painter, QPaintDevice& device, const QRect& blitRect);
 
-    void paintBackground();
-    void paintOnionSkin(QPainter& painter);
+    void paintOnionSkin(QPainter& painter, const QRect& blitRect);
 
     void renderPostLayers(QPainter& painter, const QRect& blitRect);
-    void renderCurLayer(QPainter& painter, const QRect& blitRect);
     void renderPreLayers(QPainter& painter, const QRect& blitRect);
 
     void paintCurrentFrame(QPainter& painter, const QRect& blitRect, int startLayer, int endLayer);
 
-    void paintBitmapFrame(QPainter&, const QRect& blitRect, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
-    void paintVectorFrame(QPainter&, Layer* layer, int nFrame, bool colorize, bool useLastKeyFrame, bool isCurrentFrame);
+    void paintTransformedSelection(QPainter& painter, BitmapImage* bitmapImage, const QRect& selection) const;
 
-    void paintTransformedSelection(QPainter& painter) const;
-    void prescale(BitmapImage* bitmapImage);
+    void paintBitmapOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
+    void paintVectorOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
+    void paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPainter, const QRect& blitRect, int nFrame, bool colorize, qreal frameOpacity);
 
-private:
+    void paintCurrentBitmapFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer);
+    void paintCurrentVectorFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer);
 
     CanvasPainterOptions mOptions;
 
     const Object* mObject = nullptr;
-    QPixmap* mCanvas = nullptr;
-    QSize mCanvasSize;
+    QPixmap& mCanvas;
     QTransform mViewTransform;
     QTransform mViewInverse;
 
@@ -120,6 +118,7 @@ private:
     QPixmap mPostLayersPixmap;
     QPixmap mPreLayersPixmap;
     QPixmap mCurrentLayerPixmap;
+    QPixmap mOnionSkinPixmap;
     bool mPreLayersPixmapCacheValid = false;
     bool mPostLayersPixmapCacheValid = false;
 

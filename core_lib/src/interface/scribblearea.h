@@ -193,7 +193,6 @@ public:
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
-//    void paintBitmapBufferRect(const QRect& rect);
     void paintCanvasCursor(QPainter& painter);
     void clearBitmapBuffer();
     void clearDrawingBuffer();
@@ -223,7 +222,7 @@ private:
      * Call this in most situations where the layer rendering order is affected.
      * Peviously known as setAllDirty.
     */
-    void invalidateCaches();
+    void invalidatePainterCaches();
 
     /** Invalidate cache for the given frame */
     void invalidateCacheForFrame(int frameNumber);
@@ -249,8 +248,6 @@ private:
     VectorImage* currentVectorImage(Layer* layer) const;
 
     MoveMode mMoveMode = MoveMode::NONE;
-
-    BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
 
     std::unique_ptr<StrokeManager> mStrokeManager;
 

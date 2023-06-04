@@ -545,6 +545,8 @@ void TiledBuffer::clear()
         }
     }
 
+    mTileBounds = BlitRect();
+
     emit this->onClearedSurface(this);
 }
 

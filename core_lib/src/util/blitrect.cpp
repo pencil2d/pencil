@@ -50,12 +50,17 @@ void BlitRect::extend(const QPoint p)
     }
 }
 
+void BlitRect::extend(const QRect& rect)
+{
+    extend(rect.topLeft(), rect.size());
+}
+
 void BlitRect::extend(const QPoint& p, const QSize& size)
 {
     if (mInitialized == false)
     {
-        setBottomLeft(p);
-        setTopRight(p);
+        setTopLeft(p);
+        setBottomRight(p + QPoint(size.width(), size.height()));
         mInitialized = true;
     }
     else

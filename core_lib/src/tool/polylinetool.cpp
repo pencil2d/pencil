@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "scribblearea.h"
 
-#include "strokemanager.h"
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
@@ -226,7 +225,6 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         {
             if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
             {
-                tempPath = mEditor->view()->mapCanvasToScreen(tempPath);
                 if (mScribbleArea->makeInvisible() == true)
                 {
                     pen.setWidth(0);
@@ -234,7 +232,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
                 }
                 else
                 {
-                    pen.setWidth(properties.width * mEditor->view()->scaling());
+                    pen.setWidth(properties.width);
                 }
             }
         }

@@ -102,7 +102,8 @@ create_package_windows() {
   echo "::endgroup::"
   echo "Copy OpenSSL DLLs"
   local xbits="-x${platform#win}"
-  cp "C:\\Program Files\\OpenSSL\\lib"{ssl,crypto}"-1_1${xbits/-x32/}.dll" Pencil2D/
+  local _xbits="_x${platform#win}"
+  cp "${IQTA_TOOLS}\\OpenSSL\\Win${_xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${xbits/-x32/}.dll" Pencil2D/
   echo "Create ZIP"
   "${WINDIR}\\System32\\tar" caf "pencil2d-${platform}-$1-$(date +%F).zip" Pencil2D
   echo "::set-output name=output-basename::pencil2d-${platform}-$1-$(date +%F)"

@@ -195,7 +195,6 @@ void EraserTool::paintAt(QPointF point)
         qreal brushWidth = properties.width * pressure;
         mCurrentWidth = brushWidth;
 
-        BlitRect rect(point.toPoint());
         mScribbleArea->drawBrush(point,
                                  brushWidth,
                                  properties.feather,
@@ -203,13 +202,6 @@ void EraserTool::paintAt(QPointF point)
                                  opacity,
                                  properties.useFeather,
                                  properties.useAA == ON);
-
-        int rad = qRound(brushWidth / 2 + 2);
-
-        //continuously update buffer to update stroke behind grid.
-//        mScribbleArea->paintBitmapBufferRect(rect);
-
-        mScribbleArea->refreshBitmap(rect, rad);
     }
 }
 
@@ -222,11 +214,6 @@ void EraserTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        for (int i = 0; i < p.size(); i++)
-        {
-            p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
-        }
-
         qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
         qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
         qreal brushWidth = properties.width * pressure;
@@ -247,7 +234,6 @@ void EraserTool::drawStroke()
         {
             QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
 
-            rect.extend(point.toPoint());
             mScribbleArea->drawBrush(point,
                                      brushWidth,
                                      properties.feather,
@@ -260,11 +246,6 @@ void EraserTool::drawStroke()
                 mLastBrushPoint = getCurrentPoint();
             }
         }
-
-        int rad = qRound(brushWidth / 2 + 2);
-
-//        mScribbleArea->paintBitmapBufferRect(rect);
-        mScribbleArea->refreshBitmap(rect, rad);
     }
     else if (layer->type() == Layer::VECTOR)
     {
@@ -276,7 +257,6 @@ void EraserTool::drawStroke()
         qreal brushWidth = mCurrentWidth;
 
         QPen pen(Qt::white, brushWidth, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin);
-        int rad = qRound(brushWidth) / 2 + 2;
 
         if (p.size() == 4)
         {
@@ -284,9 +264,7 @@ void EraserTool::drawStroke()
             path.cubicTo(p[1],
                          p[2],
                          p[3]);
-            qDebug() << path;
             mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }
@@ -294,12 +272,7 @@ void EraserTool::drawStroke()
 void EraserTool::removeVectorPaint()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP)
-    {
-        mScribbleArea->paintBitmapBuffer();
-        mScribbleArea->clearBitmapBuffer();
-    }
-    else if (layer->type() == Layer::VECTOR)
+    if (layer->type() == Layer::VECTOR)
     {
         mScribbleArea->clearBitmapBuffer();
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
