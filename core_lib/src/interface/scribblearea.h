@@ -168,6 +168,7 @@ public slots:
 
     void showLayerNotVisibleWarning();
     void updateTile(TiledBuffer* tiledBuffer, Tile* tile);
+    void loadTile(TiledBuffer* tiledBuffer, Tile* tile);
 
 protected:
     bool event(QEvent *event) override;

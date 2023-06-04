@@ -32,18 +32,11 @@ class TiledBuffer: public QObject
     Q_OBJECT
 public:
     TiledBuffer(QObject* parent = nullptr);
-    TiledBuffer(const TiledBuffer& pieces);
-    TiledBuffer(const QRect bounds);
     ~TiledBuffer();
-
-//    void refreshSurface();
-
-//    QImage surfaceAsImage();
 
     Status writeFile(const QString& filename);
 
-    void addTileToSurface(const QPixmap& pixmap, const QPoint& pos);
-//    void appendBitmapSurface(const Surface& surface);
+    void loadTile(const QImage& image, const QPoint& topLeft, Tile* tile);
 
     /**
      * @brief paintSurfaceUsing
@@ -97,28 +90,7 @@ public:
      */
     QPixmap copySurfaceAsPixmap(const QRect selection);
 
-    /**
-     * @brief eraseSelection
-     * Removes paint within a given selection
-     * Useful for selections.
-     * @param selection
-     */
-    void eraseSelection(const QRect selection);
-    void eraseSelection(const QPoint pos, QPixmap& pixmap, const QRect selection);
-    void fillSelection(const QPoint &pos, QPixmap &pixmap, QColor color, const QRect selection);
     void clear();
-
-    QList<QPixmap> pixmaps();
-    QList<QPoint> tilePositions();
-
-//    inline const QRect bounds() { return mSurface.bounds; }
-
-    QImage cachedSurfaceImage() { return mCachedSurface; }
-
-    void renderSurfaceImage();
-
-//    Surface surface() { return mSurface; }
-//    const Surface readOnlySurface() const {return mSurface; }
 
     bool isValid() { return !mTiles.isEmpty(); }
 
