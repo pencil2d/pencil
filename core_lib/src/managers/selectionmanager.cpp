@@ -111,35 +111,40 @@ QPointF SelectionManager::getSelectionAnchorPoint() const
 
 void SelectionManager::setMoveModeForAnchorInRange(const QPointF& point)
 {
-    MoveMode mode = MoveMode::NONE;
-    if (mSelectionPolygon.count() > 3) {
-        QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
-
-        const double calculatedSelectionTol = selectionTolerance();
-
-        if (QLineF(point, projectedPolygon[0]).length() < calculatedSelectionTol)
-        {
-            mode = MoveMode::TOPLEFT;
-        }
-        else if (QLineF(point, projectedPolygon[1]).length() < calculatedSelectionTol)
-        {
-            mode = MoveMode::TOPRIGHT;
-        }
-        else if (QLineF(point, projectedPolygon[2]).length() < calculatedSelectionTol)
-        {
-            mode = MoveMode::BOTTOMRIGHT;
-        }
-        else if (QLineF(point, projectedPolygon[3]).length() < calculatedSelectionTol)
-        {
-            mode = MoveMode::BOTTOMLEFT;
-        }
-        else if (projectedPolygon.containsPoint(point, Qt::WindingFill))
-        {
-            mode = MoveMode::MIDDLE;
-        }
+    if (mSelectionPolygon.count() < 4)
+    {
+        mMoveMode = MoveMode::NONE;
+        return;
     }
 
-    mMoveMode = mode;
+    QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
+
+    const double calculatedSelectionTol = selectionTolerance();
+
+    if (QLineF(point, projectedPolygon[0]).length() < calculatedSelectionTol)
+    {
+        mMoveMode = MoveMode::TOPLEFT;
+    }
+    else if (QLineF(point, projectedPolygon[1]).length() < calculatedSelectionTol)
+    {
+        mMoveMode = MoveMode::TOPRIGHT;
+    }
+    else if (QLineF(point, projectedPolygon[2]).length() < calculatedSelectionTol)
+    {
+        mMoveMode = MoveMode::BOTTOMRIGHT;
+    }
+    else if (QLineF(point, projectedPolygon[3]).length() < calculatedSelectionTol)
+    {
+        mMoveMode = MoveMode::BOTTOMLEFT;
+    }
+    else if (projectedPolygon.containsPoint(point, Qt::WindingFill))
+    {
+        mMoveMode = MoveMode::MIDDLE;
+    }
+    else
+    {
+        mMoveMode = MoveMode::NONE;
+    }
 }
 
 void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPointF& offset, qreal rotationOffset, int rotationIncrement)

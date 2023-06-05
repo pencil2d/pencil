@@ -51,38 +51,35 @@ QCursor SelectTool::cursor()
     mCursorPixmap.fill(QColor(255, 255, 255, 0));
     QPainter cursorPainter(&mCursorPixmap);
     cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
-    QPoint hotOffset;
-    if (mode != MoveMode::NONE) {
-        QPixmap iconPix;
-        switch(mode)
-        {
-            case MoveMode::TOPLEFT:
-            case MoveMode::BOTTOMRIGHT:
-            {
-                iconPix = QPixmap("://icons/new/svg/cursor-diagonal-left.svg");
-                break;
-            }
-            case MoveMode::TOPRIGHT:
-            case MoveMode::BOTTOMLEFT:
-            {
-                iconPix = QPixmap("://icons/new/svg/cursor-diagonal-right.svg");
-                break;
-            }
-            case MoveMode::MIDDLE:
-            {
-                iconPix = QPixmap("://icons/new/svg/cursor-move.svg");
-                break;
-            }
-            default:
-                break;
-        }
-        cursorPainter.drawPixmap(QPoint(6, 6), iconPix);
-        hotOffset = { -1, -1 };
-    } else {
-        cursorPainter.drawPixmap(QPoint(), QPixmap(":icons/cross.png"));
-        hotOffset = { 10, 10 };
+
+    switch(mode)
+    {
+    case MoveMode::TOPLEFT:
+    case MoveMode::BOTTOMRIGHT:
+    {
+        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-diagonal-left.svg"));
+        break;
     }
-    return QCursor(mCursorPixmap, hotOffset.x(), hotOffset.y());
+    case MoveMode::TOPRIGHT:
+    case MoveMode::BOTTOMLEFT:
+    {
+        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-diagonal-right.svg"));
+        break;
+    }
+    case MoveMode::MIDDLE:
+    {
+        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-move.svg"));
+        break;
+    }
+    case MoveMode::NONE:
+    {
+        cursorPainter.drawPixmap(QPoint(2, 2), QPixmap(":icons/cross.png"));
+        break;
+    }
+    default:
+        Q_UNREACHABLE();
+    }
+    return mCursorPixmap;
 }
 
 void SelectTool::resetToDefault()
