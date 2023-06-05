@@ -65,6 +65,8 @@ private:
     MoveMode mStartMoveMode = MoveMode::NONE;
     QRectF mSelectionRect;
     Layer* mCurrentLayer = nullptr;
+
+    QPixmap mCursorPixmap = QPixmap(24, 24);
 };
 
 #endif
