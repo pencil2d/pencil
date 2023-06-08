@@ -124,7 +124,6 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
     {
         if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
         {
-            mEditor->backup(typeName());
             mScribbleArea->handleDrawingOnEmptyFrame();
 
             if (layer->type() == Layer::VECTOR)
@@ -136,12 +135,9 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
                 {
                     mScribbleArea->toggleThinLines();
                 }
-            } else if (layer->type() == Layer::BITMAP) {
-                mScribbleArea->paintBitmapBuffer();
             }
             mPoints << getCurrentPoint();
             emit isActiveChanged(POLYLINE, true);
-
         }
     }
 }
@@ -162,6 +158,8 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
 {
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
+
+    mEditor->backup(typeName());
 
     endPolyline(mPoints);
     clearToolData();
@@ -252,7 +250,7 @@ void PolylineTool::cancelPolyline()
 void PolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    mScribbleArea->clearBitmapBuffer();
+//    mScribbleArea->clearBitmapBuffer();
 
     if (layer->type() == Layer::VECTOR)
     {

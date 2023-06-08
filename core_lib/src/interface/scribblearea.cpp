@@ -195,11 +195,10 @@ void ScribbleArea::updateTile(TiledBuffer* tiledBuffer, Tile* tile)
 
 void ScribbleArea::loadTile(TiledBuffer* tiledBuffer, Tile* tile)
 {
-    if (currentTool()->type() != ToolType::POLYLINE) {
-        const auto& bitmapImage = currentBitmapImage(mEditor->layers()->currentLayer());
-        const QImage& image = *bitmapImage->image();
-        mTiledBuffer.loadTile(image, bitmapImage->topLeft(), tile);
-    }
+    const auto& bitmapImage = currentBitmapImage(mEditor->layers()->currentLayer());
+    const QImage& image = *bitmapImage->image();
+    mTiledBuffer.loadTile(image, bitmapImage->topLeft(), tile);
+
     const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->pos(), tile->boundingRect().size()));
     update(mappedRect.toRect());
 }
@@ -1213,6 +1212,7 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     o.fLayerVisibilityThreshold = mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD);
     o.scaling = mEditor->view()->scaling();
     o.cmBufferBlendMode = mEditor->tools()->currentTool()->type() == ToolType::ERASER ? QPainter::CompositionMode_DestinationOut : QPainter::CompositionMode_SourceOver;
+    o.bIgnoreCanvasBuffer = currentTool()->type() == POLYLINE;
 
     OnionSkinPainterOptions onionSkinOptions;
     onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);

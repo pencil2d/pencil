@@ -296,9 +296,10 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
     if (isCurrentLayer) {
         if (isDrawing) {
 
-//        // paint the buffer which hasn't been applied to a bitmapImage yet
-//        currentBitmapPainter.setCompositionMode(mOptions.cmBufferBlendMode);
-//        currentBitmapPainter.drawImage(mBuffer->topLeft(), *mBuffer->image());
+            if (mOptions.bIgnoreCanvasBuffer) {
+                currentBitmapPainter.setCompositionMode(QPainter::CompositionMode_Source);
+                currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
+            }
 
             const auto tiles = mTiledBuffer->tiles();
             for (const Tile* tile : tiles) {
