@@ -646,7 +646,9 @@ void BitmapImage::drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::C
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
         painter.setBrush(brush);
-        painter.drawRect(rectangle.translated(-mBounds.topLeft()));
+
+        // Adjust the brush rectangle to be bigger than the bounds itself, otherwize there will be artifacts shown in some cases
+        painter.drawRect(rectangle.translated(-mBounds.topLeft()).adjusted(-1, -1, 1, 1));
         painter.end();
     }
     modification();

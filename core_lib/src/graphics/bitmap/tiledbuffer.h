@@ -39,31 +39,12 @@ public:
     void loadTile(const QImage& image, const QPoint& topLeft, Tile* tile);
 
     /**
-     * @brief paintSurfaceUsing
-     * Paint the surface using a given pixmap and position as input
-     * Currently useful for selections but might have other uses.
-     * @param inPixmap
-     * @param newPos
-     */
-    void paintSurfaceUsing(const QPixmap& inPixmap, const QPoint& newPos);
-
-    /**
      * @brief drawRectOnSurface
      * For test and debug currently
      * @param rect
      * @param color
      */
     void drawRect(QRect rect, QColor color);
-
-    /**
-     * @brief createNewSurfaceFromImage
-     * Creates a new surface from an input image or path
-     * Useful if you need to import a new image or load a project
-     * @param image
-     * @param topLeft
-     */
-    void createNewSurfaceFromImage(const QImage& image, const QPoint& topLeft);
-    void createNewSurfaceFromImage(const QString& path, const QPoint& topLeft);
 
     bool isTransparent(QImage image);
 
@@ -74,22 +55,6 @@ public:
      */
     void extendBoundaries(const QRect &rect);
 
-    /**
-     * @brief cutSurfaceAsPixmap
-     * Retrieves a pixmap from the surface you've selected and erases what's underneath
-     * @param selection
-     * @return a pixmap with the given paint within the selection
-     */
-    QPixmap cutSurfaceAsPixmap(const QRect selection);
-
-    /**
-     * @brief copySurfaceAsPixmap
-     * Retrives a pixmap from the surface you've selected and keeps the surface intact
-     * @param selection
-     * @return a pixmap with the given paint within the selection
-     */
-    QPixmap copySurfaceAsPixmap(const QRect selection);
-
     void clear();
 
     bool isValid() { return !mTiles.isEmpty(); }
@@ -97,6 +62,7 @@ public:
     void drawBrush(const QPointF& point, int brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     void drawPath(QPainterPath path, QPen pen, QBrush brush,
                   QPainter::CompositionMode cm, bool antialiasing);
+    void drawImage(const QImage& image, const QPointF& point, QPainter::CompositionMode cm, bool antialiasing);
 
     QHash<TileIndex, Tile*> tiles() const { return mTiles; }
 

@@ -1383,12 +1383,10 @@ void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF
     BitmapImage bmiSrcClip = bmiSource_->copy(srcRect.toAlignedRect());
     BitmapImage bmiTmpClip = bmiSrcClip; // TODO: find a shorter way
 
-    bmiTmpClip.drawRect(srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, mPrefs->isOn(SETTING::ANTIALIAS));
+    bmiTmpClip.drawRect(srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, true);
     bmiSrcClip.bounds().moveTo(trgRect.topLeft().toPoint());
     bmiTmpClip.paste(&bmiSrcClip, QPainter::CompositionMode_SourceIn);
-    mBufferImg->paste(&bmiTmpClip);
-
-    update(mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect().adjusted(-1, -1, 1, 1));
+    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.topLeft(), QPainter::CompositionMode_SourceOver, true);
 }
 
 void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)

@@ -342,7 +342,7 @@ void SmudgeTool::drawStroke()
         QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
-            targetImage.paste(mScribbleArea->mBufferImg);
+            targetImage.paste(&mScribbleArea->mTiledBuffer);
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             rect.extend(targetPoint.toPoint());
             mScribbleArea->blurBrush(&targetImage,
