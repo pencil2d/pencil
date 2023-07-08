@@ -80,11 +80,11 @@ MoveMode OverlayManager::getMoveModeForPoint(const QPointF& pos, const QTransfor
     {
         mode = MoveMode::PERSP_SINGLE;
     }
-    else if (mTwoPointPerspectiveEnabled && QLineF(pos, transform.inverted().map(mLeftPerspectivePoint)).length() < calculatedSelectionTol)
+    else if ((mTwoPointPerspectiveEnabled || mThreePointPerspectiveEnabled) && QLineF(pos, transform.inverted().map(mLeftPerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_LEFT;
     }
-    else if (mTwoPointPerspectiveEnabled && QLineF(pos, transform.inverted().map(mRightPerspectivePoint)).length() < calculatedSelectionTol)
+    else if ((mTwoPointPerspectiveEnabled || mThreePointPerspectiveEnabled) && QLineF(pos, transform.inverted().map(mRightPerspectivePoint)).length() < calculatedSelectionTol)
     {
         mode = MoveMode::PERSP_RIGHT;
     }
