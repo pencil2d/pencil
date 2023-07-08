@@ -101,23 +101,6 @@ double OverlayManager::selectionTolerance()
     return qAbs(mSelectionTolerance * mEditor->viewScaleInversed());
 }
 
-void OverlayManager::updatePerspective(int persp)
-{
-    switch (persp) {
-    case 1:
-        setMoveMode(MoveMode::PERSP_SINGLE);
-        break;
-    case 2:
-        setMoveMode(MoveMode::PERSP_LEFT);
-        break;
-    case 3:
-        setMoveMode(MoveMode::PERSP_LEFT);
-        break;
-    default:
-        break;
-    }
-}
-
 void OverlayManager::updatePerspective(const QPointF& point)
 {
     switch (mMoveMode) {
