@@ -75,7 +75,6 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     dir.mkpath(resultsPath);
 
     properties.bucketFillReferenceMode = 0;
-    properties.bucketFillToLayerMode = 0;
     properties.bucketFillExpandEnabled = false;
     properties.fillMode = 0;
 
@@ -92,7 +91,6 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
 
     // The dragging logic is based around that we only fill on either transparent or the same color as the fill color.
     SECTION("Filling on current layer - layer is not pre filled") {
-        properties.bucketFillToLayerMode = 0;
         Layer* strokeLayer = editor->layers()->currentLayer();
         SECTION("When reference is current layer, only transparent color is filled")
         {
@@ -121,7 +119,6 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     }
 
     SECTION("Filling on current layer - layer is pre-filled") {
-        properties.bucketFillToLayerMode = 0;
 
         // Fill mode is set to `replace` because it makes it easier to compare colors...
         properties.fillMode = 1;
@@ -157,75 +154,6 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
             image->writeFile(resultsPath + "test3a-second.png");
 
             verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, fillColor.rgba());
-        }
-    }
-
-    // The behaviour changes here because we'll be filling on the layer below, but that layer is blank,
-    // yet the reference mode tells the flood fill algorithm to fill using the pixel data from the the reference layer.
-    // In this case it means that all pixels will be filled as we drag across the segments.
-    SECTION("Filling on layer below - layer is not pre-filled") {
-        properties.bucketFillToLayerMode = 1;
-
-        Layer* fillLayer = editor->layers()->currentLayer(-1);
-        SECTION("When reference is current layer, then all pixels not matching the fill color are filled once")
-        {
-            properties.bucketFillReferenceMode = 0;
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
-
-            // Verify that colors are correct on layer below
-            BitmapImage* image = static_cast<LayerBitmap*>(fillLayer)->getLastBitmapImageAtFrame(1);
-
-            image->writeFile(resultsPath + "test4a.png");
-
-            verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, qPremultiply(fillColor.rgba()));
-        }
-
-
-        SECTION("When reference is all layers, then all pixels not matching the fill color are filled")
-        {
-            properties.bucketFillReferenceMode = 1;
-
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
-
-            BitmapImage* image = static_cast<LayerBitmap*>(fillLayer)->getLastBitmapImageAtFrame(1);
-
-            image->writeFile(resultsPath + "test5a.png");
-
-            verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, qPremultiply(fillColor.rgba()));
-        }
-    }
-
-    SECTION("Filling on layer below - layer is pre-filled") {
-        properties.bucketFillToLayerMode = 1;
-        properties.fillMode = 1;
-
-        SECTION("when reference is all layers, then only pixels matching the fill color are filled")
-        {
-            properties.bucketFillReferenceMode = 1;
-
-            Layer* strokeLayer = editor->layers()->currentLayer();
-            Layer* fillLayer = editor->layers()->currentLayer(-1);
-
-            // Because the layer is blank, all pixels will be filled once
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
-            BitmapImage* image1 = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
-            image1->writeFile(resultsPath + "test6a-first.png");
-
-            fillColor = QColor(0,255,0,255);
-
-            // Changes fillTo mode to current layer
-            properties.bucketFillToLayerMode = 0;
-
-            editor->layers()->setCurrentLayer(strokeLayer);
-
-            // Now the layer has been filled with pixel data, so we'll only fill when the color matches the fill color
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
-
-            BitmapImage* image2 = static_cast<LayerBitmap*>(fillLayer)->getLastBitmapImageAtFrame(1);
-            image1->writeFile(resultsPath + "test6a-second.png");
-            image2->writeFile(resultsPath + "test6a-third.png");
-
-            verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image1, fillColor.rgba());
         }
     }
 }

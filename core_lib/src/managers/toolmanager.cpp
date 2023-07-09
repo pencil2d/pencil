@@ -251,19 +251,8 @@ void ToolManager::setBucketFillExpand(int expandValue)
     emit toolPropertyChanged(currentTool()->type(), BUCKETFILLEXPAND);
 }
 
-void ToolManager::setBucketFillToLayerMode(int layerMode)
-{
-    currentTool()->setFillToLayerMode(layerMode);
-    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERMODE);
-}
-
 void ToolManager::setBucketFillReferenceMode(int referenceMode)
 {
-    // If the bucket reference mode is current layer, enforce fillTo is also set to current layer
-    if (bucketReferenceModeIsCurrentLayer(referenceMode)) {
-        currentTool()->setFillToLayerMode(0);
-        emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERMODE);
-    }
     currentTool()->setFillReferenceMode(referenceMode);
     emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERREFERENCEMODE);
 }

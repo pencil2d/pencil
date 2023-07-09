@@ -49,12 +49,6 @@ BitmapBucket::BitmapBucket(Editor* editor,
 
     mTolerance = mProperties.toleranceEnabled ? static_cast<int>(mProperties.tolerance) : 0;
 
-    if (properties.bucketFillToLayerMode == 1)
-    {
-        auto result = findBitmapLayerBelow(initialLayer, initialLayerIndex);
-        mTargetFillToLayer = result.first;
-        mTargetFillToLayerIndex = result.second;
-    }
     Q_ASSERT(mTargetFillToLayer);
 
     mReferenceImage = *static_cast<BitmapImage*>(initialLayer->getLastKeyFrameAtPosition(frameIndex));
@@ -85,15 +79,13 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
     QRgb colorOfReferenceImage = mReferenceImage.constScanLine(checkPoint.x(), checkPoint.y());
     QRgb targetPixelColor = targetImage.constScanLine(checkPoint.x(), checkPoint.y());
 
-    if (targetPixelColor == mBucketColor &&(mProperties.fillMode == 1 || qAlpha(targetPixelColor) == 255))
+    if (targetPixelColor == mBucketColor && (mProperties.fillMode == 1 || qAlpha(targetPixelColor) == 255))
     {
         // Avoid filling if target pixel color matches fill color
         // to avoid creating numerous seemingly useless undo operations
         return false;
     }
 
-    // Allow filling if the reference pixel matches the start reference color, and
-    // the target pixel is either transparent or matches the start reference color
     return BitmapImage::compareColor(colorOfReferenceImage, mStartReferenceColor, mTolerance, mPixelCache) &&
            (targetPixelColor == 0 || BitmapImage::compareColor(targetPixelColor, mStartReferenceColor, mTolerance, mPixelCache));
 }
