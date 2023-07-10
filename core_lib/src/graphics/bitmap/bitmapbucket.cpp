@@ -79,6 +79,11 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
     QRgb colorOfReferenceImage = mReferenceImage.constScanLine(checkPoint.x(), checkPoint.y());
     QRgb targetPixelColor = targetImage.constScanLine(checkPoint.x(), checkPoint.y());
 
+    // A normal click to fill should happen unconditionally, because the alternative is utterly confusing.
+    if (!mFilledOnce) {
+        return true;
+    }
+
     if (targetPixelColor == mBucketColor && (mProperties.fillMode == 1 || qAlpha(targetPixelColor) == 255))
     {
         // Avoid filling if target pixel color matches fill color
@@ -91,9 +96,6 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
         return false;
     }
 
-    if (!mFilledOnce) {
-        return true;
-    }
     return BitmapImage::compareColor(colorOfReferenceImage, mStartReferenceColor, mTolerance, mPixelCache) &&
            (targetPixelColor == 0 || BitmapImage::compareColor(targetPixelColor, mStartReferenceColor, mTolerance, mPixelCache));
 }
