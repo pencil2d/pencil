@@ -86,6 +86,9 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
         return false;
     }
 
+    if (!mFilledOnce) {
+        return true;
+    }
     return BitmapImage::compareColor(colorOfReferenceImage, mStartReferenceColor, mTolerance, mPixelCache) &&
            (targetPixelColor == 0 || BitmapImage::compareColor(targetPixelColor, mStartReferenceColor, mTolerance, mPixelCache));
 }
@@ -155,6 +158,7 @@ void BitmapBucket::paint(const QPointF updatedPoint, std::function<void(BucketSt
     delete replaceImage;
 
     state(BucketState::DidFillTarget, mTargetFillToLayerIndex, currentFrameIndex);
+    mFilledOnce = true;
 }
 
 BitmapImage BitmapBucket::flattenBitmapLayersToImage()

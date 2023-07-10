@@ -76,6 +76,7 @@ private:
     int mTolerance = 0;
 
     int mTargetFillToLayerIndex = -1;
+    int mFilledOnce = false;
 
     Properties mProperties;
 };
