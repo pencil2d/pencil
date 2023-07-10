@@ -84,6 +84,11 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint) const
         // Avoid filling if target pixel color matches fill color
         // to avoid creating numerous seemingly useless undo operations
         return false;
+    } else if (QColor::fromRgb(targetPixelColor) == QColor::fromRgb(mBucketColor) && mProperties.fillMode == 0) {
+        // Avoid filling if the target pixel color matches without the alpha component
+        // this fixes a case where filling a fully opaque pixel with a less opaque version of itself would cause undo
+        // fills to happen
+        return false;
     }
 
     if (!mFilledOnce) {
