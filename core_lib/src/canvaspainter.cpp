@@ -305,12 +305,15 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
             for (const Tile* tile : tiles) {
                 currentBitmapPainter.drawPixmap(tile->pos(), tile->pixmap());
             }
-        } else {
-            currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
         }
         if (mRenderTransform) {
             paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
         }
+    }
+
+    // When we're not showing the current layer or not drawing, paint the last known image reference
+    if (!isCurrentLayer || !isDrawing) {
+        currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
     }
 
     painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
