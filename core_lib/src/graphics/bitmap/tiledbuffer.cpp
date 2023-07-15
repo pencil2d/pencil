@@ -131,25 +131,6 @@ void TiledBuffer::drawPath(QPainterPath path, QPen pen, QBrush brush,
 {
     int width = pen.width();
 
-
-
-//    QPainter painter(image());
-//    painter.setCompositionMode(cm);
-//    painter.setRenderHint(QPainter::Antialiasing, antialiasing);
-//    painter.setPen(pen);
-//    painter.setBrush(brush);
-//    painter.setWorldMatrixEnabled(true);
-//    if (path.length() > 0)
-//    {
-//        painter.drawPath( path );
-//    }
-//    else
-//    {
-//        // forces drawing when points are coincident (mousedown)
-//        painter.drawPoint(static_cast<int>(path.elementAt(0).x), static_cast<int>(path.elementAt(0).y));
-//    }
-//    painter.end();
-
     int radius = (width + 1);
     float tilesize = UNIFORM_TILESIZE;
     QRectF pathRect = path.boundingRect();
@@ -213,16 +194,6 @@ void TiledBuffer::clear()
 
     emit this->onClearedSurface(this);
 }
-
-//Status TiledBuffer::writeFile(const QString& filename)
-//{
-//    if (mTiles.values().first()) {
-//        const QImage& image = surfaceAsImage();
-//        bool b = image.save(filename);
-//        return (b) ? Status::OK : Status::FAIL;
-//    }
-//    return Status::FAIL;
-//}
 
 QPoint TiledBuffer::getTilePos(const TileIndex& index) const
 {

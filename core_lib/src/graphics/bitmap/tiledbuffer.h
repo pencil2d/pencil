@@ -99,25 +99,6 @@ private:
      */
     QRect getRectForPoint(const QPoint& point) const;
 
-    /**
-     * @brief touchedTiles
-     * Will find and return points within and surrounding the selection
-     * @param QRect rect
-     * @return list of touched points
-     */
-    QList<QPoint> touchedTiles(const QRect& rect);
-
-//    /**
-//     * @brief BitmapSurface::intersectedSurface
-//     * Returns a Surface containing the tiles that intersected the region
-//     * @param rect
-//     * @return Surface
-//     */
-//    Surface intersectedSurface(const QRect rect);
-
-    QList<QPoint> scanForSurroundingTiles(const QRect& rect);
-    QList<QPoint> scanForTilesAtRect(const QRect& rect);
-
     const int UNIFORM_TILESIZE = 64;
 
     BlitRect mTileBounds;
