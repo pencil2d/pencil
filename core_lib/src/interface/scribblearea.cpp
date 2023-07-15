@@ -814,9 +814,9 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
     mDevicePixelRatio = devicePixelRatioF();
-    mCanvas = QPixmap(QSizeF(event->size() * mDevicePixelRatio).toSize());
+    mCanvas = QPixmap(QSizeF(size() * mDevicePixelRatio).toSize());
 
-    mEditor->view()->setCanvasSize(event->size());
+    mEditor->view()->setCanvasSize(size());
 
     invalidateCacheForFrame(mEditor->currentFrame());
     invalidatePainterCaches();

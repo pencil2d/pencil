@@ -112,6 +112,7 @@ void CanvasPainter::paintCached(const QRect& blitRect)
     mainPainter.drawPixmap(blitRect, mPostLayersPixmap, blitRect);
     mainPainter.setWorldMatrixEnabled(true);
 }
+
 void CanvasPainter::resetLayerCache()
 {
     mPreLayersPixmapCacheValid = false;
