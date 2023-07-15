@@ -153,10 +153,9 @@ void PenTool::pointerReleaseEvent(PointerEvent *event)
         drawStroke();
     }
 
-//    if (layer->type() == Layer::BITMAP)
-//        paintBitmapStroke();
-//    else if (layer->type() == Layer::VECTOR)
-//        paintVectorStroke(layer);
+    if (layer->type() == Layer::VECTOR) {
+        paintVectorStroke(layer);
+    }
     endStroke();
 }
 

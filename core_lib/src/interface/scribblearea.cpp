@@ -195,9 +195,15 @@ void ScribbleArea::updateTile(TiledBuffer* tiledBuffer, Tile* tile)
 
 void ScribbleArea::loadTile(TiledBuffer* tiledBuffer, Tile* tile)
 {
-    const auto& bitmapImage = currentBitmapImage(mEditor->layers()->currentLayer());
-    const QImage& image = *bitmapImage->image();
-    mTiledBuffer.loadTile(image, bitmapImage->topLeft(), tile);
+    Layer::LAYER_TYPE layerType = mEditor->layers()->currentLayer()->type();
+    if (layerType == Layer::BITMAP) {
+        const auto& bitmapImage = currentBitmapImage(mEditor->layers()->currentLayer());
+        const QImage& image = *bitmapImage->image();
+        mTiledBuffer.loadTile(image, bitmapImage->topLeft(), tile);
+    } else if (layerType == Layer::VECTOR) {
+
+        // Not used, we only use the buffer to paint the stroke before painting the real vector stroke
+    }
 
     const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->pos(), tile->boundingRect().size()));
     update(mappedRect.toRect());
@@ -1309,7 +1315,9 @@ void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
 
 void ScribbleArea::endStroke()
 {
-    paintBitmapBuffer();
+    if (mEditor->layers()->currentLayer()->type() == Layer::BITMAP) {
+        paintBitmapBuffer();
+    }
 
     int frameNumber = mEditor->currentFrame();
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {

@@ -180,6 +180,7 @@ void EraserTool::pointerReleaseEvent(PointerEvent *event)
     {
         drawStroke();
     }
+
     removeVectorPaint();
     endStroke();
 }

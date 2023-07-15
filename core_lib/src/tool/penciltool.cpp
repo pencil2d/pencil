@@ -29,7 +29,6 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "scribblearea.h"
-#include "blitrect.h"
 #include "layervector.h"
 #include "vectorimage.h"
 
@@ -186,11 +185,10 @@ void PencilTool::pointerReleaseEvent(PointerEvent *event)
         drawStroke();
     }
 
-//    Layer* layer = mEditor->layers()->currentLayer();
-//    if (layer->type() == Layer::BITMAP)
-//        paintBitmapStroke();
-//    else if (layer->type() == Layer::VECTOR)
-//        paintVectorStroke(layer);
+    Layer* layer = mEditor->layers()->currentLayer();
+    if (layer->type() == Layer::VECTOR) {
+        paintVectorStroke(layer);
+    }
     endStroke();
 }
 

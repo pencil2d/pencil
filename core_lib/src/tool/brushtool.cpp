@@ -173,11 +173,9 @@ void BrushTool::pointerReleaseEvent(PointerEvent *event)
         drawStroke();
     }
 
-//    mScribbleArea->paintBitmapBuffer();
-//    if (layer->type() == Layer::BITMAP)
-//        paintBitmapStroke();
-//    else if (layer->type() == Layer::VECTOR)
-//        paintVectorStroke();
+    if (layer->type() == Layer::VECTOR) {
+        paintVectorStroke(layer);
+    }
 
     endStroke();
 }
@@ -280,12 +278,10 @@ void BrushTool::drawStroke()
 
 // This function uses the points from DrawStroke
 // and turns them into vector lines.
-void BrushTool::paintVectorStroke()
+void BrushTool::paintVectorStroke(Layer* layer)
 {
     if (mStrokePoints.empty())
         return;
-
-    Layer* layer = mEditor->layers()->currentLayer();
 
     if (layer->type() == Layer::VECTOR && mStrokePoints.size() > -1)
     {

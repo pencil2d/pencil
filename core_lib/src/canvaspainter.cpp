@@ -327,7 +327,7 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     QPainter currentVectorPainter;
     initializePainter(currentVectorPainter, mCurrentLayerPixmap, blitRect);
 
-    const bool isDrawing = mBuffer && !mBuffer->bounds().isEmpty();
+    const bool isDrawing = mTiledBuffer->isValid();
 
     // Paint existing vector image to the painter
     vectorImage->paintImage(currentVectorPainter, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
@@ -335,7 +335,11 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     if (isCurrentLayer) {
         if (isDrawing) {
             currentVectorPainter.setCompositionMode(mOptions.cmBufferBlendMode);
-            currentVectorPainter.drawImage(mBuffer->topLeft(), *mBuffer->image());
+
+            const auto tiles = mTiledBuffer->tiles();
+            for (const Tile* tile : tiles) {
+                currentVectorPainter.drawPixmap(tile->pos(), tile->pixmap());
+            }
         } else if (mRenderTransform) {
             vectorImage->setSelectionTransformation(mSelectionTransform);
         }
