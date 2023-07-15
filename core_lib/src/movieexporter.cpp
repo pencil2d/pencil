@@ -175,6 +175,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     std::vector< LayerSound* > allSoundLayers = obj->getLayersByType<LayerSound>();
     for (LayerSound* layer : allSoundLayers)
     {
+        if (!layer->visible()) { continue; }
         layer->foreachKeyFrame([&allSoundClips](KeyFrame* key)
         {
             if (!key->fileName().isEmpty())
