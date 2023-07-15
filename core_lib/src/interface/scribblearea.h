@@ -185,7 +185,6 @@ protected:
 
 public:
     void drawPolyline(QPainterPath path, QPen pen, bool useAA);
-    void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA = true);
     void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
@@ -195,7 +194,6 @@ public:
 
     void paintBitmapBuffer();
     void paintCanvasCursor(QPainter& painter);
-    void clearBitmapBuffer();
     void clearDrawingBuffer();
     void refreshBitmap(const QRectF& rect, int rad);
     void refreshVector(const QRectF& rect, int rad);
@@ -211,7 +209,6 @@ public:
     /// on an empty frame, and if so, takes action according to use preference.
     void handleDrawingOnEmptyFrame();
 
-    BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
     TiledBuffer mTiledBuffer;
 
     QPixmap mCursorImg;

@@ -290,7 +290,7 @@ void BrushTool::paintVectorStroke()
     if (layer->type() == Layer::VECTOR && mStrokePoints.size() > -1)
     {
         // Clear the temporary pixel path
-        mScribbleArea->clearBitmapBuffer();
+        mScribbleArea->clearDrawingBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
         BezierCurve curve(mStrokePoints, mStrokePressures, tol);

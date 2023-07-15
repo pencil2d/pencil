@@ -281,7 +281,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
         return;
 
     // Clear the temporary pixel path
-    mScribbleArea->clearBitmapBuffer();
+    mScribbleArea->clearDrawingBuffer();
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
     BezierCurve curve(mStrokePoints, mStrokePressures, tol);

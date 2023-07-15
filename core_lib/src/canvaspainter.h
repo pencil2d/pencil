@@ -67,7 +67,7 @@ public:
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
 
-    void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer, TiledBuffer* tilledBuffer);
+    void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, TiledBuffer* tilledBuffer);
     void paint(const QRect& blitRect);
     void paintCached(const QRect& blitRect);
     void resetLayerCache();
@@ -108,7 +108,6 @@ private:
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
-    BitmapImage* mBuffer = nullptr;
     TiledBuffer* mTiledBuffer = nullptr;
 
     QImage mScaledBitmap;

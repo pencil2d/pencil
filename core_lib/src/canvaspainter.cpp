@@ -152,7 +152,7 @@ void CanvasPainter::renderPostLayers(QPainter& painter, const QRect& blitRect)
     }
 }
 
-void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer, TiledBuffer* tiledBuffer)
+void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, TiledBuffer* tiledBuffer)
 {
     Q_UNUSED(rect)
     Q_ASSERT(object);
@@ -161,7 +161,6 @@ void CanvasPainter::setPaintSettings(const Object* object, int currentLayer, int
     CANVASPAINTER_LOG("Set CurrentLayerIndex = %d", currentLayer);
     mCurrentLayerIndex = currentLayer;
     mFrameNumber = frame;
-    mBuffer = buffer;
     mTiledBuffer = tiledBuffer;
 }
 

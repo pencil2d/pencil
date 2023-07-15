@@ -855,24 +855,14 @@ void ScribbleArea::paintBitmapBuffer()
     mTiledBuffer.clear();
 }
 
-void ScribbleArea::clearBitmapBuffer()
+void ScribbleArea::clearDrawingBuffer()
 {
-    mBufferImg->clear();
-}
-
-void ScribbleArea::clearDrawingBuffer() {
     mTiledBuffer.clear();
-}
-
-void ScribbleArea::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm)
-{
-    mBufferImg->drawLine(P1, P2, pen, cm, mPrefs->isOn(SETTING::ANTIALIAS));
 }
 
 void ScribbleArea::drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm)
 {
-    mBufferImg->drawPath(mEditor->view()->mapScreenToCanvas(path), pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
-    update(mEditor->view()->mapCanvasToScreen(mBufferImg->bounds()).toRect().adjusted(-1, -1, 1, 1));
+    mTiledBuffer.drawPath(mEditor->view()->mapScreenToCanvas(path), pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
 }
 
 void ScribbleArea::paintCanvasCursor(QPainter& painter)
@@ -1235,7 +1225,7 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
     mCanvasPainter.setTransformedSelection(sm->mySelectionRect().toRect(), sm->selectionTransform());
 
-    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, mBufferImg, &mTiledBuffer);
+    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, &mTiledBuffer);
 }
 
 void ScribbleArea::drawCanvas(int frame, QRect rect)
@@ -1438,9 +1428,7 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
             }
         }
     }
-    mBufferImg->paste(&bmiTmpClip);
-
-    update(mEditor->view()->mapCanvasToScreen(mBufferImg->bounds()).toRect().adjusted(-1, -1, 1, 1));
+    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.topLeft(), QPainter::CompositionMode_SourceOver, true);
 }
 
 /************************************************************************************/
