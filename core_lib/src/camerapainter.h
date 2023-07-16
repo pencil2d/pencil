@@ -37,26 +37,27 @@ class KeyFrame;
 class CameraPainter
 {
 public:
-    explicit CameraPainter();
+    explicit CameraPainter(QPixmap& canvas);
 
-    void paint() const;
-    void paintCached();
+    void paint(const QRect& blitRect);
+    void paintCached(const QRect& blitRect);
 
     void setOnionSkinPainterOptions(const OnionSkinPainterOptions& options) { mOnionSkinOptions = options; }
-    void setCanvas(QPixmap* canvas);
     void preparePainter(const Object* object, int layerIndex, int frameIndex, const QTransform& transform, bool isPlaying, LayerVisibility layerVisibility, float relativeLayerOpacityThreshold, qreal viewScale);
+    void reset();
+
     void resetCache();
 
 private:
-    void initializePainter(QPainter& painter, QPixmap& pixmap) const;
-    void paintVisuals(QPainter& painter) const;
-    void paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
-    void paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer) const;
+    void initializePainter(QPainter& painter, QPixmap& pixmap, const QRect& blitRect, bool blitEnabled);
+    void paintVisuals(QPainter& painter, const QRect& blitRect);
+    void paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect, const QRect& blitRect);
+    void paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer, const QRect& blitRect);
 
     const Object* mObject = nullptr;
-    QPixmap* mCanvas = nullptr;
+    QPixmap& mCanvas;
 
-    std::unique_ptr<QPixmap> mCachedPaint = nullptr;
+    QPixmap mCameraPixmap;
     QTransform mViewTransform;
 
     OnionSkinSubPainter mOnionSkinPainter;
@@ -69,6 +70,7 @@ private:
     qreal mViewScale = 0;
 
     bool mIsPlaying = false;
+    bool mCameraCacheValid = false;
 };
 
 #endif // CAMERAPAINTER_H
