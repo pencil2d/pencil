@@ -77,7 +77,7 @@ public:
     void drawBrush(const QPointF& point, int brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     void drawPath(QPainterPath path, QPen pen, QBrush brush,
                   QPainter::CompositionMode cm, bool antialiasing);
-    void drawImage(const QImage& image, const QPointF& point, QPainter::CompositionMode cm, bool antialiasing);
+    void drawImage(const QImage& image, const QRect& imageBounds, QPainter::CompositionMode cm, bool antialiasing);
 
     QHash<TileIndex, Tile*> tiles() const { return mTiles; }
 

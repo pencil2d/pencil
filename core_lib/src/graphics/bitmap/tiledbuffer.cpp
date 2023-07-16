@@ -93,16 +93,16 @@ void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, QPen pen, QBru
     }
 }
 
-void TiledBuffer::drawImage(const QImage& image, const QPointF& point, QPainter::CompositionMode cm, bool antialiasing) {
+void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPainter::CompositionMode cm, bool antialiasing) {
     float tilesize = UNIFORM_TILESIZE;
 
     float imageXRad = image.width();
     float imageYRad = image.height();
     // Gather the amount of tiles that fits the size of the brush width
-    int xLeft = qFloor((qFloor(point.x() - imageXRad)) / tilesize);
-    int xRight = qFloor((qFloor(point.x() + imageXRad)) / tilesize);
-    int yTop = qFloor(qFloor(point.y() - imageYRad) / tilesize);
-    int yBottom = qFloor(qFloor(point.y() + imageYRad) / tilesize);
+    int xLeft = qFloor((qFloor(imageBounds.left() - imageXRad)) / tilesize);
+    int xRight = qFloor((qFloor(imageBounds.right() + imageXRad)) / tilesize);
+    int yTop = qFloor(qFloor(imageBounds.top() - imageYRad) / tilesize);
+    int yBottom = qFloor(qFloor(imageBounds.bottom() + imageYRad) / tilesize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
@@ -116,7 +116,7 @@ void TiledBuffer::drawImage(const QImage& image, const QPointF& point, QPainter:
                 painter.translate(-tile->pos());
                 painter.setRenderHint(QPainter::Antialiasing, antialiasing);
                 painter.setCompositionMode(cm);
-                painter.drawImage(point, image);
+                painter.drawImage(imageBounds.topLeft(), image);
                 painter.end();
 
                 mTileBounds.extend(tile->pos(), tile->boundingRect().size());

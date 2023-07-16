@@ -1035,6 +1035,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     // paints the canvas
     painter.setWorldMatrixEnabled(false);
     painter.drawPixmap(QPoint(0, 0), mCanvas);
+//    painter.drawRect(event->rect());
 
     currentTool()->paint(painter);
 
@@ -1384,7 +1385,7 @@ void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF
     bmiTmpClip.drawRect(srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, true);
     bmiSrcClip.bounds().moveTo(trgRect.topLeft().toPoint());
     bmiTmpClip.paste(&bmiSrcClip, QPainter::CompositionMode_SourceIn);
-    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.topLeft(), QPainter::CompositionMode_SourceOver, true);
+    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.bounds(), QPainter::CompositionMode_SourceOver, true);
 }
 
 void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)
@@ -1436,7 +1437,7 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
             }
         }
     }
-    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.topLeft(), QPainter::CompositionMode_SourceOver, true);
+    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.bounds(), QPainter::CompositionMode_SourceOver, true);
 }
 
 /************************************************************************************/
