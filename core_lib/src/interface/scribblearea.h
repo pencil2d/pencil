@@ -68,7 +68,6 @@ public:
     Editor* editor() const { return mEditor; }
 
     void deleteSelection();
-    void displaySelectionProperties();
 
     void applyTransformedSelection();
     void cancelTransformedSelection();
@@ -139,8 +138,6 @@ public:
     BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
     void setCurrentTool(ToolType eToolMode);
-
-    void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
     bool isTabletInUse() const { return mTabletInUse; }
