@@ -189,12 +189,14 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 
 void ScribbleArea::updateTile(TiledBuffer* tiledBuffer, Tile* tile)
 {
+    Q_UNUSED(tiledBuffer);
     const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->pos(), tile->boundingRect().size()));
     update(mappedRect.toRect());
 }
 
 void ScribbleArea::loadTile(TiledBuffer* tiledBuffer, Tile* tile)
 {
+    Q_UNUSED(tiledBuffer)
     Layer::LAYER_TYPE layerType = mEditor->layers()->currentLayer()->type();
     if (layerType == Layer::BITMAP) {
         const auto& bitmapImage = currentBitmapImage(mEditor->layers()->currentLayer());
@@ -1035,7 +1037,6 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     // paints the canvas
     painter.setWorldMatrixEnabled(false);
     painter.drawPixmap(QPoint(0, 0), mCanvas);
-//    painter.drawRect(event->rect());
 
     currentTool()->paint(painter);
 
@@ -1269,7 +1270,7 @@ void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor,
 {
     QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
-    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_SourceOver, true);
+    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_SourceOver, useAA);
 }
 
 void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
@@ -1292,7 +1293,7 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, 
     {
         brush = QBrush(fillColor, Qt::SolidPattern);
     }
-    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, brush, QPainter::CompositionMode_SourceOver, true);
+    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, brush, QPainter::CompositionMode_SourceOver, useAA);
 }
 
 void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)

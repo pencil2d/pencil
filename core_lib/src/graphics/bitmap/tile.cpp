@@ -16,8 +16,6 @@ GNU General Public License for more details.
 
 #include "tile.h"
 
-#include <QDebug>
-
 Tile::Tile(QSize size):
     mTilePixmap(size)
 {
@@ -38,18 +36,7 @@ QRect Tile::boundingRect() const
     return mTilePixmap.rect();
 }
 
-void Tile::replaceTile(const QPixmap& pixmap)
-{
-    if (pixmap.isNull()) { return; }
-
-    mTilePixmap = pixmap;
-    mCacheValid = true;
-
-}
-
 void Tile::clear()
 {
-    mTilePixmap.fill(Qt::transparent); // image cache is transparent too, and aligned to the pixel table:
-    mCacheValid = true;
-    mDirty = false;
+    mTilePixmap.fill(Qt::transparent);
 }

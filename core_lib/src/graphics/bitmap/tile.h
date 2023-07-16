@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #ifndef TILE_H
 #define TILE_H
 
+#include <QPoint>
 #include <QPixmap>
 
 class Tile
@@ -33,17 +34,12 @@ public:
     QRect boundingRect() const;
 
     void clear();
-    void replaceTile(const QPixmap& pixmap);
 
-    bool isDirty() { return mDirty; }
-    void setDirty(bool dirty) { mDirty = dirty; }
     void setPos(const QPoint& pos) { m_pos = pos; }
     QPoint pos() const { return m_pos; }
 
 private:
     QPixmap    mTilePixmap;
-    bool      mCacheValid;
-    bool mDirty = false;
     QPoint m_pos;
 };
 

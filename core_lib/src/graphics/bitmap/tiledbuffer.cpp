@@ -15,12 +15,12 @@ GNU General Public License for more details.
 
 */
 #include "tiledbuffer.h"
-#include "QtGui/qpainterpath.h"
 
 #include <QDebug>
 
 #include <QPixmap>
 #include <QPainter>
+#include <QPainterPath>
 #include <QDebug>
 #include <QtMath>
 #include <QPainterPath>

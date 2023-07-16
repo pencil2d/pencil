@@ -216,7 +216,8 @@ void BitmapImage::paste(const TiledBuffer* tiledBuffer, QPainter::CompositionMod
     QPainter painter(image());
 
     painter.setCompositionMode(cm);
-    for (const Tile* item : tiledBuffer->tiles()) {
+    auto const tiles = tiledBuffer->tiles();
+    for (const Tile* item : tiles) {
         const QPixmap& tilePixmap = item->pixmap();
         const QPoint& tilePos = item->pos();
         painter.drawPixmap(tilePos-mBounds.topLeft(), tilePixmap);
@@ -647,7 +648,7 @@ void BitmapImage::drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::C
         painter.setPen(pen);
         painter.setBrush(brush);
 
-        // Adjust the brush rectangle to be bigger than the bounds itself, otherwize there will be artifacts shown in some cases
+        // Adjust the brush rectangle to be bigger than the bounds itself, otherwise there will be artifacts shown in some cases
         painter.drawRect(rectangle.translated(-mBounds.topLeft()).adjusted(-1, -1, 1, 1));
         painter.end();
     }

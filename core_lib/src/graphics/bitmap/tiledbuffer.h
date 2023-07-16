@@ -49,34 +49,21 @@ public:
     TiledBuffer(QObject* parent = nullptr);
     ~TiledBuffer();
 
-    Status writeFile(const QString& filename);
-
+    /** Loads the input tile into the tiledBuffer */
     void loadTile(const QImage& image, const QPoint& topLeft, Tile* tile);
 
-    /**
-     * @brief drawRectOnSurface
-     * For test and debug currently
-     * @param rect
-     * @param color
-     */
-    void drawRect(QRect rect, QColor color);
-
-    bool isTransparent(QImage image);
-
-    /**
-     * @brief extendBoundaries
-     * Extend boundaries of the surface if the input rectangle lies outside.
-     * @param rect
-     */
-    void extendBoundaries(const QRect &rect);
-
+    /** Clears the content of the tiled buffer */
     void clear();
 
+    /** Returns true if there are any tiles, otherwise false */
     bool isValid() { return !mTiles.isEmpty(); }
 
+    /** Draws a brush with the specified parameters to the tiled buffer */
     void drawBrush(const QPointF& point, int brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
+    /** Draws a path with the specified parameters to the tiled buffer */
     void drawPath(QPainterPath path, QPen pen, QBrush brush,
                   QPainter::CompositionMode cm, bool antialiasing);
+    /** Draws a image with the specified parameters to the tiled buffer */
     void drawImage(const QImage& image, const QRect& imageBounds, QPainter::CompositionMode cm, bool antialiasing);
 
     QHash<TileIndex, Tile*> tiles() const { return mTiles; }
@@ -85,10 +72,10 @@ public:
 
 
 signals:
-    void onUpdateTile(TiledBuffer *tiledBuffer, Tile* tile);
-    void onNewTile(TiledBuffer *tiledBuffer, Tile* tile);
-    void onClearTile(TiledBuffer *tiledBuffer, Tile* tile);
-    void onClearedSurface(TiledBuffer *tiledBuffer);
+    void onUpdateTile(TiledBuffer* tiledBuffer, Tile* tile);
+    void onNewTile(TiledBuffer* tiledBuffer, Tile* tile);
+    void onClearTile(TiledBuffer* tiledBuffer, Tile* tile);
+    void onClearedSurface(TiledBuffer* tiledBuffer);
 
 private:
 
@@ -119,9 +106,6 @@ private:
     BlitRect mTileBounds;
 
     QHash<TileIndex, Tile*> mTiles;
-
-//    Surface mSurface;
-    QImage mCachedSurface;
 
     bool mImageCacheValid = false;
 };
