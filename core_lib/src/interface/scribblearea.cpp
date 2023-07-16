@@ -1275,10 +1275,10 @@ void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor,
 
 void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
 {
-    drawBrush(thePoint, brushWidth, fixedBrushFeather, fillColor, opacity, true);
+    drawBrush(thePoint, brushWidth, fixedBrushFeather, fillColor, QPainter::CompositionMode_SourceOver, opacity, true);
 }
 
-void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColor, qreal opacity, bool usingFeather, bool useAA)
+void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather, bool useAA)
 {
     QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
@@ -1293,7 +1293,7 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, 
     {
         brush = QBrush(fillColor, Qt::SolidPattern);
     }
-    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, brush, QPainter::CompositionMode_SourceOver, useAA);
+    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, brush, compMode, useAA);
 }
 
 void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
