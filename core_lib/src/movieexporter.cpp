@@ -216,11 +216,22 @@ Status MovieExporter::assembleAudio(const Object* obj,
     panChannelLayout.chop(1);
     // Output arguments
     // Mix audio
-    args << "-filter_complex" << QString("%1%2 amerge=inputs=%3, pan=mono|c0=%4 [out]")
-            .arg(filterComplex).arg(amergeInput).arg(clipCount).arg(panChannelLayout);
+    args << "-filter_complex";
+    if (clipCount == 1)
+    {
+        // If there is only one sound clip there is no need to use amerge
+        // Prior to ffmpeg 3.2, amerge does not support inputs=1
+        filterComplex.chop(1); // Remove final semicolon since there are no more filters added after
+        args << filterComplex << "-map" << amergeInput;
+    }
+    else {
+        args << QString("%1%2 amerge=inputs=%3, pan=mono|c0=%4 [out]")
+                .arg(filterComplex).arg(amergeInput).arg(clipCount).arg(panChannelLayout);
+        args << "-map" << "[out]";
+    }
     // Convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
     // Supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
-    args << "-ar" << "44100" << "-acodec" << "pcm_s16le" << "-ac" << "2" << "-map" << "[out]" << "-y";
+    args << "-ar" << "44100" << "-acodec" << "pcm_s16le" << "-ac" << "2" << "-y";
     // Trim audio
     args << "-ss" << QString::number((startFrame - 1) / static_cast<double>(fps));
     args << "-to" << QString::number(endFrame / static_cast<double>(fps));
