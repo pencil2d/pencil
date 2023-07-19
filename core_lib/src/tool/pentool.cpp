@@ -163,8 +163,6 @@ void PenTool::pointerReleaseEvent(PointerEvent *event)
 // draw a single paint dab at the given location
 void PenTool::paintAt(QPointF point)
 {
-    //qDebug() << "Made a single dab at " << point;
-
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
@@ -176,11 +174,6 @@ void PenTool::paintAt(QPointF point)
                                brushWidth,
                                mEditor->color()->frontColor(),
                                properties.useAA);
-
-        int rad = qRound(brushWidth) / 2 + 2;
-
-        BlitRect rect(point.toPoint());
-        mScribbleArea->refreshBitmap(rect, rad);
     }
 }
 
@@ -193,11 +186,6 @@ void PenTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        for (int i = 0; i < p.size(); i++)
-        {
-            p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
-        }
-
         qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
         qreal brushWidth = properties.width * pressure;
         mCurrentWidth = brushWidth;
@@ -206,8 +194,6 @@ void PenTool::drawStroke()
         // Eg. stepsize should be a slider.. will have fixed (0.3) value for now.
         qreal brushStep = (0.5 * brushWidth);
         brushStep = qMax(1.0, brushStep);
-
-        BlitRect rect;
 
         QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
@@ -218,7 +204,6 @@ void PenTool::drawStroke()
         for (int i = 0; i < steps; i++)
         {
             QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
-            rect.extend(point.toPoint());
             mScribbleArea->drawPen(point,
                                    brushWidth,
                                    mEditor->color()->frontColor(),
@@ -229,21 +214,14 @@ void PenTool::drawStroke()
                 mLastBrushPoint = getCurrentPoint();
             }
         }
-
-        int rad = qRound(brushWidth) / 2 + 2;
-
-        mScribbleArea->paintBitmapBufferRect(rect);
-        mScribbleArea->refreshBitmap(rect, rad);
     }
     else if (layer->type() == Layer::VECTOR)
     {
         qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
         qreal brushWidth = properties.width * pressure;
 
-        int rad = qRound((brushWidth / 2 + 2) * mEditor->view()->scaling());
-
         QPen pen(mEditor->color()->frontColor(),
-                 brushWidth * mEditor->view()->scaling(),
+                 brushWidth,
                  Qt::SolidLine,
                  Qt::RoundCap,
                  Qt::RoundJoin);
@@ -253,7 +231,6 @@ void PenTool::drawStroke()
             QPainterPath path(p[0]);
             path.cubicTo(p[1], p[2], p[3]);
             mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }

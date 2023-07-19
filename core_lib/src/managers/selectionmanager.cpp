@@ -111,38 +111,40 @@ QPointF SelectionManager::getSelectionAnchorPoint() const
 
 void SelectionManager::setMoveModeForAnchorInRange(const QPointF& point)
 {
-    if (mSelectionPolygon.count() < 3) { return; }
+    if (mSelectionPolygon.count() < 4)
+    {
+        mMoveMode = MoveMode::NONE;
+        return;
+    }
 
     QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
 
     const double calculatedSelectionTol = selectionTolerance();
 
-    MoveMode mode;
     if (QLineF(point, projectedPolygon[0]).length() < calculatedSelectionTol)
     {
-        mode = MoveMode::TOPLEFT;
+        mMoveMode = MoveMode::TOPLEFT;
     }
     else if (QLineF(point, projectedPolygon[1]).length() < calculatedSelectionTol)
     {
-        mode = MoveMode::TOPRIGHT;
+        mMoveMode = MoveMode::TOPRIGHT;
     }
     else if (QLineF(point, projectedPolygon[2]).length() < calculatedSelectionTol)
     {
-        mode = MoveMode::BOTTOMRIGHT;
+        mMoveMode = MoveMode::BOTTOMRIGHT;
     }
     else if (QLineF(point, projectedPolygon[3]).length() < calculatedSelectionTol)
     {
-        mode = MoveMode::BOTTOMLEFT;
+        mMoveMode = MoveMode::BOTTOMLEFT;
     }
     else if (projectedPolygon.containsPoint(point, Qt::WindingFill))
     {
-        mode = MoveMode::MIDDLE;
+        mMoveMode = MoveMode::MIDDLE;
     }
-    else {
-        mode = MoveMode::NONE;
+    else
+    {
+        mMoveMode = MoveMode::NONE;
     }
-
-    mMoveMode = mode;
 }
 
 void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPointF& offset, qreal rotationOffset, int rotationIncrement)
@@ -150,7 +152,13 @@ void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPoint
     switch (mMoveMode)
     {
     case MoveMode::MIDDLE: {
-        translate(currentPoint - offset);
+        QPointF newOffset = currentPoint - mDragOrigin;
+
+        if (mLockAxis) {
+            mTranslation = offset + alignPositionToAxis(newOffset);
+        } else {
+            mTranslation = offset + newOffset;
+        }
         break;
     }
     case MoveMode::TOPLEFT:
@@ -252,7 +260,7 @@ void SelectionManager::scale(qreal sX, qreal sY)
     mScaleY = sY;
 }
 
-int SelectionManager::constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const
+int SelectionManager::constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const
 {
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
@@ -302,33 +310,15 @@ void SelectionManager::calculateSelectionTransformation()
     mSelectionTransform = t * s * r * t2;
 }
 
-QPointF SelectionManager::offsetFromAspectRatio(qreal offsetX, qreal offsetY) const
+QPointF SelectionManager::alignPositionToAxis(QPointF currentPoint) const
 {
-    QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
-    qreal width = QLineF(projectedPolygon[0], projectedPolygon[1]).dx();
-    qreal height = QLineF(projectedPolygon[0], projectedPolygon[3]).dy();
-    qreal factor = width / height;
-
-    if (mMoveMode == MoveMode::TOPLEFT || mMoveMode == MoveMode::BOTTOMRIGHT)
-    {
-        offsetY = offsetX / factor;
+    if (qAbs(currentPoint.y()) > qAbs(currentPoint.x())) {
+        // Align to y axis
+        return QPointF(0, currentPoint.y());
     }
-    else if (mMoveMode == MoveMode::TOPRIGHT || mMoveMode == MoveMode::BOTTOMLEFT)
-    {
-        offsetY = -(offsetX / factor);
-    }
-    else if (mMoveMode == MoveMode::MIDDLE)
-    {
-        qreal absX = offsetX;
-        if (absX < 0) { absX = -absX; }
 
-        qreal absY = offsetY;
-        if (absY < 0) { absY = -absY; }
-
-        if (absX > absY) { offsetY = 0; }
-        if (absY > absX) { offsetX = 0; }
-    }
-    return QPointF(offsetX, offsetY);
+    // Align to x axis
+    return QPointF(currentPoint.x(), 0);
 }
 
 /**

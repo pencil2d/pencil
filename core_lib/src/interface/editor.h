@@ -135,6 +135,7 @@ signals:
     void selectedFramesChanged();
 
     void updateTimeLine() const;
+    void updateTimeLineCached();
     void updateLayerCount();
     void updateBackup();
 
@@ -166,8 +167,8 @@ public: //slots
 
     void clearCurrentFrame();
 
-    bool importImage(const QString& filePath);
-    bool importGIF(const QString& filePath, int numOfImages = 0);
+    Status importImage(const QString& filePath);
+    Status importGIF(const QString& filePath, int numOfImages = 0);
     void restoreKey();
 
     void scrubNextKeyFrame();
@@ -223,8 +224,8 @@ public: //slots
     void resetAutoSaveCounter();
 
 private:
-    bool importBitmapImage(const QString&, int space = 0);
-    bool importVectorImage(const QString&);
+    Status importBitmapImage(const QString&, int space = 0);
+    Status importVectorImage(const QString&);
 
     void pasteToCanvas(BitmapImage* bitmapImage, int frameNumber);
     void pasteToCanvas(VectorImage* vectorImage, int frameNumber);

@@ -41,8 +41,6 @@ public:
     Status save(Object*) override;
     void workingLayerChanged(Layer*) override;
 
-    QPointF offsetFromAspectRatio(qreal offsetX, qreal offsetY) const;
-
     void flipSelection(bool flipVertical);
 
     void setSelection(QRectF rect, bool roundPixels=false);
@@ -51,6 +49,10 @@ public:
     void rotate(qreal angle, qreal lockedAngle);
     void scale(qreal sX, qreal sY);
     void maintainAspectRatio(bool state) { mAspectRatioFixed = state; }
+
+    /** @brief Locks movement either horizontally or vertically depending on drag direction
+     *  @param state */
+    void alignPositionToAxis(bool state) { mLockAxis = state; }
 
     void setMoveModeForAnchorInRange(const QPointF& point);
     MoveMode getMoveMode() const { return mMoveMode; }
@@ -102,7 +104,6 @@ public:
     QPolygonF mapToSelection(const QPolygonF& polygon) const { return mSelectionTransform.map(polygon); }
     QPolygonF mapFromLocalSpace(const QPolygonF& polygon) const { return mSelectionTransform.inverted().map(polygon); }
 
-
     // Vector selection
     VectorSelection vectorSelection;
 
@@ -111,6 +112,10 @@ public:
 
     void clearCurves() { mClosestCurves.clear(); };
     void clearVertices() { mClosestVertices.clear(); };
+
+    /// The point from where the dragging will be based of inside the selection area.
+    /// Not to be confused with the selection origin
+    void setDragOrigin(const QPointF point) { mDragOrigin = point; }
 
     const QList<int> closestCurves() const { return mClosestCurves; }
     const QList<VertexRef> closestVertices() const { return mClosestVertices; }
@@ -124,9 +129,16 @@ signals:
     void needDeleteSelection();
 
 private:
-    int constrainRotationToAngle(const qreal& rotatedAngle, const int& rotationIncrement) const;
+    /** @brief Aligns the input position to the nearest axis.
+     *  Eg. draggin along the x axis, will keep the selection to that axis.
+     * @param currentPosition the position of the cursor
+     * @return A point that is either horizontally or vertically aligned with the current position.
+     */
+    QPointF alignPositionToAxis(QPointF currentPoint) const;
+    int constrainRotationToAngle(const qreal rotatedAngle, const int rotationIncrement) const;
 
     bool mAspectRatioFixed = false;
+    bool mLockAxis = false;
     QPolygonF mSelectionPolygon;
     QRectF mOriginalRect;
 
@@ -137,6 +149,8 @@ private:
 
     QList<int> mClosestCurves;
     QList<VertexRef> mClosestVertices;
+
+    QPointF mDragOrigin;
 
     MoveMode mMoveMode = MoveMode::NONE;
     QTransform mSelectionTransform;

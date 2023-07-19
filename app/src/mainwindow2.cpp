@@ -68,7 +68,6 @@ GNU General Public License for more details.
 #include "repositionframesdialog.h"
 
 //#include "preview.h"
-//#include "timeline2.h"
 #include "errordialog.h"
 #include "filedialog.h"
 #include "importimageseqdialog.h"
@@ -171,12 +170,6 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
-    /*
-    mTimeline2 = new Timeline2;
-    mTimeline2->setObjectName( "Timeline2" );
-    mDockWidgets.append( mTimeline2 );
-    */
-
     mDockWidgets
         << mTimeLine
         << mColorBox
@@ -197,7 +190,6 @@ void MainWindow2::createDockWidgets()
 
         pWidget->setEditor(mEditor);
         pWidget->initUI();
-        pWidget->show();
         qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
@@ -229,8 +221,9 @@ void MainWindow2::createDockWidgets()
 
     for (BaseDockWidget* w : mDockWidgets)
     {
-        w->updateUI();
         w->setFloating(false);
+        w->show();
+        w->updateUI();
     }
 }
 
@@ -875,14 +868,11 @@ void MainWindow2::importImage()
         return;
     }
 
-    bool ok = mEditor->importImage(strFilePath);
-    if (!ok)
+    Status st = mEditor->importImage(strFilePath);
+    if (!st.ok())
     {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps."),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+        errorDialog.exec();
         return;
     }
 
@@ -986,29 +976,27 @@ void MainWindow2::importGIF()
     progress.show();
 
     QString strImgFileLower = gifDialog->getFilePath();
-    bool importOK = strImgFileLower.toLower().endsWith(".gif");
-
-    if (importOK)
+    if (!strImgFileLower.toLower().endsWith(".gif"))
     {
-        bool ok = mEditor->importGIF(strImgFileLower, space);
-        if (!ok)
-            importOK = false;
+        ErrorDialog errorDialog(tr("Import failed"), tr("You can only import files ending with .gif."));
+        errorDialog.exec();
+    }
+    else
+    {
+        Status st = mEditor->importGIF(strImgFileLower, space);
 
         progress.setValue(50);
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-    }
 
-    if (!importOK)
-    {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("was unable to import %1").arg(strImgFileLower),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
+        progress.setValue(100);
+        progress.close();
 
-    progress.setValue(100);
-    progress.close();
+        if (!st.ok())
+        {
+            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+            errorDialog.exec();
+        }
+    }
 
     mSuppressAutoSaveDialog = false;
 }
@@ -1495,7 +1483,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
-    connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::animationLengthChanged, pTimeline, &TimeLine::extendLength);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
 
@@ -1504,6 +1491,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
+    connect(pEditor, &Editor::updateTimeLineCached, pTimeline, &TimeLine::updateUICached);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);

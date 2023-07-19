@@ -39,12 +39,7 @@ setup_macos() {
 }
 
 setup_windows() {
-  # Only 64 bit OpenSSL comes pre-installed
-  if [ "${INPUT_ARCH%%_*}" = "win32" ]; then
-    echo "::group::Install OpenSSL"
-    choco install openssl.light --force --x86
-    echo "::endgroup::"
-  fi
+  : # Nothing to do here
 }
 
 "setup_$(echo "${RUNNER_OS}" | tr '[A-Z]' '[a-z]')"

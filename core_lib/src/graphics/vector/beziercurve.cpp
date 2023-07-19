@@ -279,7 +279,7 @@ void BezierCurve::setFilled(bool YesOrNo)
     mFilled = YesOrNo;
 }
 
-BezierCurve BezierCurve::transformed(QTransform transformation)
+BezierCurve BezierCurve::transformed(QTransform transformation) const
 {
     BezierCurve transformedCurve = *this; // copy the curve
     if (isSelected(-1)) { transformedCurve.setOrigin(transformation.map(origin)); }
@@ -621,7 +621,8 @@ QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
 
 QRectF BezierCurve::getBoundingRect()
 {
-    return getSimplePath().boundingRect();
+    qreal radius = getWidth() / 2;
+    return getSimplePath().boundingRect().adjusted(-radius, -radius, radius, radius);
 }
 
 void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, bool smooth)

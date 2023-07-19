@@ -232,6 +232,7 @@ void TimeLine::initUI()
 
     connect(editor(), &Editor::scrubbed, this, &TimeLine::updateFrame);
     connect(editor(), &Editor::frameModified, this, &TimeLine::updateContent);
+    connect(editor(), &Editor::framesModified, this, &TimeLine::updateContent);
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);
@@ -246,15 +247,10 @@ void TimeLine::updateUI()
     updateContent();
 }
 
-int TimeLine::getLength()
+void TimeLine::updateUICached()
 {
-    return mTracks->getFrameLength();
-}
-
-void TimeLine::setLength(int frame)
-{
-    mTracks->setFrameLength(frame);
-    updateLength();
+    mLayerList->update();
+    mTracks->update();
 }
 
 /** Extends the timeline frame length if necessary
@@ -310,7 +306,6 @@ void TimeLine::updateLayerView()
 
     mVScrollbar->setMinimum(0);
     mVScrollbar->setMaximum(qMax(0, mNumLayers - pageDisplay));
-    update();
     updateContent();
 }
 
@@ -322,7 +317,7 @@ void TimeLine::updateLayerNumber(int numberOfLayers)
 
 void TimeLine::updateLength()
 {
-    int frameLength = getLength();
+    int frameLength = mTracks->getFrameLength();
     mHScrollbar->setMaximum(qMax(0, frameLength - mTracks->width() / mTracks->getFrameSize()));
     mTimeControls->updateLength(frameLength);
     updateContent();

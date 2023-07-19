@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QString>
 #include <QCursor>
+#include <QPainter>
 #include <QPointF>
 #include <QHash>
 #include "pencildef.h"
@@ -126,13 +127,15 @@ public:
     virtual void setToleranceEnabled(const bool enabled);
     virtual void setFillExpand(const int fillExpandValue);
     virtual void setFillExpandEnabled(const bool enabled);
-    virtual void setFillToLayer(int layerMode);
+    virtual void setFillToLayerMode(int layerMode);
     virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
     virtual void setShowSelectionInfo(const bool b);
     virtual void setShowCameraPath(const bool showCameraPath);
     virtual void setPathDotColorType(const DotColorType dotColorType);
     virtual void resetCameraPath();
+
+    virtual void paint(QPainter& painter) { Q_UNUSED(painter) };
 
     virtual bool leavingThisTool() { return true; }
 
