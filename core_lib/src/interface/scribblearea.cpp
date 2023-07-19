@@ -62,6 +62,7 @@ ScribbleArea::~ScribbleArea()
 bool ScribbleArea::init()
 {
     mPrefs = mEditor->preference();
+    mPlayback = mEditor->playback();
     mDoubleClickTimer = new QTimer(this);
     mMouseFilterTimer = new QTimer(this);
 
@@ -188,13 +189,19 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 
 void ScribbleArea::updateCurrentFrame()
 {
-    updateFrame(mEditor->currentFrame());
+    if (mEditor->layers()->getIsPreview())
+        mEditor->layers()->blurCurrentFrame(mEditor->currentFrame());
+    else
+        updateFrame(mEditor->currentFrame());
 }
 
 void ScribbleArea::updateFrame(int frame)
 {
     Q_ASSERT(frame >= 0);
-    update();
+    if (mEditor->layers()->getIsPreview())
+        mEditor->layers()->blurCurrentFrame(mEditor->currentFrame());
+    else
+        update();
 }
 
 void ScribbleArea::invalidateCacheForDirtyFrames()

@@ -107,6 +107,8 @@ private:
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
     BitmapImage* mBuffer = nullptr;
+    BitmapImage* mCloneBuffer = nullptr;    // to clone original, so original is preserved
+    BitmapImage* mBlurBuffer = nullptr;     // the blurred image buffer
 
     QImage mScaledBitmap;
 

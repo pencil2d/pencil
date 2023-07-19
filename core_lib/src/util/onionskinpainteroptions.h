@@ -29,5 +29,6 @@ struct OnionSkinPainterOptions {
     int framesToSkinPrev = 0;
     int framesToSkinNext = 0;
     bool isAbsolute = false;
+    bool mNoPlaybackMode = false;
 };
 #endif // ONIONSKINPAINTEROPTIONS_H

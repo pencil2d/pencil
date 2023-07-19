@@ -15,6 +15,7 @@ GNU General Public License for more details.
 
 */
 #include "layervector.h"
+//#include "camera_dof.h"
 
 #include "vectorimage.h"
 #include <QDir>
@@ -62,6 +63,38 @@ void LayerVector::moveColor(int start, int end)
     });
 }
 
+VectorImage *LayerVector::getBlurredVector(int frame, qreal blur)
+{
+    VectorImage* image = static_cast<VectorImage*>(getKeyFrameWhichCovers(frame));
+    VectorImage* clone = image->clone();
+//    std::fast_gaussian_blur(image, clone, image., image->height(), 4, blur);
+    return clone;
+}
+/*
+qreal LayerVector::getBlur(qreal dist, int outputWidth, int currFrameWidth, qreal aperture)
+{
+    qreal factor = static_cast<qreal>(outputWidth) / static_cast<qreal>(currFrameWidth);
+    qreal hf_dist = std::getHyperfocalDistance(mStandardFocalLength * factor, aperture);
+
+    if (hf_dist <= getDistance() && hf_dist <= dist)
+        return 0.0;
+    qreal dof_near = std::getDOF_near(hf_dist, mStandardFocalLength * factor, dist);
+    qreal dof_far = std::getDOF_far(hf_dist, mStandardFocalLength * factor, dist);
+
+    if (dof_near <= getDistance() && getDistance() <= dof_far)
+        return 0.0;
+
+    if (dof_near > getDistance())
+    {
+        return qPow(mBaseNumber, (dof_near - getDistance())/dof_near);
+    }
+    else if (getDistance() > dof_far)
+    {
+        return qPow(mBaseNumber, (getDistance() - dof_far)/getDistance());
+    }
+    return 0.0;
+}
+*/
 void LayerVector::loadImageAtFrame(QString path, int frameNumber)
 {
     if (keyExists(frameNumber))

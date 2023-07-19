@@ -46,6 +46,7 @@ class BaseTool;
 class PointerEvent;
 class BitmapImage;
 class VectorImage;
+class PlaybackManager;
 
 
 class ScribbleArea : public QWidget
@@ -294,6 +295,7 @@ private:
     QPointF mTransformedCursorPos;
 
     PreferenceManager* mPrefs = nullptr;
+    PlaybackManager* mPlayback = nullptr;
 
     QPixmap mCanvas;
     CanvasPainter mCanvasPainter;

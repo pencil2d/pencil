@@ -161,7 +161,7 @@ namespace std
             }
         }
     }
-
+/*
     // version for kernels that are correctly sized, that is when r <= w
     template<typename T, int C>
     void horizontal_blur_extend_small_kernel(const T * in, T * out, const int w, const int h, const int r)
@@ -256,7 +256,7 @@ namespace std
             }
         }
     }
-
+*/
     //!
     //! \brief This function performs a single separable horizontal box blur pass with kernel crop border policy.
     //!
@@ -330,10 +330,10 @@ namespace std
         if constexpr(P == kExtend)
         {
             // horizontal_blur_extend<T,C>(in, out, w, h, r);   // generic version
-            if( r > w )
-                horizontal_blur_extend_large_kernel<T,C>(in, out, w, h, r); // large kernels version
-            else
-                horizontal_blur_extend_small_kernel<T,C>(in, out, w, h, r); // small kernels version
+//            if( r > w )
+//                horizontal_blur_extend_large_kernel<T,C>(in, out, w, h, r); // large kernels version
+//            else
+//                horizontal_blur_extend_small_kernel<T,C>(in, out, w, h, r); // small kernels version
         }
         else
         {

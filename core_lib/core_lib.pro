@@ -46,6 +46,7 @@ HEADERS +=  \
     src/interface/editor.h \
     src/interface/flowlayout.h \
     src/interface/layerpropertiesdialog.h \
+    src/interface/previewwindow.h \
     src/interface/recentfilemenu.h \
     src/interface/scribblearea.h \
     src/interface/timecontrols.h \
@@ -120,7 +121,7 @@ HEADERS +=  \
     src/qminiz.h \
     src/activeframepool.h \
     src/external/platformhandler.h \
-    src/selectionpainter.h
+    src/selectionpainter.h \
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/bitmap/bitmapbucket.cpp \
@@ -136,6 +137,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
     src/interface/layerpropertiesdialog.cpp \
+    src/interface/previewwindow.cpp \
     src/interface/recentfilemenu.cpp \
     src/interface/scribblearea.cpp \
     src/interface/timecontrols.cpp \
@@ -199,11 +201,12 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/miniz.cpp \
     src/qminiz.cpp \
     src/activeframepool.cpp \
-    src/selectionpainter.cpp
+    src/selectionpainter.cpp \
 
 FORMS += \
     ui/camerapropertiesdialog.ui \
-    ui/layerpropertiesdialog.ui
+    ui/layerpropertiesdialog.ui \
+    ui/previewwindow.ui
 
 win32 {
     INCLUDEPATH += src/external/win32

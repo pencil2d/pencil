@@ -294,7 +294,62 @@ void LayerCamera::approximateControlPointFor(int frame) const
 
 Camera *LayerCamera::interpolateCamera(Camera *cam)
 {
-    linearInterpolateTransform(cam);
+    if (keyFrameCount() == 0)
+        return cam;
+
+    int frameNumber = cam->pos();
+    Camera* camera1 = static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber - 1));
+
+    int nextFrame = getNextKeyFramePosition(frameNumber);
+    Camera* camera2 = static_cast<Camera*>(getLastKeyFrameAtPosition(nextFrame));
+
+    if (camera1 == nullptr && camera2 == nullptr)
+    {
+        return cam; // do nothing
+    }
+
+    else if (camera1 == nullptr && camera2 != nullptr)
+    {
+        cam->assign(*camera2);
+        return cam;
+    }
+
+    else if (camera2 == nullptr && camera1 != nullptr)
+    {
+        cam->assign(*camera1);
+        return cam;
+    }
+
+    if (camera1->compare(*camera2))
+    {
+        cam->assign(*camera1);
+        return cam;
+    }
+
+    double frame1 = camera1->pos();
+    double frame2 = camera2->pos();
+
+    // interpolation
+    qreal percent = getInterpolationPercent(camera1->getEasingType(), (frameNumber - frame1)/ (frame2 - frame1));
+
+    auto lerp = [](double f1, double f2, double percent) -> double
+    {
+        return f1 * (1.0 - percent) + f2 * percent;
+    };
+
+    QPointF point = getBezierPoint(camera1->translation(), camera2->translation(),
+                                   -camera1->getPathControlPoint(), percent);
+    double dx = point.x();
+    double dy = point.y();
+    double r = lerp(camera1->rotation(), camera2->rotation(), percent);
+    double s = lerp(camera1->scaling(), camera2->scaling(), percent);
+    double dist = lerp(camera1->getDistance(), camera2->getDistance(), percent);
+
+    cam->translate(dx, dy);
+    cam->rotate(r);
+    cam->scale(s);
+    cam->setDistance(dist);
+
     return cam;
 }
 

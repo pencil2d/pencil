@@ -57,6 +57,32 @@ QRect LayerBitmap::getFrameBounds(int frame)
     return image->bounds();
 }
 
+BitmapImage* LayerBitmap::getBlurredBitmap(BitmapImage* image, float blur)
+{
+    ulong size = image->width() * image->height() * 4;
+    uchar* new_image = new uchar[size];
+    uchar* old_image = new uchar[size];
+    for (ulong x = 0; x < size; x++)
+        old_image[x] = *image->image()->scanLine(x);
+
+    std::fast_gaussian_blur(old_image, new_image, image->width(), image->height(), 4, blur);
+
+    for (int y = 0; y < image->height(); y++)
+    {
+        for (int x = 0; x < image->width(); x++)
+        {
+            image->setPixel(x, y, qRgba(new_image[2],new_image[1],new_image[0],new_image[3]));
+            new_image += 4;
+        }
+    }
+
+    for (int i = 0; i < 40; i++)
+        qDebug() << "old: " << old_image[i] << " new: " << new_image[i];
+//    delete[] old_image;
+//    delete[] new_image;
+    return image;
+}
+
 // dist = distance setting on Camera in millimeters
 qreal LayerBitmap::getBlur(qreal dist, int outputWidth, int currFrameWidth, qreal aperture)
 {
@@ -67,19 +93,16 @@ qreal LayerBitmap::getBlur(qreal dist, int outputWidth, int currFrameWidth, qrea
         return 0.0;
     qreal dof_near = std::getDOF_near(hf_dist, mStandardFocalLength * factor, dist);
     qreal dof_far = std::getDOF_far(hf_dist, mStandardFocalLength * factor, dist);
-//    qDebug() << "aperture: " << aperture << " HfDist: " << hf_dist  << " Layer-dist: " << getDistance() << " Cam-dist: " << dist << " dof_near: " << dof_near << " dof_far: " << dof_far;
 
     if (dof_near <= getDistance() && getDistance() <= dof_far)
         return 0.0;
 
     if (dof_near > getDistance())
     {
-//        qDebug() << "dof_near - layerdist " << dof_near - getDistance() << " " << qPow(mBaseNumber, (dof_near - getDistance())/(dof_near - mMinDistance));
         return qPow(mBaseNumber, (dof_near - getDistance())/dof_near);
     }
     else if (getDistance() > dof_far)
     {
-//        qDebug() << "layerdist-dof_far " << getDistance() - dof_far << " " << qPow(mBaseNumber, (getDistance() - dof_far)/(mMaxDistance - dof_far));
         return qPow(mBaseNumber, (getDistance() - dof_far)/getDistance());
     }
     return 0.0;

@@ -21,6 +21,7 @@ GNU General Public License for more details.
 
 #include "log.h"
 #include "object.h"
+
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "bitmapimage.h"
@@ -138,7 +139,8 @@ void CanvasPainter::renderPreLayers(QPainter& painter)
         paintCurrentFrame(painter, 0, mCurrentLayerIndex - 1);
     }
 
-    paintOnionSkin(painter);
+    if (!mOnionSkinPainterOptions.mNoPlaybackMode)
+        paintOnionSkin(painter);
     painter.setOpacity(1.0);
 }
 
@@ -455,7 +457,10 @@ void CanvasPainter::paintCurrentFrame(QPainter& painter, int startLayer, int end
         CANVASPAINTER_LOG("  Render Layer[%d] %s", i, layer->name());
         switch (layer->type())
         {
-        case Layer::BITMAP: { paintBitmapFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break; }
+        case Layer::BITMAP:
+            {
+                paintBitmapFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break;
+            }
         case Layer::VECTOR: { paintVectorFrame(painter, layer, mFrameNumber, false, true, i == mCurrentLayerIndex); break; }
         default: break;
         }

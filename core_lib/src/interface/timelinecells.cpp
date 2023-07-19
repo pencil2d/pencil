@@ -1024,7 +1024,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                     if (current->type() == Layer::BITMAP
                             || current->type() == Layer::VECTOR)
                     {
-                        tip += ("'" + current->name() +"' Distance: " + QString::number(current->getDistance()/1000.0) + " m.\n");
+                        tip += tr("%1: Distance: %2 m.\n").arg(current->name(), QString::number(current->getDistance()/1000.0));
                     }
                 }
                 tip.chop(2);    // remove new line chars

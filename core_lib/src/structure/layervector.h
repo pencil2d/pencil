@@ -43,6 +43,9 @@ public:
     void removeColor(int index);
     void moveColor(int start, int end);
 
+    VectorImage* getBlurredVector(int frame, qreal blur);
+    qreal getBlur(qreal dist, int outputWidth, int currFrameWidth, qreal aperture);
+
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
     KeyFrame* createKeyFrame(int position, Object*) override;
@@ -50,6 +53,13 @@ protected:
 private:
     QString fileName(KeyFrame* key) const;
     bool needSaveFrame(KeyFrame* key, const QString& strSavePath);
+
+    qreal const mStandardFocalLength = 50.0;
+    qreal const mDofNearFactor = 20.0;
+    qreal const mDofFarFactor = 2;
+    int const mMaxDistance = 10000000;
+    int const mMinDistance = 500;
+    int const mBaseNumber = 80;
 };
 
 #endif

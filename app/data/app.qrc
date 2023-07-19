@@ -73,6 +73,8 @@
         <file>icons/new/svg/camera-move.svg</file>
         <file>icons/new/svg/camera-rotate.svg</file>
         <file>icons/new/svg/camera-scale.svg</file>
+        <file>icons/controls/preview_off-32.png</file>
+        <file>icons/controls/preview_on-32.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>icons/onion-blue.png</file>

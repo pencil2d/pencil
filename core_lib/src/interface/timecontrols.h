@@ -28,6 +28,7 @@ GNU General Public License for more details.
 class Editor;
 class PreferenceManager;
 class TimeLine;
+class PreviewWindow;
 
 class TimeControls : public QToolBar
 {
@@ -70,6 +71,8 @@ private:
     void loopStartValueChanged(int);
     void loopEndValueChanged(int);
     void updateSoundScrubIcon(bool soundScrubEnabled);
+    void gotoPreviewMode();
+    void previewMode();
 
     void noTimecodeText();
     void onlyFramesText();
@@ -83,6 +86,7 @@ private:
     QPushButton* mLoopButton = nullptr;
     QPushButton* mSoundButton = nullptr;
     QPushButton* mSoundScrubButton = nullptr;
+    QPushButton* mPreviewButton = nullptr;
     QSpinBox*    mFpsBox = nullptr;
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
@@ -100,9 +104,12 @@ private:
     QIcon mLoopIcon;
     QIcon mSoundIcon;
     QIcon mSoundScrubIcon;
+    QIcon mPreviewIcon;
     QIcon mJumpToEndIcon;
     QIcon mJumpToStartIcon;
 
+    PreviewWindow* mPreviewWindow = nullptr;
+    bool mPreviewOpen = false;
     TimeLine* mTimeline = nullptr;
     Editor* mEditor = nullptr;
     int mFps = 12;

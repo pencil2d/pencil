@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 #include "pencildef.h"
+#include "previewwindow.h"
 
 TimeControls::TimeControls(TimeLine* parent) : QToolBar(parent)
 {
@@ -103,6 +104,7 @@ void TimeControls::initUI()
     mLoopButton = new QPushButton(this);
     mSoundButton = new QPushButton(this);
     mSoundScrubButton = new QPushButton(this);
+    mPreviewButton = new QPushButton(this);
     mJumpToEndButton = new QPushButton(this);
     mJumpToStartButton = new QPushButton(this);
 
@@ -113,6 +115,8 @@ void TimeControls::initUI()
     mSoundScrubIcon = QIcon();
     mSoundScrubIcon.addFile(":icons/controls/soundscrub.png", QSize(), QIcon::Normal, QIcon::On);
     mSoundScrubIcon.addFile(":icons/controls/soundscrub-disabled.png", QSize(), QIcon::Normal, QIcon::Off);
+    mPreviewIcon = QIcon();
+    mPreviewIcon.addFile(":icons/controls/preview_on-32.png");
     mJumpToEndIcon = QIcon(":icons/controls/endplay.png");
     mJumpToStartIcon = QIcon(":icons/controls/startplay.png");
     mStartIcon = QIcon(":icons/controls/play.png");
@@ -121,6 +125,7 @@ void TimeControls::initUI()
     mLoopButton->setIcon(mLoopIcon);
     mSoundButton->setIcon(mSoundIcon);
     mSoundScrubButton->setIcon(mSoundScrubIcon);
+    mPreviewButton->setIcon(mPreviewIcon);
     mJumpToEndButton->setIcon(mJumpToEndIcon);
     mJumpToStartButton->setIcon(mJumpToStartIcon);
 
@@ -128,6 +133,7 @@ void TimeControls::initUI()
     mLoopButton->setToolTip(tr("Loop"));
     mSoundButton->setToolTip(tr("Sound on/off"));
     mSoundScrubButton->setToolTip(tr("Sound scrub on/off"));
+    mPreviewButton->setToolTip(tr("Preview window"));
     mJumpToEndButton->setToolTip(tr("Jump to the End", "Tooltip of the jump to end button"));
     mJumpToStartButton->setToolTip(tr("Jump to the Start", "Tooltip of the jump to start button"));
 
@@ -136,7 +142,6 @@ void TimeControls::initUI()
     mSoundButton->setChecked(true);
     mSoundScrubButton->setCheckable(true);
     mSoundScrubButton->setChecked(mEditor->preference()->isOn(SETTING::SOUND_SCRUB_ACTIVE));
-
 
     addWidget(mJumpToStartButton);
     addWidget(mPlayButton);
@@ -148,6 +153,7 @@ void TimeControls::initUI()
     addWidget(mLoopEndSpinBox);
     addWidget(mSoundButton);
     addWidget(mSoundScrubButton);
+    addWidget(mPreviewButton);
     addWidget(mTimecodeSelect);
     mTimecodeLabelAction = addWidget(mTimecodeLabel);
 
@@ -221,6 +227,8 @@ void TimeControls::makeConnections()
 
     connect(mSoundScrubButton, &QPushButton::clicked, this, &TimeControls::soundScrubToggled);
     connect(mSoundScrubButton, &QPushButton::clicked, this, &TimeControls::updateSoundScrubIcon);
+
+    connect(mPreviewButton, &QPushButton::clicked, this, &TimeControls::gotoPreviewMode);
 
     connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::fpsChanged);
     connect(mFpsBox, &QSpinBox::editingFinished, this, &TimeControls::onFpsEditingFinished);
@@ -318,6 +326,23 @@ void TimeControls::updateSoundScrubIcon(bool soundScrubEnabled)
         mEditor->playback()->setSoundScrubActive(false);
         mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, false);
     }
+}
+
+void TimeControls::gotoPreviewMode()
+{
+    if (mEditor->layers()->getIsPreview())
+        return;
+
+    mEditor->layers()->setIsPreview(true);
+    mPreviewWindow = new PreviewWindow();
+    mPreviewWindow->setAttribute(Qt::WA_DeleteOnClose);
+    mPreviewWindow->setCore(mEditor);
+    mPreviewWindow->setWindowFlags(mPreviewWindow->windowFlags() | Qt::WindowStaysOnTopHint);
+    mPreviewWindow->show();
+}
+
+void TimeControls::previewMode()
+{
 }
 
 void TimeControls::noTimecodeText()

@@ -40,6 +40,7 @@ public:
     void repositionFrame(QPoint point, int frame);
     QRect getFrameBounds(int frame);
 
+    BitmapImage* getBlurredBitmap(BitmapImage *image, float blur);
     qreal getBlur(qreal dist, int outputWidth, int currFrameWidth, qreal aperture);
 
 protected:

@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "layermanager.h"
 
+#include "bitmapimage.h"
 #include "camera.h"
 #include "object.h"
 #include "editor.h"
@@ -128,35 +129,6 @@ void LayerManager::setCurrentLayer(int layerIndex)
         mLastCameraLayerIdx = layerIndex;
     }
 
-    // TODO : erase the following. Only made to test BLUR calculations!
-    if (currentLayer()->type() == Layer::BITMAP)
-    {
-        LayerBitmap* layerBit = static_cast<LayerBitmap*>(editor()->layers()->currentLayer());
-        LayerCamera* layerCam = static_cast<LayerCamera*>(editor()->layers()->getLastCameraLayer());
-        int w = layerCam->getViewRect().width();
-        int first = layerCam->getPreviousKeyFramePosition(editor()->currentFrame());
-        int last  = layerCam->getNextKeyFramePosition(editor()->currentFrame());
-        bool b;
-        for (int i = first; i <= last; i++)
-        {
-            if (i != first && i != last)
-                b = layerCam->addNewKeyFrameAt(i);
-            else
-                b = true;
-            if (b)
-            {
-                Camera* cam = layerCam->getCameraAtFrame(i);
-                cam = layerCam->interpolateCamera(cam);
-                qDebug() << "FRAME: " << i << " BLUR: " << layerBit->getBlur(cam->getDistance(),
-                                                                             w,
-                                                                             w / cam->scaling(),
-                                                                             layerCam->getAperture());
-            }
-            if (i != first && i != last)
-                layerCam->removeKeyFrame(i);
-        }
-    }
-
 }
 
 void LayerManager::setCurrentLayer(Layer* layer)
@@ -237,6 +209,88 @@ void LayerManager::sortLayersByDistance(int id)
     } while (swaps > 0);
 
     setCurrentLayer(editor()->object()->findLayerById(id));
+}
+
+void LayerManager::blurCurrentFrame(int frame)
+{
+    auto start = std::chrono::system_clock::now();
+
+    LayerCamera* layerCam = static_cast<LayerCamera*>(getLastCameraLayer());
+    Q_ASSERT(layerCam);
+    int w = layerCam->getViewRect().width();
+    int h = layerCam->getViewRect().height();
+    BitmapImage* mainImage = new BitmapImage(QRect(0,0,w,h), QColor(Qt::transparent));
+
+    bool b = false;
+    for (int i = 1; i < count(); i++)
+    {
+
+        if (getLayer(i)->type() == Layer::BITMAP)
+        {
+            LayerBitmap* layer = static_cast<LayerBitmap*>(getLayer(i));
+            BitmapImage* image = new BitmapImage(QRect(0,0,w,h), QColor(Qt::transparent));
+
+            qreal w = static_cast<qreal>(layerCam->getViewRect().width());
+            if (!layerCam->keyExists(frame))
+            {
+                layerCam->addNewKeyFrameAt(frame);
+                b = true;
+            }
+            Camera* cam = layerCam->getCameraAtFrame(frame);
+            cam = layerCam->interpolateCamera(cam);
+
+            qreal blur = layer->getBlur(cam->getDistance(), w, w / cam->scaling(), layerCam->getAperture());
+
+            if (blur > 0)
+            {
+                BitmapImage* imgClone = image->clone();
+                imgClone = layer->getBlurredBitmap(imgClone, blur);
+                image->paste(imgClone);
+                // put img on qgraphicsscene in preview window
+            }
+            else
+            {
+
+            }
+            mainImage->paste(image);
+
+            if (b)
+            {
+                layerCam->removeKeyFrame(frame);
+                b = false;
+            }
+        }
+        else if (getLayer(i)->type() == Layer::VECTOR)
+        {
+            LayerVector* layer = static_cast<LayerVector*>(getLayer(i));
+            LayerCamera* layerCam = static_cast<LayerCamera*>(getLastCameraLayer());
+            Q_ASSERT(layerCam);
+
+            qreal w = static_cast<qreal>(layerCam->getViewRect().width());
+            if (!layerCam->keyExists(frame))
+            {
+                layerCam->addNewKeyFrameAt(frame);
+                b = true;
+            }
+            Camera* cam = layerCam->getCameraAtFrame(frame);
+            cam = layerCam->interpolateCamera(cam);
+    //        qDebug() << "FRAME: " << frame << " BLUR: " << layerB->getBlur(cam->getDistance(), w, w / cam->scaling(), layerCam->getAperture());
+//            qreal blur = layer->getBlur(cam->getDistance(), w, w / cam->scaling(), layerCam->getAperture());
+/*
+            if (blur > 0)
+            {
+
+            }
+*/
+            if (b)
+            {
+                layerCam->removeKeyFrame(frame);
+                b = false;
+            }
+        }
+    }
+    auto end = std::chrono::system_clock::now();
+    qDebug() << "tid: " << std::chrono::duration_cast<std::chrono::microseconds>(end-start).count();
 }
 
 Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayerName)

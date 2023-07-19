@@ -78,6 +78,10 @@ public:
     QString nameSuggestLayer(const QString& name);
     int getLastLayerIndex() { return count() - 1; }
     void sortLayersByDistance(int id);
+    void blurCurrentFrame(int frame);
+
+    bool getIsPreview() { return mIsPreview; }
+    void setIsPreview(bool isPreview) { mIsPreview = isPreview; }
 
 signals:
     void currentLayerWillChange(int index);
@@ -88,6 +92,7 @@ signals:
 
 private:
     int getIndex(Layer*) const;
+    bool mIsPreview = false;   // set to false in Preview and Export mode
 
     int mLastCameraLayerIdx = 0;
 };
