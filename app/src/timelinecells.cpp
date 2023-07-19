@@ -236,17 +236,6 @@ void TimeLineCells::drawContent()
 
     QPainter painter(mCache);
 
-<<<<<<< HEAD:core_lib/src/interface/timelinecells.cpp
-    const Object* object = mEditor->object();
-
-    Q_ASSERT(object != nullptr);
-
-    const Layer* currentLayer = mEditor->layers()->currentLayer();
-//    qDebug() << currentLayer->name();
-    if (currentLayer == nullptr) return;
-
-=======
->>>>>>> master:app/src/timelinecells.cpp
     // grey background of the view
     const QPalette palette = QApplication::palette();
     painter.setPen(Qt::NoPen);
@@ -1114,10 +1103,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
 
             mEditor->layers()->notifyAnimationLengthChanged();
             emit mEditor->framesModified();
-<<<<<<< HEAD:core_lib/src/interface/timelinecells.cpp
-=======
             updateContent();
->>>>>>> master:app/src/timelinecells.cpp
         }
         else if (!mTimeLine->scrubbing && !mMovingFrames && !mClickSelecting && !mBoxSelecting)
         {
@@ -1127,10 +1113,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             // Add/remove from already selected
             currentLayer->toggleFrameSelected(frameNumber, multipleSelection);
             emit mEditor->selectedFramesChanged();
-<<<<<<< HEAD:core_lib/src/interface/timelinecells.cpp
-=======
             updateContent();
->>>>>>> master:app/src/timelinecells.cpp
         }
     }
     if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)

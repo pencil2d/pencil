@@ -195,7 +195,6 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/selectionpainter.cpp \
 
 FORMS += \
-    ui/camerapropertiesdialog.ui \
     ui/layerpropertiesdialog.ui \
     ui/previewwindow.ui
 

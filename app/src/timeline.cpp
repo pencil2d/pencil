@@ -28,7 +28,6 @@ GNU General Public License for more details.
 #include <QWheelEvent>
 #include <QSlider>
 #include <QDebug>
-#include "layer.h"
 #include "editor.h"
 #include "layermanager.h"
 #include "timecontrols.h"
