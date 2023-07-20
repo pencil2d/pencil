@@ -293,9 +293,15 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
     painter.setOpacity(paintedImage->getOpacity() - (1.0-painter.opacity()));
     painter.setWorldMatrixEnabled(false);
 
+    bool shouldPaintTransformedSelection = mRenderTransform;
     if (isCurrentLayer) {
         if (isDrawing) {
 
+            // Certain tools require being painted continously, for example the Polyline tool.
+            // The tiled buffer does not update the area outside of which it paints,
+            // so in the case in order to see the previously laid down polyline stroke
+            // the area around it must be drawn again before
+            // applying the new tiled output on top
             if (mOptions.bIgnoreCanvasBuffer) {
                 currentBitmapPainter.setCompositionMode(QPainter::CompositionMode_Source);
                 currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
@@ -306,14 +312,20 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
                 currentBitmapPainter.drawPixmap(tile->pos(), tile->pixmap());
             }
         }
-        if (mRenderTransform) {
-            paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
-        }
+    } else {
+        // We do not wish to draw selection transformations on anything but the current layer
+        shouldPaintTransformedSelection = false;
     }
 
-    // When we're not showing the current layer or not drawing, paint the last known image reference
+    // When we're drawing using a tool, the surface will be painted by the tiled buffer
+    // and thus we don't want to paint the current image again
+    // When we're on another layer though, the tiled buffer is not used
     if (!isCurrentLayer || !isDrawing) {
         currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
+    }
+
+    if (shouldPaintTransformedSelection) {
+        paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
     }
 
     painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
