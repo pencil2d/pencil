@@ -353,7 +353,7 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     painter.setWorldMatrixEnabled(false);
     painter.setTransform(QTransform());
 
-    // Remember to adjust opacity based on addition opacity value from image
+    // Remember to adjust opacity based on additional opacity value from the keyframe
     painter.setOpacity(vectorImage->getOpacity() - (1.0-painter.opacity()));
     painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
 }

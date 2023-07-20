@@ -250,7 +250,6 @@ void PolylineTool::cancelPolyline()
 void PolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-//    mScribbleArea->clearBitmapBuffer();
 
     if (layer->type() == Layer::VECTOR)
     {
@@ -277,4 +276,5 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     }
     mScribbleArea->endStroke();
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+    mScribbleArea->clearDrawingBuffer();
 }
