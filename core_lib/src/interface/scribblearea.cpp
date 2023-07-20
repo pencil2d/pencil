@@ -1268,8 +1268,6 @@ void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal 
 
 void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA)
 {
-    QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
-
     mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_SourceOver, useAA);
 }
 
@@ -1280,8 +1278,6 @@ void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBru
 
 void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather, bool useAA)
 {
-    QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
-
     QBrush brush;
     if (usingFeather)
     {
@@ -1386,7 +1382,7 @@ void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF
     bmiTmpClip.drawRect(srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, true);
     bmiSrcClip.bounds().moveTo(trgRect.topLeft().toPoint());
     bmiTmpClip.paste(&bmiSrcClip, QPainter::CompositionMode_SourceIn);
-    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.bounds(), QPainter::CompositionMode_SourceOver, true);
+    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.bounds(), QPainter::CompositionMode_SourceOver, mPrefs->isOn(SETTING::ANTIALIAS));
 }
 
 void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)
@@ -1438,7 +1434,7 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
             }
         }
     }
-    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.bounds(), QPainter::CompositionMode_SourceOver, true);
+    mTiledBuffer.drawImage(*bmiTmpClip.image(), bmiTmpClip.bounds(), QPainter::CompositionMode_SourceOver, mPrefs->isOn(SETTING::ANTIALIAS));
 }
 
 /************************************************************************************/
