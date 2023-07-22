@@ -1558,21 +1558,6 @@ BaseTool* ScribbleArea::currentTool() const
     return editor()->tools()->currentTool();
 }
 
-BaseTool* ScribbleArea::getTool(ToolType eToolType)
-{
-    return editor()->tools()->getTool(eToolType);
-}
-
-void ScribbleArea::setCurrentTool(ToolType eToolMode)
-{
-    Q_UNUSED(eToolMode)
-
-    // change cursor
-    setCursor(currentTool()->cursor());
-    updateCanvasCursor();
-    updateCurrentFrame();
-}
-
 void ScribbleArea::deleteSelection()
 {
     auto selectMan = mEditor->select();

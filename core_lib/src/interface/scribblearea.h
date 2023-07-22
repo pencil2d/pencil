@@ -136,8 +136,6 @@ public:
     void flipSelection(bool flipVertical);
 
     BaseTool* currentTool() const;
-    BaseTool* getTool(ToolType eToolMode);
-    void setCurrentTool(ToolType eToolMode);
 
     bool isMouseInUse() const { return mMouseInUse; }
     bool isTabletInUse() const { return mTabletInUse; }

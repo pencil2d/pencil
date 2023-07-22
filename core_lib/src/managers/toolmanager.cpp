@@ -103,6 +103,9 @@ void ToolManager::setDefaultTool()
 
 void ToolManager::setCurrentTool(ToolType eToolType)
 {
+    // We're already using this tool
+    if (mCurrentTool == getTool(eToolType)) { return; }
+
     if (mCurrentTool != nullptr)
     {
        mCurrentTool->leavingThisTool();
