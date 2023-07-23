@@ -58,17 +58,18 @@ Tile* TiledBuffer::getTileFromIndex(int tileX, int tileY)
     return selectedTile;
 }
 
-void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
+void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, int brushCursorWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
     QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
-    int radius = (brushWidth + 1);
     float tilesize = UNIFORM_TILESIZE;
 
+    int width = qMax(brushCursorWidth,brushWidth);
+
     // Gather the amount of tiles that fits the size of the brush width
-    int xLeft = qFloor((qFloor(point.x() - radius)) / tilesize);
-    int xRight = qFloor((qFloor(point.x() + radius)) / tilesize);
-    int yTop = qFloor(qFloor(point.y() - radius) / tilesize);
-    int yBottom = qFloor(qFloor(point.y() + radius) / tilesize);
+    int xLeft = qFloor((qFloor(point.x() - width)) / tilesize);
+    int xRight = qFloor((qFloor(point.x() + width)) / tilesize);
+    int yTop = qFloor(qFloor(point.y() - width) / tilesize);
+    int yBottom = qFloor(qFloor(point.y() + width) / tilesize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
@@ -126,20 +127,20 @@ void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPain
 }
 
 
-void TiledBuffer::drawPath(QPainterPath path, QPen pen, QBrush brush,
+void TiledBuffer::drawPath(QPainterPath path, int cursorWidth, QPen pen, QBrush brush,
                            QPainter::CompositionMode cm, bool antialiasing)
 {
-    int width = pen.width();
+    int pathWidth = pen.width();
 
-    int radius = (width + 1);
+    int width = (qMax(pathWidth,cursorWidth) + 1);
     float tilesize = UNIFORM_TILESIZE;
     QRectF pathRect = path.boundingRect();
 
     // Gather the amount of tiles that fits the size of the brush width
-    int xLeft = qFloor((qFloor(pathRect.left() - radius)) / tilesize);
-    int xRight = qFloor((qFloor(pathRect.right() + radius)) / tilesize);
-    int yTop = qFloor(qFloor(pathRect.top() - radius) / tilesize);
-    int yBottom = qFloor(qFloor(pathRect.bottom() + radius) / tilesize);
+    int xLeft = qFloor((qFloor(pathRect.left() - width)) / tilesize);
+    int xRight = qFloor((qFloor(pathRect.right() + width)) / tilesize);
+    int yTop = qFloor(qFloor(pathRect.top() - width) / tilesize);
+    int yBottom = qFloor(qFloor(pathRect.bottom() + width) / tilesize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {

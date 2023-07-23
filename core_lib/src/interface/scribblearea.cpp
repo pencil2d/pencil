@@ -868,11 +868,6 @@ void ScribbleArea::clearDrawingBuffer()
     mTiledBuffer.clear();
 }
 
-void ScribbleArea::drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm)
-{
-    mTiledBuffer.drawPath(mEditor->view()->mapScreenToCanvas(path), pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
-}
-
 void ScribbleArea::paintCanvasCursor(QPainter& painter)
 {
     QTransform view = mEditor->view()->getView();
@@ -922,9 +917,14 @@ void ScribbleArea::updateCanvasCursor()
     QPoint translatedPos = QPoint(static_cast<int>(mTransformedCursorPos.x() - mCursorCenterPos.x()),
                                   static_cast<int>(mTransformedCursorPos.y() - mCursorCenterPos.y()));
 
-    update(mTransCursImg.rect().adjusted(-1, -1, 1, 1)
-           .translated(translatedPos));
+    QRect updateRect = mCursorImg.rect().adjusted(-1, -1, 1, 1).translated(translatedPos);;
 
+
+    // When we're using a tool, the TiledBuffer will take care of this,
+    // we don't want to cause needless updates
+    if (!currentTool()->isActive()) {
+        update(updateRect);
+    }
 }
 
 void ScribbleArea::handleDrawingOnEmptyFrame()
@@ -1266,9 +1266,14 @@ void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal 
     gradient.setColorAt(1.0 - (offset / 100.0), QColor(r, g, b, mainColorAlpha - alphaAdded));
 }
 
+void ScribbleArea::drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm)
+{
+    mTiledBuffer.drawPath(mEditor->view()->mapScreenToCanvas(path), mEditor->view()->mapScreenToCanvas(mCursorImg.rect()).width(), pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
+}
+
 void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA)
 {
-    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_SourceOver, useAA);
+    mTiledBuffer.drawBrush(thePoint, brushWidth, mEditor->view()->mapScreenToCanvas(mCursorImg.rect()).width(), Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_SourceOver, useAA);
 }
 
 void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
@@ -1289,7 +1294,7 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, 
     {
         brush = QBrush(fillColor, Qt::SolidPattern);
     }
-    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, brush, compMode, useAA);
+    mTiledBuffer.drawBrush(thePoint, brushWidth, mEditor->view()->mapScreenToCanvas(mCursorImg.rect()).width(), Qt::NoPen, brush, compMode, useAA);
 }
 
 void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
@@ -1305,7 +1310,7 @@ void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
     blitRect.extend(updateRect);
 
     mTiledBuffer.clear();
-    mTiledBuffer.drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_SourceOver, useAA);
+    mTiledBuffer.drawPath(path, mEditor->view()->mapScreenToCanvas(mCursorImg.rect()).width(), pen, Qt::NoBrush, QPainter::CompositionMode_SourceOver, useAA);
 
     // And update only the affected area
     update(blitRect.adjusted(-1, -1, 1, 1));
