@@ -19,11 +19,9 @@ GNU General Public License for more details.
 #include <QRect>
 #include <QImage>
 #include <QPainter>
-
 #include <QHash>
 
 #include "blitrect.h"
-#include "pencilerror.h"
 #include "tile.h"
 
 struct TileIndex {
@@ -75,7 +73,7 @@ signals:
     void onUpdateTile(TiledBuffer* tiledBuffer, Tile* tile);
     void onNewTile(TiledBuffer* tiledBuffer, Tile* tile);
     void onClearTile(TiledBuffer* tiledBuffer, Tile* tile);
-    void onClearedSurface(TiledBuffer* tiledBuffer);
+    void onClearBuffer(TiledBuffer* tiledBuffer);
 
 private:
 
@@ -106,8 +104,6 @@ private:
     BlitRect mTileBounds;
 
     QHash<TileIndex, Tile*> mTiles;
-
-    bool mImageCacheValid = false;
 };
 
 #endif // TILEDBUFFER_H

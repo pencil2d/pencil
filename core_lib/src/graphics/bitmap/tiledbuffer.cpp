@@ -16,14 +16,9 @@ GNU General Public License for more details.
 */
 #include "tiledbuffer.h"
 
-#include <QDebug>
-
 #include <QPixmap>
-#include <QPainter>
 #include <QPainterPath>
-#include <QDebug>
 #include <QtMath>
-#include <QPainterPath>
 
 TiledBuffer::TiledBuffer(QObject* parent) : QObject(parent)
 {
@@ -59,17 +54,15 @@ Tile* TiledBuffer::getTileFromIndex(int tileX, int tileY)
 }
 
 void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, int brushCursorWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
-    QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
-
-    float tilesize = UNIFORM_TILESIZE;
-
-    int width = qMax(brushCursorWidth,brushWidth);
+    const QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+    const float tilesize = UNIFORM_TILESIZE;
+    const int width = qMax(brushCursorWidth,brushWidth);
 
     // Gather the amount of tiles that fits the size of the brush width
-    int xLeft = qFloor((qFloor(point.x() - width)) / tilesize);
-    int xRight = qFloor((qFloor(point.x() + width)) / tilesize);
-    int yTop = qFloor(qFloor(point.y() - width) / tilesize);
-    int yBottom = qFloor(qFloor(point.y() + width) / tilesize);
+    const int xLeft = qFloor((qFloor(point.x() - width)) / tilesize);
+    const int xRight = qFloor((qFloor(point.x() + width)) / tilesize);
+    const int yTop = qFloor(qFloor(point.y() - width) / tilesize);
+    const int yBottom = qFloor(qFloor(point.y() + width) / tilesize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
@@ -95,15 +88,14 @@ void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, int brushCurso
 }
 
 void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPainter::CompositionMode cm, bool antialiasing) {
-    float tilesize = UNIFORM_TILESIZE;
-
-    float imageXRad = image.width();
-    float imageYRad = image.height();
+    const float tilesize = UNIFORM_TILESIZE;
+    const float imageXRad = image.width();
+    const float imageYRad = image.height();
     // Gather the amount of tiles that fits the size of the brush width
-    int xLeft = qFloor((qFloor(imageBounds.left() - imageXRad)) / tilesize);
-    int xRight = qFloor((qFloor(imageBounds.right() + imageXRad)) / tilesize);
-    int yTop = qFloor(qFloor(imageBounds.top() - imageYRad) / tilesize);
-    int yBottom = qFloor(qFloor(imageBounds.bottom() + imageYRad) / tilesize);
+    const int xLeft = qFloor((qFloor(imageBounds.left() - imageXRad)) / tilesize);
+    const int xRight = qFloor((qFloor(imageBounds.right() + imageXRad)) / tilesize);
+    const int yTop = qFloor(qFloor(imageBounds.top() - imageYRad) / tilesize);
+    const int yBottom = qFloor(qFloor(imageBounds.bottom() + imageYRad) / tilesize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
@@ -130,17 +122,16 @@ void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPain
 void TiledBuffer::drawPath(QPainterPath path, int cursorWidth, QPen pen, QBrush brush,
                            QPainter::CompositionMode cm, bool antialiasing)
 {
-    int pathWidth = pen.width();
-
-    int width = (qMax(pathWidth,cursorWidth) + 1);
-    float tilesize = UNIFORM_TILESIZE;
-    QRectF pathRect = path.boundingRect();
+    const int pathWidth = pen.width();
+    const int width = (qMax(pathWidth,cursorWidth) + 1);
+    const float tilesize = UNIFORM_TILESIZE;
+    const QRectF pathRect = path.boundingRect();
 
     // Gather the amount of tiles that fits the size of the brush width
-    int xLeft = qFloor((qFloor(pathRect.left() - width)) / tilesize);
-    int xRight = qFloor((qFloor(pathRect.right() + width)) / tilesize);
-    int yTop = qFloor(qFloor(pathRect.top() - width) / tilesize);
-    int yBottom = qFloor(qFloor(pathRect.bottom() + width) / tilesize);
+    const int xLeft = qFloor((qFloor(pathRect.left() - width)) / tilesize);
+    const int xRight = qFloor((qFloor(pathRect.right() + width)) / tilesize);
+    const int yTop = qFloor(qFloor(pathRect.top() - width) / tilesize);
+    const int yBottom = qFloor(qFloor(pathRect.bottom() + width) / tilesize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
@@ -186,6 +177,7 @@ void TiledBuffer::clear()
             // Clear the content of the tile
             //
             tile->clear();
+            emit onClearTile(this, tile);
             mTiles.remove(i.key());
             delete tile;
         }
@@ -193,7 +185,7 @@ void TiledBuffer::clear()
 
     mTileBounds = BlitRect();
 
-    emit this->onClearedSurface(this);
+    emit onClearBuffer(this);
 }
 
 QPoint TiledBuffer::getTilePos(const TileIndex& index) const
