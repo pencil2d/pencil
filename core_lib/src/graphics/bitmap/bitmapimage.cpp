@@ -880,7 +880,9 @@ void BitmapImage::traceLine(BitmapImage* img, bool blackEnabled, bool redEnabled
                 else
                 {
                     if (blackEnabled && alphaValue > TRANSP_THRESHOLD)
+                    {
                         img->scanLine(x, y, blackline);
+                    }
                     else if (blackEnabled)
                         img->scanLine(x, y, transp);
                 }

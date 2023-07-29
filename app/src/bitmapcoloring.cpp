@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include "ui_bitmapcoloringwidget.h"
 #include "layermanager.h"
 #include "toolmanager.h"
-#include "selectionmanager.h"
 #include "app_util.h"
 
 
@@ -523,7 +522,7 @@ void BitmapColoring::prepareAndTraceLines()
 
     if (ui->cb3TraceAllKeyframes->isChecked())
     {
-        for (int i = sourceLayer->firstKeyFramePosition(); i <= sourceLayer->getMaxKeyFramePosition(); i++ )
+        for (int i = sourceLayer->firstKeyFramePosition(); i <= sourceLayer->getMaxKeyFramePosition(); i++)
         {
             if (sourceLayer->keyExists(i))
             {
@@ -584,6 +583,7 @@ void BitmapColoring::prepareLines()
     {
         return;
     }
+
     LayerManager* lMgr = mEditor->layers();
     LayerBitmap* colorLayer = nullptr;
     bool black;
@@ -593,6 +593,7 @@ void BitmapColoring::prepareLines()
     {
         colorLayer = mLayerBitmap;
     }
+
     // Method selector 2 = Coloring on separate layer
     else
     {
@@ -627,7 +628,7 @@ void BitmapColoring::prepareLines()
         return;
     }
 
-    mBitmapImage->traceLine(colorLayer->getBitmapImageAtFrame(mEditor->currentFrame()),
+    mBitmapImage->traceLine(mBitmapImage,
                             black,
                             mRedChecked,
                             mGreenChecked,
