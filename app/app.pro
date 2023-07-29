@@ -76,7 +76,6 @@ HEADERS += \
     src/predefinedsetmodel.h \
     src/pegbaralignmentdialog.h \
     src/shortcutfilter.h \
-    src/timeline2.h \
     src/actioncommands.h \
     src/preferencesdialog.h \
     src/filespage.h \
@@ -85,12 +84,17 @@ HEADERS += \
     src/timelinepage.h \
     src/toolspage.h \
     src/preview.h \
+    src/basedockwidget.h \
     src/colorbox.h \
     src/colorinspector.h \
     src/colorpalettewidget.h \
     src/colorwheel.h \
+    src/timeline.h \
+    src/timelinecells.h \
+    src/timecontrols.h \
+    src/cameracontextmenu.h \
+    src/camerapropertiesdialog.h \
     src/filedialog.h \
-    src/displayoptionwidget.h \
     src/pencil2d.h \
     src/exportmoviedialog.h \
     src/app_util.h \
@@ -112,7 +116,8 @@ HEADERS += \
     src/commandlineparser.h \
     src/commandlineexporter.h \
     src/statusbar.h \
-    src/elidedlabel.h
+    src/elidedlabel.h \
+    src/cameraoptionswidget.h
 
 SOURCES += \
     src/addtransparencytopaperdialog.cpp \
@@ -125,7 +130,6 @@ SOURCES += \
     src/predefinedsetmodel.cpp \
     src/pegbaralignmentdialog.cpp \
     src/shortcutfilter.cpp \
-    src/timeline2.cpp \
     src/actioncommands.cpp \
     src/preferencesdialog.cpp \
     src/filespage.cpp \
@@ -134,12 +138,17 @@ SOURCES += \
     src/timelinepage.cpp \
     src/toolspage.cpp \
     src/preview.cpp \
+    src/basedockwidget.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
+    src/timeline.cpp \
+    src/timelinecells.cpp \
+    src/timecontrols.cpp \
+    src/cameracontextmenu.cpp \
+    src/camerapropertiesdialog.cpp \
     src/filedialog.cpp \
-    src/displayoptionwidget.cpp \
     src/pencil2d.cpp \
     src/exportmoviedialog.cpp \
     src/errordialog.cpp \
@@ -161,10 +170,13 @@ SOURCES += \
     src/commandlineparser.cpp \
     src/commandlineexporter.cpp \
     src/statusbar.cpp \
-    src/elidedlabel.cpp
+    src/elidedlabel.cpp \
+    src/cameraoptionswidget.cpp
 
 FORMS += \
     ui/addtransparencytopaperdialog.ui \
+    ui/cameraoptionswidget.ui \
+    ui/camerapropertiesdialog.ui \
     ui/importimageseqpreview.ui \
     ui/importlayersdialog.ui \
     ui/importpositiondialog.ui \
@@ -173,11 +185,9 @@ FORMS += \
     ui/onionskin.ui \
     ui/pegbaralignmentdialog.ui \
     ui/repositionframesdialog.ui \
-    ui/timeline2.ui \
     ui/shortcutspage.ui \
     ui/colorinspector.ui \
     ui/colorpalette.ui \
-    ui/displayoption.ui \
     ui/errordialog.ui \
     ui/importexportdialog.ui \
     ui/exportmovieoptions.ui \

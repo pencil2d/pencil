@@ -28,6 +28,7 @@ GNU General Public License for more details.
 #include "polylinetool.h"
 #include "selecttool.h"
 #include "smudgetool.h"
+#include "cameratool.h"
 #include "editor.h"
 
 
@@ -48,6 +49,7 @@ bool ToolManager::init()
     mToolSetHash.insert(POLYLINE, new PolylineTool(this));
     mToolSetHash.insert(SELECT, new SelectTool(this));
     mToolSetHash.insert(SMUDGE, new SmudgeTool(this));
+    mToolSetHash.insert(CAMERA, new CameraTool(this));
 
     foreach(BaseTool* pTool, mToolSetHash.values())
     {
@@ -61,6 +63,7 @@ bool ToolManager::init()
 
 Status ToolManager::load(Object*)
 {
+    setDefaultTool();
     return Status::OK;
 }
 
@@ -69,7 +72,7 @@ Status ToolManager::save(Object*)
     return Status::OK;
 }
 
-BaseTool* ToolManager::currentTool()
+BaseTool* ToolManager::currentTool() const
 {
     if (mTemporaryTool != nullptr)
     {
@@ -248,14 +251,19 @@ void ToolManager::setBucketFillExpand(int expandValue)
     emit toolPropertyChanged(currentTool()->type(), BUCKETFILLEXPAND);
 }
 
-void ToolManager::setBucketFillToLayer(int layerIndex)
+void ToolManager::setBucketFillToLayerMode(int layerMode)
 {
-    currentTool()->setFillToLayer(layerIndex);
+    currentTool()->setFillToLayerMode(layerMode);
     emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERMODE);
 }
 
 void ToolManager::setBucketFillReferenceMode(int referenceMode)
 {
+    // If the bucket reference mode is current layer, enforce fillTo is also set to current layer
+    if (bucketReferenceModeIsCurrentLayer(referenceMode)) {
+        currentTool()->setFillToLayerMode(0);
+        emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERMODE);
+    }
     currentTool()->setFillReferenceMode(referenceMode);
     emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERREFERENCEMODE);
 }
@@ -269,6 +277,38 @@ void ToolManager::setUseFillContour(bool useFillContour)
 void ToolManager::setShowSelectionInfo(bool b)
 {
     currentTool()->setShowSelectionInfo(b);
+}
+
+void ToolManager::setShowCameraPath(bool enabled)
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->setShowCameraPath(enabled);
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
+}
+
+void ToolManager::resetCameraPath()
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->resetCameraPath();
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
+}
+
+void ToolManager::resetCameraTransform(CameraFieldOption option)
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->resetTransform(option);
+}
+
+void ToolManager::setCameraPathDotColor(int dotColorNum)
+{
+    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
+    cameraTool->setPathDotColorType(static_cast<DotColorType>(dotColorNum));
+    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
+}
+
+bool ToolManager::bucketReferenceModeIsCurrentLayer(int referenceMode) const
+{
+    return referenceMode == 0;
 }
 
 // Switches on/off two actions

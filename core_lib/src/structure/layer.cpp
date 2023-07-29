@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include <QDomElement>
 #include "keyframe.h"
 #include "object.h"
-#include "timelinecells.h"
 
 // Used to sort the selected frames list
 bool sortAsc(int left, int right)
@@ -185,20 +184,24 @@ bool Layer::addNewKeyFrameAt(int position)
     return addKeyFrame(position, key);
 }
 
-bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
+void Layer::addOrReplaceKeyFrame(int position, KeyFrame* pKeyFrame)
 {
     Q_ASSERT(position > 0);
-    auto it = mKeyFrames.find(position);
-    if (it != mKeyFrames.end())
+    pKeyFrame->setPos(position);
+    loadKey(pKeyFrame);
+    markFrameAsDirty(position);
+}
+
+bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
+{
+    if (keyExists(position))
     {
         return false;
     }
 
     pKeyFrame->setPos(position);
-    mKeyFrames.insert(std::make_pair(position, pKeyFrame));
-
+    mKeyFrames.emplace(position, pKeyFrame);
     markFrameAsDirty(position);
-
     return true;
 }
 
@@ -218,14 +221,16 @@ bool Layer::insertExposureAt(int position)
 
 bool Layer::removeKeyFrame(int position)
 {
+    if (keyFrameCount() == 1 && this->type() != SOUND) { return false; }
     auto frame = getKeyFrameWhichCovers(position);
+
     if (frame)
     {
         if (frame->isSelected()) {
             removeFromSelectionList(frame->pos());
         }
         mKeyFrames.erase(frame->pos());
-        markFrameAsDirty(position);
+        markFrameAsDirty(frame->pos());
         delete frame;
     }
     return true;

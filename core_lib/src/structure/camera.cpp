@@ -20,14 +20,19 @@ Camera::Camera()
 {
 }
 
-Camera::Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type)
+Camera::Camera(QPointF translation, qreal rotation, qreal scaling)
 {
     Q_ASSERT(scaling > 0);
     mTranslate = translation;
     mRotate = rotation;
     mScale = scaling;
-    mEasingType = static_cast<CameraEasingType>(type);
     updateViewTransform();
+}
+
+Camera::Camera(QPointF translation, qreal rotation, qreal scaling, CameraEasingType type)
+{
+    mEasingType = type;
+    Camera(translation, rotation, scaling);
 }
 
 Camera::Camera(const Camera& c2) : KeyFrame(c2)
@@ -35,6 +40,8 @@ Camera::Camera(const Camera& c2) : KeyFrame(c2)
     mTranslate = c2.mTranslate;
     mRotate = c2.mRotate;
     mScale = c2.mScale;
+    mPathControlPoint = c2.mPathControlPoint;
+    mEasingType = c2.mEasingType;
     mNeedUpdateView = true;
 }
 
@@ -52,6 +59,9 @@ void Camera::assign(const Camera& rhs)
     mTranslate = rhs.mTranslate;
     mRotate = rhs.mRotate;
     mScale = rhs.mScale;
+    mPathControlPoint = rhs.mPathControlPoint;
+    mEasingType = rhs.mEasingType;
+
     mNeedUpdateView = true;
     updateViewTransform();
     modification();
@@ -61,10 +71,10 @@ QTransform Camera::getView()
 {
     if (mNeedUpdateView)
         updateViewTransform();
-    return view;
+    return mView;
 }
 
-void Camera::reset()
+void Camera::resetTransform()
 {
     mTranslate = QPointF(0, 0);
     mRotate = 0.;
@@ -86,7 +96,7 @@ void Camera::updateViewTransform()
         QTransform s;
         s.scale(mScale, mScale);
 
-        view = t * r * s;
+        mView = t * r * s;
     }
     mNeedUpdateView = false;
 }
@@ -130,17 +140,27 @@ void Camera::scale(qreal scaleValue)
     modification();
 }
 
-void Camera::scaleWithOffset(qreal scaleValue, QPointF offset)
+void Camera::setEasingType(CameraEasingType type)
 {
-    mTranslate = (mTranslate + offset) * mScale / scaleValue - offset;
-    scale(scaleValue);
+    mEasingType = type;
+    modification();
 }
 
-bool Camera::operator==(const Camera& rhs) const
+void Camera::setPathControlPoint(QPointF point)
 {
-    bool b = (mTranslate == rhs.mTranslate)
-        && qFuzzyCompare(mRotate, rhs.mRotate)
-        && qFuzzyCompare(mScale, rhs.mScale);
+    mPathControlPoint = point;
+    modification();
+}
 
-    return b;
+void Camera::setPathControlPointMoved(bool moved)
+{
+    mPathControlPointMoved = moved;
+    modification();
+}
+
+bool Camera::compare(const Camera& rhs) const
+{
+    return ((mTranslate == rhs.mTranslate)
+        && qFuzzyCompare(mRotate, rhs.mRotate)
+        && qFuzzyCompare(mScale, rhs.mScale));
 }

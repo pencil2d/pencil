@@ -42,6 +42,7 @@ public:
     Layer* currentLayer();
     Layer* currentLayer(int offset);
     Layer* getLayer(int index);
+    LayerCamera* getCameraLayerBelow(int layerIndex) const;
     Layer* findLayerByName(QString sName, Layer::LAYER_TYPE type = Layer::UNDEFINED);
     Layer* getLastCameraLayer();
     int    currentLayerIndex();
@@ -49,6 +50,7 @@ public:
     void   setCurrentLayer(Layer* layer);
     int    count();
 
+    bool canDeleteLayer(int index) const;
     Status deleteLayer(int index);
     Status renameLayer(Layer*, const QString& newName);
     void notifyLayerChanged(Layer*);

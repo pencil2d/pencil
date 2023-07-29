@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "layervector.h"
 #include "layerbitmap.h"
+#include "layercamera.h"
 #include "layermanager.h"
 #include "colormanager.h"
 #include "strokemanager.h"
@@ -73,7 +74,7 @@ void BucketTool::resetToDefault()
     setFillMode(0);
     setFillExpand(2);
     setFillExpandEnabled(true);
-    setFillToLayer(0);
+    setFillToLayerMode(0);
     setToleranceEnabled(false);
     setFillReferenceMode(0);
 }
@@ -162,7 +163,7 @@ void BucketTool::setFillExpand(const int fillExpandValue)
     settings.sync();
 }
 
-void BucketTool::setFillToLayer(int layerMode)
+void BucketTool::setFillToLayerMode(int layerMode)
 {
     properties.bucketFillToLayerMode = layerMode;
 
@@ -190,16 +191,18 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
     if (targetLayer->type() != Layer::BITMAP) { return; }
 
+    LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
+
     mBitmapBucket = BitmapBucket(mEditor,
                                  mEditor->color()->frontColor(),
-                                 mScribbleArea->getCameraRect(),
+                                 layerCam ? layerCam->getViewRect() : QRect(),
                                  getCurrentPoint(),
                                  properties);
 
     // Because we can change layer to on the fly but we do not act reactively on it
     // it's neccesary to invalidate layer cache on press event, otherwise the cache
     // will be drawn until a move event has been initiated.
-    mScribbleArea->invalidateLayerPixmapCache();
+    mScribbleArea->invalidatePainterCaches();
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
@@ -273,7 +276,7 @@ void BucketTool::paintBitmap()
             // otherwise dragging won't show until release event
             if (properties.bucketFillToLayerMode == 1)
             {
-                mScribbleArea->invalidateLayerPixmapCache();
+                mScribbleArea->invalidatePainterCaches();
             }
         }
     });
@@ -336,7 +339,6 @@ void BucketTool::drawStroke()
             QPainterPath path(p[0]);
             path.cubicTo(p[1], p[2], p[3]);
             mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }

@@ -34,6 +34,7 @@ public:
     ToolType type() override;
     void loadSettings() override;
     QCursor cursor() override;
+    QCursor cursor(MoveMode mode) const;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
@@ -47,22 +48,18 @@ public:
 private:
     void cancelChanges();
     void applyTransformation();
-    void setAnchorToLastPoint();
     void updateSettings(const SETTING setting);
 
     void beginInteraction(Qt::KeyboardModifiers keyMod, Layer* layer);
     void createVectorSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
-    void transformSelection(Qt::KeyboardModifiers keyMod, Layer* layer);
+    void transformSelection(Qt::KeyboardModifiers keyMod);
     void storeClosestVectorCurve(Layer* layer);
 
     void setCurveSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
     void setAreaSelected(VectorImage* vectorImage, Qt::KeyboardModifiers keyMod);
 
-    QPointF offsetFromPressPos();
-
     Layer* currentPaintableLayer();
 
-    QPointF anchorOriginPoint;
     Layer* mCurrentLayer = nullptr;
     qreal mRotatedAngle = 0.0;
     qreal mPreviousAngle = 0.0;

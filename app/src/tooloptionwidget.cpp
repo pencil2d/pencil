@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QDebug>
 
+#include "cameraoptionswidget.h"
 #include "bucketoptionswidget.h"
 #include "spinslider.h"
 #include "editor.h"
@@ -45,8 +46,10 @@ ToolOptionWidget::~ToolOptionWidget()
 
 void ToolOptionWidget::initUI()
 {
-	mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
-	ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
+    mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
+    mCameraOptionsWidget = new CameraOptionsWidget(editor(), this);
+    ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
+    ui->horizontalLayout_2->addWidget(mCameraOptionsWidget);
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -63,8 +66,6 @@ void ToolOptionWidget::updateUI()
 {
     BaseTool* currentTool = editor()->tools()->currentTool();
     Q_ASSERT(currentTool);
-
-    disableAllOptions();
 
     setVisibility(currentTool);
 
@@ -109,8 +110,6 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(ui->vectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled);
     connect(ui->useAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA);
 
-    connect(ui->fillMode, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setFillMode);
-
     connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
@@ -139,6 +138,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case SHOWSELECTIONINFO: setShowSelectionInfo(p.showSelectionInfo); break;
     case BEZIER: setBezier(p.bezier_state); break;
+    case CAMERAPATH: { break; }
     case TOLERANCE: break;
     case USETOLERANCE: break;
     case BUCKETFILLEXPAND: break;
@@ -155,14 +155,22 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
 void ToolOptionWidget::setVisibility(BaseTool* tool)
 {
     Q_ASSERT(mBucketOptionsWidget);
+    Q_ASSERT(mCameraOptionsWidget);
+
+    disableAllOptions();
+
     if (tool->type() == BUCKET)
     {
-        disableAllOptions();
         mBucketOptionsWidget->setHidden(false);
         return;
     }
+    else if (tool->type() == CAMERA)
+    {
+        mCameraOptionsWidget->setHidden(false);
+    }
     else
     {
+        mCameraOptionsWidget->setHidden(true);
         mBucketOptionsWidget->setHidden(true);
     }
 
@@ -356,7 +364,6 @@ void ToolOptionWidget::disableAllOptions()
     ui->preserveAlphaBox->hide();
     ui->vectorMergeBox->hide();
     ui->useAABox->hide();
-    ui->fillModeGroup->hide();
     ui->inpolLevelsCombo->hide();
     ui->fillContourBox->hide();
     ui->showInfoBox->hide();

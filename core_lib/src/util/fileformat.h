@@ -59,7 +59,7 @@ GNU General Public License for more details.
     QString(".pclx")
 
 #define PFF_DEFAULT_IMAGE_EXT \
-   QString(".png")
+    QString(".png")
 
 #define PFF_DEFAULT_IMAGE_SEQ_EXT \
     QString(".png")
@@ -67,8 +67,14 @@ GNU General Public License for more details.
 #define PFF_DEFAULT_ANIMATED_EXT \
     QString(".gif")
 
+#define PFF_DEFAULT_MOVIE_EXT \
+    QString(".mp4")
+
 #define PFF_DEFAULT_PALETTE_EXT \
     QString(".xml")
+
+#define PFF_DEFAULT_SOUND_EXT \
+    QString(".wav")
 
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"

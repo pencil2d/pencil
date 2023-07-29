@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define SELECTTOOL_H
 
 #include "basetool.h"
+#include "movemode.h"
 
 #include <QRectF>
 
@@ -64,6 +65,8 @@ private:
     MoveMode mStartMoveMode = MoveMode::NONE;
     QRectF mSelectionRect;
     Layer* mCurrentLayer = nullptr;
+
+    QPixmap mCursorPixmap = QPixmap(24, 24);
 };
 
 #endif

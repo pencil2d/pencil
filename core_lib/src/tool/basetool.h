@@ -21,9 +21,9 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QString>
 #include <QCursor>
+#include <QPainter>
 #include <QPointF>
 #include <QHash>
-#include "movemode.h"
 #include "pencildef.h"
 
 class QPixmap;
@@ -57,6 +57,8 @@ public:
     int bucketFillReferenceMode = 0;
     bool  useFillContour = false;
     bool  showSelectionInfo = true;
+    bool  cameraShowPath = true;
+    DotColorType cameraPathDotColorType = DotColorType::RED;
 };
 
 const int ON = 1;
@@ -99,7 +101,6 @@ public:
 
     static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
     QPixmap quickSizeCursor(qreal scalingFac);
-    static QCursor selectMoveCursor(MoveMode mode, ToolType type);
     static bool isAdjusting() { return msIsAdjusting; }
 
     /** Check if the tool is active.
@@ -126,24 +127,28 @@ public:
     virtual void setToleranceEnabled(const bool enabled);
     virtual void setFillExpand(const int fillExpandValue);
     virtual void setFillExpandEnabled(const bool enabled);
-    virtual void setFillToLayer(int layerMode);
+    virtual void setFillToLayerMode(int layerMode);
     virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
     virtual void setShowSelectionInfo(const bool b);
+    virtual void setShowCameraPath(const bool showCameraPath);
+    virtual void setPathDotColorType(const DotColorType dotColorType);
+    virtual void resetCameraPath();
+
+    virtual void paint(QPainter& painter) { Q_UNUSED(painter) };
 
     virtual bool leavingThisTool() { return true; }
-    virtual bool switchingLayer() { return true; } // default state should be true
 
     Properties properties;
 
-    QPointF getCurrentPressPixel();
-    QPointF getCurrentPressPoint();
-    QPointF getCurrentPixel();
-    QPointF getCurrentPoint();
-    QPointF getLastPixel();
-    QPointF getLastPoint();
-    QPointF getLastPressPixel();
-    QPointF getLastPressPoint();
+    QPointF getCurrentPressPixel() const;
+    QPointF getCurrentPressPoint() const;
+    QPointF getCurrentPixel() const;
+    QPointF getCurrentPoint() const;
+    QPointF getLastPixel() const;
+    QPointF getLastPoint() const;
+    QPointF getLastPressPixel() const;
+    QPointF getLastPressPoint() const;
 
     bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
@@ -152,7 +157,7 @@ signals:
     bool isActiveChanged(ToolType, bool);
 
 protected:
-    StrokeManager* strokeManager() { return mStrokeManager; }
+    StrokeManager* strokeManager() const { return mStrokeManager; }
     Editor* editor() { return mEditor; }
 
     QHash<ToolPropertyType, bool> mPropertyEnabled;

@@ -14,30 +14,23 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#ifndef TIMELINE2_H
-#define TIMELINE2_H
 
-#include "basedockwidget.h"
+#ifndef PAINTERUTILS_H
+#define PAINTERUTILS_H
 
+#include <QtMath>
 
-namespace Ui {
-class Timeline2;
-}
-
-
-class Timeline2 : public BaseDockWidget
+/** Calculate layer opacity based on current layer offset */
+inline qreal calculateRelativeOpacityForLayer(int currentLayerIndex, int layerIndexNext, float threshold)
 {
-    Q_OBJECT
-
-public:
-    explicit Timeline2(QWidget* parent = nullptr);
-    ~Timeline2() override;
-
-    void initUI() override;
-    void updateUI() override;
-
-private:
-    Ui::Timeline2* ui;
+    int layerOffset = currentLayerIndex - layerIndexNext;
+    int absoluteOffset = qAbs(layerOffset);
+    qreal newOpacity = 1.0;
+    if (absoluteOffset != 0)
+    {
+        newOpacity = qPow(static_cast<qreal>(threshold), absoluteOffset);
+    }
+    return newOpacity;
 };
 
-#endif // TIMELINE2_H
+#endif // PAINTERUTILS_H

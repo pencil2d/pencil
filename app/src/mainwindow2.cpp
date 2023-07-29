@@ -32,6 +32,7 @@ GNU General Public License for more details.
 #include <QLabel>
 #include <QClipboard>
 #include <QToolBar>
+#include <QToolButton>
 
 // core_lib headers
 #include "pencildef.h"
@@ -58,7 +59,6 @@ GNU General Public License for more details.
 #include "colorbox.h"
 #include "colorinspector.h"
 #include "colorpalettewidget.h"
-#include "displayoptionwidget.h"
 #include "tooloptionwidget.h"
 #include "preferencesdialog.h"
 #include "timeline.h"
@@ -69,7 +69,6 @@ GNU General Public License for more details.
 #include "repositionframesdialog.h"
 
 //#include "preview.h"
-//#include "timeline2.h"
 #include "errordialog.h"
 #include "filedialog.h"
 #include "importimageseqdialog.h"
@@ -131,9 +130,9 @@ MainWindow2::MainWindow2(QWidget* parent) :
     readSettings();
 
     selectionChanged();
+    currentLayerChanged();
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
-    connect(mToolBox, &ToolBoxWidget::clearButtonClicked, mEditor, &Editor::clearCurrentFrame);
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
@@ -163,9 +162,6 @@ void MainWindow2::createDockWidgets()
     mColorPalette->setCore(mEditor);
     mColorPalette->setObjectName("ColorPalette");
 
-    mDisplayOptionWidget = new DisplayOptionWidget(this);
-    mDisplayOptionWidget->setObjectName("DisplayOption");
-
     mOnionSkinWidget = new OnionSkinWidget(this);
     mOnionSkinWidget->setObjectName("Onion Skin");
 
@@ -189,7 +185,6 @@ void MainWindow2::createDockWidgets()
         << mColorBox
         << mColorInspector
         << mColorPalette
-        << mDisplayOptionWidget
         << mOnionSkinWidget
         << mToolOptions
         << mToolBox
@@ -206,7 +201,6 @@ void MainWindow2::createDockWidgets()
 
         pWidget->setEditor(mEditor);
         pWidget->initUI();
-        pWidget->show();
         qDebug() << "Init Dock widget: " << pWidget->objectName();
     }
 
@@ -217,7 +211,6 @@ void MainWindow2::createDockWidgets()
     mBitmapColoring->hide();
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
-    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
     setDockNestingEnabled(true);
@@ -237,13 +230,13 @@ void MainWindow2::createDockWidgets()
     makeConnections(mEditor, mColorInspector);
     makeConnections(mEditor, mColorPalette);
     makeConnections(mEditor, mToolOptions);
-    makeConnections(mEditor, mDisplayOptionWidget);
     makeConnections(mEditor, ui->statusBar);
 
     for (BaseDockWidget* w : mDockWidgets)
     {
-        w->updateUI();
         w->setFloating(false);
+        w->show();
+        w->updateUI();
     }
 }
 
@@ -291,7 +284,7 @@ void MainWindow2::createMenus()
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::selectionChanged);
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
-    connect(ui->actionPeg_bar_Alignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
+    connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
     connect(ui->actionAdd_Transparency_to_paper, &QAction::triggered, this, &MainWindow2::openAddTranspToPaperDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
@@ -345,9 +338,55 @@ void MainWindow2::createMenus()
     PreferenceManager* prefs = mEditor->preference();
     connect(ui->actionStatusBar, &QAction::triggered, ui->statusBar, &QStatusBar::setVisible);
     bindPreferenceSetting(ui->actionStatusBar, prefs, SETTING::SHOW_STATUS_BAR);
+    bindPreferenceSetting(ui->actionThreePointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE3);
+    bindPreferenceSetting(ui->actionTwoPointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE2);
+    bindPreferenceSetting(ui->actionOnePointPerspective, prefs, SETTING::OVERLAY_PERSPECTIVE1);
+    bindPreferenceSetting(ui->actionSafeAreas, prefs, SETTING::OVERLAY_SAFE);
+    bindPreferenceSetting(ui->actionGoldenRatio, prefs, SETTING::OVERLAY_GOLDEN);
+    bindPreferenceSetting(ui->actionThirds, prefs, SETTING::OVERLAY_THIRDS);
+    bindPreferenceSetting(ui->actionCenter, prefs, SETTING::OVERLAY_CENTER);
     bindPreferenceSetting(ui->actionGrid, prefs, SETTING::GRID);
+    bindPreferenceSetting(ui->actionShowOutlinesOnly, prefs, SETTING::OUTLINES);
+    bindPreferenceSetting(ui->actionShowInvisibleLines, prefs, SETTING::INVISIBLE_LINES);
     bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
     bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
+
+    bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
+    ui->actionSafeAreas->setEnabled(enableSafeArea);
+
+    auto perspectiveLinesAngleGroup = new QActionGroup(this);
+    perspectiveLinesAngleGroup->setExclusive(true);
+    perspectiveLinesAngleGroup->addAction(ui->action2Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action3Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action5Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action7_5Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action10Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action15Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action20Degrees);
+    perspectiveLinesAngleGroup->addAction(ui->action30Degrees);
+    connect(perspectiveLinesAngleGroup, &QActionGroup::triggered, this, [&](QAction* action) {
+        if (action == ui->action2Degrees)        mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 2);
+        else if (action == ui->action3Degrees)   mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 3);
+        else if (action == ui->action5Degrees)   mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 5);
+        else if (action == ui->action7_5Degrees) mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 7);
+        else if (action == ui->action10Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 10);
+        else if (action == ui->action15Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 15);
+        else if (action == ui->action20Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 20);
+        else if (action == ui->action30Degrees)  mEditor->preference()->set(SETTING::OVERLAY_ANGLE, 30);
+        else Q_UNREACHABLE();
+        emit mEditor->view()->viewChanged();
+    });
+
+    switch (prefs->getInt(SETTING::OVERLAY_ANGLE)) {
+    case 2: ui->action2Degrees->setChecked(true); break;
+    case 3: ui->action3Degrees->setChecked(true); break;
+    case 5: ui->action5Degrees->setChecked(true); break;
+    case 7: ui->action7_5Degrees->setChecked(true); break;
+    case 10: ui->action10Degrees->setChecked(true); break;
+    case 15: ui->action15Degrees->setChecked(true); break;
+    case 20: ui->action20Degrees->setChecked(true); break;
+    case 30: ui->action30Degrees->setChecked(true); break;
+    }
 
     //--- Animation Menu ---
     PlaybackManager* pPlaybackManager = mEditor->playback();
@@ -403,7 +442,6 @@ void MainWindow2::createMenus()
         mColorBox->toggleViewAction(),
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
-        mDisplayOptionWidget->toggleViewAction(),
         mColorInspector->toggleViewAction(),
         mBitmapColoring->toggleViewAction(),
         mOnionSkinWidget->toggleViewAction()
@@ -412,8 +450,9 @@ void MainWindow2::createMenus()
     for (QAction* action : actions)
     {
         action->setMenuRole(QAction::NoRole);
-        winMenu->addAction(action);
+        winMenu->insertAction(ui->menuToolbars->menuAction(), action);
     }
+    winMenu->insertSeparator(ui->menuToolbars->menuAction());
     connect(ui->actionResetWindows, &QAction::triggered, this, &MainWindow2::resetAndDockAllSubWidgets);
     connect(ui->actionLockWindows, &QAction::toggled, this, &MainWindow2::lockWidgets);
     bindPreferenceSetting(ui->actionLockWindows, prefs, SETTING::LAYOUT_LOCK);
@@ -551,6 +590,10 @@ void MainWindow2::currentLayerChanged()
 {
     bool isBitmap = (mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
     ui->menuChange_line_color->setEnabled(isBitmap);
+
+    bool isVector = (mEditor->layers()->currentLayer()->type() == Layer::VECTOR);
+    ui->actionShowInvisibleLines->setEnabled(isVector);
+    ui->actionShowOutlinesOnly->setEnabled(isVector);
 }
 
 void MainWindow2::selectionChanged()
@@ -867,10 +910,9 @@ void MainWindow2::importImage()
     if (strFilePath.isEmpty()) { return; }
     if (!QFile::exists(strFilePath)) { return; }
 
-    ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
 
     if (positionDialog->result() != QDialog::Accepted)
@@ -878,14 +920,11 @@ void MainWindow2::importImage()
         return;
     }
 
-    bool ok = mEditor->importImage(strFilePath);
-    if (!ok)
+    Status st = mEditor->importImage(strFilePath);
+    if (!st.ok())
     {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("Unable to import image.<br><b>TIP:</b> Use Bitmap layer to import bitmaps."),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+        errorDialog.exec();
         return;
     }
 
@@ -909,10 +948,9 @@ void MainWindow2::importImageSequence()
         return;
     }
 
-    ImportPositionDialog* positionDialog = new ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -939,10 +977,9 @@ void MainWindow2::importPredefinedImageSet()
         return;
     }
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -973,10 +1010,9 @@ void MainWindow2::importGIF()
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
     mSuppressAutoSaveDialog = true;
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(this);
+    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
     OnScopeExit(delete positionDialog)
 
-    positionDialog->setCore(mEditor);
     positionDialog->exec();
     if (positionDialog->result() != QDialog::Accepted)
     {
@@ -992,29 +1028,27 @@ void MainWindow2::importGIF()
     progress.show();
 
     QString strImgFileLower = gifDialog->getFilePath();
-    bool importOK = strImgFileLower.toLower().endsWith(".gif");
-
-    if (importOK)
+    if (!strImgFileLower.toLower().endsWith(".gif"))
     {
-        bool ok = mEditor->importGIF(strImgFileLower, space);
-        if (!ok)
-            importOK = false;
+        ErrorDialog errorDialog(tr("Import failed"), tr("You can only import files ending with .gif."));
+        errorDialog.exec();
+    }
+    else
+    {
+        Status st = mEditor->importGIF(strImgFileLower, space);
 
         progress.setValue(50);
         QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-    }
 
-    if (!importOK)
-    {
-        QMessageBox::warning(this,
-                             tr("Warning"),
-                             tr("was unable to import %1").arg(strImgFileLower),
-                             QMessageBox::Ok,
-                             QMessageBox::Ok);
-    }
+        progress.setValue(100);
+        progress.close();
 
-    progress.setValue(100);
-    progress.close();
+        if (!st.ok())
+        {
+            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+            errorDialog.exec();
+        }
+    }
 
     mSuppressAutoSaveDialog = false;
 }
@@ -1080,7 +1114,6 @@ void MainWindow2::resetAndDockAllSubWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
-    addDockWidget(Qt::LeftDockWidgetArea, mDisplayOptionWidget);
     addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
     addDockWidget(Qt::BottomDockWidgetArea, mTimeLine);
 }
@@ -1335,7 +1368,6 @@ void MainWindow2::setupKeyboardShortcuts()
     mColorBox->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_WHEEL));
     mColorPalette->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_LIBRARY));
     mTimeLine->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_TIMELINE));
-    mDisplayOptionWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_DISPLAY_OPTIONS));
     mColorInspector->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_COLOR_INSPECTOR));
     mOnionSkinWidget->toggleViewAction()->setShortcut(cmdKeySeq(CMD_TOGGLE_ONION_SKIN));
 
@@ -1494,30 +1526,29 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pTimeline, &TimeLine::newSoundLayer, mCommands, &ActionCommands::addNewSoundLayer);
     connect(pTimeline, &TimeLine::newCameraLayer, mCommands, &ActionCommands::addNewCameraLayer);
     connect(mTimeLine, &TimeLine::playButtonTriggered, mCommands, &ActionCommands::PlayStop);
+    connect(pTimeline, &TimeLine::deleteCurrentLayerClick, mCommands, &ActionCommands::deleteCurrentLayer);
 
     // Clipboard state handling
     connect(QApplication::clipboard(), &QClipboard::dataChanged, mEditor, &Editor::clipboardChanged);
-    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(pTimeline, &TimeLine::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(this, &MainWindow2::windowActivated, this, &MainWindow2::updateCopyCutPasteEnabled);
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &MainWindow2::updateCopyCutPasteEnabled);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, pTimeline, &TimeLine::updateUI);
-    connect(pEditor->layers(), &LayerManager::layerCountChanged, pTimeline, &TimeLine::updateUI);
     connect(pEditor->layers(), &LayerManager::animationLengthChanged, pTimeline, &TimeLine::extendLength);
     connect(pEditor->sound(), &SoundManager::soundClipDurationChanged, pTimeline, &TimeLine::updateUI);
 
+    // Menu UI changes
+    connect(ui->menuEdit, &QMenu::aboutToShow, this, &MainWindow2::updateCopyCutPasteEnabled);
+
     connect(pEditor, &Editor::objectLoaded, pTimeline, &TimeLine::onObjectLoaded);
     connect(pEditor, &Editor::updateTimeLine, pTimeline, &TimeLine::updateUI);
+    connect(pEditor, &Editor::updateTimeLineCached, pTimeline, &TimeLine::updateUICached);
 
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mBitmapColoring, &BitmapColoring::updateUI);
     connect(mBitmapColoring, &QDockWidget::visibilityChanged, mBitmapColoring, &BitmapColoring::visibilityChanged);
-}
-
-void MainWindow2::makeConnections(Editor* editor, DisplayOptionWidget* displayWidget)
-{
-    connect(editor->layers(), &LayerManager::currentLayerChanged, displayWidget, &DisplayOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
@@ -1560,6 +1591,11 @@ void MainWindow2::updateCopyCutPasteEnabled()
     ui->actionPaste->setEnabled(canPaste);
 }
 
+void MainWindow2::updateLayerMenu()
+{
+    ui->actionDelete_Current_Layer->setEnabled(mEditor->layers()->canDeleteLayer(mEditor->currentLayerIndex()));
+}
+
 void MainWindow2::changePlayState(bool isPlaying)
 {
     if (isPlaying)
@@ -1589,7 +1625,6 @@ bool MainWindow2::event(QEvent* event)
 {
     if(event->type() == QEvent::WindowActivate) {
         emit windowActivated();
-        return true;
     }
     return QMainWindow::event(event);
 }
@@ -1684,25 +1719,40 @@ void MainWindow2::createToolbars()
     mMainToolbar->addAction(ui->actionCut);
     mMainToolbar->addAction(ui->actionCopy);
     mMainToolbar->addAction(ui->actionPaste);
+    mMainToolbar->addAction(ui->actionClearFrame);
 
     mViewToolbar = addToolBar(tr("View Toolbar"));
     mViewToolbar->setObjectName("mViewToolbar");
     mViewToolbar->addAction(ui->actionZoom_In);
     mViewToolbar->addAction(ui->actionZoom_Out);
     mViewToolbar->addAction(ui->actionReset_View);
+    mViewToolbar->addSeparator();
     mViewToolbar->addAction(ui->actionHorizontal_Flip);
     mViewToolbar->addAction(ui->actionVertical_Flip);
+    mViewToolbar->addSeparator();
+    mViewToolbar->addAction(ui->actionShowInvisibleLines);
+    mViewToolbar->addAction(ui->actionShowOutlinesOnly);
 
     mOverlayToolbar = addToolBar(tr("Overlay Toolbar"));
     mOverlayToolbar->setObjectName("mOverlayToolbar");
     mOverlayToolbar->addAction(ui->actionGrid);
+    mOverlayToolbar->addAction(ui->actionCenter);
+    mOverlayToolbar->addAction(ui->actionThirds);
+    mOverlayToolbar->addAction(ui->actionGoldenRatio);
+    mOverlayToolbar->addAction(ui->actionSafeAreas);
+    mOverlayToolbar->addAction(ui->actionOnePointPerspective);
+    mOverlayToolbar->addAction(ui->actionTwoPointPerspective);
+    mOverlayToolbar->addAction(ui->actionThreePointPerspective);
+    mOverlayToolbar->setIconSize(QSize(22,22));
+    QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
+    perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
+    perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);
+    mOverlayToolbar->addWidget(perspectiveLinesAngleButton);
 
     mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
 
-    ui->menuWindows->addSeparator();
-    QMenu* toolbarMenu = ui->menuWindows->addMenu(tr("Toolbars"));
     for (QToolBar* tb : mToolbars)
     {
-        toolbarMenu->addAction(tb->toggleViewAction());
+        ui->menuToolbars->addAction(tb->toggleViewAction());
     }
 }

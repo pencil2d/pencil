@@ -47,7 +47,7 @@ public:
     void setWidth(const qreal width) override;
     void setFillExpand(const int fillExpandValue) override;
     void setFillExpandEnabled(const bool enabled) override;
-    void setFillToLayer(int layerIndex) override;
+    void setFillToLayerMode(int layerMode) override;
     void setFillReferenceMode(int referenceMode) override;
     void setFillMode(int mode) override;
 

@@ -55,7 +55,6 @@ GNU General Public License for more details.
 #include "aboutdialog.h"
 #include "doubleprogressdialog.h"
 #include "checkupdatesdialog.h"
-#include "layeropacitydialog.h"
 #include "errordialog.h"
 
 
@@ -177,12 +176,10 @@ Status ActionCommands::importSound(FileType type)
     {
         st = Status::CANCELED;
     }
-    else if (strSoundFile.endsWith(".wav"))
-    {
-        st = mEditor->sound()->loadSound(key, strSoundFile);
-    }
     else
     {
+        // Convert even if it already is a WAV file to strip metadata that the
+        // DirectShow media player backend on Windows can't handle
         st = convertSoundToWav(strSoundFile);
     }
 
@@ -696,13 +693,6 @@ void ActionCommands::reverseSelectedFrames()
 void ActionCommands::removeKey()
 {
     mEditor->removeKey();
-
-    // Add a new keyframe at the beginning if there are none, unless it is a sound layer which can't have empty keyframes but can be an empty layer
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->keyFrameCount() == 0 && layer->type() != Layer::SOUND)
-    {
-        layer->addNewKeyFrameAt(1);
-    }
 }
 
 void ActionCommands::duplicateLayer()
@@ -712,10 +702,9 @@ void ActionCommands::duplicateLayer()
     int currFrame = mEditor->currentFrame();
 
     Layer* toLayer = layerMgr->createLayer(fromLayer->type(), tr("%1 (copy)", "Default duplicate layer name").arg(fromLayer->name()));
-    toLayer->removeKeyFrame(1);
     fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
         key = key->clone();
-        toLayer->addKeyFrame(key->pos(), key);
+        toLayer->addOrReplaceKeyFrame(key->pos(), key);
         if (toLayer->type() == Layer::SOUND)
         {
             mEditor->sound()->processSound(static_cast<SoundClip*>(key));
@@ -725,6 +714,9 @@ void ActionCommands::duplicateLayer()
             key->modification();
         }
     });
+    if (!fromLayer->keyExists(1)) {
+        toLayer->removeKeyFrame(1);
+    }
     mEditor->scrubTo(currFrame);
 }
 
@@ -751,6 +743,7 @@ void ActionCommands::duplicateKey()
 
     layer->addKeyFrame(nextEmptyFrame, dupKey);
     mEditor->scrubTo(nextEmptyFrame);
+    emit mEditor->frameModified(nextEmptyFrame);
 
     if (layer->type() == Layer::SOUND)
     {
@@ -850,6 +843,10 @@ Status ActionCommands::deleteCurrentLayer()
 {
     LayerManager* layerMgr = mEditor->layers();
     QString strLayerName = layerMgr->currentLayer()->name();
+
+    if (!layerMgr->canDeleteLayer(mEditor->currentLayerIndex())) {
+        return Status::CANCELED;
+    }
 
     int ret = QMessageBox::warning(mParent,
                                    tr("Delete Layer", "Windows title of Delete current layer pop-up."),

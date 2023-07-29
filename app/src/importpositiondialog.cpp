@@ -18,13 +18,16 @@ GNU General Public License for more details.
 #include "ui_importpositiondialog.h"
 
 #include <QSettings>
+#include <QStandardItemModel>
 #include "editor.h"
+#include "layercamera.h"
 #include "viewmanager.h"
+#include "layermanager.h"
 #include "scribblearea.h"
 
-ImportPositionDialog::ImportPositionDialog(QWidget *parent) :
+ImportPositionDialog::ImportPositionDialog(Editor* editor, QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::ImportPositionDialog)
+    ui(new Ui::ImportPositionDialog), mEditor(editor)
 {
     ui->setupUi(this);
 
@@ -32,6 +35,12 @@ ImportPositionDialog::ImportPositionDialog(QWidget *parent) :
     ui->cbImagePosition->addItem(tr("Center of canvas (0,0)"));
     ui->cbImagePosition->addItem(tr("Center of camera, current frame"));
     ui->cbImagePosition->addItem(tr("Center of camera, follow camera"));
+
+    if (mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()) == nullptr) {
+        auto model = dynamic_cast<QStandardItemModel*>(ui->cbImagePosition->model());
+        model->item(2, 0)->setEnabled(false);
+        model->item(3, 0)->setEnabled(false);
+    }
 
     connect(ui->cbImagePosition, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &ImportPositionDialog::didChangeComboBoxIndex);
     connect(ui->buttonBox, &QDialogButtonBox::accepted, this, &ImportPositionDialog::changeImportView);
@@ -76,7 +85,9 @@ void ImportPositionDialog::changeImportView()
     }
     else if (mImportOption == ImportPosition::Type::CenterOfCamera)
     {
-        QRectF cameraRect = mEditor->getScribbleArea()->getCameraRect(); // Must be QRectF for the precision of cameraRect.center()
+        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()));
+        Q_ASSERT(layerCam);
+        QRectF cameraRect = layerCam->getViewRect();
         transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
         mEditor->view()->setImportView(transform);
         QSettings settings(PENCIL2D, PENCIL2D);
@@ -84,6 +95,7 @@ void ImportPositionDialog::changeImportView()
         return;
     }
 
+    Q_ASSERT(mImportOption == ImportPosition::Type::CenterOfCameraFollowed);
     mEditor->view()->setImportFollowsCamera(true);
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());

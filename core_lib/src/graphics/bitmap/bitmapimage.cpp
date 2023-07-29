@@ -18,7 +18,6 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QDebug>
-#include <QtMath>
 #include <QFile>
 #include <QFileInfo>
 #include <QPainterPath>
@@ -51,7 +50,7 @@ BitmapImage::BitmapImage(const QPoint& topLeft, const QImage& image)
 {
     mBounds = QRect(topLeft, image.size());
     mMinBound = true;
-    mImage = image;
+    mImage = image.convertToFormat(QImage::Format_ARGB32_Premultiplied);
 }
 
 BitmapImage::BitmapImage(const QPoint& topLeft, const QString& path)
@@ -70,7 +69,7 @@ BitmapImage::~BitmapImage()
 
 void BitmapImage::setImage(QImage* img)
 {
-    Q_ASSERT(img);
+    Q_ASSERT(img && img->format() == QImage::Format_ARGB32_Premultiplied);
     mImage = *img;
     mMinBound = false;
 
@@ -125,7 +124,7 @@ void BitmapImage::loadFile()
 {
     if (!fileName().isEmpty() && !isLoaded())
     {
-        mImage = QImage(fileName());
+        mImage = QImage(fileName()).convertToFormat(QImage::Format_ARGB32_Premultiplied);
         mBounds.setSize(mImage.size());
         mMinBound = false;
     }
@@ -181,13 +180,6 @@ BitmapImage BitmapImage::copy(QRect rectangle)
     if (rectangle.isEmpty() || mBounds.isEmpty()) return BitmapImage();
 
     QRect intersection2 = rectangle.translated(-mBounds.topLeft());
-
-    // If the region goes out of bounds, make sure the image is formatted in ARGB
-    // so that the area beyond the image bounds is transparent.
-    if (!mBounds.contains(rectangle) && !image()->hasAlphaChannel())
-    {
-        mImage = mImage.convertToFormat(QImage::Format_ARGB32);
-    }
 
     BitmapImage result(rectangle.topLeft(), image()->copy(intersection2));
     return result;
@@ -1312,48 +1304,6 @@ void BitmapImage::clear(QRect rectangle)
     painter.end();
 
     modification();
-}
-
-/** Compare colors for the purposes of flood filling
- *
- *  Calculates the Eulcidian difference of the RGB channels
- *  of the image and compares it to the tolerance
- *
- *  @param[in] newColor The first color to compare
- *  @param[in] oldColor The second color to compare
- *  @param[in] tolerance The threshold limit between a matching and non-matching color
- *  @param[in,out] cache Contains a mapping of previous results of compareColor with rule that
- *                 cache[someColor] = compareColor(someColor, oldColor, tolerance)
- *
- *  @return Returns true if the colors have a similarity below the tolerance level
- *          (i.e. if Eulcidian distance squared is <= tolerance)
- */
-bool BitmapImage::compareColor(QRgb newColor, QRgb oldColor, int tolerance, QHash<QRgb, bool> *cache)
-{
-    // Handle trivial case
-    if (newColor == oldColor) return true;
-
-    if(cache && cache->contains(newColor)) return cache->value(newColor);
-
-    // Get Eulcidian distance between colors
-    // Not an accurate representation of human perception,
-    // but it's the best any image editing program ever does
-    int diffRed = static_cast<int>(qPow(qRed(oldColor) - qRed(newColor), 2));
-    int diffGreen = static_cast<int>(qPow(qGreen(oldColor) - qGreen(newColor), 2));
-    int diffBlue = static_cast<int>(qPow(qBlue(oldColor) - qBlue(newColor), 2));
-    // This may not be the best way to handle alpha since the other channels become less relevant as
-    // the alpha is reduces (ex. QColor(0,0,0,0) is the same as QColor(255,255,255,0))
-    int diffAlpha = static_cast<int>(qPow(qAlpha(oldColor) - qAlpha(newColor), 2));
-
-    bool isSimilar = (diffRed + diffGreen + diffBlue + diffAlpha) <= tolerance;
-
-    if(cache)
-    {
-        Q_ASSERT(cache->contains(isSimilar) ? isSimilar == (*cache)[newColor] : true);
-        (*cache)[newColor] = isSimilar;
-    }
-
-    return isSimilar;
 }
 
 bool BitmapImage::floodFill(BitmapImage** replaceImage,

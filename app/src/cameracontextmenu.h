@@ -15,29 +15,25 @@ GNU General Public License for more details.
 
 */
 
-#ifndef CAMERAPROPERTIESDIALOG_H
-#define CAMERAPROPERTIESDIALOG_H
+#ifndef CAMERACONTEXTMENU_H
+#define CAMERACONTEXTMENU_H
 
-#include <QDialog>
+#include <QPoint>
+#include <QObject>
 
-namespace Ui {
-    class CameraPropertiesDialog;
-}
+#include <QMenu>
 
-class CameraPropertiesDialog : public QDialog
+class LayerCamera;
+
+class CameraContextMenu : public QMenu
 {
     Q_OBJECT
 public:
-    CameraPropertiesDialog(const QString& name, int width, int height);
-    ~CameraPropertiesDialog() override;
-    QString getName();
-    void setName(const QString& name);
-    int getWidth();
-    void setWidth(int);
-    int getHeight();
-    void setHeight(int);
+    CameraContextMenu(int frameNumber, const LayerCamera* layer);
+
 private:
-    Ui::CameraPropertiesDialog* ui = nullptr;
+    int mFrameNumber;
+    const LayerCamera* mCurrentLayer;
 };
 
-#endif // CAMERAPROPERTIESDIALOG_H
+#endif // CAMERACONTEXTMENU_H

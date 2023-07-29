@@ -30,7 +30,6 @@ GNU General Public License for more details.
 #include <QPixmapCache>
 
 #include "movemode.h"
-#include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
 #include "canvaspainter.h"
@@ -38,6 +37,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "strokemanager.h"
 #include "selectionpainter.h"
+#include "camerapainter.h"
 
 class Layer;
 class Editor;
@@ -120,9 +120,17 @@ public:
     /** Object updated, invalidate all cache */
     void onObjectLoaded();
 
+    /** Tool property updated, invalidate cache and frame if needed */
+    void onToolPropertyUpdated(ToolType, ToolPropertyType);
+
+    /** Tool changed, invalidate cache and frame if needed */
+    void onToolChanged(ToolType);
+
+    /** Set frame on layer to modified and invalidate current frame cache */
+    void setModified(int layerNumber, int frameNumber);
+    void setModified(const Layer* layer, int frameNumber);
+
     void flipSelection(bool flipVertical);
-    void renderOverlays();
-    void prepOverlays();
 
     BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolMode);
@@ -180,11 +188,8 @@ public:
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
-    void paintBitmapBufferRect(const QRect& rect);
     void paintCanvasCursor(QPainter& painter);
     void clearBitmapBuffer();
-    void refreshBitmap(const QRectF& rect, int rad);
-    void refreshVector(const QRectF& rect, int rad);
     void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
@@ -197,18 +202,18 @@ public:
     /// on an empty frame, and if so, takes action according to use preference.
     void handleDrawingOnEmptyFrame();
 
-    BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
+    BitmapImage mBufferImg; // used to draw strokes for both bitmap and vector
 
     QPixmap mCursorImg;
     QPixmap mTransCursImg;
 
 private:
 
-    /** Invalidate the layer pixmap cache.
+    /** Invalidate the layer pixmap and camera painter caches.
      * Call this in most situations where the layer rendering order is affected.
      * Peviously known as setAllDirty.
     */
-    void invalidateLayerPixmapCache();
+    void invalidatePainterCaches();
 
     /** Invalidate cache for the given frame */
     void invalidateCacheForFrame(int frameNumber);
@@ -223,6 +228,8 @@ private:
     /** invalidate onion skin cache around frame */
     void invalidateOnionSkinsCacheAround(int frame);
 
+    void prepOverlays(int frame);
+    void prepCameraPainter(int frame);
     void prepCanvas(int frame, QRect rect);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
@@ -232,8 +239,6 @@ private:
     VectorImage* currentVectorImage(Layer* layer) const;
 
     MoveMode mMoveMode = MoveMode::NONE;
-
-    BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
 
     std::unique_ptr<StrokeManager> mStrokeManager;
 
@@ -252,6 +257,15 @@ private:
     QColor mOnionColor;
 
 private:
+
+    /* Under certain circumstances a mouse press event will fire after a tablet release event.
+       This causes unexpected behaviours for some of the tools, eg. the bucket.
+       The problem only seems to occur on windows and only when tapping.
+       prior to this fix the event queue would look like this:
+       eg: TabletPress -> TabletRelease -> MousePress
+       The following will filter mouse events created after a tablet release event.
+    */
+    void tabletReleaseEventFired();
     bool mKeyboardInUse = false;
     bool mMouseInUse = false;
     bool mMouseRightButtonInUse = false;
@@ -265,6 +279,10 @@ private:
     // Microsoft suggests that a double click action should be no more than 500 ms
     const int DOUBLE_CLICK_THRESHOLD = 500;
     QTimer* mDoubleClickTimer = nullptr;
+    int mTabletReleaseMillisAgo;
+    const int MOUSE_FILTER_THRESHOLD = 200;
+
+    QTimer* mMouseFilterTimer = nullptr;
 
     QPoint mCursorCenterPos;
     QPointF mTransformedCursorPos;
@@ -275,6 +293,7 @@ private:
     CanvasPainter mCanvasPainter;
     OverlayPainter mOverlayPainter;
     SelectionPainter mSelectionPainter;
+    CameraPainter mCameraPainter;
 
     QPolygonF mOriginalPolygonF = QPolygonF();
 

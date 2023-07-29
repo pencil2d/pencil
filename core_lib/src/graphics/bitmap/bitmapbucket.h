@@ -57,7 +57,7 @@ private:
      * @param checkPoint
      * @return True if you are allowed to fill, otherwise false
      */
-    bool shouldFill(QPointF checkPoint) const;
+    bool allowFill(const QPoint& checkPoint) const;
 
     std::pair<Layer*, int> findBitmapLayerBelow(Layer* targetLayer, int layerIndex) const;
     BitmapImage flattenBitmapLayersToImage();
@@ -65,19 +65,19 @@ private:
     Editor* mEditor = nullptr;
     Layer* mTargetFillToLayer = nullptr;
 
+    QHash<QRgb, bool> *mPixelCache;
+
     BitmapImage mReferenceImage;
     QRgb mBucketColor = 0;
-    QRgb mReferenceColor = 0;
-    QRgb mAppliedColor = 0;
+    QRgb mStartReferenceColor = 0;
 
-    QPointF mBucketStartPoint;
     QRect mMaxFillRegion;
+
+    int mTolerance = 0;
 
     int mTargetFillToLayerIndex = -1;
 
     Properties mProperties;
-
-    bool mFirstPaint = true;
 };
 
 #endif // BITMAPBUCKET_H

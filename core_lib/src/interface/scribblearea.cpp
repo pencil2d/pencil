@@ -31,6 +31,9 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
+#include "blitrect.h"
+
+#include "onionskinpainteroptions.h"
 
 #include "colormanager.h"
 #include "toolmanager.h"
@@ -41,7 +44,7 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "overlaymanager.h"
 
-ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent)
+ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent), mCanvasPainter(mCanvas)
 {
     setObjectName("ScribbleArea");
 
@@ -54,21 +57,26 @@ ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent)
 
 ScribbleArea::~ScribbleArea()
 {
-    delete mBufferImg;
 }
 
 bool ScribbleArea::init()
 {
     mPrefs = mEditor->preference();
     mDoubleClickTimer = new QTimer(this);
+    mMouseFilterTimer = new QTimer(this);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
+    connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &ScribbleArea::onToolPropertyUpdated);
+    connect(mEditor->tools(), &ToolManager::toolChanged, this, &ScribbleArea::onToolChanged);
+
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
+    connect(mMouseFilterTimer, &QTimer::timeout, this, &ScribbleArea::tabletReleaseEventFired);
 
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::onSelectionChanged);
     connect(mEditor->select(), &SelectionManager::needDeleteSelection, this, &ScribbleArea::deleteSelection);
 
     mDoubleClickTimer->setInterval(50);
+    mMouseFilterTimer->setInterval(50);
 
     const int curveSmoothingLevel = mPrefs->getInt(SETTING::CURVE_SMOOTHING);
     mCurveSmoothingLevel = curveSmoothingLevel / 20.0; // default value is 1.0
@@ -81,12 +89,9 @@ bool ScribbleArea::init()
 
     mLayerVisibility = static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY));
 
-    mBufferImg = new BitmapImage;
-
     updateCanvasCursor();
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
-
 #if QT_VERSION >= QT_VERSION_CHECK(5, 9, 0)
     setTabletTracking(true); // tablet tracking first added in 5.9
 #endif
@@ -138,6 +143,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::INVISIBLE_LINES:
     case SETTING::OUTLINES:
     case SETTING::ONION_TYPE:
+    case SETTING::ONION_WHILE_PLAYBACK:
         invalidateAllCache();
         break;
     case SETTING::QUICK_SIZING:
@@ -166,13 +172,13 @@ void ScribbleArea::updateToolCursor()
 void ScribbleArea::setCurveSmoothing(int newSmoothingLevel)
 {
     mCurveSmoothingLevel = newSmoothingLevel / 20.0;
-    invalidateLayerPixmapCache();
+    invalidatePainterCaches();
 }
 
 void ScribbleArea::setEffect(SETTING e, bool isOn)
 {
     mPrefs->set(e, isOn);
-    invalidateLayerPixmapCache();
+    invalidatePainterCaches();
 }
 
 /************************************************************************************/
@@ -245,7 +251,7 @@ void ScribbleArea::invalidateAllCache()
 {
     QPixmapCache::clear();
     mPixmapCacheKeys.clear();
-    invalidateLayerPixmapCache();
+    invalidatePainterCaches();
     mEditor->layers()->currentLayer()->clearDirtyFrames();
 
     update();
@@ -262,26 +268,52 @@ void ScribbleArea::invalidateCacheForFrame(int frameNumber)
     }
 }
 
-void ScribbleArea::invalidateLayerPixmapCache()
+void ScribbleArea::invalidatePainterCaches()
 {
+    mCameraPainter.resetCache();
     mCanvasPainter.resetLayerCache();
     update();
 }
+
+void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
+{
+    switch (type)
+    {
+    case ToolPropertyType::CAMERAPATH:
+        onFrameModified(mEditor->currentFrame());
+        break;
+    default:
+        break;
+    }
+}
+
+void ScribbleArea::onToolChanged(ToolType)
+{
+    int frame = mEditor->currentFrame();
+    prepOverlays(frame);
+    prepCameraPainter(frame);
+    invalidateCacheForFrame(frame);
+    updateCurrentFrame();
+}
+
 
 void ScribbleArea::onPlayStateChanged()
 {
     int currentFrame = mEditor->currentFrame();
     if (mPrefs->isOn(SETTING::PREV_ONION) ||
         mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateLayerPixmapCache();
+        invalidatePainterCaches();
     }
 
+    prepOverlays(currentFrame);
+    prepCameraPainter(currentFrame);
+    invalidateCacheForFrame(currentFrame);
     updateFrame(currentFrame);
 }
 
 void ScribbleArea::onScrubbed(int frameNumber)
 {
-    invalidateLayerPixmapCache();
+    invalidatePainterCaches();
     updateFrame(frameNumber);
 }
 
@@ -289,7 +321,7 @@ void ScribbleArea::onFramesModified()
 {
     invalidateCacheForDirtyFrames();
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateLayerPixmapCache();
+        invalidatePainterCaches();
     }
     update();
 }
@@ -298,7 +330,7 @@ void ScribbleArea::onFrameModified(int frameNumber)
 {
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
         invalidateOnionSkinsCacheAround(frameNumber);
-        invalidateLayerPixmapCache();
+        invalidatePainterCaches();
     }
     invalidateCacheForFrame(frameNumber);
     updateFrame(frameNumber);
@@ -491,13 +523,6 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
     // Don't change view if tool is in use
     if (isPointerInUse()) return;
 
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::CAMERA && !layer->visible())
-    {
-        showLayerNotVisibleWarning(); // FIXME: crash when using tablets
-        return;
-    }
-
     static const bool isX11 = QGuiApplication::platformName() == "xcb";
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
@@ -512,14 +537,14 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
         const int delta = pixels.y();
         const qreal newScale = currentScale * (1 + (delta * 0.01));
-        mEditor->view()->scaleWithOffset(newScale, offset);
+        mEditor->view()->scaleAtOffset(newScale, offset);
     }
     else if (!angle.isNull())
     {
         const int delta = angle.y();
         // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
         const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
-        mEditor->view()->scaleWithOffset(newScale, offset);
+        mEditor->view()->scaleAtOffset(newScale, offset);
     }
     updateCanvasCursor();
     event->accept();
@@ -574,6 +599,8 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     }
     else if (event.eventType() == QTabletEvent::TabletRelease)
     {
+        mTabletReleaseMillisAgo = 0;
+        mMouseFilterTimer->start();
         if (mTabletInUse)
         {
             mStrokeManager->pointerReleaseEvent(&event);
@@ -688,6 +715,22 @@ void ScribbleArea::handleDoubleClick()
     }
 }
 
+void ScribbleArea::tabletReleaseEventFired()
+{
+    // Under certain circumstances a mouse press event will fire after a tablet release event.
+    // This causes unexpected behaviours for some of the tools, eg. the bucket.
+    // The problem only seems to occur on windows and only when tapping.
+    // prior to this fix, the event queue would look like this:
+    // eg: TabletPress -> TabletRelease -> MousePress
+    // The following will filter mouse events created after a tablet release event.
+    mTabletReleaseMillisAgo += 50;
+
+    if (mTabletReleaseMillisAgo >= MOUSE_FILTER_THRESHOLD) {
+        mTabletReleaseMillisAgo = 0;
+        mMouseFilterTimer->stop();
+    }
+}
+
 bool ScribbleArea::isLayerPaintable() const
 {
     Layer* layer = mEditor->layers()->currentLayer();
@@ -698,7 +741,7 @@ bool ScribbleArea::isLayerPaintable() const
 
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
-    if (mTabletInUse)
+    if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD))
     {
         e->ignore();
         return;
@@ -714,6 +757,7 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
+    if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD)) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerMoveEvent(&event);
@@ -723,6 +767,7 @@ void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 {
+    if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD)) { e->ignore(); return; }
     PointerEvent event(e);
 
     mStrokeManager->pointerReleaseEvent(&event);
@@ -745,12 +790,12 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
     mDevicePixelRatio = devicePixelRatioF();
     mCanvas = QPixmap(QSizeF(size() * mDevicePixelRatio).toSize());
-    mCanvas.fill(Qt::transparent);
 
     mEditor->view()->setCanvasSize(size());
 
     invalidateCacheForFrame(mEditor->currentFrame());
-    invalidateLayerPixmapCache();
+    invalidatePainterCaches();
+    mCanvasPainter.reset();
 }
 
 void ScribbleArea::showLayerNotVisibleWarning()
@@ -798,10 +843,10 @@ void ScribbleArea::paintBitmapBuffer()
         default: //nothing
             break;
         }
-        targetImage->paste(mBufferImg, cm);
+        targetImage->paste(&mBufferImg, cm);
     }
 
-    QRect rect = mEditor->view()->mapCanvasToScreen(mBufferImg->bounds()).toRect();
+    QRect rect = mEditor->view()->mapCanvasToScreen(mBufferImg.bounds()).toRect();
 
     drawCanvas(frameNumber, rect.adjusted(-1, -1, 1, 1));
     update(rect);
@@ -810,85 +855,23 @@ void ScribbleArea::paintBitmapBuffer()
     updateFrame(frameNumber);
     layer->setModified(frameNumber, true);
 
-    mEditor->notifyCurrentFrameUpdated();
-
-    mBufferImg->clear();
-}
-
-void ScribbleArea::paintBitmapBufferRect(const QRect& rect)
-{
-    if (mEditor->playback()->isPlaying())
-    {
-        Layer* layer = mEditor->layers()->currentLayer();
-        Q_ASSERT(layer);
-
-        BitmapImage* targetImage = currentBitmapImage(layer);
-
-        if (targetImage != nullptr)
-        {
-            QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
-            switch (currentTool()->type())
-            {
-            case ERASER:
-                cm = QPainter::CompositionMode_DestinationOut;
-                break;
-            case BRUSH:
-            case PEN:
-            case PENCIL:
-                if (getTool(currentTool()->type())->properties.preserveAlpha)
-                {
-                    cm = QPainter::CompositionMode_SourceAtop;
-                }
-                break;
-            default: //nothing
-                break;
-            }
-            targetImage->paste(mBufferImg, cm);
-        }
-
-        // Clear the buffer
-        mBufferImg->clear();
-
-        int frameNumber = mEditor->currentFrame();
-        layer->setModified(frameNumber, true);
-
-        updateFrame(frameNumber);
-
-        drawCanvas(frameNumber, rect.adjusted(-1, -1, 1, 1));
-        update(rect);
-    }
+    mBufferImg.clear();
 }
 
 void ScribbleArea::clearBitmapBuffer()
 {
-    mBufferImg->clear();
+    mBufferImg.clear();
 }
 
 void ScribbleArea::drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm)
 {
-    mBufferImg->drawLine(P1, P2, pen, cm, mPrefs->isOn(SETTING::ANTIALIAS));
+    mBufferImg.drawLine(P1, P2, pen, cm, mPrefs->isOn(SETTING::ANTIALIAS));
 }
 
 void ScribbleArea::drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm)
 {
-    mBufferImg->drawPath(path, pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
-}
-
-void ScribbleArea::refreshBitmap(const QRectF& rect, int rad)
-{
-    QRectF updatedRect = mEditor->view()->mapCanvasToScreen(rect.normalized().adjusted(-rad, -rad, +rad, +rad));
-    update(updatedRect.toRect());
-}
-
-void ScribbleArea::refreshVector(const QRectF& rect, int rad)
-{
-    rad += 1;
-    //QRectF updatedRect = mEditor->view()->mapCanvasToScreen( rect.normalized().adjusted( -rad, -rad, +rad, +rad ) );
-    update(rect.normalized().adjusted(-rad, -rad, +rad, +rad).toRect());
-
-    //qDebug() << "Logical:  " << rect;
-    //qDebug() << "Physical: " << mEditor->view()->mapCanvasToScreen( rect.normalized() );
-    //update();
+    mBufferImg.drawPath(mEditor->view()->mapScreenToCanvas(path), pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
+    update(mEditor->view()->mapCanvasToScreen(mBufferImg.bounds()).toRect().adjusted(-1, -1, 1, 1));
 }
 
 void ScribbleArea::paintCanvasCursor(QPainter& painter)
@@ -1000,10 +983,10 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
 void ScribbleArea::paintEvent(QPaintEvent* event)
 {
+    int currentFrame = mEditor->currentFrame();
     if (!currentTool()->isActive())
     {
         // --- we retrieve the canvas from the cache; we create it if it doesn't exist
-        const int currentFrame = mEditor->currentFrame();
         const int frameNumber = mEditor->layers()->lastFrameAtFrame(currentFrame);
 
         if (frameNumber < 0)
@@ -1016,7 +999,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
             if (cacheKeyIter == mPixmapCacheKeys.end() || !QPixmapCache::find(cacheKeyIter.value(), &mCanvas))
             {
-                drawCanvas(mEditor->currentFrame(), event->rect());
+                drawCanvas(currentFrame, event->rect());
                 mPixmapCacheKeys[static_cast<unsigned>(currentFrame)] = QPixmapCache::insert(mCanvas);
                 //qDebug() << "Repaint canvas!";
             }
@@ -1028,9 +1011,12 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     }
     else
     {
-        prepCanvas(mEditor->currentFrame(), event->rect());
-        prepOverlays();
-        mCanvasPainter.paintCached();
+        prepCanvas(currentFrame, event->rect());
+        prepCameraPainter(currentFrame);
+        prepOverlays(currentFrame);
+
+        mCanvasPainter.paintCached(event->rect());
+        mCameraPainter.paintCached();
     }
 
     if (currentTool()->type() == MOVE)
@@ -1052,6 +1038,8 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     // paints the canvas
     painter.setWorldMatrixEnabled(false);
     painter.drawPixmap(QPoint(0, 0), mCanvas);
+
+    currentTool()->paint(painter);
 
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -1131,8 +1119,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
         paintCanvasCursor(painter);
 
-        mCanvasPainter.renderGrid(painter);
-        mOverlayPainter.renderOverlays(painter, editor()->overlays()->getMoveMode());
+        mOverlayPainter.paint(painter);
 
 
         // paints the selection outline
@@ -1182,52 +1169,81 @@ VectorImage* ScribbleArea::currentVectorImage(Layer* layer) const
     return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
 }
 
+void ScribbleArea::prepCameraPainter(int frame)
+{
+    Object* object = mEditor->object();
+
+    mCameraPainter.preparePainter(object,
+                                  mEditor->currentLayerIndex(),
+                                  frame,
+                                  mEditor->view()->getView(),
+                                  mEditor->playback()->isPlaying(),
+                                  mLayerVisibility,
+                                  mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD),
+                                  mEditor->view()->getViewScaleInverse());
+
+    OnionSkinPainterOptions onionSkinOptions;
+    onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
+    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying();
+    onionSkinOptions.isAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
+    onionSkinOptions.skinPrevFrames = mPrefs->isOn(SETTING::PREV_ONION);
+    onionSkinOptions.skinNextFrames = mPrefs->isOn(SETTING::NEXT_ONION);
+    onionSkinOptions.colorizePrevFrames = mPrefs->isOn(SETTING::ONION_RED);
+    onionSkinOptions.colorizeNextFrames = mPrefs->isOn(SETTING::ONION_BLUE);
+    onionSkinOptions.framesToSkinPrev = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    onionSkinOptions.framesToSkinNext = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    onionSkinOptions.maxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
+    onionSkinOptions.minOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
+
+    mCameraPainter.setOnionSkinPainterOptions(onionSkinOptions);
+    mCameraPainter.setCanvas(&mCanvas);
+}
+
 void ScribbleArea::prepCanvas(int frame, QRect rect)
 {
     Object* object = mEditor->object();
 
     CanvasPainterOptions o;
-    o.bPrevOnionSkin = mPrefs->isOn(SETTING::PREV_ONION);
-    o.bNextOnionSkin = mPrefs->isOn(SETTING::NEXT_ONION);
-    o.bColorizePrevOnion = mPrefs->isOn(SETTING::ONION_RED);
-    o.bColorizeNextOnion = mPrefs->isOn(SETTING::ONION_BLUE);
-    o.nPrevOnionSkinCount = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
-    o.nNextOnionSkinCount = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
-    o.fOnionSkinMaxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
-    o.fOnionSkinMinOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
     o.bAntiAlias = mPrefs->isOn(SETTING::ANTIALIAS);
-    o.bGrid = mPrefs->isOn(SETTING::GRID);
-    o.nGridSizeW = mPrefs->getInt(SETTING::GRID_SIZE_W);
-    o.nGridSizeH = mPrefs->getInt(SETTING::GRID_SIZE_H);
-    o.bAxis = false;
     o.bThinLines = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);
     o.eLayerVisibility = mLayerVisibility;
     o.fLayerVisibilityThreshold = mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD);
-    o.bIsOnionAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
     o.scaling = mEditor->view()->scaling();
-    o.onionWhilePlayback = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
-    o.isPlaying = mEditor->playback()->isPlaying() ? true : false;
     o.cmBufferBlendMode = mEditor->tools()->currentTool()->type() == ToolType::ERASER ? QPainter::CompositionMode_DestinationOut : QPainter::CompositionMode_SourceOver;
-    mCanvasPainter.setOptions(o);
 
-    mCanvasPainter.setCanvas(&mCanvas);
+    OnionSkinPainterOptions onionSkinOptions;
+    onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
+    onionSkinOptions.isPlaying = mEditor->playback()->isPlaying();
+    onionSkinOptions.isAbsolute = (mPrefs->getString(SETTING::ONION_TYPE) == "absolute");
+    onionSkinOptions.skinPrevFrames = mPrefs->isOn(SETTING::PREV_ONION);
+    onionSkinOptions.skinNextFrames = mPrefs->isOn(SETTING::NEXT_ONION);
+    onionSkinOptions.colorizePrevFrames = mPrefs->isOn(SETTING::ONION_RED);
+    onionSkinOptions.colorizeNextFrames = mPrefs->isOn(SETTING::ONION_BLUE);
+    onionSkinOptions.framesToSkinPrev = mPrefs->getInt(SETTING::ONION_PREV_FRAMES_NUM);
+    onionSkinOptions.framesToSkinNext = mPrefs->getInt(SETTING::ONION_NEXT_FRAMES_NUM);
+    onionSkinOptions.maxOpacity = mPrefs->getInt(SETTING::ONION_MAX_OPACITY);
+    onionSkinOptions.minOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
+
+    mCanvasPainter.setOnionSkinOptions(onionSkinOptions);
+    mCanvasPainter.setOptions(o);
 
     ViewManager* vm = mEditor->view();
     SelectionManager* sm = mEditor->select();
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
     mCanvasPainter.setTransformedSelection(sm->mySelectionRect().toRect(), sm->selectionTransform());
 
-    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, mBufferImg);
+    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, &mBufferImg);
 }
 
 void ScribbleArea::drawCanvas(int frame, QRect rect)
 {
-    mCanvas.fill(Qt::transparent);
     mCanvas.setDevicePixelRatio(mDevicePixelRatio);
     prepCanvas(frame, rect);
-    mCanvasPainter.paint();
-    prepOverlays();
+    prepCameraPainter(frame);
+    prepOverlays(frame);
+    mCanvasPainter.paint(rect);
+    mCameraPainter.paint();
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset)
@@ -1254,8 +1270,9 @@ void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor,
 {
     QRectF rectangle(thePoint.x() - 0.5 * brushWidth, thePoint.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
-    mBufferImg->drawEllipse(rectangle, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern),
+    mBufferImg.drawEllipse(rectangle, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern),
                             QPainter::CompositionMode_Source, useAA);
+    update(mEditor->view()->mapCanvasToScreen(mBufferImg.bounds()).toRect().adjusted(-1, -1, 1, 1));
 }
 
 void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
@@ -1272,14 +1289,16 @@ void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, 
         QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
         setGaussianGradient(radialGrad, fillColor, opacity, mOffset);
 
-        mBufferImg->drawEllipse(rectangle, Qt::NoPen, radialGrad,
+        mBufferImg.drawEllipse(rectangle, Qt::NoPen, radialGrad,
                                 QPainter::CompositionMode_SourceOver, false);
     }
     else
     {
-        mBufferImg->drawEllipse(rectangle, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern),
+        mBufferImg.drawEllipse(rectangle, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern),
                                 QPainter::CompositionMode_SourceOver, useAA);
     }
+
+    update(mEditor->view()->mapCanvasToScreen(mBufferImg.bounds()).toRect().adjusted(-1, -1, 1, 1));
 }
 
 void ScribbleArea::flipSelection(bool flipVertical)
@@ -1287,15 +1306,13 @@ void ScribbleArea::flipSelection(bool flipVertical)
     mEditor->select()->flipSelection(flipVertical);
 }
 
-void ScribbleArea::renderOverlays()
-{
-    updateCurrentFrame();
-}
-
-void ScribbleArea::prepOverlays()
+void ScribbleArea::prepOverlays(int frame)
 {
     OverlayPainterOptions o;
 
+    o.bGrid = mPrefs->isOn(SETTING::GRID);
+    o.nGridSizeW = mPrefs->getInt(SETTING::GRID_SIZE_W);
+    o.nGridSizeH = mPrefs->getInt(SETTING::GRID_SIZE_H);
     o.bCenter = mPrefs->isOn(SETTING::OVERLAY_CENTER);
     o.bThirds = mPrefs->isOn(SETTING::OVERLAY_THIRDS);
     o.bGoldenRatio = mPrefs->isOn(SETTING::OVERLAY_GOLDEN);
@@ -1309,14 +1326,18 @@ void ScribbleArea::prepOverlays()
     o.bShowSafeAreaHelperText = mPrefs->isOn(SETTING::OVERLAY_SAFE_HELPER_TEXT_ON);
     o.bTitleSafe = mPrefs->isOn(SETTING::TITLE_SAFE_ON);
     o.nTitleSafe = mPrefs->getInt(SETTING::TITLE_SAFE);
+    o.nOverlayAngle = mPrefs->getInt(SETTING::OVERLAY_ANGLE);
+    o.bShowHandle = mEditor->tools()->currentTool()->type() == MOVE && mEditor->layers()->currentLayer()->type() != Layer::CAMERA;
 
-    o.mRect = getCameraRect();   // camera rect!
-    o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspPoint();
-    o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspPoint();
-    o.mRightPerspPoint = mEditor->overlays()->getRightPerspPoint();
-    o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspPoint();
+    o.mSinglePerspPoint = mEditor->overlays()->getSinglePerspectivePoint();
+    o.mLeftPerspPoint = mEditor->overlays()->getLeftPerspectivePoint();
+    o.mRightPerspPoint = mEditor->overlays()->getRightPerspectivePoint();
+    o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspectivePoint();
+
+    o.nFrameIndex = frame;
 
     mOverlayPainter.setOptions(o);
+    mOverlayPainter.preparePainter(mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()), palette());
 
     ViewManager* vm = mEditor->view();
     mOverlayPainter.setViewTransform(vm->getView());
@@ -1336,7 +1357,9 @@ void ScribbleArea::blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF
     bmiTmpClip.drawRect(srcRect, Qt::NoPen, radialGrad, QPainter::CompositionMode_Source, mPrefs->isOn(SETTING::ANTIALIAS));
     bmiSrcClip.bounds().moveTo(trgRect.topLeft().toPoint());
     bmiTmpClip.paste(&bmiSrcClip, QPainter::CompositionMode_SourceIn);
-    mBufferImg->paste(&bmiTmpClip);
+    mBufferImg.paste(&bmiTmpClip);
+
+    update(mEditor->view()->mapCanvasToScreen(mBufferImg.bounds()).toRect().adjusted(-1, -1, 1, 1));
 }
 
 void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal mOffset_, qreal opacity_)
@@ -1388,28 +1411,32 @@ void ScribbleArea::liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPoi
             }
         }
     }
-    mBufferImg->paste(&bmiTmpClip);
+    mBufferImg.paste(&bmiTmpClip);
+
+    update(mEditor->view()->mapCanvasToScreen(mBufferImg.bounds()).toRect().adjusted(-1, -1, 1, 1));
 }
 
 void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
 {
-    QRectF updateRect = mEditor->view()->mapCanvasToScreen(path.boundingRect().toRect()).adjusted(-1, -1, 1, 1);
+    BlitRect blitRect;
 
-    // Update region outside updateRect
-    QRectF boundingRect = updateRect.adjusted(-width(), -height(), width(), height());
-    mBufferImg->clear();
-    mBufferImg->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_SourceOver, useAA);
-    update(boundingRect.toRect());
+    // In order to clear what was previous dirty, we need to include the previous buffer bound
+    // this ensures that we won't see stroke artifacts
+    blitRect.extend(mEditor->view()->mapCanvasToScreen(mBufferImg.bounds()).toRect());
 
+    QRect updateRect = mEditor->view()->mapCanvasToScreen(path.boundingRect()).toRect();
+    // Now extend with the new path bounds mapped to the local coordinate
+    blitRect.extend(updateRect);
+
+    mBufferImg.clear();
+    mBufferImg.drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_SourceOver, useAA);
+
+    // And update only the affected area
+    update(blitRect.adjusted(-1, -1, 1, 1));
 }
 
 /************************************************************************************/
 // view handling
-
-QRect ScribbleArea::getCameraRect()
-{
-    return mCanvasPainter.getCameraRect();
-}
 
 QPointF ScribbleArea::getCentralPoint()
 {

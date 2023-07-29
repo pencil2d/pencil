@@ -55,6 +55,11 @@ Status LayerManager::save(Object* o)
     return Status::OK;
 }
 
+LayerCamera* LayerManager::getCameraLayerBelow(int layerIndex) const
+{
+    return static_cast<LayerCamera*>(object()->getLayerBelow(layerIndex, Layer::CAMERA));
+}
+
 Layer* LayerManager::getLastCameraLayer()
 {
     Layer* layer = object()->getLayer(mLastCameraLayerIdx);
@@ -104,19 +109,11 @@ int LayerManager::currentLayerIndex()
 void LayerManager::setCurrentLayer(int layerIndex)
 {
     Q_ASSERT(layerIndex >= 0);
-
-    Object* o = object();
-    if (layerIndex >= o->getLayerCount())
-    {
-        Q_ASSERT(false);
-        return;
-    }
+    Q_ASSERT(layerIndex < object()->getLayerCount());
 
     // Deselect frames of previous layer.
-    Layer* previousLayer = object()->getLayer(editor()->currentLayerIndex());
-    if (previousLayer != nullptr) {
-        previousLayer->deselectAll();
-    }
+    Layer* previousLayer = currentLayer();
+    previousLayer->deselectAll();
 
     emit currentLayerWillChange(layerIndex);
 
@@ -125,12 +122,9 @@ void LayerManager::setCurrentLayer(int layerIndex)
     editor()->setCurrentLayerIndex(layerIndex);
     emit currentLayerChanged(layerIndex);
 
-    if (object())
+    if (object()->getLayer(layerIndex)->type() == Layer::CAMERA)
     {
-        if (object()->getLayer(layerIndex)->type() == Layer::CAMERA)
-        {
-            mLastCameraLayerIdx = layerIndex;
-        }
+        mLastCameraLayerIdx = layerIndex;
     }
 }
 
@@ -315,6 +309,11 @@ int LayerManager::count()
     return object()->getLayerCount();
 }
 
+bool LayerManager::canDeleteLayer(int index) const
+{
+    return object()->canDeleteLayer(index);
+}
+
 Status LayerManager::deleteLayer(int index)
 {
     Layer* layer = object()->getLayer(index);
@@ -336,13 +335,15 @@ Status LayerManager::deleteLayer(int index)
     }
 
     object()->deleteLayer(layer);
+    Q_ASSERT(object()->getLayerCount() >= 2);
 
     // current layer is the last layer && we are deleting it
-    if (index == object()->getLayerCount() &&
+    if (index == object()->getLayerCount() - 1 &&
         index == currentLayerIndex())
     {
         setCurrentLayer(currentLayerIndex() - 1);
     }
+    object()->deleteLayer(layer);
     if (index >= currentLayerIndex())
     {
         // current layer has changed, so trigger updates

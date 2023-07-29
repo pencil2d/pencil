@@ -135,6 +135,7 @@ signals:
     void selectedFramesChanged();
 
     void updateTimeLine() const;
+    void updateTimeLineCached();
     void updateLayerCount();
     void updateBackup();
 
@@ -170,13 +171,12 @@ public: //slots
     */
     void updateFrame(int frameNumber);
 
-    void setModified(const Layer* layer, int frameNumber);
     void setModified(int layerNumber, int frameNumber);
 
     void clearCurrentFrame();
 
-    bool importImage(const QString& filePath);
-    bool importGIF(const QString& filePath, int numOfImages = 0);
+    Status importImage(const QString& filePath);
+    Status importGIF(const QString& filePath, int numOfImages = 0);
     void restoreKey();
 
     void scrubNextKeyFrame();
@@ -191,8 +191,8 @@ public: //slots
     void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
+    bool canSwapLayers(int layerIndexLeft, int layerIndexRight) const;
 
-    void onModified(int layer, int frame);
     void backup(const QString& undoText);
     bool backup(int layerNumber, int frameNumber, const QString& undoText);
     /**
@@ -239,8 +239,8 @@ public: //slots
 
 
 private:
-    bool importBitmapImage(const QString&, int space = 0);
-    bool importVectorImage(const QString&);
+    Status importBitmapImage(const QString&, int space = 0);
+    Status importVectorImage(const QString&);
 
     void pasteToCanvas(BitmapImage* bitmapImage, int frameNumber);
     void pasteToCanvas(VectorImage* vectorImage, int frameNumber);

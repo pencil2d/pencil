@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "fileformat.h"
 #include "pencildef.h"
 
+
 QString FileDialog::getOpenFileName(QWidget* parent, FileType fileType, const QString& caption)
 {
     QString strInitialFilePath = getLastOpenPath(fileType);
@@ -38,6 +39,12 @@ QString FileDialog::getOpenFileName(QWidget* parent, FileType fileType, const QS
     if (!filePath.isEmpty())
     {
         setLastOpenPath(fileType, filePath);
+
+        if (fileType == FileType::ANIMATION)
+        {
+            // When we open a project, change default export path for all filetypes
+            setLastSavePaths(filePath);
+        }
     }
 
     return filePath;
@@ -62,6 +69,18 @@ QStringList FileDialog::getOpenFileNames(QWidget* parent, FileType fileType, con
     return filePaths;
 }
 
+void FileDialog::setLastSavePaths(const QString& filePath)
+{
+    QFileInfo filePathInfo(filePath);
+    QDir projectPath = filePathInfo.absoluteDir();
+    QString baseName = filePathInfo.baseName();
+    QList<FileType> fileTypes = { FileType::IMAGE, FileType::IMAGE_SEQUENCE, FileType::GIF, FileType::MOVIE, FileType::SOUND, FileType::PALETTE };
+    for (FileType& fileType : fileTypes)
+    {
+        setLastSavePath(fileType, projectPath.absoluteFilePath(defaultFileName(fileType, baseName)));
+    }
+}
+
 QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QString& caption)
 {
     QString strInitialFilePath = getLastSavePath(fileType);
@@ -76,18 +95,23 @@ QString FileDialog::getSaveFileName(QWidget* parent, FileType fileType, const QS
 
     if (filePath.isEmpty()) { return QString(); }
 
-    setLastSavePath(fileType, filePath);
-
-    QFileInfo info(filePath);
-    if (info.suffix().isEmpty() && strSelectedFilter.isEmpty())
+    if (!hasValidSuffix(strFilter, filePath))
     {
-        filePath += addDefaultExtensionSuffix(fileType);
+        filePath += getDefaultExtensionByFileType(fileType);
     }
+
+    if (fileType == FileType::ANIMATION)
+    {
+        // When we save a new project, change default path for all other filetypes
+        setLastSavePaths(filePath);
+    }
+
+    setLastSavePath(fileType, filePath);
 
     return filePath;
 }
 
-QString FileDialog::addDefaultExtensionSuffix(const FileType fileType)
+QString FileDialog::getDefaultExtensionByFileType(const FileType fileType)
 {
     switch (fileType)
     {
@@ -96,8 +120,10 @@ QString FileDialog::addDefaultExtensionSuffix(const FileType fileType)
     case FileType::IMAGE_SEQUENCE: return PFF_DEFAULT_IMAGE_SEQ_EXT;
     case FileType::GIF: return PFF_DEFAULT_ANIMATED_EXT;
     case FileType::PALETTE: return PFF_DEFAULT_PALETTE_EXT;
+    case FileType::MOVIE: return PFF_DEFAULT_MOVIE_EXT;
+    case FileType::SOUND: return PFF_DEFAULT_SOUND_EXT;
     default:
-        return "";
+        Q_UNREACHABLE();
     }
 }
 
@@ -105,7 +131,6 @@ QString FileDialog::getLastOpenPath(FileType fileType)
 {
     QSettings setting(PENCIL2D, PENCIL2D);
     setting.beginGroup("LastOpenPath");
-
     return setting.value(toSettingKey(fileType), QDir::homePath()).toString();
 }
 
@@ -194,6 +219,22 @@ QString FileDialog::saveFileFilters(FileType fileType)
     return "";
 }
 
+bool FileDialog::hasValidSuffix(const QString& filters, const QString& filePath)
+{
+    QString fileName = QFileInfo(filePath).fileName();
+    for (const QString& filter : filters.split(";;"))
+    {
+        int start = filter.indexOf("(") + 1;
+        int end = filter.indexOf(")");
+        Q_ASSERT(start >= 1 && end >= 0);
+
+        if (QDir::match(filter.mid(start, end - start), fileName)) {
+            return true;
+        }
+    }
+    return false;
+}
+
 QString FileDialog::getFilterForFile(const QString& filters, QString filePath)
 {
     if (!filePath.contains("."))
@@ -222,19 +263,19 @@ QString FileDialog::getFilterForFile(const QString& filters, QString filePath)
     return QString();
 }
 
-QString FileDialog::defaultFileName(FileType fileType)
+QString FileDialog::defaultFileName(FileType fileType, QString baseName)
 {
-    switch (fileType)
+    QString defaultName = tr("untitled");
+    if (!baseName.isEmpty())
     {
-    case FileType::ANIMATION: return tr("MyAnimation.pclx");
-    case FileType::IMAGE:
-    case FileType::IMAGE_SEQUENCE: return tr("untitled.png");
-    case FileType::GIF: return tr("untitled.gif");
-    case FileType::MOVIE: return tr("untitled.mp4");
-    case FileType::SOUND: return tr("untitled.wav");
-    case FileType::PALETTE: return tr("untitled.xml");
+        defaultName = baseName;
     }
-    return "";
+    else if (fileType == FileType::ANIMATION)
+    {
+        defaultName = tr("MyAnimation");
+    }
+
+    return defaultName.append(getDefaultExtensionByFileType(fileType));
 }
 
 QString FileDialog::toSettingKey(FileType fileType)

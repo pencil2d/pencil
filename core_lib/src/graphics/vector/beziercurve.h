@@ -74,7 +74,7 @@ public:
     void setSelected(int i, bool YesOrNo);
     void setFilled(bool yesOrNo);
 
-    BezierCurve transformed(QTransform transformation);
+    BezierCurve transformed(QTransform transformation) const;
     void transform(QTransform transformation);
 
     void appendCubic(const QPointF& c1Point, const QPointF& c2Point, const QPointF& vertexPoint, qreal pressureValue);

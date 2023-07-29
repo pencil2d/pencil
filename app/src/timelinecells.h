@@ -57,7 +57,7 @@ public:
 
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
-    void clearCache() { delete mCache; mCache = new QPixmap( size() ); }
+    void clearCache() { delete mCache; mCache = nullptr; }
 
     bool didDetachLayer() const;
 
@@ -89,9 +89,6 @@ protected:
 private slots:
     void loadSetting(SETTING setting);
 
-    void setHold(int frame);
-    void setCameraEasing(CameraEasingType type, int frame);
-
 private:
     int getLayerNumber(int y) const;
     int getInbetweenLayerNumber(int y) const;
@@ -101,17 +98,19 @@ private:
 
     void onDidLeaveWidget();
 
-    void trackScrubber();
+    bool trackScrubber();
     void drawContent();
     void paintTicks(QPainter& painter, const QPalette& palette) const;
     void paintOnionSkin(QPainter& painter) const;
     void paintLayerGutter(QPainter& painter) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
+    void paintCurrentFrameBorder(QPainter& painter, int recLeft, int recTop, int recWidth, int recHeight) const;
     void paintFrameCursorOnCurrentLayer(QPainter& painter, int recTop, int recWidth, int recHeight) const;
     void paintSelectedFrames(QPainter& painter, const Layer* layer, const int layerIndex) const;
     void paintLabel(QPainter& painter, const Layer* layer, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
+    void paintHighlightedFrame(QPainter& painter, int framePos, int recTop, int recWidth, int recHeight) const;
 
     void editLayerProperties(Layer* layer) const;
     void editLayerProperties(LayerCamera *layer) const;
@@ -124,12 +123,15 @@ private:
     TIMELINE_CELL_TYPE mType;
 
     QPixmap* mCache = nullptr;
+    bool mRedrawContent = false;
     bool mDrawFrameNumber = true;
     bool mbShortScrub = false;
     int mFrameLength = 1;
     int mFrameSize = 0;
     int mFontSize = 10;
     bool mScrubbing = false;
+    bool mHighlightFrameEnabled = false;
+    int mHighlightedFrame = -1;
     int mLayerHeight = 20;
     int mStartY = 0;
     int mEndY   = 0;
@@ -168,9 +170,6 @@ private:
     const static int mOffsetY = 20;
     const static int mLayerDetachThreshold = 5;
 
-    QMenu* mEasingMenu = nullptr;
-    QMenu* mInterpolationMenu = nullptr;
-    QAction* mHoldAction = nullptr;
 };
 
 #endif // TIMELINECELLS_H

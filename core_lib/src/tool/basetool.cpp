@@ -65,6 +65,7 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(ANTI_ALIASING, false);
     mPropertyEnabled.insert(FILL_MODE, false);
     mPropertyEnabled.insert(STABILIZATION, false);
+    mPropertyEnabled.insert(CAMERAPATH, false);
 }
 
 QCursor BaseTool::cursor()
@@ -200,56 +201,6 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
     return cursorPixmap;
 }
 
-QCursor BaseTool::selectMoveCursor(MoveMode mode, ToolType type)
-{
-    QPixmap cursorPixmap = QPixmap(24, 24);
-    if (!cursorPixmap.isNull())
-    {
-        cursorPixmap.fill(QColor(255, 255, 255, 0));
-        QPainter cursorPainter(&cursorPixmap);
-        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
-
-        switch(mode)
-        {
-        case MoveMode::PERSP_LEFT:
-        case MoveMode::PERSP_RIGHT:
-        case MoveMode::PERSP_MIDDLE:
-        case MoveMode::PERSP_SINGLE:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            break;
-        }
-        case MoveMode::MIDDLE:
-        {
-            if (type == SELECT) {
-                cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-selectmove.png"));
-            } else {
-                return Qt::ArrowCursor;
-            }
-            break;
-        }
-        case MoveMode::TOPLEFT:
-        case MoveMode::BOTTOMRIGHT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalleft.png"));
-            break;
-        }
-        case MoveMode::TOPRIGHT:
-        case MoveMode::BOTTOMLEFT:
-        {
-            cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/arrow-diagonalright.png"));
-            break;
-        }
-
-        default:
-            return (type == SELECT) ? Qt::CrossCursor : Qt::ArrowCursor;
-            break;
-        }
-        cursorPainter.end();
-    }
-    return QCursor(cursorPixmap);
-}
-
 bool BaseTool::isActive()
 {
     return strokeManager()->isActive();
@@ -368,42 +319,42 @@ void BaseTool::adjustCursor(Qt::KeyboardModifiers modifiers)
     }
 }
 
-QPointF BaseTool::getCurrentPressPixel()
+QPointF BaseTool::getCurrentPressPixel() const
 {
     return strokeManager()->getCurrentPressPixel();
 }
 
-QPointF BaseTool::getCurrentPressPoint()
+QPointF BaseTool::getCurrentPressPoint() const
 {
     return mEditor->view()->mapScreenToCanvas(strokeManager()->getCurrentPressPixel());
 }
 
-QPointF BaseTool::getCurrentPixel()
+QPointF BaseTool::getCurrentPixel() const
 {
     return strokeManager()->getCurrentPixel();
 }
 
-QPointF BaseTool::getCurrentPoint()
+QPointF BaseTool::getCurrentPoint() const
 {
     return mEditor->view()->mapScreenToCanvas(getCurrentPixel());
 }
 
-QPointF BaseTool::getLastPixel()
+QPointF BaseTool::getLastPixel() const
 {
     return strokeManager()->getLastPixel();
 }
 
-QPointF BaseTool::getLastPoint()
+QPointF BaseTool::getLastPoint() const
 {
     return mEditor->view()->mapScreenToCanvas(getLastPixel());
 }
 
-QPointF BaseTool::getLastPressPixel()
+QPointF BaseTool::getLastPressPixel() const
 {
     return strokeManager()->getLastPressPixel();
 }
 
-QPointF BaseTool::getLastPressPoint()
+QPointF BaseTool::getLastPressPoint() const
 {
     return mEditor->view()->mapScreenToCanvas(getLastPressPixel());
 }
@@ -478,7 +429,7 @@ void BaseTool::setFillExpand(const int fillExpandValue)
     properties.bucketFillExpand = fillExpandValue;
 }
 
-void BaseTool::setFillToLayer(int layerMode)
+void BaseTool::setFillToLayerMode(int layerMode)
 {
     properties.bucketFillToLayerMode = layerMode;
 }
@@ -503,4 +454,16 @@ void BaseTool::setShowSelectionInfo(const bool b)
     properties.showSelectionInfo = b;
 }
 
+void BaseTool::setShowCameraPath(const bool showCameraPath)
+{
+    properties.cameraShowPath = showCameraPath;
+}
 
+void BaseTool::setPathDotColorType(const DotColorType dotColorType)
+{
+    properties.cameraPathDotColorType = dotColorType;
+}
+
+void BaseTool::resetCameraPath()
+{
+}
