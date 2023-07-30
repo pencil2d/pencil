@@ -189,11 +189,8 @@ public:
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
-    void paintBitmapBufferRect(const QRect& rect);
     void paintCanvasCursor(QPainter& painter);
     void clearBitmapBuffer();
-    void refreshBitmap(const QRectF& rect, int rad);
-    void refreshVector(const QRectF& rect, int rad);
     void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
@@ -206,7 +203,7 @@ public:
     /// on an empty frame, and if so, takes action according to use preference.
     void handleDrawingOnEmptyFrame();
 
-    BitmapImage* mBufferImg = nullptr; // used to pre-draw vector modifications
+    BitmapImage mBufferImg; // used to draw strokes for both bitmap and vector
 
     QPixmap mCursorImg;
     QPixmap mTransCursImg;
@@ -217,7 +214,7 @@ private:
      * Call this in most situations where the layer rendering order is affected.
      * Peviously known as setAllDirty.
     */
-    void invalidateCaches();
+    void invalidatePainterCaches();
 
     /** Invalidate cache for the given frame */
     void invalidateCacheForFrame(int frameNumber);
@@ -243,8 +240,6 @@ private:
     VectorImage* currentVectorImage(Layer* layer) const;
 
     MoveMode mMoveMode = MoveMode::NONE;
-
-    BitmapImage mBitmapSelection; // used to temporary store a transformed portion of a bitmap image
 
     std::unique_ptr<StrokeManager> mStrokeManager;
 

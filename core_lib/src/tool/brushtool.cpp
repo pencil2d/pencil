@@ -25,7 +25,6 @@ GNU General Public License for more details.
 
 #include "beziercurve.h"
 #include "vectorimage.h"
-#include "layervector.h"
 #include "editor.h"
 #include "colormanager.h"
 #include "strokemanager.h"
@@ -33,7 +32,6 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "selectionmanager.h"
 #include "scribblearea.h"
-#include "blitrect.h"
 #include "pointerevent.h"
 
 
@@ -194,17 +192,12 @@ void BrushTool::paintAt(QPointF point)
         qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
         qreal brushWidth = properties.width * pressure;
         mCurrentWidth = brushWidth;
-
-        BlitRect rect(point.toPoint());
         mScribbleArea->drawBrush(point,
                                  brushWidth,
                                  properties.feather,
                                  mEditor->color()->frontColor(),
                                  opacity,
                                  true);
-
-        int rad = qRound(brushWidth) / 2 + 2;
-        mScribbleArea->refreshBitmap(rect, rad);
     }
 }
 
@@ -217,11 +210,6 @@ void BrushTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        for (int i = 0; i < p.size(); i++)
-        {
-            p[i] = mEditor->view()->mapScreenToCanvas(p[i]);
-        }
-
         qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
         qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
         qreal brushWidth = properties.width * pressure;
@@ -229,8 +217,6 @@ void BrushTool::drawStroke()
 
         qreal brushStep = (0.5 * brushWidth);
         brushStep = qMax(1.0, brushStep);
-
-        BlitRect rect;
 
         QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
@@ -242,7 +228,6 @@ void BrushTool::drawStroke()
         {
             QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
 
-            rect.extend(point.toPoint());
             mScribbleArea->drawBrush(point,
                                      brushWidth,
                                      properties.feather,
@@ -254,11 +239,6 @@ void BrushTool::drawStroke()
                 mLastBrushPoint = getCurrentPoint();
             }
         }
-
-        int rad = qRound(brushWidth / 2 + 2);
-
-        mScribbleArea->paintBitmapBufferRect(rect);
-        mScribbleArea->refreshBitmap(rect, rad);
 
         // Line visualizer
         // for debugging
@@ -281,10 +261,8 @@ void BrushTool::drawStroke()
         qreal pressure = (properties.pressure) ? mCurrentPressure : 1;
         qreal brushWidth = properties.width * pressure;
 
-        int rad = qRound((brushWidth / 2 + 2) * mEditor->view()->scaling());
-
         QPen pen(mEditor->color()->frontColor(),
-                 brushWidth * mEditor->view()->scaling(),
+                 brushWidth,
                  Qt::SolidLine,
                  Qt::RoundCap,
                  Qt::RoundJoin);
@@ -295,7 +273,6 @@ void BrushTool::drawStroke()
             path.cubicTo(p[1], p[2], p[3]);
 
             mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }

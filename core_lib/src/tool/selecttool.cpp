@@ -42,12 +42,14 @@ void SelectTool::loadSettings()
 
 QCursor SelectTool::cursor()
 {
+    // Don't update cursor while we're moving the selection
+    if (mScribbleArea->isPointerInUse()) { return mCursorPixmap; }
+
+    mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
     MoveMode mode = mEditor->select()->getMoveMode();
 
-    QPixmap cursorPixmap = QPixmap(24, 24);
-
-    cursorPixmap.fill(QColor(255, 255, 255, 0));
-    QPainter cursorPainter(&cursorPixmap);
+    mCursorPixmap.fill(QColor(255, 255, 255, 0));
+    QPainter cursorPainter(&mCursorPixmap);
     cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
 
     switch(mode)
@@ -55,27 +57,29 @@ QCursor SelectTool::cursor()
     case MoveMode::TOPLEFT:
     case MoveMode::BOTTOMRIGHT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-diagonal-left.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-diagonal-left.svg"));
         break;
     }
     case MoveMode::TOPRIGHT:
     case MoveMode::BOTTOMLEFT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-diagonal-right.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-diagonal-right.svg"));
         break;
     }
     case MoveMode::MIDDLE:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-move.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-move.svg"));
         break;
     }
+    case MoveMode::NONE:
+        cursorPainter.drawPixmap(QPoint(3,3), QPixmap(":icons/general/cross.png"));
+        break;
     default:
-        return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
+        Q_UNREACHABLE();
         break;
     }
     cursorPainter.end();
-
-    return QCursor(cursorPixmap);
+    return mCursorPixmap;
 }
 
 void SelectTool::resetToDefault()

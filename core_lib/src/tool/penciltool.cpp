@@ -207,16 +207,11 @@ void PencilTool::paintAt(QPointF point)
         qreal fixedBrushFeather = properties.feather;
 
         mCurrentWidth = brushWidth;
-
-        BlitRect rect(point.toPoint());
         mScribbleArea->drawPencil(point,
                                   brushWidth,
                                   fixedBrushFeather,
                                   mEditor->color()->frontColor(),
                                   opacity);
-
-        int rad = qRound(brushWidth) / 2 + 2;
-        mScribbleArea->refreshBitmap(rect, rad);
     }
 }
 
@@ -238,8 +233,6 @@ void PencilTool::drawStroke()
         qreal fixedBrushFeather = properties.feather;
         qreal brushStep = qMax(1.0, (0.5 * brushWidth));
 
-        BlitRect rect;
-
         QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
 
@@ -249,7 +242,6 @@ void PencilTool::drawStroke()
         for (int i = 0; i < steps; i++)
         {
             QPointF point = mLastBrushPoint + (i + 1) * brushStep * (getCurrentPoint() - mLastBrushPoint) / distance;
-            rect.extend(point.toPoint());
             mScribbleArea->drawPencil(point,
                                       brushWidth,
                                       fixedBrushFeather,
@@ -261,11 +253,6 @@ void PencilTool::drawStroke()
                 mLastBrushPoint = getCurrentPoint();
             }
         }
-
-        int rad = qRound(brushWidth) / 2 + 2;
-
-        mScribbleArea->paintBitmapBufferRect(rect);
-        mScribbleArea->refreshBitmap(rect, rad);
     }
     else if (layer->type() == Layer::VECTOR)
     {
@@ -277,8 +264,6 @@ void PencilTool::drawStroke()
                  Qt::RoundCap,
                  Qt::RoundJoin);
 
-        int rad = qRound((mCurrentWidth / 2 + 2) * mEditor->view()->scaling());
-
         if (p.size() == 4)
         {
             QPainterPath path(p[0]);
@@ -286,7 +271,6 @@ void PencilTool::drawStroke()
                          p[2],
                          p[3]);
             mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-            mScribbleArea->refreshVector(path.boundingRect().toRect(), rad);
         }
     }
 }

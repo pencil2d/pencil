@@ -38,7 +38,7 @@ For a more pleasant development experience, you might want to install %Qt Creato
 
 Pencil uses version 5 of the %Qt framework. To install all required components of %Qt, run this command:
 
-    sudo pacman -S --needed qt5-multimedia qt5-svg qt5-xmlpatterns
+    sudo pacman -S --needed qt5-multimedia qt5-svg qt5-xmlpatterns qt-gstreamer
 
 For a more pleasant development experience, you might want to install %Qt Creator as well (recommended). To do so, run the following command:
 

@@ -28,7 +28,6 @@ class Object;
 class QPainter;
 class QImage;
 
-
 class VectorImage : public KeyFrame
 {
 public:
@@ -80,6 +79,8 @@ public:
     void deleteSelectedPoints();
     void removeVertex(int curve, int vertex);
 
+    QRectF getBoundsOfTransformedCurves() const;
+
     bool isEmpty() const { return mCurves.isEmpty(); }
 
     void paste(VectorImage&);
@@ -93,7 +94,6 @@ public:
     void moveColor(int start, int end);
 
     void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
-    void outputImage(QImage* image, QTransform myView, bool simplified, bool showThinCurves, bool antialiasing); // uses paintImage
 
     void clear();
     void clean();

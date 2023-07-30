@@ -111,38 +111,40 @@ QPointF SelectionManager::getSelectionAnchorPoint() const
 
 void SelectionManager::setMoveModeForAnchorInRange(const QPointF& point)
 {
-    if (mSelectionPolygon.count() < 3) { return; }
+    if (mSelectionPolygon.count() < 4)
+    {
+        mMoveMode = MoveMode::NONE;
+        return;
+    }
 
     QPolygonF projectedPolygon = mapToSelection(mSelectionPolygon);
 
     const double calculatedSelectionTol = selectionTolerance();
 
-    MoveMode mode;
     if (QLineF(point, projectedPolygon[0]).length() < calculatedSelectionTol)
     {
-        mode = MoveMode::TOPLEFT;
+        mMoveMode = MoveMode::TOPLEFT;
     }
     else if (QLineF(point, projectedPolygon[1]).length() < calculatedSelectionTol)
     {
-        mode = MoveMode::TOPRIGHT;
+        mMoveMode = MoveMode::TOPRIGHT;
     }
     else if (QLineF(point, projectedPolygon[2]).length() < calculatedSelectionTol)
     {
-        mode = MoveMode::BOTTOMRIGHT;
+        mMoveMode = MoveMode::BOTTOMRIGHT;
     }
     else if (QLineF(point, projectedPolygon[3]).length() < calculatedSelectionTol)
     {
-        mode = MoveMode::BOTTOMLEFT;
+        mMoveMode = MoveMode::BOTTOMLEFT;
     }
     else if (projectedPolygon.containsPoint(point, Qt::WindingFill))
     {
-        mode = MoveMode::MIDDLE;
+        mMoveMode = MoveMode::MIDDLE;
     }
-    else {
-        mode = MoveMode::NONE;
+    else
+    {
+        mMoveMode = MoveMode::NONE;
     }
-
-    mMoveMode = mode;
 }
 
 void SelectionManager::adjustSelection(const QPointF& currentPoint, const QPointF& offset, qreal rotationOffset, int rotationIncrement)

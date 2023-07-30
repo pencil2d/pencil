@@ -28,6 +28,8 @@ public:
     explicit BlitRect(const QPoint p);
     explicit BlitRect(const QRect rect);
     void extend(const QPoint p);
+    void extend(const QPoint& p, const QSize& size);
+    void extend(const QRect& rect);
 
 private:
     bool mInitialized = false;
