@@ -64,6 +64,7 @@ public:
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     Status addNewKey();
+    void interpolateKeyframes();
 
     /** Will insert a keyframe at the current position and push connected frames to the right */
     Status insertKeyFrameAtCurrentPosition();

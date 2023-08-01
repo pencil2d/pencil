@@ -657,6 +657,66 @@ Status ActionCommands::addNewKey()
     return Status::OK;
 }
 
+void ActionCommands::interpolateKeyframes()
+{
+    bool cont = true;
+    // must be bitmap layer
+    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP)
+        cont = false;
+
+    LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+    QList<int> framePair = layer->selectedKeyFramesPositions();
+
+    // must be exactly two frames
+    if (framePair.length() != 2)
+        cont = false;
+
+    int first = framePair[0];
+    int last = layer->getNextKeyFramePosition(first);
+    // first and last must be adjacent keyframes
+    if (last != framePair[1])
+        cont = false;
+
+    if (!cont) {
+        QMessageBox::information(mParent,
+                                 tr("Information"),
+                                 tr("To interpolate keframes, you must select to adjacent frames!"),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    BitmapImage* img1 = layer->getBitmapImageAtFrame(first);
+    mEditor->scrubTo(first);
+    QRect rect1 = img1->bounds();
+    BitmapImage* img2 = layer->getBitmapImageAtFrame(last);
+    mEditor->scrubTo(last);
+    QRect rect2 = img2->bounds();
+
+    QLineF upperLine = QLineF(rect1.topLeft(), rect2.topLeft());
+    QLineF bottomLine = QLineF(rect1.bottomRight(), rect2.bottomRight());
+
+    int counter = 1;
+    KeyFrame* keyframe = layer->getKeyFrameAt(first);
+
+    qreal percent = 0.0;
+    qreal interpolations = static_cast<qreal>(last - first);
+
+    for (int i = first + 1; i < last; i++)
+    {
+        KeyFrame* dupKey = keyframe->clone();
+        layer->addKeyFrame(i, dupKey);
+        BitmapImage* image = layer->getBitmapImageAtFrame(i);
+        percent = counter / interpolations;
+        QRect transformer = QRect(upperLine.pointAt(percent).toPoint(),
+                                  bottomLine.pointAt(percent).toPoint());
+        image->transform(transformer, true);
+        image->modification();
+        mEditor->scrubTo(i);
+        counter++;
+    }
+
+}
+
 void ActionCommands::exposeSelectedFrames(int offset)
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
