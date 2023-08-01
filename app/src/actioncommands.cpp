@@ -33,8 +33,6 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "colormanager.h"
-#include "preferencemanager.h"
-#include "selectionmanager.h"
 #include "util.h"
 #include "app_util.h"
 
@@ -43,7 +41,6 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "bitmapimage.h"
-#include "vectorimage.h"
 #include "soundclip.h"
 #include "camera.h"
 
@@ -624,14 +621,14 @@ void ActionCommands::interpolateKeyframes()
 
     int first = framePair[0];
     int last = layer->getNextKeyFramePosition(first);
-    // first and last must be adjacent keyframes
-    if (last != framePair[1])
+    // first and last must be adjacent keyframes, with minimum 1 keyframe in between
+    if (last != framePair[1] || first == last - 1)
         cont = false;
 
     if (!cont) {
         QMessageBox::information(mParent,
                                  tr("Information"),
-                                 tr("To interpolate keframes, you must select to adjacent frames!"),
+                                 tr("To interpolate keyframes, select two adjacent keyframes with space between."),
                                  QMessageBox::Ok);
         return;
     }
@@ -646,10 +643,10 @@ void ActionCommands::interpolateKeyframes()
     QLineF upperLine = QLineF(rect1.topLeft(), rect2.topLeft());
     QLineF bottomLine = QLineF(rect1.bottomRight(), rect2.bottomRight());
 
-    int counter = 1;
     KeyFrame* keyframe = layer->getKeyFrameAt(first);
 
     qreal percent = 0.0;
+    int counter = 1;
     qreal interpolations = static_cast<qreal>(last - first);
 
     for (int i = first + 1; i < last; i++)
@@ -665,7 +662,7 @@ void ActionCommands::interpolateKeyframes()
         mEditor->scrubTo(i);
         counter++;
     }
-
+    mEditor->scrubTo(last);
 }
 
 void ActionCommands::exposeSelectedFrames(int offset)
