@@ -651,6 +651,8 @@ void ActionCommands::interpolateKeyframes()
 
     for (int i = first + 1; i < last; i++)
     {
+        if (counter > 1)
+            keyframe = layer->getKeyFrameAt(i - 1);
         KeyFrame* dupKey = keyframe->clone();
         layer->addKeyFrame(i, dupKey);
         BitmapImage* image = layer->getBitmapImageAtFrame(i);
@@ -662,6 +664,7 @@ void ActionCommands::interpolateKeyframes()
         mEditor->scrubTo(i);
         counter++;
     }
+    emit mEditor->updateTimeLine();
     mEditor->scrubTo(last);
 }
 
