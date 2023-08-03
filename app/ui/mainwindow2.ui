@@ -651,7 +651,7 @@
   <action name="actionAdd_Frame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/controls/frame-add.svg</normaloff>:/icons/themes/playful/controls/frame-add.svg</iconset>
+     <normaloff>:/icons/themes/playful/timeline/frame-add.svg</normaloff>:/icons/themes/playful/timeline/frame-add.svg</iconset>
    </property>
    <property name="text">
     <string>Add Frame</string>
@@ -660,7 +660,7 @@
   <action name="actionDuplicate_Frame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/controls/frame-duplicate.svg</normaloff>:/icons/themes/playful/controls/frame-duplicate.svg</iconset>
+     <normaloff>:/icons/themes/playful/timeline/frame-duplicate.svg</normaloff>:/icons/themes/playful/timeline/frame-duplicate.svg</iconset>
    </property>
    <property name="text">
     <string>Duplicate Frame</string>
@@ -669,7 +669,7 @@
   <action name="actionRemove_Frame">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/controls/frame-remove.svg</normaloff>:/icons/themes/playful/controls/frame-remove.svg</iconset>
+     <normaloff>:/icons/themes/playful/timeline/frame-remove.svg</normaloff>:/icons/themes/playful/timeline/frame-remove.svg</iconset>
    </property>
    <property name="text">
     <string>Remove Frame</string>
@@ -813,7 +813,7 @@
   <action name="actionDelete_Current_Layer">
    <property name="icon">
     <iconset resource="../data/app.qrc">
-     <normaloff>:/icons/themes/playful/controls/layer-remove.svg</normaloff>:/icons/themes/playful/controls/layer-remove.svg</iconset>
+     <normaloff>:/icons/themes/playful/timeline/layer-remove.svg</normaloff>:/icons/themes/playful/timeline/layer-remove.svg</iconset>
    </property>
    <property name="text">
     <string>Delete Current Layer</string>
