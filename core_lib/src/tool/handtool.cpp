@@ -41,6 +41,23 @@ void HandTool::loadSettings()
     properties.useFeather = false;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
+
+    mInvertZoomDirection = mEditor->preference()->isOn(SETTING::INVERT_ZOOM_DIRECTION);
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &HandTool::updateSettings);
+}
+
+void HandTool::updateSettings(const SETTING setting)
+{
+    switch (setting)
+    {
+    case SETTING::INVERT_ZOOM_DIRECTION:
+    {
+        mInvertZoomDirection = mEditor->preference()->isOn(SETTING::INVERT_ZOOM_DIRECTION);
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 QCursor HandTool::cursor()
@@ -111,7 +128,17 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
     else if (isScale)
     {
         float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
-        qreal scaleValue = viewMgr->scaling() * (1 + delta);
+        qreal scaleValue = 0.0;
+        if (mInvertZoomDirection)
+        {
+            // Zoom in by dragging cursor up
+            scaleValue = viewMgr->scaling() * (1 - delta);
+        }
+        else
+        {
+            // Zoom in by dragging cursor down
+            scaleValue = viewMgr->scaling() * (1 + delta);
+        }
         viewMgr->scaleAtOffset(scaleValue, mStartPoint);
     }
 }
