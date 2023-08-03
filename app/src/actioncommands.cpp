@@ -548,13 +548,29 @@ void ActionCommands::ZoomOut()
 void ActionCommands::rotateClockwise()
 {
     float currentRotation = mEditor->view()->rotation();
-    mEditor->view()->rotate(currentRotation + 15.f);
+    // Invert rotation direction if view is flipped either vertically or horizontally
+    if (mEditor->view()->isFlipHorizontal() ^ mEditor->view()->isFlipVertical())
+    {
+        mEditor->view()->rotate(currentRotation - 15.f);
+    }
+    else
+    {
+        mEditor->view()->rotate(currentRotation + 15.f);
+    }
 }
 
 void ActionCommands::rotateCounterClockwise()
 {
     float currentRotation = mEditor->view()->rotation();
-    mEditor->view()->rotate(currentRotation - 15.f);
+    // Invert rotation direction if view is flipped either vertically or horizontally
+    if (mEditor->view()->isFlipHorizontal() ^ mEditor->view()->isFlipVertical())
+    {
+        mEditor->view()->rotate(currentRotation + 15.f);
+    }
+    else
+    {
+        mEditor->view()->rotate(currentRotation - 15.f);
+    }
 }
 
 void ActionCommands::PlayStop()
