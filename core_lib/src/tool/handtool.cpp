@@ -42,7 +42,7 @@ void HandTool::loadSettings()
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
 
-    mInvertZoomDirection = mEditor->preference()->isOn(SETTING::INVERT_ZOOM_DIRECTION);
+    mInvertZoomDirection = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION);
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &HandTool::updateSettings);
 }
 
@@ -50,9 +50,9 @@ void HandTool::updateSettings(const SETTING setting)
 {
     switch (setting)
     {
-    case SETTING::INVERT_ZOOM_DIRECTION:
+    case SETTING::INVERT_DRAG_ZOOM_DIRECTION:
     {
-        mInvertZoomDirection = mEditor->preference()->isOn(SETTING::INVERT_ZOOM_DIRECTION);
+        mInvertZoomDirection = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION);
         break;
     }
     default:

@@ -40,7 +40,7 @@ ToolsPage::~ToolsPage()
 void ToolsPage::updateValues()
 {
     ui->useQuickSizingBox->setChecked(mManager->isOn(SETTING::QUICK_SIZING));
-    ui->invertZoomDirectionBox->setChecked(mManager->isOn(SETTING::INVERT_ZOOM_DIRECTION));
+    ui->invertZoomDirectionBox->setChecked(mManager->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION));
     setRotationIncrement(mManager->getInt(SETTING::ROTATION_INCREMENT));
 }
 
@@ -51,7 +51,7 @@ void ToolsPage::quickSizingChange(int b)
 
 void ToolsPage::invertZoomDirectionChange(int b)
 {
-    mManager->set(SETTING::INVERT_ZOOM_DIRECTION, b != Qt::Unchecked);
+    mManager->set(SETTING::INVERT_DRAG_ZOOM_DIRECTION, b != Qt::Unchecked);
 }
 
 void ToolsPage::setRotationIncrement(int angle)

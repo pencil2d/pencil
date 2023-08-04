@@ -254,7 +254,8 @@ const static float RotationHandleOffset = 50;
 #define SETTING_LOAD_MOST_RECENT    "LoadMostRecent"
 #define SETTING_LOAD_DEFAULT_PRESET "LoadDefaultPreset"
 #define SETTING_DEFAULT_PRESET      "DefaultPreset"
-#define SETTING_INVERT_ZOOM_DIRECTION "InvertZoomDirection"
+
+#define SETTING_INVERT_DRAG_ZOOM_DIRECTION   "InvertDragZoomDirection"
 
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"

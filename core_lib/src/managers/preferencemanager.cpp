@@ -77,8 +77,9 @@ void PreferenceManager::loadPrefs()
     set(SETTING::HIGH_RESOLUTION,          settings.value(SETTING_HIGH_RESOLUTION,        true).toBool());
     set(SETTING::SHADOW,                   settings.value(SETTING_SHADOW,                 false).toBool());
     set(SETTING::QUICK_SIZING,             settings.value(SETTING_QUICK_SIZING,           true).toBool());
-    set(SETTING::INVERT_ZOOM_DIRECTION,    settings.value(SETTING_INVERT_ZOOM_DIRECTION,  false).toBool());
     set(SETTING::SHOW_SELECTION_INFO,      settings.value(SETTING_SHOW_SELECTION_INFO,    false).toBool());
+
+    set(SETTING::INVERT_DRAG_ZOOM_DIRECTION,   settings.value(SETTING_INVERT_DRAG_ZOOM_DIRECTION,  false).toBool());
 
     set(SETTING::ROTATION_INCREMENT,       settings.value(SETTING_ROTATION_INCREMENT,     15).toInt());
 
@@ -437,8 +438,8 @@ void PreferenceManager::set(SETTING option, bool value)
     case SETTING::QUICK_SIZING:
         settings.setValue(SETTING_QUICK_SIZING, value);
         break;
-    case SETTING::INVERT_ZOOM_DIRECTION:
-        settings.setValue(SETTING_INVERT_ZOOM_DIRECTION, value);
+    case SETTING::INVERT_DRAG_ZOOM_DIRECTION:
+        settings.setValue(SETTING_INVERT_DRAG_ZOOM_DIRECTION, value);
         break;
     case SETTING::LAYOUT_LOCK:
         settings.setValue(SETTING_LAYOUT_LOCK, value);
