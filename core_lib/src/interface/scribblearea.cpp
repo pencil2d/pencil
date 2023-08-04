@@ -89,6 +89,8 @@ bool ScribbleArea::init()
 
     mLayerVisibility = static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY));
 
+    mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION) ? -1 : 1;
+
     updateCanvasCursor();
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
