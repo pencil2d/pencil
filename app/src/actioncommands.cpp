@@ -733,6 +733,10 @@ void ActionCommands::duplicateKey()
     KeyFrame* key = layer->getKeyFrameAt(mEditor->currentFrame());
     if (key == nullptr) return;
 
+    // Duplicating a selected keyframe is not handled properly.
+    // The desired behavior is to clear selection anyway so we just do that.
+    deselectAll();
+
     KeyFrame* dupKey = key->clone();
 
     int nextEmptyFrame = mEditor->currentFrame() + 1;
@@ -757,6 +761,7 @@ void ActionCommands::duplicateKey()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
 }
 
 void ActionCommands::moveFrameForward()
