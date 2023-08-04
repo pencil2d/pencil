@@ -157,6 +157,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::LAYER_VISIBILITY:
         setLayerVisibility(static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY)));
         break;
+    case SETTING::INVERT_SCROLL_ZOOM_DIRECTION:
+        mInvertScrollDirection = mEditor->preference()->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION);
+        break;
     default:
         break;
     }
@@ -535,13 +538,21 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         // XXX: This pixel-based zooming algorithm currently has some shortcomings compared to the angle-based one:
         //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
         //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
-        const int delta = pixels.y();
+        int delta = pixels.y();
+        if (mInvertScrollDirection)
+        {
+            delta = delta * -1;
+        }
         const qreal newScale = currentScale * (1 + (delta * 0.01));
         mEditor->view()->scaleAtOffset(newScale, offset);
     }
     else if (!angle.isNull())
     {
-        const int delta = angle.y();
+        int delta = angle.y();
+        if (mInvertScrollDirection)
+        {
+            delta = delta * -1;
+        }
         // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
         const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
         mEditor->view()->scaleAtOffset(newScale, offset);
