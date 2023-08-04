@@ -114,7 +114,7 @@
           <item>
            <widget class="QCheckBox" name="invertZoomDirectionBox">
             <property name="toolTip">
-             <string>Zooms in when moving the cursor up as opposed to down</string>
+             <string>Zoom in by dragging the cursor up instead of down</string>
             </property>
             <property name="text">
              <string>Invert Zoom Direction</string>
