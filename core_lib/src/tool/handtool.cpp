@@ -42,7 +42,7 @@ void HandTool::loadSettings()
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
 
-    mInvertZoomDirection = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION);
+    mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION) ? -1 : 1;
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &HandTool::updateSettings);
 }
 
@@ -52,7 +52,7 @@ void HandTool::updateSettings(const SETTING setting)
     {
     case SETTING::INVERT_DRAG_ZOOM_DIRECTION:
     {
-        mInvertZoomDirection = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION);
+        mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION) ? -1 : 1;
         break;
     }
     default:
@@ -127,18 +127,8 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
     }
     else if (isScale)
     {
-        float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
-        qreal scaleValue = 0.0;
-        if (mInvertZoomDirection)
-        {
-            // Zoom in by dragging cursor up
-            scaleValue = viewMgr->scaling() * (1 - delta);
-        }
-        else
-        {
-            // Zoom in by dragging cursor down
-            scaleValue = viewMgr->scaling() * (1 + delta);
-        }
+        const float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
+        const qreal scaleValue = viewMgr->scaling() * (1 + (delta * mDeltaFactor));
         viewMgr->scaleAtOffset(scaleValue, mStartPoint);
     }
 }

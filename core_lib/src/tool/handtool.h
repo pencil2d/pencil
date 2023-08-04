@@ -45,7 +45,7 @@ private:
     QPointF mLastPixel;
     QPointF mStartPoint;
     bool mIsHeld = false;
-    bool mInvertZoomDirection = false;
+    int mDeltaFactor = 1;
 };
 
 #endif
