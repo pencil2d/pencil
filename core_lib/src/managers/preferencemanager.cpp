@@ -79,6 +79,9 @@ void PreferenceManager::loadPrefs()
     set(SETTING::QUICK_SIZING,             settings.value(SETTING_QUICK_SIZING,           true).toBool());
     set(SETTING::SHOW_SELECTION_INFO,      settings.value(SETTING_SHOW_SELECTION_INFO,    false).toBool());
 
+    set(SETTING::INVERT_DRAG_ZOOM_DIRECTION,   settings.value(SETTING_INVERT_DRAG_ZOOM_DIRECTION,  false).toBool());
+    set(SETTING::INVERT_SCROLL_ZOOM_DIRECTION, settings.value(SETTING_INVERT_SCROLL_ZOOM_DIRECTION,  false).toBool());
+
     set(SETTING::ROTATION_INCREMENT,       settings.value(SETTING_ROTATION_INCREMENT,     15).toInt());
 
     set(SETTING::WINDOW_OPACITY,           settings.value(SETTING_WINDOW_OPACITY,         0).toInt());
@@ -435,6 +438,12 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::QUICK_SIZING:
         settings.setValue(SETTING_QUICK_SIZING, value);
+        break;
+    case SETTING::INVERT_DRAG_ZOOM_DIRECTION:
+        settings.setValue(SETTING_INVERT_DRAG_ZOOM_DIRECTION, value);
+        break;
+    case SETTING::INVERT_SCROLL_ZOOM_DIRECTION:
+        settings.setValue(SETTING_INVERT_SCROLL_ZOOM_DIRECTION, value);
         break;
     case SETTING::LAYOUT_LOCK:
         settings.setValue(SETTING_LAYOUT_LOCK, value);
