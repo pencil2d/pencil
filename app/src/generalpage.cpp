@@ -113,6 +113,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->safeHelperTextCheckbox, &QCheckBox::stateChanged, this, &GeneralPage::SafeAreaHelperTextCheckBoxStateChanged);
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
+    connect(ui->invertScrollDirectionBox, &QCheckBox::stateChanged, this, &GeneralPage::invertScrollDirectionBoxStateChanged);
 }
 
 GeneralPage::~GeneralPage()
@@ -181,6 +182,8 @@ void GeneralPage::updateValues()
     else Q_ASSERT(false);
 
     ui->backgroundButtons->button(buttonIdx)->setChecked(true);
+
+    ui->invertScrollDirectionBox->setChecked(mManager->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION));
 }
 
 void GeneralPage::languageChanged(int i)
@@ -295,4 +298,9 @@ void GeneralPage::gridCheckBoxStateChanged(int b)
 void GeneralPage::frameCacheNumberChanged(int value)
 {
     mManager->set(SETTING::FRAME_POOL_SIZE, value);
+}
+
+void GeneralPage::invertScrollDirectionBoxStateChanged(int b)
+{
+    mManager->set(SETTING::INVERT_SCROLL_ZOOM_DIRECTION, b != Qt::Unchecked);
 }

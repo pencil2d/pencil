@@ -56,6 +56,7 @@ private slots:
     void curveSmoothingChanged(int value);
     void backgroundChanged(int value);
     void frameCacheNumberChanged(int value);
+    void invertScrollDirectionBoxStateChanged(int b);
 
 private:
 

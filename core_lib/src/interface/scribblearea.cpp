@@ -89,6 +89,8 @@ bool ScribbleArea::init()
 
     mLayerVisibility = static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY));
 
+    mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION) ? -1 : 1;
+
     updateCanvasCursor();
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
@@ -156,6 +158,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::LAYER_VISIBILITY_THRESHOLD:
     case SETTING::LAYER_VISIBILITY:
         setLayerVisibility(static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY)));
+        break;
+    case SETTING::INVERT_SCROLL_ZOOM_DIRECTION:
+        mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION) ? -1 : 1;
         break;
     default:
         break;
@@ -536,14 +541,14 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
         //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
         const int delta = pixels.y();
-        const qreal newScale = currentScale * (1 + (delta * 0.01));
+        const qreal newScale = currentScale * (1 + ((delta * mDeltaFactor) * 0.01));
         mEditor->view()->scaleAtOffset(newScale, offset);
     }
     else if (!angle.isNull())
     {
         const int delta = angle.y();
         // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
-        const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
+        const qreal newScale = currentScale * std::pow(100, (delta * mDeltaFactor) / (12.0 * 120));
         mEditor->view()->scaleAtOffset(newScale, offset);
     }
     updateCanvasCursor();
