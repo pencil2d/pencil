@@ -547,30 +547,16 @@ void ActionCommands::ZoomOut()
 
 void ActionCommands::rotateClockwise()
 {
-    float currentRotation = mEditor->view()->rotation();
-    // Invert rotation direction if view is flipped either vertically or horizontally
-    if (mEditor->view()->isFlipHorizontal() ^ mEditor->view()->isFlipVertical())
-    {
-        mEditor->view()->rotate(currentRotation - 15.f);
-    }
-    else
-    {
-        mEditor->view()->rotate(currentRotation + 15.f);
-    }
+    // Rotation direction is inverted if view is flipped either vertically or horizontally
+    const float delta = mEditor->view()->isFlipHorizontal() == !mEditor->view()->isFlipVertical() ? -15.f : 15.f;
+    mEditor->view()->rotateRelative(delta);
 }
 
 void ActionCommands::rotateCounterClockwise()
 {
-    float currentRotation = mEditor->view()->rotation();
-    // Invert rotation direction if view is flipped either vertically or horizontally
-    if (mEditor->view()->isFlipHorizontal() ^ mEditor->view()->isFlipVertical())
-    {
-        mEditor->view()->rotate(currentRotation + 15.f);
-    }
-    else
-    {
-        mEditor->view()->rotate(currentRotation - 15.f);
-    }
+    // Rotation direction is inverted if view is flipped either vertically or horizontally
+    const float delta = mEditor->view()->isFlipHorizontal() == !mEditor->view()->isFlipVertical() ? 15.f : -15.f;
+    mEditor->view()->rotateRelative(delta);
 }
 
 void ActionCommands::PlayStop()
