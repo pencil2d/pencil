@@ -107,7 +107,7 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
         angleOffset = qRadiansToDegrees(angleOffset);
         float newAngle = 0.0;
         // Invert rotation direction if view is flipped either vertically or horizontally
-        if (viewMgr->isFlipHorizontal() ^ viewMgr->isFlipVertical())
+        if (viewMgr->isFlipHorizontal() == !viewMgr->isFlipVertical())
         {
             newAngle = viewMgr->rotation() - static_cast<float>(angleOffset);
         }
