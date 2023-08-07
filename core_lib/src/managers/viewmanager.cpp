@@ -171,6 +171,14 @@ void ViewManager::rotate(float degree)
     emit viewChanged();
 }
 
+void ViewManager::rotateRelative(float delta)
+{
+    mRotation = mRotation + delta;
+    updateViewTransforms();
+
+    emit viewChanged();
+}
+
 void ViewManager::resetRotation()
 {
     rotate(0);
