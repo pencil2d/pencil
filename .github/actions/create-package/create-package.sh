@@ -40,7 +40,7 @@ wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-inte
     ${update_info} \
     -appimage
   local qtsuffix="-qt${INPUT_QT}"
-  local output_name="pencil2d${qtsuffix/-qt5/}-linux-$1-$(date +%F)"
+  local output_name="pencil2d${qtsuffix/-qt5/}-linux-$3"
   mv Pencil2D*.AppImage "$output_name.AppImage"
   mv Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" \
     && sed -i '1,/^$/s/^\(Filename\|URL\): .*$/\1: '"$output_name.AppImage/" "$output_name.AppImage.zsync" \
@@ -84,8 +84,8 @@ create_package_macos() {
   popd >/dev/null
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
-  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-$1-$(date +%F).zip" Pencil2D
-  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-$1-$(date +%F)" > "${GITHUB_OUTPUT}"
+  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-$3.zip" Pencil2D
+  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-$3" > "${GITHUB_OUTPUT}"
 }
 
 create_package_windows() {
@@ -110,13 +110,38 @@ create_package_windows() {
   echo "Copy OpenSSL DLLs"
   curl -fsSLO https://download.firedaemon.com/FireDaemon-OpenSSL/openssl-1.1.1w.zip
   "${WINDIR}\\System32\\tar" xf openssl-1.1.1w.zip
-  local xbits="x${platform#win}"
-  local _xbits="-${xbits}"
+  local wordsize="${platform#win}"
+  local xbits="x${wordsize}"
+  local _xbits="-x${wordsize}"
   cp "openssl-1.1\\${xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${_xbits/-x32/}.dll" Pencil2D/
+  echo "Create Installer"
+  env -C ../util/installer qmake CONFIG-=debug_and_release CONFIG+=release
+  env -C ../util/installer "PATH=${PATH/\/usr\/bin:/}" nmake
+  local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%F)"
+  if [ "$IS_RELEASE" = "true" ]; then
+    versiondefines="-d Edition=Release -d Version=$2"
+  fi
+  wix build -arch "x${wordsize/32/86}" -dcl high -b ../util/installer -b Pencil2D \
+    -d "ProductCode=$(python -c "import uuid; print(str(uuid.uuid5(uuid.NAMESPACE_URL, '-Nhttps://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}')).upper())")" \
+    $versiondefines \
+    -out "pencil2d-${platform}-$3.msi" \
+    ../util/installer/pencil2d.wxs
+  wix build -arch "x${wordsize/32/86}" -dcl high -sw1133 -b ../util/installer -b Pencil2D \
+    -ext WixToolset.Util.wixext -ext WixToolset.Bal.wixext \
+    -d "ProductCode=$(python -c "import uuid; print(str(uuid.uuid5(uuid.NAMESPACE_URL, '-Nhttps://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}')).upper())")" \
+    $versiondefines \
+    -out "pencil2d-${platform}-$3.exe" \
+    ../util/installer/pencil2d.bundle.wxs
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
-  "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$1-$(date +%F).zip" Pencil2D
-  echo "output-basename=pencil2d${qtsuffix/-qt5/}-${platform}-$1-$(date +%F)" > "${GITHUB_OUTPUT}"
+  "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$3.zip" Pencil2D
+  echo "output-basename=pencil2d${qtsuffix/-qt5/}-${platform}-$3" > "${GITHUB_OUTPUT}"
 }
 
-"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}"
+eval "$(grep '^VERSION =' ../util/common.pri | tr -d '[:blank:]')"
+buildversion="${GITHUB_RUN_NUMBER}-$(date +%F)"
+if [ "$IS_RELEASE" = "true" ]; then
+  buildversion="${VERSION}"
+fi
+
+"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}" "${VERSION}" "${buildversion}"

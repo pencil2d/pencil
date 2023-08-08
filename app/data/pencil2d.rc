@@ -1,1 +1,54 @@
-IDI_ICON1       ICON    DISCARDABLE     "pencil2d.ico"
+#include <winres.h>
+
+#if defined(PENCIL2D_RELEASE_BUILD)
+#define BUILD_FILEFLAG 0
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+#define BUILD_FILEFLAG VS_FF_PRERELEASE
+#else
+#define BUILD_FILEFLAG VS_FF_PRIVATEBUILD
+#endif
+
+#if defined(QT_NO_DEBUG)
+#define DEBUG_FILEFLAG 0
+#else
+#define DEBUG_FILEFLAG VS_FF_DEBUG
+#endif
+
+IDI_ICON1 ICON "pencil2d.ico"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION APP_VERSION_RC
+PRODUCTVERSION APP_VERSION_RC
+FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEFLAGS DEBUG_FILEFLAG|BUILD_FILEFLAG
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "040904B0"
+        {
+            VALUE "ProductName", "Pencil2D"
+            VALUE "ProductVersion", APP_VERSION
+            VALUE "CompanyName", "The Pencil2D Team"
+            VALUE "LegalCopyright", "\xA9 The Pencil2D Team"
+            VALUE "FileDescription", "Pencil2D"
+            VALUE "FileVersion", APP_VERSION
+            VALUE "InternalName", "pencil2d"
+            VALUE "OriginalFilename", "pencil2d.exe"
+            VALUE "PrivateBuild", "Private Build"
+        }
+    }
+
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0409 0x04B0
+    }
+}
+
+STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+{
+    0 "Pencil2D Animation"
+    1 "Pencil2D Animation (Old Format)"
+}

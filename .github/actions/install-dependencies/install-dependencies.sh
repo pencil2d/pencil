@@ -51,7 +51,9 @@ setup_macos() {
 }
 
 setup_windows() {
-  : # Nothing to do here
+  dotnet tool install -g wix
+  wix extension add -g WixToolset.Util.wixext WixToolset.Bal.wixext
+  nuget install -x -OutputDirectory util/installer WixToolset.BalUtil
 }
 
 "setup_$(echo "${RUNNER_OS}" | tr '[A-Z]' '[a-z]')"

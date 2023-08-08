@@ -1,5 +1,6 @@
 VERSION = 0.6.6
 DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+DEFINES += APP_VERSION_RC=$$replace(VERSION, "\.", ",")
 
 PENCIL2D_NIGHTLY {
     DEFINES += PENCIL2D_NIGHTLY_BUILD
@@ -17,9 +18,9 @@ win32-g++ {
 }
 
 win32-msvc* {
-    QMAKE_CXXFLAGS += /MP /utf-8 
+    QMAKE_CXXFLAGS += /MP /utf-8
     CONFIG(release,debug|release) {
-        QMAKE_CXXFLAGS += /Gy /GL 
+        QMAKE_CXXFLAGS += /Gy /GL
         CONFIG += ltcg
         CONFIG += force_debug_info
     }
