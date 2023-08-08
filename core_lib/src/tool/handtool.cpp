@@ -122,8 +122,10 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
 
         qreal angleOffset = static_cast<qreal>(std::atan2(curV.y(), curV.x()) - std::atan2(startV.y(), startV.x()));
         angleOffset = qRadiansToDegrees(angleOffset);
-        float newAngle = viewMgr->rotation() + static_cast<float>(angleOffset);
-        viewMgr->rotate(newAngle);
+        // Invert rotation direction if view is flipped either vertically or horizontally
+        const float delta = viewMgr->isFlipHorizontal() == !viewMgr->isFlipVertical()
+            ? static_cast<float>(angleOffset * -1) : static_cast<float>(angleOffset);
+        viewMgr->rotateRelative(delta);
     }
     else if (isScale)
     {
