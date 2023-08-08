@@ -59,7 +59,6 @@ private:
      */
     bool allowFill(const QPoint& checkPoint) const;
 
-    std::pair<Layer*, int> findBitmapLayerBelow(Layer* targetLayer, int layerIndex) const;
     BitmapImage flattenBitmapLayersToImage();
 
     Editor* mEditor = nullptr;

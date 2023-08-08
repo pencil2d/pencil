@@ -187,29 +187,3 @@ BitmapImage BitmapBucket::flattenBitmapLayersToImage()
     }
     return flattenImage;
 }
-
-std::pair<Layer*, int> BitmapBucket::findBitmapLayerBelow(Layer* targetLayer, int layerIndex) const
-{
-    bool foundLayerBelow = false;
-    int layerBelowIndex = layerIndex;
-    for (int i = layerIndex - 1; i >= 0; i--)
-    {
-        Layer* searchlayer = mEditor->layers()->getLayer(i);
-        Q_ASSERT(searchlayer);
-
-        if (searchlayer->type() == Layer::BITMAP && searchlayer->visible())
-        {
-            targetLayer = searchlayer;
-            foundLayerBelow = true;
-            layerBelowIndex = i;
-            break;
-        }
-    }
-
-    if (foundLayerBelow && !targetLayer->keyExists(mEditor->currentFrame()))
-    {
-        targetLayer->addNewKeyFrameAt(mEditor->currentFrame());
-        emit mEditor->updateTimeLine();
-    }
-    return std::make_pair(targetLayer, layerBelowIndex);
-}
