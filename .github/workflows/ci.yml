@@ -24,23 +24,43 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - name: Linux x86_64
+        - name: Qt 5 / Linux x86_64
           os: ubuntu-latest
           # XXX: --privileged is sort of a brute-force solution to get FUSE
           #      working inside Docker, however so far I haven’t been able to
           #      figure out precisely *which* privileges are needed.
           container: { image: "ubuntu:16.04", options: --privileged }
-        - name: macOS x86_64
+          qt: 5
+        - name: Qt 5 / macOS x86_64
           os: macos-latest
           container:
-        - name: Windows x86
+          qt: 5
+        - name: Qt 5 / Windows x86
           os: windows-2019
           arch: win32_msvc2019
           container:
-        - name: Windows x86_64
+          qt: 5
+        - name: Qt 5 / Windows x86_64
           os: windows-2019
           arch: win64_msvc2019_64
           container:
+          qt: 5
+        - name: Qt 6 / Linux x86_64
+          os: ubuntu-latest
+          # XXX: --privileged is sort of a brute-force solution to get FUSE
+          #      working inside Docker, however so far I haven’t been able to
+          #      figure out precisely *which* privileges are needed.
+          container: { image: "ubuntu:22.04", options: --privileged }
+          qt: 6
+        - name: Qt 6 / macOS x86_64
+          os: macos-latest
+          container:
+          qt: 6
+        - name: Qt 6 / Windows x86_64
+          os: windows-2019
+          arch: win64_msvc2019_64
+          container:
+          qt: 6
 
     name: ${{matrix.name}}
     runs-on: ${{matrix.os}}
@@ -63,6 +83,7 @@ jobs:
       uses: ./.github/actions/install-dependencies
       with:
         arch: ${{matrix.arch}}
+        qt: ${{matrix.qt}}
 
     - name: Set up environment
       uses: ./.github/actions/setup-environment
@@ -70,8 +91,10 @@ jobs:
         arch: ${{matrix.arch}}
 
     - name: Configure build
-      run: mkdir build; qmake -o build PREFIX=/usr CONFIG+=release CONFIG+=GIT
+      run: mkdir build; ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
+        -o build PREFIX=/usr CONFIG+=release CONFIG+=GIT
         CONFIG+=PENCIL2D_${{github.ref == 'refs/heads/release' && 'RELEASE' || 'NIGHTLY'}}
+        ${{matrix.qt == 6 && 'CONFIG+=c++17 QMAKE_CXX_FLAGS+=-std=c++17' || ''}}
 
     - name: Build Pencil2D
       working-directory: build
@@ -83,11 +106,14 @@ jobs:
 
     - name: Create package
       id: package
+      if: runner.os != 'Linux' || matrix.qt == 5
       uses: ./.github/actions/create-package
       with:
         arch: ${{matrix.arch}}
+        qt: ${{matrix.qt}}
 
     - name: Upload package
+      if: runner.os != 'Linux' || matrix.qt == 5
       uses: actions/upload-artifact@v3
       with:
         name: ${{steps.package.outputs.output-basename}}

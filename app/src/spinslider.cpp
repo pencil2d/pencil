@@ -51,7 +51,7 @@ void SpinSlider::init(QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal
     mSlider->setMaximumWidth(500);
 
     QGridLayout* layout = new QGridLayout();
-    layout->setMargin(2);
+    layout->setContentsMargins(2, 2, 2, 2);
     layout->setSpacing(2);
 
     layout->addWidget(mLabel, 0, 0, 1, 1);

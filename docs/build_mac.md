@@ -50,7 +50,11 @@ A dialog should pop up asking if you want to install the command line developer 
 
 If you have `Homebrew` installed, you can install %Qt 5 framework via Homebrew as well. Run this command:
 
-    brew install qt5
+    brew install qt@5
+
+If you would like to use %Qt 6 instead, simply replace the version number in the command above.
+
+@warning Please note that there are known issues with the Homebrew build of Qt 6 which may cause Pencil2D to crash. As a workaround, you can try disabling the "Add build library search path to DYLD_LIBRARY_PATH and DYLD_FRAMEWORK_PATH" option in your run configuration after configuring the project in Qt Creator. Otherwise, please use the official builds instead (see above), as they are not affected. For more details, see [this discussion](https://github.com/orgs/Homebrew/discussions/4362).
 
 And also run the following commands to install %Qt Creator:
 

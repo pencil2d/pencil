@@ -19,6 +19,12 @@ GNU General Public License for more details.
 
 #include <QTextStream>
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+const auto qEndl = Qt::endl;
+#else
+const auto qEndl = endl;
+#endif
+
 CommandLineParser::CommandLineParser() : mParser(), mInputPath(), mOutputPaths(), mCamera()
 {
     mParser.setApplicationDescription(tr("Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. "
@@ -96,7 +102,7 @@ void CommandLineParser::process(QStringList arguments)
         mWidth = mParser.value("width").toInt(&ok);
         if (!ok)
         {
-            err << tr("Warning: width value %1 is not an integer, ignoring.").arg(mParser.value("width")) << endl;
+            err << tr("Warning: width value %1 is not an integer, ignoring.").arg(mParser.value("width")) << qEndl;
             mWidth = -1;
         }
     }
@@ -107,7 +113,7 @@ void CommandLineParser::process(QStringList arguments)
         mHeight = mParser.value("height").toInt(&ok);
         if (!ok)
         {
-            err << tr("Warning: height value %1 is not an integer, ignoring.").arg(mParser.value("height")) << endl;
+            err << tr("Warning: height value %1 is not an integer, ignoring.").arg(mParser.value("height")) << qEndl;
             mHeight = -1;
         }
     }
@@ -118,12 +124,12 @@ void CommandLineParser::process(QStringList arguments)
         mStartFrame = mParser.value("start").toInt(&ok);
         if (!ok)
         {
-            err << tr("Warning: start value %1 is not an integer, ignoring.").arg(mParser.value("start")) << endl;
+            err << tr("Warning: start value %1 is not an integer, ignoring.").arg(mParser.value("start")) << qEndl;
             mStartFrame = 1;
         }
         if (mStartFrame < 1)
         {
-            err << tr("Warning: start value must be at least 1, ignoring.") << endl;
+            err << tr("Warning: start value must be at least 1, ignoring.") << qEndl;
             mStartFrame = 1;
         }
     }
@@ -144,13 +150,13 @@ void CommandLineParser::process(QStringList arguments)
             mEndFrame = mParser.value("end").toInt(&ok);
             if (!ok)
             {
-                err << tr("Warning: end value %1 is not an integer, last or last-sound, ignoring.").arg(mParser.value("end")) << endl;
+                err << tr("Warning: end value %1 is not an integer, last or last-sound, ignoring.").arg(mParser.value("end")) << qEndl;
                 mEndFrame = -1;
             }
         }
         if (mEndFrame > -1 && mEndFrame < mStartFrame)
         {
-            err << tr("Warning: end value %1 is smaller than start value %2, ignoring.").arg(mEndFrame).arg(mStartFrame) << endl;
+            err << tr("Warning: end value %1 is smaller than start value %2, ignoring.").arg(mEndFrame).arg(mStartFrame) << qEndl;
             mEndFrame = mStartFrame;
         }
     }

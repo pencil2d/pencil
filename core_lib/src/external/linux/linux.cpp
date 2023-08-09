@@ -49,6 +49,7 @@ namespace PlatformHandler
             }
         }
 
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         // Temporary solution for high DPI displays
         // EnableHighDpiScaling is a just in case mechanism in the event that we
         // want to disable this without recompiling, see #922
@@ -60,5 +61,6 @@ namespace PlatformHandler
             // Only works on Windows & X11
             QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
         }
+#endif // QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     }
 }
