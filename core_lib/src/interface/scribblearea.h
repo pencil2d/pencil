@@ -153,7 +153,6 @@ public slots:
     void clearImage();
     void setCurveSmoothing(int);
     void toggleThinLines();
-    void toggleOutlines();
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void setLayerVisibility(LayerVisibility visibility);
@@ -190,8 +189,6 @@ public:
     void paintBitmapBuffer();
     void paintCanvasCursor(QPainter& painter);
     void clearDrawingBuffer();
-    void refreshBitmap(const QRectF& rect, int rad);
-    void refreshVector(const QRectF& rect, int rad);
     void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
@@ -207,7 +204,6 @@ public:
     TiledBuffer mTiledBuffer;
 
     QPixmap mCursorImg;
-    QPixmap mTransCursImg;
 
 private:
 

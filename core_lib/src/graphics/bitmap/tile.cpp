@@ -16,15 +16,13 @@ GNU General Public License for more details.
 
 #include "tile.h"
 
-Tile::Tile(QSize size):
+#include <QPainter>
+
+Tile::Tile(const QPoint& pos, QSize size):
+    mPos(pos),
     mTilePixmap(size)
 {
     clear(); //Default tiles are transparent
-}
-
-Tile::Tile(QPixmap& pixmap)
-{
-    mTilePixmap = pixmap;
 }
 
 Tile::~Tile()
@@ -34,6 +32,15 @@ Tile::~Tile()
 QRect Tile::boundingRect() const
 {
     return mTilePixmap.rect();
+}
+
+void Tile::load(const QImage& image, const QPoint& topLeft)
+{
+    QPainter painter(&mTilePixmap);
+
+    painter.translate(-mPos);
+    painter.drawImage(topLeft, image);
+    painter.end();
 }
 
 void Tile::clear()

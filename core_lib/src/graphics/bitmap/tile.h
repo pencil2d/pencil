@@ -24,23 +24,22 @@ class Tile
 {
 public:
 
-    explicit Tile (QSize size);
-    explicit Tile (QPixmap& pixmap);
+    explicit Tile (const QPoint& pos, QSize size);
     ~Tile();
 
     const QPixmap& pixmap() const { return mTilePixmap; }
     QPixmap& pixmap() { return mTilePixmap; }
 
+    QPoint pos() const { return mPos; }
     QRect boundingRect() const;
 
+    /** Loads the input image into the tile */
+    void load(const QImage& image, const QPoint& topLeft);
     void clear();
-
-    void setPos(const QPoint& pos) { m_pos = pos; }
-    QPoint pos() const { return m_pos; }
 
 private:
     QPixmap    mTilePixmap;
-    QPoint m_pos;
+    QPoint mPos;
 };
 
 #endif // TILE_H

@@ -276,5 +276,4 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     }
     mScribbleArea->endStroke();
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-    mScribbleArea->clearDrawingBuffer();
 }

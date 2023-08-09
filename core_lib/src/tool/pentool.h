@@ -39,7 +39,6 @@ public:
     void drawStroke();
     void paintAt(QPointF point);
     void paintVectorStroke(Layer *layer);
-    void paintBitmapStroke();
 
     void setWidth(const qreal width) override;
     void setPressure(const bool pressure) override;

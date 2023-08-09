@@ -16,9 +16,10 @@ GNU General Public License for more details.
 */
 #include "tiledbuffer.h"
 
-#include <QPixmap>
 #include <QPainterPath>
 #include <QtMath>
+
+#include "tile.h"
 
 TiledBuffer::TiledBuffer(QObject* parent) : QObject(parent)
 {
@@ -29,21 +30,15 @@ TiledBuffer::~TiledBuffer()
     clear();
 }
 
-Tile* TiledBuffer::getTileFromIndex(int tileX, int tileY)
+Tile* TiledBuffer::getTileFromIndex(const TileIndex& tileIndex)
 {
-    TileIndex tileIndex;
-    tileIndex.x = tileX;
-    tileIndex.y = tileY;
-
     Tile* selectedTile = mTiles.value(tileIndex, nullptr);
 
     if (!selectedTile) {
         // Time to allocate it, update table:
-        selectedTile = new Tile(QSize(UNIFORM_TILESIZE, UNIFORM_TILESIZE));
-        mTiles.insert(tileIndex, selectedTile);
-
         const QPoint& tilePos (getTilePos(tileIndex));
-        selectedTile->setPos(tilePos);
+        selectedTile = new Tile(tilePos, QSize(UNIFORM_TILE_SIZE, UNIFORM_TILE_SIZE));
+        mTiles.insert(tileIndex, selectedTile);
 
         emit this->onNewTile(this, selectedTile);
     } else {
@@ -55,65 +50,59 @@ Tile* TiledBuffer::getTileFromIndex(int tileX, int tileY)
 
 void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, int brushCursorWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
     const QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
-    const float tilesize = UNIFORM_TILESIZE;
+    const float tileSize = UNIFORM_TILE_SIZE;
     const int width = qMax(brushCursorWidth,brushWidth);
 
-    // Gather the amount of tiles that fits the size of the brush width
-    const int xLeft = qFloor((qFloor(point.x() - width)) / tilesize);
-    const int xRight = qFloor((qFloor(point.x() + width)) / tilesize);
-    const int yTop = qFloor(qFloor(point.y() - width) / tilesize);
-    const int yBottom = qFloor(qFloor(point.y() + width) / tilesize);
+    // Gather the number of tiles that fits the size of the brush width
+    const int xLeft = qFloor((qFloor(point.x() - width)) / tileSize);
+    const int xRight = qFloor((qFloor(point.x() + width)) / tileSize);
+    const int yTop = qFloor(qFloor(point.y() - width) / tileSize);
+    const int yBottom = qFloor(qFloor(point.y() + width) / tileSize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
 
-            Tile* tile = getTileFromIndex(tileX, tileY);
+            Tile* tile = getTileFromIndex({tileX, tileY});
 
-            if (tile)
-            {
-                QPainter painter(&tile->pixmap());
+            QPainter painter(&tile->pixmap());
 
-                painter.translate(-tile->pos());
-                painter.setRenderHint(QPainter::Antialiasing, antialiasing);
-                painter.setPen(pen);
-                painter.setBrush(brush);
-                painter.setCompositionMode(cm);
-                painter.drawEllipse(brushRect);
-                painter.end();
+            painter.translate(-tile->pos());
+            painter.setRenderHint(QPainter::Antialiasing, antialiasing);
+            painter.setPen(pen);
+            painter.setBrush(brush);
+            painter.setCompositionMode(cm);
+            painter.drawEllipse(brushRect);
+            painter.end();
 
-                mTileBounds.extend(tile->pos(), tile->boundingRect().size());
-            }
+            mTileBounds.extend(tile->pos(), tile->boundingRect().size());
         }
     }
 }
 
 void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPainter::CompositionMode cm, bool antialiasing) {
-    const float tilesize = UNIFORM_TILESIZE;
+    const float tileSize = UNIFORM_TILE_SIZE;
     const float imageXRad = image.width();
     const float imageYRad = image.height();
-    // Gather the amount of tiles that fits the size of the brush width
-    const int xLeft = qFloor((qFloor(imageBounds.left() - imageXRad)) / tilesize);
-    const int xRight = qFloor((qFloor(imageBounds.right() + imageXRad)) / tilesize);
-    const int yTop = qFloor(qFloor(imageBounds.top() - imageYRad) / tilesize);
-    const int yBottom = qFloor(qFloor(imageBounds.bottom() + imageYRad) / tilesize);
+    // Gather the number of tiles that fits the size of the brush width
+    const int xLeft = qFloor((qFloor(imageBounds.left() - imageXRad)) / tileSize);
+    const int xRight = qFloor((qFloor(imageBounds.right() + imageXRad)) / tileSize);
+    const int yTop = qFloor(qFloor(imageBounds.top() - imageYRad) / tileSize);
+    const int yBottom = qFloor(qFloor(imageBounds.bottom() + imageYRad) / tileSize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
 
-            Tile* tile = getTileFromIndex(tileX, tileY);
+            Tile* tile = getTileFromIndex({tileX, tileY});
 
-            if (tile)
-            {
-                QPainter painter(&tile->pixmap());
+            QPainter painter(&tile->pixmap());
 
-                painter.translate(-tile->pos());
-                painter.setRenderHint(QPainter::Antialiasing, antialiasing);
-                painter.setCompositionMode(cm);
-                painter.drawImage(imageBounds.topLeft(), image);
-                painter.end();
+            painter.translate(-tile->pos());
+            painter.setRenderHint(QPainter::Antialiasing, antialiasing);
+            painter.setCompositionMode(cm);
+            painter.drawImage(imageBounds.topLeft(), image);
+            painter.end();
 
-                mTileBounds.extend(tile->pos(), tile->boundingRect().size());
-            }
+            mTileBounds.extend(tile->pos(), tile->boundingRect().size());
         }
     }
 }
@@ -124,45 +113,33 @@ void TiledBuffer::drawPath(QPainterPath path, int cursorWidth, QPen pen, QBrush 
 {
     const int pathWidth = pen.width();
     const int width = (qMax(pathWidth,cursorWidth) + 1);
-    const float tilesize = UNIFORM_TILESIZE;
+    const float tileSize = UNIFORM_TILE_SIZE;
     const QRectF pathRect = path.boundingRect();
 
-    // Gather the amount of tiles that fits the size of the brush width
-    const int xLeft = qFloor((qFloor(pathRect.left() - width)) / tilesize);
-    const int xRight = qFloor((qFloor(pathRect.right() + width)) / tilesize);
-    const int yTop = qFloor(qFloor(pathRect.top() - width) / tilesize);
-    const int yBottom = qFloor(qFloor(pathRect.bottom() + width) / tilesize);
+    // Gather the number of tiles that fits the size of the brush width
+    const int xLeft = qFloor((qFloor(pathRect.left() - width)) / tileSize);
+    const int xRight = qFloor((qFloor(pathRect.right() + width)) / tileSize);
+    const int yTop = qFloor(qFloor(pathRect.top() - width) / tileSize);
+    const int yBottom = qFloor(qFloor(pathRect.bottom() + width) / tileSize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
 
-            Tile* tile = getTileFromIndex(tileX, tileY);
+            Tile* tile = getTileFromIndex({tileX, tileY});
 
-            if (tile)
-            {
-                QPainter painter(&tile->pixmap());
+            QPainter painter(&tile->pixmap());
 
-                painter.translate(-tile->pos());
-                painter.setRenderHint(QPainter::Antialiasing, antialiasing);
-                painter.setPen(pen);
-                painter.setBrush(brush);
-                painter.setCompositionMode(cm);
-                painter.drawPath(path);
-                painter.end();
+            painter.translate(-tile->pos());
+            painter.setRenderHint(QPainter::Antialiasing, antialiasing);
+            painter.setPen(pen);
+            painter.setBrush(brush);
+            painter.setCompositionMode(cm);
+            painter.drawPath(path);
+            painter.end();
 
-                mTileBounds.extend(tile->pos(), tile->boundingRect().size());
-            }
+            mTileBounds.extend(tile->pos(), tile->boundingRect().size());
         }
     }
-}
-
-void TiledBuffer::loadTile(const QImage& image, const QPoint& topLeft, Tile* tile)
-{
-    QPainter painter(&tile->pixmap());
-
-    painter.translate(-tile->pos());
-    painter.drawImage(topLeft, image);
-    painter.end();
 }
 
 void TiledBuffer::clear()
@@ -190,14 +167,14 @@ void TiledBuffer::clear()
 
 QPoint TiledBuffer::getTilePos(const TileIndex& index) const
 {
-    return QPoint { qRound(UNIFORM_TILESIZE*static_cast<qreal>(index.x)),
-                    qRound(UNIFORM_TILESIZE*static_cast<qreal>(index.y)) };
+    return QPoint { qRound(UNIFORM_TILE_SIZE*static_cast<qreal>(index.x)),
+                    qRound(UNIFORM_TILE_SIZE*static_cast<qreal>(index.y)) };
 }
 
 TileIndex TiledBuffer::getTileIndex(const TileIndex& pos) const
 {
-    return { qRound(static_cast<qreal>(pos.x)/UNIFORM_TILESIZE),
-             qRound(static_cast<qreal>(pos.y)/UNIFORM_TILESIZE) };
+    return { qRound(static_cast<qreal>(pos.x)/UNIFORM_TILE_SIZE),
+             qRound(static_cast<qreal>(pos.y)/UNIFORM_TILE_SIZE) };
 }
 
 QRect TiledBuffer::getRectForPoint(const QPoint& point, const QSize size) const
@@ -207,5 +184,5 @@ QRect TiledBuffer::getRectForPoint(const QPoint& point, const QSize size) const
 
 QRect TiledBuffer::getRectForPoint(const QPoint& point) const
 {
-    return QRect(point.x(), point.y(), UNIFORM_TILESIZE, UNIFORM_TILESIZE);
+    return QRect(point.x(), point.y(), UNIFORM_TILE_SIZE, UNIFORM_TILE_SIZE);
 }

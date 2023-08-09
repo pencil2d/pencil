@@ -32,6 +32,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "blitrect.h"
+#include "tile.h"
 
 #include "onionskinpainteroptions.h"
 
@@ -201,7 +202,7 @@ void ScribbleArea::loadTile(TiledBuffer* tiledBuffer, Tile* tile)
     if (layerType == Layer::BITMAP) {
         const auto& bitmapImage = currentBitmapImage(mEditor->layers()->currentLayer());
         const QImage& image = *bitmapImage->image();
-        mTiledBuffer.loadTile(image, bitmapImage->topLeft(), tile);
+        tile->load(image, bitmapImage->topLeft());
     } else if (layerType == Layer::VECTOR) {
 
         // Not used, we only use the buffer to paint the stroke before painting the real vector stroke
@@ -887,9 +888,6 @@ void ScribbleArea::paintCanvasCursor(QPainter& painter)
                               static_cast<int>(mTransformedCursorPos.y() - mCursorCenterPos.y())),
                        mCursorImg);
 
-    // update center of transformed img for rect only
-    mTransCursImg = mCursorImg.transformed(view);
-
     mCursorCenterPos.setX(centerCal);
     mCursorCenterPos.setY(centerCal);
 }
@@ -910,20 +908,16 @@ void ScribbleArea::updateCanvasCursor()
     }
     else
     {
-        mCursorImg = QPixmap(); // if above does not comply, deallocate image
+        mCursorImg = QPixmap(); // if the above does not comply, deallocate image
     }
 
-    // update cursor rect
-    QPoint translatedPos = QPoint(static_cast<int>(mTransformedCursorPos.x() - mCursorCenterPos.x()),
-                                  static_cast<int>(mTransformedCursorPos.y() - mCursorCenterPos.y()));
-
-    QRect updateRect = mCursorImg.rect().adjusted(-1, -1, 1, 1).translated(translatedPos);;
-
-
-    // When we're using a tool, the TiledBuffer will take care of this,
+    // When we're using a tool, the TiledBuffer will take care of this;
     // we don't want to cause needless updates
     if (!currentTool()->isActive()) {
-        update(updateRect);
+        // update cursor rect
+        QPoint translatedPos(static_cast<int>(mTransformedCursorPos.x() - mCursorCenterPos.x()),
+                             static_cast<int>(mTransformedCursorPos.y() - mCursorCenterPos.y()));
+        update(mCursorImg.rect().adjusted(-1, -1, 1, 1).translated(translatedPos));
     }
 }
 
@@ -1301,7 +1295,7 @@ void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
 {
     BlitRect blitRect;
 
-    // In order to clear what was previous dirty, we need to include the previous buffer bound
+    // In order to clear what was previously dirty, we need to include the previous buffer bound
     // this ensures that we won't see stroke artifacts
     blitRect.extend(mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect());
 
@@ -1322,13 +1316,7 @@ void ScribbleArea::endStroke()
         paintBitmapBuffer();
     }
 
-    int frameNumber = mEditor->currentFrame();
-    if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
-        invalidateOnionSkinsCacheAround(frameNumber);
-        invalidatePainterCaches();
-    }
-    invalidateCacheForFrame(frameNumber);
-    updateFrame(frameNumber);
+    onFrameModified(mEditor->currentFrame());
 }
 
 void ScribbleArea::flipSelection(bool flipVertical)
@@ -1523,12 +1511,6 @@ void ScribbleArea::toggleThinLines()
 {
     bool previousValue = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     setEffect(SETTING::INVISIBLE_LINES, !previousValue);
-}
-
-void ScribbleArea::toggleOutlines()
-{
-    mIsSimplified = !mIsSimplified;
-    setEffect(SETTING::OUTLINES, mIsSimplified);
 }
 
 void ScribbleArea::setLayerVisibility(LayerVisibility visibility)

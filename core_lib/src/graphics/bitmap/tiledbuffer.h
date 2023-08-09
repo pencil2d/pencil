@@ -16,13 +16,14 @@ GNU General Public License for more details.
 #ifndef TILEDBUFFER_H
 #define TILEDBUFFER_H
 
-#include <QRect>
-#include <QImage>
 #include <QPainter>
 #include <QHash>
 
 #include "blitrect.h"
-#include "tile.h"
+
+class QImage;
+class QRect;
+class Tile;
 
 struct TileIndex {
     int x;
@@ -47,14 +48,11 @@ public:
     TiledBuffer(QObject* parent = nullptr);
     ~TiledBuffer();
 
-    /** Loads the input tile into the tiledBuffer */
-    void loadTile(const QImage& image, const QPoint& topLeft, Tile* tile);
-
     /** Clears the content of the tiled buffer */
     void clear();
 
     /** Returns true if there are any tiles, otherwise false */
-    bool isValid() { return !mTiles.isEmpty(); }
+    bool isValid() const { return !mTiles.isEmpty(); }
 
     /** Draws a brush with the specified parameters to the tiled buffer */
     void drawBrush(const QPointF& point, int brushWidth, int brushCursorWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
@@ -77,7 +75,7 @@ signals:
 
 private:
 
-    Tile* getTileFromIndex(int tileX, int tileY);
+    Tile* getTileFromIndex(const TileIndex& tileIndex);
 
     inline QPoint getTilePos(const TileIndex& index) const;
     inline TileIndex getTileIndex(const TileIndex& pos) const;
@@ -93,13 +91,13 @@ private:
 
     /**
      * @brief getRectForPoint
-     * Returns a rectnagle with the size of TILESIZE (64,64)
+     * Returns a rectangle with the size of UNIFORM_TILE_SIZE (64,64)
      * @param point
      * @return QRect
      */
     QRect getRectForPoint(const QPoint& point) const;
 
-    const int UNIFORM_TILESIZE = 64;
+    const int UNIFORM_TILE_SIZE = 64;
 
     BlitRect mTileBounds;
 

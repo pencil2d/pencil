@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "util.h"
 
 #include "blitrect.h"
+#include "tile.h"
 #include "tiledbuffer.h"
 
 BitmapImage::BitmapImage()
@@ -648,7 +649,8 @@ void BitmapImage::drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::C
         painter.setPen(pen);
         painter.setBrush(brush);
 
-        // Adjust the brush rectangle to be bigger than the bounds itself, otherwise there will be artifacts shown in some cases
+        // Adjust the brush rectangle to be bigger than the bounds itself,
+        // otherwise there will be artifacts shown in some cases when smudging
         painter.drawRect(rectangle.translated(-mBounds.topLeft()).adjusted(-1, -1, 1, 1));
         painter.end();
     }
