@@ -29,6 +29,12 @@ GNU General Public License for more details.
 
 #include "commandlineexporter.h"
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+const auto qEndl = Qt::endl;
+#else
+const auto qEndl = endl;
+#endif
+
 CommandLineExporter::CommandLineExporter(Editor *editor) :
     mEditor(editor),
     mOut(stdout, QIODevice::WriteOnly),
@@ -50,16 +56,16 @@ bool CommandLineExporter::process(const QString &inputPath,
 
     if(inputPath.isEmpty())
     {
-        mErr << tr("Error: No input file specified. An input project file argument is required when output path(s) are specified.") << endl;
+        mErr << tr("Error: No input file specified. An input project file argument is required when output path(s) are specified.") << qEndl;
         return false;
     }
 
     Status s = mEditor->openObject(inputPath, [](int){}, [](int){});
     if (!s.ok())
     {
-        mErr << endl << endl << s.title() << endl << endl;
-        mErr << s.description() << endl << endl;
-        mErr << s.details().str() << endl << endl;
+        mErr << qEndl << qEndl << s.title() << qEndl << qEndl;
+        mErr << s.description() << qEndl << qEndl;
+        mErr << s.details().str() << qEndl << qEndl;
         return false;
     }
 
@@ -69,7 +75,7 @@ bool CommandLineExporter::process(const QString &inputPath,
         cameraLayer = dynamic_cast<LayerCamera*>(layerManager->findLayerByName(camera, Layer::CAMERA));
         if (cameraLayer == nullptr)
         {
-            mErr << tr("Warning: the specified camera layer %1 was not found, ignoring.").arg(camera) << endl;
+            mErr << tr("Warning: the specified camera layer %1 was not found, ignoring.").arg(camera) << qEndl;
         }
     }
     if (cameraLayer == nullptr)
@@ -101,7 +107,7 @@ bool CommandLineExporter::process(const QString &inputPath,
         QString format = detectFormatByFileNameExtension(outputPath);
         if (format.isNull())
         {
-            mErr << tr("Warning: Output format is not specified or unsupported. Using PNG.", "Command line warning") << endl;
+            mErr << tr("Warning: Output format is not specified or unsupported. Using PNG.", "Command line warning") << qEndl;
             format = "PNG";
         }
 
@@ -126,10 +132,10 @@ void CommandLineExporter::exportMovie(const QString &outputPath,
 {
     if (transparency)
     {
-        mErr << tr("Warning: Transparency is not currently supported in movie files", "Command line warning") << endl;
+        mErr << tr("Warning: Transparency is not currently supported in movie files", "Command line warning") << qEndl;
     }
 
-    mOut << tr("Exporting movie...", "Command line task progress") << endl;
+    mOut << tr("Exporting movie...", "Command line task progress") << qEndl;
 
     ExportMovieDesc desc;
     desc.strFileName = outputPath;
@@ -141,7 +147,7 @@ void CommandLineExporter::exportMovie(const QString &outputPath,
 
     MovieExporter ex;
     ex.run(mEditor->object(), desc, [](float, float){}, [](float){}, [](const QString &){});
-    mOut << tr("Done.", "Command line task done") << endl;
+    mOut << tr("Done.", "Command line task done") << qEndl;
 }
 
 void CommandLineExporter::exportImageSequence(const QString &outputPath,
@@ -152,7 +158,7 @@ void CommandLineExporter::exportImageSequence(const QString &outputPath,
                                               int endFrame,
                                               bool transparency)
 {
-    mOut << tr("Exporting image sequence...", "Command line task progress") << endl;
+    mOut << tr("Exporting image sequence...", "Command line task progress") << qEndl;
     mEditor->object()->exportFrames(startFrame,
                                     endFrame,
                                     cameraLayer,
@@ -165,5 +171,5 @@ void CommandLineExporter::exportImageSequence(const QString &outputPath,
                                     true,
                                     nullptr,
                                     0);
-    mOut << tr("Done.", "Command line task done") << endl;
+    mOut << tr("Done.", "Command line task done") << qEndl;
 }

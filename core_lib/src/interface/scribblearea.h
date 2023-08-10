@@ -256,6 +256,7 @@ private:
     qreal mCurveSmoothingLevel = 0.0;
     bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
     QColor mOnionColor;
+    int mDeltaFactor = 1;
 
 private:
 

@@ -27,17 +27,17 @@ VertexRef::VertexRef(int curveN, int vertexN)
     vertexNumber = vertexN;
 }
 
-VertexRef VertexRef::nextVertex()
+VertexRef VertexRef::nextVertex() const
 {
     return VertexRef(curveNumber, vertexNumber+1);
 }
 
-VertexRef VertexRef::prevVertex()
+VertexRef VertexRef::prevVertex() const
 {
     return VertexRef(curveNumber, vertexNumber-1);
 }
 
-bool VertexRef::operator==(VertexRef vertexRef1)
+bool VertexRef::operator==(VertexRef vertexRef1) const
 {
     if ( (curveNumber == vertexRef1.curveNumber) && (vertexNumber == vertexRef1.vertexNumber))
     {
@@ -49,7 +49,7 @@ bool VertexRef::operator==(VertexRef vertexRef1)
     }
 }
 
-bool VertexRef::operator!=(VertexRef vertexRef1)
+bool VertexRef::operator!=(VertexRef vertexRef1) const
 {
     if ( (curveNumber != vertexRef1.curveNumber) || (vertexNumber != vertexRef1.vertexNumber))
     {

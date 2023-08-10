@@ -12,7 +12,7 @@ TEMPLATE = app
 TARGET = pencil2d
 QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 
-CONFIG += qt precompile_header lrelease embed_translations
+CONFIG += precompile_header lrelease embed_translations
 
 DESTDIR = ../bin
 MOC_DIR = .moc

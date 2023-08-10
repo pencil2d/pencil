@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QProgressBar>
 #include <QPushButton>
 #include <QDesktopServices>
+#include <QRegularExpression>
 #include <QVersionNumber>
 #include <QXmlStreamReader>
 
@@ -204,15 +205,15 @@ QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
     while (!xmlReader.atEnd() && !xmlReader.hasError())
     {
         QXmlStreamReader::TokenType tokenType = xmlReader.readNext();
-        if (tokenType == QXmlStreamReader::StartElement && xmlReader.name() == "entry")
+        if (tokenType == QXmlStreamReader::StartElement && xmlReader.name() == QLatin1String("entry"))
         {
             while (!xmlReader.atEnd() && !xmlReader.hasError())
             {
                 xmlReader.readNext();
-                if (xmlReader.name() == "title")
+                if (xmlReader.name() == QLatin1String("title"))
                 {
                     QString titleTag = xmlReader.readElementText();
-                    return titleTag.remove(QRegExp("^v")); // remove the leading 'v'
+                    return titleTag.remove(QRegularExpression("^v")); // remove the leading 'v'
                 }
             }
         }

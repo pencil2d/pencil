@@ -89,6 +89,8 @@ bool ScribbleArea::init()
 
     mLayerVisibility = static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY));
 
+    mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION) ? -1 : 1;
+
     updateCanvasCursor();
 
     setMouseTracking(true); // reacts to mouse move events, even if the button is not pressed
@@ -156,6 +158,9 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::LAYER_VISIBILITY_THRESHOLD:
     case SETTING::LAYER_VISIBILITY:
         setLayerVisibility(static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY)));
+        break;
+    case SETTING::INVERT_SCROLL_ZOOM_DIRECTION:
+        mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION) ? -1 : 1;
         break;
     default:
         break;
@@ -526,7 +531,11 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
     static const bool isX11 = QGuiApplication::platformName() == "xcb";
     const QPoint pixels = event->pixelDelta();
     const QPoint angle = event->angleDelta();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    const QPointF offset = mEditor->view()->mapScreenToCanvas(event->position());
+#else
     const QPointF offset = mEditor->view()->mapScreenToCanvas(event->posF());
+#endif
 
     const qreal currentScale = mEditor->view()->scaling();
     // From the pixelDelta documentation: On X11 this value is driver-specific and unreliable, use angleDelta() instead
@@ -536,14 +545,14 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
         //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
         //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
         const int delta = pixels.y();
-        const qreal newScale = currentScale * (1 + (delta * 0.01));
+        const qreal newScale = currentScale * (1 + ((delta * mDeltaFactor) * 0.01));
         mEditor->view()->scaleAtOffset(newScale, offset);
     }
     else if (!angle.isNull())
     {
         const int delta = angle.y();
         // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
-        const qreal newScale = currentScale * std::pow(100, delta / (12.0 * 120));
+        const qreal newScale = currentScale * std::pow(100, (delta * mDeltaFactor) / (12.0 * 120));
         mEditor->view()->scaleAtOffset(newScale, offset);
     }
     updateCanvasCursor();
@@ -554,7 +563,11 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
 {
     PointerEvent event(e);
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (event.pointerType() == QPointingDevice::PointerType::Eraser)
+#else
     if (event.pointerType() == QTabletEvent::Eraser)
+#endif
     {
         editor()->tools()->tabletSwitchToEraser();
     }
@@ -629,7 +642,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
 void ScribbleArea::pointerPressEvent(PointerEvent* event)
 {
     bool isCameraLayer = mEditor->layers()->currentLayer()->type() == Layer::CAMERA;
-    if ((currentTool()->type() != HAND || isCameraLayer) && (event->button() != Qt::RightButton) && (event->button() != Qt::MidButton || isCameraLayer))
+    if ((currentTool()->type() != HAND || isCameraLayer) && (event->button() != Qt::RightButton) && (event->button() != Qt::MiddleButton || isCameraLayer))
     {
         Layer* layer = mEditor->layers()->currentLayer();
         if (!layer->visible())
@@ -642,7 +655,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
         }
     }
 
-    if (event->buttons() & (Qt::MidButton | Qt::RightButton) &&
+    if (event->buttons() & (Qt::MiddleButton | Qt::RightButton) &&
         editor()->tools()->setTemporaryTool(HAND, event->buttons()))
     {
         currentTool()->pointerPressEvent(event);

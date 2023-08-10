@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QInputDialog>
 #include <QPainter>
+#include <QRegularExpression>
 #include <QSettings>
 
 #include "camerapropertiesdialog.h"
@@ -859,7 +860,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         }
         break;
     case TIMELINE_CELL_TYPE::Tracks:
-        if (event->button() == Qt::MidButton)
+        if (event->button() == Qt::MiddleButton)
         {
             mLastFrameNumber = getFrameNumber(event->pos().x());
         }
@@ -993,7 +994,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
-        if (primaryButton == Qt::MidButton)
+        if (primaryButton == Qt::MiddleButton)
         {
             mFrameOffset = qMin(qMax(0, mFrameLength - width() / getFrameSize()), qMax(0, mFrameOffset + mLastFrameNumber - mFramePosMoveX));
             update();
@@ -1050,7 +1051,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
     if (frameNumber < 1) frameNumber = 1;
     int layerNumber = getLayerNumber(event->pos().y());
 
-    if (mType == TIMELINE_CELL_TYPE::Tracks && mCurrentLayerNumber != -1 && primaryButton != Qt::MidButton)
+    if (mType == TIMELINE_CELL_TYPE::Tracks && mCurrentLayerNumber != -1 && primaryButton != Qt::MiddleButton)
     {
         // We should affect the current layer based on what's selected, not where the mouse currently is.
         Layer* currentLayer = mEditor->layers()->getLayer(mCurrentLayerNumber);
@@ -1155,7 +1156,7 @@ void TimeLineCells::editLayerProperties(Layer *layer) const
 
 void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
 {
-    QRegExp regex("([\\xFFEF-\\xFFFF])+");
+    QRegularExpression regex("([\\x{FFEF}-\\x{FFFF}])+");
 
     CameraPropertiesDialog dialog(cameraLayer->name(), cameraLayer->getViewRect().width(),
                                   cameraLayer->getViewRect().height());
@@ -1178,7 +1179,7 @@ void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
 
 void TimeLineCells::editLayerName(Layer* layer) const
 {
-    QRegExp regex("([\\xFFEF-\\xFFFF])+");
+    QRegularExpression regex("([\\x{FFEF}-\\x{FFFF}])+");
 
     bool ok;
     QString name = QInputDialog::getText(nullptr, tr("Layer Properties"),

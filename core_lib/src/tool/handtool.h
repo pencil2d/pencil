@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #define HANDTOOL_H
 
 #include "basetool.h"
+#include "preferencemanager.h"
 
 
 class HandTool : public BaseTool
@@ -38,11 +39,13 @@ public:
     virtual bool isActive() override { return false; }
 
 private:
+    void updateSettings(const SETTING setting);
     void transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons);
 
     QPointF mLastPixel;
     QPointF mStartPoint;
     bool mIsHeld = false;
+    int mDeltaFactor = 1;
 };
 
 #endif

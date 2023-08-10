@@ -53,7 +53,9 @@ void BaseDockWidget::resizeEvent(QResizeEvent *event)
 #ifdef __APPLE__
     // For some reason the behavior of minimumSize and the margin changes on mac when floating, so we need to do this
 #else
-    minHeight += layout()->margin()*2;
+    int top, bottom;
+    layout()->getContentsMargins(nullptr, &top, nullptr, &bottom);
+    minHeight += top + bottom;
 #endif
     setMinimumSize(QSize(layout()->minimumSize().width(), minHeight));
 }

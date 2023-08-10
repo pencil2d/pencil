@@ -234,6 +234,28 @@ PointerEvent::InputType PointerEvent::inputType() const
     return InputType::Unknown;
 }
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+
+QInputDevice::DeviceType PointerEvent::device() const
+{
+    if (mTabletEvent)
+    {
+        return mTabletEvent->deviceType();
+    }
+    return QInputDevice::DeviceType::Unknown;
+}
+
+QPointingDevice::PointerType PointerEvent::pointerType() const
+{
+    if (mTabletEvent)
+    {
+        return mTabletEvent->pointerType();
+    }
+    return QPointingDevice::PointerType::Unknown;
+}
+
+#else // QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+
 QTabletEvent::TabletDevice PointerEvent::device() const
 {
     if (mTabletEvent)
@@ -252,4 +274,4 @@ QTabletEvent::PointerType PointerEvent::pointerType() const
     return QTabletEvent::PointerType::UnknownPointer;
 }
 
-//QEvent::device
+#endif // QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
