@@ -67,11 +67,11 @@ void ColorInspector::initUI()
     ui->hsvAlphaSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
 
     QPalette p1 = ui->colorWrapper->palette();
-    p1.setBrush(QPalette::Background, QBrush(QImage(":/background/checkerboard.png")));
+    p1.setBrush(QPalette::Window, QBrush(QImage(":/background/checkerboard.png")));
     ui->colorWrapper->setPalette(p1);
 
     QPalette p2 = ui->color->palette();
-    p2.setColor(QPalette::Background, mCurrentColor);
+    p2.setColor(QPalette::Window, mCurrentColor);
     ui->color->setPalette(p2);
 
     connect(ui->colorSpecTabWidget, &QTabWidget::currentChanged, this, &ColorInspector::onColorSpecChanged);
@@ -180,7 +180,7 @@ void ColorInspector::updateControls()
     ui->hsvAlphaSpinBox->setValue(qRound(mCurrentColor.alpha() / 2.55));
 
     QPalette p = ui->color->palette();
-    p.setColor(QPalette::Background, mCurrentColor);
+    p.setColor(QPalette::Window, mCurrentColor);
     ui->color->setPalette(p);
 
     update();

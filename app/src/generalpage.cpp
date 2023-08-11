@@ -92,7 +92,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     ui->backgroundButtons->setId(ui->dotsBackgroundButton, 4);
     ui->backgroundButtons->setId(ui->weaveBackgroundButton, 5);
 
-    auto buttonClicked = static_cast<void (QButtonGroup::*)(int)>(&QButtonGroup::buttonClicked);
+    auto buttonClicked = static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked);
     auto curIndexChanged = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
     auto spinValueChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->languageCombo, curIndexChanged, this, &GeneralPage::languageChanged);
@@ -196,19 +196,15 @@ void GeneralPage::languageChanged(int i)
                          tr("The language change will take effect after a restart of Pencil2D"));
 }
 
-void GeneralPage::backgroundChanged(int value)
+void GeneralPage::backgroundChanged(QAbstractButton* button)
 {
     QString brushName = "white";
-    switch (value)
-    {
-    case 1: brushName = "checkerboard"; break;
-    case 2: brushName = "white"; break;
-    case 3: brushName = "grey"; break;
-    case 4: brushName = "dots"; break;
-    case 5: brushName = "weave"; break;
-    default:
-        break;
-    }
+    if (button == ui->checkerBackgroundButton)    brushName = "checkerboard";
+    else if (button == ui->whiteBackgroundButton) brushName = "white";
+    else if (button == ui->greyBackgroundButton)  brushName = "grey";
+    else if (button == ui->dotsBackgroundButton)  brushName = "dots";
+    else if (button == ui->weaveBackgroundButton) brushName = "weave";
+    else Q_UNREACHABLE();
     mManager->set(SETTING::BACKGROUND_STYLE, brushName);
 }
 

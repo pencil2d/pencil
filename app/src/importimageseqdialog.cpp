@@ -364,7 +364,7 @@ Status ImportImageSeqDialog::validateFiles(const QStringList &filepaths)
 
     for (int i = 0; i < filepaths.count(); i++)
     {
-        QFileInfo file = filepaths.at(i);
+        QFileInfo file(filepaths.at(i));
         if (!file.exists())
             failedPathsString += filepaths.at(i) + "\n";
     }

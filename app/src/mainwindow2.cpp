@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "ui_mainwindow2.h"
 
 // Qt headers
+#include <QActionGroup>
 #include <QDir>
 #include <QList>
 #include <QMenu>
@@ -196,7 +197,9 @@ void MainWindow2::createDockWidgets()
     for (BaseDockWidget* pWidget : mDockWidgets)
     {
         pWidget->setAllowedAreas(Qt::AllDockWidgetAreas);
-        pWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
+        pWidget->setFeatures(QDockWidget::DockWidgetFeature::DockWidgetClosable |
+                             QDockWidget::DockWidgetFeature::DockWidgetMovable |
+                             QDockWidget::DockWidgetFeature::DockWidgetFloatable);
         pWidget->setFocusPolicy(Qt::NoFocus);
 
         pWidget->setEditor(mEditor);
@@ -1055,7 +1058,11 @@ void MainWindow2::importGIF()
 
 void MainWindow2::lockWidgets(bool shouldLock)
 {
-    QDockWidget::DockWidgetFeatures feat = shouldLock ? QDockWidget::NoDockWidgetFeatures : QDockWidget::AllDockWidgetFeatures;
+    QDockWidget::DockWidgetFeatures feat = shouldLock
+        ? QDockWidget::NoDockWidgetFeatures
+        : (QDockWidget::DockWidgetFeature::DockWidgetClosable |
+           QDockWidget::DockWidgetFeature::DockWidgetMovable |
+           QDockWidget::DockWidgetFeature::DockWidgetFloatable);
 
     for (QDockWidget* d : mDockWidgets)
     {

@@ -92,7 +92,7 @@ void TimeLine::initUI()
     layerButtons->setFixedHeight(30);
 
     QHBoxLayout* leftToolBarLayout = new QHBoxLayout();
-    leftToolBarLayout->setMargin(0);
+    leftToolBarLayout->setContentsMargins(0, 0, 0, 0);
     leftToolBarLayout->addWidget(layerButtons);
     leftToolBar->setLayout(leftToolBarLayout);
 
@@ -112,7 +112,7 @@ void TimeLine::initUI()
     QGridLayout* leftLayout = new QGridLayout();
     leftLayout->addWidget(leftToolBar, 0, 0);
     leftLayout->addWidget(mLayerList, 1, 0);
-    leftLayout->setMargin(0);
+    leftLayout->setContentsMargins(0, 0, 0, 0);
     leftLayout->setSpacing(0);
     leftWidget->setLayout(leftLayout);
 
@@ -167,7 +167,7 @@ void TimeLine::initUI()
     rightToolBarLayout->addWidget(timelineButtons);
     rightToolBarLayout->setAlignment(Qt::AlignLeft);
     rightToolBarLayout->addWidget(mTimeControls);
-    rightToolBarLayout->setMargin(0);
+    rightToolBarLayout->setContentsMargins(0, 0, 0, 0);
     rightToolBarLayout->setSpacing(0);
     rightToolBar->setLayout(rightToolBarLayout);
 
@@ -175,7 +175,7 @@ void TimeLine::initUI()
     rightLayout->addWidget(rightToolBar, 0, 0);
     rightLayout->setAlignment(Qt::AlignLeft);
     rightLayout->addWidget(mTracks, 1, 0);
-    rightLayout->setMargin(0);
+    rightLayout->setContentsMargins(0, 0, 0, 0);
     rightLayout->setSpacing(0);
     rightWidget->setLayout(rightLayout);
 
@@ -190,7 +190,7 @@ void TimeLine::initUI()
     lay->addWidget(splitter, 0, 0);
     lay->addWidget(mVScrollbar, 0, 1);
     lay->addWidget(mHScrollbar, 1, 0);
-    lay->setMargin(0);
+    lay->setContentsMargins(0, 0, 0, 0);
     lay->setSpacing(0);
     timeLineContent->setLayout(lay);
     setWidget(timeLineContent);

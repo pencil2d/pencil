@@ -3,6 +3,9 @@ inputs:
   arch:
     description: Architecture
     required: true
+  qt:
+    description: Qt Version
+    required: true
 runs:
   using: composite
   steps:
@@ -11,8 +14,11 @@ runs:
     env:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
+      INPUT_QT: ${{inputs.qt}}
   - if: runner.os == 'Windows'
     uses: jurplel/install-qt-action@v3
     with:
       arch: ${{inputs.arch}}
       tools: tools_openssl_x${{endsWith(inputs.arch, '_64') && '64' || '86'}}
+      version: ${{matrix.qt == 6 && '6.4.2' || '5.15.2'}}
+      modules: ${{matrix.qt == 6 && 'qtmultimedia' || ''}}
