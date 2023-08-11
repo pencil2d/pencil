@@ -151,9 +151,6 @@ void TiledBuffer::clear()
         Tile* tile = i.value();
         if (tile)
         {
-            // Clear the content of the tile
-            //
-            tile->clear();
             emit onClearTile(this, tile);
             mTiles.remove(i.key());
             delete tile;
