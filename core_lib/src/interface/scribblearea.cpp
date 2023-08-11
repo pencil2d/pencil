@@ -76,8 +76,8 @@ bool ScribbleArea::init()
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::onSelectionChanged);
     connect(mEditor->select(), &SelectionManager::needDeleteSelection, this, &ScribbleArea::deleteSelection);
 
-    connect(&mTiledBuffer, &TiledBuffer::onUpdateTile, this, &ScribbleArea::updateTile);
-    connect(&mTiledBuffer, &TiledBuffer::onNewTile, this, &ScribbleArea::loadTile);
+    connect(&mTiledBuffer, &TiledBuffer::tileUpdated, this, &ScribbleArea::onTileUpdated);
+    connect(&mTiledBuffer, &TiledBuffer::tileCreated, this, &ScribbleArea::onTileCreated);
 
     mDoubleClickTimer->setInterval(50);
     mMouseFilterTimer->setInterval(50);
@@ -188,14 +188,14 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 /************************************************************************************/
 // update methods
 
-void ScribbleArea::updateTile(TiledBuffer* tiledBuffer, Tile* tile)
+void ScribbleArea::onTileUpdated(TiledBuffer* tiledBuffer, Tile* tile)
 {
     Q_UNUSED(tiledBuffer);
     const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->pos(), tile->boundingRect().size()));
     update(mappedRect.toRect());
 }
 
-void ScribbleArea::loadTile(TiledBuffer* tiledBuffer, Tile* tile)
+void ScribbleArea::onTileCreated(TiledBuffer* tiledBuffer, Tile* tile)
 {
     Q_UNUSED(tiledBuffer)
     Layer::LAYER_TYPE layerType = mEditor->layers()->currentLayer()->type();

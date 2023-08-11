@@ -40,9 +40,9 @@ Tile* TiledBuffer::getTileFromIndex(const TileIndex& tileIndex)
         selectedTile = new Tile(tilePos, QSize(UNIFORM_TILE_SIZE, UNIFORM_TILE_SIZE));
         mTiles.insert(tileIndex, selectedTile);
 
-        emit this->onNewTile(this, selectedTile);
+        emit this->tileCreated(this, selectedTile);
     } else {
-        emit this->onUpdateTile(this, selectedTile);
+        emit this->tileUpdated(this, selectedTile);
     }
 
     return selectedTile;
@@ -151,7 +151,7 @@ void TiledBuffer::clear()
         Tile* tile = i.value();
         if (tile)
         {
-            emit onClearTile(this, tile);
+            emit tileCleared(this, tile);
             mTiles.remove(i.key());
             delete tile;
         }
@@ -159,7 +159,7 @@ void TiledBuffer::clear()
 
     mTileBounds = BlitRect();
 
-    emit onClearBuffer(this);
+    emit bufferCleared(this);
 }
 
 QPoint TiledBuffer::getTilePos(const TileIndex& index) const

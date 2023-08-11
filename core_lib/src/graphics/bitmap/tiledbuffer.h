@@ -68,10 +68,10 @@ public:
 
 
 signals:
-    void onUpdateTile(TiledBuffer* tiledBuffer, Tile* tile);
-    void onNewTile(TiledBuffer* tiledBuffer, Tile* tile);
-    void onClearTile(TiledBuffer* tiledBuffer, Tile* tile);
-    void onClearBuffer(TiledBuffer* tiledBuffer);
+    void tileUpdated(TiledBuffer* tiledBuffer, Tile* tile);
+    void tileCreated(TiledBuffer* tiledBuffer, Tile* tile);
+    void tileCleared(TiledBuffer* tiledBuffer, Tile* tile);
+    void bufferCleared(TiledBuffer* tiledBuffer);
 
 private:
 

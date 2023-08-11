@@ -161,8 +161,8 @@ public slots:
     void paletteColorChanged(QColor);
 
     void showLayerNotVisibleWarning();
-    void updateTile(TiledBuffer* tiledBuffer, Tile* tile);
-    void loadTile(TiledBuffer* tiledBuffer, Tile* tile);
+    void onTileUpdated(TiledBuffer* tiledBuffer, Tile* tile);
+    void onTileCreated(TiledBuffer* tiledBuffer, Tile* tile);
 
 protected:
     bool event(QEvent *event) override;
