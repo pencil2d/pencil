@@ -488,10 +488,9 @@ void BitmapColoring::blendLines()
 }
 
 /*
- * If drawings are made in Pencil2D, we need to:
- * - Preserve the originals by...
- * - ...making a copy of the originals, and...
- * - ...making a color layer
+ * If drawings are made in Pencil2D, we need to preserve the originals by:
+ * - ...making a copy of the original layer, named 'name'_L (L for Line art)
+ * - ...making a new coloring layer          named 'name'_C (C for Coloring)
  * (unless copy and color layer already exists)
 */
 void BitmapColoring::prepareAndTraceLines()

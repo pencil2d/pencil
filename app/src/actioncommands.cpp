@@ -851,6 +851,8 @@ Status ActionCommands::deleteCurrentLayer()
     LayerManager* layerMgr = mEditor->layers();
     QString strLayerName = layerMgr->currentLayer()->name();
 
+    qDebug() << "current layer index: " << mEditor->layers()->currentLayerIndex();
+    qDebug() << "count: " << mEditor->layers()->count();
     if (!layerMgr->canDeleteLayer(mEditor->currentLayerIndex())) {
         return Status::CANCELED;
     }
