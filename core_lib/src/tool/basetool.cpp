@@ -164,7 +164,7 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
         cursorPixmap.fill(QColor(255, 255, 255, 0));
         QPainter cursorPainter(&cursorPixmap);
         QPen cursorPen = cursorPainter.pen();
-        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+        cursorPainter.setRenderHint(QPainter::Antialiasing);
 
         // Draw cross in center
         cursorPen.setStyle(Qt::SolidLine);

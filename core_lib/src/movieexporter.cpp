@@ -27,12 +27,19 @@ GNU General Public License for more details.
 #include <QThread>
 #include <QtMath>
 #include <QPainter>
+#include <QRegularExpression>
 
 #include "object.h"
 #include "layercamera.h"
 #include "layersound.h"
 #include "soundclip.h"
 #include "util.h"
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+using Qt::SplitBehaviorFlags;
+#else
+using SplitBehaviorFlags = QString::SplitBehavior;
+#endif
 
 MovieExporter::MovieExporter()
 {
@@ -175,6 +182,7 @@ Status MovieExporter::assembleAudio(const Object* obj,
     std::vector< LayerSound* > allSoundLayers = obj->getLayersByType<LayerSound>();
     for (LayerSound* layer : allSoundLayers)
     {
+        if (!layer->visible()) { continue; }
         layer->foreachKeyFrame([&allSoundClips](KeyFrame* key)
         {
             if (!key->fileName().isEmpty())
@@ -215,11 +223,22 @@ Status MovieExporter::assembleAudio(const Object* obj,
     panChannelLayout.chop(1);
     // Output arguments
     // Mix audio
-    args << "-filter_complex" << QString("%1%2 amerge=inputs=%3, pan=mono|c0=%4 [out]")
-            .arg(filterComplex).arg(amergeInput).arg(clipCount).arg(panChannelLayout);
+    args << "-filter_complex";
+    if (clipCount == 1)
+    {
+        // If there is only one sound clip there is no need to use amerge
+        // Prior to ffmpeg 3.2, amerge does not support inputs=1
+        filterComplex.chop(1); // Remove final semicolon since there are no more filters added after
+        args << filterComplex << "-map" << amergeInput;
+    }
+    else {
+        args << QString("%1%2 amerge=inputs=%3, pan=mono|c0=%4 [out]")
+                .arg(filterComplex).arg(amergeInput).arg(clipCount).arg(panChannelLayout);
+        args << "-map" << "[out]";
+    }
     // Convert audio file: 44100Hz sampling rate, stereo, signed 16 bit little endian
     // Supported audio file types: wav, mp3, ogg... ( all file types supported by ffmpeg )
-    args << "-ar" << "44100" << "-acodec" << "pcm_s16le" << "-ac" << "2" << "-map" << "[out]" << "-y";
+    args << "-ar" << "44100" << "-acodec" << "pcm_s16le" << "-ac" << "2" << "-y";
     // Trim audio
     args << "-ss" << QString::number((startFrame - 1) / static_cast<double>(fps));
     args << "-to" << QString::number(endFrame / static_cast<double>(fps));
@@ -340,7 +359,7 @@ Status MovieExporter::generateMovie(
 
     // Run FFmpeg command
 
-    STATUS_CHECK(executeFFMpegPipe(ffmpegPath, args, progress, [&](QProcess& ffmpeg, int framesProcessed)
+    Status status = executeFFMpegPipe(ffmpegPath, args, progress, [&](QProcess& ffmpeg, int framesProcessed)
     {
         if(framesProcessed < 0)
         {
@@ -365,10 +384,13 @@ Status MovieExporter::generateMovie(
             obj->paintImage(painter, currentFrame, false, true);
             painter.end();
 
-            // Should use sizeInBytes instead of byteCount to support large images,
-            // but this is only supported in QT 5.10+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+            int bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.sizeInBytes());
+            Q_ASSERT(bytesWritten == imageToExport.sizeInBytes());
+#else
             int bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
             Q_ASSERT(bytesWritten == imageToExport.byteCount());
+#endif
 
             currentFrame++;
             failCounter = 0;
@@ -376,7 +398,8 @@ Status MovieExporter::generateMovie(
         }
 
         return false;
-    }));
+    });
+    STATUS_CHECK(status);
 
     return Status::OK;
 }
@@ -456,7 +479,7 @@ Status MovieExporter::generateGif(
 
     // Run FFmpeg command
 
-    STATUS_CHECK(executeFFMpegPipe(ffmpegPath, args, progress, [&](QProcess& ffmpeg, int framesProcessed)
+    Status status = executeFFMpegPipe(ffmpegPath, args, progress, [&](QProcess& ffmpeg, int framesProcessed)
     {
         /* The GIF FFmpeg command requires the entires stream to be
          * written before FFmpeg can encode the GIF. This is because
@@ -482,13 +505,19 @@ Status MovieExporter::generateGif(
 
         obj->paintImage(painter, currentFrame, false, true);
 
+#if QT_VERSION >= QT_VERSION_CHECK(5, 10, 0)
+        bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.sizeInBytes());
+        Q_ASSERT(bytesWritten == imageToExport.sizeInBytes());
+#else
         bytesWritten = ffmpeg.write(reinterpret_cast<const char*>(imageToExport.constBits()), imageToExport.byteCount());
         Q_ASSERT(bytesWritten == imageToExport.byteCount());
+#endif
 
         currentFrame++;
 
         return true;
-    }));
+    });
+    STATUS_CHECK(status);
 
     return Status::OK;
 }
@@ -529,7 +558,7 @@ Status MovieExporter::executeFFmpeg(const QString& cmd, const QStringList& args,
             if(!ffmpeg.waitForReadyRead()) break;
 
             QString output(ffmpeg.readAll());
-            QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+            QStringList sList = output.split(QRegularExpression("[\r\n]"), SplitBehaviorFlags::SkipEmptyParts);
             for (const QString& s : sList)
             {
                 qDebug() << "[ffmpeg]" << s;
@@ -553,7 +582,7 @@ Status MovieExporter::executeFFmpeg(const QString& cmd, const QStringList& args,
         }
 
         QString output(ffmpeg.readAll());
-        QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+        QStringList sList = output.split(QRegularExpression("[\r\n]"), SplitBehaviorFlags::SkipEmptyParts);
         for (const QString& s : sList)
         {
             qDebug() << "[ffmpeg]" << s;
@@ -659,7 +688,7 @@ Status MovieExporter::executeFFMpegPipe(const QString& cmd, const QStringList& a
             if(ffmpeg.waitForReadyRead(10))
             {
                 QString output(ffmpeg.readAll());
-                QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+                QStringList sList = output.split(QRegularExpression("[\r\n]"), SplitBehaviorFlags::SkipEmptyParts);
                 for (const QString& s : sList)
                 {
                     qDebug() << "[ffmpeg]" << s;
@@ -690,7 +719,7 @@ Status MovieExporter::executeFFMpegPipe(const QString& cmd, const QStringList& a
         }
 
         QString output(ffmpeg.readAll());
-        QStringList sList = output.split(QRegExp("[\r\n]"), QString::SkipEmptyParts);
+        QStringList sList = output.split(QRegularExpression("[\r\n]"), SplitBehaviorFlags::SkipEmptyParts);
         for (const QString& s : sList)
         {
             qDebug() << "[ffmpeg]" << s;
