@@ -918,7 +918,7 @@ void BitmapImage::fillSpotAreas(BitmapImage *img)
     // fill areas size 'area' or less with appropriate color
     QVector<QPoint> points;
     points.clear();
-    QRgb active = blackline;
+    QRgb active;
     QRgb previous = blackline;
     for (int x = img->left() + 1; x < img->right(); x++)
     {

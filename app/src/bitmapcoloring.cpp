@@ -19,7 +19,6 @@ GNU General Public License for more details.
 #include "bitmapcoloring.h"
 #include "ui_bitmapcoloringwidget.h"
 #include "layermanager.h"
-#include "toolmanager.h"
 #include "app_util.h"
 
 
@@ -48,6 +47,7 @@ BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
     connect(ui->cb3TraceAllKeyframes, &QCheckBox::stateChanged, this, &BitmapColoring::checkAllKeyframesBoxes);
     connect(ui->btnResetTrace, &QPushButton::clicked, this, &BitmapColoring::resetColoringDock);
     connect(ui->cbMethodSelector, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &BitmapColoring::enableTabs);
+    connect(ui->btnInfo, &QPushButton::clicked, this, &BitmapColoring::infoBox);
 
     // Prepare
     connect(ui->tabWidget, &QTabWidget::tabBarClicked, this, &BitmapColoring::tabWidgetClicked);
@@ -195,6 +195,34 @@ void BitmapColoring::resetColoringDock()
     ui->cb2TraceGreen->setChecked(false);
     ui->cb2TraceBlue->setChecked(false);
     ui->cb3TraceAllKeyframes->setChecked(false);
+}
+
+void BitmapColoring::infoBox()
+{
+    QMessageBox::information(this, tr("Basics in Advanced Coloring")
+                             ,tr("Advanced coloring is developed for users that use color-separation to achieve a shade-effect.\n"
+                                "It is assumed that the animation is done with black/gray pencil,\n"
+                                "and you can use red, blue and/or green for the color-separation.\n\n"
+                                "In this example, we have a active layer called 'Bird'.\n"
+                                "The Advanced coloring creates two new layers, called 'Bird_L' and 'Bird_C'.\n"
+                                "'Bird_L' is a copy of the Line-art layer, and 'Bird_C' is the Coloring layer.\n"
+                                "STEP 1: Trace:\n"
+                                "Make sure that you are on the layer 'Bird'!\n"
+                                "Check the relevant boxes for color-separation.\n"
+                                "Check the 'all drawings' box, if it is all drawings on layer. It most times is.\n"
+                                "Press 'Trace'\n"
+                                "STEP 2: Thin:\n"
+                                "Make sure that you are on the layer 'Bird_C'!\n"
+                                "Here the traced lines are thinned to 1 pixel thickness.\n"
+                                "To avoid 'holes' in your thinned line, you can run the 'Fill small areas' first.\n"
+                                "Your original layer 'Bird' is un-altered through the process, and should be made hidden.\n"
+                                "Press 'Thin'\n"
+                                "STEP 3: Colorize:\n"
+                                "Choose the Bucket-tool. Reference 'current layer', and method 'Replace'\n"
+                                "NB! Uncheck 'Color tolerance' and 'Expand fill'!\n"
+                                "STEP 4: Blend:\n"
+                                "Press 'Blend and Finish', and the thinned lines will dissappear,\n"
+                                "and be replaced with blending af neighboring colors. You're done!\n\n"));
 }
 
 void BitmapColoring::enableTabs(int index)
@@ -506,13 +534,13 @@ void BitmapColoring::prepareAndTraceLines()
 
     if (!lMgr->findLayerByName(orgName + "_L"))
     {
-        artLayer = lMgr->createBitmapLayer(orgName + "_L");
         colorLayer = lMgr->createBitmapLayer(orgName + "_C");
+        artLayer = lMgr->createBitmapLayer(orgName + "_L");
     }
     else
     {
-        artLayer = static_cast<LayerBitmap*>(lMgr->findLayerByName(orgName + "_L"));
         colorLayer = static_cast<LayerBitmap*>(lMgr->findLayerByName(orgName + "_C"));
+        artLayer = static_cast<LayerBitmap*>(lMgr->findLayerByName(orgName + "_L"));
     }
     Q_ASSERT(artLayer && colorLayer);
 
