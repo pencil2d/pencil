@@ -3,6 +3,32 @@
 trap 'echo "::error::Command failed"' ERR
 set -eE
 
+harvest_windeployqt() {
+  echo "<?xml version='1.0' encoding='utf-8'?>"
+  echo "<Wix xmlns='http://wixtoolset.org/schemas/v4/wxs'>"
+  echo "  <Fragment>"
+  echo "    <ComponentGroup Id='windeployqt' Directory='INSTALLDIR'>"
+
+  while IFS= read -r filepath; do
+    if [ "${filepath%%_*}" = "translations\\qtbase" -o "${filepath%%_*}" = "translations\\qtmultimedia" -o "${filepath%%_*}" = "vc" ]; then
+      # windeployqt lists some translation files that it doesn't actually copy, and the MSVC redistributable is handled by the bundle
+      continue
+    fi
+    local subdirectory="$(dirname "${filepath}")"
+    if [ "${subdirectory}" = "." ]; then
+      echo "      <Component>"
+    else
+      echo "      <Component Subdirectory='${subdirectory}'>"
+    fi
+    echo "        <File Source='${filepath}' />"
+    echo "      </Component>"
+  done
+
+  echo "    </ComponentGroup>"
+  echo "  </Fragment>"
+  echo "</Wix>"
+}
+
 create_package_linux() {
   echo "::group::Set up AppImage contents"
   make install INSTALL_ROOT="${PWD}/Pencil2D"
@@ -104,9 +130,8 @@ create_package_windows() {
 
   echo "Remove files"
   find \( -name '*.pdb' -o -name '*.ilk' \) -delete
-  echo "::group::Deploy Qt libraries"
-  windeployqt Pencil2D/pencil2d.exe
-  echo "::endgroup::"
+  echo "Deploy Qt libraries"
+  windeployqt --list relative Pencil2D/pencil2d.exe | harvest_windeployqt > windeployqt.wxs
   echo "Copy OpenSSL DLLs"
   curl -fsSLO https://download.firedaemon.com/FireDaemon-OpenSSL/openssl-1.1.1w.zip
   "${WINDIR}\\System32\\tar" xf openssl-1.1.1w.zip
@@ -114,7 +139,7 @@ create_package_windows() {
   local xbits="x${wordsize}"
   local _xbits="-x${wordsize}"
   cp "openssl-1.1\\${xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${_xbits/-x32/}.dll" Pencil2D/
-  echo "Create Installer"
+  echo "::group::Create Installer"
   env -C ../util/installer qmake CONFIG-=debug_and_release CONFIG+=release
   env -C ../util/installer "PATH=${PATH/\/usr\/bin:/}" nmake
   local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%F)"
@@ -125,13 +150,13 @@ create_package_windows() {
     -d "ProductCode=$(python -c "import uuid; print(str(uuid.uuid5(uuid.NAMESPACE_URL, '-Nhttps://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}')).upper())")" \
     $versiondefines \
     -out "pencil2d-${platform}-$3.msi" \
-    ../util/installer/pencil2d.wxs
+    ../util/installer/pencil2d.wxs windeployqt.wxs
   wix build -arch "x${wordsize/32/86}" -dcl high -sw1133 -b ../util/installer -b Pencil2D \
     -ext WixToolset.Util.wixext -ext WixToolset.Bal.wixext \
-    -d "ProductCode=$(python -c "import uuid; print(str(uuid.uuid5(uuid.NAMESPACE_URL, '-Nhttps://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}')).upper())")" \
     $versiondefines \
     -out "pencil2d-${platform}-$3.exe" \
     ../util/installer/pencil2d.bundle.wxs
+  echo "::endgroup::"
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
   "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$3.zip" Pencil2D
