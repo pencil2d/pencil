@@ -19,19 +19,16 @@ GNU General Public License for more details.
 #include <QPainter>
 
 Tile::Tile(const QPoint& pos, QSize size):
+    mTilePixmap(size),
     mPos(pos),
-    mTilePixmap(size)
+    mBounds(pos, size),
+    mSize(size)
 {
     clear(); //Default tiles are transparent
 }
 
 Tile::~Tile()
 {
-}
-
-QRect Tile::boundingRect() const
-{
-    return mTilePixmap.rect();
 }
 
 void Tile::load(const QImage& image, const QPoint& topLeft)

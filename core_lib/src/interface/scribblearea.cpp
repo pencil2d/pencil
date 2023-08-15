@@ -196,7 +196,7 @@ void ScribbleArea::setEffect(SETTING e, bool isOn)
 void ScribbleArea::onTileUpdated(TiledBuffer* tiledBuffer, Tile* tile)
 {
     Q_UNUSED(tiledBuffer);
-    const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->pos(), tile->boundingRect().size()));
+    const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->bounds()));
     update(mappedRect.toRect());
 }
 
@@ -213,7 +213,7 @@ void ScribbleArea::onTileCreated(TiledBuffer* tiledBuffer, Tile* tile)
         // Not used, we only use the buffer to paint the stroke before painting the real vector stroke
     }
 
-    const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->pos(), tile->boundingRect().size()));
+    const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->bounds()));
     update(mappedRect.toRect());
 }
 

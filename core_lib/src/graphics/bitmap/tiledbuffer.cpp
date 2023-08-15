@@ -74,7 +74,7 @@ void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, int brushCurso
             painter.drawEllipse(brushRect);
             painter.end();
 
-            mTileBounds.extend(tile->pos(), tile->boundingRect().size());
+            mTileBounds.extend(tile->bounds());
         }
     }
 }
@@ -102,7 +102,7 @@ void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPain
             painter.drawImage(imageBounds.topLeft(), image);
             painter.end();
 
-            mTileBounds.extend(tile->pos(), tile->boundingRect().size());
+            mTileBounds.extend(tile->bounds());
         }
     }
 }
@@ -137,7 +137,7 @@ void TiledBuffer::drawPath(QPainterPath path, int cursorWidth, QPen pen, QBrush 
             painter.drawPath(path);
             painter.end();
 
-            mTileBounds.extend(tile->pos(), tile->boundingRect().size());
+            mTileBounds.extend(tile->bounds());
         }
     }
 }

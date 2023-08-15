@@ -30,8 +30,9 @@ public:
     const QPixmap& pixmap() const { return mTilePixmap; }
     QPixmap& pixmap() { return mTilePixmap; }
 
-    QPoint pos() const { return mPos; }
-    QRect boundingRect() const;
+    const QPoint& pos() const { return mPos; }
+    const QRect& bounds() const { return mBounds; }
+    const QSize& size() const { return mSize; }
 
     /** Loads the input image into the tile */
     void load(const QImage& image, const QPoint& topLeft);
@@ -40,6 +41,8 @@ public:
 private:
     QPixmap    mTilePixmap;
     QPoint mPos;
+    QRect mBounds;
+    QSize mSize;
 };
 
 #endif // TILE_H
