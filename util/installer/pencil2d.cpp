@@ -56,6 +56,7 @@ public:
         __inout DWORD* pdwAutomaticBehaviorType
         )
     {
+        // Take control of BAFunctions-managed controls
         if (::CompareStringW(LOCALE_NEUTRAL, 0, wzName, -1, L"ProgressActionText", -1) == CSTR_EQUAL)
         {
             *pfProcessed = TRUE;
@@ -76,18 +77,19 @@ public:
     {
         HRESULT hr = S_OK;
 
+        // Start marquee effect on progress bars
         WCHAR szClass[countof(PROGRESS_CLASSW)] = L"";
         if (!::GetClassNameW(hWnd, szClass, countof(szClass)))
         {
-            BalExitOnLastError(hr, "Failed to get window class.");
+            BalExitWithLastError(hr, "Failed to get window class.");
         }
-
         if (::CompareStringW(LOCALE_NEUTRAL, 0, szClass, -1, PROGRESS_CLASSW, -1) == CSTR_EQUAL &&
             ::GetWindowLongPtrW(hWnd, GWL_STYLE) & PBS_MARQUEE)
         {
             ::SendMessageW(hWnd, PBM_SETMARQUEE, TRUE, 0);
         }
 
+        // Store control HWNDs for later
         if (wId == PENCIL2DBAFUNCTIONS_PROGRESS_ACTION_TEXT)
         {
             if (m_hwndControlProgressActionText)
@@ -119,60 +121,23 @@ public:
         __inout BOOL* pfCancel
         )
     {
-        LPWSTR wzValue = NULL;
-        LONGLONG llValue = 0;
-
         BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Trying to recover installation options from related bundle %ls.", wzBundleId);
-        if (SUCCEEDED(BalGetRelatedBundleVariable(wzBundleId, L"InstallFolder", &wzValue)) && wzValue)
-        {
-            BalSetStringVariable(L"InstallFolder", wzValue, TRUE);
-            BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Recovered install folder: %ls.", wzValue);
-        }
-
-        if (SUCCEEDED(BalGetRelatedBundleVariable(wzBundleId, L"DesktopShortcut", &wzValue)) && wzValue)
-        {
-            if (SUCCEEDED(StrStringToInt64(wzValue, 0, &llValue)))
-            {
-                BalSetNumericVariable(L"DesktopShortcut", llValue);
-                BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Recovered desktop shortcut option: %lld.", llValue);
-            }
-            else
-            {
-                BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Failed to convert desktop shortcut option '%ls' from related bundle to number, ignoring.", wzValue);
-            }
-        }
+        RecoverRelatedBundleStringVariable(wzBundleId, L"InstallFolder", TRUE);
+        RecoverRelatedBundleNumericVariable(wzBundleId, L"DesktopShortcut");
 
         return __super::OnDetectRelatedBundle(wzBundleId, relationType, wzBundleTag, fPerMachine, wzVersion, fMissingFromCache, pfCancel);
     }
 
     virtual STDMETHODIMP OnPauseAutomaticUpdatesBegin()
     {
-        if (m_hwndControlProgressActionText) {
-            LOC_STRING* pLocString = NULL;
-            LocGetString(m_pWixLoc, L"#(loc.PauseAutomaticUpdatesMessage)", &pLocString);
-            LPWSTR sczFormattedString = NULL;
-            if (pLocString)
-            {
-                BalFormatString(pLocString->wzText, &sczFormattedString);
-            }
-            ::SetWindowTextW(m_hwndControlProgressActionText, sczFormattedString ? sczFormattedString : L"Pausing Windows automatic updates");
-        }
+        SetProgressActionText(L"#(loc.PauseAutomaticUpdatesMessage)", L"Pausing Windows automatic updates");
 
         return __super::OnPauseAutomaticUpdatesBegin();
     }
 
     virtual STDMETHODIMP OnSystemRestorePointBegin()
     {
-        if (m_hwndControlProgressActionText) {
-            LOC_STRING* pLocString = NULL;
-            LocGetString(m_pWixLoc, L"#(loc.SystemRestorePointMessage)", &pLocString);
-            LPWSTR sczFormattedString = NULL;
-            if (pLocString)
-            {
-                BalFormatString(pLocString->wzText, &sczFormattedString);
-            }
-            ::SetWindowTextW(m_hwndControlProgressActionText, sczFormattedString ? sczFormattedString : L"Creating system restore point");
-        }
+        SetProgressActionText(L"#(loc.SystemRestorePointMessage)", L"Creating system restore point");
 
         return __super::OnSystemRestorePointBegin();
     }
@@ -181,16 +146,7 @@ public:
         __inout BOOL* pfCancel
         )
     {
-        if (m_hwndControlProgressActionText) {
-            LOC_STRING* pLocString = NULL;
-            LocGetString(m_pWixLoc, L"#(loc.CacheMessage)", &pLocString);
-            LPWSTR sczFormattedString = NULL;
-            if (pLocString)
-            {
-                BalFormatString(pLocString->wzText, &sczFormattedString);
-            }
-            ::SetWindowTextW(m_hwndControlProgressActionText, sczFormattedString ? sczFormattedString : L"Preparing files");
-        }
+        SetProgressActionText(L"#(loc.CacheMessage)", L"Preparing files");
 
         return __super::OnCacheBegin(pfCancel);
     }
@@ -204,37 +160,26 @@ public:
         __inout BOOL* pfCancel
         )
     {
-        if (m_hwndControlProgressActionText) {
-            LOC_STRING* pLocString = NULL;
-            switch (action) {
-                case BOOTSTRAPPER_ACTION_STATE_UNINSTALL:
-                    LocGetString(m_pWixLoc, L"#(loc.ExecuteUninstallPackagesMessage)", &pLocString);
-                    break;
-                case BOOTSTRAPPER_ACTION_STATE_INSTALL:
-                    LocGetString(m_pWixLoc, L"#(loc.ExecuteInstallPackagesMessage)", &pLocString);
-                    break;
-                case BOOTSTRAPPER_ACTION_STATE_MODIFY:
-                    LocGetString(m_pWixLoc, L"#(loc.ExecuteModifyPackagesMessage)", &pLocString);
-                    break;
-                case BOOTSTRAPPER_ACTION_STATE_REPAIR:
-                    LocGetString(m_pWixLoc, L"#(loc.ExecuteRepairPackagesMessage)", &pLocString);
-                    break;
-                case BOOTSTRAPPER_ACTION_STATE_MINOR_UPGRADE:
-                    LocGetString(m_pWixLoc, L"#(loc.ExecuteUpgradePackagesMessage)", &pLocString);
-                    break;
-            }
-
-            LPWSTR sczFormattedString = NULL;
-            if (pLocString)
-            {
-                BalFormatString(pLocString->wzText, &sczFormattedString);
-            }
-
-            ::SetWindowTextW(m_hwndControlProgressActionText, sczFormattedString ? sczFormattedString : L"Processing packages");
-        }
-        else
-        {
-            BalLog(BOOTSTRAPPER_LOG_LEVEL_ERROR, "Don't have progress control!");
+        switch (action) {
+            case BOOTSTRAPPER_ACTION_STATE_UNINSTALL:
+                SetProgressActionText(L"#(loc.ExecuteUninstallPackagesMessage)", L"Uninstalling packages");
+                break;
+            case BOOTSTRAPPER_ACTION_STATE_INSTALL:
+                SetProgressActionText(L"#(loc.ExecuteInstallPackagesMessage)", L"Installing packages");
+                break;
+            case BOOTSTRAPPER_ACTION_STATE_MODIFY:
+                SetProgressActionText(L"#(loc.ExecuteModifyPackagesMessage)", L"Modifying packages");
+                break;
+            case BOOTSTRAPPER_ACTION_STATE_REPAIR:
+                SetProgressActionText(L"#(loc.ExecuteRepairPackagesMessage)", L"Repairing packages");
+                break;
+            case BOOTSTRAPPER_ACTION_STATE_MINOR_UPGRADE:
+                SetProgressActionText(L"#(loc.ExecuteUpgradePackagesMessage)", L"Upgrading packages");
+                break;
+            default:
+                BalLog(BOOTSTRAPPER_LOG_LEVEL_ERROR, "Unknown action state %d", action);
+                // Should never happen anyway, but at least make sure progress text isn't completely wrong
+                SetProgressActionText(NULL, L"Processing packages");
         }
 
         return __super::OnExecutePackageBegin(wzPackageId, fExecute, action, uiLevel, fDisableExternalUiHandler, pfCancel);
@@ -251,13 +196,10 @@ public:
         __inout int* pResult
         )
     {
-        if (messageType == INSTALLMESSAGE_ACTIONSTART && cData >= 3)
+        if (messageType == INSTALLMESSAGE_ACTIONSTART && cData >= 2)
         {
-            if (m_hwndControlProgressActionText)
-            {
-                // Second field contains human-readable action description
-                ::SetWindowTextW(m_hwndControlProgressActionText, rgwzData[1]);
-            }
+            // Second field contains human-readable action description
+            SetProgressActionText(NULL, rgwzData[1]);
         }
 
         return __super::OnExecuteMsiMessage(wzPackageId, messageType, dwUIHint, wzMessage, cData, rgwzData, nRecommendation, pResult);
@@ -267,15 +209,83 @@ public:
         __in HRESULT hrStatus
         )
     {
-        if (m_hwndControlProgressActionText)
-        {
-            ::SetWindowTextW(m_hwndControlProgressActionText, L"");
-        }
+        SetProgressActionText(NULL, L"");
 
         return __super::OnExecuteComplete(hrStatus);
     }
 
 private:
+    HRESULT RecoverRelatedBundleStringVariable(
+        __in_z LPCWSTR wzBundleId,
+        __in_z LPCWSTR wzVariable,
+        __in BOOL fFormatted
+        )
+    {
+        HRESULT hr = S_OK;
+        LPWSTR wzValue = NULL;
+
+        hr = BalGetRelatedBundleVariable(wzBundleId, wzVariable, &wzValue);
+        BalExitOnFailure(hr, "Failed to get variable %ls from related bundle %ls.", wzVariable, wzBundleId);
+
+        if (wzValue)
+        {
+            hr = BalSetStringVariable(wzVariable, wzValue, fFormatted);
+            BalExitOnFailure(hr, "Failed to set variable %ls to recovered value %ls.", wzVariable, wzValue);
+            BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Recovered related bundle variable %ls: %ls.", wzVariable, wzValue);
+        }
+
+    LExit:
+        ReleaseStr(wzValue);
+        return hr;
+    }
+
+    HRESULT RecoverRelatedBundleNumericVariable(
+        __in_z LPCWSTR wzBundleId,
+        __in_z LPCWSTR wzVariable
+        )
+    {
+        HRESULT hr = S_OK;
+        LPWSTR wzValue = NULL;
+        LONGLONG llValue = 0;
+
+        hr = BalGetRelatedBundleVariable(wzBundleId, wzVariable, &wzValue);
+        BalExitOnFailure(hr, "Failed to get variable %ls from related bundle %ls.", wzVariable, wzBundleId);
+
+        hr = StrStringToInt64(wzValue, 0, &llValue);
+        BalExitOnFailure(hr, "Failed to convert value %ls of variable %ls recovered from related bundle to number.", wzValue, wzVariable);
+
+        hr = BalSetNumericVariable(wzVariable, llValue);
+        BalExitOnFailure(hr, "Failed to set variable %ls to recovered value %lld.", wzVariable, llValue);
+        BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Recovered related bundle variable %ls: %lld.", wzVariable, llValue);
+
+    LExit:
+        ReleaseStr(wzValue);
+        return hr;
+    }
+
+    void SetProgressActionText(
+        __in_z LPCWSTR wzLocId,
+        __in_z LPCWSTR wzFallbackText
+        )
+    {
+        if (!m_hwndControlProgressActionText)
+        {
+            return;
+        }
+
+        LOC_STRING* pLocString = NULL;
+        LPWSTR sczFormattedString = NULL;
+        LocGetString(m_pWixLoc, wzLocId, &pLocString);
+        if (pLocString)
+        {
+            BalFormatString(pLocString->wzText, &sczFormattedString);
+        }
+
+        ::SetWindowTextW(m_hwndControlProgressActionText, sczFormattedString ? sczFormattedString : wzFallbackText);
+
+        ReleaseStr(sczFormattedString);
+    }
+
     WIX_LOCALIZATION *m_pWixLoc = NULL;
     HWND m_hwndControlProgressActionText = NULL;
 };
@@ -312,8 +322,7 @@ extern "C" HRESULT WINAPI BAFunctionsCreate(
 
     IBootstrapperEngine* pEngine = NULL;
     LPWSTR sczModulePath = NULL;
-    WCHAR sczLanguage[6] = L"";
-    SIZE_T cch = countof(sczLanguage);
+    LPWSTR sczLanguage = NULL;
     LPWSTR sczLocPath = NULL;
     WIX_LOCALIZATION *pWixLoc = NULL;
     Pencil2DBAFunctions* pBAFunctions = NULL;
@@ -327,8 +336,7 @@ extern "C" HRESULT WINAPI BAFunctionsCreate(
     hr = PathRelativeToModule(&sczModulePath, NULL, vhInstance);
     BalExitOnFailure(hr, "Failed to get module path.");
 
-    // Language Identifiers are 16 bit, hence max. 5 digits + terminating null character
-    hr = pEngine->GetVariableString(L"WixStdBALanguageId", sczLanguage, &cch);
+    hr = BalGetStringVariable(L"WixStdBALanguageId", &sczLanguage);
     BalExitOnFailure(hr, "Failed to get language id.");
 
     hr = LocProbeForFile(sczModulePath, L"thm.wxl", sczLanguage, &sczLocPath);
@@ -346,6 +354,7 @@ extern "C" HRESULT WINAPI BAFunctionsCreate(
 
 LExit:
     ReleaseObject(pBAFunctions);
+    ReleaseStr(sczLanguage);
     ReleaseStr(sczLocPath);
     ReleaseStr(sczModulePath);
     ReleaseObject(pEngine);

@@ -10,10 +10,6 @@ harvest_windeployqt() {
   echo "    <ComponentGroup Id='windeployqt' Directory='INSTALLDIR'>"
 
   while IFS= read -r filepath; do
-    if [ "${filepath%%_*}" = "translations\\qtbase" -o "${filepath%%_*}" = "translations\\qtmultimedia" -o "${filepath%%_*}" = "vc" ]; then
-      # windeployqt lists some translation files that it doesn't actually copy, and the MSVC redistributable is handled by the bundle
-      continue
-    fi
     local subdirectory="$(dirname "${filepath}")"
     if [ "${subdirectory}" = "." ]; then
       echo "      <Component>"
@@ -131,7 +127,8 @@ create_package_windows() {
   echo "Remove files"
   find \( -name '*.pdb' -o -name '*.ilk' \) -delete
   echo "Deploy Qt libraries"
-  windeployqt --list relative Pencil2D/pencil2d.exe | harvest_windeployqt > windeployqt.wxs
+  # windeployqt lists some translation files that it doesn't actually copy, and the MSVC redistributable is handled by the bundle, so skip those
+  windeployqt --list relative Pencil2D/pencil2d.exe | grep -v '^translations\\qtbase_' | grep -v '^translations\\qtmultimedia_' | grep -v '^vc_' | harvest_windeployqt > windeployqt.wxs
   echo "Copy OpenSSL DLLs"
   curl -fsSLO https://download.firedaemon.com/FireDaemon-OpenSSL/openssl-1.1.1w.zip
   "${WINDIR}\\System32\\tar" xf openssl-1.1.1w.zip
