@@ -244,7 +244,7 @@ void PolylineTool::cancelPolyline()
 {
     // Clear the in-progress polyline from the bitmap buffer.
     mScribbleArea->clearDrawingBuffer();
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 void PolylineTool::endPolyline(QList<QPointF> points)

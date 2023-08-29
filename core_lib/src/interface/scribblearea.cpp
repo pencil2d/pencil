@@ -217,14 +217,12 @@ void ScribbleArea::onTileCreated(TiledBuffer* tiledBuffer, Tile* tile)
     update(mappedRect.toRect());
 }
 
-void ScribbleArea::updateCurrentFrame()
+void ScribbleArea::updateFrame()
 {
-    updateFrame(mEditor->currentFrame());
-}
+    if (currentTool()->isActive() && currentTool()->isDrawingTool()) {
+        return;
+    }
 
-void ScribbleArea::updateFrame(int frame)
-{
-    Q_ASSERT(frame >= 0);
     update();
 }
 
@@ -282,12 +280,14 @@ void ScribbleArea::invalidateOnionSkinsCacheAround(int frameNumber)
 
 void ScribbleArea::invalidateAllCache()
 {
+    if (currentTool()->isDrawingTool() && currentTool()->isActive()) { return; }
+
     QPixmapCache::clear();
     mPixmapCacheKeys.clear();
     invalidatePainterCaches();
     mEditor->layers()->currentLayer()->clearDirtyFrames();
 
-    update();
+    updateFrame();
 }
 
 void ScribbleArea::invalidateCacheForFrame(int frameNumber)
@@ -305,7 +305,7 @@ void ScribbleArea::invalidatePainterCaches()
 {
     mCameraPainter.resetCache();
     mCanvasPainter.resetLayerCache();
-    update();
+    updateFrame();
 }
 
 void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
@@ -326,7 +326,7 @@ void ScribbleArea::onToolChanged(ToolType)
     prepOverlays(frame);
     prepCameraPainter(frame);
     invalidateCacheForFrame(frame);
-    updateCurrentFrame();
+    updateFrame();
 }
 
 
@@ -341,13 +341,14 @@ void ScribbleArea::onPlayStateChanged()
     prepOverlays(currentFrame);
     prepCameraPainter(currentFrame);
     invalidateCacheForFrame(currentFrame);
-    updateFrame(currentFrame);
+    updateFrame();
 }
 
 void ScribbleArea::onScrubbed(int frameNumber)
 {
+    Q_UNUSED(frameNumber)
     invalidatePainterCaches();
-    updateFrame(frameNumber);
+    updateFrame();
 }
 
 void ScribbleArea::onFramesModified()
@@ -356,7 +357,7 @@ void ScribbleArea::onFramesModified()
     if (mPrefs->isOn(SETTING::PREV_ONION) || mPrefs->isOn(SETTING::NEXT_ONION)) {
         invalidatePainterCaches();
     }
-    update();
+    updateFrame();
 }
 
 void ScribbleArea::onFrameModified(int frameNumber)
@@ -366,7 +367,7 @@ void ScribbleArea::onFrameModified(int frameNumber)
         invalidatePainterCaches();
     }
     invalidateCacheForFrame(frameNumber);
-    updateFrame(frameNumber);
+    updateFrame();
 }
 
 void ScribbleArea::onViewChanged()
@@ -383,7 +384,7 @@ void ScribbleArea::onSelectionChanged()
 {
     int currentFrame = mEditor->currentFrame();
     invalidateCacheForFrame(currentFrame);
-    updateFrame(currentFrame);
+    updateFrame();
 }
 
 void ScribbleArea::onOnionSkinTypeChanged()
@@ -859,7 +860,7 @@ void ScribbleArea::paintBitmapBuffer()
     // just return (since we have nothing to paint on).
     if (layer->getLastKeyFrameAtPosition(frameNumber) == nullptr)
     {
-        updateCurrentFrame();
+        updateFrame();
         return;
     }
 
@@ -1488,7 +1489,7 @@ void ScribbleArea::applyTransformedSelection()
         mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
     }
 
-    update();
+    updateFrame();
 }
 
 void ScribbleArea::cancelTransformedSelection()
@@ -1516,7 +1517,7 @@ void ScribbleArea::cancelTransformedSelection()
         mOriginalPolygonF = QPolygonF();
 
         mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
-        updateCurrentFrame();
+        updateFrame();
     }
 }
 

@@ -86,12 +86,9 @@ public:
     QRect getCameraRect();
     QPointF getCentralPoint();
 
-    /** Update current frame.
-     *  calls update() behind the scene and update cache if necessary */
-    void updateCurrentFrame();
     /** Update frame.
      * calls update() behind the scene and update cache if necessary */
-    void updateFrame(int frame);
+    void updateFrame();
 
     /** Frame scrubbed, invalidate relevant cache */
     void onScrubbed(int frameNumber);

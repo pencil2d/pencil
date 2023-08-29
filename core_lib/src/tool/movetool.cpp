@@ -119,7 +119,7 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         mEditor->overlays()->updatePerspective(mapped);
     }
 
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
@@ -154,7 +154,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
             storeClosestVectorCurve(mCurrentLayer);
         }
     }
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)

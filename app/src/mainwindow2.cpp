@@ -879,7 +879,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    ui->scribbleArea->updateCurrentFrame();
+    ui->scribbleArea->updateFrame();
     mTimeLine->updateContent();
 }
 
