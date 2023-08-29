@@ -167,19 +167,3 @@ QPoint TiledBuffer::getTilePos(const TileIndex& index) const
     return QPoint { qRound(UNIFORM_TILE_SIZE*static_cast<qreal>(index.x)),
                     qRound(UNIFORM_TILE_SIZE*static_cast<qreal>(index.y)) };
 }
-
-TileIndex TiledBuffer::getTileIndex(const TileIndex& pos) const
-{
-    return { qRound(static_cast<qreal>(pos.x)/UNIFORM_TILE_SIZE),
-             qRound(static_cast<qreal>(pos.y)/UNIFORM_TILE_SIZE) };
-}
-
-QRect TiledBuffer::getRectForPoint(const QPoint& point, const QSize size) const
-{
-    return QRect(point.x(), point.y(), size.width(), size.height());
-}
-
-QRect TiledBuffer::getRectForPoint(const QPoint& point) const
-{
-    return QRect(point.x(), point.y(), UNIFORM_TILE_SIZE, UNIFORM_TILE_SIZE);
-}

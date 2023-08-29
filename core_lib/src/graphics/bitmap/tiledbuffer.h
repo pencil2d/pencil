@@ -66,7 +66,6 @@ public:
 
     const QRect& bounds() const { return mTileBounds; }
 
-
 signals:
     void tileUpdated(TiledBuffer* tiledBuffer, Tile* tile);
     void tileCreated(TiledBuffer* tiledBuffer, Tile* tile);
@@ -78,24 +77,6 @@ private:
     Tile* getTileFromIndex(const TileIndex& tileIndex);
 
     inline QPoint getTilePos(const TileIndex& index) const;
-    inline TileIndex getTileIndex(const TileIndex& pos) const;
-
-    /**
-     * @brief getRectForPoint
-     * Returns a rectangle with a specified size for the given point
-     * @param point
-     * @param size
-     * @return QRect
-     */
-    QRect getRectForPoint(const QPoint& point, const QSize size) const;
-
-    /**
-     * @brief getRectForPoint
-     * Returns a rectangle with the size of UNIFORM_TILE_SIZE (64,64)
-     * @param point
-     * @return QRect
-     */
-    QRect getRectForPoint(const QPoint& point) const;
 
     const int UNIFORM_TILE_SIZE = 64;
 
