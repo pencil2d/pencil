@@ -60,21 +60,21 @@ BitmapBucket::BitmapBucket(Editor* editor,
         mReferenceImage = singleLayerImage;
     }
     mStartReferenceColor = mReferenceImage.constScanLine(point.x(), point.y());
-    mUseFillToDrag = canUseFillToDrag(point, color, mProperties, singleLayerImage);
+    mUseDragToFill = canUseDragToFill(point, color, singleLayerImage);
 
     mPixelCache = new QHash<QRgb, bool>();
 }
 
-bool BitmapBucket::canUseFillToDrag(const QPoint& fillPoint, const QColor& bucketColor, const Properties& properties, const BitmapImage& referenceImage)
+bool BitmapBucket::canUseDragToFill(const QPoint& fillPoint, const QColor& bucketColor, const BitmapImage& referenceImage)
 {
     QRgb pressReferenceColorSingleLayer = referenceImage.constScanLine(fillPoint.x(), fillPoint.y());
     QRgb startRef = qUnpremultiply(pressReferenceColorSingleLayer);
 
-    if (properties.fillMode == 0 && ((QColor(qRed(startRef), qGreen(startRef), qBlue(startRef)) == bucketColor.rgb() && qAlpha(startRef) == 255) || bucketColor.alpha() == 0)) {
+    if (mProperties.fillMode == 0 && ((QColor(qRed(startRef), qGreen(startRef), qBlue(startRef)) == bucketColor.rgb() && qAlpha(startRef) == 255) || bucketColor.alpha() == 0)) {
         // In overlay mode: When the reference pixel matches the bucket color and the reference is fully opaque
         // Otherwise when the bucket alpha is zero.
         return false;
-    } else if (properties.fillMode == 2 && qAlpha(startRef) == 255) {
+    } else if (mProperties.fillMode == 2 && qAlpha(startRef) == 255) {
         // In behind mode: When the reference pixel is already fully opaque, the output will be invisible.
         return false;
     }
@@ -89,12 +89,12 @@ bool BitmapBucket::allowFill(const QPoint& checkPoint, const QRgb& checkColor) c
         return true;
     }
 
-    return allowContinousFill(checkPoint, checkColor);
+    return allowContinuousFill(checkPoint, checkColor);
 }
 
-bool BitmapBucket::allowContinousFill(const QPoint& checkPoint, const QRgb& checkColor) const
+bool BitmapBucket::allowContinuousFill(const QPoint& checkPoint, const QRgb& checkColor) const
 {
-    if (!mUseFillToDrag) {
+    if (!mUseDragToFill) {
         return false;
     }
 

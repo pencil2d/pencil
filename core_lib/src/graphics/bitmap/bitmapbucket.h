@@ -58,10 +58,10 @@ private:
      * @return True if you are allowed to fill, otherwise false
      */
     bool allowFill(const QPoint& checkPoint, const QRgb& checkColor) const;
-    bool allowContinousFill(const QPoint& checkPoint, const QRgb& checkColor) const;
+    bool allowContinuousFill(const QPoint& checkPoint, const QRgb& checkColor) const;
 
     /** Determines whether fill to drag feature can be used */
-    bool canUseFillToDrag(const QPoint& fillPoint, const QColor& bucketColor, const Properties& properties, const BitmapImage& referenceImage);
+    bool canUseDragToFill(const QPoint& fillPoint, const QColor& bucketColor, const BitmapImage& referenceImage);
 
     BitmapImage flattenBitmapLayersToImage();
 
@@ -80,7 +80,7 @@ private:
 
     int mTargetFillToLayerIndex = -1;
     bool mFilledOnce = false;
-    bool mUseFillToDrag = false;
+    bool mUseDragToFill = false;
 
     Properties mProperties;
 };
