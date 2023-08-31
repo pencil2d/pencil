@@ -2,9 +2,11 @@
 
 # Pencil2D Animation
 
-**Pencil2D** is an animation/drawing software for Windows, macOS, Linux, and FreeBSD. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics. Pencil2D is free and open source.
+**Pencil2D** is a free and open source animation/drawing software for Windows, macOS, Linux, and FreeBSD. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.
 
-Pencil2D Website: <https://www.pencil2d.org/>
+Pencil2D is a community-driven project developed entirely by volunteers and we are always looking for more helping hands! There are many different ways to contribute, so anyone can help regardless of their background. For more information, please see the [Contributing](#contributing) section below.
+
+Don’t forget to check out our official website: <https://www.pencil2d.org/>
 
 ### User Showcase
 
