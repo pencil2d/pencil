@@ -52,7 +52,8 @@ wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-inte
 create_package_macos() {
   echo "::group::Clean"
   make clean
-  mv bin Pencil2D
+  mkdir Pencil2D
+  mv app/Pencil2D.app Pencil2D/
   pushd Pencil2D >/dev/null
   echo "::endgroup::"
 
@@ -88,16 +89,19 @@ create_package_macos() {
 }
 
 create_package_windows() {
+  echo "::group::Set up application files"
+  nmake install INSTALL_ROOT="$(cygpath -w "${PWD}/Pencil2D")"
+  echo "::endgroup::"
+
   echo "Copy FFmpeg plugin"
   local platform="${INPUT_ARCH%%_*}"
   local ffmpeg="ffmpeg-${platform}.zip"
   curl -fsSLO "https://github.com/pencil2d/pencil2d-deps/releases/download/ffmpge-v4.1.1/$ffmpeg"
   "${WINDIR}\\System32\\tar" xf "${ffmpeg}"
-  mkdir bin/plugins
-  mv "ffmpeg.exe" bin/plugins/
+  mkdir Pencil2D/plugins
+  mv "ffmpeg.exe" Pencil2D/plugins/
   rm -rf "${ffmpeg}"
 
-  mv bin Pencil2D
   echo "Remove files"
   find \( -name '*.pdb' -o -name '*.ilk' \) -delete
   echo "::group::Deploy Qt libraries"
