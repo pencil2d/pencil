@@ -77,7 +77,7 @@
         <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Pencil2D.LegacyAnimation$(IdEditionSuffix)\shell\open" Name="MultiSelectModel" Type="string" Value="single" />
 
         <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe" Name="AppUserModelID" Type="string" Value="Pencil2D.Pencil2D$(IdEditionSuffix)" />
-        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe" Name="FriendlyAppName" Type="string" Value="@[#pencil2d.exe],-0" /><!-- TODO: Put in resource! -->
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe" Name="FriendlyAppName" Type="string" Value="@[#pencil2d.exe],-0" />
         <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe\shell\open" Type="string" Value="&quot;[#pencil2d.exe]&quot; &quot;%1&quot;" />
         <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe\shell\open" Name="MultiSelectModel" Type="string" Value="single" />
         <RegistryKey Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe\SupportedTypes\.pclx" ForceCreateOnInstall="yes" />

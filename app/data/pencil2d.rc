@@ -53,7 +53,9 @@ FILETYPE VFT_APP
 #endif
             VALUE "InternalName", "pencil2d"
             VALUE "OriginalFilename", "pencil2d.exe"
+#if !defined(PENCIL2D_RELEASE_BUILD) && !defined(PENCIL2D_NIGHTLY_BUILD)
             VALUE "PrivateBuild", "Private Build"
+#endif
         }
     }
 
@@ -66,6 +68,7 @@ FILETYPE VFT_APP
 STRINGTABLE
 LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
 {
-    0 "Pencil2D Animation"
-    1 "Pencil2D Animation (Old Format)"
+    0 "Pencil2D"
+    1 "Pencil2D Animation"
+    2 "Pencil2D Animation (Old Format)"
 }
