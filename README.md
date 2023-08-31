@@ -4,8 +4,6 @@
 
 **Pencil2D** is an animation/drawing software for Windows, macOS, Linux, and FreeBSD. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics. Pencil2D is free and open source.
 
-Here is a video demonstrating the project: <https://www.youtube.com/watch?v=ma52j9B1kEM>
-
 Pencil2D Website: <https://www.pencil2d.org/>
 
 ### User Showcase
@@ -14,30 +12,14 @@ Pencil2D Website: <https://www.pencil2d.org/>
 
 _User Showcase Reel 2022_
 
-### Using Pencil2D
-Note that the following guides and documentation are outdated.
-
-* [Quick Reference](https://www.pencil2d.org/doc/quick-reference.html) - Web version of the PDF guide included with Pencil2D
-* [User Manual](https://www.pencil2d.org/doc/user-manual.html) - End user documentation how-to
-* [FAQ](https://www.pencil2d.org/doc/faq.html) - Frequently Asked Questions
-
 ## Download
 
 ### Pencil2D 0.6.6 (17 Feb 2021)
 
-You can download Pencil2D from the [Official Website][p2d-download] or [Github releases][gh-release]
+You can download Pencil2D from the [Official Website][p2d-download] or [Github releases][gh-release].
 
 [p2d-download]: https://www.pencil2d.org/download/
 [gh-release]: https://github.com/pencil2d/pencil/releases
-
-For first time users refer to the [User Manual][user-man]
-
-[user-man]: https://www.pencil2d.org/doc/user-manual.html
-
-If you run into any issues, make sure to check out the [FAQ][p2d-faq]
-
-[p2d-faq]: https://www.pencil2d.org/doc/faq.html
-
 
 ### Nightly Builds
 
@@ -45,11 +27,33 @@ Nightly builds are the bleeding edge versions of Pencil2D, which contains the mo
 
 [Download Nightly Buildls](https://www.pencil2d.org/download/nightly/)
 
+## Using Pencil2D
+
+Note that the following guides and documentation are outdated.
+
+Pencil2D comes with a Quick Reference that you can use to familiarize yourself with the tools and functions at your disposal. After opening Pencil2D, you can access it through the main menu: Help > Quick Reference Guide.
+
+We encourage you to visit our [User Manual][user-man] for a quick guide for novice users, then play around with the program – it's fun!
+
+[user-man]: https://www.pencil2d.org/doc/user-manual.html
+
+After you feel a little more comfortable with the basics, check out these [tutorials][pencil-tutorials] provided by Pencil developers and users. While some of these resources might reference previous versions of Pencil2D, the underlying concepts are still the same.
+
+[pencil-tutorials]: https://www.pencil2d.org/doc/tutorials.html
+
+If you encounter difficulty or have additional questions, we have a large community of users who are glad to help out. View the [FAQ][p2d-faq] on our website or visit our [discussion forums][p2d-discussion] to post a new question.
+
+[p2d-faq]: https://www.pencil2d.org/doc/faq.html
+[p2d-discussion]: https://discuss.pencil2d.org/c/support/5
+
 ## Contributing
+
+Interested in contributing to Pencil? There are many ways to help. Take a look at our issues and see what you can help out with, check out the developer guide, or help out with making Pencil2D available to more people by contributing to translation.
 
 * [Issue Tracker](https://github.com/pencil2d/pencil/issues) - Report bugs or request features.
 * [Developer Guide](https://dev.pencil2d.org/) - Learn how to compile Pencil2D yourself.
 * [Transifex](https://www.transifex.com/pencil2d/) - You can help translate Pencil2D, too.
+* [Documentation contributions](https://www.pencil2d.org/doc/CONTRIBUTING) - Guidelines for contributing to documentation.
 
 ## Source Code
 
