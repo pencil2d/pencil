@@ -28,15 +28,15 @@
         <Page Name="Install">
             <Checkbox Name="EulaAcceptCheckbox" X="95" Y="215" Width="450" Height="17" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">#(loc.InstallAcceptCheckbox)</Checkbox>
             <Hypertext Name="EulaHyperlink" X="111" Y="238" Width="200" Height="17" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">&lt;a href=&quot;#&quot;&gt;#(loc.InstallLicenseLinkText)&lt;/a&gt;</Hypertext>
-            <!--Button Name="InstallUpdateButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal" EnableCondition="WixStdBAUpdateAvailable" HideWhenDisabled="yes">#(loc.UpdateButton)</Button--><!-- TODO -->
             <Button Name="InstallButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal">#(loc.InstallInstallButton)</Button>
-            <Button Name="OptionsButton" X="-20" Y="-23" Width="16" Height="16" TabStop="yes" FontId="Normal" VisibleCondition="NOT WixStdBASuppressOptionsUI">
+            <Button Name="OptionsButton" X="-20" Y="-24" Width="16" Height="16" TabStop="yes" FontId="Normal" VisibleCondition="NOT WixStdBASuppressOptionsUI">
                 <ButtonImage ImageId="cog" />
                 <ButtonHoverImage ImageId="cog-hover" />
                 <ButtonSelectedImage ImageId="cog-hover" />
                 <Tooltip>#(loc.InstallOptionsButton)</Tooltip>
                 <ChangePageAction Page="Options" />
             </Button>
+            <Button Name="InstallUpdateButton" X="-44" Y="-20" Width="200" Height="23" TabStop="yes" FontId="Normal" EnableCondition="WixStdBAUpdateAvailable" HideWhenDisabled="yes">#(loc.UpdateButton)</Button>
         </Page>
         <Page Name="Options">
             <Label X="95" Y="215" Width="-95" Height="17" FontId="Normal" DisablePrefix="yes">#(loc.OptionsLocationLabel)</Label>
@@ -62,9 +62,9 @@
             <Button Name="ProgressCancelButton" X="-20" Y="-20" Width="75" Height="23" TabStop="yes" FontId="Normal">#(loc.ProgressCancelButton)</Button>
         </Page>
         <Page Name="Modify">
-            <!--Button Name="ModifyUpdateButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal" EnableCondition="WixStdBAUpdateAvailable" HideWhenDisabled="yes">#(loc.UpdateButton)</Button--><!-- TODO -->
             <Button Name="RepairButton" X="195" Y="235" Width="250" Height="40" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">#(loc.ModifyRepairButton)</Button>
             <Button Name="UninstallButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal">#(loc.ModifyUninstallButton)</Button>
+            <Button Name="ModifyUpdateButton" X="-20" Y="-20" Width="200" Height="23" TabStop="yes" FontId="Normal" EnableCondition="WixStdBAUpdateAvailable" HideWhenDisabled="yes">#(loc.UpdateButton)</Button>
         </Page>
         <Page Name="Success">
             <Label X="95" Y="215" Width="-95" Height="17" FontId="Normal" DisablePrefix="yes">
