@@ -97,6 +97,7 @@
       <Component Directory="INSTALLDIR">
         <File Source="resources.pri" />
       </Component>
+      <ComponentGroupRef Id="resources" />
       <Component Directory="INSTALLDIR">
         <File Source="libcrypto-1_1$(OpenSSLSuffix).dll" />
       </Component>

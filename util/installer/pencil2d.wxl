@@ -43,7 +43,9 @@
   <String Id="SuccessText" Value="[WixBundleName] was successfully set up." />
   <String Id="SuccessLayoutText" Value="[WixBundleName] was successfully layouted." />
   <String Id="SuccessUninstallText" Value="[WixBundleName] was successfully uninstalled." />
+  <String Id="SuccessCacheText" Value="[WixBundleName] was successfully cached." />
   <String Id="SuccessInstallText" Value="[WixBundleName] was successfully installed." />
+  <String Id="SuccessModifyText" Value="[WixBundleName] was successfully modified." />
   <String Id="SuccessRepairText" Value="[WixBundleName] was successfully repaired." />
   <String Id="SuccessRestartText" Value="To start using [WixBundleName], please restart your computer." />
   <String Id="SuccessUninstallRestartText" Value="To complete the removal of [WixBundleName], please restart your computer." />
@@ -52,9 +54,11 @@
   <String Id="FailureText" Value="Failed to set up [WixBundleName]." />
   <String Id="FailureLayoutText" Value="Failed to layout [WixBundleName]." />
   <String Id="FailureUninstallText" Value="Failed to uninstall [WixBundleName]." />
+  <String Id="FailureCacheText" Value="Failed to cache [WixBundleName]." />
   <String Id="FailureInstallText" Value="Failed to install [WixBundleName]." />
+  <String Id="FailureModifyText" Value="Failed to modify [WixBundleName]." />
   <String Id="FailureRepairText" Value="Failed to repair [WixBundleName]." />
-  <String Id="FailureHyperlinkLogText" Value="One or more issues caused the setup to fail. Please fix the issues and then retry. For more information see the &lt;a href=&quot;#&quot;&gt;log file&lt;/a&gt;." />
+  <String Id="FailureHyperlinkLogText" Value="One or more issues caused the operation to fail. Please fix the issues and then retry. For more information see the &lt;a href=&quot;#&quot;&gt;log file&lt;/a&gt;." />
   <String Id="FailureRestartText" Value="To complete the rollback of [WixBundleName], please restart your computer." />
   <String Id="FailureRestartButton" Value="&amp;Restart" />
   <String Id="FailureCloseButton" Value="&amp;Close" />
