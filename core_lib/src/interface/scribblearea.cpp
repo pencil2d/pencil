@@ -88,7 +88,6 @@ bool ScribbleArea::init()
     mQuickSizing = mPrefs->isOn(SETTING::QUICK_SIZING);
     mMakeInvisible = false;
 
-    mIsSimplified = mPrefs->isOn(SETTING::OUTLINES);
     mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
 
     mLayerVisibility = static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY));
@@ -415,8 +414,6 @@ void ScribbleArea::keyPressEvent(QKeyEvent *event)
     // Don't handle this event on auto repeat
     if (event->isAutoRepeat()) { return; }
 
-    mKeyboardInUse = true;
-
     if (isPointerInUse()) { return; } // prevents shortcuts calls while drawing
 
     if (currentTool()->keyPressEvent(event))
@@ -530,8 +527,6 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
         return;
     }
 
-    mKeyboardInUse = false;
-
     if (event->key() == 0)
     {
         editor()->tools()->tryClearTemporaryTool(Qt::Key_unknown);
@@ -554,7 +549,7 @@ void ScribbleArea::keyReleaseEvent(QKeyEvent *event)
 // mouse and tablet event handlers
 void ScribbleArea::wheelEvent(QWheelEvent* event)
 {
-    // Don't change view if tool is in use
+    // Don't change view if the tool is in use
     if (isPointerInUse()) return;
 
     static const bool isX11 = QGuiApplication::platformName() == "xcb";
@@ -693,7 +688,6 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
     const bool isPressed = event->buttons() & Qt::LeftButton;
     if (isPressed && mQuickSizing)
     {
-        //qDebug() << "Start Adjusting" << event->buttons();
         if (currentTool()->startAdjusting(event->modifiers(), 1))
         {
             return;
@@ -733,13 +727,6 @@ void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
         return; // [SHIFT]+drag OR [CTRL]+drag
     }
 
-    if (event->buttons() & (Qt::RightButton | Qt::MiddleButton))
-    {
-        mMouseRightButtonInUse = false;
-        return;
-    }
-
-    //qDebug() << "release event";
     currentTool()->pointerReleaseEvent(event);
 
     editor()->tools()->tryClearTemporaryTool(event->button());
@@ -759,11 +746,11 @@ void ScribbleArea::handleDoubleClick()
 
 void ScribbleArea::tabletReleaseEventFired()
 {
-    // Under certain circumstances a mouse press event will fire after a tablet release event.
-    // This causes unexpected behaviours for some of the tools, eg. the bucket.
-    // The problem only seems to occur on windows and only when tapping.
-    // prior to this fix, the event queue would look like this:
-    // eg: TabletPress -> TabletRelease -> MousePress
+    // Under certain circumstances, a mouse press event will fire after a tablet release event.
+    // This causes unexpected behaviors for some tools, e.g., the bucket tool.
+    // The problem only seems to occur on Windows and only when tapping.
+    // Prior to this fix, the event queue would look like this:
+    // e.g.: TabletPress -> TabletRelease -> MousePress
     // The following will filter mouse events created after a tablet release event.
     mTabletReleaseMillisAgo += 50;
 
@@ -1048,10 +1035,9 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
     currentTool()->paint(painter);
 
-    Layer* layer = mEditor->layers()->currentLayer();
-
     if (!editor()->playback()->isPlaying())    // we don't need to display the following when the animation is playing
     {
+        Layer* layer = mEditor->layers()->currentLayer();
         if (layer->type() == Layer::VECTOR)
         {
             VectorImage* vectorImage = currentVectorImage(layer);
@@ -1127,7 +1113,6 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         paintCanvasCursor(painter);
 
         mOverlayPainter.paint(painter);
-
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())

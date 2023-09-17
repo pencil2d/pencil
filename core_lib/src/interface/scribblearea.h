@@ -54,7 +54,6 @@ class ScribbleArea : public QWidget
     Q_OBJECT
 
     friend class MoveTool;
-    friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
 
@@ -74,16 +73,12 @@ public:
 
     bool isLayerPaintable() const;
 
-    QVector<QPoint> calcSelectionCenterPoints();
-
     void setEffect(SETTING e, bool isOn);
 
     LayerVisibility getLayerVisibility() const { return mLayerVisibility; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
-    bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    QRect getCameraRect();
     QPointF getCentralPoint();
 
     /** Update frame.
@@ -124,10 +119,6 @@ public:
     /** Tool changed, invalidate cache and frame if needed */
     void onToolChanged(ToolType);
 
-    /** Set frame on layer to modified and invalidate current frame cache */
-    void setModified(int layerNumber, int frameNumber);
-    void setModified(const Layer* layer, int frameNumber);
-
     void endStroke();
 
     void flipSelection(bool flipVertical);
@@ -143,7 +134,6 @@ public:
 
 signals:
     void multiLayerOnionSkinChanged(bool);
-    void refreshPreview();
     void selectionUpdated();
 
 public slots:
@@ -233,26 +223,16 @@ private:
     BitmapImage* currentBitmapImage(Layer* layer) const;
     VectorImage* currentVectorImage(Layer* layer) const;
 
-    MoveMode mMoveMode = MoveMode::NONE;
-
     std::unique_ptr<StrokeManager> mStrokeManager;
 
     Editor* mEditor = nullptr;
 
-
-    bool mIsSimplified = false;
-    bool mShowThinLines = false;
     bool mQuickSizing = true;
     LayerVisibility mLayerVisibility = LayerVisibility::ALL;
-    bool mUsePressure   = true;
     bool mMakeInvisible = false;
-    bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;
-    bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
-    QColor mOnionColor;
+    bool mMultiLayerOnionSkin = false; // Future use. If required, just add a checkbox to update it.
     int mDeltaFactor = 1;
-
-private:
 
     /* Under certain circumstances a mouse press event will fire after a tablet release event.
        This causes unexpected behaviours for some of the tools, eg. the bucket.
@@ -262,9 +242,7 @@ private:
        The following will filter mouse events created after a tablet release event.
     */
     void tabletReleaseEventFired();
-    bool mKeyboardInUse = false;
     bool mMouseInUse = false;
-    bool mMouseRightButtonInUse = false;
     bool mTabletInUse = false;
     qreal mDevicePixelRatio = 1.;
 

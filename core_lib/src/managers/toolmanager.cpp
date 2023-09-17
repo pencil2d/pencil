@@ -347,7 +347,7 @@ void ToolManager::tabletSwitchToEraser()
 }
 
 void ToolManager::tabletRestorePrevTool()
-{   
+{
     if (mTemporaryTool == nullptr && mTabletEraserTool != nullptr)
     {
         mTabletEraserTool = nullptr;
