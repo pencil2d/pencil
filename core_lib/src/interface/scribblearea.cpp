@@ -1031,7 +1031,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
     // paints the canvas
     painter.setWorldMatrixEnabled(false);
-    painter.drawPixmap(QPoint(0, 0), mCanvas);
+    painter.drawPixmap(event->rect(), mCanvas, event->rect());
 
     currentTool()->paint(painter);
 
