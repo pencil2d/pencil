@@ -299,7 +299,7 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
         // so in that case, in order to see the previously laid-down polyline stroke,
         // the surrounding area must be drawn again before
         // applying the new tiled output on top
-        if (mOptions.bIgnoreCanvasBuffer) {
+        if (!blitRect.contains(mTiledBuffer->bounds()) || mOptions.bIgnoreCanvasBuffer) {
             currentBitmapPainter.setCompositionMode(QPainter::CompositionMode_Source);
             currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
         }
