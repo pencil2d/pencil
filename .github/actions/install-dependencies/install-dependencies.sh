@@ -51,6 +51,9 @@ setup_macos() {
 }
 
 setup_windows() {
+  curl -fsSLO https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
+  mkdir okapi
+  "${WINDIR}\\System32\\tar" xfC okapi-apps_win32-x86_64_1.45.0.zip okapi
   dotnet tool install -g wix
   wix extension add -g WixToolset.Util.wixext WixToolset.Bal.wixext
   nuget install -x -OutputDirectory util/installer WixToolset.BalUtil

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<WixLocalization Culture="en-us" Language="1033" xmlns="http://wixtoolset.org/schemas/v4/wxl">
+<WixLocalization Culture="en" Language="9" xmlns="http://wixtoolset.org/schemas/v4/wxl">
   <!-- Standard BA -->
   <String Id="ConfirmCancelMessage" Value="Are you sure you want to cancel?" />
   <String Id="FilesInUseTitle" Value="Files In Use" />
@@ -23,7 +23,7 @@
   <String Id="Caption" Value="[WixBundleName] Setup" />
   <String Id="CheckingForUpdatesLabel" Value="Checking for updates" />
   <String Id="UpdateButton" Value="&amp;Update to version [WixStdBAUpdateAvailable]" />
-  <String Id="HelpText" Value="/install | /repair | /uninstall | /layout [directory] &#x2013; install, repair, uninstall or create a complete local copy of the bundle in directory. &#xA;&#xA;/passive | /quiet &#x2013; suppress interactive prompts or both UI and prompts.&#xA;/norestart &#x2013; suppress any attempts to restart. By default UI will prompt before restart.&#xA;/log [logfile] &#x2013; log to a custom file. By default a log file is created in %TEMP%.&#xA;&#xA;InstallFolder=[directory] | DesktopShortcut=[0|1] &#x2013; Overwrite installation options." />
+  <String Id="HelpText" Value="/install | /repair | /uninstall | /layout [directory] &#x2013; install, repair, uninstall or create a complete local copy of the bundle in directory.&#xA;&#xA;/passive | /quiet &#x2013; suppress interactive prompts or both UI and prompts.&#xA;/norestart &#x2013; suppress any attempts to restart. By default UI will prompt before restart.&#xA;/log [logfile] &#x2013; log to a custom file. By default a log file is created in %TEMP%.&#xA;&#xA;InstallFolder=[directory] | DesktopShortcut=[0|1] &#x2013; Overwrite installation options." />
   <String Id="InstallVersion" Value="Version [WixBundleVersion]" />
   <String Id="InstallVersionNightly" Value="Build [NightlyBuildNumber] ([NightlyBuildTimestamp])" />
   <String Id="InstallAcceptCheckbox" Value="I &amp;accept the terms and conditions of the GNU General Public License, version 2" />

@@ -140,6 +140,14 @@ create_package_windows() {
   env -C ../util/installer qmake CONFIG-=debug_and_release CONFIG+=release
   env -C ../util/installer "PATH=${PATH/\/usr\/bin:/}" nmake
   env -C Pencil2D find resources/ -type f | harvest_files resources > resources.wxs
+  for i in ../util/installer/translations/pencil2d_*.wxl.xlf; do
+    local basename="$(basename -s .wxl.xlf "$i")"
+    local locale="${basename#*_}"
+    local culture="${locale/_/-}"
+    local lcid="$(pwsh -c "(Get-Culture -Name ${culture}).lcid")"
+    sed "s/Culture=\"en\"/Culture=\"${culture}\"/;s/Language=\"9\"/Language=\"${lcid}\"/" ../util/installer/pencil2d.wxl > "../util/installer/pencil2d_${locale}.wxl"
+    tikal.bat -m -fc ../util/installer/okf_xml_wxl -ie utf-8 -oe utf-8 -sd ../util/installer -od ../util/installer "${i}"
+  done
   local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%F)"
   if [ "$IS_RELEASE" = "true" ]; then
     versiondefines="-d Edition=Release -d Version=$2"
