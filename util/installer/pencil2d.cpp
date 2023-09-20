@@ -10,6 +10,7 @@
 #include "pathutil.h"
 #include "strutil.h"
 #include "thmutil.h"
+#include "verutil.h"
 #include "xmlutil.h"
 
 #include "BootstrapperEngine.h"
@@ -121,11 +122,36 @@ public:
         __inout BOOL* pfCancel
         )
     {
-        BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Trying to recover installation options from related bundle %ls.", wzBundleId);
-        RecoverRelatedBundleStringVariable(wzBundleId, L"InstallFolder", TRUE);
-        RecoverRelatedBundleNumericVariable(wzBundleId, L"DesktopShortcut");
+        HRESULT hr = S_OK;
+        LPWSTR sczVersion = NULL;
 
-        return __super::OnDetectRelatedBundle(wzBundleId, relationType, wzBundleTag, fPerMachine, wzVersion, fMissingFromCache, pfCancel);
+        if (relationType == BOOTSTRAPPER_RELATION_UPGRADE)
+        {
+            BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Trying to recover installation options from related bundle %ls.", wzBundleId);
+            RecoverRelatedBundleStringVariable(wzBundleId, L"InstallFolder", TRUE);
+            RecoverRelatedBundleNumericVariable(wzBundleId, L"DesktopShortcut");
+
+            if (m_command.action == BOOTSTRAPPER_ACTION_INSTALL)
+            {
+                hr = BalGetVersionVariable(L"WixBundleVersion", &sczVersion);
+                BalExitOnFailure(hr, "Failed to get bundle version.");
+
+                int nResult;
+                hr = VerCompareStringVersions(wzVersion, sczVersion, TRUE, &nResult);
+                BalExitOnFailure(hr, "Failed to compare bundle version: %ls to related bundle version: %ls.", sczVersion, wzVersion);
+
+                if (nResult < 0)
+                {
+                    BalSetNumericVariable(L"UpgradeDetected", 1);
+                }
+            }
+        }
+
+        hr = __super::OnDetectRelatedBundle(wzBundleId, relationType, wzBundleTag, fPerMachine, wzVersion, fMissingFromCache, pfCancel);
+
+    LExit:
+        ReleaseStr(sczVersion);
+        return hr;
     }
 
     virtual STDMETHODIMP OnPauseAutomaticUpdatesBegin()
@@ -231,7 +257,6 @@ private:
         {
             hr = BalSetStringVariable(wzVariable, wzValue, fFormatted);
             BalExitOnFailure(hr, "Failed to set variable %ls to recovered value %ls.", wzVariable, wzValue);
-            BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Recovered related bundle variable %ls: %ls.", wzVariable, wzValue);
         }
 
     LExit:
@@ -256,7 +281,6 @@ private:
 
         hr = BalSetNumericVariable(wzVariable, llValue);
         BalExitOnFailure(hr, "Failed to set variable %ls to recovered value %lld.", wzVariable, llValue);
-        BalLog(BOOTSTRAPPER_LOG_LEVEL_STANDARD, "Recovered related bundle variable %ls: %lld.", wzVariable, llValue);
 
     LExit:
         ReleaseStr(wzValue);

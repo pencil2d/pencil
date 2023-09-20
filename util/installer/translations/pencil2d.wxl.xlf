@@ -74,15 +74,23 @@
 <source xml:lang="en">[WixBundleName] Setup</source>
 <target xml:lang="en">[WixBundleName] Setup</target>
 </trans-unit>
-<trans-unit id="19" resname="CheckingForUpdatesLabel" restype="x-Value" xml:space="preserve">
+<trans-unit id="19" resname="Version" restype="x-Value" xml:space="preserve">
+<source xml:lang="en">Version [WixBundleVersion]</source>
+<target xml:lang="en">Version [WixBundleVersion]</target>
+</trans-unit>
+<trans-unit id="20" resname="VersionNightly" restype="x-Value" xml:space="preserve">
+<source xml:lang="en">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</source>
+<target xml:lang="en">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</target>
+</trans-unit>
+<trans-unit id="21" resname="CheckingForUpdatesLabel" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Checking for updates</source>
 <target xml:lang="en">Checking for updates</target>
 </trans-unit>
-<trans-unit id="20" resname="UpdateButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="22" resname="UpdateButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Update to version [WixStdBAUpdateAvailable]</source>
 <target xml:lang="en">&amp;Update to version [WixStdBAUpdateAvailable]</target>
 </trans-unit>
-<trans-unit id="21" resname="HelpText" restype="x-Value" xml:space="preserve">
+<trans-unit id="23" resname="HelpText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">/install | /repair | /uninstall | /layout [directory] – install, repair, uninstall or create a complete local copy of the bundle in directory.
 
 /passive | /quiet – suppress interactive prompts or both UI and prompts.
@@ -98,14 +106,6 @@ InstallFolder=[directory] | DesktopShortcut=[0|1] – Overwrite installation opt
 
 InstallFolder=[directory] | DesktopShortcut=[0|1] – Overwrite installation options.</target>
 </trans-unit>
-<trans-unit id="22" resname="InstallVersion" restype="x-Value" xml:space="preserve">
-<source xml:lang="en">Version [WixBundleVersion]</source>
-<target xml:lang="en">Version [WixBundleVersion]</target>
-</trans-unit>
-<trans-unit id="23" resname="InstallVersionNightly" restype="x-Value" xml:space="preserve">
-<source xml:lang="en">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</source>
-<target xml:lang="en">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</target>
-</trans-unit>
 <trans-unit id="24" resname="InstallAcceptCheckbox" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">I &amp;accept the terms and conditions of the GNU General Public License, version 2</source>
 <target xml:lang="en">I &amp;accept the terms and conditions of the GNU General Public License, version 2</target>
@@ -118,135 +118,147 @@ InstallFolder=[directory] | DesktopShortcut=[0|1] – Overwrite installation opt
 <source xml:lang="en">&amp;Install [WixBundleName]</source>
 <target xml:lang="en">&amp;Install [WixBundleName]</target>
 </trans-unit>
-<trans-unit id="27" resname="InstallOptionsButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="27" resname="InstallUpgradeButton" restype="x-Value" xml:space="preserve">
+<source xml:lang="en">&amp;Upgrade [WixBundleName]</source>
+<target xml:lang="en">&amp;Upgrade [WixBundleName]</target>
+</trans-unit>
+<trans-unit id="28" resname="InstallOptionsButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Options</source>
 <target xml:lang="en">Options</target>
 </trans-unit>
-<trans-unit id="28" resname="OptionsLocationLabel" restype="x-Value" xml:space="preserve">
+<trans-unit id="29" resname="OptionsLocationLabel" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Install location:</source>
 <target xml:lang="en">Install location:</target>
 </trans-unit>
-<trans-unit id="29" resname="OptionsBrowseButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="30" resname="OptionsBrowseButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Browse</source>
 <target xml:lang="en">&amp;Browse</target>
 </trans-unit>
-<trans-unit id="30" resname="OptionsDesktopShortcutCheckbox" restype="x-Value" xml:space="preserve">
+<trans-unit id="31" resname="OptionsDesktopShortcutCheckbox" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Create &amp;desktop shortcut</source>
 <target xml:lang="en">Create &amp;desktop shortcut</target>
 </trans-unit>
-<trans-unit id="31" resname="OptionsOkButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="32" resname="OptionsOkButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;OK</source>
 <target xml:lang="en">&amp;OK</target>
 </trans-unit>
-<trans-unit id="32" resname="OptionsCancelButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="33" resname="OptionsCancelButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Cancel</source>
 <target xml:lang="en">&amp;Cancel</target>
 </trans-unit>
-<trans-unit id="33" resname="ProgressLabel" restype="x-Value" xml:space="preserve">
+<trans-unit id="34" resname="ProgressLabel" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Status:</source>
 <target xml:lang="en">Status:</target>
 </trans-unit>
-<trans-unit id="34" resname="ProgressActionText" restype="x-Value" xml:space="preserve">
+<trans-unit id="35" resname="ProgressActionText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Initializing</source>
 <target xml:lang="en">Initializing</target>
 </trans-unit>
-<trans-unit id="35" resname="ProgressCancelButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="36" resname="ProgressCancelButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Cancel</source>
 <target xml:lang="en">&amp;Cancel</target>
 </trans-unit>
-<trans-unit id="36" resname="ModifyRepairButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="37" resname="ModifyRepairButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Repair</source>
 <target xml:lang="en">&amp;Repair</target>
 </trans-unit>
-<trans-unit id="37" resname="ModifyUninstallButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="38" resname="ModifyUninstallButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Uninstall</source>
 <target xml:lang="en">&amp;Uninstall</target>
 </trans-unit>
-<trans-unit id="38" resname="SuccessText" restype="x-Value" xml:space="preserve">
+<trans-unit id="39" resname="SuccessText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully set up.</source>
 <target xml:lang="en">[WixBundleName] was successfully set up.</target>
 </trans-unit>
-<trans-unit id="39" resname="SuccessLayoutText" restype="x-Value" xml:space="preserve">
+<trans-unit id="40" resname="SuccessLayoutText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully layouted.</source>
 <target xml:lang="en">[WixBundleName] was successfully layouted.</target>
 </trans-unit>
-<trans-unit id="40" resname="SuccessUninstallText" restype="x-Value" xml:space="preserve">
+<trans-unit id="41" resname="SuccessUninstallText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully uninstalled.</source>
 <target xml:lang="en">[WixBundleName] was successfully uninstalled.</target>
 </trans-unit>
-<trans-unit id="41" resname="SuccessCacheText" restype="x-Value" xml:space="preserve">
+<trans-unit id="42" resname="SuccessCacheText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully cached.</source>
 <target xml:lang="en">[WixBundleName] was successfully cached.</target>
 </trans-unit>
-<trans-unit id="42" resname="SuccessInstallText" restype="x-Value" xml:space="preserve">
+<trans-unit id="43" resname="SuccessInstallText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully installed.</source>
 <target xml:lang="en">[WixBundleName] was successfully installed.</target>
 </trans-unit>
-<trans-unit id="43" resname="SuccessModifyText" restype="x-Value" xml:space="preserve">
+<trans-unit id="44" resname="SuccessUpgradeText" restype="x-Value" xml:space="preserve">
+<source xml:lang="en">[WixBundleName] was successfully upgraded.</source>
+<target xml:lang="en">[WixBundleName] was successfully upgraded.</target>
+</trans-unit>
+<trans-unit id="45" resname="SuccessModifyText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully modified.</source>
 <target xml:lang="en">[WixBundleName] was successfully modified.</target>
 </trans-unit>
-<trans-unit id="44" resname="SuccessRepairText" restype="x-Value" xml:space="preserve">
+<trans-unit id="46" resname="SuccessRepairText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully repaired.</source>
 <target xml:lang="en">[WixBundleName] was successfully repaired.</target>
 </trans-unit>
-<trans-unit id="45" resname="SuccessRestartText" restype="x-Value" xml:space="preserve">
+<trans-unit id="47" resname="SuccessRestartText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">To start using [WixBundleName], please restart your computer.</source>
 <target xml:lang="en">To start using [WixBundleName], please restart your computer.</target>
 </trans-unit>
-<trans-unit id="46" resname="SuccessUninstallRestartText" restype="x-Value" xml:space="preserve">
+<trans-unit id="48" resname="SuccessUninstallRestartText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">To complete the removal of [WixBundleName], please restart your computer.</source>
 <target xml:lang="en">To complete the removal of [WixBundleName], please restart your computer.</target>
 </trans-unit>
-<trans-unit id="47" resname="SuccessLaunchButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="49" resname="SuccessLaunchButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Launch [WixBundleName]</source>
 <target xml:lang="en">&amp;Launch [WixBundleName]</target>
 </trans-unit>
-<trans-unit id="48" resname="SuccessRestartButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="50" resname="SuccessRestartButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Restart computer</source>
 <target xml:lang="en">&amp;Restart computer</target>
 </trans-unit>
-<trans-unit id="49" resname="FailureText" restype="x-Value" xml:space="preserve">
+<trans-unit id="51" resname="FailureText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to set up [WixBundleName].</source>
 <target xml:lang="en">Failed to set up [WixBundleName].</target>
 </trans-unit>
-<trans-unit id="50" resname="FailureLayoutText" restype="x-Value" xml:space="preserve">
+<trans-unit id="52" resname="FailureLayoutText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to layout [WixBundleName].</source>
 <target xml:lang="en">Failed to layout [WixBundleName].</target>
 </trans-unit>
-<trans-unit id="51" resname="FailureUninstallText" restype="x-Value" xml:space="preserve">
+<trans-unit id="53" resname="FailureUninstallText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to uninstall [WixBundleName].</source>
 <target xml:lang="en">Failed to uninstall [WixBundleName].</target>
 </trans-unit>
-<trans-unit id="52" resname="FailureCacheText" restype="x-Value" xml:space="preserve">
+<trans-unit id="54" resname="FailureCacheText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to cache [WixBundleName].</source>
 <target xml:lang="en">Failed to cache [WixBundleName].</target>
 </trans-unit>
-<trans-unit id="53" resname="FailureInstallText" restype="x-Value" xml:space="preserve">
+<trans-unit id="55" resname="FailureInstallText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to install [WixBundleName].</source>
 <target xml:lang="en">Failed to install [WixBundleName].</target>
 </trans-unit>
-<trans-unit id="54" resname="FailureModifyText" restype="x-Value" xml:space="preserve">
+<trans-unit id="56" resname="FailureUpgradeText" restype="x-Value" xml:space="preserve">
+<source xml:lang="en">Failed to upgrade [WixBundleName].</source>
+<target xml:lang="en">Failed to upgrade [WixBundleName].</target>
+</trans-unit>
+<trans-unit id="57" resname="FailureModifyText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to modify [WixBundleName].</source>
 <target xml:lang="en">Failed to modify [WixBundleName].</target>
 </trans-unit>
-<trans-unit id="55" resname="FailureRepairText" restype="x-Value" xml:space="preserve">
+<trans-unit id="58" resname="FailureRepairText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to repair [WixBundleName].</source>
 <target xml:lang="en">Failed to repair [WixBundleName].</target>
 </trans-unit>
-<trans-unit id="56" resname="FailureHyperlinkLogText" restype="x-Value" xml:space="preserve">
+<trans-unit id="59" resname="FailureHyperlinkLogText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">One or more issues caused the operation to fail. Please fix the issues and then retry. For more information see the &lt;a href="#">log file&lt;/a>.</source>
 <target xml:lang="en">One or more issues caused the operation to fail. Please fix the issues and then retry. For more information see the &lt;a href="#">log file&lt;/a>.</target>
 </trans-unit>
-<trans-unit id="57" resname="FailureRestartText" restype="x-Value" xml:space="preserve">
+<trans-unit id="60" resname="FailureRestartText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">To complete the rollback of [WixBundleName], please restart your computer.</source>
 <target xml:lang="en">To complete the rollback of [WixBundleName], please restart your computer.</target>
 </trans-unit>
-<trans-unit id="58" resname="FailureRestartButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="61" resname="FailureRestartButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Restart</source>
 <target xml:lang="en">&amp;Restart</target>
 </trans-unit>
-<trans-unit id="59" resname="FailureCloseButton" restype="x-Value" xml:space="preserve">
+<trans-unit id="62" resname="FailureCloseButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Close</source>
 <target xml:lang="en">&amp;Close</target>
 </trans-unit>

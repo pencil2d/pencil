@@ -144,7 +144,7 @@ create_package_windows() {
     local basename="$(basename -s .wxl.xlf "$i")"
     local locale="${basename#*_}"
     local culture="${locale/_/-}"
-    local lcid="$(pwsh -c "(Get-Culture -Name ${culture}).lcid")"
+    local lcid="$(pwsh -c "(Get-Culture -Name ${culture}).LCID")"
     sed "s/Culture=\"en\"/Culture=\"${culture}\"/;s/Language=\"9\"/Language=\"${lcid}\"/" ../util/installer/pencil2d.wxl > "../util/installer/pencil2d_${locale}.wxl"
     tikal.bat -m -fc ../util/installer/okf_xml_wxl -ie utf-8 -oe utf-8 -sd ../util/installer -od ../util/installer "${i}"
   done

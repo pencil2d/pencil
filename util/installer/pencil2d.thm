@@ -13,9 +13,9 @@
 
     <Window Width="640" Height="413" HexStyle="100a0000" FontId="Normal" Caption="#(loc.Caption)">
         <ImageControl X="20" Y="20" Width="600" Height="175" ImageId="pencil2d" Visible="yes"/>
-        <Label Name="InstallVersion" X="20" Y="-22" Width="246" Height="17" FontId="Normal" DisablePrefix="yes" VisibleCondition="WixStdBAShowVersion">
-          <Text>#(loc.InstallVersion)</Text>
-          <Text Condition="NightlyBuildNumber AND NightlyBuildTimestamp">#(loc.InstallVersionNightly)</Text>
+        <Label Name="Version" X="20" Y="-22" Width="246" Height="17" FontId="Normal" DisablePrefix="yes" VisibleCondition="WixStdBAShowVersion">
+          <Text>#(loc.Version)</Text>
+          <Text Condition="NightlyBuildNumber AND NightlyBuildTimestamp">#(loc.VersionNightly)</Text>
         </Label>
 
         <Page Name="Loading">
@@ -28,7 +28,10 @@
         <Page Name="Install">
             <Checkbox Name="EulaAcceptCheckbox" X="95" Y="215" Width="450" Height="17" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">#(loc.InstallAcceptCheckbox)</Checkbox>
             <Hypertext Name="EulaHyperlink" X="111" Y="238" Width="200" Height="17" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">&lt;a href=&quot;#&quot;&gt;#(loc.InstallLicenseLinkText)&lt;/a&gt;</Hypertext>
-            <Button Name="InstallButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal">#(loc.InstallInstallButton)</Button>
+            <Button Name="InstallButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal">
+                <Text>#(loc.InstallInstallButton)</Text>
+                <Text Condition="UpgradeDetected">#(loc.InstallUpgradeButton)</Text>
+            </Button>
             <Button Name="OptionsButton" X="-20" Y="-24" Width="16" Height="16" TabStop="yes" FontId="Normal" VisibleCondition="NOT WixStdBASuppressOptionsUI">
                 <ButtonImage ImageId="cog" />
                 <ButtonHoverImage ImageId="cog-hover" />
@@ -72,7 +75,8 @@
                 <Text Condition="WixBundleAction = 2">#(loc.SuccessLayoutText)</Text>
                 <Text Condition="WixBundleAction = 3 OR WixBundleAction = 4">#(loc.SuccessUninstallText)</Text>
                 <Text Condition="WixBundleAction = 5">#(loc.SuccessCacheText)</Text>
-                <Text Condition="WixBundleAction = 6">#(loc.SuccessInstallText)</Text>
+                <Text Condition="WixBundleAction = 6 AND NOT UpgradeDetected">#(loc.SuccessInstallText)</Text>
+                <Text Condition="WixBundleAction = 6 AND UpgradeDetected">#(loc.SuccessUpgradeText)</Text>
                 <Text Condition="WixBundleAction = 7">#(loc.SuccessModifyText)</Text>
                 <Text Condition="WixBundleAction = 8">#(loc.SuccessRepairText)</Text>
             </Label>
@@ -89,7 +93,8 @@
                 <Text Condition="WixBundleAction = 2">#(loc.FailureLayoutText)</Text>
                 <Text Condition="WixBundleAction = 3 OR WixBundleAction = 4">#(loc.FailureUninstallText)</Text>
                 <Text Condition="WixBundleAction = 5">#(loc.FailureCacheText)</Text>
-                <Text Condition="WixBundleAction = 6">#(loc.FailureInstallText)</Text>
+                <Text Condition="WixBundleAction = 6 AND NOT UpgradeDetected">#(loc.FailureInstallText)</Text>
+                <Text Condition="WixBundleAction = 6 AND UpgradeDetected">#(loc.FailureUpgradeText)</Text>
                 <Text Condition="WixBundleAction = 7">#(loc.FailureModifyText)</Text>
                 <Text Condition="WixBundleAction = 8">#(loc.FailureRepairText)</Text>
             </Label>
