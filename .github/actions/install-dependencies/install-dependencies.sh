@@ -51,6 +51,7 @@ setup_macos() {
 }
 
 setup_windows() {
+  pip install --ignore-requires-python translate-toolkit[rc]
   curl -fsSLO https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
   mkdir okapi
   "${WINDIR}\\System32\\tar" xfC okapi-apps_win32-x86_64_1.45.0.zip okapi

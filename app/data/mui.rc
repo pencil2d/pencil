@@ -1,0 +1,15 @@
+#if defined(__MINGW32__) || defined(__MINGW64__)
+// This is needed for MinGW versions < 8
+// (not to be confused with the GCC version by which Qt labels their MinGW packages)
+#include <winresrc.h>
+#else
+#include <winres.h>
+#endif
+
+STRINGTABLE
+LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
+{
+    0 "Pencil2D"
+    1 "Pencil2D Animation"
+    2 "Pencil2D Animation (Old Format)"
+}

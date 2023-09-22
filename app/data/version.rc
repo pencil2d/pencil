@@ -35,7 +35,7 @@ FILETYPE VFT_APP
 {
     BLOCK "StringFileInfo"
     {
-        BLOCK "040904B0"
+        BLOCK "000904B0"
         {
             VALUE "ProductName", "Pencil2D"
 #ifdef __GNUC__
@@ -61,14 +61,6 @@ FILETYPE VFT_APP
 
     BLOCK "VarFileInfo"
     {
-        VALUE "Translation", 0x0409, 0x04B0
+        VALUE "Translation", 0x0009, 0x04B0
     }
-}
-
-STRINGTABLE
-LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
-{
-    0 "Pencil2D"
-    1 "Pencil2D Animation"
-    2 "Pencil2D Animation (Old Format)"
 }
