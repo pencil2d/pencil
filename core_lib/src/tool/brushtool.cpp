@@ -195,6 +195,7 @@ void BrushTool::paintAt(QPointF point)
                                  brushWidth,
                                  properties.feather,
                                  mEditor->color()->frontColor(),
+                                 QPainter::CompositionMode_SourceOver,
                                  opacity,
                                  true);
     }
@@ -231,6 +232,7 @@ void BrushTool::drawStroke()
                                      brushWidth,
                                      properties.feather,
                                      mEditor->color()->frontColor(),
+                                     QPainter::CompositionMode_SourceOver,
                                      opacity,
                                      true);
             if (i == (steps - 1))

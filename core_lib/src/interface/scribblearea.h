@@ -54,7 +54,6 @@ class ScribbleArea : public QWidget
     Q_OBJECT
 
     friend class MoveTool;
-    friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
 
@@ -74,24 +73,17 @@ public:
 
     bool isLayerPaintable() const;
 
-    QVector<QPoint> calcSelectionCenterPoints();
-
     void setEffect(SETTING e, bool isOn);
 
     LayerVisibility getLayerVisibility() const { return mLayerVisibility; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
-    bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    QRect getCameraRect();
     QPointF getCentralPoint();
 
-    /** Update current frame.
-     *  calls update() behind the scene and update cache if necessary */
-    void updateCurrentFrame();
     /** Update frame.
      * calls update() behind the scene and update cache if necessary */
-    void updateFrame(int frame);
+    void updateFrame();
 
     /** Frame scrubbed, invalidate relevant cache */
     void onScrubbed(int frameNumber);
@@ -127,17 +119,11 @@ public:
     /** Tool changed, invalidate cache and frame if needed */
     void onToolChanged(ToolType);
 
-    /** Set frame on layer to modified and invalidate current frame cache */
-    void setModified(int layerNumber, int frameNumber);
-    void setModified(const Layer* layer, int frameNumber);
-
     void endStroke();
 
     void flipSelection(bool flipVertical);
 
     BaseTool* currentTool() const;
-    BaseTool* getTool(ToolType eToolMode);
-    void setCurrentTool(ToolType eToolMode);
 
     bool isMouseInUse() const { return mMouseInUse; }
     bool isTabletInUse() const { return mTabletInUse; }
@@ -148,14 +134,12 @@ public:
 
 signals:
     void multiLayerOnionSkinChanged(bool);
-    void refreshPreview();
     void selectionUpdated();
 
 public slots:
     void clearImage();
     void setCurveSmoothing(int);
     void toggleThinLines();
-    void toggleOutlines();
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void setLayerVisibility(LayerVisibility visibility);
@@ -164,8 +148,8 @@ public slots:
     void paletteColorChanged(QColor);
 
     void showLayerNotVisibleWarning();
-    void updateTile(TiledBuffer* tiledBuffer, Tile* tile);
-    void loadTile(TiledBuffer* tiledBuffer, Tile* tile);
+    void onTileUpdated(TiledBuffer* tiledBuffer, Tile* tile);
+    void onTileCreated(TiledBuffer* tiledBuffer, Tile* tile);
 
 protected:
     bool event(QEvent *event) override;
@@ -185,15 +169,13 @@ public:
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA = true);
     void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
-    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, qreal opacity, bool usingFeather = true, bool useAA = false);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather = true, bool useAA = false);
     void blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
     void paintCanvasCursor(QPainter& painter);
     void clearDrawingBuffer();
-    void refreshBitmap(const QRectF& rect, int rad);
-    void refreshVector(const QRectF& rect, int rad);
     void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
@@ -209,7 +191,6 @@ public:
     TiledBuffer mTiledBuffer;
 
     QPixmap mCursorImg;
-    QPixmap mTransCursImg;
 
 private:
 
@@ -242,25 +223,16 @@ private:
     BitmapImage* currentBitmapImage(Layer* layer) const;
     VectorImage* currentVectorImage(Layer* layer) const;
 
-    MoveMode mMoveMode = MoveMode::NONE;
-
     std::unique_ptr<StrokeManager> mStrokeManager;
 
     Editor* mEditor = nullptr;
 
-
-    bool mIsSimplified = false;
-    bool mShowThinLines = false;
     bool mQuickSizing = true;
     LayerVisibility mLayerVisibility = LayerVisibility::ALL;
-    bool mUsePressure   = true;
     bool mMakeInvisible = false;
-    bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;
-    bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
-    QColor mOnionColor;
-
-private:
+    bool mMultiLayerOnionSkin = false; // Future use. If required, just add a checkbox to update it.
+    int mDeltaFactor = 1;
 
     /* Under certain circumstances a mouse press event will fire after a tablet release event.
        This causes unexpected behaviours for some of the tools, eg. the bucket.
@@ -270,9 +242,7 @@ private:
        The following will filter mouse events created after a tablet release event.
     */
     void tabletReleaseEventFired();
-    bool mKeyboardInUse = false;
     bool mMouseInUse = false;
-    bool mMouseRightButtonInUse = false;
     bool mTabletInUse = false;
     qreal mDevicePixelRatio = 1.;
 

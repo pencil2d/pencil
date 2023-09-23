@@ -52,7 +52,9 @@ void BlitRect::extend(const QPoint p)
 
 void BlitRect::extend(const QRect& rect)
 {
-    extend(rect.topLeft(), rect.size());
+    // For reasons I do not understand, rect.size() or width and height, adds 1 pixel each...
+    // we subtract one to counter that
+    extend(rect.topLeft(), QSize(rect.width() - 1, rect.height() - 1));
 }
 
 void BlitRect::extend(const QPoint& p, const QSize& size)

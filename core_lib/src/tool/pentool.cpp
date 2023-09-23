@@ -234,12 +234,6 @@ void PenTool::drawStroke()
     }
 }
 
-void PenTool::paintBitmapStroke()
-{
-    mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->clearDrawingBuffer();
-}
-
 void PenTool::paintVectorStroke(Layer* layer)
 {
     if (mStrokePoints.empty())

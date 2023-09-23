@@ -41,6 +41,23 @@ void HandTool::loadSettings()
     properties.useFeather = false;
     properties.stabilizerLevel = -1;
     properties.useAA = -1;
+
+    mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION) ? -1 : 1;
+    connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &HandTool::updateSettings);
+}
+
+void HandTool::updateSettings(const SETTING setting)
+{
+    switch (setting)
+    {
+    case SETTING::INVERT_DRAG_ZOOM_DIRECTION:
+    {
+        mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION) ? -1 : 1;
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 QCursor HandTool::cursor()
@@ -105,13 +122,15 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
 
         qreal angleOffset = static_cast<qreal>(std::atan2(curV.y(), curV.x()) - std::atan2(startV.y(), startV.x()));
         angleOffset = qRadiansToDegrees(angleOffset);
-        float newAngle = viewMgr->rotation() + static_cast<float>(angleOffset);
-        viewMgr->rotate(newAngle);
+        // Invert rotation direction if view is flipped either vertically or horizontally
+        const float delta = viewMgr->isFlipHorizontal() == !viewMgr->isFlipVertical()
+            ? static_cast<float>(angleOffset * -1) : static_cast<float>(angleOffset);
+        viewMgr->rotateRelative(delta);
     }
     else if (isScale)
     {
-        float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
-        qreal scaleValue = viewMgr->scaling() * (1 + delta);
+        const float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
+        const qreal scaleValue = viewMgr->scaling() * (1 + (delta * mDeltaFactor));
         viewMgr->scaleAtOffset(scaleValue, mStartPoint);
     }
 }

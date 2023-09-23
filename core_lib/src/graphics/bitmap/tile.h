@@ -17,34 +17,32 @@ GNU General Public License for more details.
 #ifndef TILE_H
 #define TILE_H
 
+#include <QPoint>
 #include <QPixmap>
 
 class Tile
 {
 public:
 
-    explicit Tile (QSize size);
-    explicit Tile (QPixmap& pixmap);
+    explicit Tile (const QPoint& pos, QSize size);
     ~Tile();
 
     const QPixmap& pixmap() const { return mTilePixmap; }
     QPixmap& pixmap() { return mTilePixmap; }
 
-    QRect boundingRect() const;
+    const QPoint& pos() const { return mPos; }
+    const QRect& bounds() const { return mBounds; }
+    const QSize& size() const { return mSize; }
 
+    /** Loads the input image into the tile */
+    void load(const QImage& image, const QPoint& topLeft);
     void clear();
-    void replaceTile(const QPixmap& pixmap);
-
-    bool isDirty() { return mDirty; }
-    void setDirty(bool dirty) { mDirty = dirty; }
-    void setPos(const QPoint& pos) { m_pos = pos; }
-    QPoint pos() const { return m_pos; }
 
 private:
     QPixmap    mTilePixmap;
-    bool      mCacheValid;
-    bool mDirty = false;
-    QPoint m_pos;
+    QPoint mPos;
+    QRect mBounds;
+    QSize mSize;
 };
 
 #endif // TILE_H

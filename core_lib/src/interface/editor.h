@@ -24,6 +24,18 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 #include "pencildef.h"
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+Q_MOC_INCLUDE("colormanager.h")
+Q_MOC_INCLUDE("toolmanager.h")
+Q_MOC_INCLUDE("layermanager.h")
+Q_MOC_INCLUDE("playbackmanager.h")
+Q_MOC_INCLUDE("viewmanager.h")
+Q_MOC_INCLUDE("preferencemanager.h")
+Q_MOC_INCLUDE("selectionmanager.h")
+Q_MOC_INCLUDE("soundmanager.h")
+Q_MOC_INCLUDE("overlaymanager.h")
+Q_MOC_INCLUDE("clipboardmanager.h")
+#endif
 
 class QClipboard;
 class QTemporaryDir;
@@ -154,14 +166,8 @@ public: //slots
 
     /** Will call update() and update the canvas
      * Only call this directly If you need the cache to be intact and require the frame to be repainted
-     * Convenient method that does the same as updateFrame but for the current frame
     */
-    void updateCurrentFrame();
-
-    /** Will call update() and update the canvas
-     * Only call this directly If you need the cache to be intact and require the frame to be repainted
-    */
-    void updateFrame(int frameNumber);
+    void updateFrame();
 
     void setModified(int layerNumber, int frameNumber);
 

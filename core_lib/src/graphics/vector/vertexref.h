@@ -23,10 +23,10 @@ class VertexRef
 public:
     VertexRef();
     VertexRef(int curveN, int vertexN);
-    VertexRef nextVertex();
-    VertexRef prevVertex();
-    bool operator==(VertexRef vertexRef1);
-    bool operator!=(VertexRef vertexRef1);
+    VertexRef nextVertex() const;
+    VertexRef prevVertex() const;
+    bool operator==(VertexRef vertexRef1) const;
+    bool operator!=(VertexRef vertexRef1) const;
 
     int curveNumber = -1;
     int vertexNumber = -1;

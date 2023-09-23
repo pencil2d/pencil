@@ -17,13 +17,12 @@ GNU General Public License for more details.
 #include "canvaspainter.h"
 
 #include <QtMath>
-#include <QSettings>
 
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "bitmapimage.h"
-#include "layercamera.h"
+#include "tile.h"
 #include "tiledbuffer.h"
 #include "vectorimage.h"
 
@@ -293,27 +292,32 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
     painter.setOpacity(paintedImage->getOpacity() - (1.0-painter.opacity()));
     painter.setWorldMatrixEnabled(false);
 
-    if (isCurrentLayer) {
-        if (isDrawing) {
-
-            if (mOptions.bIgnoreCanvasBuffer) {
-                currentBitmapPainter.setCompositionMode(QPainter::CompositionMode_Source);
-                currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
-            }
-
-            const auto tiles = mTiledBuffer->tiles();
-            for (const Tile* tile : tiles) {
-                currentBitmapPainter.drawPixmap(tile->pos(), tile->pixmap());
-            }
+    if (isCurrentLayer && isDrawing)
+    {
+        // Certain tools require being painted continuously, for example, the Polyline tool.
+        // The tiled buffer does not update the area outside which it paints,
+        // so in that case, in order to see the previously laid-down polyline stroke,
+        // the surrounding area must be drawn again before
+        // applying the new tiled output on top
+        if (!blitRect.contains(mTiledBuffer->bounds()) || mOptions.bIgnoreCanvasBuffer) {
+            currentBitmapPainter.setCompositionMode(QPainter::CompositionMode_Source);
+            currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
         }
-        if (mRenderTransform) {
-            paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
+
+        const auto tiles = mTiledBuffer->tiles();
+        for (const Tile* tile : tiles) {
+            currentBitmapPainter.drawPixmap(tile->pos(), tile->pixmap());
         }
+    } else {
+        // When we're drawing using a tool, the surface will be painted by the tiled buffer,
+        // and thus we don't want to paint the current image again
+        // When we're on another layer though, the tiled buffer is not used
+        currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
     }
 
-    // When we're not showing the current layer or not drawing, paint the last known image reference
-    if (!isCurrentLayer || !isDrawing) {
-        currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
+    // We do not wish to draw selection transformations on anything but the current layer
+    if (isCurrentLayer && mRenderTransform) {
+        paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
     }
 
     painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
@@ -353,7 +357,7 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     painter.setWorldMatrixEnabled(false);
     painter.setTransform(QTransform());
 
-    // Remember to adjust opacity based on addition opacity value from image
+    // Remember to adjust opacity based on additional opacity value from the keyframe
     painter.setOpacity(vectorImage->getOpacity() - (1.0-painter.opacity()));
     painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
 }

@@ -119,7 +119,7 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         mEditor->overlays()->updatePerspective(mapped);
     }
 
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
@@ -154,7 +154,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
             storeClosestVectorCurve(mCurrentLayer);
         }
     }
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
@@ -367,7 +367,7 @@ QCursor MoveTool::cursor(MoveMode mode) const
 
     cursorPixmap.fill(QColor(255, 255, 255, 0));
     QPainter cursorPainter(&cursorPixmap);
-    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+    cursorPainter.setRenderHint(QPainter::Antialiasing);
 
     switch(mode)
     {

@@ -16,40 +16,31 @@ GNU General Public License for more details.
 
 #include "tile.h"
 
-#include <QDebug>
+#include <QPainter>
 
-Tile::Tile(QSize size):
-    mTilePixmap(size)
+Tile::Tile(const QPoint& pos, QSize size):
+    mTilePixmap(size),
+    mPos(pos),
+    mBounds(pos, size),
+    mSize(size)
 {
     clear(); //Default tiles are transparent
-}
-
-Tile::Tile(QPixmap& pixmap)
-{
-    mTilePixmap = pixmap;
 }
 
 Tile::~Tile()
 {
 }
 
-QRect Tile::boundingRect() const
+void Tile::load(const QImage& image, const QPoint& topLeft)
 {
-    return mTilePixmap.rect();
-}
+    QPainter painter(&mTilePixmap);
 
-void Tile::replaceTile(const QPixmap& pixmap)
-{
-    if (pixmap.isNull()) { return; }
-
-    mTilePixmap = pixmap;
-    mCacheValid = true;
-
+    painter.translate(-mPos);
+    painter.drawImage(topLeft, image);
+    painter.end();
 }
 
 void Tile::clear()
 {
-    mTilePixmap.fill(Qt::transparent); // image cache is transparent too, and aligned to the pixel table:
-    mCacheValid = true;
-    mDirty = false;
+    mTilePixmap.fill(Qt::transparent);
 }

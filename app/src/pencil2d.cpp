@@ -150,7 +150,11 @@ void Pencil2D::installTranslators()
 #endif
 
     std::unique_ptr<QTranslator> qtTranslator(new QTranslator(this));
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    if (qtTranslator->load(locale, "qt", "_", QLibraryInfo::path(QLibraryInfo::TranslationsPath)))
+#else
     if (qtTranslator->load(locale, "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+#endif
     {
         installTranslator(qtTranslator.release());
     }

@@ -47,7 +47,6 @@ public:
     MoveMode getMoveModeForPoint(const QPointF& pos, const QTransform& transform);
     double selectionTolerance();
 
-    void updatePerspective(const int persp);
     void updatePerspective(const QPointF& point);
 
     MoveMode getMoveMode() const { return mMoveMode; }
