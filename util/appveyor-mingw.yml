@@ -39,7 +39,7 @@ after_build:
 
 test_script:
   - echo "Running tests"
-  - cd "%APPVEYOR_BUILD_FOLDER%\build\tests\bin"
+  - cd "%APPVEYOR_BUILD_FOLDER%\build\tests\release"
   - tests.exe
 
 for:

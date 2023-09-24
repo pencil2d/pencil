@@ -6,16 +6,11 @@
 
 ! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
-QT += core widgets gui xml multimedia svg
-
 TEMPLATE = lib
 CONFIG += staticlib precompile_header
+QT += core widgets gui xml multimedia svg
 
 RESOURCES += data/core_lib.qrc
-
-MOC_DIR = .moc
-OBJECTS_DIR = .obj
-UI_DIR = .ui
 
 INCLUDEPATH += src \
     src/graphics \

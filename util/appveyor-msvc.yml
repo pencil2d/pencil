@@ -38,7 +38,7 @@ after_build:
 
 test_script:
   - echo "Running tests"
-  - tests\bin\tests.exe
+  - tests\release\tests.exe
 
 for:
 - matrix:

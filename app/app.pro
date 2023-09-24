@@ -265,8 +265,9 @@ unix:!macx {
 
 INCLUDEPATH += ../../core_lib/src
 
-CONFIG(debug,debug|release) BUILDTYPE = debug
-CONFIG(release,debug|release) BUILDTYPE = release
+BUILDTYPE =
+debug_and_release:CONFIG(debug,debug|release) BUILDTYPE = debug
+debug_and_release:CONFIG(release,debug|release) BUILDTYPE = release
 
 win32-msvc* {
     LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
