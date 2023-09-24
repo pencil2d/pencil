@@ -35,7 +35,7 @@ public slots:
 
 protected:
 
-    void paintEvent( QPaintEvent* ) override;
+    void paintEvent(QPaintEvent* event) override;
 
 
 private slots:
