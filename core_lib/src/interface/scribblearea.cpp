@@ -1032,7 +1032,12 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
     // paints the canvas
     painter.setWorldMatrixEnabled(false);
-    painter.drawPixmap(event->rect(), mCanvas, event->rect());
+
+    // In other places we use the blitRect to paint the buffer pixmap, however
+    // the main pixmap which needs to be scaled accordingly to DPI, which is not accounted for when using the event rect
+    // instead we can set a clipRect to avoid the area being updated needlessly
+    painter.setClipRect(event->rect());
+    painter.drawPixmap(QPointF(), mCanvas);
 
     currentTool()->paint(painter);
 
