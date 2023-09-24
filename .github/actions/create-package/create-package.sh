@@ -104,9 +104,11 @@ create_package_windows() {
   windeployqt Pencil2D/pencil2d.exe
   echo "::endgroup::"
   echo "Copy OpenSSL DLLs"
-  local xbits="-x${platform#win}"
-  local _xbits="_x${platform#win}"
-  cp "${IQTA_TOOLS}\\OpenSSL\\Win${_xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${xbits/-x32/}.dll" Pencil2D/
+  curl -fsSLO https://download.firedaemon.com/FireDaemon-OpenSSL/openssl-1.1.1w.zip
+  "${WINDIR}\\System32\\tar" xf openssl-1.1.1w.zip
+  local xbits="x${platform#win}"
+  local _xbits="-${xbits}"
+  cp "openssl-1.1\\${xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${_xbits/-x32/}.dll" Pencil2D/
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
   "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$1-$(date +%F).zip" Pencil2D
