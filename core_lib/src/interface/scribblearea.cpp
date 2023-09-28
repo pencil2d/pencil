@@ -196,7 +196,7 @@ void ScribbleArea::onTileUpdated(TiledBuffer* tiledBuffer, Tile* tile)
 {
     Q_UNUSED(tiledBuffer);
     const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->bounds()));
-    update(mappedRect.toRect());
+    update(mappedRect.toAlignedRect());
 }
 
 void ScribbleArea::onTileCreated(TiledBuffer* tiledBuffer, Tile* tile)
@@ -213,7 +213,7 @@ void ScribbleArea::onTileCreated(TiledBuffer* tiledBuffer, Tile* tile)
     }
 
     const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->bounds()));
-    update(mappedRect.toRect());
+    update(mappedRect.toAlignedRect());
 }
 
 void ScribbleArea::updateFrame()
@@ -819,7 +819,7 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
     QWidget::resizeEvent(event);
     mDevicePixelRatio = devicePixelRatioF();
     mCanvas = QPixmap(QSizeF(size() * mDevicePixelRatio).toSize());
-
+    mCanvas.setDevicePixelRatio(mDevicePixelRatio);
     mEditor->view()->setCanvasSize(size());
 
     invalidateCacheForFrame(mEditor->currentFrame());
@@ -1236,7 +1236,6 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
 
 void ScribbleArea::drawCanvas(int frame, QRect rect)
 {
-    mCanvas.setDevicePixelRatio(mDevicePixelRatio);
     prepCanvas(frame, rect);
     prepCameraPainter(frame);
     prepOverlays(frame);

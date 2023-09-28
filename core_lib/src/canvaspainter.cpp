@@ -41,13 +41,17 @@ void CanvasPainter::reset()
 {
     mPostLayersPixmap = QPixmap(mCanvas.size());
     mPreLayersPixmap = QPixmap(mCanvas.size());
+    mCurrentLayerPixmap = QPixmap(mCanvas.size());
+    mOnionSkinPixmap = QPixmap(mCanvas.size());
     mPreLayersPixmap.fill(Qt::transparent);
     mCanvas.fill(Qt::transparent);
-    mCurrentLayerPixmap = QPixmap(mCanvas.size());
     mCurrentLayerPixmap.fill(Qt::transparent);
     mPostLayersPixmap.fill(Qt::transparent);
-    mOnionSkinPixmap = QPixmap(mCanvas.size());
     mOnionSkinPixmap.fill(Qt::transparent);
+    mCurrentLayerPixmap.setDevicePixelRatio(mCanvas.devicePixelRatioF());
+    mPreLayersPixmap.setDevicePixelRatio(mCanvas.devicePixelRatioF());
+    mPostLayersPixmap.setDevicePixelRatio(mCanvas.devicePixelRatioF());
+    mOnionSkinPixmap.setDevicePixelRatio(mCanvas.devicePixelRatioF());
 }
 
 void CanvasPainter::setViewTransform(const QTransform view, const QTransform viewInverse)
@@ -93,7 +97,7 @@ void CanvasPainter::paintCached(const QRect& blitRect)
     QPainter mainPainter;
     initializePainter(mainPainter, mCanvas, blitRect);
     mainPainter.setWorldMatrixEnabled(false);
-    mainPainter.drawPixmap(blitRect, mPreLayersPixmap, blitRect);
+    mainPainter.drawPixmap(QPointF(), mPreLayersPixmap);
     mainPainter.setWorldMatrixEnabled(true);
 
     paintCurrentFrame(mainPainter, blitRect, mCurrentLayerIndex, mCurrentLayerIndex);
@@ -108,7 +112,7 @@ void CanvasPainter::paintCached(const QRect& blitRect)
     }
 
     mainPainter.setWorldMatrixEnabled(false);
-    mainPainter.drawPixmap(blitRect, mPostLayersPixmap, blitRect);
+    mainPainter.drawPixmap(QPointF(), mPostLayersPixmap);
     mainPainter.setWorldMatrixEnabled(true);
 }
 
@@ -121,6 +125,9 @@ void CanvasPainter::resetLayerCache()
 void CanvasPainter::initializePainter(QPainter& painter, QPaintDevice& device, const QRect& blitRect)
 {
     painter.begin(&device);
+
+    // Only draw inside the clipped rectangle
+    painter.setClipRect(blitRect);
 
     // Clear the area that's about to be painted again, to avoid painting on top of existing pixels
     // causing artifacts.
@@ -177,7 +184,7 @@ void CanvasPainter::paint(const QRect& blitRect)
     preLayerPainter.end();
 
     mainPainter.setWorldMatrixEnabled(false);
-    mainPainter.drawPixmap(blitRect, mPreLayersPixmap, blitRect);
+    mainPainter.drawPixmap(QPointF(), mPreLayersPixmap);
     mainPainter.setWorldMatrixEnabled(true);
 
     paintCurrentFrame(mainPainter, blitRect, mCurrentLayerIndex, mCurrentLayerIndex);
@@ -187,7 +194,7 @@ void CanvasPainter::paint(const QRect& blitRect)
     postLayerPainter.end();
 
     mainPainter.setWorldMatrixEnabled(false);
-    mainPainter.drawPixmap(blitRect, mPostLayersPixmap, blitRect);
+    mainPainter.drawPixmap(QPointF(), mPostLayersPixmap);
     mainPainter.setWorldMatrixEnabled(true);
 
     mPreLayersPixmapCacheValid = true;
@@ -273,7 +280,7 @@ void CanvasPainter::paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPa
         onionSkinPainter.setBrush(colorBrush);
         onionSkinPainter.drawRect(painter.viewport());
     }
-    painter.drawPixmap(blitRect, mOnionSkinPixmap, blitRect);
+    painter.drawPixmap(QPointF(), mOnionSkinPixmap);
 }
 
 void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer)
@@ -320,7 +327,8 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
         paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
     }
 
-    painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
+//    painter.setClipRect(blitRect);
+    painter.drawPixmap(QPointF(), mCurrentLayerPixmap);
 }
 
 void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer)
@@ -357,9 +365,10 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     painter.setWorldMatrixEnabled(false);
     painter.setTransform(QTransform());
 
+//    painter.setClipRect(blitRect);
     // Remember to adjust opacity based on additional opacity value from the keyframe
     painter.setOpacity(vectorImage->getOpacity() - (1.0-painter.opacity()));
-    painter.drawPixmap(blitRect, mCurrentLayerPixmap, blitRect);
+    painter.drawPixmap(QPointF(), mCurrentLayerPixmap);
 }
 
 void CanvasPainter::paintTransformedSelection(QPainter& painter, BitmapImage* bitmapImage, const QRect& selection) const
