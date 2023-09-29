@@ -19,6 +19,5 @@ runs:
     uses: jurplel/install-qt-action@v3
     with:
       arch: ${{inputs.arch}}
-      tools: tools_openssl_x${{endsWith(inputs.arch, '_64') && '64' || '86'}}
       version: ${{matrix.qt == 6 && '6.4.2' || '5.15.2'}}
       modules: ${{matrix.qt == 6 && 'qtmultimedia' || ''}}
