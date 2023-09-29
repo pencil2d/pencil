@@ -151,15 +151,12 @@ void TiledBuffer::clear()
         Tile* tile = i.value();
         if (tile)
         {
-            emit tileCleared(this, tile);
             mTiles.remove(i.key());
             delete tile;
         }
     }
 
     mTileBounds = BlitRect();
-
-    emit bufferCleared(this);
 }
 
 QPoint TiledBuffer::getTilePos(const TileIndex& index) const
