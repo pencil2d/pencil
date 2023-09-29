@@ -238,7 +238,7 @@ void CanvasPainter::paintBitmapOnionSkinFrame(QPainter& painter, const QRect& bl
     initializePainter(onionSkinPainter, mOnionSkinPixmap, blitRect);
 
     onionSkinPainter.drawImage(bitmapImage->topLeft(), *bitmapImage->image());
-    paintOnionSkinFrame(painter, onionSkinPainter, blitRect, nFrame, colorize, bitmapImage->getOpacity());
+    paintOnionSkinFrame(painter, onionSkinPainter, nFrame, colorize, bitmapImage->getOpacity());
 }
 
 void CanvasPainter::paintVectorOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize)
@@ -253,10 +253,10 @@ void CanvasPainter::paintVectorOnionSkinFrame(QPainter& painter, const QRect& bl
     initializePainter(onionSkinPainter, mOnionSkinPixmap, blitRect);
 
     vectorImage->paintImage(onionSkinPainter, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
-    paintOnionSkinFrame(painter, onionSkinPainter, blitRect, nFrame, colorize, vectorImage->getOpacity());
+    paintOnionSkinFrame(painter, onionSkinPainter, nFrame, colorize, vectorImage->getOpacity());
 }
 
-void CanvasPainter::paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPainter, const QRect& blitRect, int nFrame, bool colorize, qreal frameOpacity)
+void CanvasPainter::paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPainter, int nFrame, bool colorize, qreal frameOpacity)
 {
     // Don't transform the image here as we used the viewTransform in the image output
     painter.setWorldMatrixEnabled(false);
@@ -327,7 +327,6 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
         paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
     }
 
-//    painter.setClipRect(blitRect);
     painter.drawPixmap(QPointF(), mCurrentLayerPixmap);
 }
 
@@ -365,7 +364,6 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     painter.setWorldMatrixEnabled(false);
     painter.setTransform(QTransform());
 
-//    painter.setClipRect(blitRect);
     // Remember to adjust opacity based on additional opacity value from the keyframe
     painter.setOpacity(vectorImage->getOpacity() - (1.0-painter.opacity()));
     painter.drawPixmap(QPointF(), mCurrentLayerPixmap);
