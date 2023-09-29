@@ -97,7 +97,7 @@ void CanvasPainter::paintCached(const QRect& blitRect)
     QPainter mainPainter;
     initializePainter(mainPainter, mCanvas, blitRect);
     mainPainter.setWorldMatrixEnabled(false);
-    mainPainter.drawPixmap(QPointF(), mPreLayersPixmap);
+    mainPainter.drawPixmap(pointZero, mPreLayersPixmap);
     mainPainter.setWorldMatrixEnabled(true);
 
     paintCurrentFrame(mainPainter, blitRect, mCurrentLayerIndex, mCurrentLayerIndex);
@@ -112,7 +112,7 @@ void CanvasPainter::paintCached(const QRect& blitRect)
     }
 
     mainPainter.setWorldMatrixEnabled(false);
-    mainPainter.drawPixmap(QPointF(), mPostLayersPixmap);
+    mainPainter.drawPixmap(pointZero, mPostLayersPixmap);
     mainPainter.setWorldMatrixEnabled(true);
 }
 
@@ -184,7 +184,7 @@ void CanvasPainter::paint(const QRect& blitRect)
     preLayerPainter.end();
 
     mainPainter.setWorldMatrixEnabled(false);
-    mainPainter.drawPixmap(QPointF(), mPreLayersPixmap);
+    mainPainter.drawPixmap(pointZero, mPreLayersPixmap);
     mainPainter.setWorldMatrixEnabled(true);
 
     paintCurrentFrame(mainPainter, blitRect, mCurrentLayerIndex, mCurrentLayerIndex);
@@ -194,7 +194,7 @@ void CanvasPainter::paint(const QRect& blitRect)
     postLayerPainter.end();
 
     mainPainter.setWorldMatrixEnabled(false);
-    mainPainter.drawPixmap(QPointF(), mPostLayersPixmap);
+    mainPainter.drawPixmap(pointZero, mPostLayersPixmap);
     mainPainter.setWorldMatrixEnabled(true);
 
     mPreLayersPixmapCacheValid = true;
@@ -280,7 +280,7 @@ void CanvasPainter::paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPa
         onionSkinPainter.setBrush(colorBrush);
         onionSkinPainter.drawRect(painter.viewport());
     }
-    painter.drawPixmap(QPointF(), mOnionSkinPixmap);
+    painter.drawPixmap(pointZero, mOnionSkinPixmap);
 }
 
 void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer)
@@ -313,7 +313,7 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
 
         const auto tiles = mTiledBuffer->tiles();
         for (const Tile* tile : tiles) {
-            currentBitmapPainter.drawPixmap(tile->pos(), tile->pixmap());
+            currentBitmapPainter.drawPixmap(tile->posF(), tile->pixmap());
         }
     } else {
         // When we're drawing using a tool, the surface will be painted by the tiled buffer,
@@ -327,7 +327,7 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
         paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
     }
 
-    painter.drawPixmap(QPointF(), mCurrentLayerPixmap);
+    painter.drawPixmap(pointZero, mCurrentLayerPixmap);
 }
 
 void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer)
@@ -353,7 +353,7 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
 
             const auto tiles = mTiledBuffer->tiles();
             for (const Tile* tile : tiles) {
-                currentVectorPainter.drawPixmap(tile->pos(), tile->pixmap());
+                currentVectorPainter.drawPixmap(tile->posF(), tile->pixmap());
             }
         } else if (mRenderTransform) {
             vectorImage->setSelectionTransformation(mSelectionTransform);
@@ -366,7 +366,7 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
 
     // Remember to adjust opacity based on additional opacity value from the keyframe
     painter.setOpacity(vectorImage->getOpacity() - (1.0-painter.opacity()));
-    painter.drawPixmap(QPointF(), mCurrentLayerPixmap);
+    painter.drawPixmap(pointZero, mCurrentLayerPixmap);
 }
 
 void CanvasPainter::paintTransformedSelection(QPainter& painter, BitmapImage* bitmapImage, const QRect& selection) const

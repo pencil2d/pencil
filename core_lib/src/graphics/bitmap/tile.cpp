@@ -21,6 +21,7 @@ GNU General Public License for more details.
 Tile::Tile(const QPoint& pos, QSize size):
     mTilePixmap(size),
     mPos(pos),
+    mPosF(pos),
     mBounds(pos, size),
     mSize(size)
 {

@@ -31,6 +31,7 @@ public:
     QPixmap& pixmap() { return mTilePixmap; }
 
     const QPoint& pos() const { return mPos; }
+    const QPointF& posF() const { return mPosF; }
     const QRect& bounds() const { return mBounds; }
     const QSize& size() const { return mSize; }
 
@@ -39,7 +40,8 @@ public:
     void clear();
 
 private:
-    QPixmap    mTilePixmap;
+    QPixmap mTilePixmap;
+    QPointF mPosF;
     QPoint mPos;
     QRect mBounds;
     QSize mSize;
