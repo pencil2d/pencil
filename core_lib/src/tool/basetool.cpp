@@ -111,7 +111,7 @@ void BaseTool::pointerDoubleClickEvent(PointerEvent* event)
  */
 bool BaseTool::isDrawingTool()
 {
-    if (type() == ToolType::HAND || type() == ToolType::MOVE || type() == ToolType::SELECT )
+    if (type() == ToolType::HAND || type() == ToolType::MOVE || type() == ToolType::CAMERA || type() == ToolType::SELECT )
     {
         return false;
     }
