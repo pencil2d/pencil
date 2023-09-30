@@ -69,8 +69,6 @@ public:
 signals:
     void tileUpdated(TiledBuffer* tiledBuffer, Tile* tile);
     void tileCreated(TiledBuffer* tiledBuffer, Tile* tile);
-    void tileCleared(TiledBuffer* tiledBuffer, Tile* tile);
-    void bufferCleared(TiledBuffer* tiledBuffer);
 
 private:
 

@@ -94,7 +94,7 @@ private:
 
     void paintBitmapOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
     void paintVectorOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
-    void paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPainter, const QRect& blitRect, int nFrame, bool colorize, qreal frameOpacity);
+    void paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPainter, int nFrame, bool colorize, qreal frameOpacity);
 
     void paintCurrentBitmapFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer);
     void paintCurrentVectorFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer);
@@ -124,6 +124,10 @@ private:
     QPixmap mOnionSkinPixmap;
     bool mPreLayersPixmapCacheValid = false;
     bool mPostLayersPixmapCacheValid = false;
+
+    // There's a considerable amount of overhead in simply allocating a QPointF on the fly.
+    // Since we just need to draw it at 0,0, we might as well make a const value for that purpose
+    const QPointF pointZero;
 
 
     OnionSkinSubPainter mOnionSkinSubPainter;

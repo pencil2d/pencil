@@ -52,8 +52,11 @@ void BlitRect::extend(const QPoint p)
 
 void BlitRect::extend(const QRect& rect)
 {
-    // For reasons I do not understand, rect.size() or width and height, adds 1 pixel each...
-    // we subtract one to counter that
+    // For historical reasons the values returned by the bottom() and
+    // right() functions deviate from the true bottom-right corner of the rectangle:
+    // The right() function returns left() + width() - 1 and the bottom()
+    // function returns top() + height() - 1
+    // In order to counter that, we subtract 1 from width and height
     extend(rect.topLeft(), QSize(rect.width() - 1, rect.height() - 1));
 }
 
