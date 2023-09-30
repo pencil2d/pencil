@@ -36,6 +36,7 @@ CameraPainter::CameraPainter(QPixmap& canvas) : mCanvas(canvas)
 void CameraPainter::reset()
 {
     mCameraPixmap = QPixmap(mCanvas.size());
+    mCameraPixmap.setDevicePixelRatio(mCanvas.devicePixelRatioF());
     mCameraPixmap.fill(Qt::transparent);
 }
 
@@ -85,7 +86,7 @@ void CameraPainter::paintCached(const QRect& blitRect)
         mCameraCacheValid = true;
     } else {
         painter.setWorldMatrixEnabled(false);
-        painter.drawPixmap(blitRect, mCameraPixmap, blitRect);
+        painter.drawPixmap(mZeroPoint, mCameraPixmap);
         painter.setWorldMatrixEnabled(true);
         painter.end();
     }
@@ -102,6 +103,7 @@ void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap, const 
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
     }
 
+    painter.setClipRect(blitRect);
     painter.setWorldMatrixEnabled(true);
     painter.setWorldTransform(mViewTransform);
 }
@@ -137,7 +139,7 @@ void CameraPainter::paintVisuals(QPainter& painter, const QRect& blitRect)
                 visualsPainter.setOpacity(calculateRelativeOpacityForLayer(mCurrentLayerIndex, i, mRelativeLayerOpacityThreshold));
             }
 
-            paintOnionSkinning(visualsPainter, cameraLayer, blitRect);
+            paintOnionSkinning(visualsPainter, cameraLayer);
 
             visualsPainter.restore();
         }
@@ -147,13 +149,13 @@ void CameraPainter::paintVisuals(QPainter& painter, const QRect& blitRect)
 
     QTransform camTransform = cameraLayerBelow->getViewAtFrame(mFrameIndex);
     QRect cameraRect = cameraLayerBelow->getViewRect();
-    paintBorder(visualsPainter, camTransform, cameraRect, blitRect);
+    paintBorder(visualsPainter, camTransform, cameraRect);
 
     painter.setWorldMatrixEnabled(false);
-    painter.drawPixmap(blitRect, mCameraPixmap, blitRect);
+    painter.drawPixmap(mZeroPoint, mCameraPixmap);
 }
 
-void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect, const QRect& blitRect)
+void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect)
 {
     painter.save();
     QRect viewRect = painter.viewport();
@@ -176,7 +178,7 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     painter.restore();
 }
 
-void CameraPainter::paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer, const QRect& blitRect)
+void CameraPainter::paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer)
 {
     QPen onionSkinPen;
 

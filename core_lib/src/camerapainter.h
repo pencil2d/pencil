@@ -51,14 +51,16 @@ public:
 private:
     void initializePainter(QPainter& painter, QPixmap& pixmap, const QRect& blitRect, bool blitEnabled);
     void paintVisuals(QPainter& painter, const QRect& blitRect);
-    void paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect, const QRect& blitRect);
-    void paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer, const QRect& blitRect);
+    void paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect);
+    void paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer);
 
     const Object* mObject = nullptr;
     QPixmap& mCanvas;
 
     QPixmap mCameraPixmap;
     QTransform mViewTransform;
+
+    const QPointF mZeroPoint;
 
     OnionSkinSubPainter mOnionSkinPainter;
     OnionSkinPainterOptions mOnionSkinOptions;
