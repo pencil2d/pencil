@@ -28,9 +28,21 @@ GNU General Public License for more details.
 
 #include "painterutils.h"
 
-CameraPainter::CameraPainter()
+CameraPainter::CameraPainter(QPixmap& canvas) : mCanvas(canvas)
 {
+    reset();
+}
 
+void CameraPainter::reset()
+{
+    mCameraPixmap = QPixmap(mCanvas.size());
+    mCameraPixmap.setDevicePixelRatio(mCanvas.devicePixelRatioF());
+    mCameraPixmap.fill(Qt::transparent);
+}
+
+void CameraPainter::resetCache()
+{
+    mCameraCacheValid = false;
 }
 
 void CameraPainter::preparePainter(const Object* object,
@@ -52,50 +64,51 @@ void CameraPainter::preparePainter(const Object* object,
     mViewScale = viewScale;
 }
 
-void CameraPainter::paint() const
+void CameraPainter::paint(const QRect& blitRect)
 {
     QPainter painter;
-    initializePainter(painter, *mCanvas);
-    paintVisuals(painter);
+    initializePainter(painter, mCanvas, blitRect, false);
+    paintVisuals(painter, blitRect);
+
+    mCameraCacheValid = true;
 }
 
-void CameraPainter::paintCached()
+void CameraPainter::paintCached(const QRect& blitRect)
 {
-    if (!mCachedPaint) {
-        QPainter tempPainter;
-        QPixmap cachedPixmap(mCanvas->size());
-        cachedPixmap.fill(Qt::transparent);
-        initializePainter(tempPainter, cachedPixmap);
-
-        paintVisuals(tempPainter);
-        mCachedPaint.reset(new QPixmap(cachedPixmap));
-        tempPainter.end();
+    QPainter painter;
+    // As always, initialize the painter with the canvas image, as this is what we'll paint on
+    // In this case though because the canvas has already been painted, we're not interested in
+    // having the blitter clear the image again, as that would remove our previous painted data, ie. strokes...
+    initializePainter(painter, mCanvas, blitRect, false);
+    if (!mCameraCacheValid) {
+        paintVisuals(painter, blitRect);
+        painter.end();
+        mCameraCacheValid = true;
+    } else {
+        painter.setWorldMatrixEnabled(false);
+        painter.drawPixmap(mZeroPoint, mCameraPixmap);
+        painter.setWorldMatrixEnabled(true);
+        painter.end();
     }
-
-    QPainter painter;
-    initializePainter(painter, *mCanvas);
-    painter.drawPixmap(0, 0, *mCachedPaint.get());
-    painter.end();
 }
 
-void CameraPainter::setCanvas(QPixmap* canvas)
-{
-    mCanvas = canvas;
-}
-
-void CameraPainter::resetCache()
-{
-    mCachedPaint.reset();
-}
-
-void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap) const
+void CameraPainter::initializePainter(QPainter& painter, QPixmap& pixmap, const QRect& blitRect, bool blitEnabled)
 {
     painter.begin(&pixmap);
+
+    if (blitEnabled) {
+        painter.setCompositionMode(QPainter::CompositionMode_Clear);
+        painter.fillRect(blitRect, Qt::transparent);
+        // Surface has been cleared and is ready to be painted on
+        painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    }
+
+    painter.setClipRect(blitRect);
+    painter.setWorldMatrixEnabled(true);
     painter.setWorldTransform(mViewTransform);
-    painter.setWorldMatrixEnabled(false);
 }
 
-void CameraPainter::paintVisuals(QPainter& painter) const
+void CameraPainter::paintVisuals(QPainter& painter, const QRect& blitRect)
 {
     LayerCamera* cameraLayerBelow = static_cast<LayerCamera*>(mObject->getLayerBelow(mCurrentLayerIndex, Layer::CAMERA));
 
@@ -104,6 +117,9 @@ void CameraPainter::paintVisuals(QPainter& painter) const
     const Layer* currentLayer = mObject->getLayer(mCurrentLayerIndex);
 
     if (mLayerVisibility == LayerVisibility::CURRENTONLY && currentLayer->type() != Layer::CAMERA) { return; }
+
+    QPainter visualsPainter;
+    initializePainter(visualsPainter, mCameraPixmap, blitRect, true);
 
     if (!mIsPlaying || mOnionSkinOptions.enabledWhilePlaying) {
 
@@ -117,15 +133,15 @@ void CameraPainter::paintVisuals(QPainter& painter) const
 
             bool isCurrentLayer = cameraLayer == cameraLayerBelow;
 
-            painter.save();
-            painter.setOpacity(1);
+            visualsPainter.save();
+            visualsPainter.setOpacity(1);
             if (mLayerVisibility == LayerVisibility::RELATED && !isCurrentLayer) {
-                painter.setOpacity(calculateRelativeOpacityForLayer(mCurrentLayerIndex, i, mRelativeLayerOpacityThreshold));
+                visualsPainter.setOpacity(calculateRelativeOpacityForLayer(mCurrentLayerIndex, i, mRelativeLayerOpacityThreshold));
             }
 
-            paintOnionSkinning(painter, cameraLayer);
+            paintOnionSkinning(visualsPainter, cameraLayer);
 
-            painter.restore();
+            visualsPainter.restore();
         }
     }
 
@@ -133,10 +149,13 @@ void CameraPainter::paintVisuals(QPainter& painter) const
 
     QTransform camTransform = cameraLayerBelow->getViewAtFrame(mFrameIndex);
     QRect cameraRect = cameraLayerBelow->getViewRect();
-    paintBorder(painter, camTransform, cameraRect);
+    paintBorder(visualsPainter, camTransform, cameraRect);
+
+    painter.setWorldMatrixEnabled(false);
+    painter.drawPixmap(mZeroPoint, mCameraPixmap);
 }
 
-void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
+void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransform, const QRect& camRect)
 {
     painter.save();
     QRect viewRect = painter.viewport();
@@ -159,12 +178,13 @@ void CameraPainter::paintBorder(QPainter& painter, const QTransform& camTransfor
     painter.restore();
 }
 
-void CameraPainter::paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer) const
+void CameraPainter::paintOnionSkinning(QPainter& painter, const LayerCamera* cameraLayer)
 {
     QPen onionSkinPen;
 
     painter.save();
     painter.setBrush(Qt::NoBrush);
+    painter.setWorldMatrixEnabled(false);
 
     onionSkinPen.setStyle(Qt::PenStyle::DashLine);
     mOnionSkinPainter.paint(painter, cameraLayer, mOnionSkinOptions, mFrameIndex, [&] (OnionSkinPaintState state, int onionSkinNumber) {

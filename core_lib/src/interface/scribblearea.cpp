@@ -45,7 +45,7 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "overlaymanager.h"
 
-ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent), mCanvasPainter(mCanvas)
+ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent), mCanvasPainter(mCanvas), mCameraPainter(mCanvas)
 {
     setObjectName("ScribbleArea");
 
@@ -825,6 +825,7 @@ void ScribbleArea::resizeEvent(QResizeEvent* event)
     invalidateCacheForFrame(mEditor->currentFrame());
     invalidatePainterCaches();
     mCanvasPainter.reset();
+    mCameraPainter.reset();
 }
 
 void ScribbleArea::showLayerNotVisibleWarning()
@@ -1010,7 +1011,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
         prepOverlays(currentFrame);
 
         mCanvasPainter.paintCached(event->rect());
-        mCameraPainter.paintCached();
+        mCameraPainter.paintCached(event->rect());
     }
 
     if (currentTool()->type() == MOVE)
@@ -1193,7 +1194,6 @@ void ScribbleArea::prepCameraPainter(int frame)
     onionSkinOptions.minOpacity = mPrefs->getInt(SETTING::ONION_MIN_OPACITY);
 
     mCameraPainter.setOnionSkinPainterOptions(onionSkinOptions);
-    mCameraPainter.setCanvas(&mCanvas);
 }
 
 void ScribbleArea::prepCanvas(int frame, QRect rect)
@@ -1240,7 +1240,7 @@ void ScribbleArea::drawCanvas(int frame, QRect rect)
     prepCameraPainter(frame);
     prepOverlays(frame);
     mCanvasPainter.paint(rect);
-    mCameraPainter.paint();
+    mCameraPainter.paint(rect);
 }
 
 void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset)
