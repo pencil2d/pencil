@@ -9,7 +9,7 @@
 TEMPLATE = app
 CONFIG += console
 CONFIG -= app_bundle
-QT += core widgets gui xml multimedia svg testlib
+QT += core widgets gui xml multimedia svg
 
 TARGET = tests
 

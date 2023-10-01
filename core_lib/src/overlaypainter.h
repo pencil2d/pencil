@@ -32,8 +32,6 @@ struct OverlayPainterOptions
     QPointF mLeftPerspPoint;
     QPointF mRightPerspPoint;
     QPointF mMiddlePerspPoint;
-
-    QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
 };
 
 class OverlayPainter
@@ -47,7 +45,7 @@ public:
 
     void preparePainter(const LayerCamera* cameraLayer, const QPalette& palette);
 
-    void paint(QPainter& painter);
+    void paint(QPainter& painter, const QRect& viewport);
 private:
     void initializePainter(QPainter& painter);
 
@@ -56,9 +54,9 @@ private:
     void paintOverlayThirds(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
     void paintOverlayGolden(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
     void paintOverlaySafeAreas(QPainter& painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const;
-    void paintOverlayPerspectiveOnePoint(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
-    void paintOverlayPerspectiveTwoPoints(QPainter& painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const;
-    void paintOverlayPerspectiveThreePoints(QPainter& painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const;
+    void paintOverlayPerspectiveOnePoint(QPainter& painter, const QRect& viewport, const QTransform& camTransform) const;
+    void paintOverlayPerspectiveTwoPoints(QPainter& painter, const QRect& viewport, const Camera& camera, const QTransform& camTransform) const;
+    void paintOverlayPerspectiveThreePoints(QPainter& painter, const QRect& viewport, const Camera& camera, const QTransform& camTransform) const;
 
     int round100(double f, int gridSize) const;
 

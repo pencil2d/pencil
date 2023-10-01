@@ -19,32 +19,40 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QStandardPaths>
 
-QTransform RectMapTransform( QRectF source, QRectF target )
+static inline bool clipInfiniteLineToEdge(qreal& t0, qreal& t1, qreal p, qreal q)
 {
-    qreal x1 = source.left();
-    qreal y1 = source.top();
-    qreal x2 = source.right();
-    qreal y2 = source.bottom();
-    qreal x1P = target.left();
-    qreal y1P = target.top();
-    qreal x2P = target.right();
-    qreal y2P = target.bottom();
+    if (p < 0) { // Line entering the clipping window
+        t0 = qMax(t0, q / p);
+        return t0 < t1;
+    }
+    if (p > 0) { // Line leaving the clipping window
+        t1 = qMin(t1, q / p);
+        return t0 < t1;
+    }
+    return q >= 0;
+}
 
-    QTransform matrix;
-    if ( ( x1 != x2 ) && ( y1 != y2 ) )
-    {
-        matrix = QTransform( ( x2P - x1P ) / ( x2 - x1 ), // scale x
-                             0,
-                             0,
-                             ( y2P - y1P ) / ( y2 - y1 ), // scale y
-                             ( x1P * x2 - x2P * x1 ) / ( x2 - x1 ),    // dx
-                             ( y1P * y2 - y2P * y1 ) / ( y2 - y1 ) );  // dy
+QLineF clipLine(const QLineF& line, const QRect& clip, qreal t0, qreal t1)
+{
+    int left = clip.left(), right = left + clip.width(), top = clip.top(), bottom = top + clip.height();
+    qreal x1 = line.x1(), x2 = line.x2(), dx = line.dx(), y1 = line.y1(), y2 = line.y2(), dy = line.dy();
+
+    if (t0 == 0 && t1 == 1 && (x1 < left && x2 < left ||
+                               x1 > right && x2 > right ||
+                               y1 < top && y2 < top ||
+                               y1 > bottom && y2 > bottom) ||
+        !clipInfiniteLineToEdge(t0, t1, -dx, x1 - left) ||
+        !clipInfiniteLineToEdge(t0, t1,  dx, right - x1) ||
+        !clipInfiniteLineToEdge(t0, t1, -dy, y1 - top) ||
+        !clipInfiniteLineToEdge(t0, t1,  dy, bottom - y1)) {
+        return {};
     }
-    else
-    {
-        matrix.reset();
-    }
-    return matrix;
+
+    Q_ASSERT(t0 < t1);
+    return {line.x1() + line.dx() * t0,
+            line.y1() + line.dy() * t0,
+            line.x1() + line.dx() * t1,
+            line.y1() + line.dy() * t1};
 }
 
 void clearFocusOnFinished(QAbstractSpinBox *spinBox)
@@ -106,14 +114,14 @@ quint64 imageSize(const QImage& img)
 QString uniqueString(int len)
 {
     static const char alphanum[] = "0123456789abcdefghijklmnopqrstuvwxyz";
-    const int alphanum_len = sizeof(alphanum);
+    const int alphanumLen = sizeof(alphanum);
 
     if (len > 128) len = 128;
 
     char s[128 + 1];
     for (int i = 0; i < len; ++i)
     {
-        s[i] = alphanum[rand() % (alphanum_len - 1)];
+        s[i] = alphanum[rand() % (alphanumLen - 1)];
     }
     s[len] = 0;
     return QString::fromUtf8(s);
