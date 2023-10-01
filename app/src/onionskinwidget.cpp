@@ -57,9 +57,23 @@ void OnionSkinWidget::initUI()
     ui->opacityGroup->setLayout(opacityLayout);
 
 #ifdef __APPLE__
+
+    ui->scrollAreaWidgetContents->layout()->setSpacing(8);
+
     // Mac only style. ToolButtons are naturally borderless on Win/Linux.
     QString stylesheet =
         "QToolButton { border: 0px; } "
+        "QGroupBox::title {"
+            "subcontrol-origin: padding;"
+            "left: 6px;"
+            "padding: 2px 2px 0px 0px;"
+            "background: transparent;"
+        "}"
+        "QGroupBox {"
+            "subcontrol-origin: margin;"
+            "margin-top: 8px;"
+            "padding-top: 16px;"
+        "}"
         "QToolButton:pressed{ border: 1px solid #FFADAD; border-radius: 2px; background-color: #D5D5D5; }"
         "QToolButton:checked{ border: 1px solid #ADADAD; border-radius: 2px; background-color: #D5D5D5; }";
     setStyleSheet(this->styleSheet().append(stylesheet));
