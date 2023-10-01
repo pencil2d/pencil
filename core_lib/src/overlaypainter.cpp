@@ -65,17 +65,18 @@ void OverlayPainter::paint(QPainter &painter, const QRect& viewport)
         paintOverlaySafeAreas(painter, *camera, camTransform, cameraRect);
     }
 
+    const QRect mappedViewport = mViewTransform.inverted().mapRect(viewport);
     if (mOptions.bPerspective1)
     {
-        paintOverlayPerspectiveOnePoint(painter, viewport, camTransform);
+        paintOverlayPerspectiveOnePoint(painter, mappedViewport, camTransform);
     }
     if (mOptions.bPerspective2 || mOptions.bPerspective3)
     {
-        paintOverlayPerspectiveTwoPoints(painter, viewport, *camera, camTransform);
+        paintOverlayPerspectiveTwoPoints(painter, mappedViewport, *camera, camTransform);
     }
     if (mOptions.bPerspective3)
     {
-        paintOverlayPerspectiveThreePoints(painter, viewport, *camera, camTransform);
+        paintOverlayPerspectiveThreePoints(painter, mappedViewport, *camera, camTransform);
     }
 
     if (mOptions.bGrid)
@@ -250,7 +251,7 @@ void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, const QR
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
 
-    QPointF singlePoint = mViewTransform.map(camTransform.inverted().map(mOptions.mSinglePerspPoint));
+    QPointF singlePoint = camTransform.inverted().map(mOptions.mSinglePerspPoint);
     QLineF angleLine(singlePoint.x(), singlePoint.y(), singlePoint.x() + 1, singlePoint.y());
 
     QVector<QLineF> lines;
@@ -262,10 +263,11 @@ void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, const QR
 
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setWorldMatrixEnabled(false);
     painter.drawLines(lines);
 
     if (mOptions.bShowHandle) {
+        singlePoint = mViewTransform.map(singlePoint);
+        painter.setWorldMatrixEnabled(false);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.setPen(mPalette.color(QPalette::HighlightedText));
         painter.setBrush(mPalette.color(QPalette::Highlight));
@@ -280,8 +282,8 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const Q
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
 
-    QPointF leftPoint = mViewTransform.map(camTransform.inverted().map(mOptions.mLeftPerspPoint));
-    QPointF rightPoint = mViewTransform.map(camTransform.inverted().map(mOptions.mRightPerspPoint));
+    QPointF leftPoint = camTransform.inverted().map(mOptions.mLeftPerspPoint);
+    QPointF rightPoint = camTransform.inverted().map(mOptions.mRightPerspPoint);
     QLineF angleLineLeft(leftPoint.x(), leftPoint.y(), leftPoint.x() + 1, leftPoint.y());
     QLineF angleLineRight(rightPoint.x(), rightPoint.y(), rightPoint.x() + 1, rightPoint.y());
 
@@ -296,10 +298,12 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const Q
 
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setWorldMatrixEnabled(false);
     painter.drawLines(lines);
 
     if (mOptions.bShowHandle) {
+        leftPoint = mViewTransform.map(leftPoint);
+        rightPoint = mViewTransform.map(rightPoint);
+        painter.setWorldMatrixEnabled(false);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.setPen(mPalette.color(QPalette::HighlightedText));
         painter.setBrush(mPalette.color(QPalette::Highlight));
@@ -315,7 +319,7 @@ void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
 
-    QPointF middlePoint = mViewTransform.map(camTransform.inverted().map(mOptions.mMiddlePerspPoint));
+    QPointF middlePoint = camTransform.inverted().map(mOptions.mMiddlePerspPoint);
     QLineF angleLine(middlePoint.x(), middlePoint.y(), middlePoint.x() + 1, middlePoint.y());
 
     const int middleAngleOffset = mOptions.mLeftPerspPoint.y() < mOptions.mMiddlePerspPoint.y() ? 180 : 0;
@@ -328,10 +332,11 @@ void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const
 
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.setWorldMatrixEnabled(false);
     painter.drawLines(lines);
 
     if (mOptions.bShowHandle) {
+        middlePoint = mViewTransform.map(middlePoint);
+        painter.setWorldMatrixEnabled(false);
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
         painter.setPen(mPalette.color(QPalette::HighlightedText));
         painter.setBrush(mPalette.color(QPalette::Highlight));
