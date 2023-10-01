@@ -41,14 +41,12 @@ public:
     void setFillExpand(int value);
     void setColorTolerance(int tolerance);
     void setFillReferenceMode(int referenceMode);
-    void setFillToLayerMode(int layerMode);
     void setFillMode(int mode);
 
     void onPropertyChanged(ToolType, const ToolPropertyType propertyType);
     void onLayerChanged(int);
 
 private:
-    void disableFillToLayerComboBox(bool state);
     void updatePropertyVisibility();
 
     Ui::BucketOptionsWidget *ui;
