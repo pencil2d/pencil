@@ -101,12 +101,12 @@ void MoveTool::updateSettings(const SETTING setting)
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
 {
-    mCurrentLayer = currentPaintableLayer();
-    if (mCurrentLayer == nullptr) return;
+    Layer* currentLayer = currentPaintableLayer();
+    if (currentLayer == nullptr) return;
 
     if (mEditor->select()->somethingSelected())
     {
-        beginInteraction(event->modifiers(), mCurrentLayer);
+        beginInteraction(event->modifiers(), currentLayer);
     }
     if (mEditor->overlays()->anyOverlayEnabled())
     {
@@ -124,8 +124,8 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
 {
-    mCurrentLayer = currentPaintableLayer();
-    if (mCurrentLayer == nullptr) return;
+    Layer* currentLayer = currentPaintableLayer();
+    if (currentLayer == nullptr) return;
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
@@ -149,9 +149,9 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
         mScribbleArea->updateToolCursor();
 
-        if (mCurrentLayer->type() == Layer::VECTOR)
+        if (currentLayer->type() == Layer::VECTOR)
         {
-            storeClosestVectorCurve(mCurrentLayer);
+            storeClosestVectorCurve(currentLayer);
         }
     }
     mEditor->updateFrame();
@@ -305,12 +305,6 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     selectMan->setCurves(pVecImg->getCurvesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
 }
 
-void MoveTool::cancelChanges()
-{
-    mScribbleArea->cancelTransformedSelection();
-    mEditor->deselectAll();
-}
-
 void MoveTool::applyTransformation()
 {
     SelectionManager* selectMan = mEditor->select();
@@ -325,14 +319,9 @@ void MoveTool::applyTransformation()
 
 bool MoveTool::leavingThisTool()
 {
-    if (mCurrentLayer)
+    if (currentPaintableLayer())
     {
-        switch (mCurrentLayer->type())
-        {
-        case Layer::BITMAP: applyTransformation(); break;
-        case Layer::VECTOR: applyTransformation(); break;
-        default: break;
-        }
+        applyTransformation();
     }
     return true;
 }
@@ -406,7 +395,6 @@ QCursor MoveTool::cursor(MoveMode mode) const
     }
     default:
         return Qt::ArrowCursor;
-        break;
     }
     cursorPainter.end();
 
