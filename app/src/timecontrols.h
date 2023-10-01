@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include <QToolBar>
 #include <QPushButton>
 #include <QToolButton>
-#include <QMenu>
 #include <QSpinBox>
 #include <QCheckBox>
 #include <QLabel>
