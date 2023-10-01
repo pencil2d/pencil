@@ -41,8 +41,8 @@ public:
 
 private slots:
     void playbackStateChanged(int);
-    void onionPrevButtonClicked(bool);
-    void onionNextButtonClicked(bool);
+    void prevFramesGroupClicked(bool);
+    void nextFramesGroupClicked(bool);
     void onionBlueButtonClicked(bool);
     void onionRedButtonClicked(bool);
     void onionMaxOpacityChange(int);
