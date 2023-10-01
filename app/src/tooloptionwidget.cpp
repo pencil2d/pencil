@@ -143,7 +143,6 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case USETOLERANCE: break;
     case BUCKETFILLEXPAND: break;
     case USEBUCKETFILLEXPAND: break;
-    case BUCKETFILLLAYERMODE: break;
     case BUCKETFILLLAYERREFERENCEMODE: break;
     case FILL_MODE: break;
     default:

@@ -64,7 +64,6 @@ enum ToolPropertyType
     USETOLERANCE,
     BUCKETFILLEXPAND,
     USEBUCKETFILLEXPAND,
-    BUCKETFILLLAYERMODE,
     BUCKETFILLLAYERREFERENCEMODE,
     CAMERAPATH,
 };
@@ -306,7 +305,6 @@ const static float RotationHandleOffset = 50;
 #define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
 #define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"
 #define SETTING_BUCKET_FILL_EXPAND_ON "BucketFillExpandEnabled"
-#define SETTING_BUCKET_FILL_TO_LAYER_MODE "BucketFillToLayerMode"
 #define SETTING_BUCKET_FILL_REFERENCE_MODE "BucketFillReferenceMode"
 
 #define SETTING_FILL_MODE "FillMode"

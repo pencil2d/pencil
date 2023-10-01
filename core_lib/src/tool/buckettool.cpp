@@ -62,7 +62,6 @@ void BucketTool::loadSettings()
 
     properties.bucketFillExpand = settings.value(SETTING_BUCKET_FILL_EXPAND, 2.0).toInt();
     properties.bucketFillExpandEnabled = settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool();
-    properties.bucketFillToLayerMode = settings.value(SETTING_BUCKET_FILL_TO_LAYER_MODE, 0).toInt();
     properties.bucketFillReferenceMode = settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt();
     properties.fillMode = settings.value(SETTING_FILL_MODE, 0).toInt();
 }
@@ -74,7 +73,6 @@ void BucketTool::resetToDefault()
     setFillMode(0);
     setFillExpand(2);
     setFillExpandEnabled(true);
-    setFillToLayerMode(0);
     setToleranceEnabled(false);
     setFillReferenceMode(0);
 }
@@ -163,16 +161,6 @@ void BucketTool::setFillExpand(const int fillExpandValue)
     settings.sync();
 }
 
-void BucketTool::setFillToLayerMode(int layerMode)
-{
-    properties.bucketFillToLayerMode = layerMode;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_BUCKET_FILL_TO_LAYER_MODE, layerMode);
-    settings.sync();
-}
-
 void BucketTool::setFillReferenceMode(int referenceMode)
 {
     properties.bucketFillReferenceMode = referenceMode;
@@ -195,7 +183,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
     mBitmapBucket = BitmapBucket(mEditor,
                                  mEditor->color()->frontColor(),
-                                 layerCam ? layerCam->getViewRect() : QRect(),
+                                 layerCam ? layerCam->getViewAtFrame(mEditor->currentFrame()).inverted().mapRect(layerCam->getViewRect()) : QRect(),
                                  getCurrentPoint(),
                                  properties);
 
@@ -271,13 +259,6 @@ void BucketTool::paintBitmap()
         else if (progress == BucketState::DidFillTarget)
         {
             mEditor->setModified(layerIndex, frameIndex);
-
-            // Need to invalidate layer pixmap cache when filling anything else but current layer
-            // otherwise dragging won't show until release event
-            if (properties.bucketFillToLayerMode == 1)
-            {
-                mScribbleArea->invalidatePainterCaches();
-            }
         }
     });
 }

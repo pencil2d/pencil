@@ -127,7 +127,7 @@ private:
 
     // There's a considerable amount of overhead in simply allocating a QPointF on the fly.
     // Since we just need to draw it at 0,0, we might as well make a const value for that purpose
-    const QPointF pointZero;
+    const QPointF mPointZero;
 
 
     OnionSkinSubPainter mOnionSkinSubPainter;
