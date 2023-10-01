@@ -257,7 +257,7 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
         {
             drawStroke();
             mScribbleArea->paintBitmapBuffer();
-            mScribbleArea->clearBitmapBuffer();
+            mScribbleArea->clearDrawingBuffer();
             endStroke();
         }
         else if (layer->type() == Layer::VECTOR)
@@ -317,7 +317,7 @@ void SmudgeTool::drawStroke()
         QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
-            targetImage.paste(&mScribbleArea->mBufferImg);
+            targetImage.paste(&mScribbleArea->mTiledBuffer);
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
             mScribbleArea->liquifyBrush(&targetImage,
                                         sourcePoint,
@@ -342,9 +342,8 @@ void SmudgeTool::drawStroke()
         QPointF sourcePoint = mLastBrushPoint;
         for (int i = 0; i < steps; i++)
         {
-            targetImage.paste(&mScribbleArea->mBufferImg);
+            targetImage.paste(&mScribbleArea->mTiledBuffer);
             QPointF targetPoint = mLastBrushPoint + (i + 1) * (brushStep) * (b - mLastBrushPoint) / distance;
-            rect.extend(targetPoint.toPoint());
             mScribbleArea->blurBrush(&targetImage,
                                      sourcePoint,
                                      targetPoint,

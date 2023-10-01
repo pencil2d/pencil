@@ -284,7 +284,7 @@ void BucketTool::paintBitmap()
 
 void BucketTool::paintVector(Layer* layer)
 {
-    mScribbleArea->clearBitmapBuffer();
+    mScribbleArea->clearDrawingBuffer();
 
     VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
     if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
@@ -324,8 +324,6 @@ void BucketTool::drawStroke()
     if (layer->type() == Layer::VECTOR)
     {
         mCurrentWidth = 30;
-        int rad = qRound((mCurrentWidth / 2 + 2) * mEditor->view()->scaling());
-
         QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
 
         QPen pen(pathColor,

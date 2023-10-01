@@ -103,6 +103,9 @@ void ToolManager::setDefaultTool()
 
 void ToolManager::setCurrentTool(ToolType eToolType)
 {
+    // We're already using this tool
+    if (mCurrentTool == getTool(eToolType)) { return; }
+
     if (mCurrentTool != nullptr)
     {
        mCurrentTool->leavingThisTool();
@@ -334,6 +337,9 @@ int ToolManager::propertySwitch(bool condition, int tool)
 void ToolManager::tabletSwitchToEraser()
 {
     mTabletEraserTool = getTool(ERASER);
+
+    // We should only notify a tool change if we're positive that the state has changed and it should only happen once
+    // if the user for some reason is using another temporary tool at the same time, that takes first priority
     if (mTemporaryTool == nullptr)
     {
         emit toolChanged(ERASER);
@@ -342,9 +348,9 @@ void ToolManager::tabletSwitchToEraser()
 
 void ToolManager::tabletRestorePrevTool()
 {
-    mTabletEraserTool = nullptr;
-    if (mTemporaryTool == nullptr)
+    if (mTemporaryTool == nullptr && mTabletEraserTool != nullptr)
     {
+        mTabletEraserTool = nullptr;
         emit toolChanged(currentTool()->type());
     }
 }

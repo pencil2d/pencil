@@ -180,6 +180,7 @@ void EraserTool::pointerReleaseEvent(PointerEvent *event)
     {
         drawStroke();
     }
+
     removeVectorPaint();
     endStroke();
 }
@@ -199,6 +200,7 @@ void EraserTool::paintAt(QPointF point)
                                  brushWidth,
                                  properties.feather,
                                  QColor(255, 255, 255, 255),
+                                 QPainter::CompositionMode_DestinationOut,
                                  opacity,
                                  properties.useFeather,
                                  properties.useAA == ON);
@@ -238,6 +240,7 @@ void EraserTool::drawStroke()
                                      brushWidth,
                                      properties.feather,
                                      Qt::white,
+                                     QPainter::CompositionMode_DestinationOut,
                                      opacity,
                                      properties.useFeather,
                                      properties.useAA == ON);
@@ -272,14 +275,9 @@ void EraserTool::drawStroke()
 void EraserTool::removeVectorPaint()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP)
+    if (layer->type() == Layer::VECTOR)
     {
-        mScribbleArea->paintBitmapBuffer();
-        mScribbleArea->clearBitmapBuffer();
-    }
-    else if (layer->type() == Layer::VECTOR)
-    {
-        mScribbleArea->clearBitmapBuffer();
+        mScribbleArea->clearDrawingBuffer();
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
         // Clear the area containing the last point
