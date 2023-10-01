@@ -215,7 +215,7 @@ private:
 
     void prepOverlays(int frame);
     void prepCameraPainter(int frame);
-    void prepCanvas(int frame, QRect rect);
+    void prepCanvas(int frame);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter &painter);

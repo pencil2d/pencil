@@ -1005,7 +1005,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
     }
     else
     {
-        prepCanvas(currentFrame, event->rect());
+        prepCanvas(currentFrame);
         prepCameraPainter(currentFrame);
         prepOverlays(currentFrame);
 
@@ -1117,7 +1117,7 @@ void ScribbleArea::paintEvent(QPaintEvent* event)
 
         paintCanvasCursor(painter);
 
-        mOverlayPainter.paint(painter);
+        mOverlayPainter.paint(painter, rect());
 
         // paints the selection outline
         if (mEditor->select()->somethingSelected())
@@ -1196,7 +1196,7 @@ void ScribbleArea::prepCameraPainter(int frame)
     mCameraPainter.setCanvas(&mCanvas);
 }
 
-void ScribbleArea::prepCanvas(int frame, QRect rect)
+void ScribbleArea::prepCanvas(int frame)
 {
     Object* object = mEditor->object();
 
@@ -1231,12 +1231,12 @@ void ScribbleArea::prepCanvas(int frame, QRect rect)
     mCanvasPainter.setViewTransform(vm->getView(), vm->getViewInverse());
     mCanvasPainter.setTransformedSelection(sm->mySelectionRect().toRect(), sm->selectionTransform());
 
-    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, rect, &mTiledBuffer);
+    mCanvasPainter.setPaintSettings(object, mEditor->layers()->currentLayerIndex(), frame, &mTiledBuffer);
 }
 
 void ScribbleArea::drawCanvas(int frame, QRect rect)
 {
-    prepCanvas(frame, rect);
+    prepCanvas(frame);
     prepCameraPainter(frame);
     prepOverlays(frame);
     mCanvasPainter.paint(rect);

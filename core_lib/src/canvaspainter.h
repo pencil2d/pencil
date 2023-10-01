@@ -67,7 +67,7 @@ public:
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
 
-    void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, TiledBuffer* tilledBuffer);
+    void setPaintSettings(const Object* object, int currentLayer, int frame, TiledBuffer* tilledBuffer);
     void paint(const QRect& blitRect);
     void paintCached(const QRect& blitRect);
     void resetLayerCache();

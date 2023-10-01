@@ -3,10 +3,10 @@
 #include "layercamera.h"
 #include "camera.h"
 #include "layer.h"
+#include "util.h"
 
-Q_CONSTEXPR static qreal LINELENGTHFACTOR = 2.0;
-Q_CONSTEXPR static int LEFTANGLEOFFSET = 90;
-Q_CONSTEXPR static int RIGHTANGLEOFFSET = -90;
+Q_CONSTEXPR static int LEFT_ANGLE_OFFSET = 90;
+Q_CONSTEXPR static int RIGHT_ANGLE_OFFSET = -90;
 Q_CONSTEXPR static int HANDLE_WIDTH = 12;
 
 OverlayPainter::OverlayPainter()
@@ -33,7 +33,7 @@ void OverlayPainter::setViewTransform(const QTransform view)
     mViewTransform = view;
 }
 
-void OverlayPainter::paint(QPainter &painter)
+void OverlayPainter::paint(QPainter &painter, const QRect& viewport)
 {
     if (mCameraLayer == nullptr) { return; }
 
@@ -67,15 +67,15 @@ void OverlayPainter::paint(QPainter &painter)
 
     if (mOptions.bPerspective1)
     {
-        paintOverlayPerspectiveOnePoint(painter, camTransform, cameraRect);
+        paintOverlayPerspectiveOnePoint(painter, viewport, camTransform);
     }
-    if (mOptions.bPerspective2)
+    if (mOptions.bPerspective2 || mOptions.bPerspective3)
     {
-        paintOverlayPerspectiveTwoPoints(painter, *camera, camTransform, cameraRect);
+        paintOverlayPerspectiveTwoPoints(painter, viewport, *camera, camTransform);
     }
     if (mOptions.bPerspective3)
     {
-        paintOverlayPerspectiveThreePoints(painter, *camera, camTransform, cameraRect);
+        paintOverlayPerspectiveThreePoints(painter, viewport, *camera, camTransform);
     }
 
     if (mOptions.bGrid)
@@ -211,7 +211,7 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, const Camera& came
 
             QTransform t = scale.inverted() * rot * trans;
             painter.setTransform(t, true);
-            painter.drawText(QPoint(), QObject::tr("Safe Action area %1 %").arg(action));
+            painter.drawText(QPoint(), tr("Safe Action area %1 %").arg(action));
             painter.restore();
         }
     }
@@ -238,43 +238,32 @@ void OverlayPainter::paintOverlaySafeAreas(QPainter &painter, const Camera& came
 
             QTransform t = scale.inverted() * rot * trans;
             painter.setTransform(t, true);
-            painter.drawText(QPoint(), QObject::tr("Safe Title area %1 %").arg(title));
+            painter.drawText(QPoint(), tr("Safe Title area %1 %").arg(title));
             painter.restore();
         }
     }
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const
+void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, const QRect& viewport, const QTransform& camTransform) const
 {
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing, true);
-
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
-    int repeats = static_cast<int>(360 / degrees);
-    QLineF angleLine;
 
-    QPointF singlePoint = camTransform.inverted().map(mOptions.mSinglePerspPoint);
-    if (singlePoint == QPointF(0, 0))
-    {
-        // TODO: bug in Qt prevents points from being (0,0)...
-        singlePoint = QPointF(0.1, 0.1);
-    }
+    QPointF singlePoint = mViewTransform.map(camTransform.inverted().map(mOptions.mSinglePerspPoint));
+    QLineF angleLine(singlePoint.x(), singlePoint.y(), singlePoint.x() + 1, singlePoint.y());
 
-    angleLine.setP1(singlePoint);
     QVector<QLineF> lines;
-    for (int i = 0; i < repeats; i++)
+    for (qreal angle = 0; angle < 180; angle += degrees)
     {
-        angleLine.setAngle(i * degrees);
-        angleLine.setLength(camRect.width() * 2.0);
-        lines.append(angleLine);
+        angleLine.setAngle(angle);
+        lines.append(clipLine(angleLine, viewport, -qInf(), qInf()));
     }
-    painter.drawLines(lines);
 
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setWorldMatrixEnabled(false);
-
-    singlePoint = mViewTransform.map(singlePoint);
+    painter.drawLines(lines);
 
     if (mOptions.bShowHandle) {
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
@@ -284,55 +273,31 @@ void OverlayPainter::paintOverlayPerspectiveOnePoint(QPainter& painter, const QT
     }
 
     painter.restore();
-
 }
 
-void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const
+void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const QRect& viewport, const Camera& camera, const QTransform& camTransform) const
 {
-    painter.save();
-    painter.setRenderHint(QPainter::Antialiasing, true);
-
     qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
     if (degrees == 7.0) { degrees = 7.5; }
-    int repeats = static_cast<int>(180 / degrees);
 
-    QPointF leftPoint = camTransform.inverted().map(mOptions.mLeftPerspPoint);
-    QPointF rightPoint = camTransform.inverted().map(mOptions.mRightPerspPoint);
-    if (leftPoint == QPointF(0.0, 0.0))
-    {
-        // TODO: bug in Qt prevents points from being (0,0)...
-        leftPoint = QPointF(0.1, 0.1);
-    }
+    QPointF leftPoint = mViewTransform.map(camTransform.inverted().map(mOptions.mLeftPerspPoint));
+    QPointF rightPoint = mViewTransform.map(camTransform.inverted().map(mOptions.mRightPerspPoint));
+    QLineF angleLineLeft(leftPoint.x(), leftPoint.y(), leftPoint.x() + 1, leftPoint.y());
+    QLineF angleLineRight(rightPoint.x(), rightPoint.y(), rightPoint.x() + 1, rightPoint.y());
 
-    if (rightPoint == QPointF(0.0, 0.0))
-    {
-        // TODO: bug in Qt prevents points from being (0,0)...
-        rightPoint = QPointF(0.1, 0.1);
-    }
-
-    QLineF angleLineLeft;
-    QLineF angleLineRight;
-    angleLineLeft.setAngle(LEFTANGLEOFFSET);
-    angleLineLeft.setP1(leftPoint);
-    angleLineLeft.setLength(camRect.width() * LINELENGTHFACTOR);
-    angleLineRight.setAngle(RIGHTANGLEOFFSET);
-    angleLineRight.setP1(rightPoint);
-    angleLineRight.setLength(camRect.width() * LINELENGTHFACTOR);
     QVector<QLineF> lines;
-    for (int i = 0; i <= repeats; i++)
+    for (qreal angle = 0; angle <= 180; angle += degrees)
     {
-        angleLineLeft.setAngle((LEFTANGLEOFFSET - i * degrees) + camera.rotation());
-        angleLineRight.setAngle((RIGHTANGLEOFFSET - i * degrees) + camera.rotation());
-        lines.append(angleLineRight);
-        lines.append(angleLineLeft);
+        angleLineLeft.setAngle(LEFT_ANGLE_OFFSET - angle + camera.rotation());
+        angleLineRight.setAngle(RIGHT_ANGLE_OFFSET - angle + camera.rotation());
+        lines.append(clipLine(angleLineLeft, viewport, 0, qInf()));
+        lines.append(clipLine(angleLineRight, viewport, 0, qInf()));
     }
 
-    painter.drawLines(lines);
-
+    painter.save();
+    painter.setRenderHint(QPainter::Antialiasing, true);
     painter.setWorldMatrixEnabled(false);
-
-    leftPoint = mViewTransform.map(leftPoint);
-    rightPoint = mViewTransform.map(rightPoint);
+    painter.drawLines(lines);
 
     if (mOptions.bShowHandle) {
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
@@ -345,42 +310,26 @@ void OverlayPainter::paintOverlayPerspectiveTwoPoints(QPainter& painter, const C
     painter.restore();
 }
 
-void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const
+void OverlayPainter::paintOverlayPerspectiveThreePoints(QPainter& painter, const QRect& viewport, const Camera& camera, const QTransform& camTransform) const
 {
-    if (!mOptions.bPerspective2)
-        paintOverlayPerspectiveTwoPoints(painter, camera, camTransform, camRect);
+    qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
+    if (degrees == 7.0) { degrees = 7.5; }
+
+    QPointF middlePoint = mViewTransform.map(camTransform.inverted().map(mOptions.mMiddlePerspPoint));
+    QLineF angleLine(middlePoint.x(), middlePoint.y(), middlePoint.x() + 1, middlePoint.y());
+
+    const int middleAngleOffset = mOptions.mLeftPerspPoint.y() < mOptions.mMiddlePerspPoint.y() ? 180 : 0;
+    QVector<QLineF> lines;
+    for (qreal angle = 0; angle <= 180; angle += degrees)
+    {
+        angleLine.setAngle(middleAngleOffset - angle + camera.rotation());
+        lines.append(clipLine(angleLine, viewport, 0, qInf()));
+    }
 
     painter.save();
     painter.setRenderHint(QPainter::Antialiasing, true);
-
-    qreal degrees = static_cast<qreal>(mOptions.nOverlayAngle);
-    if (degrees == 7.0) { degrees = 7.5; }
-    int repeats = static_cast<int>(180 / degrees);
-
-    QPointF middlePoint = camTransform.inverted().map(mOptions.mMiddlePerspPoint);
-    if (middlePoint == QPointF(0.0, 0.0))
-    {
-        // TODO: bug in Qt prevents points from being (0,0)...
-        middlePoint = QPointF(0.1, 0.1);
-    }
-
-    const int middleAngleOffset = mOptions.mLeftPerspPoint.y() < mOptions.mMiddlePerspPoint.y() ? 180 : 0;
-
-    QLineF angleLine;
-    angleLine.setAngle(middleAngleOffset);
-    angleLine.setP1(middlePoint);
-    angleLine.setLength(camRect.width() * LINELENGTHFACTOR);
-    QVector<QLineF> lines;
-    for (int i = 0; i <= repeats; i++)
-    {
-        angleLine.setAngle((middleAngleOffset - i * degrees) + camera.rotation());
-        lines.append(angleLine);
-    }
-    painter.drawLines(lines);
-
     painter.setWorldMatrixEnabled(false);
-
-    middlePoint = mViewTransform.map(middlePoint);
+    painter.drawLines(lines);
 
     if (mOptions.bShowHandle) {
         painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
