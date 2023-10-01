@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #include "ui_shortcutspage.h"
 
 #include <QDebug>
-#include <QStringRef>
 #include <QSettings>
 #include <QStandardItemModel>
 #include <QKeyEvent>

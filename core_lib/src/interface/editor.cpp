@@ -914,17 +914,42 @@ void Editor::updateObject()
     emit updateLayerCount();
 }
 
-bool Editor::importBitmapImage(const QString& filePath, int space)
+Status Editor::importBitmapImage(const QString& filePath, int space)
 {
     QImageReader reader(filePath);
 
     Q_ASSERT(layers()->currentLayer()->type() == Layer::BITMAP);
     auto layer = static_cast<LayerBitmap*>(layers()->currentLayer());
 
+    Status status = Status::OK;
+    DebugDetails dd;
+    dd << QString("Raw file path: %1").arg(filePath);
+
     QImage img(reader.size(), QImage::Format_ARGB32_Premultiplied);
     if (img.isNull())
     {
-        return false;
+        QString format = reader.format();
+        if (!format.isEmpty())
+        {
+            dd << QString("QImageReader format: %1").arg(format);
+        }
+        dd << QString("QImageReader ImageReaderError type: %1").arg(reader.errorString());
+
+        QString errorDesc;
+        switch(reader.error())
+        {
+        case QImageReader::ImageReaderError::FileNotFoundError:
+            errorDesc = tr("File not found at path \"%1\". Please check the image is present at the specified location and try again.").arg(filePath);
+            break;
+        case QImageReader::UnsupportedFormatError:
+            errorDesc = tr("Image format is not supported. Please convert the image file to one of the following formats and try again:\n%1")
+                        .arg((QString)reader.supportedImageFormats().join(", "));
+            break;
+        default:
+            errorDesc = tr("An error has occurred while reading the image. Please check that the file is a valid image and try again.");
+        }
+
+        status = Status(Status::FAIL, dd, tr("Import failed"), errorDesc);
     }
 
     const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
@@ -958,14 +983,18 @@ bool Editor::importBitmapImage(const QString& filePath, int space)
         }
     }
 
-    return true;
+    return status;
 }
 
-bool Editor::importVectorImage(const QString& filePath)
+Status Editor::importVectorImage(const QString& filePath)
 {
     Q_ASSERT(layers()->currentLayer()->type() == Layer::VECTOR);
 
     auto layer = static_cast<LayerVector*>(layers()->currentLayer());
+
+    Status status = Status::OK;
+    DebugDetails dd;
+    dd << QString("Raw file path: %1").arg(filePath);
 
     VectorImage* vectorImage = layer->getVectorImageAtFrame(currentFrame());
     if (vectorImage == nullptr)
@@ -984,13 +1013,19 @@ bool Editor::importVectorImage(const QString& filePath)
 
         backup(tr("Import Image"));
     }
+    else {
+        status = Status(Status::FAIL, dd, tr("Import failed"), tr("You cannot import images into a vector layer."));
+    }
 
-    return ok;
+    return status;
 }
 
-bool Editor::importImage(const QString& filePath)
+Status Editor::importImage(const QString& filePath)
 {
     Layer* layer = layers()->currentLayer();
+
+    DebugDetails dd;
+    dd << QString("Raw file path: %1").arg(filePath);
 
     if (view()->getImportFollowsCamera())
     {
@@ -1008,21 +1043,22 @@ bool Editor::importImage(const QString& filePath)
         return importVectorImage(filePath);
 
     default:
-    {
-        //mLastError = Status::ERROR_INVALID_LAYER_TYPE;
-        return false;
-    }
+        dd << QString("Current layer: %1").arg(layer->type());
+        return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, tr("Import failed"), tr("You can only import images to a bitmap layer."));
     }
 }
 
-bool Editor::importGIF(const QString& filePath, int numOfImages)
+Status Editor::importGIF(const QString& filePath, int numOfImages)
 {
     Layer* layer = layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP)
+    if (layer->type() != Layer::BITMAP)
     {
-        return importBitmapImage(filePath, numOfImages);
+        DebugDetails dd;
+        dd << QString("Raw file path: %1").arg(filePath);
+        dd << QString("Current layer: %1").arg(layer->type());
+        return Status(Status::ERROR_INVALID_LAYER_TYPE, dd, tr("Import failed"), tr("You can only import images to a bitmap layer."));
     }
-    return false;
+    return importBitmapImage(filePath, numOfImages);
 }
 
 void Editor::selectAll() const
@@ -1073,14 +1109,9 @@ void Editor::deselectAll() const
     }
 }
 
-void Editor::updateFrame(int frameNumber)
+void Editor::updateFrame()
 {
-    mScribbleArea->updateFrame(frameNumber);
-}
-
-void Editor::updateCurrentFrame()
-{
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 void Editor::setCurrentLayerIndex(int i)

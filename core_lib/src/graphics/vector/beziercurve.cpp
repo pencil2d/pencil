@@ -279,7 +279,7 @@ void BezierCurve::setFilled(bool YesOrNo)
     mFilled = YesOrNo;
 }
 
-BezierCurve BezierCurve::transformed(QTransform transformation)
+BezierCurve BezierCurve::transformed(QTransform transformation) const
 {
     BezierCurve transformedCurve = *this; // copy the curve
     if (isSelected(-1)) { transformedCurve.setOrigin(transformation.map(origin)); }
@@ -621,7 +621,8 @@ QPainterPath BezierCurve::getStrokedPath(qreal width, bool usePressure)
 
 QRectF BezierCurve::getBoundingRect()
 {
-    return getSimplePath().boundingRect();
+    qreal radius = getWidth() / 2;
+    return getSimplePath().boundingRect().adjusted(-radius, -radius, radius, radius);
 }
 
 void BezierCurve::createCurve(const QList<QPointF>& pointList, const QList<qreal>& pressureList, bool smooth)
@@ -859,7 +860,11 @@ bool BezierCurve::findIntersection(BezierCurve curve1, int i1, BezierCurve curve
 
     QPointF intersectionPoint = QPointF(50.0, 50.0); // bogus point
     QPointF* cubicIntersection = &intersectionPoint;
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    if ( R1.intersects(R2) || L2.intersects(L1, cubicIntersection) == QLineF::BoundedIntersection )
+#else
     if ( R1.intersects(R2) || L2.intersect(L1, cubicIntersection) == QLineF::BoundedIntersection )
+#endif
     {
         //if (L2.intersect(L1, intersection) == QLineF::BoundedIntersection) {
         //qDebug() << "                   FOUND rectangle intersection ";
@@ -879,7 +884,11 @@ bool BezierCurve::findIntersection(BezierCurve curve1, int i1, BezierCurve curve
                 Q2 = curve2.getPointOnCubic(i2, t);
                 L1 = QLineF(P1, Q1);
                 L2 = QLineF(P2, Q2);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+                if (L2.intersects(L1, cubicIntersection) == QLineF::BoundedIntersection)
+#else
                 if (L2.intersect(L1, cubicIntersection) == QLineF::BoundedIntersection)
+#endif
                 {
                     QPointF intersectionPoint = *cubicIntersection;
                     if (intersectionPoint != curve1.getVertex(i1-1) && intersectionPoint != curve1.getVertex(i1))

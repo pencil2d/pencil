@@ -547,14 +547,16 @@ void ActionCommands::ZoomOut()
 
 void ActionCommands::rotateClockwise()
 {
-    float currentRotation = mEditor->view()->rotation();
-    mEditor->view()->rotate(currentRotation + 15.f);
+    // Rotation direction is inverted if view is flipped either vertically or horizontally
+    const float delta = mEditor->view()->isFlipHorizontal() == !mEditor->view()->isFlipVertical() ? -15.f : 15.f;
+    mEditor->view()->rotateRelative(delta);
 }
 
 void ActionCommands::rotateCounterClockwise()
 {
-    float currentRotation = mEditor->view()->rotation();
-    mEditor->view()->rotate(currentRotation - 15.f);
+    // Rotation direction is inverted if view is flipped either vertically or horizontally
+    const float delta = mEditor->view()->isFlipHorizontal() == !mEditor->view()->isFlipVertical() ? 15.f : -15.f;
+    mEditor->view()->rotateRelative(delta);
 }
 
 void ActionCommands::PlayStop()
@@ -733,6 +735,10 @@ void ActionCommands::duplicateKey()
     KeyFrame* key = layer->getKeyFrameAt(mEditor->currentFrame());
     if (key == nullptr) return;
 
+    // Duplicating a selected keyframe is not handled properly.
+    // The desired behavior is to clear selection anyway so we just do that.
+    deselectAll();
+
     KeyFrame* dupKey = key->clone();
 
     int nextEmptyFrame = mEditor->currentFrame() + 1;
@@ -757,6 +763,7 @@ void ActionCommands::duplicateKey()
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
+    emit mEditor->layers()->currentLayerChanged(mEditor->layers()->currentLayerIndex()); // trigger timeline repaint.
 }
 
 void ActionCommands::moveFrameForward()
@@ -878,7 +885,7 @@ void ActionCommands::changeKeyframeLineColor()
         QRgb color = mEditor->color()->frontColor().rgb();
         LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
         layer->getBitmapImageAtFrame(mEditor->currentFrame())->fillNonAlphaPixels(color);
-        mEditor->updateFrame(mEditor->currentFrame());
+        mEditor->updateFrame();
     }
 }
 
@@ -893,7 +900,7 @@ void ActionCommands::changeallKeyframeLineColor()
             if (layer->keyExists(i))
                 layer->getBitmapImageAtFrame(i)->fillNonAlphaPixels(color);
         }
-        mEditor->updateFrame(mEditor->currentFrame());
+        mEditor->updateFrame();
     }
 }
 

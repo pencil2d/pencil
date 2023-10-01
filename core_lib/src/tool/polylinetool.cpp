@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "scribblearea.h"
 
-#include "strokemanager.h"
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
@@ -224,7 +223,6 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         {
             if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
             {
-                tempPath = mEditor->view()->mapCanvasToScreen(tempPath);
                 if (mScribbleArea->makeInvisible() == true)
                 {
                     pen.setWidth(0);
@@ -232,7 +230,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
                 }
                 else
                 {
-                    pen.setWidth(properties.width * mEditor->view()->scaling());
+                    pen.setWidth(properties.width);
                 }
             }
         }
@@ -245,14 +243,13 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 void PolylineTool::cancelPolyline()
 {
     // Clear the in-progress polyline from the bitmap buffer.
-    mScribbleArea->clearBitmapBuffer();
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->clearDrawingBuffer();
+    mScribbleArea->updateFrame();
 }
 
 void PolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    mScribbleArea->clearBitmapBuffer();
 
     if (layer->type() == Layer::VECTOR)
     {
@@ -276,11 +273,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     if (layer->type() == Layer::BITMAP)
     {
         drawPolyline(points, points.last());
-        BitmapImage *bitmapImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
-        if (bitmapImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
-        bitmapImage->paste(mScribbleArea->mBufferImg);
     }
-
-    mScribbleArea->clearBitmapBuffer();
+    mScribbleArea->endStroke();
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

@@ -202,19 +202,154 @@
     background-image: linear-gradient(120deg, #005cc0, #004699)
 }
 
+.main-content {
+    word-wrap:break-word
+}
+
+.main-content :first-child {
+    margin-top:0
+}
+
+@media screen and (min-width: 64em) {
+    .main-content {
+        max-width:64rem;
+        padding:3rem 6rem;
+        margin:0 auto;
+        font-size:1.1rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .main-content {
+        padding:3rem 4rem;
+        font-size:1.1rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .main-content {
+        padding:2rem 1rem;
+        font-size:1rem
+    }
+}
+
+.site-footer {
+    padding-top:2rem;
+    margin-top:2rem;
+    border-top:solid 1px #eff0f1
+}
+
+@media screen and (min-width: 64em) {
+    .site-footer {
+        font-size:1rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .site-footer {
+        font-size:1rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .site-footer {
+        font-size:0.9rem;
+        margin-bottom:0.5rem
+    }
+}
+
+.site-footer-owner {
+    display:block;
+    font-weight:bold
+}
+
+.site-footer-credits {
+    color:#819198
+}
+
+.site-footer .my-span-icon a {
+    text-decoration:none
+}
+
+.site-footer .my-span-icon a:hover {
+    text-decoration:none
+}
+
+@media screen and (min-width: 64em) {
+    .site-footer .my-span-icon {
+        padding:0px 5px 0px 5px
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .site-footer .my-span-icon {
+        padding:0px 10px 10px 10px
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .site-footer .my-span-icon {
+        padding:0px 10px 10px 10px
+    }
+}
+
+.site-footer .my-svg-icon {
+    color:#606c71;
+    fill:#606c71;
+    width:24px;
+    height:24px
+}
+
+.site-footer .my-svg-icon:hover {
+    text-decoration:none;
+    color:#005cc0;
+    fill:#005cc0;
+    transform:scale(1.25);
+    transition:color 0.5s,transform 0.2s ease-out
+}
+
+@media screen and (min-width: 64em) {
+    .site-footer .my-svg-icon {
+        width:28px;
+        height:28px
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .site-footer .my-svg-icon {
+        width:32px;
+        height:32px
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .site-footer .my-svg-icon {
+        width:36px;
+        height:36px
+    }
+}
+
+path {
+    fill: #00438c
+}
+
+a:hover path {
+    fill: #ef8003
+}
+
 /* Doxygen-specific */
 
-.site-header, .page-header {
+.site-header, .page-header, .main-content {
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size: 16px;
     line-height: 1.5;
 }
 
-.site-header, .site-header * {
+.site-header, .site-header *, .main-content, .main-content * {
     box-sizing: border-box
 }
 
-.site-header div {
+.site-header div, .site-footer-owner a {
     font: inherit
 }
 
@@ -242,4 +377,8 @@
 
 .project-tagline {
     margin: 0 0 1rem
+}
+
+.site-footer-owner, .site-footer-credits {
+    float: right
 }

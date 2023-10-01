@@ -53,7 +53,6 @@ public:
     bool toleranceEnabled = false;
     int bucketFillExpand = 0;
     bool bucketFillExpandEnabled = 0;
-    int bucketFillToLayerMode = 0;
     int bucketFillReferenceMode = 0;
     bool  useFillContour = false;
     bool  showSelectionInfo = true;
@@ -127,7 +126,6 @@ public:
     virtual void setToleranceEnabled(const bool enabled);
     virtual void setFillExpand(const int fillExpandValue);
     virtual void setFillExpandEnabled(const bool enabled);
-    virtual void setFillToLayerMode(int layerMode);
     virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
     virtual void setShowSelectionInfo(const bool b);

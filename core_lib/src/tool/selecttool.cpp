@@ -42,40 +42,44 @@ void SelectTool::loadSettings()
 
 QCursor SelectTool::cursor()
 {
+    // Don't update cursor while we're moving the selection
+    if (mScribbleArea->isPointerInUse()) { return QCursor(mCursorPixmap); }
+
+    mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
     MoveMode mode = mEditor->select()->getMoveMode();
 
-    QPixmap cursorPixmap = QPixmap(24, 24);
-
-    cursorPixmap.fill(QColor(255, 255, 255, 0));
-    QPainter cursorPainter(&cursorPixmap);
-    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+    mCursorPixmap.fill(QColor(255, 255, 255, 0));
+    QPainter cursorPainter(&mCursorPixmap);
+    cursorPainter.setRenderHint(QPainter::Antialiasing);
 
     switch(mode)
     {
     case MoveMode::TOPLEFT:
     case MoveMode::BOTTOMRIGHT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-left.svg"));
+        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-diagonal-left.svg"));
         break;
     }
     case MoveMode::TOPRIGHT:
     case MoveMode::BOTTOMLEFT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-right.svg"));
+        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-diagonal-right.svg"));
         break;
     }
     case MoveMode::MIDDLE:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
+        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-move.svg"));
+        break;
+    }
+    case MoveMode::NONE:
+    {
+        cursorPainter.drawPixmap(QPoint(2, 2), QPixmap(":icons/cross.png"));
         break;
     }
     default:
-        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
-        break;
+        Q_UNREACHABLE();
     }
-    cursorPainter.end();
-
-    return QCursor(cursorPixmap);
+    return QCursor(mCursorPixmap);
 }
 
 void SelectTool::resetToDefault()
@@ -112,7 +116,7 @@ void SelectTool::beginSelection()
         mAnchorOriginPoint = getLastPoint();
     }
 
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
@@ -156,7 +160,7 @@ void SelectTool::pointerMoveEvent(PointerEvent*)
         }
     }
 
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 void SelectTool::pointerReleaseEvent(PointerEvent* event)
@@ -185,7 +189,7 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     mSelectionRect = mEditor->select()->mapToSelection(mEditor->select()->mySelectionRect()).boundingRect();
 
     mScribbleArea->updateToolCursor();
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 bool SelectTool::maybeDeselect()

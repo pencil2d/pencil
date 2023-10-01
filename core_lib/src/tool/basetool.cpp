@@ -111,7 +111,7 @@ void BaseTool::pointerDoubleClickEvent(PointerEvent* event)
  */
 bool BaseTool::isDrawingTool()
 {
-    if (type() == ToolType::HAND || type() == ToolType::MOVE || type() == ToolType::SELECT )
+    if (type() == ToolType::HAND || type() == ToolType::MOVE || type() == ToolType::CAMERA || type() == ToolType::SELECT )
     {
         return false;
     }
@@ -164,7 +164,7 @@ QPixmap BaseTool::canvasCursor(float width, float feather, bool useFeather, floa
         cursorPixmap.fill(QColor(255, 255, 255, 0));
         QPainter cursorPainter(&cursorPixmap);
         QPen cursorPen = cursorPainter.pen();
-        cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+        cursorPainter.setRenderHint(QPainter::Antialiasing);
 
         // Draw cross in center
         cursorPen.setStyle(Qt::SolidLine);
@@ -427,11 +427,6 @@ void BaseTool::setToleranceEnabled(const bool enabled)
 void BaseTool::setFillExpand(const int fillExpandValue)
 {
     properties.bucketFillExpand = fillExpandValue;
-}
-
-void BaseTool::setFillToLayerMode(int layerMode)
-{
-    properties.bucketFillToLayerMode = layerMode;
 }
 
 void BaseTool::setFillReferenceMode(int referenceMode)

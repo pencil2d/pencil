@@ -28,186 +28,186 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="78"/>
+        <location filename="../app/src/actioncommands.cpp" line="77"/>
         <source>Importing movie...</source>
         <translation>Zavádí se obrazový záznam...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="78"/>
-        <location filename="../app/src/actioncommands.cpp" line="200"/>
-        <location filename="../app/src/actioncommands.cpp" line="427"/>
+        <location filename="../app/src/actioncommands.cpp" line="77"/>
+        <location filename="../app/src/actioncommands.cpp" line="199"/>
+        <location filename="../app/src/actioncommands.cpp" line="426"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="86"/>
+        <location filename="../app/src/actioncommands.cpp" line="85"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
         <translation>Zavádíte spoustu snímků. Toto může chvíli trvat. Opravdu chcete pokračovat?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="133"/>
+        <location filename="../app/src/actioncommands.cpp" line="132"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Neexistuje žádná zvuková vrsva jako cíl zavedení. Vytvořit novou zvukovou vrstvu?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="134"/>
+        <location filename="../app/src/actioncommands.cpp" line="133"/>
         <source>Create sound layer</source>
         <translation>Vytvořit zvukovou vrstvu</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="135"/>
+        <location filename="../app/src/actioncommands.cpp" line="134"/>
         <source>Don&apos;t create layer</source>
         <translation>Nevytvářet vrstvu</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="145"/>
+        <location filename="../app/src/actioncommands.cpp" line="144"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="146"/>
-        <location filename="../app/src/actioncommands.cpp" line="792"/>
-        <location filename="../app/src/actioncommands.cpp" line="805"/>
-        <location filename="../app/src/actioncommands.cpp" line="818"/>
-        <location filename="../app/src/actioncommands.cpp" line="831"/>
+        <location filename="../app/src/actioncommands.cpp" line="145"/>
+        <location filename="../app/src/actioncommands.cpp" line="793"/>
+        <location filename="../app/src/actioncommands.cpp" line="806"/>
+        <location filename="../app/src/actioncommands.cpp" line="819"/>
+        <location filename="../app/src/actioncommands.cpp" line="832"/>
         <source>Layer name:</source>
         <translation>Název vrstvy:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="147"/>
+        <location filename="../app/src/actioncommands.cpp" line="146"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>Zvuková vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="200"/>
+        <location filename="../app/src/actioncommands.cpp" line="199"/>
         <source>Importing sound...</source>
         <translation>Zavádí se zvuk...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="241"/>
+        <location filename="../app/src/actioncommands.cpp" line="240"/>
         <source>Something went wrong</source>
         <translation>Něco neproběhlo, jak mělo</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="241"/>
-        <location filename="../app/src/actioncommands.cpp" line="969"/>
+        <location filename="../app/src/actioncommands.cpp" line="240"/>
+        <location filename="../app/src/actioncommands.cpp" line="970"/>
         <source>You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.</source>
         <translation>V současné době máte celkem %1 zvukových záběrů. Vzhledem k současným omezením nebudete moci vyvést žádnou animaci přesahující %2 zvukových klipů. Doporučujeme rozdělit větší projekty na více menších, abyste se vešli do tohoto omezení.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="299"/>
+        <location filename="../app/src/actioncommands.cpp" line="298"/>
         <source>Exporting movie</source>
         <translation>Vyvádí se obrazový záznam...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="343"/>
+        <location filename="../app/src/actioncommands.cpp" line="342"/>
         <source>Finished. Open file location?</source>
         <translation>Dokončeno. Otevřít umístění souboru?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="353"/>
+        <location filename="../app/src/actioncommands.cpp" line="352"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>Dokončeno. Otevřít záznam nyní?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="361"/>
+        <location filename="../app/src/actioncommands.cpp" line="360"/>
         <source>Unknown export error</source>
         <translation>Neznámá chyba při vyvedení</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="361"/>
+        <location filename="../app/src/actioncommands.cpp" line="360"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
         <translation>Vyvedení nevytvořilo žádné chyby, ale výstupní soubor nelze najít. Vyvedení možná nebylo úspěšně dokončeno.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="427"/>
+        <location filename="../app/src/actioncommands.cpp" line="426"/>
         <source>Exporting image sequence...</source>
         <translation>Vyvádí se řada obrázků...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="509"/>
-        <location filename="../app/src/actioncommands.cpp" line="950"/>
-        <location filename="../app/src/actioncommands.cpp" line="969"/>
+        <location filename="../app/src/actioncommands.cpp" line="508"/>
+        <location filename="../app/src/actioncommands.cpp" line="951"/>
+        <location filename="../app/src/actioncommands.cpp" line="970"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="510"/>
+        <location filename="../app/src/actioncommands.cpp" line="509"/>
         <source>Unable to export image.</source>
         <translation>Obrázek nelze vyvést.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="664"/>
+        <location filename="../app/src/actioncommands.cpp" line="663"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
         <translation>Odstranit vybrané snímky</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="665"/>
+        <location filename="../app/src/actioncommands.cpp" line="664"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
         <translation>Opravdu chcete odstranit vybrané snímky? Tento krok je v současnosti nevratný!</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="705"/>
+        <location filename="../app/src/actioncommands.cpp" line="704"/>
         <source>%1 (copy)</source>
         <comment>Default duplicate layer name</comment>
         <translation>%1 (kopie)</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="791"/>
-        <location filename="../app/src/actioncommands.cpp" line="804"/>
-        <location filename="../app/src/actioncommands.cpp" line="830"/>
+        <location filename="../app/src/actioncommands.cpp" line="792"/>
+        <location filename="../app/src/actioncommands.cpp" line="805"/>
+        <location filename="../app/src/actioncommands.cpp" line="831"/>
         <source>Layer Properties</source>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="793"/>
+        <location filename="../app/src/actioncommands.cpp" line="794"/>
         <source>Bitmap Layer</source>
         <translation>Bitmapová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="806"/>
+        <location filename="../app/src/actioncommands.cpp" line="807"/>
         <source>Vector Layer</source>
         <translation>Vektorová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="817"/>
+        <location filename="../app/src/actioncommands.cpp" line="818"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
         <translation>Vlastnosti vrstvy</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="819"/>
+        <location filename="../app/src/actioncommands.cpp" line="820"/>
         <source>Camera Layer</source>
         <translation>Kamerová vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="832"/>
+        <location filename="../app/src/actioncommands.cpp" line="833"/>
         <source>Sound Layer</source>
         <translation>Zvuková vrstva</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="851"/>
+        <location filename="../app/src/actioncommands.cpp" line="852"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Smazat vrstvu</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="852"/>
+        <location filename="../app/src/actioncommands.cpp" line="853"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
         <translation>Opravdu chcete smazat vrstvu: %1? Toto nelze vrátit zpět.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="861"/>
+        <location filename="../app/src/actioncommands.cpp" line="862"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Ponechejte, prosím, v projektu alespoň jednu vrstvu s kamerou</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="950"/>
+        <location filename="../app/src/actioncommands.cpp" line="951"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
         <translation>Dočasný adresář je určen pouze pro použití Pencil2D. Neměňte jej, pokud nevíte, co děláte.</translation>
     </message>
@@ -2600,72 +2600,108 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="528"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
         <source>Copy</source>
         <translation>Kopírovat</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="573"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="587"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="577"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="591"/>
         <source>Paste from Previous Keyframe</source>
         <translation>Vložit z předchozího klíčového snímku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="685"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="689"/>
         <source>Paste</source>
         <translation>Vložit</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="707"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="711"/>
         <source>Flip selection vertically</source>
         <translation>Převrátit výběr svisle</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="709"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="713"/>
         <source>Flip selection horizontally</source>
         <translation>Převrátit výběr vodorovně</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="725"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="729"/>
         <source>Reposition frame</source>
         <translation>Přemístění snímku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="809"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="818"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="827"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="859"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="813"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="822"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="831"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="863"/>
         <source>Could not open file</source>
         <translation>Nepodařilo se otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="810"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="814"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>Soubor, jejž jste vybral, je adresář, takže jej nelze otevřít. Pokud se pokoušíte o otevření projektu, který používá starou stavbu, otevřete, prosím, soubor končící na .pcl, ne složku s daty.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="819"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="823"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>Soubor, jejž jste vybral, není, takže jej nelze otevřít. Ujistěte se, prosím, že jste zadal správnou cestu a že je soubor přístupný a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="828"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="832"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Tento program nemá oprávnění ke čtení vybraného souboru. Ověřte, prosím, že máte oprávnění k tomuto souboru a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="860"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="864"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>Při pokusu o nahrání souboru se vyskytla neznámá chyba. Soubor nelze nahrát.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="948"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="981"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="942"/>
+        <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
+        <translation>Soubor nebyl nalezen v cestě &quot;%1&quot;. Zkontrolujte, prosím, zda je obrázek v zadaném umístění přítomen, a zkuste to znovu.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="945"/>
+        <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
+%1</source>
+        <translation>Formát obrázku není podporován. Převeďte, prosím, obrázkový soubor do jednoho z následujících formátů, a zkuste to znovu:
+%1</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="949"/>
+        <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
+        <translation>Při čtení obrázku došlo k chybě. Zkontrolujte, zda je soubor platným obrázkem, a zkuste to znovu.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="952"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1017"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1047"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1059"/>
+        <source>Import failed</source>
+        <translation>Nepodařilo se zavést</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="977"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1014"/>
         <source>Import Image</source>
         <translation>Zavést obrázek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1189"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1017"/>
+        <source>You cannot import images into a vector layer.</source>
+        <translation>Obrázky nelze do vektorové vrstvy zavést.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1047"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1059"/>
+        <source>You can only import images to a bitmap layer.</source>
+        <translation>Obrázky lze zavádět pouze do bitmapové vrstvy.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1229"/>
         <source>Remove frame</source>
         <translation>Odstranit snímek</translation>
     </message>
@@ -3500,61 +3536,51 @@
 <context>
     <name>ImportImageSeqDialog</name>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="61"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="62"/>
         <source>Import Animated GIF</source>
         <translation>Zavést animovaný GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="63"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="64"/>
         <source>Import image sequence</source>
         <translation>Zavést řadu obrázků</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="72"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="73"/>
         <source>Import predefined keyframe set</source>
         <translation>Zavést předem stanovenou sadu klíčových snímků</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="73"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="74"/>
         <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
 The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
         <translation>Vyberte obrázek, který odpovídá hlediskům: MyFile000.png, např. Joe001.png
 Zavaděč vyhledá a najde obrázky odpovídající stejným hlediskům. Výsledek můžete vidět v náhledovém rámečku níže.</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="172"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="173"/>
         <source>Importing image sequence...</source>
         <translation>Zavádí se řada obrázků...</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="172"/>
-        <location filename="../app/src/importimageseqdialog.cpp" line="310"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="173"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="290"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="223"/>
-        <source>Warning</source>
-        <translation>Varování</translation>
-    </message>
-    <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="224"/>
-        <source>Unable to import</source>
-        <translation>Nelze zavést</translation>
-    </message>
-    <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="310"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="290"/>
         <source>Importing images...</source>
         <translation>Zavádí se obrázky...</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="366"/>
-        <location filename="../app/src/importimageseqdialog.cpp" line="391"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="350"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="375"/>
         <source>Invalid path</source>
         <translation>Neplatná cesta</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="367"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="351"/>
         <source>The following file did not meet the criteria: 
 %1 
 
@@ -3565,7 +3591,7 @@ Read the instructions and try again</source>
 Přečtěte si pokyny a zkuste to znovu</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="392"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="376"/>
         <source>The following file(-s) did not meet the criteria: 
 %1</source>
         <translation>Následující soubor nesplnil hlediska: 
@@ -4161,7 +4187,7 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="626"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1559"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1554"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -4549,15 +4575,13 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="656"/>
         <location filename="../app/src/mainwindow2.cpp" line="713"/>
-        <location filename="../app/src/mainwindow2.cpp" line="976"/>
+        <location filename="../app/src/mainwindow2.cpp" line="973"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="701"/>
         <location filename="../app/src/mainwindow2.cpp" line="803"/>
-        <location filename="../app/src/mainwindow2.cpp" line="875"/>
-        <location filename="../app/src/mainwindow2.cpp" line="997"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
@@ -4602,98 +4626,98 @@ Chcete ji uložit nyní?</translation>
         <translation>Už se znovu neptat</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="876"/>
-        <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>Obrázek nelze zavést.&lt;br&gt;&lt;b&gt;Rada:&lt;/b&gt; K zavedení bitmap použijte bitmapovou vrstvu.</translation>
+        <location filename="../app/src/mainwindow2.cpp" line="981"/>
+        <source>Import failed</source>
+        <translation>Nepodařilo se zavést</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="976"/>
+        <location filename="../app/src/mainwindow2.cpp" line="981"/>
+        <source>You can only import files ending with .gif.</source>
+        <translation>Zavádět lze pouze soubory s příponou .gif.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="973"/>
         <source>Importing Animated GIF...</source>
         <translation>Zavádí se animovaný GIF...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="998"/>
-        <source>was unable to import %1</source>
-        <translation>nebylo možno zavést %1</translation>
-    </message>
-    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1339"/>
         <location filename="../app/src/mainwindow2.cpp" line="1344"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1349"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Zpět</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1357"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1364"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1352"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1359"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Znovu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1400"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1395"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>Otevření palety nahradí starou paletu.
 Touto činností se změní barva(y) v tazích!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1402"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1397"/>
         <source>Open Palette</source>
         <translation>Otevřít paletu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1554"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1549"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1603"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1598"/>
         <source>Restore Project?</source>
         <translation>Obnovit projekt?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1604"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1599"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D se nezavřel správně. Chcete projekt obnovit?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1609"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1604"/>
         <source>Restore project</source>
         <translation>Obnovit projekt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1643"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1638"/>
         <source>Recovery Failed.</source>
         <translation>Nepodařilo se obnovit.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1644"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1639"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>Promiňte! Pencil2D nemůže obnovit váš projekt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1654"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1649"/>
         <source>Recovery Succeeded!</source>
         <translation>Podařilo se obnovit.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1655"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1650"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>Okamžitě, prosím, uložte svou práci, abyste zabránili ztrátě dat</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1661"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1656"/>
         <source>Main Toolbar</source>
         <translation>Hlavní nástrojový pruh</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1675"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1670"/>
         <source>View Toolbar</source>
         <translation>Nástrojový pruh pro zobrazení</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1687"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1682"/>
         <source>Overlay Toolbar</source>
         <translation>Nástrojový pruh pro překrytí</translation>
     </message>

@@ -863,6 +863,21 @@ void VectorImage::setSelectionRect(QRectF rectangle)
     select(rectangle);
 }
 
+QRectF VectorImage::getBoundsOfTransformedCurves() const
+{
+    QRectF bounds;
+    for (int i = 0; i < mCurves.size(); i++)
+    {
+        BezierCurve curve;
+        if (mCurves.at(i).isPartlySelected())
+        {
+            curve = mCurves[i].transformed(mSelectionTransformation);
+            bounds |= curve.getBoundingRect();
+        }
+    }
+    return bounds;
+}
+
 /**
  * @brief VectorImage::calculateSelectionRect
  */
@@ -1188,6 +1203,7 @@ void VectorImage::paintImage(QPainter& painter,
     bool showThinCurves,
     bool antialiasing)
 {
+    painter.save();
     painter.setRenderHint(QPainter::Antialiasing, antialiasing);
 
     painter.setClipping(false);
@@ -1233,26 +1249,7 @@ void VectorImage::paintImage(QPainter& painter,
         curve.drawPath(painter, mObject, mSelectionTransformation, simplified, showThinCurves);
         painter.setClipping(false);
     }
-}
-
-/**
- * @brief VectorImage::outputImage
- * @param image: QImage*
- * @param myView: QTransform
- * @param simplified: bool
- * @param showThinCurves: bool
- * @param antialiasing: bool
- */
-void VectorImage::outputImage(QImage* image,
-                              QTransform myView,
-                              bool simplified,
-                              bool showThinCurves,
-                              bool antialiasing)
-{
-    image->fill(qRgba(0, 0, 0, 0));
-    QPainter painter(image);
-    painter.setTransform(myView);
-    paintImage(painter, simplified, showThinCurves, antialiasing);
+    painter.restore();
 }
 
 /**
