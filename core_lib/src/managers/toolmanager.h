@@ -77,7 +77,6 @@ public slots:
     void setTolerance(int);
     void setBucketColorToleranceEnabled(bool enabled);
     void setBucketFillExpandEnabled(bool enabled);
-    void setBucketFillToLayerMode(int layerMode);
     void setBucketFillReferenceMode(int referenceMode);
     void setBucketFillExpand(int);
     void setUseFillContour(bool);

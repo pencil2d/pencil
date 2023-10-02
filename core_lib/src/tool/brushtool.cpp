@@ -173,10 +173,9 @@ void BrushTool::pointerReleaseEvent(PointerEvent *event)
         drawStroke();
     }
 
-    if (layer->type() == Layer::BITMAP)
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
-        paintVectorStroke();
+    if (layer->type() == Layer::VECTOR) {
+        paintVectorStroke(layer);
+    }
 
     endStroke();
 }
@@ -196,6 +195,7 @@ void BrushTool::paintAt(QPointF point)
                                  brushWidth,
                                  properties.feather,
                                  mEditor->color()->frontColor(),
+                                 QPainter::CompositionMode_SourceOver,
                                  opacity,
                                  true);
     }
@@ -232,6 +232,7 @@ void BrushTool::drawStroke()
                                      brushWidth,
                                      properties.feather,
                                      mEditor->color()->frontColor(),
+                                     QPainter::CompositionMode_SourceOver,
                                      opacity,
                                      true);
             if (i == (steps - 1))
@@ -277,25 +278,17 @@ void BrushTool::drawStroke()
     }
 }
 
-void BrushTool::paintBitmapStroke()
-{
-    mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->clearBitmapBuffer();
-}
-
 // This function uses the points from DrawStroke
 // and turns them into vector lines.
-void BrushTool::paintVectorStroke()
+void BrushTool::paintVectorStroke(Layer* layer)
 {
     if (mStrokePoints.empty())
         return;
 
-    Layer* layer = mEditor->layers()->currentLayer();
-
     if (layer->type() == Layer::VECTOR && mStrokePoints.size() > -1)
     {
         // Clear the temporary pixel path
-        mScribbleArea->clearBitmapBuffer();
+        mScribbleArea->clearDrawingBuffer();
         qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
         BezierCurve curve(mStrokePoints, mStrokePressures, tol);

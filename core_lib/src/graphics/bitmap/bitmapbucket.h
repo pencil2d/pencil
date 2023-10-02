@@ -43,7 +43,7 @@ public:
      * @param progress - a function that returns the progress of the paint operation,
      * the layer and frame that was affected at the given point.
      */
-    void paint(const QPointF updatedPoint, std::function<void(BucketState, int, int)> progress);
+    void paint(const QPointF& updatedPoint, std::function<void(BucketState, int, int)> progress);
 
 private:
 
@@ -57,9 +57,12 @@ private:
      * @param checkPoint
      * @return True if you are allowed to fill, otherwise false
      */
-    bool allowFill(const QPoint& checkPoint) const;
+    bool allowFill(const QPoint& checkPoint, const QRgb& checkColor) const;
+    bool allowContinuousFill(const QPoint& checkPoint, const QRgb& checkColor) const;
 
-    std::pair<Layer*, int> findBitmapLayerBelow(Layer* targetLayer, int layerIndex) const;
+    /** Determines whether fill to drag feature can be used */
+    bool canUseDragToFill(const QPoint& fillPoint, const QColor& bucketColor, const BitmapImage& referenceImage);
+
     BitmapImage flattenBitmapLayersToImage();
 
     Editor* mEditor = nullptr;
@@ -76,6 +79,8 @@ private:
     int mTolerance = 0;
 
     int mTargetFillToLayerIndex = -1;
+    bool mFilledOnce = false;
+    bool mUseDragToFill = false;
 
     Properties mProperties;
 };

@@ -104,6 +104,9 @@
           <property name="title">
            <string>Previous Frames</string>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
           <layout class="QHBoxLayout" name="onionPrevLayout">
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
@@ -120,38 +123,6 @@
            <property name="bottomMargin">
             <number>6</number>
            </property>
-           <item>
-            <widget class="QToolButton" name="onionPrevButton">
-             <property name="toolTip">
-              <string>Onion skin previous frame</string>
-             </property>
-             <property name="statusTip">
-              <string>Onion skin previous frame</string>
-             </property>
-             <property name="autoFillBackground">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../data/app.qrc">
-               <normaloff>:/icons/themes/playful/onion/onionskin-enable.svg</normaloff>:/icons/themes/playful/onion/onionskin-enable.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>22</width>
-               <height>22</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="autoRaise">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
            <item>
             <widget class="QSpinBox" name="onionPrevFramesNumBox">
              <property name="sizePolicy">
@@ -214,6 +185,9 @@
           <property name="title">
            <string>Next Frames</string>
           </property>
+          <property name="checkable">
+           <bool>true</bool>
+          </property>
           <layout class="QHBoxLayout" name="onionNextlLayout">
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
@@ -230,35 +204,6 @@
            <property name="bottomMargin">
             <number>6</number>
            </property>
-           <item>
-            <widget class="QToolButton" name="onionNextButton">
-             <property name="toolTip">
-              <string>Onion skin next frame</string>
-             </property>
-             <property name="statusTip">
-              <string>Onion skin next frame</string>
-             </property>
-             <property name="text">
-              <string>...</string>
-             </property>
-             <property name="icon">
-              <iconset resource="../data/app.qrc">
-               <normaloff>:/icons/themes/playful/onion/onionskin-enable.svg</normaloff>:/icons/themes/playful/onion/onionskin-enable.svg</iconset>
-             </property>
-             <property name="iconSize">
-              <size>
-               <width>22</width>
-               <height>22</height>
-              </size>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="autoRaise">
-              <bool>true</bool>
-             </property>
-            </widget>
-           </item>
            <item>
             <widget class="QSpinBox" name="onionNextFramesNumBox">
              <property name="sizePolicy">

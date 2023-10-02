@@ -885,7 +885,7 @@ void ActionCommands::changeKeyframeLineColor()
         QRgb color = mEditor->color()->frontColor().rgb();
         LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
         layer->getBitmapImageAtFrame(mEditor->currentFrame())->fillNonAlphaPixels(color);
-        mEditor->updateFrame(mEditor->currentFrame());
+        mEditor->updateFrame();
     }
 }
 
@@ -900,7 +900,7 @@ void ActionCommands::changeallKeyframeLineColor()
             if (layer->keyExists(i))
                 layer->getBitmapImageAtFrame(i)->fillNonAlphaPixels(color);
         }
-        mEditor->updateFrame(mEditor->currentFrame());
+        mEditor->updateFrame();
     }
 }
 

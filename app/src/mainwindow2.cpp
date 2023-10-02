@@ -879,7 +879,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    ui->scribbleArea->updateCurrentFrame();
+    ui->scribbleArea->updateFrame();
     mTimeLine->updateContent();
 }
 
@@ -1449,7 +1449,7 @@ void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector
 
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
-    connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
+    connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::updateToolCursor);
     connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxWidget::onToolSetActive);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
 

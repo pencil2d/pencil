@@ -24,6 +24,8 @@ GNU General Public License for more details.
 #include "util.h"
 
 #include "blitrect.h"
+#include "tile.h"
+#include "tiledbuffer.h"
 
 BitmapImage::BitmapImage()
 {
@@ -98,7 +100,7 @@ BitmapImage* BitmapImage::clone() const
     b->setFileName(""); // don't link to the file of the source bitmap image
 
     const bool validKeyFrame = !fileName().isEmpty();
-    if (validKeyFrame && !isLoaded()) 
+    if (validKeyFrame && !isLoaded())
     {
         // This bitmapImage is temporarily unloaded.
         // since it's not in the memory, we need to copy the linked png file to prevent data loss.
@@ -199,6 +201,28 @@ void BitmapImage::paste(BitmapImage* bitmapImage, QPainter::CompositionMode cm)
     QPainter painter(image());
     painter.setCompositionMode(cm);
     painter.drawImage(bitmapImage->mBounds.topLeft() - mBounds.topLeft(), *image2);
+    painter.end();
+
+    modification();
+}
+
+void BitmapImage::paste(const TiledBuffer* tiledBuffer, QPainter::CompositionMode cm)
+{
+    if(tiledBuffer->bounds().width() <= 0 || tiledBuffer->bounds().height() <= 0)
+    {
+        return;
+    }
+    extend(tiledBuffer->bounds());
+
+    QPainter painter(image());
+
+    painter.setCompositionMode(cm);
+    auto const tiles = tiledBuffer->tiles();
+    for (const Tile* item : tiles) {
+        const QPixmap& tilePixmap = item->pixmap();
+        const QPoint& tilePos = item->pos();
+        painter.drawPixmap(tilePos-mBounds.topLeft(), tilePixmap);
+    }
     painter.end();
 
     modification();
@@ -624,7 +648,10 @@ void BitmapImage::drawRect(QRectF rectangle, QPen pen, QBrush brush, QPainter::C
         painter.setRenderHint(QPainter::Antialiasing, antialiasing);
         painter.setPen(pen);
         painter.setBrush(brush);
-        painter.drawRect(rectangle.translated(-mBounds.topLeft()));
+
+        // Adjust the brush rectangle to be bigger than the bounds itself,
+        // otherwise there will be artifacts shown in some cases when smudging
+        painter.drawRect(rectangle.translated(-mBounds.topLeft()).adjusted(-1, -1, 1, 1));
         painter.end();
     }
     modification();

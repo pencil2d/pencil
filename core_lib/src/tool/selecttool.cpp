@@ -115,7 +115,7 @@ void SelectTool::beginSelection()
         mAnchorOriginPoint = getLastPoint();
     }
 
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
@@ -159,7 +159,7 @@ void SelectTool::pointerMoveEvent(PointerEvent*)
         }
     }
 
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 void SelectTool::pointerReleaseEvent(PointerEvent* event)
@@ -188,7 +188,7 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     mSelectionRect = mEditor->select()->mapToSelection(mEditor->select()->mySelectionRect()).boundingRect();
 
     mScribbleArea->updateToolCursor();
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 bool SelectTool::maybeDeselect()

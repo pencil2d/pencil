@@ -52,7 +52,12 @@ void BlitRect::extend(const QPoint p)
 
 void BlitRect::extend(const QRect& rect)
 {
-    extend(rect.topLeft(), rect.size());
+    // For historical reasons the values returned by the bottom() and
+    // right() functions deviate from the true bottom-right corner of the rectangle:
+    // The right() function returns left() + width() - 1 and the bottom()
+    // function returns top() + height() - 1
+    // In order to counter that, we subtract 1 from width and height
+    extend(rect.topLeft(), QSize(rect.width() - 1, rect.height() - 1));
 }
 
 void BlitRect::extend(const QPoint& p, const QSize& size)
@@ -66,8 +71,8 @@ void BlitRect::extend(const QPoint& p, const QSize& size)
     else
     {
         if (left() > p.x()) { setLeft(p.x()); }
-        if (right() < p.x() + size.width()) { setRight(p.x() + size.width()); }
         if (top() > p.y()) { setTop(p.y()); }
-        if (bottom() < p.y() + size.height()) { setBottom(p.y() + size.height()); }
+        if (right() - size.width() < p.x()) { setRight(p.x() + size.width()); }
+        if (bottom() - size.height() < p.y()) { setBottom(p.y() + size.height()); }
     }
 }

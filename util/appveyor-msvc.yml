@@ -34,11 +34,11 @@ build_script:
   - nmake
 
 after_build:
-  - windeployqt "%APPVEYOR_BUILD_FOLDER%\build\bin\pencil2d.exe"
+  - windeployqt "%APPVEYOR_BUILD_FOLDER%\build\app\release\pencil2d.exe"
 
 test_script:
   - echo "Running tests"
-  - tests\bin\tests.exe
+  - tests\release\tests.exe
 
 for:
 - matrix:

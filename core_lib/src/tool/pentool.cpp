@@ -153,10 +153,9 @@ void PenTool::pointerReleaseEvent(PointerEvent *event)
         drawStroke();
     }
 
-    if (layer->type() == Layer::BITMAP)
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
+    if (layer->type() == Layer::VECTOR) {
         paintVectorStroke(layer);
+    }
     endStroke();
 }
 
@@ -235,19 +234,13 @@ void PenTool::drawStroke()
     }
 }
 
-void PenTool::paintBitmapStroke()
-{
-    mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->clearBitmapBuffer();
-}
-
 void PenTool::paintVectorStroke(Layer* layer)
 {
     if (mStrokePoints.empty())
         return;
 
     // Clear the temporary pixel path
-    mScribbleArea->clearBitmapBuffer();
+    mScribbleArea->clearDrawingBuffer();
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
     BezierCurve curve(mStrokePoints, mStrokePressures, tol);

@@ -635,7 +635,7 @@ void ColorPaletteWidget::clickRemoveColorButton()
     {
         fitSwatchSize();
     }
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 bool ColorPaletteWidget::showPaletteWarning()

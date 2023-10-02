@@ -29,7 +29,6 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "scribblearea.h"
-#include "blitrect.h"
 #include "layervector.h"
 #include "vectorimage.h"
 
@@ -187,10 +186,9 @@ void PencilTool::pointerReleaseEvent(PointerEvent *event)
     }
 
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer->type() == Layer::BITMAP)
-        paintBitmapStroke();
-    else if (layer->type() == Layer::VECTOR)
+    if (layer->type() == Layer::VECTOR) {
         paintVectorStroke(layer);
+    }
     endStroke();
 }
 
@@ -275,20 +273,13 @@ void PencilTool::drawStroke()
     }
 }
 
-
-void PencilTool::paintBitmapStroke()
-{
-    mScribbleArea->paintBitmapBuffer();
-    mScribbleArea->clearBitmapBuffer();
-}
-
 void PencilTool::paintVectorStroke(Layer* layer)
 {
     if (mStrokePoints.empty())
         return;
 
     // Clear the temporary pixel path
-    mScribbleArea->clearBitmapBuffer();
+    mScribbleArea->clearDrawingBuffer();
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
     BezierCurve curve(mStrokePoints, mStrokePressures, tol);

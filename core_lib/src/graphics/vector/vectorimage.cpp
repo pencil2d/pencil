@@ -1203,6 +1203,7 @@ void VectorImage::paintImage(QPainter& painter,
     bool showThinCurves,
     bool antialiasing)
 {
+    painter.save();
     painter.setRenderHint(QPainter::Antialiasing, antialiasing);
 
     painter.setClipping(false);
@@ -1248,6 +1249,7 @@ void VectorImage::paintImage(QPainter& painter,
         curve.drawPath(painter, mObject, mSelectionTransformation, simplified, showThinCurves);
         painter.setClipping(false);
     }
+    painter.restore();
 }
 
 /**

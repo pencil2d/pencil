@@ -35,11 +35,11 @@ build_script:
   - mingw32-make -j2
 
 after_build:
-  - windeployqt "%APPVEYOR_BUILD_FOLDER%\build\bin\pencil2d.exe"
-  
+  - windeployqt "%APPVEYOR_BUILD_FOLDER%\build\app\release\pencil2d.exe"
+
 test_script:
   - echo "Running tests"
-  - cd "%APPVEYOR_BUILD_FOLDER%\build\tests\bin"
+  - cd "%APPVEYOR_BUILD_FOLDER%\build\tests\release"
   - tests.exe
 
 for:

@@ -229,7 +229,7 @@ void CameraTool::resetCameraPath()
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     layer->setPathMovedAtFrame(mEditor->currentFrame(), false);
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void CameraTool::resetTransform(CameraFieldOption option)
@@ -261,7 +261,7 @@ void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
 
     transformView(layer, mCamMoveMode, getCurrentPoint(), mTransformOffset, -angleDeg, mEditor->currentFrame());
 
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
     mTransformOffset = getCurrentPoint();
 }
 
@@ -271,7 +271,7 @@ void CameraTool::transformCameraPath()
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
     layer->updatePathControlPointAtFrame(getCurrentPoint(), mDragPathFrame);
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 int CameraTool::constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const
@@ -304,7 +304,7 @@ void CameraTool::pointerMoveEvent(PointerEvent* event)
     }
     mScribbleArea->updateToolCursor();
     mEditor->view()->forceUpdateViewTransform();
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void CameraTool::pointerReleaseEvent(PointerEvent* event)
