@@ -95,6 +95,11 @@ void SelectTool::setShowSelectionInfo(const bool b)
     settings.setValue("ShowSelectionInfo", b);
 }
 
+bool SelectTool::selectChanging()
+{
+    return mSelectChanging;
+}
+
 void SelectTool::beginSelection()
 {
     auto selectMan = mEditor->select();
@@ -121,6 +126,8 @@ void SelectTool::beginSelection()
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
 {
+    mSelectChanging = true;
+
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) return;
     if (!mCurrentLayer->isPaintable()) { return; }
@@ -165,6 +172,8 @@ void SelectTool::pointerMoveEvent(PointerEvent*)
 
 void SelectTool::pointerReleaseEvent(PointerEvent* event)
 {
+    mSelectChanging = false;
+
     mCurrentLayer = mEditor->layers()->currentLayer();
     if (mCurrentLayer == nullptr) return;
     if (event->button() != Qt::LeftButton) return;
