@@ -313,10 +313,13 @@ void ToolBoxWidget::onSelectionChanged(){
     BaseTool* currentTool = editor()->tools()->currentTool();
     if (currentTool->type() == SELECT)
     {
-        SelectTool* selectTool = (SelectTool*) currentTool;
-        if (!selectTool->selectChanging() && editor()->select()->somethingSelected())
+        if (editor()->select()->somethingSelected())
         {
-            moveOn();
+            SelectTool* selectTool = (SelectTool*) currentTool;
+            if (selectTool->properties.autoSwitchTool && !selectTool->selectChanging())
+            {
+                moveOn();
+            }
         }
     }
 }

@@ -38,6 +38,8 @@ void SelectTool::loadSettings()
     QSettings settings(PENCIL2D, PENCIL2D);
     properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
     mPropertyEnabled[SHOWSELECTIONINFO] = true;
+    properties.autoSwitchTool = true;
+    mPropertyEnabled[AUTOSWITCHTOOL] = true;
 }
 
 QCursor SelectTool::cursor()

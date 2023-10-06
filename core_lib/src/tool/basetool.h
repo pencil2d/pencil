@@ -55,6 +55,7 @@ public:
     bool bucketFillExpandEnabled = 0;
     int bucketFillReferenceMode = 0;
     bool  useFillContour = false;
+    bool autoSwitchTool = true;
     bool  showSelectionInfo = true;
     bool  cameraShowPath = true;
     DotColorType cameraPathDotColorType = DotColorType::RED;
@@ -128,6 +129,7 @@ public:
     virtual void setFillExpandEnabled(const bool enabled);
     virtual void setFillReferenceMode(int referenceMode);
     virtual void setUseFillContour(const bool useFillContour);
+    virtual void setAutoSwitchTool(const bool autoSwitch);
     virtual void setShowSelectionInfo(const bool b);
     virtual void setShowCameraPath(const bool showCameraPath);
     virtual void setPathDotColorType(const DotColorType dotColorType);
