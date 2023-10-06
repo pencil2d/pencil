@@ -196,6 +196,7 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
     mStartMoveMode = MoveMode::NONE;
     mSelectionRect = mEditor->select()->mapToSelection(mEditor->select()->mySelectionRect()).boundingRect();
+    editor()->select()->setSelection(mSelectionRect);
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateFrame();
