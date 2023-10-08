@@ -2,13 +2,12 @@
 #define ADDTRANSPARENCYTOPAPERDIALOG_H
 
 #include <QDialog>
-#include <QImage>
 #include <QGraphicsScene>
-#include <QGraphicsPixmapItem>
 
 #include "bitmapimage.h"
 
 class Editor;
+class QGraphicsPixmapItem;
 
 namespace Ui {
 class AddTransparencyToPaperDialog;
@@ -35,17 +34,15 @@ protected:
 private slots:
     void SpinboxChanged(int value);
     void SliderChanged(int value);
-    void loadDrawing(int frame);
+    void traceScannedDrawings();
     void updateDrawing();
     void layerChanged(int index);
     void checkerStateChanged(bool state);
     void zoomChanged(int zoomLevel);
 
 private:
-
     void updatePreview();
-    void traceScannedDrawings();
-    void closeClicked();
+    void loadDrawing(int frame);
 
     int mZoomLevel = 1;
 

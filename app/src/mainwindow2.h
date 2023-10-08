@@ -19,8 +19,6 @@ GNU General Public License for more details.
 #define MAINWINDOW2_H
 
 #include <QMainWindow>
-#include "pegbaralignmentdialog.h"
-#include "addtransparencytopaperdialog.h"
 
 template<typename T> class QList;
 class QActionGroup;
@@ -31,7 +29,6 @@ class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
 class BitmapColoring;
-class DisplayOptionWidget;
 class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
@@ -46,6 +43,7 @@ class ImportImageSeqDialog;
 class BackupElement;
 class LayerOpacityDialog;
 class PegBarAlignmentDialog;
+class AddTransparencyToPaperDialog;
 class RepositionFramesDialog;
 class StatusBar;
 enum class SETTING;

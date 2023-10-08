@@ -77,7 +77,6 @@ public:
     /** Get selected keyframe positions based on the order they were selected */
     QList<int> selectedKeyFramesByLast() const { return mSelectedFrames_byLast; }
 
-
     virtual Status saveKeyFrameFile(KeyFrame*, QString dataPath) = 0;
     virtual void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressForward) = 0;
     virtual QDomElement createDomElement(QDomDocument& doc) const = 0;

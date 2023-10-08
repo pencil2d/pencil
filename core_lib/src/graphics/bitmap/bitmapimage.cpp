@@ -728,11 +728,6 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
-void BitmapImage::setBounds(QRect rect)
-{
-    updateBounds(rect);
-}
-
 BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, bool greenEnabled, bool blueEnabled)
 {
     Q_ASSERT(img != nullptr);

@@ -19,7 +19,6 @@ GNU General Public License for more details.
 
 #include "object.h"
 #include "editor.h"
-#include "bitmapimage.h"
 
 #include "layersound.h"
 #include "layerbitmap.h"

@@ -112,11 +112,8 @@ public:
 
 
     QRect& bounds() { autoCrop(); return mBounds; }
-    void setBounds(QRect rect);
 
     // coloring methods
-    int getThreshold() { return mThreshold; }
-    int getSpotArea() { return mSpotArea; }
     BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool redEnabled, bool greenEnabled, bool blueEnabled);
     BitmapImage* prepDrawing(BitmapImage* img, bool redEnabled, bool greenEnabled, bool blueEnabled);
     void traceLine(BitmapImage* bitmapimage, bool blackEnabled, bool redEnabled, bool greenEnabled, bool blueEnabled);
@@ -211,7 +208,6 @@ private:
     const int GRAYSCALEDIFF = 15; // difference in grasycale values to decide color
     const int TRANSP_THRESHOLD = 60;// threshold when tracing black for two layer coloring
 
-    const int RED_FACTOR = 20;
     qreal mOpacity = 1.0;
 };
 

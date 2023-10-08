@@ -67,6 +67,7 @@ GNU General Public License for more details.
 #include "bitmapcoloring.h"
 #include "onionskinwidget.h"
 #include "pegbaralignmentdialog.h"
+#include "addtransparencytopaperdialog.h"
 #include "repositionframesdialog.h"
 
 //#include "preview.h"
@@ -175,12 +176,6 @@ void MainWindow2::createDockWidgets()
     mBitmapColoring = new BitmapColoring(mEditor, this);
     mBitmapColoring->setObjectName("BitmapColoring");
 
-    /*
-    mTimeline2 = new Timeline2;
-    mTimeline2->setObjectName( "Timeline2" );
-    mDockWidgets.append( mTimeline2 );
-    */
-
     mDockWidgets
         << mTimeLine
         << mColorBox
@@ -211,7 +206,6 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
     addDockWidget(Qt::RightDockWidgetArea, mBitmapColoring);
-    mBitmapColoring->hide();
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
@@ -238,7 +232,10 @@ void MainWindow2::createDockWidgets()
     for (BaseDockWidget* w : mDockWidgets)
     {
         w->setFloating(false);
-        w->show();
+        if (w != mBitmapColoring)
+        {
+            w->show();
+        }
         w->updateUI();
     }
 }
@@ -1555,7 +1552,7 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mBitmapColoring, &BitmapColoring::updateUI);
-    connect(mBitmapColoring, &QDockWidget::visibilityChanged, mBitmapColoring, &BitmapColoring::visibilityChanged);
+    connect(mBitmapColoring, &QDockWidget::visibilityChanged, mBitmapColoring, &BitmapColoring::onVisibilityChanged);
 }
 
 void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)

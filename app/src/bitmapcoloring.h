@@ -2,13 +2,11 @@
 #define BITMAPCOLORING_H
 
 #include "basedockwidget.h"
-#include "editor.h"
-#include "layerbitmap.h"
-#include "bitmapimage.h"
-#include <QTabWidget>
-#include "scribblearea.h"
 
-class Layer;
+class BitmapImage;
+class Editor;
+class LayerBitmap;
+class ScribbleArea;
 
 namespace Ui
 {
@@ -25,11 +23,9 @@ public:
 
     void initUI() override;
     void updateUI() override;
-    void visibilityChanged(bool visibility);
+    void onVisibilityChanged(bool visibility);
 
-signals:
-
-public slots:
+private slots:
     void checkRedBoxes();
     void checkGreenBoxes();
     void checkBlueBoxes();
@@ -40,7 +36,7 @@ public slots:
     void enableTabs(int index);
     // 1: Trace
     void updateTraceBoxes();
-    void setThreshold(int threshold);
+    void prepareAndTraceLines();
     void traceLines();
     // 2: Thin
     void updateFillSpotsButton();
@@ -52,8 +48,7 @@ public slots:
     void updateBlendBoxes();
     void blendLines();
 
-protected:
-    void prepareAndTraceLines();
+private:
     void prepareLines();
     void trace();
     void thin();
@@ -61,13 +56,11 @@ protected:
     void nonValidBitmap(int frame);
     void updateTraceButtons();
 
-private:
     Ui::BitmapColoringWidget* ui = nullptr;
     Editor* mEditor = nullptr;
     ScribbleArea* mScribblearea = nullptr;
     LayerBitmap* mLayerBitmap = nullptr;
     BitmapImage* mBitmapImage = nullptr;
-    bool mSelectAreas = false;
     int mAnimLayer = 0; // Animation layer index
     int mColLayer = 0;  // Coloring layer index
     bool mRedChecked = false;

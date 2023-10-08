@@ -18,7 +18,10 @@ GNU General Public License for more details.
 #include <QProgressDialog>
 #include "bitmapcoloring.h"
 #include "ui_bitmapcoloringwidget.h"
+#include "editor.h"
+#include "layerbitmap.h"
 #include "layermanager.h"
+#include "scribblearea.h"
 #include "app_util.h"
 
 
@@ -111,7 +114,7 @@ void BitmapColoring::updateUI()
     mScribblearea->updateFrame();
 }
 
-void BitmapColoring::visibilityChanged(bool visibility)
+void BitmapColoring::onVisibilityChanged(bool visibility)
 {
     if (visibility)
         updateUI();
@@ -243,11 +246,6 @@ void BitmapColoring::updateTraceBoxes()
         ui->tab1->setEnabled(true);
         ui->gb2Trace->setEnabled(true);
     }
-}
-
-void BitmapColoring::setThreshold(int threshold)
-{
-    mBitmapImage->setThreshold(threshold);
 }
 
 void BitmapColoring::traceLines()
@@ -664,13 +662,6 @@ void BitmapColoring::prepareLines()
 
 void BitmapColoring::trace()
 {
-    if (mSelectAreas)
-    {
-        mEditor->copy();
-        mLayerBitmap->removeKeyFrame(mEditor->currentFrame());
-        mLayerBitmap->addNewKeyFrameAt(mEditor->currentFrame());
-        mEditor->paste();
-    }
     mBitmapImage = mLayerBitmap->getBitmapImageAtFrame(mEditor->currentFrame());
     if (mBitmapImage == nullptr)
     {

@@ -54,12 +54,9 @@
         <file>icons/new/svg/smudge_detailed.svg</file>
         <file>icons/new/svg/trash_detailed.svg</file>
         <file>icons/new/checkerboard_smaller.png</file>
-        <file>icons/select.png</file>
         <file>icons/blue.png</file>
         <file>icons/green.png</file>
         <file>icons/red.png</file>
-        <file>icons/black.png</file>
-        <file>icons/select_ok.png</file>
         <file>icons/overlayCenter.png</file>
         <file>icons/overlayGoldenRatio.png</file>
         <file>icons/overlaySafe.png</file>

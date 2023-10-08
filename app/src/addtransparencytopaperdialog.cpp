@@ -1,6 +1,7 @@
 #include "addtransparencytopaperdialog.h"
 #include "ui_addtransparencytopaperdialog.h"
 
+#include <QGraphicsPixmapItem>
 #include <QProgressDialog>
 #include <QDebug>
 
@@ -19,13 +20,13 @@ AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QDialog *parent) :
     ui->mainLayout->setStretchFactor(ui->optionsLayout, 1);
     ui->mainLayout->setStretchFactor(ui->previewLayout, 20);
 
-    connect(this, &QDialog::finished, this, &AddTransparencyToPaperDialog::closeClicked);
+    connect(this, &QDialog::finished, this, &AddTransparencyToPaperDialog::closeDialog);
     connect(ui->sb_treshold, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AddTransparencyToPaperDialog::SpinboxChanged);
     connect(ui->sliderThreshold, &QSlider::valueChanged, this, &AddTransparencyToPaperDialog::SliderChanged);
     connect(ui->cb_Red, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Green, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Blue, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
-    connect(ui->btnCancel, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::closeClicked);
+    connect(ui->btnCancel, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::closeDialog);
     connect(ui->btnApply, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::traceScannedDrawings);
     connect(ui->testTransparencyCheckbox, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::checkerStateChanged);
     connect(ui->zoomSlider, &QSlider::valueChanged, this, &AddTransparencyToPaperDialog::zoomChanged);
@@ -245,10 +246,5 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
         mEditor->setAutoSaveCounter(count);
     }
     if (ui->rbAllKeyframes->isChecked())
-        closeClicked();
-}
-
-void AddTransparencyToPaperDialog::closeClicked()
-{
-    emit closeDialog();
+        emit closeDialog();
 }

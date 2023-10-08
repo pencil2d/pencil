@@ -27,7 +27,6 @@ class LayerBitmap : public Layer
     Q_OBJECT
 
 public:
-
     LayerBitmap(Object* object);
     ~LayerBitmap() override;
 

@@ -154,8 +154,6 @@ signals:
     void objectLoaded();
 
     void fpsChanged(int fps);
-    void changeThinLinesButton(bool);
-    void currentFrameChanged(int n);
     void scrubbedTo(int frame);
 
     void needSave();
@@ -193,8 +191,6 @@ public: //slots
     KeyFrame* addNewKey();
     void removeKey();
 
-    void notifyCurrentFrameUpdated();
-    void notifyAnimationLengthChanged();
     void switchVisibilityOfLayer(int layerNumber);
     void swapLayers(int i, int j);
     bool canSwapLayers(int layerIndexLeft, int layerIndexRight) const;
@@ -240,7 +236,6 @@ public: //slots
     void resetAutoSaveCounter();
     int getAutoSaveCounter() { return mAutosaveCounter; }
     void setAutoSaveCounter(int count) { mAutosaveCounter = count; }
-    bool getIsDoingRepeatColoring() { return mIsDoingRepeatInColoring; }
     void setIsDoingRepeatColoring(bool b) { mIsDoingRepeatInColoring = b; }
 
 
