@@ -52,7 +52,8 @@ wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-inte
 create_package_macos() {
   echo "::group::Clean"
   make clean
-  mv bin Pencil2D
+  mkdir Pencil2D
+  mv app/Pencil2D.app Pencil2D/
   pushd Pencil2D >/dev/null
   echo "::endgroup::"
 
@@ -88,25 +89,30 @@ create_package_macos() {
 }
 
 create_package_windows() {
+  echo "::group::Set up application files"
+  nmake install INSTALL_ROOT="$(cygpath -w "${PWD}/Pencil2D")"
+  echo "::endgroup::"
+
   echo "Copy FFmpeg plugin"
   local platform="${INPUT_ARCH%%_*}"
   local ffmpeg="ffmpeg-${platform}.zip"
   curl -fsSLO "https://github.com/pencil2d/pencil2d-deps/releases/download/ffmpge-v4.1.1/$ffmpeg"
   "${WINDIR}\\System32\\tar" xf "${ffmpeg}"
-  mkdir bin/plugins
-  mv "ffmpeg.exe" bin/plugins/
+  mkdir Pencil2D/plugins
+  mv "ffmpeg.exe" Pencil2D/plugins/
   rm -rf "${ffmpeg}"
 
-  mv bin Pencil2D
   echo "Remove files"
   find \( -name '*.pdb' -o -name '*.ilk' \) -delete
   echo "::group::Deploy Qt libraries"
   windeployqt Pencil2D/pencil2d.exe
   echo "::endgroup::"
   echo "Copy OpenSSL DLLs"
-  local xbits="-x${platform#win}"
-  local _xbits="_x${platform#win}"
-  cp "${IQTA_TOOLS}\\OpenSSL\\Win${_xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${xbits/-x32/}.dll" Pencil2D/
+  curl -fsSLO https://download.firedaemon.com/FireDaemon-OpenSSL/openssl-1.1.1w.zip
+  "${WINDIR}\\System32\\tar" xf openssl-1.1.1w.zip
+  local xbits="x${platform#win}"
+  local _xbits="-${xbits}"
+  cp "openssl-1.1\\${xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${_xbits/-x32/}.dll" Pencil2D/
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
   "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$1-$(date +%F).zip" Pencil2D

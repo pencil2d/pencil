@@ -38,6 +38,7 @@ GNU General Public License for more details.
 #include "strokemanager.h"
 #include "selectionpainter.h"
 #include "camerapainter.h"
+#include "tiledbuffer.h"
 
 class Layer;
 class Editor;
@@ -52,7 +53,6 @@ class ScribbleArea : public QWidget
     Q_OBJECT
 
     friend class MoveTool;
-    friend class EditTool;
     friend class SmudgeTool;
     friend class BucketTool;
 
@@ -66,31 +66,23 @@ public:
     Editor* editor() const { return mEditor; }
 
     void deleteSelection();
-    void displaySelectionProperties();
 
     void applyTransformedSelection();
     void cancelTransformedSelection();
 
     bool isLayerPaintable() const;
 
-    QVector<QPoint> calcSelectionCenterPoints();
-
     void setEffect(SETTING e, bool isOn);
 
     LayerVisibility getLayerVisibility() const { return mLayerVisibility; }
     qreal getCurveSmoothing() const { return mCurveSmoothingLevel; }
-    bool usePressure() const { return mUsePressure; }
     bool makeInvisible() const { return mMakeInvisible; }
 
-    QRect getCameraRect();
     QPointF getCentralPoint();
 
-    /** Update current frame.
-     *  calls update() behind the scene and update cache if necessary */
-    void updateCurrentFrame();
     /** Update frame.
      * calls update() behind the scene and update cache if necessary */
-    void updateFrame(int frame);
+    void updateFrame();
 
     /** Frame scrubbed, invalidate relevant cache */
     void onScrubbed(int frameNumber);
@@ -126,17 +118,11 @@ public:
     /** Tool changed, invalidate cache and frame if needed */
     void onToolChanged(ToolType);
 
-    /** Set frame on layer to modified and invalidate current frame cache */
-    void setModified(int layerNumber, int frameNumber);
-    void setModified(const Layer* layer, int frameNumber);
+    void endStroke();
 
     void flipSelection(bool flipVertical);
 
     BaseTool* currentTool() const;
-    BaseTool* getTool(ToolType eToolMode);
-    void setCurrentTool(ToolType eToolMode);
-
-    void floodFillError(int errorType);
 
     bool isMouseInUse() const { return mMouseInUse; }
     bool isTabletInUse() const { return mTabletInUse; }
@@ -147,14 +133,12 @@ public:
 
 signals:
     void multiLayerOnionSkinChanged(bool);
-    void refreshPreview();
     void selectionUpdated();
 
 public slots:
     void clearImage();
     void setCurveSmoothing(int);
     void toggleThinLines();
-    void toggleOutlines();
     void increaseLayerVisibilityIndex();
     void decreaseLayerVisibilityIndex();
     void setLayerVisibility(LayerVisibility visibility);
@@ -163,6 +147,8 @@ public slots:
     void paletteColorChanged(QColor);
 
     void showLayerNotVisibleWarning();
+    void onTileUpdated(TiledBuffer* tiledBuffer, Tile* tile);
+    void onTileCreated(TiledBuffer* tiledBuffer, Tile* tile);
 
 protected:
     bool event(QEvent *event) override;
@@ -179,17 +165,16 @@ protected:
 
 public:
     void drawPolyline(QPainterPath path, QPen pen, bool useAA);
-    void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA = true);
     void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
-    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, qreal opacity, bool usingFeather = true, bool useAA = false);
+    void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather = true, bool useAA = false);
     void blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
     void paintCanvasCursor(QPainter& painter);
-    void clearBitmapBuffer();
+    void clearDrawingBuffer();
     void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
     void pointerPressEvent(PointerEvent*);
@@ -202,10 +187,9 @@ public:
     /// on an empty frame, and if so, takes action according to use preference.
     void handleDrawingOnEmptyFrame();
 
-    BitmapImage mBufferImg; // used to draw strokes for both bitmap and vector
+    TiledBuffer mTiledBuffer;
 
     QPixmap mCursorImg;
-    QPixmap mTransCursImg;
 
 private:
 
@@ -230,7 +214,7 @@ private:
 
     void prepOverlays(int frame);
     void prepCameraPainter(int frame);
-    void prepCanvas(int frame, QRect rect);
+    void prepCanvas(int frame);
     void drawCanvas(int frame, QRect rect);
     void settingUpdated(SETTING setting);
     void paintSelectionVisuals(QPainter &painter);
@@ -238,26 +222,16 @@ private:
     BitmapImage* currentBitmapImage(Layer* layer) const;
     VectorImage* currentVectorImage(Layer* layer) const;
 
-    MoveMode mMoveMode = MoveMode::NONE;
-
     std::unique_ptr<StrokeManager> mStrokeManager;
 
     Editor* mEditor = nullptr;
 
-
-    bool mIsSimplified = false;
-    bool mShowThinLines = false;
     bool mQuickSizing = true;
     LayerVisibility mLayerVisibility = LayerVisibility::ALL;
-    bool mUsePressure   = true;
     bool mMakeInvisible = false;
-    bool mToolCursors = true;
     qreal mCurveSmoothingLevel = 0.0;
-    bool mMultiLayerOnionSkin = false; // future use. If required, just add a checkbox to updated it.
-    QColor mOnionColor;
+    bool mMultiLayerOnionSkin = false; // Future use. If required, just add a checkbox to update it.
     int mDeltaFactor = 1;
-
-private:
 
     /* Under certain circumstances a mouse press event will fire after a tablet release event.
        This causes unexpected behaviours for some of the tools, eg. the bucket.
@@ -267,9 +241,7 @@ private:
        The following will filter mouse events created after a tablet release event.
     */
     void tabletReleaseEventFired();
-    bool mKeyboardInUse = false;
     bool mMouseInUse = false;
-    bool mMouseRightButtonInUse = false;
     bool mTabletInUse = false;
     qreal mDevicePixelRatio = 1.;
 

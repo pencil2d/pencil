@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources targetOsVersion="6.2.1" majorVersion="1">
+  <index root="\" startIndexAt="resources\">
+    <default>
+      <qualifier name="scale" value="100"/>
+      <qualifier name="Language" value="en-US"/>
+    </default>
+    <indexer-config type="folder" foldernameAsQualifier="true" filenameAsQualifier="true" qualifierDelimiter="."/>
+  </index>
+</resources>

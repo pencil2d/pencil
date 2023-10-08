@@ -108,7 +108,7 @@ void BitmapColoring::updateUI()
         ui->tab2->setEnabled(false);
         ui->tab3->setEnabled(false);
     }
-    mScribblearea->updateCurrentFrame();
+    mScribblearea->updateFrame();
 }
 
 void BitmapColoring::visibilityChanged(bool visibility)

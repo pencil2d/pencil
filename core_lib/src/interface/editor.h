@@ -174,14 +174,8 @@ public: //slots
 
     /** Will call update() and update the canvas
      * Only call this directly If you need the cache to be intact and require the frame to be repainted
-     * Convenient method that does the same as updateFrame but for the current frame
     */
-    void updateCurrentFrame();
-
-    /** Will call update() and update the canvas
-     * Only call this directly If you need the cache to be intact and require the frame to be repainted
-    */
-    void updateFrame(int frameNumber);
+    void updateFrame();
 
     void setModified(int layerNumber, int frameNumber);
 

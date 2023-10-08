@@ -22,7 +22,17 @@ GNU General Public License for more details.
 
 class QAbstractSpinBox;
 
-QTransform RectMapTransform( QRectF source, QRectF target );
+/**
+ * Clips a given line to a clipping window using the Liang-Barsky algorithm.
+ * @see https://www2.eecs.berkeley.edu/Pubs/TechRpts/1992/6271.html
+ *
+ * @param line The line to be clipped
+ * @param clip The clipping window to use
+ * @param t0 The starting point of the line to check, as a percentage
+ * @param t0 The ending point of the line to check, as a percentage
+ * @return The clipped line, or a null line if the line is completely outside the clipping window
+ */
+QLineF clipLine(const QLineF& line, const QRect& clip, qreal t0, qreal t1);
 
 void clearFocusOnFinished(QAbstractSpinBox *spinBox);
 

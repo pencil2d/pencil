@@ -92,7 +92,7 @@ jobs:
 
     - name: Configure build
       run: mkdir build; ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
-        -o build PREFIX=/usr CONFIG+=release CONFIG+=GIT
+        -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
         CONFIG+=PENCIL2D_${{github.ref == 'refs/heads/release' && 'RELEASE' || 'NIGHTLY'}}
         ${{matrix.qt == 6 && 'CONFIG+=c++17 QMAKE_CXX_FLAGS+=-std=c++17' || ''}}
 
@@ -102,7 +102,7 @@ jobs:
 
     - name: Run tests
       env: { QT_QPA_PLATFORM: minimal }
-      run: build/tests/bin/tests
+      run: build/tests/tests
 
     - name: Create package
       id: package

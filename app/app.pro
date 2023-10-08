@@ -6,18 +6,11 @@
 
 ! include( ../util/common.pri ) { error( Could not find the common.pri file! ) }
 
+TEMPLATE = app
+CONFIG += precompile_header lrelease embed_translations
 QT += core widgets gui xml multimedia svg network
 
-TEMPLATE = app
 TARGET = pencil2d
-QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
-
-CONFIG += precompile_header lrelease embed_translations
-
-DESTDIR = ../bin
-MOC_DIR = .moc
-OBJECTS_DIR = .obj
-UI_DIR = .ui
 
 RESOURCES += data/app.qrc
 
@@ -224,10 +217,30 @@ macx {
     QMAKE_BUNDLE_DATA += FILE_ICONS
 
     QMAKE_TARGET_BUNDLE_PREFIX += org.pencil2d
+    QMAKE_APPLICATION_BUNDLE_NAME = Pencil2D
 }
 
 win32 {
+    target.path = /
+    visualelements.path = /
+    visualelements.files = data/pencil2d.VisualElementsManifest.xml $$OUT_PWD\resources.pri
+    visualelements.CONFIG += no_check_exist
+    visualelements.depends += resources.pri
+    resources.path = /resources
+    resources.files = data/resources/*
+
+    PRI_CONFIG = data/resources.xml
+    PRI_INDEX_NAME = Pencil2D
     RC_FILE = data/pencil2d.rc
+    INSTALLS += target visualelements resources
+
+    makepri.name = makepri
+    makepri.input = PRI_CONFIG
+    makepri.output = ${QMAKE_FILE_IN_BASE}.pri
+    makepri.commands = makepri new /o /in $$PRI_INDEX_NAME /pr ${QMAKE_FILE_PATH} /cf ${QMAKE_FILE_IN} /of ${QMAKE_FILE_OUT}
+    silent: makepri.commands = @echo makepri ${QMAKE_FILE_IN} && $$makepri.commands
+    makepri.CONFIG = no_link
+    QMAKE_EXTRA_COMPILERS += makepri
 }
 
 unix:!macx {
@@ -258,8 +271,9 @@ unix:!macx {
 
 INCLUDEPATH += ../../core_lib/src
 
-CONFIG(debug,debug|release) BUILDTYPE = debug
-CONFIG(release,debug|release) BUILDTYPE = release
+BUILDTYPE =
+debug_and_release:CONFIG(debug,debug|release) BUILDTYPE = debug
+debug_and_release:CONFIG(release,debug|release) BUILDTYPE = release
 
 win32-msvc* {
     LIBS += -L$$OUT_PWD/../core_lib/$$BUILDTYPE/ -lcore_lib
