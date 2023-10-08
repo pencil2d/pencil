@@ -30,7 +30,6 @@ GNU General Public License for more details.
 #include <QPixmapCache>
 
 #include "movemode.h"
-#include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
 #include "canvaspainter.h"

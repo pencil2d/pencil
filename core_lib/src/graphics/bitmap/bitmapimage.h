@@ -24,10 +24,16 @@ GNU General Public License for more details.
 
 class TiledBuffer;
 
-
 class BitmapImage : public KeyFrame
 {
 public:
+    const QRgb transp = qRgba(0, 0, 0, 0);
+    const QRgb rosa = qRgba(255,230,230,255);
+    const QRgb blackline = qRgba(1, 1, 1, 255);
+    const QRgb redline = qRgba(254,0,0,255);
+    const QRgb greenline = qRgba(0,254,0,255);
+    const QRgb blueline = qRgba(0,0,254,255);
+
     BitmapImage();
     BitmapImage(const BitmapImage&);
     BitmapImage(const QRect &rectangle, const QColor& color);
@@ -107,6 +113,16 @@ public:
 
     QRect& bounds() { autoCrop(); return mBounds; }
 
+    // coloring methods
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    BitmapImage* prepDrawing(BitmapImage* img, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    void traceLine(BitmapImage* bitmapimage, bool blackEnabled, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    void eraseRedGreenBlueLines(BitmapImage* img);
+    void fillSpotAreas(BitmapImage* img);
+    void toThinLine(BitmapImage* colorImage, bool black, bool red, bool green, bool blue);
+    void blendLines(BitmapImage* bitmapimage, bool black, bool red, bool green, bool blue);
+    int fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage* img);
+
     /** Determines if the BitmapImage is minimally bounded.
      *
      *  A BitmapImage is minimally bounded if all edges contain
@@ -124,6 +140,9 @@ public:
 
     Status writeFile(const QString& filename);
 
+public slots:
+    void setThreshold(int threshold) { mThreshold = threshold; }
+    void setSpotArea(int spotArea) { mSpotArea = spotArea; }
     /** Compare colors for the purposes of flood filling
      *
      *  Calculates the Eulcidian difference of the RGB channels
@@ -181,6 +200,14 @@ private:
     /** @see isMinimallyBounded() */
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
+
+    int mSpotArea = 6;
+    int mThreshold = 200;
+    const int mLowThreshold = 30;   // threshold for images to be given transparency
+    const int COLORDIFF = 5; // difference in color values to decide color
+    const int GRAYSCALEDIFF = 15; // difference in grasycale values to decide color
+    const int TRANSP_THRESHOLD = 60;// threshold when tracing black for two layer coloring
+
     qreal mOpacity = 1.0;
 };
 

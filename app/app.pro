@@ -59,6 +59,7 @@ INCLUDEPATH += \
 PRECOMPILED_HEADER = src/app-pch.h
 
 HEADERS += \
+    src/addtransparencytopaperdialog.h \
     src/app-pch.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
@@ -102,7 +103,8 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
-    src/presetdialog.h     \
+    src/bitmapcoloring.h \
+    src/presetdialog.h \
     src/repositionframesdialog.h \
     src/commandlineparser.h \
     src/commandlineexporter.h \
@@ -111,6 +113,7 @@ HEADERS += \
     src/cameraoptionswidget.h
 
 SOURCES += \
+    src/addtransparencytopaperdialog.cpp \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/layeropacitydialog.cpp \
@@ -153,6 +156,7 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
+    src/bitmapcoloring.cpp \
     src/presetdialog.cpp \
     src/repositionframesdialog.cpp \
     src/app_util.cpp \
@@ -163,6 +167,7 @@ SOURCES += \
     src/cameraoptionswidget.cpp
 
 FORMS += \
+    ui/addtransparencytopaperdialog.ui \
     ui/cameraoptionswidget.ui \
     ui/camerapropertiesdialog.ui \
     ui/importimageseqpreview.ui \
@@ -191,6 +196,7 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
+    ui/bitmapcoloringwidget.ui \
     ui/presetdialog.ui
 
 GIT {
