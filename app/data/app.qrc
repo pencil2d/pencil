@@ -35,14 +35,9 @@
         <file>icons/themes/playful/preferences/preferences-files.svg</file>
         <file>icons/themes/playful/preferences/preferences-shortcuts.svg</file>
         <file>icons/themes/playful/preferences/preferences-tools.svg</file>
-        <file>icons/themes/playful/tools/shape.svg</file>
-        <file>icons/themes/playful/tools/text.svg</file>
         <file>icons/general/checkerboard_smaller.png</file>
         <file>icons/general/cross.png</file>
         <file>icons/themes/playful/display/overlay-grid.svg</file>
-        <file>icons/themes/classic/tools/camera-move.svg</file>
-        <file>icons/themes/classic/tools/camera-rotate.svg</file>
-        <file>icons/themes/classic/tools/camera-scale.svg</file>
         <file>icons/general/cursor-diagonal-left.svg</file>
         <file>icons/general/cursor-diagonal-right.svg</file>
         <file>icons/general/cursor-horizontal.svg</file>
