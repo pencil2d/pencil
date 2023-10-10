@@ -105,11 +105,11 @@ bool SmudgeTool::emptyFrameActionEnabled()
 QCursor SmudgeTool::cursor()
 {
     if (toolMode == 0) { //normal mode
-        return QCursor(QPixmap(":icons/general/cursor-smudge.svg"), 1, 16);
+        return QCursor(QPixmap(":icons/general/cursor-smudge.svg"), 4, 18);
 
     }
     else { // blured mode
-        return QCursor(QPixmap(":icons/general/cursor-smudge-liquify.svg"), 1, 16);
+        return QCursor(QPixmap(":icons/general/cursor-smudge-liquify.svg"), 4, 18);
     }
 }
 
