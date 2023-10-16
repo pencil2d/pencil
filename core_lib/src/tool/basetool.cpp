@@ -444,6 +444,11 @@ void BaseTool::setUseFillContour(const bool useFillContour)
     properties.useFillContour = useFillContour;
 }
 
+void BaseTool::setAutoSwitchTool(const bool autoSwitch)
+{
+    properties.autoSwitchTool = autoSwitch;
+}
+
 void BaseTool::setShowSelectionInfo(const bool b)
 {
     properties.showSelectionInfo = b;

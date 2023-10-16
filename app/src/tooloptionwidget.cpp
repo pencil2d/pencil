@@ -114,6 +114,8 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
 
+    connect(ui->autoSwitchToolCheckBox, &QCheckBox::clicked, toolManager, &ToolManager::setAutoSwitchTool);
+
     connect(ui->showInfoBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowSelectionInfo);
 
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
@@ -136,6 +138,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case ANTI_ALIASING: setAA(p.useAA); break;
     case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
+    case AUTOSWITCHTOOL: setAutoSwitchTool(p.autoSwitchTool); break;
     case SHOWSELECTIONINFO: setShowSelectionInfo(p.showSelectionInfo); break;
     case BEZIER: setBezier(p.bezier_state); break;
     case CAMERAPATH: { break; }
@@ -186,6 +189,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
+    ui->autoSwitchToolCheckBox->setVisible(tool->isPropertyEnabled(AUTOSWITCHTOOL));
     ui->showInfoBox->setVisible(tool->isPropertyEnabled(SHOWSELECTIONINFO));
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
@@ -342,6 +346,12 @@ void ToolOptionWidget::setBezier(bool useBezier)
 {
     QSignalBlocker b(ui->useBezierBox);
     ui->useBezierBox->setChecked(useBezier);
+}
+
+void ToolOptionWidget::setAutoSwitchTool(bool autoSwitch)
+{
+    QSignalBlocker b(ui->autoSwitchToolCheckBox);
+    ui->autoSwitchToolCheckBox->setChecked(autoSwitch);
 }
 
 void ToolOptionWidget::setShowSelectionInfo(bool showSelectionInfo)

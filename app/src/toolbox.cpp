@@ -31,6 +31,8 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 #include "layermanager.h"
 #include "pencilsettings.h"
+#include "selectionmanager.h"
+#include "selecttool.h"
 
 // ----------------------------------------------------------------------------------
 QString GetToolTips(QString strCommandName)
@@ -137,6 +139,8 @@ void ToolBoxWidget::initUI()
 
     connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &ToolBoxWidget::onLayerDidChange);
 
+    //switch to move tool when selection changes
+    connect(editor()->select(), &SelectionManager::selectionChanged, this, &ToolBoxWidget::onSelectionChanged);
 
     FlowLayout* flowlayout = new FlowLayout;
 
@@ -302,5 +306,20 @@ void ToolBoxWidget::onLayerDidChange(int)
     if (currentTool->type() == MOVE || currentTool->type() == CAMERA)
     {
         moveOn();
+    }
+}
+
+void ToolBoxWidget::onSelectionChanged(){
+    BaseTool* currentTool = editor()->tools()->currentTool();
+    if (currentTool->type() == SELECT)
+    {
+        if (editor()->select()->somethingSelected())
+        {
+            SelectTool* selectTool = (SelectTool*) currentTool;
+            if (selectTool->properties.autoSwitchTool && !selectTool->selectChanging())
+            {
+                moveOn();
+            }
+        }
     }
 }

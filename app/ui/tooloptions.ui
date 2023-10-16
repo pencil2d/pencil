@@ -131,6 +131,16 @@
        </item>
 
        <item>
+        <widget class="QCheckBox" name="autoSwitchToolCheckBox">
+         <property name="text">
+          <string>Auto-Switch to Move Tool</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QCheckBox" name="showInfoBox">
          <property name="text">
           <string>Show Size and Diff.</string>

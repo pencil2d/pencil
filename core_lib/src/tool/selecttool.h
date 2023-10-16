@@ -39,6 +39,8 @@ public:
     void resetToDefault() override;
     void setShowSelectionInfo(const bool b) override;
 
+    bool selectChanging();
+
 private:
 
     void pointerPressEvent(PointerEvent*) override;
@@ -65,6 +67,7 @@ private:
     MoveMode mStartMoveMode = MoveMode::NONE;
     QRectF mSelectionRect;
     Layer* mCurrentLayer = nullptr;
+    bool mSelectChanging = false;
 
     QPixmap mCursorPixmap = QPixmap(24, 24);
 };

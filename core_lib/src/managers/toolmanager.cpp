@@ -266,6 +266,11 @@ void ToolManager::setUseFillContour(bool useFillContour)
     emit toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
 }
 
+void ToolManager::setAutoSwitchTool(bool autoSwitch)
+{
+    currentTool()->setAutoSwitchTool(autoSwitch);
+}
+
 void ToolManager::setShowSelectionInfo(bool b)
 {
     currentTool()->setShowSelectionInfo(b);
