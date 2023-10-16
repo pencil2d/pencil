@@ -40,7 +40,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap resource="../data/app.qrc">:/app/icons/dialog-error.svg</pixmap>
+        <pixmap resource="../data/app.qrc">:/icons/themes/playful/dialog-error.svg</pixmap>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>

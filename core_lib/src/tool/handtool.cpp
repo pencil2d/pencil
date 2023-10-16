@@ -62,7 +62,7 @@ void HandTool::updateSettings(const SETTING setting)
 
 QCursor HandTool::cursor()
 {
-    return mIsHeld ? Qt::ClosedHandCursor : Qt::OpenHandCursor;
+    return mIsHeld ? QCursor(Qt::ClosedHandCursor) : QCursor(Qt::OpenHandCursor);
 }
 
 void HandTool::pointerPressEvent(PointerEvent*)

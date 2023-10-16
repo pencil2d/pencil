@@ -144,7 +144,7 @@ void EraserTool::setStabilizerLevel(const int level)
 
 QCursor EraserTool::cursor()
 {
-    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
+    return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
 }
 
 void EraserTool::pointerPressEvent(PointerEvent *event)

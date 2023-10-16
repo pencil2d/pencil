@@ -57,27 +57,26 @@ QCursor SelectTool::cursor()
     case MoveMode::TOPLEFT:
     case MoveMode::BOTTOMRIGHT:
     {
-        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-diagonal-left.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-diagonal-left.svg"));
         break;
     }
     case MoveMode::TOPRIGHT:
     case MoveMode::BOTTOMLEFT:
     {
-        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-diagonal-right.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-diagonal-right.svg"));
         break;
     }
     case MoveMode::MIDDLE:
     {
-        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-move.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-move.svg"));
         break;
     }
     case MoveMode::NONE:
-    {
-        cursorPainter.drawPixmap(QPoint(2, 2), QPixmap(":icons/cross.png"));
+        cursorPainter.drawPixmap(QPoint(3,3), QPixmap(":icons/general/cross.png"));
         break;
-    }
     default:
         Q_UNREACHABLE();
+        break;
     }
     return QCursor(mCursorPixmap);
 }

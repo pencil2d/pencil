@@ -81,15 +81,11 @@ QCursor BucketTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))
     {
-        QPixmap pixmap(":icons/bucketTool.png");
-        QPainter painter(&pixmap);
-        painter.end();
-
-        return QCursor(pixmap, 4, 20);
+        return QCursor(QPixmap(":icons/general/cursor-bucket.svg"), -1, 17);
     }
     else
     {
-        return QCursor(QPixmap(":icons/cross.png"), 10, 10);
+        return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
     }
 }
 

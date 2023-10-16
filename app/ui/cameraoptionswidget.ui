@@ -51,12 +51,12 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/camera-scale.svg</normaloff>:/icons/new/svg/camera-scale.svg</iconset>
+          <normaloff>:/icons/themes/playful/tools/tool-camera-scale.svg</normaloff>:/icons/themes/playful/tools/tool-camera-scale.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>26</width>
-          <height>24</height>
+          <width>22</width>
+          <height>22</height>
          </size>
         </property>
        </widget>
@@ -68,12 +68,12 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/camera-rotate.svg</normaloff>:/icons/new/svg/camera-rotate.svg</iconset>
+          <normaloff>:/icons/themes/playful/tools/tool-camera-rotate.svg</normaloff>:/icons/themes/playful/tools/tool-camera-rotate.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>26</width>
-          <height>24</height>
+          <width>22</width>
+          <height>22</height>
          </size>
         </property>
        </widget>
@@ -92,12 +92,12 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/new/svg/camera-move.svg</normaloff>:/icons/new/svg/camera-move.svg</iconset>
+          <normaloff>:/icons/themes/playful/tools/tool-camera-move.svg</normaloff>:/icons/themes/playful/tools/tool-camera-move.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>26</width>
-          <height>24</height>
+          <width>22</width>
+          <height>22</height>
          </size>
         </property>
        </widget>
