@@ -3,7 +3,9 @@
   <id>org.pencil2d.Pencil2D</id>
   <launchable type="desktop-id">org.pencil2d.Pencil2D.desktop</launchable>
   <name>Pencil2D</name>
-  <developer_name>The Pencil2D Team</developer_name>
+  <developer>
+    <name>The Pencil2D Team</name>
+  </developer>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0</project_license>
   <summary>2D animation software supporting bitmap and vector graphics</summary>
