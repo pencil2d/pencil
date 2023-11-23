@@ -29,7 +29,7 @@ class Camera;
 class LayerCamera : public Layer
 {
 public:
-    explicit LayerCamera(Object* object);
+    explicit LayerCamera(int id);
     ~LayerCamera() override;
 
     void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, const QPointF& pathPoint, bool pathMoved);
@@ -70,7 +70,7 @@ public:
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
-    KeyFrame* createKeyFrame(int position, Object*) override;
+    KeyFrame* createKeyFrame(int position) override;
 
 private:
     void linearInterpolateTransform(Camera*);

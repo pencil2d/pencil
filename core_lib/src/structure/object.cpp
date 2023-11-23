@@ -97,16 +97,16 @@ bool Object::loadXML(const QDomElement& docElem, ProgressCallback progressForwar
         switch (element.attribute("type").toInt())
         {
         case Layer::BITMAP:
-            newLayer = new LayerBitmap(this);
+            newLayer = new LayerBitmap(getUniqueLayerID());
             break;
         case Layer::VECTOR:
-            newLayer = new LayerVector(this);
+            newLayer = new LayerVector(getUniqueLayerID());
             break;
         case Layer::SOUND:
-            newLayer = new LayerSound(this);
+            newLayer = new LayerSound(getUniqueLayerID());
             break;
         case Layer::CAMERA:
-            newLayer = new LayerCamera(this);
+            newLayer = new LayerCamera(getUniqueLayerID());
             break;
         default:
             Q_UNREACHABLE();
@@ -119,7 +119,7 @@ bool Object::loadXML(const QDomElement& docElem, ProgressCallback progressForwar
 
 LayerBitmap* Object::addNewBitmapLayer()
 {
-    LayerBitmap* layerBitmap = new LayerBitmap(this);
+    LayerBitmap* layerBitmap = new LayerBitmap(getUniqueLayerID());
     mLayers.append(layerBitmap);
 
     layerBitmap->addNewKeyFrameAt(1);
@@ -129,7 +129,7 @@ LayerBitmap* Object::addNewBitmapLayer()
 
 LayerVector* Object::addNewVectorLayer()
 {
-    LayerVector* layerVector = new LayerVector(this);
+    LayerVector* layerVector = new LayerVector(getUniqueLayerID());
     mLayers.append(layerVector);
 
     layerVector->addNewKeyFrameAt(1);
@@ -139,7 +139,7 @@ LayerVector* Object::addNewVectorLayer()
 
 LayerSound* Object::addNewSoundLayer()
 {
-    LayerSound* layerSound = new LayerSound(this);
+    LayerSound* layerSound = new LayerSound(getUniqueLayerID());
     mLayers.append(layerSound);
 
     // No default keyFrame at position 1 for Sound layer.
@@ -149,7 +149,7 @@ LayerSound* Object::addNewSoundLayer()
 
 LayerCamera* Object::addNewCameraLayer()
 {
-    LayerCamera* layerCamera = new LayerCamera(this);
+    LayerCamera* layerCamera = new LayerCamera(getUniqueLayerID());
     mLayers.append(layerCamera);
 
     layerCamera->addNewKeyFrameAt(1);
@@ -378,7 +378,7 @@ bool Object::addLayer(Layer* layer)
     {
         return false;
     }
-    layer->setObject(this);
+    layer->setId(getUniqueLayerID());
     mLayers.append(layer);
     return true;
 }
@@ -755,7 +755,7 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             if (vec)
             {
                 painter.setOpacity(vec->getOpacity());
-                vec->paintImage(painter, false, false, antialiasing);
+                vec->paintImage(painter, *this, false, false, antialiasing);
             }
         }
     }

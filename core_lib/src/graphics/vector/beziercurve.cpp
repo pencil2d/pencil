@@ -34,7 +34,7 @@ BezierCurve::BezierCurve()
 BezierCurve::BezierCurve(const QList<QPointF>& pointList, bool smooth)
 {
     QList<qreal> pressureList;
-	for (int i = 0; i < pointList.size(); i++)
+    for (int i = 0; i < pointList.size(); i++)
     {
         pressureList << 0.5; // default pressure
     }
@@ -297,13 +297,13 @@ BezierCurve BezierCurve::transformed(QTransform transformation) const
     if (isSelected(-1)) { newOrigin =  transformation.map(newOrigin); }
     transformedCurve.setOrigin( newOrigin );
     for(int i=0; i< vertex.size(); i++) {
-    	QPointF newC1 = c1.at(i);
-    	QPointF newC2 = c2.at(i);
-    	QPointF newVertex = vertex.at(i);
-    	if (isSelected(i-1)) { newC1 = transformation.map(newC1); }
-    	if (isSelected(i)) { newC2 = transformation.map(newC2);  newVertex = transformation.map(newVertex); }
-    	transformedCurve.appendCubic( newC1, newC2, newVertex, pressure.at(i) );
-    	if (isSelected(i)) { transformedCurve.setSelected(i, true); }
+        QPointF newC1 = c1.at(i);
+        QPointF newC2 = c2.at(i);
+        QPointF newVertex = vertex.at(i);
+        if (isSelected(i-1)) { newC1 = transformation.map(newC1); }
+        if (isSelected(i)) { newC2 = transformation.map(newC2);  newVertex = transformation.map(newVertex); }
+        transformedCurve.appendCubic( newC1, newC2, newVertex, pressure.at(i) );
+        if (isSelected(i)) { transformedCurve.setSelected(i, true); }
     }
     transformedCurve.setWidth( width);
     transformedCurve.setVariableWidth( variableWidth );
@@ -429,9 +429,9 @@ void BezierCurve::removeVertex(int i)
     }
 }
 
-void BezierCurve::drawPath(QPainter& painter, Object* object, QTransform transformation, bool simplified, bool showThinLines )
+void BezierCurve::drawPath(QPainter& painter, const Object& object, QTransform transformation, bool simplified, bool showThinLines )
 {
-    QColor color = object->getColor(colorNumber).color;
+    QColor color = object.getColor(colorNumber).color;
 
     BezierCurve myCurve;
     if (isPartlySelected()) { myCurve = (transformed(transformation)); }
@@ -869,7 +869,7 @@ bool BezierCurve::findIntersection(BezierCurve curve1, int i1, BezierCurve curve
         //if (L2.intersect(L1, intersection) == QLineF::BoundedIntersection) {
         //qDebug() << "                   FOUND rectangle intersection ";
         //if (intersectionPoint != curve1.getVertex(i1-1) && intersectionPoint != curve1.getVertex(i1)) {
-        //	qDebug() << "                   it's not one of the points ";
+        //    qDebug() << "                   it's not one of the points ";
         // find the cubic intersection
         int nSteps = 24;
         P1 = curve1.getVertex(i1-1);
