@@ -456,7 +456,7 @@ void Object::removeColor(int index)
 
     mPalette.removeAt(index);
 
-    // update the vector pictures using that color !
+    // update the vector pictures using that color!
 }
 
 void Object::renameColor(int i, const QString& text)
@@ -507,8 +507,8 @@ void Object::exportPalettePencil(QFile& file) const
         tag.setAttribute("alpha", ref.color.alpha());
         root.appendChild(tag);
     }
-    int IndentSize = 2;
-    doc.save(out, IndentSize);
+    int indentSize = 2;
+    doc.save(out, indentSize);
 }
 
 bool Object::exportPalette(const QString& filePath) const
@@ -542,7 +542,7 @@ void Object::importPaletteGPL(QFile& file)
     QTextStream in(&file);
     QString line;
 
-    // First line must start with "GIMP Palette"
+    // The first line must start with "GIMP Palette"
     // Displaying an error here would be nice
     in.readLineInto(&line);
     if (!line.startsWith("GIMP Palette")) return;
@@ -553,16 +553,16 @@ void Object::importPaletteGPL(QFile& file)
     if (line.startsWith("Name: "))
     {
         in.readLineInto(&line);
-        // The new format contains an optional thrid line starting with "Columns: "
+        // The new format contains an optional third line starting with "Columns: "
         if (line.startsWith("Columns: "))
         {
-            // Skip to next line
+            // Skip to the next line
             in.readLineInto(&line);
         }
     }
 
     // Colors inherit the value from the previous color for missing channels
-    // Some palettes may rely on this behavior so we should try to replicate it
+    // Some palettes may rely on this behavior, so we should try to replicate it
     QColor prevColor(Qt::black);
 
     do
@@ -606,7 +606,7 @@ void Object::importPaletteGPL(QFile& file)
         if (countInLine < 2) green = prevColor.green();
         if (countInLine < 3) blue = prevColor.blue();
 
-        // GIMP assigns colors the name "Untitled" by default now
+        // GIMP assigns colors the name "Untitled" by default now,
         // so in addition to missing names, we also use automatic
         // naming for this
         if (name.isEmpty() || name == "Untitled") name = QString();
@@ -815,7 +815,7 @@ bool Object::exportFrames(int frameStart, int frameEnd,
     {
         format = "JPG";
         extension = ".jpg";
-        transparency = false; // JPG doesn't support transparency so we have to include the background
+        transparency = false; // JPG doesn't support transparency, so we have to include the background
     }
     if (formatStr == "TIFF" || formatStr == "tiff" || formatStr == "TIF" || formatStr == "tif")
     {

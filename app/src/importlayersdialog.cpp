@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "layer.h"
 #include "layersound.h"
+#include "layervector.h"
 #include "soundclip.h"
 
 
@@ -83,29 +84,43 @@ void ImportLayersDialog::importLayers()
     int currentFrame = mEditor->currentFrame();
     Q_ASSERT(ui->lwLayers->count() == mImportObject->getLayerCount());
 
-    for (int i = 0; i < ui->lwLayers->count(); i++ )
+    QMap<int, int> importedColors;
+
+    for (const QListWidgetItem* item : ui->lwLayers->selectedItems())
     {
-        QListWidgetItem* item = ui->lwLayers->item(i);
-        if (item->isSelected())
+        mImportLayer = mImportObject->takeLayer(item->data(Qt::UserRole).toInt());
+        mImportLayer->setName(mEditor->layers()->nameSuggestLayer(item->text()));
+        loadKeyFrames(mImportLayer); // all keyframes of this layer must be in memory
+
+        object->addLayer(mImportLayer);
+
+        if (mImportLayer->type() == Layer::VECTOR)
         {
-            int layerId = item->data(Qt::UserRole).toInt();
+            LayerVector* layerVector = static_cast<LayerVector*>(mImportLayer);
+            for (int i = 0; i < mImportObject->getColorCount(); i++) {
+                if (!layerVector->usesColor(i)) {
+                    continue;
+                }
 
-            mImportLayer = mImportObject->takeLayer(layerId);
-            mImportLayer->setName(mEditor->layers()->nameSuggestLayer(item->text()));
-            loadKeyFrames(mImportLayer); // all keyframes of this layer must be in memory
+                if (!importedColors.contains(i)) {
+                    const ColorRef color = mImportObject->getColor(i);
+                    object->addColor(color);
+                    importedColors[i] = object->getColorCount() - 1;
+                }
 
-            object->addLayer(mImportLayer);
-
-            if (mImportLayer->type() == Layer::SOUND)
-            {
-                LayerSound* layerSound = static_cast<LayerSound*>(mImportLayer);
-                layerSound->foreachKeyFrame([this](KeyFrame* key)
-                {
-                    SoundClip* clip = dynamic_cast<SoundClip*>(key);
-                    Status st = mEditor->sound()->loadSound(clip, clip->fileName());
-                    Q_ASSERT(st.ok());
-                });
+                layerVector->moveColor(i, importedColors[i]);
             }
+        }
+
+        if (mImportLayer->type() == Layer::SOUND)
+        {
+            LayerSound* layerSound = static_cast<LayerSound*>(mImportLayer);
+            layerSound->foreachKeyFrame([this](KeyFrame* key)
+            {
+                SoundClip* clip = dynamic_cast<SoundClip*>(key);
+                Status st = mEditor->sound()->loadSound(clip, clip->fileName());
+                Q_ASSERT(st.ok());
+            });
         }
     }
     mEditor->object()->modification();
