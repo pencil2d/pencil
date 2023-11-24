@@ -30,7 +30,11 @@ struct TileIndex {
     int y;
 };
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 inline uint qHash(const TileIndex &key, uint seed)
+#else
+inline size_t qHash(const TileIndex &key, size_t seed)
+#endif
 {
     return qHash(key.x, seed) ^ key.y;
 }

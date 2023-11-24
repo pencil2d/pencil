@@ -179,7 +179,7 @@ QPointF StrokeManager::interpolateStart(QPointF firstPoint)
         // Clear queue
         strokeQueue.clear();
         pressureQueue.clear();
-    
+
         const int sampleSize = 5;
         Q_ASSERT(sampleSize > 0);
 
@@ -334,8 +334,7 @@ QList<QPointF> StrokeManager::meanInpolOp(QList<QPointF> points, qreal x, qreal 
     pressure /= strokeQueue.size();
 
     // Use our interpolated points
-    QPointF mNewInterpolated = mLastInterpolated;
-    mNewInterpolated = QPointF(x, y);
+    QPointF mNewInterpolated(x, y);
 
     points << mLastPixel << mLastInterpolated << mNewInterpolated << mCurrentPixel;
 

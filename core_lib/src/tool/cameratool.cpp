@@ -566,9 +566,9 @@ void CameraTool::paintInterpolations(QPainter& painter, const QTransform& worldT
         painter.save();
         QColor color = cameraDotColor;
         if (currentFrame > frame && currentFrame < nextFrame)
-            color.setAlphaF(0.5);
+            color.setAlphaF(.5f);
         else
-            color.setAlphaF(0.2);
+            color.setAlphaF(.2f);
         painter.setPen(Qt::black);
         painter.setBrush(color);
 
