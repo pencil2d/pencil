@@ -26,11 +26,9 @@ GNU General Public License for more details.
 
 SCENARIO("Create camera keyframe with linear easing")
 {
-    Object* object = new Object;
-
     GIVEN("A Camera Layer with one keyframe")
     {
-        Layer* layer = new LayerCamera(object);
+        Layer* layer = new LayerCamera(1);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
         WHEN("Adding a keyframe")
@@ -46,17 +44,13 @@ SCENARIO("Create camera keyframe with linear easing")
             }
         }
     }
-
-    delete object;
 }
 
 SCENARIO("Add a second keyframe and see that the path point of the first keyframe is updated")
 {
-    Object* object = new Object;
-
     GIVEN("A Camera layer with multiple keyframes")
     {
-        Layer* layer = new LayerCamera(object);
+        Layer* layer = new LayerCamera(1);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
         layer->addNewKeyFrameAt(1);
@@ -75,17 +69,13 @@ SCENARIO("Add a second keyframe and see that the path point of the first keyfram
             }
         }
     }
-
-    delete object;
 }
 
 SCENARIO("Add keyframe after having interpolated the previous keyframe and see that the translation is kept")
 {
-    Object* object = new Object;
-
     GIVEN("A Camera layer with multiple keyframes")
     {
-        Layer* layer = new LayerCamera(object);
+        Layer* layer = new LayerCamera(1);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
         layer->addNewKeyFrameAt(1);
@@ -102,17 +92,13 @@ SCENARIO("Add keyframe after having interpolated the previous keyframe and see t
             }
         }
     }
-
-    delete object;
 }
 
 SCENARIO("Remove a camera keyframe and see that the path is properly reset")
 {
-    Object* object = new Object;
-
     GIVEN("A Camera layer with multiple keyframes")
     {
-        Layer* layer = new LayerCamera(object);
+        Layer* layer = new LayerCamera(1);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
         layer->addNewKeyFrameAt(1);
@@ -132,17 +118,13 @@ SCENARIO("Remove a camera keyframe and see that the path is properly reset")
             }
         }
     }
-
-    delete object;
 }
 
 SCENARIO("When deleting an in between keyframe, the previous keyframe will try to recover its initial control point, if possible")
 {
-    Object* object = new Object;
-
     GIVEN("A Camera layer with multiple keyframes where the keys are added sequentially")
     {
-        Layer* layer = new LayerCamera(object);
+        Layer* layer = new LayerCamera(1);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
         layer->addNewKeyFrameAt(1);
@@ -169,7 +151,7 @@ SCENARIO("When deleting an in between keyframe, the previous keyframe will try t
 
     GIVEN("A Camera layer with multiple keyframes where the third frame is added in-between")
     {
-        Layer* layer = new LayerCamera(object);
+        Layer* layer = new LayerCamera(2);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
         layer->addNewKeyFrameAt(1);
@@ -196,17 +178,13 @@ SCENARIO("When deleting an in between keyframe, the previous keyframe will try t
             }
         }
     }
-
-    delete object;
 }
 
 SCENARIO("When adding a keyframe in-between two othes where the control points has been modified, the curve will be preserved")
 {
-    Object* object = new Object;
-
     GIVEN("A Camera layer with multiple keyframes where the third frame is added in-between")
     {
-        Layer* layer = new LayerCamera(object);
+        Layer* layer = new LayerCamera(1);
         LayerCamera* camLayer = static_cast<LayerCamera*>(layer);
 
         layer->addNewKeyFrameAt(1);
@@ -233,8 +211,6 @@ SCENARIO("When adding a keyframe in-between two othes where the control points h
             }
         }
     }
-
-    delete object;
 }
 
 SCENARIO("Loading a project and see that all camera properties are set, if applicable")
