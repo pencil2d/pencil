@@ -38,8 +38,6 @@ public:
 
     VectorImage* clone() const override;
 
-    void setObject(Object* pObj) { mObject = pObj; }
-
     bool read(QString filePath);
     Status write(QString filePath, QString format);
 
@@ -85,7 +83,6 @@ public:
 
     void paste(VectorImage&);
 
-    QColor getColor(int i);
     int  getColorNumber(QPointF point);
     bool usesColor(int index);
     void removeColor(int index);
@@ -93,7 +90,7 @@ public:
     bool isCurveVisible(int curve);
     void moveColor(int start, int end);
 
-    void paintImage(QPainter& painter, bool simplified, bool showThinCurves, bool antialiasing);
+    void paintImage(QPainter& painter, const Object& object, bool simplified, bool showThinCurves, bool antialiasing);
 
     void clear();
     void clean();
@@ -165,7 +162,6 @@ private:
 private:
     QList<BezierCurve> mCurves;
 
-    Object* mObject = nullptr;
     QRectF mSelectionRect;
     QTransform mSelectionTransformation;
     QSize mSize;
