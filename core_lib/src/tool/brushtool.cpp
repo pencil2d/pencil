@@ -67,6 +67,8 @@ void BrushTool::loadSettings()
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
+
+    StrokeTool::loadSettings();
 }
 
 void BrushTool::resetToDefault()
@@ -143,10 +145,13 @@ void BrushTool::pointerPressEvent(PointerEvent *event)
     mLastBrushPoint = getCurrentPoint();
 
     startStroke(event->inputType());
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void BrushTool::pointerMoveEvent(PointerEvent* event)
 {
+    StrokeTool::pointerMoveEvent(event);
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
@@ -154,6 +159,8 @@ void BrushTool::pointerMoveEvent(PointerEvent* event)
         if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
             strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void BrushTool::pointerReleaseEvent(PointerEvent *event)
@@ -178,6 +185,7 @@ void BrushTool::pointerReleaseEvent(PointerEvent *event)
     }
 
     endStroke();
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 // draw a single paint dab at the given location

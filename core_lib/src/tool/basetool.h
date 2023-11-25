@@ -90,17 +90,8 @@ public:
     virtual bool keyPressEvent(QKeyEvent*) { return false; }
     virtual bool keyReleaseEvent(QKeyEvent*) { return false; }
 
-    // dynamic cursor adjustment
-    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep);
-    virtual void stopAdjusting();
-    virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
-
     virtual void clearToolData() {}
     virtual void resetToDefault() {}
-
-    static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
-    QPixmap quickSizeCursor(qreal scalingFac);
-    static bool isAdjusting() { return msIsAdjusting; }
 
     /** Check if the tool is active.
      *
@@ -133,7 +124,11 @@ public:
     virtual void setPathDotColorType(const DotColorType dotColorType);
     virtual void resetCameraPath();
 
-    virtual void paint(QPainter& painter) { Q_UNUSED(painter) };
+    /** Apply logic to tools that require interruption of the current pointer event.
+     *  @return True if the event was interrupted, otherwise false */
+    virtual bool interruptPointerEvent(PointerEvent*) { return false; }
+
+    virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 
     virtual bool leavingThisTool() { return true; }
 
@@ -163,14 +158,8 @@ protected:
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
 
-    QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
-
 private:
     StrokeManager* mStrokeManager = nullptr;
-    qreal mAdjustmentStep = 0.0f;
-
-    static bool msIsAdjusting;
-    static qreal msOriginalPropertyValue;  // start from previous value (width, or feather ...)
 };
 
 #endif // BASETOOL_H

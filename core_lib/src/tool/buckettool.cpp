@@ -241,7 +241,7 @@ bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
     {
         mQuickSizingProperties.insert(Qt::ControlModifier, TOLERANCE);
     }
-    return BaseTool::startAdjusting(modifiers, argStep);
+    return StrokeTool::startAdjusting(modifiers, argStep);
 }
 
 void BucketTool::paintBitmap()

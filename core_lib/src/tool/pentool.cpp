@@ -38,6 +38,8 @@ PenTool::PenTool(QObject* parent) : StrokeTool(parent)
 
 void PenTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[VECTORMERGE] = true;
@@ -54,6 +56,8 @@ void PenTool::loadSettings()
     properties.stabilizerLevel = settings.value("penLineStabilization", StabilizationLevel::STRONG).toInt();
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+
+    StrokeTool::loadSettings();
 }
 
 void PenTool::resetToDefault()
@@ -122,6 +126,8 @@ void PenTool::pointerPressEvent(PointerEvent *event)
     mLastBrushPoint = getCurrentPoint();
 
     startStroke(event->inputType());
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void PenTool::pointerMoveEvent(PointerEvent* event)
@@ -133,6 +139,8 @@ void PenTool::pointerMoveEvent(PointerEvent* event)
         if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
             strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void PenTool::pointerReleaseEvent(PointerEvent *event)
@@ -157,6 +165,8 @@ void PenTool::pointerReleaseEvent(PointerEvent *event)
         paintVectorStroke(layer);
     }
     endStroke();
+
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 // draw a single paint dab at the given location

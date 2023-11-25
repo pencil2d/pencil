@@ -55,6 +55,8 @@ void SmudgeTool::loadSettings()
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
+
+    StrokeTool::loadSettings();
 }
 
 void SmudgeTool::resetToDefault()
@@ -186,6 +188,8 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
             }
         }
     }
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void SmudgeTool::pointerMoveEvent(PointerEvent* event)
@@ -240,6 +244,8 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
             mScribbleArea->update();
         }
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
@@ -276,6 +282,8 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
             mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         }
     }
+
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 void SmudgeTool::drawStroke()

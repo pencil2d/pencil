@@ -30,7 +30,7 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 
-PolylineTool::PolylineTool(QObject* parent) : BaseTool(parent)
+PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
@@ -54,6 +54,10 @@ void PolylineTool::loadSettings()
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value("brushAA").toBool();
     properties.stabilizerLevel = -1;
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+
+    StrokeTool::loadSettings();
 }
 
 void PolylineTool::resetToDefault()
@@ -140,19 +144,25 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
             emit isActiveChanged(POLYLINE, true);
         }
     }
+
+    StrokeTool::pointerPressEvent(event);
 }
 
-void PolylineTool::pointerMoveEvent(PointerEvent*)
+void PolylineTool::pointerMoveEvent(PointerEvent* event)
 {
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         drawPolyline(mPoints, getCurrentPoint());
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
-void PolylineTool::pointerReleaseEvent(PointerEvent *)
-{}
+void PolylineTool::pointerReleaseEvent(PointerEvent* event)
+{
+    StrokeTool::pointerReleaseEvent(event);
+}
 
 void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
 {

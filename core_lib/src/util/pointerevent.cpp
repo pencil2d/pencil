@@ -209,17 +209,33 @@ bool PointerEvent::isAccepted()
     return false;
 }
 
-QEvent::Type PointerEvent::eventType() const
+PointerEvent::Type PointerEvent::eventType() const
 {
     if (mMouseEvent)
     {
-        return mMouseEvent->type();
+        if (mMouseEvent->type() == QEvent::MouseButtonPress) {
+            return Type::Press;
+        }
+        else if (mMouseEvent->type() == QEvent::MouseMove) {
+            return Type::Move;
+        }
+        else if (mMouseEvent->type() == QEvent::MouseButtonRelease) {
+            return Type::Release;
+        }
     }
     else if (mTabletEvent)
     {
-        return mTabletEvent->type();
+        if (mTabletEvent->type() == QEvent::TabletPress) {
+            return Type::Press;
+        }
+        else if (mTabletEvent->type() == QEvent::TabletMove) {
+            return Type::Move;
+        }
+        else if (mTabletEvent->type() == QEvent::TabletRelease) {
+            return Type::Release;
+        }
     }
-    return QEvent::None;
+    return PointerEvent::Unmapped;
 }
 
 PointerEvent::InputType PointerEvent::inputType() const

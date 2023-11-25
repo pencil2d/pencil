@@ -65,6 +65,8 @@ void EraserTool::loadSettings()
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
+
+    StrokeTool::loadSettings();
 }
 
 void EraserTool::resetToDefault()
@@ -152,6 +154,8 @@ void EraserTool::pointerPressEvent(PointerEvent *event)
     startStroke(event->inputType());
     mLastBrushPoint = getCurrentPoint();
     mMouseDownPoint = getCurrentPoint();
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void EraserTool::pointerMoveEvent(PointerEvent* event)
@@ -163,6 +167,8 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
         if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
             strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void EraserTool::pointerReleaseEvent(PointerEvent *event)
@@ -183,6 +189,8 @@ void EraserTool::pointerReleaseEvent(PointerEvent *event)
 
     removeVectorPaint();
     endStroke();
+
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 // draw a single paint dab at the given location

@@ -26,6 +26,7 @@ INCLUDEPATH += src \
 PRECOMPILED_HEADER = src/corelib-pch.h
 
 HEADERS +=  \
+    src/canvascursorpainter.h \
     src/corelib-pch.h \
     src/graphics/bitmap/bitmapbucket.h \
     src/graphics/bitmap/bitmapimage.h \
@@ -115,6 +116,7 @@ HEADERS +=  \
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
+    src/canvascursorpainter.cpp \
     src/graphics/bitmap/bitmapbucket.cpp \
     src/graphics/bitmap/tile.cpp \
     src/graphics/bitmap/tiledbuffer.cpp \

@@ -55,9 +55,9 @@ public:
     bool isValid() const { return !mTiles.isEmpty(); }
 
     /** Draws a brush with the specified parameters to the tiled buffer */
-    void drawBrush(const QPointF& point, int brushWidth, int brushCursorWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
+    void drawBrush(const QPointF& point, int brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     /** Draws a path with the specified parameters to the tiled buffer */
-    void drawPath(QPainterPath path, int cursorWidth, QPen pen, QBrush brush,
+    void drawPath(QPainterPath path, QPen pen, QBrush brush,
                   QPainter::CompositionMode cm, bool antialiasing);
     /** Draws a image with the specified parameters to the tiled buffer */
     void drawImage(const QImage& image, const QRect& imageBounds, QPainter::CompositionMode cm, bool antialiasing);

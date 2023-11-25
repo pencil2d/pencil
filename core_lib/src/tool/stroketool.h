@@ -20,6 +20,9 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 #include "pointerevent.h"
+#include "preferencesdef.h"
+
+#include "canvascursorpainter.h"
 
 #include <QList>
 #include <QPointF>
@@ -36,9 +39,35 @@ public:
     void drawStroke();
     void endStroke();
 
-    bool keyPressEvent(QKeyEvent* event) override;
+    void updateCanvasCursor();
+
+public slots:
+    void onPreferenceChanged(SETTING setting);
 
 protected:
+    void loadSettings() override;
+
+    bool keyPressEvent(QKeyEvent* event) override;
+    void pointerPressEvent(PointerEvent* event) override;
+    void pointerMoveEvent(PointerEvent* event) override;
+    void pointerReleaseEvent(PointerEvent* event) override;
+
+    bool interruptPointerEvent(PointerEvent* event) override;
+
+    void paint(QPainter& painter, const QRect& blitRect) override;
+
+    // dynamic cursor adjustment
+    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep);
+    virtual void stopAdjusting();
+    virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
+    virtual bool isAdjusting() const { return msIsAdjusting; }
+
+    static bool mQuickSizingEnabled;
+    static bool msIsAdjusting;
+//    static qreal msOriginalPropertyValue;  // start from previous value (width, or feather ...)
+//    static qreal mAdjustOffset;
+
+    QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
     bool mFirstDraw = false;
 
     QList<QPointF> mStrokePoints;
@@ -56,8 +85,14 @@ protected:
     /// Returns true by default.
     virtual bool emptyFrameActionEnabled();
 
-private:
+    bool mCanvasCursorEnabled = false;
+    qreal mAdjustmentStep = 0.0f;
     QPointF mLastPixel { 0, 0 };
+
+    QPointF mAdjustPosition;
+
+    CanvasCursorPainter mCanvasCursorPainter;
+    ToolPropertyType mAdjustingPropertyType;
 };
 
 #endif // STROKETOOL_H

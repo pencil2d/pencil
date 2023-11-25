@@ -174,7 +174,6 @@ public:
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
-    void paintCanvasCursor(QPainter& painter);
     void clearDrawingBuffer();
     void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
@@ -182,16 +181,11 @@ public:
     void pointerMoveEvent(PointerEvent*);
     void pointerReleaseEvent(PointerEvent*);
 
-    void updateCanvasCursor();
-
     /// Call this when starting to use a paint tool. Checks whether we are drawing
     /// on an empty frame, and if so, takes action according to use preference.
     void handleDrawingOnEmptyFrame();
 
     TiledBuffer mTiledBuffer;
-
-    QPixmap mCursorImg;
-
 private:
 
     /** Invalidate the layer pixmap and camera painter caches.
@@ -227,7 +221,6 @@ private:
 
     Editor* mEditor = nullptr;
 
-    bool mQuickSizing = true;
     LayerVisibility mLayerVisibility = LayerVisibility::ALL;
     bool mMakeInvisible = false;
     qreal mCurveSmoothingLevel = 0.0;
@@ -257,9 +250,6 @@ private:
     const int MOUSE_FILTER_THRESHOLD = 200;
 
     QTimer* mMouseFilterTimer = nullptr;
-
-    QPoint mCursorCenterPos;
-    QPointF mTransformedCursorPos;
 
     PreferenceManager* mPrefs = nullptr;
 

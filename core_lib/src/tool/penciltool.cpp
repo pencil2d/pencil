@@ -57,6 +57,8 @@ void PencilTool::loadSettings()
     //    properties.preserveAlpha = 0;
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+
+    StrokeTool::loadSettings();
 }
 
 void PencilTool::resetToDefault()
@@ -157,6 +159,8 @@ void PencilTool::pointerPressEvent(PointerEvent *event)
     {
         mScribbleArea->toggleThinLines();
     }
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void PencilTool::pointerMoveEvent(PointerEvent* event)
@@ -168,6 +172,7 @@ void PencilTool::pointerMoveEvent(PointerEvent* event)
         if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
             strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void PencilTool::pointerReleaseEvent(PointerEvent *event)
@@ -190,6 +195,8 @@ void PencilTool::pointerReleaseEvent(PointerEvent *event)
         paintVectorStroke(layer);
     }
     endStroke();
+
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 // draw a single paint dab at the given location
