@@ -293,7 +293,7 @@ Status ActionCommands::exportMovie(bool isGif)
     desc.loop = dialog->getLoop();
     desc.alpha = dialog->getTransparency();
 
-    DoubleProgressDialog progressDlg;
+    DoubleProgressDialog progressDlg(mParent);
     progressDlg.setWindowModality(Qt::WindowModal);
     progressDlg.setWindowTitle(tr("Exporting movie"));
     Qt::WindowFlags eFlags = Qt::Dialog | Qt::WindowTitleHint;
