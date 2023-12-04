@@ -18,14 +18,14 @@ GNU General Public License for more details.
 #ifndef DOUBLEPROGRESSDIALOG_H
 #define DOUBLEPROGRESSDIALOG_H
 
-#include <QDialog>
+#include <QProgressDialog>
 #include <QProgressBar>
 
 namespace Ui {
 class DoubleProgressDialog;
 }
 
-class DoubleProgressDialog : public QDialog
+class DoubleProgressDialog : public QProgressDialog
 {
     Q_OBJECT
 
@@ -63,8 +63,8 @@ public:
 
     ProgressBarControl *major, *minor;
 
-signals:
-    void canceled();
+//signals:
+    //void canceled();
 
 private:
     Ui::DoubleProgressDialog *ui;
