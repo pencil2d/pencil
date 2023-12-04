@@ -67,16 +67,16 @@ ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
 
 ActionCommands::~ActionCommands() {}
 
-Status ActionCommands::importAnimatedImage(FileType type)
+Status ActionCommands::importAnimatedImage()
 {
-    ImportImageSeqDialog gifDialog(mParent, ImportExportDialog::Import, type);
-    gifDialog.exec();
-    if (gifDialog.result() != QDialog::Accepted)
+    ImportImageSeqDialog fileDialog(mParent, ImportExportDialog::Import, FileType::ANIMATED_IMAGE);
+    fileDialog.exec();
+    if (fileDialog.result() != QDialog::Accepted)
     {
         return Status::CANCELED;
     }
-    int frameSpacing = gifDialog.getSpace();
-    QString strImgFileLower = gifDialog.getFilePath();
+    int frameSpacing = fileDialog.getSpace();
+    QString strImgFileLower = fileDialog.getFilePath();
 
     ImportPositionDialog positionDialog(mEditor, mParent);
     positionDialog.exec();

@@ -65,7 +65,7 @@
      <addaction name="actionImport_ImageSeq"/>
      <addaction name="actionImport_ImageSeqNum"/>
      <addaction name="actionImport_MovieVideo"/>
-     <addaction name="actionImport_Gif"/>
+     <addaction name="actionImport_AnimatedImage"/>
      <addaction name="actionImportLayers_from_pclx"/>
      <addaction name="separator"/>
      <addaction name="actionImport_Sound"/>
@@ -912,9 +912,9 @@
     <string>F1</string>
    </property>
   </action>
-  <action name="actionImport_Gif">
+  <action name="actionImport_AnimatedImage">
    <property name="text">
-    <string>Animated GIF...</string>
+    <string>Animated Image...</string>
    </property>
   </action>
   <action name="actionExport_Animated_GIF">

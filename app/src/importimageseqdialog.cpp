@@ -58,9 +58,15 @@ void ImportImageSeqDialog::setupLayout()
 
     hideInstructionsLabel(true);
 
-    if (mFileType == FileType::GIF) {
+    switch (mFileType)
+    {
+    case FileType::GIF:
         setWindowTitle(tr("Import Animated GIF"));
-    } else {
+        break;
+    case FileType::IMAGE_SEQUENCE:
+        setWindowTitle(tr("Import animated image"));
+        break;
+    default:
         setWindowTitle(tr("Import image sequence"));
     }
 

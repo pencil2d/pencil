@@ -51,6 +51,9 @@ GNU General Public License for more details.
 #define PFF_GIF_EXT_FILTER \
     QCoreApplication::translate("FileFormat", "Animated GIF") + " (*.gif)"
 
+#define PFF_ANIMATED_IMAGE_EXT_FILTER \
+    QCoreApplication::translate("FileFormat", "Animated image formats") + " (*.gif *.webp);;GIF(*.gif);;WEBP(*.webp)"
+
 #define PFF_SOUND_EXT_FILTER \
     QCoreApplication::translate("FileFormat", "Sound formats") + " (*.wav *.mp3 *.wma *.ogg *.flac *.opus *.aiff *.aac *.caf);;WAV (*.wav);;MP3 (*.mp3);;WMA (*.wma);;OGG (*.ogg);;FLAC (*.flac);;Opus (*.opus);;AIFF (*.aiff);;AAC (*.aac);;CAF (*.caf)"
 

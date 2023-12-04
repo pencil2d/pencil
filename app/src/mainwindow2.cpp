@@ -254,7 +254,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importPredefinedImageSet);
     connect(ui->actionImportLayers_from_pclx, &QAction::triggered, this, &MainWindow2::importLayers);
     connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
-    connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
+    connect(ui->actionImport_AnimatedImage, &QAction::triggered, this, &MainWindow2::importAnimatedImage);
 
     connect(ui->actionImport_Sound, &QAction::triggered, [=] { mCommands->importSound(FileType::SOUND); });
     connect(ui->actionImport_MovieAudio, &QAction::triggered, [=] { mCommands->importSound(FileType::MOVIE); });
@@ -949,12 +949,12 @@ void MainWindow2::importLayers()
     importLayers->open();
 }
 
-void MainWindow2::importGIF()
+void MainWindow2::importAnimatedImage()
 {
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
     mSuppressAutoSaveDialog = true;
 
-    mCommands->importAnimatedImage(FileType::GIF);
+    mCommands->importAnimatedImage();
 
     mSuppressAutoSaveDialog = false;
 }
