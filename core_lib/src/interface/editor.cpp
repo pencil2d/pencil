@@ -914,7 +914,7 @@ void Editor::updateObject()
     emit updateLayerCount();
 }
 
-Status Editor::importBitmapImage(const QString& filePath, int space)
+Status Editor::importBitmapImage(const QString& filePath)
 {
     QImageReader reader(filePath);
 
@@ -926,8 +926,7 @@ Status Editor::importBitmapImage(const QString& filePath, int space)
     dd << QString("Raw file path: %1").arg(filePath);
 
     QImage img(reader.size(), QImage::Format_ARGB32_Premultiplied);
-    if (img.isNull())
-    {
+    if (!reader.read(&img)) {
         QString format = reader.format();
         if (!format.isEmpty())
         {
@@ -955,33 +954,18 @@ Status Editor::importBitmapImage(const QString& filePath, int space)
     const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
                      view()->getImportView().dy() - (img.height() / 2));
 
-    while (reader.read(&img))
+    if (!layer->keyExists(mFrame))
     {
-        int frameNumber = mFrame;
-        if (!layer->keyExists(frameNumber))
-        {
-            addNewKey();
-        }
-        BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(frameNumber);
-        BitmapImage importedBitmapImage(pos, img);
-        bitmapImage->paste(&importedBitmapImage);
-        emit frameModified(bitmapImage->pos());
-
-        if (space > 1) {
-            frameNumber += space;
-        } else {
-            frameNumber += 1;
-        }
-        scrubTo(frameNumber);
-
-        backup(tr("Import Image"));
-
-        // Workaround for tiff import getting stuck in this loop
-        if (!reader.supportsAnimation())
-        {
-            break;
-        }
+        addNewKey();
     }
+    BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(mFrame);
+    BitmapImage importedBitmapImage(pos, img);
+    bitmapImage->paste(&importedBitmapImage);
+    emit frameModified(bitmapImage->pos());
+
+    scrubTo(mFrame+1);
+
+    backup(tr("Import Image"));
 
     return status;
 }
@@ -1096,12 +1080,11 @@ Status Editor::importAnimatedImage(const QString& filePath, int frameSpacing, co
             return Status(Status::FAIL, dd, tr("Import failed"), errorDesc);
         }
 
-        int frameNumber = mFrame;
-        if (!bitmapLayer->keyExists(frameNumber))
+        if (!bitmapLayer->keyExists(mFrame))
         {
             addNewKey();
         }
-        BitmapImage* bitmapImage = bitmapLayer->getBitmapImageAtFrame(frameNumber);
+        BitmapImage* bitmapImage = bitmapLayer->getBitmapImageAtFrame(mFrame);
         BitmapImage importedBitmapImage(pos, img);
         bitmapImage->paste(&importedBitmapImage);
         emit frameModified(bitmapImage->pos());
@@ -1111,8 +1094,7 @@ Status Editor::importAnimatedImage(const QString& filePath, int frameSpacing, co
             break;
         }
 
-        frameNumber += frameSpacing;
-        scrubTo(frameNumber);
+        scrubTo(mFrame + frameSpacing);
 
         backup(tr("Import Image"));
 

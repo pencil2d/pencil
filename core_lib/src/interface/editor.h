@@ -230,7 +230,7 @@ public: //slots
     void resetAutoSaveCounter();
 
 private:
-    Status importBitmapImage(const QString&, int space = 0);
+    Status importBitmapImage(const QString&);
     Status importVectorImage(const QString&);
 
     void pasteToCanvas(BitmapImage* bitmapImage, int frameNumber);
