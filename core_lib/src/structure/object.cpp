@@ -828,6 +828,10 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         extension = ".bmp";
         transparency = false;
     }
+    if (formatStr == "WEBP" || formatStr == "webp") {
+        format = "WEBP";
+        extension = ".webp";
+    }
     if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {
         filePath.chop(extension.size());

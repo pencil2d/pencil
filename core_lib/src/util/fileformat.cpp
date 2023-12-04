@@ -59,6 +59,7 @@ QString detectFormatByFileNameExtension(const QString& fileName)
             { "tif",  "TIF" },
             { "tiff", "TIF" },
             { "bmp",  "BMP" },
+            { "webp", "WEBP" },
             { "mp4",  "MP4" },
             { "avi",  "AVI" },
             { "gif",  "GIF" },
