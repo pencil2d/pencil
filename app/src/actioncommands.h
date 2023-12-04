@@ -37,6 +37,7 @@ public:
     void setCore(Editor* e) { mEditor = e; }
 
     // file
+    Status importAnimatedImage(FileType type);
     Status importMovieVideo();
     Status importSound(FileType type);
     Status exportMovie(bool isGif = false);

@@ -47,6 +47,8 @@ GNU General Public License for more details.
 #include "soundclip.h"
 #include "camera.h"
 
+#include "importimageseqdialog.h"
+#include "importpositiondialog.h"
 #include "movieimporter.h"
 #include "movieexporter.h"
 #include "filedialog.h"
@@ -64,6 +66,50 @@ ActionCommands::ActionCommands(QWidget* parent) : QObject(parent)
 }
 
 ActionCommands::~ActionCommands() {}
+
+Status ActionCommands::importAnimatedImage(FileType type)
+{
+    ImportImageSeqDialog gifDialog(mParent, ImportExportDialog::Import, type);
+    gifDialog.exec();
+    if (gifDialog.result() != QDialog::Accepted)
+    {
+        return Status::CANCELED;
+    }
+    int frameSpacing = gifDialog.getSpace();
+    QString strImgFileLower = gifDialog.getFilePath();
+
+    ImportPositionDialog positionDialog(mEditor, mParent);
+    positionDialog.exec();
+    if (positionDialog.result() != QDialog::Accepted)
+    {
+        return Status::CANCELED;
+    }
+
+    // Show a progress dialog, as this could take a while if the gif is huge
+    QProgressDialog progressDialog(tr("Importing Animated GIF..."), tr("Abort"), 0, 100, mParent);
+    hideQuestionMark(progressDialog);
+    progressDialog.setWindowModality(Qt::WindowModal);
+    progressDialog.show();
+
+    Status st = mEditor->importAnimatedImage(strImgFileLower, frameSpacing, [&progressDialog](int prog) {
+        progressDialog.setValue(prog);
+        QApplication::processEvents();
+    }, [&progressDialog]() {
+        return progressDialog.wasCanceled();
+    });
+
+    progressDialog.setValue(100);
+    progressDialog.close();
+
+    if (!st.ok())
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+        errorDialog.exec();
+        return Status::SAFE;
+    }
+
+    return Status::OK;
+}
 
 Status ActionCommands::importMovieVideo()
 {
@@ -106,6 +152,7 @@ Status ActionCommands::importMovieVideo()
     {
         ErrorDialog errorDialog(st.title(), st.description(), st.details().html(), mParent);
         errorDialog.exec();
+        return Status::SAFE;
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
