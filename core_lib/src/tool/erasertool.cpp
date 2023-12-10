@@ -200,7 +200,7 @@ void EraserTool::paintAt(QPointF point)
                                  brushWidth,
                                  properties.feather,
                                  QColor(255, 255, 255, 255),
-                                 QPainter::CompositionMode_DestinationOut,
+                                 QPainter::CompositionMode_SourceOver,
                                  opacity,
                                  properties.useFeather,
                                  properties.useAA == ON);
@@ -240,7 +240,7 @@ void EraserTool::drawStroke()
                                      brushWidth,
                                      properties.feather,
                                      Qt::white,
-                                     QPainter::CompositionMode_DestinationOut,
+                                     QPainter::CompositionMode_SourceOver,
                                      opacity,
                                      properties.useFeather,
                                      properties.useAA == ON);

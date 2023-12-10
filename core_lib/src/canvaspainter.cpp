@@ -300,16 +300,9 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
 
     if (isCurrentLayer && isDrawing)
     {
-        // Certain tools require being painted continuously, for example, the Polyline tool.
-        // The tiled buffer does not update the area outside which it paints,
-        // so in that case, in order to see the previously laid-down polyline stroke,
-        // the surrounding area must be drawn again before
-        // applying the new tiled output on top
-        if (!blitRect.contains(mTiledBuffer->bounds()) || mOptions.bIgnoreCanvasBuffer) {
-            currentBitmapPainter.setCompositionMode(QPainter::CompositionMode_Source);
-            currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
-        }
+        currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
 
+        currentBitmapPainter.setCompositionMode(mOptions.cmBufferBlendMode);
         const auto tiles = mTiledBuffer->tiles();
         for (const Tile* tile : tiles) {
             currentBitmapPainter.drawPixmap(tile->posF(), tile->pixmap());
