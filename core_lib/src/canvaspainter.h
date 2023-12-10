@@ -42,9 +42,6 @@ struct CanvasPainterOptions
     bool  bThinLines = false;
     bool  bOutlines = false;
 
-    /// When using a tool that can't rely on canvas buffer,
-    /// for example Polyline because we're continously clearing the surface
-    bool  bIgnoreCanvasBuffer = false;
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
     float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
