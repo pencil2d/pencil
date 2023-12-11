@@ -86,7 +86,7 @@ Status ActionCommands::importAnimatedImage()
     }
 
     // Show a progress dialog, as this could take a while if the gif is huge
-    QProgressDialog progressDialog(tr("Importing Animated GIF..."), tr("Abort"), 0, 100, mParent);
+    QProgressDialog progressDialog(tr("Importing Animated Image..."), tr("Abort"), 0, 100, mParent);
     hideQuestionMark(progressDialog);
     progressDialog.setWindowModality(Qt::WindowModal);
     progressDialog.show();

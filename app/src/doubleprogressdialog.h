@@ -63,9 +63,6 @@ public:
 
     ProgressBarControl *major, *minor;
 
-//signals:
-    //void canceled();
-
 private:
     Ui::DoubleProgressDialog *ui;
 };

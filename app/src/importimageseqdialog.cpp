@@ -64,10 +64,10 @@ void ImportImageSeqDialog::setupLayout()
         setWindowTitle(tr("Import Animated GIF"));
         break;
     case FileType::IMAGE_SEQUENCE:
-        setWindowTitle(tr("Import animated image"));
+        setWindowTitle(tr("Import image sequence"));
         break;
     default:
-        setWindowTitle(tr("Import image sequence"));
+        setWindowTitle(tr("Import animated image"));
     }
 
     connect(uiOptionsBox->spaceSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ImportImageSeqDialog::setSpace);
