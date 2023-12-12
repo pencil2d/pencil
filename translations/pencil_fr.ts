@@ -47,12 +47,12 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="133"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
-        <translation>Votre piste son ne peut pas être importée car aucune piste de son n&apos;existe. Créer une nouvelle piste de son ?</translation>
+        <translation>Votre couche sonore ne peut pas être importée car aucune couche sonore n&apos;existe. Créer une nouvelle couche sonore ?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="134"/>
         <source>Create sound layer</source>
-        <translation>Créer un calque de son</translation>
+        <translation>Créer un couche sonore</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="135"/>
@@ -109,7 +109,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="352"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
-        <translation>L&apos;exportation n&apos;a produit aucune erreur, mais nous ne pouvons pas trouver le fichier de sortie. Votre exportation n&apos;a peut-être pas abouti.</translation>
+        <translation>L&apos;exportation n&apos;a produit aucune erreur, mais le fichier de sortie ne peut pas trouver. Votre exportation n&apos;a peut-être pas abouti.</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="418"/>
@@ -131,12 +131,12 @@
         <location filename="../app/src/actioncommands.cpp" line="655"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Enlever les trames sélectionnées</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="656"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
-        <translation type="unfinished"/>
+        <translation>Etes-vous sûr de vouloir supprimer les trames sélectionnées ? Cette action est irréversible actuellement !</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="764"/>
@@ -262,53 +262,53 @@
     <message>
         <location filename="../app/ui/bucketoptionswidget.ui" line="42"/>
         <source>Fill to</source>
-        <translation type="unfinished"/>
+        <translation>Remplir</translation>
     </message>
     <message>
         <location filename="../app/ui/bucketoptionswidget.ui" line="66"/>
         <source>Reference</source>
-        <translation type="unfinished"/>
+        <translation>Référence</translation>
     </message>
     <message>
         <location filename="../app/ui/bucketoptionswidget.ui" line="90"/>
         <source>Blend mode</source>
-        <translation type="unfinished"/>
+        <translation>Mode de Fusion</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="38"/>
         <source>Color tolerance</source>
-        <translation type="unfinished"/>
+        <translation>Tolérance de Couleur</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="39"/>
         <source>Expand fill</source>
-        <translation type="unfinished"/>
+        <translation>Tolérance de Couleur</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="40"/>
         <source>Stroke thickness</source>
-        <translation type="unfinished"/>
+        <translation>épaisseur du trait</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="52"/>
         <source>Current layer</source>
-        <translation type="unfinished"/>
+        <translation>Couche Actuelle</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="53"/>
         <source>Layer below</source>
-        <translation type="unfinished"/>
+        <translation>Couche Ci-Dessous</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="54"/>
         <source>Fill to the current layer or the layer below</source>
-        <translation type="unfinished"/>
+        <translation>Remplir jusqu'au calque actuel ou au calque situé en dessous</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
         <source>Current layer</source>
         <comment>Reference Layer Options</comment>
-        <translation type="unfinished"/>
+        <translation>Couche Courant</translation>
     </message>
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
@@ -3224,7 +3224,7 @@
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="73"/>
-        <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
+        <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png
 The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
         <translation>Sélectionner une image qui répond au critère : MonFichier000.png, ex. Toto001.png
 L&apos;importateur cherchera et trouvera les images répondant au même critère. Vous pouvez également voir le résultat dans la boîte de prévisualisation ci-dessous.</translation>
@@ -3263,8 +3263,8 @@ L&apos;importateur cherchera et trouvera les images répondant au même critère
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="367"/>
-        <source>The following file did not meet the criteria: 
-%1 
+        <source>The following file did not meet the criteria:
+%1
 
 Read the instructions and try again</source>
         <translation>Le fichier suivant ne répond pas aux critères :
@@ -3274,7 +3274,7 @@ Lisez les instruction et essayez de nouveau</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="392"/>
-        <source>The following file(-s) did not meet the criteria: 
+        <source>The following file(-s) did not meet the criteria:
 %1</source>
         <translation>Le(-s) fichier(-s) suivant(-s) ne répondes pas au critère :
 %1</translation>
