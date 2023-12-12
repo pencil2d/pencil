@@ -254,7 +254,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importPredefinedImageSet);
     connect(ui->actionImportLayers_from_pclx, &QAction::triggered, this, &MainWindow2::importLayers);
     connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
-    connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
+    connect(ui->actionImport_AnimatedImage, &QAction::triggered, this, &MainWindow2::importAnimatedImage);
 
     connect(ui->actionImport_Sound, &QAction::triggered, [=] { mCommands->importSound(FileType::SOUND); });
     connect(ui->actionImport_MovieAudio, &QAction::triggered, [=] { mCommands->importSound(FileType::MOVIE); });
@@ -949,57 +949,12 @@ void MainWindow2::importLayers()
     importLayers->open();
 }
 
-void MainWindow2::importGIF()
+void MainWindow2::importAnimatedImage()
 {
-    auto gifDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::GIF);
-    gifDialog->exec();
-    if (gifDialog->result() == QDialog::Rejected)
-    {
-        return;
-    }
-
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
     mSuppressAutoSaveDialog = true;
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
-    OnScopeExit(delete positionDialog)
-
-    positionDialog->exec();
-    if (positionDialog->result() != QDialog::Accepted)
-    {
-        return;
-    }
-
-    int space = gifDialog->getSpace();
-
-    // Show a progress dialog, as this could take a while if the gif is huge
-    QProgressDialog progress(tr("Importing Animated GIF..."), tr("Abort"), 0, 100, this);
-    hideQuestionMark(progress);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-
-    QString strImgFileLower = gifDialog->getFilePath();
-    if (!strImgFileLower.toLower().endsWith(".gif"))
-    {
-        ErrorDialog errorDialog(tr("Import failed"), tr("You can only import files ending with .gif."));
-        errorDialog.exec();
-    }
-    else
-    {
-        Status st = mEditor->importGIF(strImgFileLower, space);
-
-        progress.setValue(50);
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-
-        progress.setValue(100);
-        progress.close();
-
-        if (!st.ok())
-        {
-            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
-            errorDialog.exec();
-        }
-    }
+    mCommands->importAnimatedImage();
 
     mSuppressAutoSaveDialog = false;
 }

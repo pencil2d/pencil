@@ -90,7 +90,7 @@ public:
     void importPredefinedImageSet();
     void importLayers();
     void importMovieVideo();
-    void importGIF();
+    void importAnimatedImage();
 
     void lockWidgets(bool shouldLock);
 
