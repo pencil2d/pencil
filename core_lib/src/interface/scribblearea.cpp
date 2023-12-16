@@ -1179,9 +1179,6 @@ void ScribbleArea::setGaussianGradient(QGradient &gradient, QColor color, qreal 
     // the more feather (offset), the more softness (opacity)
     int alphaAdded = qRound((mainColorAlpha * offset) / 100);
 
-    qDebug() << "main: " << mainColorAlpha;
-    qDebug() << "alpha: " << alphaAdded;
-
     gradient.setColorAt(0.0, QColor(r, g, b, mainColorAlpha - alphaAdded));
     gradient.setColorAt(1.0, QColor(r, g, b, 0));
     gradient.setColorAt(1.0 - (offset / 100.0), QColor(r, g, b, mainColorAlpha - alphaAdded));

@@ -154,12 +154,12 @@ bool StrokeTool::interruptPointerEvent(PointerEvent* event)
             return startAdjusting(event->modifiers(), 1);
         }
     } else if (event->eventType() == PointerEvent::Move) {
-        if (event->buttons() & Qt::LeftButton && isAdjusting()) {
+        if (event->buttons() & Qt::LeftButton && msIsAdjusting) {
             adjustCursor(event->modifiers());
             return true;
         }
     } else if (event->eventType() == PointerEvent::Release) {
-        if (isAdjusting()) {
+        if (msIsAdjusting) {
             mEditor->tools()->setWidth(static_cast<float>(properties.width));
             stopAdjusting();
             return true;
@@ -190,27 +190,12 @@ void StrokeTool::updateCanvasCursor()
 
     QPointF cursorPos = getCurrentPoint();
     const qreal cursorRad = brushWidth * 0.5;
-
-//    switch (mAdjustingPropertyType) {
-//        case WIDTH: {
-//            cursorPos = isAdjusting() ? mAdjustPosition : cursorPos;
-//            break;
-//        }
-//        case FEATHER: {
-            cursorPos = isAdjusting() ? mAdjustPosition : cursorPos;
-//            break;
-//        }
-//        default:
-//            break;
-//    }
+    cursorPos = isAdjusting() ? mAdjustPosition : cursorPos;
 
     CanvasCursorPainterOptions options;
     options.widthRect = QRectF(cursorPos.x() - cursorRad, cursorPos.y() - cursorRad, brushWidth, brushWidth);
 
-//    qDebug() << "width rect: " << options.widthRect;
-
-//    qreal featherToRelativeDistance = QLineF(adjustFromPosition(msOriginalPropertyValue, 0.5), getCurrentPoint()).length();
-    qreal featherWidthFactor = ((properties.feather - 0.0) / (100.0 - 0.0));
+    qreal featherWidthFactor = ((properties.feather - 100.0) / (0.0 - 100.0));
     options.featherRect = QRectF(options.widthRect.center().x() - (cursorRad * featherWidthFactor),
                                  options.widthRect.center().y() - (cursorRad * featherWidthFactor),
                                  brushWidth * featherWidthFactor,
@@ -245,7 +230,7 @@ bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal step)
         case FEATHER: {
             const qreal factor = 0.5;
             qreal cursorRad = properties.width * factor;
-            qreal featherWidthFactor = ((properties.feather - 0.0) / (99.0 - 0.0));
+            qreal featherWidthFactor = ((properties.feather - 99.0) / (0.0 - 99.0));
             qreal distance = QLineF(getCurrentPressPoint() - QPointF((cursorRad * featherWidthFactor) * factor, (cursorRad * featherWidthFactor) * factor), getCurrentPoint()).length();
             mAdjustPosition = getCurrentPressPoint() - QPointF(distance, distance);
             break;
@@ -272,7 +257,6 @@ void StrokeTool::stopAdjusting()
 {
     msIsAdjusting = false;
     mAdjustmentStep = 0;
-//    msOriginalPropertyValue = 0;
     mAdjustPosition = QPointF();
     mAdjustingPropertyType = NULL_PROPERTY;
     updateCanvasCursor();
@@ -291,7 +275,6 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
     //    where the current position in the circle, is the percentage from center
     // 4. msOriginalPropertyValue stores the value that tells us the distance from the adjusting cursor pos to our current pos
 
-//    qDebug() << "stuff";
     switch (mQuickSizingProperties.value(modifiers))
     {
     case WIDTH:
@@ -301,9 +284,8 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         qreal circleRad = properties.width * 0.5;
         qreal maxWidth = circleRad;
         newValue = QLineF(mAdjustPosition, getCurrentPoint()).length();
-        qreal mapped = (((newValue - 0.0) / (maxWidth - 0.0)) * 99.0);
+        qreal mapped = (((newValue - maxWidth) / (0.0 - maxWidth)) * 99.0);
 
-        qDebug() << "mapped: " << newValue;
         mEditor->tools()->setFeather(qBound(1., mapped, 99.));
         break;
     }
@@ -321,38 +303,6 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
 void StrokeTool::paint(QPainter& painter, const QRect& blitRect)
 {
     mCanvasCursorPainter.paint(painter, blitRect);
-
-    QPointF cursorPos = getCurrentPoint();
-
-//    QLineF testLine
-    painter.drawLine(mEditor->view()->getView().map(QLineF(mAdjustPosition, getCurrentPoint())));
-//    switch (mAdjustingPropertyType) {
-//        case WIDTH: {
-//            cursorPos = isAdjusting() ? mAdjustPosition : cursorPos;
-//            break;
-//        }
-//        case FEATHER: {
-            cursorPos = isAdjusting() ? mAdjustPosition : cursorPos;
-//            break;
-//        }
-//        default:
-//            break;
-//    }
-
-//    CanvasCursorPainterOptions options;
-//    QRectF widthCircle = QRectF(cursorPos.x() - cursorRad, cursorPos.y() - cursorRad, properties.width, properties.width);
-
-////    qDebug() << "width rect: " << options.widthRect;
-
-////    qreal featherToRelativeDistance = QLineF(adjustFromPosition(msOriginalPropertyValue, 0.5), getCurrentPoint()).length();
-//    qreal featherWidthFactor = ((properties.feather - 2.0) / (99.0 - 2.0));
-//    QRectF featherCircle =  QRectF(widthCircle.center().x() - (cursorRad * featherWidthFactor),
-//                                 widthCircle.center().y() - (cursorRad * featherWidthFactor),
-//                                 properties.width * featherWidthFactor,
-//                                 properties.width * featherWidthFactor);
-//    painter.setPen(Qt::blue);
-//    painter.drawEllipse(mEditor->view()->getView().mapRect(featherCircle));
-//    painter.drawEllipse(mEditor->view()->getView().mapRect(QRectF(mAdjustPosition-QPoint(5,5), QSize(10,10))));
 }
 
 

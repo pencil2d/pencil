@@ -64,8 +64,6 @@ protected:
 
     static bool mQuickSizingEnabled;
     static bool msIsAdjusting;
-//    static qreal msOriginalPropertyValue;  // start from previous value (width, or feather ...)
-//    static qreal mAdjustOffset;
 
     QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
     bool mFirstDraw = false;
