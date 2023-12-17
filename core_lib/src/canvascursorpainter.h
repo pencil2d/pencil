@@ -8,6 +8,7 @@ struct CanvasCursorPainterOptions
     QRectF widthRect;
     QRectF featherRect;
     bool isAdjusting;
+    bool useFeather = false;
     bool showCursor = false;
 };
 
@@ -23,9 +24,11 @@ public:
     const QRectF dirtyRect() { return mDirtyRect; }
 private:
 
+    void mapToView(QRectF& widthRect, QRectF& featherRect);
+
     /// @brief precision circular cursor: used for drawing a cursor on the canvas.
-    void paintWidthCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthRect);
-    void paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& featherRect);
+    void paintWidthCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthCircleBounds);
+    void paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& featherCircleBounds, const QRectF& widthCircleBounds);
 
     CanvasCursorPainterOptions mOptions;
     QRectF mDirtyRect;

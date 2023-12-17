@@ -201,7 +201,8 @@ void StrokeTool::updateCanvasCursor()
                                  brushWidth * featherWidthFactor,
                                  brushWidth * featherWidthFactor);
     options.showCursor = mCanvasCursorEnabled;
-    options.isAdjusting = isAdjusting() && mQuickSizingEnabled;
+    options.isAdjusting = msIsAdjusting && mQuickSizingEnabled;
+    options.useFeather = properties.useFeather;
 
     mCanvasCursorPainter.preparePainter(options, mEditor->view()->getView());
 

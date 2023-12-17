@@ -7,9 +7,21 @@ CanvasCursorPainter::CanvasCursorPainter()
 void CanvasCursorPainter::paint(QPainter& painter, const QRect& blitRect)
 {
     if (mOptions.isAdjusting || mOptions.showCursor) {
-        paintFeatherCursor(painter, blitRect, mOptions.featherRect);
-        paintWidthCursor(painter, blitRect, mOptions.widthRect);
+        QRectF& widthRect = mOptions.widthRect;
+        QRectF& featherRect = mOptions.featherRect;
+        mapToView(widthRect, featherRect);
+
+        if (mOptions.useFeather) {
+            paintFeatherCursor(painter, blitRect, featherRect, widthRect);
+        }
+        paintWidthCursor(painter, blitRect, widthRect);
     }
+}
+
+void CanvasCursorPainter::mapToView(QRectF& widthRect, QRectF& featherRect)
+{
+    widthRect = mViewTransform.mapRect(widthRect);
+    featherRect = mViewTransform.mapRect(featherRect);
 }
 
 void CanvasCursorPainter::preparePainter(CanvasCursorPainterOptions& painterOptions, QTransform viewTransform)
@@ -18,8 +30,14 @@ void CanvasCursorPainter::preparePainter(CanvasCursorPainterOptions& painterOpti
     mViewTransform = viewTransform;
 }
 
-void CanvasCursorPainter::paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& featherRect)
+void CanvasCursorPainter::paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& featherCircleBounds, const QRectF& widthCircleBounds)
 {
+    // When the circles are too close to each other, the rendering will appear dotted or almost
+    // invisible at certain zoom levels.
+    if (widthCircleBounds.width() - featherCircleBounds.width() <= 1) {
+        return;
+    }
+
     painter.save();
 
     QPen cursorPen = QPen(Qt::gray);
@@ -29,12 +47,12 @@ void CanvasCursorPainter::paintFeatherCursor(QPainter& painter, const QRect& bli
 
     painter.setPen(cursorPen);
     painter.setCompositionMode(QPainter::RasterOp_SourceXorDestination);
-    painter.drawEllipse(mViewTransform.mapRect(featherRect));
+    painter.drawEllipse(featherCircleBounds);
 
     painter.restore();
 }
 
-void CanvasCursorPainter::paintWidthCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthRect)
+void CanvasCursorPainter::paintWidthCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthCircleBounds)
 {
     painter.save();
 
@@ -47,17 +65,15 @@ void CanvasCursorPainter::paintWidthCursor(QPainter& painter, const QRect& blitR
 
     painter.setCompositionMode(QPainter::RasterOp_SourceXorDestination);
 
-    const QRectF& circleBounds = mViewTransform.mapRect(widthRect);
-
     // Only draw the cross when the width is bigger than the cross itself
-    if (circleBounds.width() > 8) {
-        const QPointF& pos = circleBounds.center();
+    if (widthCircleBounds.width() > 8) {
+        const QPointF& pos = widthCircleBounds.center();
         painter.drawLine(QPointF(pos.x() - 2, pos.y()), QPointF(pos.x() + 2, pos.y()));
         painter.drawLine(QPointF(pos.x(), pos.y() - 2), QPointF(pos.x(), pos.y() + 2));
     }
 
-    painter.drawEllipse(circleBounds);
+    painter.drawEllipse(widthCircleBounds);
     painter.restore();
 
-    mDirtyRect = circleBounds;
+    mDirtyRect = widthCircleBounds;
 }
