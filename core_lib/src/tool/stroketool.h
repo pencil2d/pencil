@@ -84,13 +84,11 @@ protected:
     virtual bool emptyFrameActionEnabled();
 
     bool mCanvasCursorEnabled = false;
-    qreal mAdjustmentStep = 0.0f;
     QPointF mLastPixel { 0, 0 };
 
     QPointF mAdjustPosition;
 
     CanvasCursorPainter mCanvasCursorPainter;
-    ToolPropertyType mAdjustingPropertyType;
 };
 
 #endif // STROKETOOL_H
