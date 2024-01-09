@@ -2,6 +2,7 @@
 #define CANVASCURSORPAINTER_H
 
 #include <QPainter>
+#include <QPen>
 
 struct CanvasCursorPainterOptions
 {

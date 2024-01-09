@@ -7,7 +7,7 @@ CanvasCursorPainter::CanvasCursorPainter()
 
 void CanvasCursorPainter::setupPen()
 {
-    mCursorPen = Qt::gray;
+    mCursorPen = QPen(Qt::gray);
     mCursorPen.setWidthF(1);
     mCursorPen.setCosmetic(true);
 }
