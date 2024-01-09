@@ -2,6 +2,14 @@
 
 CanvasCursorPainter::CanvasCursorPainter()
 {
+    setupPen();
+}
+
+void CanvasCursorPainter::setupPen()
+{
+    mCursorPen = Qt::gray;
+    mCursorPen.setWidthF(1);
+    mCursorPen.setCosmetic(true);
 }
 
 void CanvasCursorPainter::paint(QPainter& painter, const QRect& blitRect)
@@ -40,12 +48,8 @@ void CanvasCursorPainter::paintFeatherCursor(QPainter& painter, const QRect& bli
 
     painter.save();
 
-    QPen cursorPen = QPen(Qt::gray);
     painter.setClipRect(blitRect);
-    cursorPen.setWidthF(1);
-    cursorPen.setCosmetic(true);
-
-    painter.setPen(cursorPen);
+    painter.setPen(mCursorPen);
     painter.setCompositionMode(QPainter::RasterOp_SourceXorDestination);
     painter.drawEllipse(featherCircleBounds);
 
@@ -56,12 +60,8 @@ void CanvasCursorPainter::paintWidthCursor(QPainter& painter, const QRect& blitR
 {
     painter.save();
 
-    QPen cursorPen = QPen(Qt::gray);
     painter.setClipRect(blitRect);
-    cursorPen.setWidthF(1);
-    cursorPen.setCosmetic(true);
-
-    painter.setPen(cursorPen);
+    painter.setPen(mCursorPen);
 
     painter.setCompositionMode(QPainter::RasterOp_SourceXorDestination);
 

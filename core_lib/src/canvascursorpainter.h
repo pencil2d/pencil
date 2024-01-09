@@ -24,6 +24,7 @@ public:
     const QRectF dirtyRect() { return mDirtyRect; }
 private:
 
+    void setupPen();
     void mapToView(QRectF& widthRect, QRectF& featherRect);
 
     /// @brief precision circular cursor: used for drawing a cursor on the canvas.
@@ -33,6 +34,8 @@ private:
     CanvasCursorPainterOptions mOptions;
     QRectF mDirtyRect;
     QTransform mViewTransform;
+
+    QPen mCursorPen;
 };
 
 #endif // CANVASCURSORPAINTER_H
