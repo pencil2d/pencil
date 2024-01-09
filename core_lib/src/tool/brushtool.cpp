@@ -46,6 +46,8 @@ ToolType BrushTool::type()
 
 void BrushTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
     mPropertyEnabled[PRESSURE] = true;
@@ -60,6 +62,7 @@ void BrushTool::loadSettings()
     properties.invisibility = settings.value("brushInvisibility", false).toBool();
     properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt();
+    properties.useFeather = settings.value("brushUseFeather", true).toBool();
     properties.useAA = DISABLED;
 
     if (properties.width <= 0) { setWidth(15); }
@@ -67,8 +70,6 @@ void BrushTool::loadSettings()
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
-
-    StrokeTool::loadSettings();
 }
 
 void BrushTool::resetToDefault()

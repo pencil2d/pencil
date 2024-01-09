@@ -39,6 +39,8 @@ PencilTool::PencilTool(QObject* parent) : StrokeTool(parent)
 
 void PencilTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[VECTORMERGE] = false;
@@ -51,21 +53,17 @@ void PencilTool::loadSettings()
     properties.pressure = settings.value("pencilPressure", true).toBool();
     properties.stabilizerLevel = settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt();
     properties.useAA = DISABLED;
-    properties.useFeather = true;
+    properties.useFeather = false;
     properties.useFillContour = false;
-    //    properties.invisibility = 1;
-    //    properties.preserveAlpha = 0;
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-
-    StrokeTool::loadSettings();
 }
 
 void PencilTool::resetToDefault()
 {
     setWidth(4.0);
     setFeather(50);
-    setUseFeather(true);
+    setUseFeather(false);
     setStabilizerLevel(StabilizationLevel::STRONG);
 }
 
@@ -261,7 +259,6 @@ void PencilTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        properties.useFeather = false;
         mCurrentWidth = 0; // FIXME: WTF?
         QPen pen(mEditor->color()->frontColor(),
                  1,

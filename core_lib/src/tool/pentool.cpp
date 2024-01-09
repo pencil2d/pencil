@@ -54,10 +54,9 @@ void PenTool::loadSettings()
     properties.preserveAlpha = OFF;
     properties.useAA = settings.value("penAA", true).toBool();
     properties.stabilizerLevel = settings.value("penLineStabilization", StabilizationLevel::STRONG).toInt();
+    properties.useFeather = false;
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-
-    StrokeTool::loadSettings();
 }
 
 void PenTool::resetToDefault()

@@ -41,6 +41,8 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[BEZIER] = true;
     mPropertyEnabled[ANTI_ALIASING] = true;
@@ -56,8 +58,6 @@ void PolylineTool::loadSettings()
     properties.stabilizerLevel = -1;
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-
-    StrokeTool::loadSettings();
 }
 
 void PolylineTool::resetToDefault()

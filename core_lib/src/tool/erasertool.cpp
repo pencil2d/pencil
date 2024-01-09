@@ -42,6 +42,8 @@ ToolType EraserTool::type()
 
 void EraserTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[USEFEATHER] = true;
     mPropertyEnabled[FEATHER] = true;
@@ -65,8 +67,6 @@ void EraserTool::loadSettings()
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
-
-    StrokeTool::loadSettings();
 }
 
 void EraserTool::resetToDefault()

@@ -44,6 +44,8 @@ ToolType SmudgeTool::type()
 
 void SmudgeTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
 
@@ -55,8 +57,6 @@ void SmudgeTool::loadSettings()
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
-
-    StrokeTool::loadSettings();
 }
 
 void SmudgeTool::resetToDefault()
