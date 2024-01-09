@@ -151,7 +151,6 @@ void BrushTool::pointerPressEvent(PointerEvent *event)
 
 void BrushTool::pointerMoveEvent(PointerEvent* event)
 {
-    StrokeTool::pointerMoveEvent(event);
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();

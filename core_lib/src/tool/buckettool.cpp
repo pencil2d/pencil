@@ -237,10 +237,6 @@ bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
     {
         mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     }
-    else
-    {
-        mQuickSizingProperties.insert(Qt::ControlModifier, TOLERANCE);
-    }
     return StrokeTool::startAdjusting(modifiers, argStep);
 }
 

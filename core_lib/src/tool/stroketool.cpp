@@ -183,6 +183,10 @@ void StrokeTool::pointerReleaseEvent(PointerEvent*)
 
 void StrokeTool::updateCanvasCursor()
 {
+    if (!msIsAdjusting && !mCanvasCursorEnabled) {
+        return;
+    }
+
     const qreal brushWidth = properties.width;
     const qreal brushFeather = properties.feather;
 
@@ -207,10 +211,8 @@ void StrokeTool::updateCanvasCursor()
     const QRect& dirtyRect = mCanvasCursorPainter.dirtyRect().toAlignedRect();
     const QRect& updateRect = mEditor->view()->getView().mapRect(QRectF(cursorOffset, QSizeF(brushWidth, brushWidth))).toAlignedRect();
 
-    if (msIsAdjusting || mCanvasCursorEnabled) {
-        // Adjusted to account for some pixel bleeding outside the update rect
-        mScribbleArea->update(updateRect.united(dirtyRect).adjusted(-2, -2, 2, 2));
-    }
+    // Adjusted to account for some pixel bleeding outside the update rect
+    mScribbleArea->update(updateRect.united(dirtyRect).adjusted(-2, -2, 2, 2));
 }
 
 bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal step)
@@ -239,9 +241,6 @@ bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal step)
             mAdjustPosition = currentPressPoint - QPointF(distance, distance);
             break;
         }
-        case TOLERANCE:
-//            msOriginalPropertyValue = properties.tolerance;
-            break;
         default:
             qDebug() << "Unhandled quick sizing property for tool" << typeName();
             Q_ASSERT(false);
@@ -288,10 +287,6 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         mEditor->tools()->setFeather(qBound(1., mappedValue, 99.));
         break;
     }
-    case TOLERANCE:
-    // TODO: should we reimplement or remove?
-//        mEditor->tools()->setTolerance(qBound(0., newValue, 100.));
-        break;
     default:
         qDebug() << "Unhandled quick sizing property for tool" << typeName();
         Q_ASSERT(false);
