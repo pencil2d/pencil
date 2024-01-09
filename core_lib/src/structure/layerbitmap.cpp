@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 
 
-LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
+LayerBitmap::LayerBitmap(int id) : Layer(id, Layer::BITMAP)
 {
     setName(tr("Bitmap Layer"));
 }
@@ -99,7 +99,7 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
     return Status::OK;
 }
 
-KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
+KeyFrame* LayerBitmap::createKeyFrame(int position)
 {
     BitmapImage* b = new BitmapImage;
     b->setPos(position);

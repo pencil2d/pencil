@@ -27,7 +27,7 @@ class LayerSound : public Layer
     Q_OBJECT
 
 public:
-    LayerSound( Object* object );
+    explicit LayerSound(int id);
     ~LayerSound();
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
@@ -39,7 +39,7 @@ public:
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
-    KeyFrame* createKeyFrame(int position, Object*) override;
+    KeyFrame* createKeyFrame(int position) override;
 };
 
 #endif

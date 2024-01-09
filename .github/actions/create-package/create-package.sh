@@ -75,7 +75,7 @@ create_package_macos() {
   echo "::group::Apply macdeployqt fix"
   curl -fsSLO https://github.com/aurelien-rainone/macdeployqtfix/archive/master.zip
   bsdtar xf master.zip
-  python macdeployqtfix-master/macdeployqtfix.py \
+  /Library/Frameworks/Python.framework/Versions/2.7/bin/python macdeployqtfix-master/macdeployqtfix.py \
     Pencil2D.app/Contents/MacOS/Pencil2D \
     /usr/local/Cellar/qt/5.9.1/
   echo "::endgroup::"

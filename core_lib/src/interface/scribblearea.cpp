@@ -197,16 +197,6 @@ void ScribbleArea::onTileUpdated(TiledBuffer* tiledBuffer, Tile* tile)
 void ScribbleArea::onTileCreated(TiledBuffer* tiledBuffer, Tile* tile)
 {
     Q_UNUSED(tiledBuffer)
-    Layer::LAYER_TYPE layerType = mEditor->layers()->currentLayer()->type();
-    if (layerType == Layer::BITMAP) {
-        const auto& bitmapImage = currentBitmapImage(mEditor->layers()->currentLayer());
-        const QImage& image = *bitmapImage->image();
-        tile->load(image, bitmapImage->topLeft());
-    } else if (layerType == Layer::VECTOR) {
-
-        // Not used, we only use the buffer to paint the stroke before painting the real vector stroke
-    }
-
     const QRectF& mappedRect = mEditor->view()->getView().mapRect(QRectF(tile->bounds()));
     update(mappedRect.toAlignedRect());
 }
@@ -830,7 +820,24 @@ void ScribbleArea::paintBitmapBuffer()
     BitmapImage* targetImage = currentBitmapImage(layer);
     if (targetImage != nullptr)
     {
-        targetImage->paste(&mTiledBuffer, QPainter::CompositionMode_Source);
+        QPainter::CompositionMode cm = QPainter::CompositionMode_SourceOver;
+        switch (currentTool()->type())
+        {
+        case ERASER:
+            cm = QPainter::CompositionMode_DestinationOut;
+            break;
+        case BRUSH:
+        case PEN:
+        case PENCIL:
+            if (currentTool()->properties.preserveAlpha)
+            {
+                cm = QPainter::CompositionMode_SourceOver;
+            }
+            break;
+        default: //nothing
+            break;
+        }
+        targetImage->paste(&mTiledBuffer, cm);
     }
 
     QRect rect = mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect();
@@ -1129,7 +1136,6 @@ void ScribbleArea::prepCanvas(int frame)
     o.fLayerVisibilityThreshold = mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD);
     o.scaling = mEditor->view()->scaling();
     o.cmBufferBlendMode = mEditor->tools()->currentTool()->type() == ToolType::ERASER ? QPainter::CompositionMode_DestinationOut : QPainter::CompositionMode_SourceOver;
-    o.bIgnoreCanvasBuffer = currentTool()->type() == POLYLINE;
 
     OnionSkinPainterOptions onionSkinOptions;
     onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
@@ -1191,7 +1197,8 @@ void ScribbleArea::drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter:
 
 void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA)
 {
-    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_SourceOver, useAA);
+    // We use Source as opposed to SourceOver here to avoid the dabs being added on top of each other
+    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_Source, useAA);
 }
 
 void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)

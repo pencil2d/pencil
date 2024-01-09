@@ -28,11 +28,10 @@ class QMouseEvent;
 class QPainter;
 
 class KeyFrame;
-class Object;
 class TimeLineCells;
 class Status;
 
-#define ProgressCallback std::function<void()>
+typedef std::function<void()> ProgressCallback;
 
 class Layer : public QObject
 {
@@ -49,14 +48,12 @@ public:
         CAMERA = 5,
     };
 
-    explicit Layer(Object*, LAYER_TYPE);
+    explicit Layer(int id, LAYER_TYPE eType);
     ~Layer() override;
 
     int id() const { return mId; }
+    void setId(int layerId) { mId = layerId; }
     LAYER_TYPE type() const { return meType; }
-
-    Object* object() const { return mObject; }
-    void setObject(Object* obj);
 
     void setName(QString name) { mName = name; }
     QString name() const { return mName; }
@@ -168,15 +165,13 @@ public:
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
 protected:
-    void setId(int LayerId) { mId = LayerId; }
-    virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
+    virtual KeyFrame* createKeyFrame(int position) = 0;
     bool loadKey(KeyFrame*);
 
 private:
     void removeFromSelectionList(int position);
 
     LAYER_TYPE meType = UNDEFINED;
-    Object*    mObject = nullptr;
     int        mId = 0;
     bool       mVisible = true;
     QString    mName;

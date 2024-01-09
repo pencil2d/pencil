@@ -40,16 +40,19 @@ GNU General Public License for more details.
         ";;SWF(*.swf);;FLV(*.flv);;WEBM(*.webm);;WMV(*.wmv)"
 
 #define PFF_IMAGE_FILTER \
-   QCoreApplication::translate("FileFormat",  "Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;TIFF(*.tif *.tiff)"
+   QCoreApplication::translate("FileFormat",  "Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff *.webp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;TIFF(*.tif *.tiff);;WEBP(*.webp)"
 
 #define PFF_IMAGE_SEQ_FILTER \
-    QCoreApplication::translate("FileFormat",  "Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;TIFF(*.tif *.tiff)"
+    QCoreApplication::translate("FileFormat",  "Image formats") + " (*.png *.jpg *.jpeg *.bmp *.tif *.tiff *.webp);;PNG (*.png);;JPG(*.jpg *.jpeg);;BMP(*.bmp);;TIFF(*.tif *.tiff);;WEBP(*.webp)"
 
 #define PFF_PALETTE_EXT_FILTER \
     QCoreApplication::translate("FileFormat", "Palette formats") + " (*.xml *.gpl);;" + QCoreApplication::translate("FileFormat", "Pencil2D Palette") + " (*.xml);;" + QCoreApplication::translate("FileFormat", "GIMP Palette") + " (*.gpl)"
 
 #define PFF_GIF_EXT_FILTER \
     QCoreApplication::translate("FileFormat", "Animated GIF") + " (*.gif)"
+
+#define PFF_ANIMATED_IMAGE_EXT_FILTER \
+    QCoreApplication::translate("FileFormat", "Animated image formats") + " (*.gif *.webp);;GIF(*.gif);;WEBP(*.webp)"
 
 #define PFF_SOUND_EXT_FILTER \
     QCoreApplication::translate("FileFormat", "Sound formats") + " (*.wav *.mp3 *.wma *.ogg *.flac *.opus *.aiff *.aac *.caf);;WAV (*.wav);;MP3 (*.mp3);;WMA (*.wma);;OGG (*.ogg);;FLAC (*.flac);;Opus (*.opus);;AIFF (*.aiff);;AAC (*.aac);;CAF (*.caf)"

@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include <QFileInfo>
 
 
-LayerVector::LayerVector(Object* object) : Layer(object, Layer::VECTOR)
+LayerVector::LayerVector(int id) : Layer(id, Layer::VECTOR)
 {
     setName(tr("Vector Layer"));
 }
@@ -70,7 +70,6 @@ void LayerVector::loadImageAtFrame(QString path, int frameNumber)
     }
     VectorImage* vecImg = new VectorImage;
     vecImg->setPos(frameNumber);
-    vecImg->setObject(object());
     vecImg->read(path);
     addKeyFrame(frameNumber, vecImg);
 }
@@ -106,11 +105,10 @@ Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
     return Status::OK;
 }
 
-KeyFrame* LayerVector::createKeyFrame(int position, Object* obj)
+KeyFrame* LayerVector::createKeyFrame(int position)
 {
     VectorImage* v = new VectorImage;
     v->setPos(position);
-    v->setObject(obj);
     return v;
 }
 

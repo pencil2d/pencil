@@ -68,57 +68,6 @@ Status SoundManager::save(Object*)
     return Status::OK;
 }
 
-Status SoundManager::loadSound(Layer* soundLayer, int frameNumber, QString soundFilePath)
-{
-    Q_ASSERT(soundLayer);
-    if (soundLayer->type() != Layer::SOUND)
-    {
-        return Status::ERROR_INVALID_LAYER_TYPE;
-    }
-
-    if (frameNumber < 0)
-    {
-        return Status::ERROR_INVALID_FRAME_NUMBER;
-    }
-
-    if (!QFile::exists(soundFilePath))
-    {
-        return Status::FILE_NOT_FOUND;
-    }
-
-    KeyFrame* key = soundLayer->getKeyFrameAt(frameNumber);
-    if (key == nullptr)
-    {
-        key = new SoundClip;
-        soundLayer->addKeyFrame(frameNumber, key);
-    }
-
-    if (!key->fileName().isEmpty())
-    {
-        // file path should be empty.
-        // we can only load a audio clip to an empty key!
-        return Status::FAIL;
-    }
-
-    QString strCopyFile = soundLayer->object()->copyFileToDataFolder(soundFilePath);
-    Q_ASSERT(!strCopyFile.isEmpty());
-
-    QString sOriginalName = QFileInfo(soundFilePath).fileName();
-
-    SoundClip* soundClip = dynamic_cast<SoundClip*>(key);
-    soundClip->init(strCopyFile);
-    soundClip->setSoundClipName(sOriginalName);
-
-    Status st = createMediaPlayer(soundClip);
-    if (!st.ok())
-    {
-        delete soundClip;
-        return st;
-    }
-
-    return Status::OK;
-}
-
 Status SoundManager::loadSound(SoundClip* soundClip, QString strSoundFile)
 {
     Q_ASSERT(soundClip);

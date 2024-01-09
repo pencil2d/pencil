@@ -45,10 +45,10 @@ public:
     explicit Object();
     ~Object();
 
-	Object(Object const&) = delete;
-	Object(Object&&) = delete;
-	Object& operator=(Object const&) = delete;
-	Object& operator=(Object&&) = delete;
+    Object(Object const&) = delete;
+    Object(Object&&) = delete;
+    Object& operator=(Object const&) = delete;
+    Object& operator=(Object&&) = delete;
 
     void init();
     void createWorkingDir();

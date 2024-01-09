@@ -43,6 +43,7 @@ A dialog should pop up asking if you want to install the command line developer 
 - Next, specify a location for %Qt, put it somewhere you can find it in case you ever need to navigate to the %Qt files manually.
 - Then choose the %Qt version and components you wish to install.
   - If you have no idea what to do, select `%Qt 5.15.x -> macOS`.
+  - If you are using Qt 6, make sure to also select its Multimedia module in the Additional Libraries section.
   - Also make sure %Qt Creator under the Tools section is being installed.
 - Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press `Done` and it will launch %Qt Creator for you.
 

@@ -21,7 +21,7 @@ Pencil2D relies on the %Qt application framework so you must install it before y
 - Executing this file will start the %Qt installer application. If you can't open it right away, you may have to right click on it and go to *Properties*, then in the *Permissions* tab select *Allow executing file as program* and then try opening it again.
 - Click Next. You have to create a free %Qt account if you don't have one. Don't worry, it won't cost you a penny.
 - Next, specify a location for %Qt, put it somewhere you can find it in case you ever need to navigate to the %Qt files manually.
-- Next, you can select the components you wish to install. At the very least you should have Desktop GCC selected under the latest %Qt version. Also make sure %Qt Creator under the Tools section is being installed.
+- Next, you can select the components you wish to install. At the very least you should have Desktop GCC selected under the latest %Qt version, as well as its Multimedia module from the Additional Libraries section if you are using Qt 6. Also make sure %Qt Creator under the Tools section is being installed.
 - Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press Done and it will launch %Qt Creator for you.
 
 ##### Command-line method

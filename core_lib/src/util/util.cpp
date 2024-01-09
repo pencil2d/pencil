@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #include <QApplication>
 #include <QStandardPaths>
 
-static inline bool clipInfiniteLineToEdge(qreal& t0, qreal& t1, qreal p, qreal q)
+static inline bool clipLineToEdge(qreal& t0, qreal& t1, qreal p, qreal q)
 {
     if (p < 0) { // Line entering the clipping window
         t0 = qMax(t0, q / p);
@@ -37,14 +37,14 @@ QLineF clipLine(const QLineF& line, const QRect& clip, qreal t0, qreal t1)
     int left = clip.left(), right = left + clip.width(), top = clip.top(), bottom = top + clip.height();
     qreal x1 = line.x1(), x2 = line.x2(), dx = line.dx(), y1 = line.y1(), y2 = line.y2(), dy = line.dy();
 
-    if (t0 == 0 && t1 == 1 && (x1 < left && x2 < left ||
-                               x1 > right && x2 > right ||
-                               y1 < top && y2 < top ||
-                               y1 > bottom && y2 > bottom) ||
-        !clipInfiniteLineToEdge(t0, t1, -dx, x1 - left) ||
-        !clipInfiniteLineToEdge(t0, t1,  dx, right - x1) ||
-        !clipInfiniteLineToEdge(t0, t1, -dy, y1 - top) ||
-        !clipInfiniteLineToEdge(t0, t1,  dy, bottom - y1)) {
+    if ((t0 == 0 && t1 == 1 && ((x1 < left && x2 < left) ||
+                                (x1 > right && x2 > right) ||
+                                (y1 < top && y2 < top) ||
+                                (y1 > bottom && y2 > bottom))) ||
+        !clipLineToEdge(t0, t1, -dx, x1 - left) ||
+        !clipLineToEdge(t0, t1,  dx, right - x1) ||
+        !clipLineToEdge(t0, t1, -dy, y1 - top) ||
+        !clipLineToEdge(t0, t1,  dy, bottom - y1)) {
         return {};
     }
 
