@@ -315,7 +315,7 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
     }
 
     // We do not wish to draw selection transformations on anything but the current layer
-    if (isCurrentLayer && mRenderTransform) {
+    if (isCurrentLayer && mRenderTransform && !isDrawing) {
         paintTransformedSelection(currentBitmapPainter, paintedImage, mSelection);
     }
 
