@@ -40,7 +40,6 @@ public:
     void drawStroke();
     void paintAt(QPointF point);
     void paintVectorStroke(Layer* layer);
-    void paintBitmapStroke();
 
     void setWidth(const qreal width) override;
     void setFeather(const qreal feather) override;
@@ -52,9 +51,7 @@ public:
     void setUseFillContour(const bool useFillContour) override;
 
 private:
-    QColor mCurrentPressuredColor{ 0, 0, 0, 255 };
     QPointF mLastBrushPoint{ 0, 0 };
-    qreal mOpacity = 1.0f;
     QPointF mMouseDownPoint;
 };
 

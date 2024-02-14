@@ -43,6 +43,7 @@ A dialog should pop up asking if you want to install the command line developer 
 - Next, specify a location for %Qt, put it somewhere you can find it in case you ever need to navigate to the %Qt files manually.
 - Then choose the %Qt version and components you wish to install.
   - If you have no idea what to do, select `%Qt 5.15.x -> macOS`.
+  - If you are using Qt 6, make sure to also select its Multimedia module in the Additional Libraries section.
   - Also make sure %Qt Creator under the Tools section is being installed.
 - Agree to the license and begin the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press `Done` and it will launch %Qt Creator for you.
 
@@ -50,7 +51,11 @@ A dialog should pop up asking if you want to install the command line developer 
 
 If you have `Homebrew` installed, you can install %Qt 5 framework via Homebrew as well. Run this command:
 
-    brew install qt5
+    brew install qt@5
+
+If you would like to use %Qt 6 instead, simply replace the version number in the command above.
+
+@warning Please note that there are known issues with the Homebrew build of Qt 6 which may cause Pencil2D to crash. As a workaround, you can try disabling the "Add build library search path to DYLD_LIBRARY_PATH and DYLD_FRAMEWORK_PATH" option in your run configuration after configuring the project in Qt Creator. Otherwise, please use the official builds instead (see above), as they are not affected. For more details, see [this discussion](https://github.com/orgs/Homebrew/discussions/4362).
 
 And also run the following commands to install %Qt Creator:
 

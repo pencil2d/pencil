@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #ifndef GENERALPAGE_H
 #define GENERALPAGE_H
 
+class QAbstractButton;
 class PreferenceManager;
 
 namespace Ui {
@@ -54,8 +55,9 @@ private slots:
     void highResCheckboxStateChanged(int b);
     void gridCheckBoxStateChanged(int b);
     void curveSmoothingChanged(int value);
-    void backgroundChanged(int value);
+    void backgroundChanged(QAbstractButton* button);
     void frameCacheNumberChanged(int value);
+    void invertScrollDirectionBoxStateChanged(int b);
 
 private:
 

@@ -24,6 +24,18 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 #include "pencildef.h"
 
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+Q_MOC_INCLUDE("colormanager.h")
+Q_MOC_INCLUDE("toolmanager.h")
+Q_MOC_INCLUDE("layermanager.h")
+Q_MOC_INCLUDE("playbackmanager.h")
+Q_MOC_INCLUDE("viewmanager.h")
+Q_MOC_INCLUDE("preferencemanager.h")
+Q_MOC_INCLUDE("selectionmanager.h")
+Q_MOC_INCLUDE("soundmanager.h")
+Q_MOC_INCLUDE("overlaymanager.h")
+Q_MOC_INCLUDE("clipboardmanager.h")
+#endif
 
 class QClipboard;
 class QTemporaryDir;
@@ -154,21 +166,15 @@ public: //slots
 
     /** Will call update() and update the canvas
      * Only call this directly If you need the cache to be intact and require the frame to be repainted
-     * Convenient method that does the same as updateFrame but for the current frame
     */
-    void updateCurrentFrame();
-
-    /** Will call update() and update the canvas
-     * Only call this directly If you need the cache to be intact and require the frame to be repainted
-    */
-    void updateFrame(int frameNumber);
+    void updateFrame();
 
     void setModified(int layerNumber, int frameNumber);
 
     void clearCurrentFrame();
 
     Status importImage(const QString& filePath);
-    Status importGIF(const QString& filePath, int numOfImages = 0);
+    Status importAnimatedImage(const QString& filePath, int frameSpacing, const std::function<void (int)>& progressChanged, const std::function<bool ()>& wasCanceled);
     void restoreKey();
 
     void scrubNextKeyFrame();
@@ -224,7 +230,7 @@ public: //slots
     void resetAutoSaveCounter();
 
 private:
-    Status importBitmapImage(const QString&, int space = 0);
+    Status importBitmapImage(const QString&);
     Status importVectorImage(const QString&);
 
     void pasteToCanvas(BitmapImage* bitmapImage, int frameNumber);

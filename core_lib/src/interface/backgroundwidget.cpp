@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QStyleOption>
 #include <QPainter>
+#include <QPaintEvent>
 
 
 BackgroundWidget::BackgroundWidget(QWidget* parent) : QWidget(parent)
@@ -66,11 +67,13 @@ void BackgroundWidget::settingUpdated(SETTING setting)
     }
 }
 
-void BackgroundWidget::paintEvent(QPaintEvent *)
+void BackgroundWidget::paintEvent(QPaintEvent* event)
 {
     QStyleOption opt;
-    opt.init(this);
+    opt.initFrom(this);
     QPainter painter(this);
+    painter.setClipRect(event->rect());
+
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
 
     if (mHasShadow)
@@ -112,7 +115,7 @@ void BackgroundWidget::loadBackgroundStyle()
     setStyleSheet(mStyle);
 }
 
-void BackgroundWidget::drawShadow( QPainter& painter )
+void BackgroundWidget::drawShadow(QPainter& painter)
 {
     int radius1 = 12;
     int radius2 = 8;

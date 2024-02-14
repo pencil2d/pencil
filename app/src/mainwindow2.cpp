@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include "ui_mainwindow2.h"
 
 // Qt headers
+#include <QActionGroup>
 #include <QDir>
 #include <QList>
 #include <QMenu>
@@ -185,7 +186,9 @@ void MainWindow2::createDockWidgets()
     for (BaseDockWidget* pWidget : mDockWidgets)
     {
         pWidget->setAllowedAreas(Qt::AllDockWidgetAreas);
-        pWidget->setFeatures(QDockWidget::AllDockWidgetFeatures);
+        pWidget->setFeatures(QDockWidget::DockWidgetFeature::DockWidgetClosable |
+                             QDockWidget::DockWidgetFeature::DockWidgetMovable |
+                             QDockWidget::DockWidgetFeature::DockWidgetFloatable);
         pWidget->setFocusPolicy(Qt::NoFocus);
 
         pWidget->setEditor(mEditor);
@@ -251,7 +254,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importPredefinedImageSet);
     connect(ui->actionImportLayers_from_pclx, &QAction::triggered, this, &MainWindow2::importLayers);
     connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
-    connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
+    connect(ui->actionImport_AnimatedImage, &QAction::triggered, this, &MainWindow2::importAnimatedImage);
 
     connect(ui->actionImport_Sound, &QAction::triggered, [=] { mCommands->importSound(FileType::SOUND); });
     connect(ui->actionImport_MovieAudio, &QAction::triggered, [=] { mCommands->importSound(FileType::MOVIE); });
@@ -877,7 +880,7 @@ void MainWindow2::importImage()
         return;
     }
 
-    ui->scribbleArea->updateCurrentFrame();
+    ui->scribbleArea->updateFrame();
     mTimeLine->updateContent();
 }
 
@@ -947,64 +950,23 @@ void MainWindow2::importLayers()
     importLayers->open();
 }
 
-void MainWindow2::importGIF()
+void MainWindow2::importAnimatedImage()
 {
-    auto gifDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::GIF);
-    gifDialog->exec();
-    if (gifDialog->result() == QDialog::Rejected)
-    {
-        return;
-    }
-
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
     mSuppressAutoSaveDialog = true;
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
-    OnScopeExit(delete positionDialog)
-
-    positionDialog->exec();
-    if (positionDialog->result() != QDialog::Accepted)
-    {
-        return;
-    }
-
-    int space = gifDialog->getSpace();
-
-    // Show a progress dialog, as this could take a while if the gif is huge
-    QProgressDialog progress(tr("Importing Animated GIF..."), tr("Abort"), 0, 100, this);
-    hideQuestionMark(progress);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-
-    QString strImgFileLower = gifDialog->getFilePath();
-    if (!strImgFileLower.toLower().endsWith(".gif"))
-    {
-        ErrorDialog errorDialog(tr("Import failed"), tr("You can only import files ending with .gif."));
-        errorDialog.exec();
-    }
-    else
-    {
-        Status st = mEditor->importGIF(strImgFileLower, space);
-
-        progress.setValue(50);
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-
-        progress.setValue(100);
-        progress.close();
-
-        if (!st.ok())
-        {
-            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
-            errorDialog.exec();
-        }
-    }
+    mCommands->importAnimatedImage();
 
     mSuppressAutoSaveDialog = false;
 }
 
 void MainWindow2::lockWidgets(bool shouldLock)
 {
-    QDockWidget::DockWidgetFeatures feat = shouldLock ? QDockWidget::NoDockWidgetFeatures : QDockWidget::AllDockWidgetFeatures;
+    QDockWidget::DockWidgetFeatures feat = shouldLock
+        ? QDockWidget::NoDockWidgetFeatures
+        : (QDockWidget::DockWidgetFeature::DockWidgetClosable |
+           QDockWidget::DockWidgetFeature::DockWidgetMovable |
+           QDockWidget::DockWidgetFeature::DockWidgetFloatable);
 
     for (QDockWidget* d : mDockWidgets)
     {
@@ -1443,7 +1405,7 @@ void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector
 
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
-    connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::setCurrentTool);
+    connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::updateToolCursor);
     connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxWidget::onToolSetActive);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
 
@@ -1691,6 +1653,9 @@ void MainWindow2::createToolbars()
     mOverlayToolbar->addAction(ui->actionTwoPointPerspective);
     mOverlayToolbar->addAction(ui->actionThreePointPerspective);
     mOverlayToolbar->setIconSize(QSize(22,22));
+    mViewToolbar->setIconSize(QSize(22,22));
+    mMainToolbar->setIconSize(QSize(22,22));
+    
     QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
     perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
     perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);

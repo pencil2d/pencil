@@ -26,6 +26,7 @@ Pencil2D is built upon Qt, you need to install it before you can compile the pro
 - You have to create a free Qt account if you don't have one. Don't worry, it won't cost you a penny.
 - In the next step, choose the Qt version that matches your C++ compiler.
   - For example, select `MSVC 2019 64-bit` if you have Visual C++ 2019 installed.
+  - If you are using Qt 6, make sure to also select its Multimedia module in the Additional Libraries section.
   - If you have no idea what to do, select the latest `Qt 5.15.x -> MinGW 8.x` and `Developer and Design Tools -> MinGW 8.x 64-bit`.
 - Agree to the license and start the installation. It will take a long time to download all of the files, so be patient. When the installation is complete, press `Done` and it will launch Qt Creator for you.
 

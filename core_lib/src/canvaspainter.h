@@ -30,6 +30,8 @@ GNU General Public License for more details.
 #include "onionskinpainteroptions.h"
 #include "onionskinsubpainter.h"
 
+
+class TiledBuffer;
 class Object;
 class BitmapImage;
 class ViewManager;
@@ -39,6 +41,7 @@ struct CanvasPainterOptions
     bool  bAntiAlias = false;
     bool  bThinLines = false;
     bool  bOutlines = false;
+
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
     float fLayerVisibilityThreshold = 0.f;
     float scaling = 1.0f;
@@ -61,7 +64,7 @@ public:
     void setTransformedSelection(QRect selection, QTransform transform);
     void ignoreTransformedSelection();
 
-    void setPaintSettings(const Object* object, int currentLayer, int frame, QRect rect, BitmapImage* buffer);
+    void setPaintSettings(const Object* object, int currentLayer, int frame, TiledBuffer* tilledBuffer);
     void paint(const QRect& blitRect);
     void paintCached(const QRect& blitRect);
     void resetLayerCache();
@@ -88,7 +91,7 @@ private:
 
     void paintBitmapOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
     void paintVectorOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize);
-    void paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPainter, const QRect& blitRect, int nFrame, bool colorize, qreal frameOpacity);
+    void paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPainter, int nFrame, bool colorize, qreal frameOpacity);
 
     void paintCurrentBitmapFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer);
     void paintCurrentVectorFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer);
@@ -102,7 +105,7 @@ private:
 
     int mCurrentLayerIndex = 0;
     int mFrameNumber = 0;
-    BitmapImage* mBuffer = nullptr;
+    TiledBuffer* mTiledBuffer = nullptr;
 
     QImage mScaledBitmap;
 
@@ -118,6 +121,10 @@ private:
     QPixmap mOnionSkinPixmap;
     bool mPreLayersPixmapCacheValid = false;
     bool mPostLayersPixmapCacheValid = false;
+
+    // There's a considerable amount of overhead in simply allocating a QPointF on the fly.
+    // Since we just need to draw it at 0,0, we might as well make a const value for that purpose
+    const QPointF mPointZero;
 
 
     OnionSkinSubPainter mOnionSkinSubPainter;

@@ -360,8 +360,7 @@ void ColorPaletteWidget::palettePreferences()
 
 
     // Add to UI
-    ui->palettePref->setIcon(QIcon(":/app/icons/new/svg/more_options.svg"));
-    ui->palettePref->setIconSize(QSize(15,15));
+    ui->palettePref->setIconSize(QSize(22,22));
     ui->palettePref->setArrowType(Qt::ArrowType::NoArrow);
     ui->palettePref->setStyleSheet(buttonStylesheet);
     ui->palettePref->addAction(ui->listModeAction);
@@ -636,7 +635,7 @@ void ColorPaletteWidget::clickRemoveColorButton()
     {
         fitSwatchSize();
     }
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 bool ColorPaletteWidget::showPaletteWarning()

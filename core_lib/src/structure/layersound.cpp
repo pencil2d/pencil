@@ -20,11 +20,10 @@ GNU General Public License for more details.
 #include <QMediaPlayer>
 #include <QFileInfo>
 #include <QDir>
-#include "object.h"
 #include "soundclip.h"
 
 
-LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
+LayerSound::LayerSound(int id) : Layer(id, Layer::SOUND)
 {
     setName(tr("Sound Layer"));
 }
@@ -155,7 +154,7 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
     return Status::OK;
 }
 
-KeyFrame* LayerSound::createKeyFrame(int position, Object*)
+KeyFrame* LayerSound::createKeyFrame(int position)
 {
     SoundClip* s = new SoundClip;
     s->setPos(position);

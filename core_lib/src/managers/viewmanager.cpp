@@ -171,6 +171,14 @@ void ViewManager::rotate(float degree)
     emit viewChanged();
 }
 
+void ViewManager::rotateRelative(float delta)
+{
+    mRotation = mRotation + delta;
+    updateViewTransforms();
+
+    emit viewChanged();
+}
+
 void ViewManager::resetRotation()
 {
     rotate(0);
@@ -197,11 +205,12 @@ void ViewManager::scaleUp()
 
 void ViewManager::scaleDown()
 {
-    for (size_t i = gZoomLevels.size() - 1; i >= 0; --i)
+    const size_t nZoomLevels = gZoomLevels.size();
+    for (size_t i = 1; i <= nZoomLevels; i++)
     {
-        if (mScaling > gZoomLevels[i])
+        if (mScaling > gZoomLevels[nZoomLevels - i])
         {
-            scale(gZoomLevels[i]);
+            scale(gZoomLevels[nZoomLevels - i]);
             return;
         }
     }

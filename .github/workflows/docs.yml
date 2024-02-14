@@ -30,7 +30,7 @@ jobs:
     - name: Retrieve Qt tagfiles
       working-directory: util/docs
       run: |
-        for i in core gui network svg testlib widgets xml xmlpatterns; do
+        for i in core gui network svg testlib widgets xml; do
           curl -fsSLO "https://doc.qt.io/qt-5/qt${i}.tags"
         done
 

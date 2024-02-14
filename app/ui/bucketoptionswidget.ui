@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>197</height>
+    <height>221</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -35,25 +35,7 @@
       <number>6</number>
      </property>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout_3">
-       <item>
-        <widget class="QLabel" name="fillToDescLabel">
-         <property name="text">
-          <string>Fill to</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QComboBox" name="fillToLayerComboBox">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <layout class="QHBoxLayout" name="horizontalLayout_3"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">

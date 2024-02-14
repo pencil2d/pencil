@@ -58,6 +58,7 @@ public:
 
     float rotation();
     void rotate(float degree);
+    void rotateRelative(float delta);
     void resetRotation();
 
     qreal scaling();

@@ -38,7 +38,6 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    Status loadSound(Layer* soundLayer, int frameNumber, QString strSoundFile);
     Status loadSound(SoundClip* soundClip, QString strSoundFile);
     Status processSound(SoundClip* soundClip);
 

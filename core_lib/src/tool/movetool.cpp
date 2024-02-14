@@ -101,12 +101,12 @@ void MoveTool::updateSettings(const SETTING setting)
 
 void MoveTool::pointerPressEvent(PointerEvent* event)
 {
-    mCurrentLayer = currentPaintableLayer();
-    if (mCurrentLayer == nullptr) return;
+    Layer* currentLayer = currentPaintableLayer();
+    if (currentLayer == nullptr) return;
 
     if (mEditor->select()->somethingSelected())
     {
-        beginInteraction(event->modifiers(), mCurrentLayer);
+        beginInteraction(event->modifiers(), currentLayer);
     }
     if (mEditor->overlays()->anyOverlayEnabled())
     {
@@ -119,13 +119,13 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
         mEditor->overlays()->updatePerspective(mapped);
     }
 
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void MoveTool::pointerMoveEvent(PointerEvent* event)
 {
-    mCurrentLayer = currentPaintableLayer();
-    if (mCurrentLayer == nullptr) return;
+    Layer* currentLayer = currentPaintableLayer();
+    if (currentLayer == nullptr) return;
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
@@ -149,12 +149,12 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
         mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
         mScribbleArea->updateToolCursor();
 
-        if (mCurrentLayer->type() == Layer::VECTOR)
+        if (currentLayer->type() == Layer::VECTOR)
         {
-            storeClosestVectorCurve(mCurrentLayer);
+            storeClosestVectorCurve(currentLayer);
         }
     }
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
@@ -305,12 +305,6 @@ void MoveTool::storeClosestVectorCurve(Layer* layer)
     selectMan->setCurves(pVecImg->getCurvesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
 }
 
-void MoveTool::cancelChanges()
-{
-    mScribbleArea->cancelTransformedSelection();
-    mEditor->deselectAll();
-}
-
 void MoveTool::applyTransformation()
 {
     SelectionManager* selectMan = mEditor->select();
@@ -325,14 +319,9 @@ void MoveTool::applyTransformation()
 
 bool MoveTool::leavingThisTool()
 {
-    if (mCurrentLayer)
+    if (currentPaintableLayer())
     {
-        switch (mCurrentLayer->type())
-        {
-        case Layer::BITMAP: applyTransformation(); break;
-        case Layer::VECTOR: applyTransformation(); break;
-        default: break;
-        }
+        applyTransformation();
     }
     return true;
 }
@@ -367,7 +356,7 @@ QCursor MoveTool::cursor(MoveMode mode) const
 
     cursorPixmap.fill(QColor(255, 255, 255, 0));
     QPainter cursorPainter(&cursorPixmap);
-    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+    cursorPainter.setRenderHint(QPainter::Antialiasing);
 
     switch(mode)
     {
@@ -376,37 +365,36 @@ QCursor MoveTool::cursor(MoveMode mode) const
     case MoveMode::PERSP_MIDDLE:
     case MoveMode::PERSP_SINGLE:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-move.svg"));
         break;
     }
     case MoveMode::TOPLEFT:
     case MoveMode::BOTTOMRIGHT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-left.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-diagonal-left.svg"));
         break;
     }
     case MoveMode::TOPRIGHT:
     case MoveMode::BOTTOMLEFT:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-diagonal-right.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-diagonal-right.svg"));
         break;
     }
     case MoveMode::ROTATIONLEFT:
     case MoveMode::ROTATIONRIGHT:
     case MoveMode::ROTATION:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-rotate.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-rotate.svg"));
         break;
     }
     case MoveMode::MIDDLE:
     case MoveMode::CENTER:
     {
-        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/new/svg/cursor-move.svg"));
+        cursorPainter.drawImage(QPoint(6,6),QImage("://icons/general/cursor-move.svg"));
         break;
     }
     default:
         return Qt::ArrowCursor;
-        break;
     }
     cursorPainter.end();
 

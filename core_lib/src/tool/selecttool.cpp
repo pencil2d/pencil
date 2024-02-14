@@ -43,43 +43,42 @@ void SelectTool::loadSettings()
 QCursor SelectTool::cursor()
 {
     // Don't update cursor while we're moving the selection
-    if (mScribbleArea->isPointerInUse()) { return mCursorPixmap; }
+    if (mScribbleArea->isPointerInUse()) { return QCursor(mCursorPixmap); }
 
     mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
     MoveMode mode = mEditor->select()->getMoveMode();
 
     mCursorPixmap.fill(QColor(255, 255, 255, 0));
     QPainter cursorPainter(&mCursorPixmap);
-    cursorPainter.setRenderHint(QPainter::HighQualityAntialiasing);
+    cursorPainter.setRenderHint(QPainter::Antialiasing);
 
     switch(mode)
     {
     case MoveMode::TOPLEFT:
     case MoveMode::BOTTOMRIGHT:
     {
-        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-diagonal-left.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-diagonal-left.svg"));
         break;
     }
     case MoveMode::TOPRIGHT:
     case MoveMode::BOTTOMLEFT:
     {
-        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-diagonal-right.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-diagonal-right.svg"));
         break;
     }
     case MoveMode::MIDDLE:
     {
-        cursorPainter.drawPixmap(QPoint(6, 6), QPixmap("://icons/new/svg/cursor-move.svg"));
+        cursorPainter.drawPixmap(QPoint(6,6),QPixmap("://icons/general/cursor-move.svg"));
         break;
     }
     case MoveMode::NONE:
-    {
-        cursorPainter.drawPixmap(QPoint(2, 2), QPixmap(":icons/cross.png"));
+        cursorPainter.drawPixmap(QPoint(3,3), QPixmap(":icons/general/cross.png"));
         break;
-    }
     default:
         Q_UNREACHABLE();
+        break;
     }
-    return mCursorPixmap;
+    return QCursor(mCursorPixmap);
 }
 
 void SelectTool::resetToDefault()
@@ -95,15 +94,15 @@ void SelectTool::setShowSelectionInfo(const bool b)
     settings.setValue("ShowSelectionInfo", b);
 }
 
-void SelectTool::beginSelection()
+void SelectTool::beginSelection(Layer* currentLayer)
 {
     auto selectMan = mEditor->select();
 
     if (selectMan->somethingSelected() && mMoveMode != MoveMode::NONE) // there is something selected
     {
-        if (mCurrentLayer->type() == Layer::VECTOR)
+        if (currentLayer->type() == Layer::VECTOR)
         {
-            VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             if (vectorImage != nullptr) {
                 vectorImage->deselectAll();
             }
@@ -116,14 +115,14 @@ void SelectTool::beginSelection()
         mAnchorOriginPoint = getLastPoint();
     }
 
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 void SelectTool::pointerPressEvent(PointerEvent* event)
 {
-    mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == nullptr) return;
-    if (!mCurrentLayer->isPaintable()) { return; }
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer == nullptr) return;
+    if (!currentLayer->isPaintable()) { return; }
     if (event->button() != Qt::LeftButton) { return; }
     auto selectMan = mEditor->select();
 
@@ -131,14 +130,14 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     mMoveMode = selectMan->getMoveMode();
     mStartMoveMode = mMoveMode;
 
-    beginSelection();
+    beginSelection(currentLayer);
 }
 
 void SelectTool::pointerMoveEvent(PointerEvent*)
 {
-    mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == nullptr) { return; }
-    if (!mCurrentLayer->isPaintable()) { return; }
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer == nullptr) { return; }
+    if (!currentLayer->isPaintable()) { return; }
     auto selectMan = mEditor->select();
 
     if (!selectMan->somethingSelected()) { return; }
@@ -151,22 +150,22 @@ void SelectTool::pointerMoveEvent(PointerEvent*)
     {
         controlOffsetOrigin(getCurrentPoint(), mAnchorOriginPoint);
 
-        if (mCurrentLayer->type() == Layer::VECTOR)
+        if (currentLayer->type() == Layer::VECTOR)
         {
-            VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
             if (vectorImage != nullptr) {
                 vectorImage->select(selectMan->mapToSelection(QPolygonF(selectMan->mySelectionRect())).boundingRect());
             }
         }
     }
 
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 void SelectTool::pointerReleaseEvent(PointerEvent* event)
 {
-    mCurrentLayer = mEditor->layers()->currentLayer();
-    if (mCurrentLayer == nullptr) return;
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer == nullptr) return;
     if (event->button() != Qt::LeftButton) return;
 
     // if there's a small very small distance between current and last point
@@ -182,14 +181,14 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     }
     else
     {
-        keepSelection();
+        keepSelection(currentLayer);
     }
 
     mStartMoveMode = MoveMode::NONE;
     mSelectionRect = mEditor->select()->mapToSelection(mEditor->select()->mySelectionRect()).boundingRect();
 
     mScribbleArea->updateToolCursor();
-    mScribbleArea->updateCurrentFrame();
+    mScribbleArea->updateFrame();
 }
 
 bool SelectTool::maybeDeselect()
@@ -201,12 +200,12 @@ bool SelectTool::maybeDeselect()
  * @brief SelectTool::keepSelection
  * Keep selection rect and normalize if invalid
  */
-void SelectTool::keepSelection()
+void SelectTool::keepSelection(Layer* currentLayer)
 {
     auto selectMan = mEditor->select();
-    if (mCurrentLayer->type() == Layer::VECTOR)
+    if (currentLayer->type() == Layer::VECTOR)
     {
-        VectorImage* vectorImage = static_cast<LayerVector*>(mCurrentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         if (vectorImage == nullptr) { return; }
         selectMan->setSelection(vectorImage->getSelectionRect(), false);
     }
@@ -214,12 +213,6 @@ void SelectTool::keepSelection()
 
 void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 {
-    QPointF offset = offsetFromPressPos();
-
-    if (editor()->layers()->currentLayer()->type() == Layer::BITMAP) {
-        offset = QPointF(offset).toPoint();
-    }
-
     // when the selection is none, manage the selection Origin
     if (mStartMoveMode != MoveMode::NONE) {
         QRectF rect = mSelectionRect;
@@ -303,7 +296,7 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
         break;
     }
 
-    // Follow the generic behaviour anyway
+    // Follow the generic behavior anyway
     return BaseTool::keyPressEvent(event);
 }
 

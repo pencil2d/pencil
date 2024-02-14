@@ -64,7 +64,6 @@ enum ToolPropertyType
     USETOLERANCE,
     BUCKETFILLEXPAND,
     USEBUCKETFILLEXPAND,
-    BUCKETFILLLAYERMODE,
     BUCKETFILLLAYERREFERENCEMODE,
     CAMERAPATH,
 };
@@ -256,6 +255,9 @@ const static float RotationHandleOffset = 50;
 #define SETTING_LOAD_DEFAULT_PRESET "LoadDefaultPreset"
 #define SETTING_DEFAULT_PRESET      "DefaultPreset"
 
+#define SETTING_INVERT_DRAG_ZOOM_DIRECTION   "InvertDragZoomDirection"
+#define SETTING_INVERT_SCROLL_ZOOM_DIRECTION "InvertScrollZoomDirection"
+
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"
 #define SETTING_COUNT            "Count"
@@ -304,7 +306,6 @@ const static float RotationHandleOffset = 50;
 #define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
 #define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"
 #define SETTING_BUCKET_FILL_EXPAND_ON "BucketFillExpandEnabled"
-#define SETTING_BUCKET_FILL_TO_LAYER_MODE "BucketFillToLayerMode"
 #define SETTING_BUCKET_FILL_REFERENCE_MODE "BucketFillReferenceMode"
 
 #define SETTING_FILL_MODE "FillMode"

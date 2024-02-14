@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QDebug>
 #include <QDateTime>
+#include <QRegularExpression>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -96,16 +97,16 @@ bool Object::loadXML(const QDomElement& docElem, ProgressCallback progressForwar
         switch (element.attribute("type").toInt())
         {
         case Layer::BITMAP:
-            newLayer = new LayerBitmap(this);
+            newLayer = new LayerBitmap(getUniqueLayerID());
             break;
         case Layer::VECTOR:
-            newLayer = new LayerVector(this);
+            newLayer = new LayerVector(getUniqueLayerID());
             break;
         case Layer::SOUND:
-            newLayer = new LayerSound(this);
+            newLayer = new LayerSound(getUniqueLayerID());
             break;
         case Layer::CAMERA:
-            newLayer = new LayerCamera(this);
+            newLayer = new LayerCamera(getUniqueLayerID());
             break;
         default:
             Q_UNREACHABLE();
@@ -118,7 +119,7 @@ bool Object::loadXML(const QDomElement& docElem, ProgressCallback progressForwar
 
 LayerBitmap* Object::addNewBitmapLayer()
 {
-    LayerBitmap* layerBitmap = new LayerBitmap(this);
+    LayerBitmap* layerBitmap = new LayerBitmap(getUniqueLayerID());
     mLayers.append(layerBitmap);
 
     layerBitmap->addNewKeyFrameAt(1);
@@ -128,7 +129,7 @@ LayerBitmap* Object::addNewBitmapLayer()
 
 LayerVector* Object::addNewVectorLayer()
 {
-    LayerVector* layerVector = new LayerVector(this);
+    LayerVector* layerVector = new LayerVector(getUniqueLayerID());
     mLayers.append(layerVector);
 
     layerVector->addNewKeyFrameAt(1);
@@ -138,7 +139,7 @@ LayerVector* Object::addNewVectorLayer()
 
 LayerSound* Object::addNewSoundLayer()
 {
-    LayerSound* layerSound = new LayerSound(this);
+    LayerSound* layerSound = new LayerSound(getUniqueLayerID());
     mLayers.append(layerSound);
 
     // No default keyFrame at position 1 for Sound layer.
@@ -148,7 +149,7 @@ LayerSound* Object::addNewSoundLayer()
 
 LayerCamera* Object::addNewCameraLayer()
 {
-    LayerCamera* layerCamera = new LayerCamera(this);
+    LayerCamera* layerCamera = new LayerCamera(getUniqueLayerID());
     mLayers.append(layerCamera);
 
     layerCamera->addNewKeyFrameAt(1);
@@ -303,7 +304,11 @@ bool Object::swapLayers(int i, int j)
 
     if (i != j)
     {
+#if QT_VERSION >= QT_VERSION_CHECK(5, 13, 0)
+        mLayers.swapItemsAt(i, j);
+#else
         mLayers.swap(i, j);
+#endif
     }
     return true;
 }
@@ -373,7 +378,7 @@ bool Object::addLayer(Layer* layer)
     {
         return false;
     }
-    layer->setObject(this);
+    layer->setId(getUniqueLayerID());
     mLayers.append(layer);
     return true;
 }
@@ -451,7 +456,7 @@ void Object::removeColor(int index)
 
     mPalette.removeAt(index);
 
-    // update the vector pictures using that color !
+    // update the vector pictures using that color!
 }
 
 void Object::renameColor(int i, const QString& text)
@@ -502,8 +507,8 @@ void Object::exportPalettePencil(QFile& file) const
         tag.setAttribute("alpha", ref.color.alpha());
         root.appendChild(tag);
     }
-    int IndentSize = 2;
-    doc.save(out, IndentSize);
+    int indentSize = 2;
+    doc.save(out, indentSize);
 }
 
 bool Object::exportPalette(const QString& filePath) const
@@ -537,7 +542,7 @@ void Object::importPaletteGPL(QFile& file)
     QTextStream in(&file);
     QString line;
 
-    // First line must start with "GIMP Palette"
+    // The first line must start with "GIMP Palette"
     // Displaying an error here would be nice
     in.readLineInto(&line);
     if (!line.startsWith("GIMP Palette")) return;
@@ -548,16 +553,16 @@ void Object::importPaletteGPL(QFile& file)
     if (line.startsWith("Name: "))
     {
         in.readLineInto(&line);
-        // The new format contains an optional thrid line starting with "Columns: "
+        // The new format contains an optional third line starting with "Columns: "
         if (line.startsWith("Columns: "))
         {
-            // Skip to next line
+            // Skip to the next line
             in.readLineInto(&line);
         }
     }
 
     // Colors inherit the value from the previous color for missing channels
-    // Some palettes may rely on this behavior so we should try to replicate it
+    // Some palettes may rely on this behavior, so we should try to replicate it
     QColor prevColor(Qt::black);
 
     do
@@ -571,8 +576,11 @@ void Object::importPaletteGPL(QFile& file)
 
         int countInLine = 0;
         QString name = "";
-
-        for(const QString& snip : line.split(QRegExp("\\s|\\t"), QString::SkipEmptyParts))
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+        for(const QString& snip : line.split(QRegularExpression("\\s|\\t"), Qt::SkipEmptyParts))
+#else
+        for(const QString& snip : line.split(QRegularExpression("\\s|\\t"), QString::SkipEmptyParts))
+#endif
         {
             switch (countInLine)
             {
@@ -598,7 +606,7 @@ void Object::importPaletteGPL(QFile& file)
         if (countInLine < 2) green = prevColor.green();
         if (countInLine < 3) blue = prevColor.blue();
 
-        // GIMP assigns colors the name "Untitled" by default now
+        // GIMP assigns colors the name "Untitled" by default now,
         // so in addition to missing names, we also use automatic
         // naming for this
         if (name.isEmpty() || name == "Untitled") name = QString();
@@ -747,7 +755,7 @@ void Object::paintImage(QPainter& painter,int frameNumber,
             if (vec)
             {
                 painter.setOpacity(vec->getOpacity());
-                vec->paintImage(painter, false, false, antialiasing);
+                vec->paintImage(painter, *this, false, false, antialiasing);
             }
         }
     }
@@ -807,7 +815,7 @@ bool Object::exportFrames(int frameStart, int frameEnd,
     {
         format = "JPG";
         extension = ".jpg";
-        transparency = false; // JPG doesn't support transparency so we have to include the background
+        transparency = false; // JPG doesn't support transparency, so we have to include the background
     }
     if (formatStr == "TIFF" || formatStr == "tiff" || formatStr == "TIF" || formatStr == "tif")
     {
@@ -819,6 +827,10 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         format = "BMP";
         extension = ".bmp";
         transparency = false;
+    }
+    if (formatStr == "WEBP" || formatStr == "webp") {
+        format = "WEBP";
+        extension = ".webp";
     }
     if (filePath.endsWith(extension, Qt::CaseInsensitive))
     {

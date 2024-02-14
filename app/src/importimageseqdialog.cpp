@@ -58,10 +58,16 @@ void ImportImageSeqDialog::setupLayout()
 
     hideInstructionsLabel(true);
 
-    if (mFileType == FileType::GIF) {
+    switch (mFileType)
+    {
+    case FileType::GIF:
         setWindowTitle(tr("Import Animated GIF"));
-    } else {
+        break;
+    case FileType::IMAGE_SEQUENCE:
         setWindowTitle(tr("Import image sequence"));
+        break;
+    default:
+        setWindowTitle(tr("Import animated image"));
     }
 
     connect(uiOptionsBox->spaceSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ImportImageSeqDialog::setSpace);
@@ -364,7 +370,7 @@ Status ImportImageSeqDialog::validateFiles(const QStringList &filepaths)
 
     for (int i = 0; i < filepaths.count(); i++)
     {
-        QFileInfo file = filepaths.at(i);
+        QFileInfo file(filepaths.at(i));
         if (!file.exists())
             failedPathsString += filepaths.at(i) + "\n";
     }

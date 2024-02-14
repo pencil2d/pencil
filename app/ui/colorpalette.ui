@@ -51,7 +51,13 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/add.png</normaloff>:/icons/add.png</iconset>
+          <normaloff>:/icons/themes/playful/misc/add-color.svg</normaloff>:/icons/themes/playful/misc/add-color.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -80,7 +86,13 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/remove.png</normaloff>:/icons/remove.png</iconset>
+          <normaloff>:/icons/themes/playful/misc/remove-color.svg</normaloff>:/icons/themes/playful/misc/remove-color.svg</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>22</width>
+          <height>22</height>
+         </size>
         </property>
         <property name="flat">
          <bool>true</bool>
@@ -95,7 +107,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
-          <height>20</height>
+          <height>22</height>
          </size>
         </property>
        </spacer>
@@ -134,12 +146,12 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/new/svg/color-dialog.svg</normaloff>:/app/icons/new/svg/color-dialog.svg</iconset>
+          <normaloff>:/icons/themes/playful/misc/color-dialog.svg</normaloff>:/icons/themes/playful/misc/color-dialog.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>16</width>
-          <height>16</height>
+          <width>22</width>
+          <height>22</height>
          </size>
         </property>
         <property name="flat">
@@ -155,7 +167,7 @@
         <property name="sizeHint" stdset="0">
          <size>
           <width>40</width>
-          <height>20</height>
+          <height>22</height>
          </size>
         </property>
        </spacer>
@@ -179,12 +191,12 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/app/icons/new/svg/more_options.svg</normaloff>:/app/icons/new/svg/more_options.svg</iconset>
+          <normaloff>:/icons/themes/playful/misc/more-options.svg</normaloff>:/icons/themes/playful/misc/more-options.svg</iconset>
         </property>
         <property name="iconSize">
          <size>
-          <width>15</width>
-          <height>15</height>
+          <width>22</width>
+          <height>22</height>
          </size>
         </property>
         <property name="checkable">

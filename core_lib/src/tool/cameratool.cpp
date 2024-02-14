@@ -122,24 +122,24 @@ QCursor CameraTool::cursor()
     case CameraMoveType::TOPLEFT:
     case CameraMoveType::BOTTOMRIGHT:
     {
-        moveTypeImage = QImage("://icons/new/svg/cursor-diagonal-left.svg");
+        moveTypeImage = QImage("://icons/general/cursor-diagonal-left.svg");
         break;
     }
     case CameraMoveType::TOPRIGHT:
     case CameraMoveType::BOTTOMLEFT:
     {
-        moveTypeImage = QImage("://icons/new/svg/cursor-diagonal-right.svg");
+        moveTypeImage = QImage("://icons/general/cursor-diagonal-right.svg");
         break;
     }
     case CameraMoveType::ROTATION:
     {
-        moveTypeImage = QImage("://icons/new/svg/cursor-rotate.svg");
+        moveTypeImage = QImage("://icons/general/cursor-rotate.svg");
         break;
     }
     case CameraMoveType::PATH:
     case CameraMoveType::CENTER:
     {
-        moveTypeImage = QImage("://icons/new/svg/cursor-move.svg");
+        moveTypeImage = QImage("://icons/general/cursor-move.svg");
         break;
     }
     default:
@@ -229,7 +229,7 @@ void CameraTool::resetCameraPath()
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     layer->setPathMovedAtFrame(mEditor->currentFrame(), false);
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void CameraTool::resetTransform(CameraFieldOption option)
@@ -261,7 +261,7 @@ void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
 
     transformView(layer, mCamMoveMode, getCurrentPoint(), mTransformOffset, -angleDeg, mEditor->currentFrame());
 
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
     mTransformOffset = getCurrentPoint();
 }
 
@@ -271,7 +271,7 @@ void CameraTool::transformCameraPath()
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
     layer->updatePathControlPointAtFrame(getCurrentPoint(), mDragPathFrame);
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 int CameraTool::constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const
@@ -304,7 +304,7 @@ void CameraTool::pointerMoveEvent(PointerEvent* event)
     }
     mScribbleArea->updateToolCursor();
     mEditor->view()->forceUpdateViewTransform();
-    mEditor->updateCurrentFrame();
+    mEditor->updateFrame();
 }
 
 void CameraTool::pointerReleaseEvent(PointerEvent* event)
@@ -566,9 +566,9 @@ void CameraTool::paintInterpolations(QPainter& painter, const QTransform& worldT
         painter.save();
         QColor color = cameraDotColor;
         if (currentFrame > frame && currentFrame < nextFrame)
-            color.setAlphaF(0.5);
+            color.setAlphaF(.5f);
         else
-            color.setAlphaF(0.2);
+            color.setAlphaF(.2f);
         painter.setPen(Qt::black);
         painter.setBrush(color);
 

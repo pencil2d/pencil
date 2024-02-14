@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "stroketool.h"
 #include <QColor>
 
+class Layer;
 
 class BrushTool : public StrokeTool
 {
@@ -38,8 +39,7 @@ public:
     void pointerReleaseEvent(PointerEvent*) override;
 
     void drawStroke();
-    void paintVectorStroke();
-    void paintBitmapStroke();
+    void paintVectorStroke(Layer* layer);
     void paintAt(QPointF point);
 
     void setWidth(const qreal width) override;

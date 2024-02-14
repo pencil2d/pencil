@@ -39,7 +39,7 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
     addWidget(mToolLabel, 1);
 
     mModifiedLabel = new QLabel(this);
-    mModifiedLabel->setPixmap(QPixmap(":/icons/save.png"));
+    mModifiedLabel->setPixmap(QPixmap(":/icons/themes/playful/menubar/save.svg"));
     updateModifiedStatus(false);
     addPermanentWidget(mModifiedLabel);
 
@@ -62,7 +62,11 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
     mZoomBox->setMaxCount(mZoomBox->count() + 1);
     mZoomBox->setEditable(true);
     mZoomBox->lineEdit()->setAlignment(Qt::AlignRight);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    connect(mZoomBox, &QComboBox::textActivated, [=](const QString &currentText)
+#else
     connect(mZoomBox, static_cast<void (QComboBox::*)(const QString &)>(&QComboBox::activated), [=](const QString &currentText)
+#endif
     {
         if (mZoomBox->count() == mZoomBox->maxCount())
         {
@@ -138,18 +142,18 @@ void StatusBar::updateToolStatus(ToolType tool)
     }
 
     static QPixmap toolIcons[TOOL_TYPE_COUNT]{
-        {":icons/new/svg/pencil_detailed.svg"},
-        {":icons/new/svg/eraser_detailed.svg"},
-        {":icons/new/svg/selection.svg"},
-        {":icons/new/svg/arrow.svg"},
-        {":icons/new/svg/hand_detailed.svg"},
-        {":icons/new/svg/smudge_detailed.svg"},
-        {":icons/new/svg/arrow.svg"},
-        {":icons/new/svg/pen_detailed.svg"},
-        {":icons/new/svg/line.svg"},
-        {":icons/new/svg/bucket_detailed.svg"},
-        {":icons/new/svg/eyedropper_detailed.svg"},
-        {":icons/new/svg/brush_detailed.svg"}
+        {":icons/themes/playful/tools/tool-pencil.svg"},
+        {":icons/themes/playful/tools/tool-eraser.svg"},
+        {":icons/themes/playful/tools/tool-select.svg"},
+        {":icons/themes/playful/tools/tool-move.svg"},
+        {":icons/themes/playful/tools/tool-hand.svg"},
+        {":icons/themes/playful/tools/tool-smudge.svg"},
+        {""}, // Camera tool does not have an icon
+        {":icons/themes/playful/tools/tool-pen.svg"},
+        {":icons/themes/playful/tools/tool-polyline.svg"},
+        {":icons/themes/playful/tools/tool-bucket.svg"},
+        {":icons/themes/playful/tools/tool-eyedropper.svg"},
+        {":icons/themes/playful/tools/tool-brush.svg"}
     };
     mToolIcon->setPixmap(toolIcons[tool]);
     mToolIcon->setToolTip(BaseTool::TypeName(tool));

@@ -119,6 +119,7 @@ QString FileDialog::getDefaultExtensionByFileType(const FileType fileType)
     case FileType::IMAGE: return PFF_DEFAULT_IMAGE_EXT;
     case FileType::IMAGE_SEQUENCE: return PFF_DEFAULT_IMAGE_SEQ_EXT;
     case FileType::GIF: return PFF_DEFAULT_ANIMATED_EXT;
+    case FileType::ANIMATED_IMAGE: return PFF_DEFAULT_ANIMATED_EXT;
     case FileType::PALETTE: return PFF_DEFAULT_PALETTE_EXT;
     case FileType::MOVIE: return PFF_DEFAULT_MOVIE_EXT;
     case FileType::SOUND: return PFF_DEFAULT_SOUND_EXT;
@@ -167,6 +168,7 @@ QString FileDialog::openDialogCaption(FileType fileType)
     case FileType::IMAGE: return tr("Import image");
     case FileType::IMAGE_SEQUENCE: return tr("Import image sequence");
     case FileType::GIF: return tr("Import Animated GIF");
+    case FileType::ANIMATED_IMAGE: return tr("Import animated image");
     case FileType::MOVIE: return tr("Import movie");
     case FileType::SOUND: return tr("Import sound");
     case FileType::PALETTE: return tr("Open palette");
@@ -182,6 +184,7 @@ QString FileDialog::saveDialogCaption(FileType fileType)
     case FileType::IMAGE: return tr("Export image");
     case FileType::IMAGE_SEQUENCE: return tr("Export image sequence");
     case FileType::GIF: return tr("Export Animated GIF");
+    case FileType::ANIMATED_IMAGE: return tr("Export animated image");
     case FileType::MOVIE: return tr("Export movie");
     case FileType::SOUND: return tr("Export sound");
     case FileType::PALETTE: return tr("Export palette");
@@ -197,6 +200,7 @@ QString FileDialog::openFileFilters(FileType fileType)
     case FileType::IMAGE: return PFF_IMAGE_FILTER;
     case FileType::IMAGE_SEQUENCE: return PFF_IMAGE_SEQ_FILTER;
     case FileType::GIF: return PFF_GIF_EXT_FILTER;
+    case FileType::ANIMATED_IMAGE: return PFF_ANIMATED_IMAGE_EXT_FILTER;
     case FileType::MOVIE: return PFF_MOVIE_EXT;
     case FileType::SOUND: return PFF_SOUND_EXT_FILTER;
     case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
@@ -212,6 +216,7 @@ QString FileDialog::saveFileFilters(FileType fileType)
     case FileType::IMAGE: return "";
     case FileType::IMAGE_SEQUENCE: return "";
     case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
+    case FileType::ANIMATED_IMAGE: return "";
     case FileType::MOVIE: return "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)";
     case FileType::SOUND: return "";
     case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
@@ -286,6 +291,7 @@ QString FileDialog::toSettingKey(FileType fileType)
     case FileType::IMAGE: return "Image";
     case FileType::IMAGE_SEQUENCE: return "ImageSequence";
     case FileType::GIF: return "Animated GIF";
+    case FileType::ANIMATED_IMAGE: return "Animated Image";
     case FileType::MOVIE: return "Movie";
     case FileType::SOUND: return "Sound";
     case FileType::PALETTE: return "Palette";
