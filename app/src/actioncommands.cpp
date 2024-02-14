@@ -704,7 +704,6 @@ void ActionCommands::interpolateKeyframes()
             keyframe = layer->getKeyFrameAt(i - 1);
         KeyFrame* dupKey = keyframe->clone();
         layer->addKeyFrame(i, dupKey);
-        mEditor->scrubTo(i);
         BitmapImage* image = layer->getBitmapImageAtFrame(i);
         percent = counter / interpolations;
         QRect transformer = QRect(upperLine.pointAt(percent).toPoint(),
@@ -713,7 +712,9 @@ void ActionCommands::interpolateKeyframes()
         image->modification();
         counter++;
         layer->markFrameAsDirty(i);
+        mEditor->scrubTo(i);
     }
+    emit mEditor->updateTimeLine();
     emit mEditor->framesModified();
     mEditor->scrubTo(last);
 }
