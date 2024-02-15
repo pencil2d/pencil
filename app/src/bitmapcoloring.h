@@ -3,10 +3,12 @@
 
 #include "basedockwidget.h"
 
+class Object;
 class BitmapImage;
 class Editor;
 class LayerBitmap;
 class ScribbleArea;
+
 
 namespace Ui
 {
@@ -55,6 +57,7 @@ private:
     void blend(LayerBitmap* artLayer);
     void nonValidBitmap(int frame);
     void updateTraceButtons();
+    void copyFrame(LayerBitmap *fromLayer, LayerBitmap *toLayer, int frame);
 
     Ui::BitmapColoringWidget* ui = nullptr;
     Editor* mEditor = nullptr;

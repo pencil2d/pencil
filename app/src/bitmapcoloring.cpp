@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "scribblearea.h"
 #include "app_util.h"
+#include "object.h"
 
 
 BitmapColoring::BitmapColoring(Editor* editor, QWidget *parent) :
@@ -744,4 +745,35 @@ void BitmapColoring::updateTraceButtons()
         ui->btnPrepareLines->setEnabled(false);
         ui->btnApplyTrace->setEnabled(true);
     }
+}
+
+void BitmapColoring::copyFrame(LayerBitmap *fromLayer, LayerBitmap *toLayer, int frame)
+{
+    if (fromLayer->keyExists(frame))
+    {
+        KeyFrame* keyframe = fromLayer->getKeyFrameAt(frame);
+        KeyFrame* dupKey = keyframe->clone();
+        if (toLayer->keyExists(frame) && toLayer->keyFrameCount() == 1)
+        {
+            int i = toLayer->firstKeyFramePosition();
+            if (i == frame)
+            {
+                toLayer->addKeyFrame(frame + 1, dupKey);
+                toLayer->removeKeyFrame(frame);
+                toLayer->moveKeyFrame(frame + 1, -1);
+            } else
+            {
+                toLayer->addKeyFrame(frame, dupKey);
+                toLayer->removeKeyFrame(i);
+            }
+        }
+        else
+        {
+            toLayer->removeKeyFrame(frame);
+            toLayer->addKeyFrame(frame, dupKey);
+        }
+        toLayer->setModified(frame, true);
+        toLayer->getKeyFrameAt(frame)->modification();
+    }
+
 }
