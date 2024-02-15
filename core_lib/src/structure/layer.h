@@ -115,7 +115,6 @@ public:
 
     void foreachKeyFrame(std::function<void(KeyFrame*)>) const;
 
-    void copyFrame(Layer *fromLayer, Layer *toLayer, int frame);
     void setModified(int position, bool isModified) const;
 
     // Handle selection

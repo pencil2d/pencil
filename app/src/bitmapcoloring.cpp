@@ -554,13 +554,13 @@ void BitmapColoring::prepareAndTraceLines()
             {
                 mEditor->scrubTo(i);
                 lMgr->setCurrentLayer(sourceLayer);
-                sourceLayer->copyFrame(sourceLayer, artLayer, i);
+                copyFrame(sourceLayer, artLayer, i);
                 BitmapImage* image = artLayer->getBitmapImageAtFrame(i);
                 image->prepDrawing(image,
                                    mRedChecked,
                                    mGreenChecked,
                                    mBlueChecked);
-                artLayer->copyFrame(artLayer, colorLayer, i);
+                copyFrame(artLayer, colorLayer, i);
                 BitmapImage* colorImage = colorLayer->getBitmapImageAtFrame(i);
                 colorImage->traceLine(colorImage,
                                       black,
@@ -581,13 +581,13 @@ void BitmapColoring::prepareAndTraceLines()
         if (sourceLayer->keyExists(i))
         {
             lMgr->setCurrentLayer(sourceLayer);
-            sourceLayer->copyFrame(sourceLayer, artLayer, i);
+            copyFrame(sourceLayer, artLayer, i);
             BitmapImage* image = artLayer->getBitmapImageAtFrame(i);
             image->prepDrawing(image,
                                mRedChecked,
                                mGreenChecked,
                                mBlueChecked);
-            artLayer->copyFrame(artLayer, colorLayer, i);
+            copyFrame(artLayer, colorLayer, i);
             BitmapImage* colorImage = colorLayer->getBitmapImageAtFrame(i);
             colorImage->traceLine(colorImage,
                                   black,
@@ -645,7 +645,7 @@ void BitmapColoring::prepareLines()
 
     if (ui->cbMethodSelector->currentIndex() == 2)
     {
-        mLayerBitmap->copyFrame(mLayerBitmap, colorLayer, mEditor->currentFrame());
+        copyFrame(mLayerBitmap, colorLayer, mEditor->currentFrame());
     }
     mBitmapImage = colorLayer->getBitmapImageAtFrame(mEditor->currentFrame());
     if (mBitmapImage == nullptr)
