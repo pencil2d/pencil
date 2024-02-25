@@ -17,8 +17,9 @@ GNU General Public License for more details.
 #ifndef CANVASCURSORPAINTER_H
 #define CANVASCURSORPAINTER_H
 
-#include <QPainter>
 #include <QPen>
+
+class QPainter;
 
 struct CanvasCursorPainterOptions
 {
@@ -36,21 +37,19 @@ public:
     CanvasCursorPainter();
     void paint(QPainter& painter, const QRect& blitRect);
 
-    void preparePainter(CanvasCursorPainterOptions& painterOptions, QTransform viewTransform);
+    void preparePainter(const CanvasCursorPainterOptions& painterOptions, const QTransform& viewTransform);
 
     const QRectF dirtyRect() { return mDirtyRect; }
 private:
 
     void setupPen();
-    void mapToView(QRectF& widthRect, QRectF& featherRect);
 
     /// @brief precision circular cursor: used for drawing a cursor on the canvas.
     void paintWidthCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthCircleBounds);
-    void paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& featherCircleBounds, const QRectF& widthCircleBounds);
+    void paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthCircleBounds, const QRectF& featherCircleBounds);
 
     CanvasCursorPainterOptions mOptions;
     QRectF mDirtyRect;
-    QTransform mViewTransform;
 
     QPen mCursorPen;
 };

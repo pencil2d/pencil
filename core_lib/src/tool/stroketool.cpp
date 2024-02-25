@@ -197,7 +197,7 @@ void StrokeTool::updateCanvasCursor()
     CanvasCursorPainterOptions options;
     options.widthRect = QRectF(cursorOffset, QSizeF(brushWidth, brushWidth));
 
-    const qreal featherWidthFactor = MathUtils::normalize(brushFeather, 0.0, 99.0);
+    const qreal featherWidthFactor = MathUtils::normalize(brushFeather, 0.0, FEATHER_MAX);
     options.featherRect = QRectF(options.widthRect.center().x() - (cursorRad * featherWidthFactor),
                                  options.widthRect.center().y() - (cursorRad * featherWidthFactor),
                                  brushWidth * featherWidthFactor,
@@ -219,39 +219,40 @@ bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal step)
 {
     Q_UNUSED(step)
 
-    if (mQuickSizingProperties.contains(modifiers))
+    if (!mQuickSizingProperties.contains(modifiers))
     {
-        const QPointF& currentPressPoint = getCurrentPressPoint();
-        const QPointF& currentPoint = getCurrentPoint();
-        auto propertyType = mQuickSizingProperties.value(modifiers);
-        switch (propertyType) {
-        case WIDTH: {
-            const qreal factor = 0.5;
-            const qreal rad = properties.width * factor;
-            const qreal distance = QLineF(currentPressPoint - QPointF(rad, rad), currentPoint).length();
-            mAdjustPosition = currentPressPoint - QPointF(distance * factor, distance * factor);
-            break;
-        }
-        case FEATHER: {
-            const qreal factor = 0.5;
-            const qreal cursorRad = properties.width * factor;
-            const qreal featherWidthFactor = MathUtils::normalize(properties.feather, 0.0, 99.0);
-            const qreal offset = (cursorRad * featherWidthFactor) * factor;
-            const qreal distance = QLineF(currentPressPoint - QPointF(offset, offset), currentPoint).length();
-            mAdjustPosition = currentPressPoint - QPointF(distance, distance);
-            break;
-        }
-        default:
-            qDebug() << "Unhandled quick sizing property for tool" << typeName();
-            Q_ASSERT(false);
-            return false;
-        }
-
-        msIsAdjusting = true;
-        updateCanvasCursor();
-        return true;
+        return false;
     }
-    return false;
+
+    const QPointF& currentPressPoint = getCurrentPressPoint();
+    const QPointF& currentPoint = getCurrentPoint();
+    auto propertyType = mQuickSizingProperties.value(modifiers);
+    switch (propertyType) {
+    case WIDTH: {
+        const qreal factor = 0.5;
+        const qreal rad = properties.width * factor;
+        const qreal distance = QLineF(currentPressPoint - QPointF(rad, rad), currentPoint).length();
+        mAdjustPosition = currentPressPoint - QPointF(distance * factor, distance * factor);
+        break;
+    }
+    case FEATHER: {
+        const qreal factor = 0.5;
+        const qreal cursorRad = properties.width * factor;
+        const qreal featherWidthFactor = MathUtils::normalize(properties.feather, 0.0, FEATHER_MAX);
+        const qreal offset = (cursorRad * featherWidthFactor) * factor;
+        const qreal distance = QLineF(currentPressPoint - QPointF(offset, offset), currentPoint).length();
+        mAdjustPosition = currentPressPoint - QPointF(distance, distance);
+        break;
+    }
+    default:
+        Q_UNREACHABLE();
+        qWarning() << "Unhandled quick sizing property for tool" << typeName();
+        return false;
+    }
+
+    msIsAdjusting = true;
+    updateCanvasCursor();
+    return true;
 }
 
 void StrokeTool::stopAdjusting()
@@ -270,7 +271,7 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         // map it back to its original value, we can multiply by the factor we divided with
         const qreal newValue = QLineF(mAdjustPosition, getCurrentPoint()).length() * 2.0;
 
-        mEditor->tools()->setWidth(qBound(1., newValue, 200.));
+        mEditor->tools()->setWidth(qBound(WIDTH_MIN, newValue, WIDTH_MAX));
         break;
     }
     case FEATHER: {
@@ -278,19 +279,18 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         const qreal inputMin = 0.0;
         const qreal inputMax = properties.width * 0.5;
         const qreal distance = QLineF(mAdjustPosition, getCurrentPoint()).length();
-        const qreal outputMax = 99.0;
+        const qreal outputMax = FEATHER_MAX;
         const qreal outputMin = 0.0;
 
         // We flip min and max here in order to get the inverted value for the UI
         const qreal mappedValue = MathUtils::map(distance, inputMin, inputMax, outputMax, outputMin);
 
-        mEditor->tools()->setFeather(qBound(1., mappedValue, 99.));
+        mEditor->tools()->setFeather(qBound(FEATHER_MIN, mappedValue, FEATHER_MAX));
         break;
     }
     default:
-        qDebug() << "Unhandled quick sizing property for tool" << typeName();
-        Q_ASSERT(false);
-        break;
+        Q_UNREACHABLE();
+        qWarning() << "Unhandled quick sizing property for tool" << typeName();
     }
     updateCanvasCursor();
 }
@@ -299,5 +299,3 @@ void StrokeTool::paint(QPainter& painter, const QRect& blitRect)
 {
     mCanvasCursorPainter.paint(painter, blitRect);
 }
-
-

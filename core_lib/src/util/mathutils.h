@@ -22,8 +22,8 @@ namespace MathUtils
      *  \param inputMin The input min value
      *  \param inputMax The input max value
      *  \param outputMin The output min value
-     *  \param outputMax the output max value
-     *  \return x value mapped to the corresponding range between outputMin and outputMax
+     *  \param outputMax The output max value
+     *  \return The value of x mapped to the corresponding range between outputMin and outputMax
      */
     inline qreal map(qreal x, qreal inputMin, qreal inputMax, qreal outputMin, qreal outputMax)
     {
@@ -35,7 +35,7 @@ namespace MathUtils
     *  \param x The input value
     *  \param min The input min value
     *  \param max The input max value
-    *  \return x normalized to a range between 0 and 1
+    *  \return The value of x normalized to a range between 0 and 1
     */
     inline qreal normalize(qreal x, qreal min, qreal max)
     {

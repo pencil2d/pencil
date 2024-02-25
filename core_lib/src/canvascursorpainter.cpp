@@ -16,6 +16,8 @@ GNU General Public License for more details.
 */
 #include "canvascursorpainter.h"
 
+#include <QPainter>
+
 CanvasCursorPainter::CanvasCursorPainter()
 {
     setupPen();
@@ -31,30 +33,23 @@ void CanvasCursorPainter::setupPen()
 void CanvasCursorPainter::paint(QPainter& painter, const QRect& blitRect)
 {
     if (mOptions.isAdjusting || mOptions.showCursor) {
-        QRectF& widthRect = mOptions.widthRect;
-        QRectF& featherRect = mOptions.featherRect;
-        mapToView(widthRect, featherRect);
-
         if (mOptions.useFeather) {
-            paintFeatherCursor(painter, blitRect, featherRect, widthRect);
+            paintFeatherCursor(painter, blitRect, mOptions.widthRect, mOptions.featherRect);
         }
-        paintWidthCursor(painter, blitRect, widthRect);
+        paintWidthCursor(painter, blitRect, mOptions.widthRect);
     }
 }
 
-void CanvasCursorPainter::mapToView(QRectF& widthRect, QRectF& featherRect)
-{
-    widthRect = mViewTransform.mapRect(widthRect);
-    featherRect = mViewTransform.mapRect(featherRect);
-}
-
-void CanvasCursorPainter::preparePainter(CanvasCursorPainterOptions& painterOptions, QTransform viewTransform)
+void CanvasCursorPainter::preparePainter(const CanvasCursorPainterOptions& painterOptions, const QTransform& viewTransform)
 {
     mOptions = painterOptions;
-    mViewTransform = viewTransform;
+    if (mOptions.isAdjusting || mOptions.showCursor) {
+        mOptions.widthRect = viewTransform.mapRect(mOptions.widthRect);
+        mOptions.featherRect = viewTransform.mapRect(mOptions.featherRect);
+    }
 }
 
-void CanvasCursorPainter::paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& featherCircleBounds, const QRectF& widthCircleBounds)
+void CanvasCursorPainter::paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthCircleBounds, const QRectF& featherCircleBounds)
 {
     // When the circles are too close to each other, the rendering will appear dotted or almost
     // invisible at certain zoom levels.

@@ -66,7 +66,6 @@ enum ToolPropertyType
     USEBUCKETFILLEXPAND,
     BUCKETFILLLAYERREFERENCEMODE,
     CAMERAPATH,
-    NULL_PROPERTY
 };
 
 enum class DotColorType {

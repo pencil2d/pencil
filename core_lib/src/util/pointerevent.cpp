@@ -213,29 +213,33 @@ PointerEvent::Type PointerEvent::eventType() const
 {
     if (mMouseEvent)
     {
-        if (mMouseEvent->type() == QEvent::MouseButtonPress) {
+        switch (mMouseEvent->type())
+        {
+        case QEvent::MouseButtonPress:
             return Type::Press;
-        }
-        else if (mMouseEvent->type() == QEvent::MouseMove) {
+        case QEvent::MouseMove:
             return Type::Move;
-        }
-        else if (mMouseEvent->type() == QEvent::MouseButtonRelease) {
+        case QEvent::MouseButtonRelease:
             return Type::Release;
+        default:
+            return Type::Unmapped;
         }
     }
     else if (mTabletEvent)
     {
-        if (mTabletEvent->type() == QEvent::TabletPress) {
+        switch (mTabletEvent->type())
+        {
+        case QEvent::TabletPress:
             return Type::Press;
-        }
-        else if (mTabletEvent->type() == QEvent::TabletMove) {
+        case QEvent::TabletMove:
             return Type::Move;
-        }
-        else if (mTabletEvent->type() == QEvent::TabletRelease) {
+        case QEvent::TabletRelease:
             return Type::Release;
+        default:
+            return Type::Unmapped;
         }
     }
-    return PointerEvent::Unmapped;
+    return Type::Unmapped;
 }
 
 PointerEvent::InputType PointerEvent::inputType() const

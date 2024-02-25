@@ -51,13 +51,12 @@ Tile* TiledBuffer::getTileFromIndex(const TileIndex& tileIndex)
 void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
     const QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
     const float tileSize = UNIFORM_TILE_SIZE;
-    const int width = brushWidth;
 
     // Gather the number of tiles that fits the size of the brush width
-    const int xLeft = qFloor((qFloor(point.x() - width)) / tileSize);
-    const int xRight = qFloor((qFloor(point.x() + width)) / tileSize);
-    const int yTop = qFloor(qFloor(point.y() - width) / tileSize);
-    const int yBottom = qFloor(qFloor(point.y() + width) / tileSize);
+    const int xLeft = qFloor((qFloor(point.x() - brushWidth)) / tileSize);
+    const int xRight = qFloor((qFloor(point.x() + brushWidth)) / tileSize);
+    const int yTop = qFloor(qFloor(point.y() - brushWidth) / tileSize);
+    const int yBottom = qFloor(qFloor(point.y() + brushWidth) / tileSize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {

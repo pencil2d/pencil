@@ -41,10 +41,11 @@ public:
 
     void updateCanvasCursor();
 
-public slots:
-    void onPreferenceChanged(SETTING setting);
+    static Q_CONSTEXPR qreal FEATHER_MIN = 1.;
+    static Q_CONSTEXPR qreal FEATHER_MAX = 99.;
+    static Q_CONSTEXPR qreal WIDTH_MIN = 1.;
+    static Q_CONSTEXPR qreal WIDTH_MAX = 200.;
 
-protected:
     void loadSettings() override;
 
     bool keyPressEvent(QKeyEvent* event) override;
@@ -56,11 +57,14 @@ protected:
 
     void paint(QPainter& painter, const QRect& blitRect) override;
 
+public slots:
+    void onPreferenceChanged(SETTING setting);
+
+protected:
     // dynamic cursor adjustment
-    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep);
+    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal step);
     virtual void stopAdjusting();
     virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
-    virtual bool isAdjusting() const { return msIsAdjusting; }
 
     static bool mQuickSizingEnabled;
     static bool msIsAdjusting;
