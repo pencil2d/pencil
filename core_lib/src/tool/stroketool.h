@@ -41,10 +41,10 @@ public:
 
     void updateCanvasCursor();
 
-    static Q_CONSTEXPR qreal FEATHER_MIN = 1.;
-    static Q_CONSTEXPR qreal FEATHER_MAX = 99.;
-    static Q_CONSTEXPR qreal WIDTH_MIN = 1.;
-    static Q_CONSTEXPR qreal WIDTH_MAX = 200.;
+    static const qreal FEATHER_MIN;
+    static const qreal FEATHER_MAX;
+    static const qreal WIDTH_MIN;
+    static const qreal WIDTH_MAX;
 
     void loadSettings() override;
 

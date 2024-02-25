@@ -42,6 +42,11 @@ extern "C" {
 }
 #endif
 
+const qreal StrokeTool::FEATHER_MIN = 1.;
+const qreal StrokeTool::FEATHER_MAX = 99.;
+const qreal StrokeTool::WIDTH_MIN = 1.;
+const qreal StrokeTool::WIDTH_MAX = 200.;
+
 // ---- shared static variables ---- ( only one instance for all the tools )
 bool StrokeTool::msIsAdjusting = false;
 bool StrokeTool::mQuickSizingEnabled = false;
