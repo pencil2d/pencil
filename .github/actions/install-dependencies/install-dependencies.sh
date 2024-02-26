@@ -51,13 +51,15 @@ setup_macos() {
 }
 
 setup_windows() {
-  pip install --ignore-requires-python translate-toolkit[rc]
+  pip install translate-toolkit[rc]
   curl -fsSLO https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
   mkdir okapi
   "${WINDIR}\\System32\\tar" xfC okapi-apps_win32-x86_64_1.45.0.zip okapi
-  dotnet tool install -g wix
-  wix extension add -g WixToolset.Util.wixext WixToolset.Bal.wixext
-  nuget install -x -OutputDirectory util/installer WixToolset.BalUtil
+  dotnet tool install -g wix --version 4.0.4
+  wix extension add -g WixToolset.Util.wixext/4.0.4 WixToolset.Bal.wixext/4.0.4
+  nuget install -x -OutputDirectory util/installer WixToolset.BootstrapperCore.Native -Version 4.0.4
+  nuget install -x -OutputDirectory util/installer WixToolset.DUtil -Version 4.0.4
+  nuget install -x -OutputDirectory util/installer WixToolset.BalUtil -Version 4.0.4
 }
 
 "setup_$(echo "${RUNNER_OS}" | tr '[A-Z]' '[a-z]')"
