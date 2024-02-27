@@ -682,6 +682,7 @@ void ActionCommands::interpolateKeyframes()
         return;
     }
 
+    layer->deselectAll();
     BitmapImage* img1 = layer->getBitmapImageAtFrame(first);
     mEditor->scrubTo(first);
     QRect rect1 = img1->bounds();
