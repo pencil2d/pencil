@@ -716,8 +716,6 @@ void ActionCommands::interpolateKeyframes()
         counter++;
         layer->markFrameAsDirty(i);
     }
-    emit mEditor->updateTimeLine();
-    emit mEditor->framesModified();
     mEditor->scrubTo(last);
 }
 
