@@ -124,10 +124,6 @@ public:
     virtual void setPathDotColorType(const DotColorType dotColorType);
     virtual void resetCameraPath();
 
-    /** Apply logic to tools that require interruption of the current pointer event.
-     *  @return True if the event was interrupted, otherwise false */
-    virtual bool interruptPointerEvent(PointerEvent*) { return false; }
-
     virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 
     virtual bool leavingThisTool() { return true; }

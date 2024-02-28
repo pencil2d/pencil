@@ -142,6 +142,10 @@ QCursor BrushTool::cursor()
 
 void BrushTool::pointerPressEvent(PointerEvent *event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
@@ -152,6 +156,10 @@ void BrushTool::pointerPressEvent(PointerEvent *event)
 
 void BrushTool::pointerMoveEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
@@ -165,6 +173,10 @@ void BrushTool::pointerMoveEvent(PointerEvent* event)
 
 void BrushTool::pointerReleaseEvent(PointerEvent *event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();

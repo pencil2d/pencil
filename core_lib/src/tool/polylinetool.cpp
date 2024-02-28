@@ -122,6 +122,10 @@ void PolylineTool::clearToolData()
 
 void PolylineTool::pointerPressEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     Layer* layer = mEditor->layers()->currentLayer();
 
     if (event->button() == Qt::LeftButton)
@@ -150,6 +154,10 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
 
 void PolylineTool::pointerMoveEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
@@ -161,6 +169,10 @@ void PolylineTool::pointerMoveEvent(PointerEvent* event)
 
 void PolylineTool::pointerReleaseEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     StrokeTool::pointerReleaseEvent(event);
 }
 

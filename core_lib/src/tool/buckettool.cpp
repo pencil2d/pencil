@@ -169,6 +169,10 @@ void BucketTool::setFillReferenceMode(int referenceMode)
 
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     startStroke(event->inputType());
 
     Layer* targetLayer = mEditor->layers()->currentLayer();
@@ -191,6 +195,10 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         Layer* layer = mEditor->layers()->currentLayer();
@@ -208,6 +216,10 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
 
 void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = editor()->layers()->currentLayer();
@@ -230,14 +242,14 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
     endStroke();
 }
 
-bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep)
+bool BucketTool::startAdjusting(Qt::KeyboardModifiers modifiers)
 {
     mQuickSizingProperties.clear();
     if (mEditor->layers()->currentLayer()->type() == Layer::VECTOR)
     {
         mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     }
-    return StrokeTool::startAdjusting(modifiers, argStep);
+    return StrokeTool::startAdjusting(modifiers);
 }
 
 void BucketTool::paintBitmap()

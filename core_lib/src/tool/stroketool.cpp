@@ -151,11 +151,11 @@ void StrokeTool::drawStroke()
     }
 }
 
-bool StrokeTool::interruptPointerEvent(PointerEvent* event)
+bool StrokeTool::handleQuickSizing(PointerEvent* event)
 {
     if (event->eventType() == PointerEvent::Press) {
         if (mQuickSizingEnabled) {
-            return startAdjusting(event->modifiers(), 1);
+            return startAdjusting(event->modifiers());
         }
     } else if (event->eventType() == PointerEvent::Move) {
         if (event->buttons() & Qt::LeftButton && msIsAdjusting) {
@@ -220,10 +220,8 @@ void StrokeTool::updateCanvasCursor()
     mScribbleArea->update(updateRect.united(dirtyRect).adjusted(-2, -2, 2, 2));
 }
 
-bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers, qreal step)
+bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers)
 {
-    Q_UNUSED(step)
-
     if (!mQuickSizingProperties.contains(modifiers))
     {
         return false;

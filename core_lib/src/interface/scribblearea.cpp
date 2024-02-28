@@ -667,13 +667,7 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
         editor()->tools()->setTemporaryTool(HAND, event->buttons()))
     {
         currentTool()->pointerPressEvent(event);
-    }
-
-    if (currentTool()->interruptPointerEvent(event)) {
-        return;
-    }
-
-    if (event->button() == Qt::LeftButton)
+    } else if (event->button() == Qt::LeftButton)
     {
         currentTool()->pointerPressEvent(event);
     }
@@ -681,17 +675,11 @@ void ScribbleArea::pointerPressEvent(PointerEvent* event)
 
 void ScribbleArea::pointerMoveEvent(PointerEvent* event)
 {
-    if (currentTool()->interruptPointerEvent(event)) {
-        return;
-    }
     currentTool()->pointerMoveEvent(event);
 }
 
 void ScribbleArea::pointerReleaseEvent(PointerEvent* event)
 {
-    if (currentTool()->interruptPointerEvent(event)) {
-        return;
-    }
     currentTool()->pointerReleaseEvent(event);
 
     editor()->tools()->tryClearTemporaryTool(event->button());

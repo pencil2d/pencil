@@ -123,7 +123,7 @@ bool SmudgeTool::keyPressEvent(QKeyEvent *event)
         mScribbleArea->setCursor(cursor()); // update cursor
         return true;
     }
-    return BaseTool::keyPressEvent(event);
+    return StrokeTool::keyPressEvent(event);
 }
 
 bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
@@ -134,12 +134,14 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
         mScribbleArea->setCursor(cursor()); // update cursor
         return true;
     }
-    return BaseTool::keyReleaseEvent(event);
+    return StrokeTool::keyReleaseEvent(event);
 }
 
 void SmudgeTool::pointerPressEvent(PointerEvent* event)
 {
-    //qDebug() << "smudgetool: mousePressEvent";
+    if (handleQuickSizing(event)) {
+        return;
+    }
 
     Layer* layer = mEditor->layers()->currentLayer();
     auto selectMan = mEditor->select();
@@ -194,6 +196,10 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
 
 void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
@@ -250,6 +256,10 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();

@@ -53,7 +53,7 @@ public:
     void pointerMoveEvent(PointerEvent* event) override;
     void pointerReleaseEvent(PointerEvent* event) override;
 
-    bool interruptPointerEvent(PointerEvent* event) override;
+    bool handleQuickSizing(PointerEvent* event);
 
     void paint(QPainter& painter, const QRect& blitRect) override;
 
@@ -62,7 +62,7 @@ public slots:
 
 protected:
     // dynamic cursor adjustment
-    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal step);
+    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers);
     virtual void stopAdjusting();
     virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
 
