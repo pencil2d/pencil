@@ -27,7 +27,7 @@ namespace MathUtils
      */
     inline qreal map(qreal x, qreal inputMin, qreal inputMax, qreal outputMin, qreal outputMax)
     {
-        qreal slope = 1.0 * (outputMax - outputMin) / (inputMax - inputMin);
+        qreal slope = (outputMax - outputMin) / (inputMax - inputMin);
         return outputMin + slope * (x - inputMin);
     }
 
