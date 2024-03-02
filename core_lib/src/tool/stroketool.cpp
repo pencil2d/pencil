@@ -188,7 +188,7 @@ void StrokeTool::pointerReleaseEvent(PointerEvent*)
 
 bool StrokeTool::event(QEvent *event)
 {
-    if (event->type() == QEvent::Leave) {
+    if (event->type() == QEvent::Leave && !isActive()) {
         mCanvasCursorEnabled = false;
         updateCanvasCursor();
     } else if (event->type() == QEvent::Enter) {
