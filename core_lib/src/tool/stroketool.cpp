@@ -59,7 +59,7 @@ StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
 void StrokeTool::loadSettings()
 {
     mQuickSizingEnabled = mEditor->preference()->isOn(SETTING::QUICK_SIZING);
-    mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::DOTTED_CURSOR);
+    mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::CANVAS_CURSOR);
 
     connect(mEditor->view(), &ViewManager::viewChanged, this, &StrokeTool::updateCanvasCursor);
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &StrokeTool::onPreferenceChanged);
@@ -69,7 +69,7 @@ void StrokeTool::onPreferenceChanged(SETTING setting)
 {
     if (setting == SETTING::QUICK_SIZING) {
         mQuickSizingEnabled = mEditor->preference()->isOn(setting);
-    } else if (setting == SETTING::DOTTED_CURSOR) {
+    } else if (setting == SETTING::CANVAS_CURSOR) {
         mCanvasCursorEnabled = mEditor->preference()->isOn(setting);
     }
 }
@@ -192,7 +192,7 @@ bool StrokeTool::event(QEvent *event)
         mCanvasCursorEnabled = false;
         updateCanvasCursor();
     } else if (event->type() == QEvent::Enter) {
-        mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::DOTTED_CURSOR);
+        mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::CANVAS_CURSOR);
     }
     return event->isAccepted();
 }
