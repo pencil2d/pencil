@@ -62,7 +62,6 @@ void BrushTool::loadSettings()
     properties.invisibility = settings.value("brushInvisibility", false).toBool();
     properties.preserveAlpha = OFF;
     properties.stabilizerLevel = settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt();
-    properties.useFeather = settings.value("brushUseFeather", true).toBool();
     properties.useAA = DISABLED;
 
     if (properties.width <= 0) { setWidth(15); }

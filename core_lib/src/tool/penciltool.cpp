@@ -53,7 +53,6 @@ void PencilTool::loadSettings()
     properties.pressure = settings.value("pencilPressure", true).toBool();
     properties.stabilizerLevel = settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt();
     properties.useAA = DISABLED;
-    properties.useFeather = false;
     properties.useFillContour = false;
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
