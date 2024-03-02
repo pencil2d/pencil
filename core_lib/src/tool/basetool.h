@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPointF>
 #include <QHash>
+#include <QEvent>
 #include "pencildef.h"
 
 class QPixmap;
@@ -85,6 +86,7 @@ public:
     virtual void pointerMoveEvent(PointerEvent*) = 0;
     virtual void pointerReleaseEvent(PointerEvent*) = 0;
     virtual void pointerDoubleClickEvent(PointerEvent*);
+    virtual bool event(QEvent* event) { return event->isAccepted(); }
 
     // return true if handled
     virtual bool keyPressEvent(QKeyEvent*) { return false; }

@@ -37,6 +37,7 @@ void CanvasCursorPainter::paint(QPainter& painter, const QRect& blitRect)
             paintFeatherCursor(painter, blitRect, mOptions.widthRect, mOptions.featherRect);
         }
         paintWidthCursor(painter, blitRect, mOptions.widthRect);
+        mIsDirty = true;
     }
 }
 
@@ -86,5 +87,11 @@ void CanvasCursorPainter::paintWidthCursor(QPainter& painter, const QRect& blitR
     painter.drawEllipse(widthCircleBounds);
     painter.restore();
 
-    mDirtyRect = widthCircleBounds;
+    mDirtyRect = widthCircleBounds.toAlignedRect();
+}
+
+void CanvasCursorPainter::clearDirty()
+{
+    mDirtyRect = QRect();
+    mIsDirty = false;
 }

@@ -39,7 +39,10 @@ public:
 
     void preparePainter(const CanvasCursorPainterOptions& painterOptions, const QTransform& viewTransform);
 
-    const QRectF dirtyRect() { return mDirtyRect; }
+    const QRect dirtyRect() { return mDirtyRect; }
+    bool isDirty() const { return mIsDirty; }
+    void clearDirty();
+
 private:
 
     void setupPen();
@@ -49,7 +52,8 @@ private:
     void paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthCircleBounds, const QRectF& featherCircleBounds);
 
     CanvasCursorPainterOptions mOptions;
-    QRectF mDirtyRect;
+    QRect mDirtyRect;
+    bool mIsDirty = false;
 
     QPen mCursorPen;
 };

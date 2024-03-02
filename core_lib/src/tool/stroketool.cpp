@@ -186,12 +186,19 @@ void StrokeTool::pointerReleaseEvent(PointerEvent*)
     updateCanvasCursor();
 }
 
+bool StrokeTool::event(QEvent *event)
+{
+    if (event->type() == QEvent::Leave) {
+        mCanvasCursorEnabled = false;
+        updateCanvasCursor();
+    } else if (event->type() == QEvent::Enter) {
+        mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::DOTTED_CURSOR);
+    }
+    return event->isAccepted();
+}
+
 void StrokeTool::updateCanvasCursor()
 {
-    if (!msIsAdjusting && !mCanvasCursorEnabled) {
-        return;
-    }
-
     const qreal brushWidth = properties.width;
     const qreal brushFeather = properties.feather;
 
@@ -213,8 +220,16 @@ void StrokeTool::updateCanvasCursor()
 
     mCanvasCursorPainter.preparePainter(options, mEditor->view()->getView());
 
-    const QRect& dirtyRect = mCanvasCursorPainter.dirtyRect().toAlignedRect();
+    const QRect& dirtyRect = mCanvasCursorPainter.dirtyRect();
     const QRect& updateRect = mEditor->view()->getView().mapRect(QRectF(cursorOffset, QSizeF(brushWidth, brushWidth))).toAlignedRect();
+
+    if (!msIsAdjusting && !mCanvasCursorEnabled) {
+        if (mCanvasCursorPainter.isDirty()) {
+            mScribbleArea->update(mCanvasCursorPainter.dirtyRect());
+            mCanvasCursorPainter.clearDirty();
+        }
+        return;
+    }
 
     // Adjusted to account for some pixel bleeding outside the update rect
     mScribbleArea->update(updateRect.united(dirtyRect).adjusted(-2, -2, 2, 2));
