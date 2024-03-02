@@ -39,6 +39,9 @@ public:
     void drawStroke();
     void endStroke();
 
+    bool leavingThisTool() override;
+    bool enteringThisTool() override;
+
     void updateCanvasCursor();
 
     static const qreal FEATHER_MIN;
@@ -60,6 +63,7 @@ public:
 
 public slots:
     void onPreferenceChanged(SETTING setting);
+    void onViewUpdated();
 
 protected:
     // dynamic cursor adjustment

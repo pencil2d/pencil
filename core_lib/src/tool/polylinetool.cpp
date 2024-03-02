@@ -96,6 +96,7 @@ void PolylineTool::setAA(const int AA)
 
 bool PolylineTool::leavingThisTool()
 {
+    StrokeTool::leavingThisTool();
     if (mPoints.size() > 0)
     {
         cancelPolyline();

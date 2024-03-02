@@ -319,6 +319,8 @@ void MoveTool::applyTransformation()
 
 bool MoveTool::leavingThisTool()
 {
+    BaseTool::leavingThisTool();
+
     if (currentPaintableLayer())
     {
         applyTransformation();

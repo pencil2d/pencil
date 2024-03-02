@@ -128,7 +128,12 @@ public:
 
     virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 
-    virtual bool leavingThisTool() { return true; }
+    /// Will clean up `active` connections
+    virtual bool leavingThisTool();
+
+    /// Setup `active` connections here that should only emit while tool is active
+    /// `leavingThisTool` will handle the cleanup of `active` connections
+    virtual bool enteringThisTool() { return true; }
 
     Properties properties;
 
@@ -155,6 +160,7 @@ protected:
 
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
+    QList<QMetaObject::Connection> mActiveConnections;
 
 private:
     StrokeManager* mStrokeManager = nullptr;

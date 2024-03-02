@@ -68,6 +68,15 @@ QCursor BaseTool::cursor()
     return Qt::ArrowCursor;
 }
 
+bool BaseTool::leavingThisTool()
+{
+   for (auto& connection : mActiveConnections) {
+       disconnect(connection);
+       mActiveConnections.removeOne(connection);
+   }
+   return true;
+}
+
 void BaseTool::initialize(Editor* editor)
 {
     Q_ASSERT(editor);

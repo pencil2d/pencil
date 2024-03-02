@@ -61,8 +61,20 @@ void StrokeTool::loadSettings()
     mQuickSizingEnabled = mEditor->preference()->isOn(SETTING::QUICK_SIZING);
     mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::CANVAS_CURSOR);
 
-    connect(mEditor->view(), &ViewManager::viewChanged, this, &StrokeTool::updateCanvasCursor);
+    /// Given the way that we update preferences currently, this connection should not be removed
+    /// when the tool is not active.
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &StrokeTool::onPreferenceChanged);
+}
+
+bool StrokeTool::enteringThisTool()
+{
+    mActiveConnections.append(connect(mEditor->view(), &ViewManager::viewChanged, this, &StrokeTool::onViewUpdated));
+    return true;
+}
+
+bool StrokeTool::leavingThisTool()
+{
+    return BaseTool::leavingThisTool();
 }
 
 void StrokeTool::onPreferenceChanged(SETTING setting)
@@ -72,6 +84,11 @@ void StrokeTool::onPreferenceChanged(SETTING setting)
     } else if (setting == SETTING::CANVAS_CURSOR) {
         mCanvasCursorEnabled = mEditor->preference()->isOn(setting);
     }
+}
+
+void StrokeTool::onViewUpdated()
+{
+    updateCanvasCursor();
 }
 
 void StrokeTool::startStroke(PointerEvent::InputType inputType)
