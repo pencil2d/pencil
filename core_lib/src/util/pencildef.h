@@ -117,9 +117,6 @@ inline LayerVisibility& operator--(LayerVisibility& vis)
 // Max frames that can be imported and loaded onto the timeline
 const static int MaxFramesBound = 9999;
 
-// Spacer for rotation handle offset
-const static float RotationHandleOffset = 50;
-
 // shortcuts command code
 #define CMD_NEW_FILE  "CmdNewFile"
 #define CMD_OPEN_FILE "CmdOpenFile"
@@ -224,12 +221,11 @@ const static float RotationHandleOffset = 50;
 
 // Settings Group/Key Name
 #define PENCIL2D "Pencil"
-#define SHORTCUTS_GROUP                 "Shortcuts"
-#define SETTING_AUTO_SAVE               "AutoSave"
-#define SETTING_AUTO_SAVE_NUMBER        "AutosaveNumber"
-#define SETTING_TOOL_CURSOR             "ToolCursors"
-#define SETTING_CANVAS_CURSOR_LEGACY    "DottedCursors" // Dotted name is kept for backward compatibility
-#define SETTING_CANVAS_CURSOR           "CanvasCursor"
+#define SHORTCUTS_GROUP             "Shortcuts"
+#define SETTING_AUTO_SAVE           "AutoSave"
+#define SETTING_AUTO_SAVE_NUMBER    "AutosaveNumber"
+#define SETTING_TOOL_CURSOR         "ToolCursors"
+#define SETTING_CANVAS_CURSOR       "DottedCursors"
 #define SETTING_HIGH_RESOLUTION     "HighResPosition"
 #define SETTING_BACKGROUND_STYLE    "Background"
 #define SETTING_WINDOW_OPACITY      "WindowOpacity"

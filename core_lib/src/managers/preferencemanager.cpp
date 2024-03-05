@@ -73,14 +73,7 @@ void PreferenceManager::loadPrefs()
     // General
     set(SETTING::ANTIALIAS,                settings.value(SETTING_ANTIALIAS,              true).toBool());
     set(SETTING::TOOL_CURSOR,              settings.value(SETTING_TOOL_CURSOR,            true).toBool());
-
-    if (settings.contains(SETTING_CANVAS_CURSOR_LEGACY)) {
-        set(SETTING::CANVAS_CURSOR,        settings.value(SETTING_CANVAS_CURSOR_LEGACY).toBool());
-        settings.remove(SETTING_CANVAS_CURSOR_LEGACY);
-    } else {
-        set(SETTING::CANVAS_CURSOR,        settings.value(SETTING_CANVAS_CURSOR,          true).toBool());
-    }
-
+    set(SETTING::CANVAS_CURSOR,            settings.value(SETTING_CANVAS_CURSOR,          true).toBool());
     set(SETTING::HIGH_RESOLUTION,          settings.value(SETTING_HIGH_RESOLUTION,        true).toBool());
     set(SETTING::SHADOW,                   settings.value(SETTING_SHADOW,                 false).toBool());
     set(SETTING::QUICK_SIZING,             settings.value(SETTING_QUICK_SIZING,           true).toBool());
