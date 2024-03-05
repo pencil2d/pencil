@@ -242,7 +242,8 @@ void StrokeTool::updateCanvasCursor()
 
     if (!msIsAdjusting && !mCanvasCursorEnabled) {
         if (mCanvasCursorPainter.isDirty()) {
-            mScribbleArea->update(mCanvasCursorPainter.dirtyRect());
+            // Adjusted to account for some pixel bleeding outside the update rect
+            mScribbleArea->update(mCanvasCursorPainter.dirtyRect().adjusted(-2, -2, 2, 2));
             mCanvasCursorPainter.clearDirty();
         }
         return;
