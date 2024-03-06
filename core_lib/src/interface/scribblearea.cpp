@@ -383,12 +383,15 @@ void ScribbleArea::onObjectLoaded()
 
 bool ScribbleArea::event(QEvent *event)
 {
+    bool processed = false;
     if (event->type() == QEvent::WindowDeactivate)
     {
         editor()->tools()->clearTemporaryTool();
+        processed = true;
     }
 
-    return currentTool()->event(event) || QWidget::event(event);
+    processed = currentTool()->event(event) || processed;
+    return QWidget::event(event) || processed;
 }
 
 /************************************************************************/

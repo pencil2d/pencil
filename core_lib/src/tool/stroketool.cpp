@@ -208,10 +208,14 @@ bool StrokeTool::event(QEvent *event)
     if (event->type() == QEvent::Leave && !isActive()) {
         mCanvasCursorEnabled = false;
         updateCanvasCursor();
+        QObject::event(event);
+        return true;
     } else if (event->type() == QEvent::Enter) {
         mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::CANVAS_CURSOR);
+        QObject::event(event);
+        return true;
     }
-    return event->isAccepted();
+    return QObject::event(event);
 }
 
 void StrokeTool::updateCanvasCursor()
