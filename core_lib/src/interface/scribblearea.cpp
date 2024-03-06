@@ -388,8 +388,7 @@ bool ScribbleArea::event(QEvent *event)
         editor()->tools()->clearTemporaryTool();
     }
 
-    currentTool()->event(event);
-    return QWidget::event(event);
+    return currentTool()->event(event) || QWidget::event(event);
 }
 
 /************************************************************************/
