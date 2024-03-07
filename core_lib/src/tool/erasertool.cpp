@@ -151,6 +151,7 @@ QCursor EraserTool::cursor()
 
 void EraserTool::pointerPressEvent(PointerEvent *event)
 {
+    mStrokeManager.pointerPressEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -164,16 +165,19 @@ void EraserTool::pointerPressEvent(PointerEvent *event)
 
 void EraserTool::pointerMoveEvent(PointerEvent* event)
 {
+    mStrokeManager.pointerMoveEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
 
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
-        mCurrentPressure = strokeManager()->getPressure();
+        mCurrentPressure = mStrokeManager.getPressure();
         updateStrokes();
-        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
-            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
+        if (properties.stabilizerLevel != mStrokeManager.getStabilizerLevel())
+        {
+            mStrokeManager.setStabilizerLevel(properties.stabilizerLevel);
+        }
     }
 
     StrokeTool::pointerMoveEvent(event);
@@ -181,6 +185,7 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
 
 void EraserTool::pointerReleaseEvent(PointerEvent *event)
 {
+    mStrokeManager.pointerReleaseEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -230,7 +235,7 @@ void EraserTool::paintAt(QPointF point)
 void EraserTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mStrokeManager.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -275,7 +280,7 @@ void EraserTool::drawStroke()
         mCurrentWidth = properties.width;
         if (properties.pressure)
         {
-            mCurrentWidth = (mCurrentWidth + (strokeManager()->getPressure() * mCurrentWidth)) * 0.5;
+            mCurrentWidth = (mCurrentWidth + (mStrokeManager.getPressure() * mCurrentWidth)) * 0.5;
         }
         qreal brushWidth = mCurrentWidth;
 

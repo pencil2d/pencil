@@ -146,6 +146,7 @@ QCursor PencilTool::cursor()
 
 void PencilTool::pointerPressEvent(PointerEvent *event)
 {
+    mStrokeManager.pointerPressEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -166,22 +167,26 @@ void PencilTool::pointerPressEvent(PointerEvent *event)
 
 void PencilTool::pointerMoveEvent(PointerEvent* event)
 {
+    mStrokeManager.pointerMoveEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
 
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
-        mCurrentPressure = strokeManager()->getPressure();
+        mCurrentPressure = mStrokeManager.getPressure();
         drawStroke();
-        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
-            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
+        if (properties.stabilizerLevel != mStrokeManager.getStabilizerLevel())
+        {
+            mStrokeManager.setStabilizerLevel(properties.stabilizerLevel);
+        }
     }
     StrokeTool::pointerMoveEvent(event);
 }
 
 void PencilTool::pointerReleaseEvent(PointerEvent *event)
 {
+    mStrokeManager.pointerReleaseEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -233,7 +238,7 @@ void PencilTool::paintAt(QPointF point)
 void PencilTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mStrokeManager.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

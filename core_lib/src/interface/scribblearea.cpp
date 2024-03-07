@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QGuiApplication>
 #include <QMessageBox>
 #include <QPixmapCache>
+#include <QTimer>
 
 #include "pointerevent.h"
 #include "beziercurve.h"
@@ -38,7 +39,6 @@ GNU General Public License for more details.
 
 #include "colormanager.h"
 #include "toolmanager.h"
-#include "strokemanager.h"
 #include "layermanager.h"
 #include "playbackmanager.h"
 #include "viewmanager.h"
@@ -54,8 +54,6 @@ ScribbleArea::ScribbleArea(QWidget* parent) : QWidget(parent),
     // Qt::WA_StaticContents ensure that the widget contents are rooted to the top-left corner
     // and don't change when the widget is resized.
     setAttribute(Qt::WA_StaticContents);
-
-    mStrokeManager.reset(new StrokeManager);
 }
 
 ScribbleArea::~ScribbleArea()
@@ -591,8 +589,6 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     if (event.eventType() == PointerEvent::Press)
     {
         event.accept();
-        mStrokeManager->pointerPressEvent(&event);
-        mStrokeManager->setTabletInUse(true);
         if (mIsFirstClick)
         {
             mIsFirstClick = false;
@@ -601,7 +597,8 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         }
         else
         {
-            qreal distance = QLineF(currentTool()->getCurrentPressPoint(), currentTool()->getLastPressPoint()).length();
+            qreal distance = QLineF(e->posF(), mTabletPressPos).length();
+            mTabletPressPos = e->posF();
 
             if (mDoubleClickMillis <= DOUBLE_CLICK_THRESHOLD && distance < 5.0) {
                 currentTool()->pointerDoubleClickEvent(&event);
@@ -618,7 +615,6 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     {
         if (!(event.buttons() & (Qt::LeftButton | Qt::RightButton)) || mTabletInUse)
         {
-            mStrokeManager->pointerMoveEvent(&event);
             pointerMoveEvent(&event);
         }
     }
@@ -628,9 +624,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
         mMouseFilterTimer->start();
         if (mTabletInUse)
         {
-            mStrokeManager->pointerReleaseEvent(&event);
             pointerReleaseEvent(&event);
-            mStrokeManager->setTabletInUse(false);
             mTabletInUse = false;
         }
     }
@@ -734,9 +728,6 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
     }
 
     PointerEvent event(e);
-
-    mStrokeManager->pointerPressEvent(&event);
-
     pointerPressEvent(&event);
     mMouseInUse = event.isAccepted();
 }
@@ -744,30 +735,25 @@ void ScribbleArea::mousePressEvent(QMouseEvent* e)
 void ScribbleArea::mouseMoveEvent(QMouseEvent* e)
 {
     if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD)) { e->ignore(); return; }
+
     PointerEvent event(e);
-
-    mStrokeManager->pointerMoveEvent(&event);
-
     pointerMoveEvent(&event);
 }
 
 void ScribbleArea::mouseReleaseEvent(QMouseEvent* e)
 {
     if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD)) { e->ignore(); return; }
+
     PointerEvent event(e);
-
-    mStrokeManager->pointerReleaseEvent(&event);
-
     pointerReleaseEvent(&event);
     mMouseInUse = (e->buttons() & Qt::RightButton) || (e->buttons() & Qt::LeftButton);
 }
 
 void ScribbleArea::mouseDoubleClickEvent(QMouseEvent* e)
 {
-    if (mStrokeManager->isTabletInUse()) { e->ignore(); return; }
-    PointerEvent event(e);
-    mStrokeManager->pointerPressEvent(&event);
+    if (mTabletInUse) { e->ignore(); return; }
 
+    PointerEvent event(e);
     currentTool()->pointerDoubleClickEvent(&event);
 }
 

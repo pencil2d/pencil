@@ -91,6 +91,36 @@ void StrokeTool::onViewUpdated()
     updateCanvasCursor();
 }
 
+QPointF StrokeTool::getCurrentPressPixel() const
+{
+    return mStrokeManager.getCurrentPressPixel();
+}
+
+QPointF StrokeTool::getCurrentPressPoint() const
+{
+    return mEditor->view()->mapScreenToCanvas(mStrokeManager.getCurrentPressPixel());
+}
+
+QPointF StrokeTool::getCurrentPixel() const
+{
+    return mStrokeManager.getCurrentPixel();
+}
+
+QPointF StrokeTool::getCurrentPoint() const
+{
+    return mEditor->view()->mapScreenToCanvas(getCurrentPixel());
+}
+
+QPointF StrokeTool::getLastPixel() const
+{
+    return mStrokeManager.getLastPixel();
+}
+
+QPointF StrokeTool::getLastPoint() const
+{
+    return mEditor->view()->mapScreenToCanvas(getLastPixel());
+}
+
 void StrokeTool::startStroke(PointerEvent::InputType inputType)
 {
     if (emptyFrameActionEnabled())
@@ -104,11 +134,11 @@ void StrokeTool::startStroke(PointerEvent::InputType inputType)
     mStrokePoints.clear();
 
     //Experimental
-    QPointF startStrokes = strokeManager()->interpolateStart(mLastPixel);
+    QPointF startStrokes = mStrokeManager.interpolateStart(mLastPixel);
     mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
 
     mStrokePressures.clear();
-    mStrokePressures << strokeManager()->getPressure();
+    mStrokePressures << mStrokeManager.getPressure();
 
     mCurrentInputType = inputType;
 
@@ -141,8 +171,8 @@ bool StrokeTool::emptyFrameActionEnabled()
 
 void StrokeTool::endStroke()
 {
-    strokeManager()->interpolateEnd();
-    mStrokePressures << strokeManager()->getPressure();
+    mStrokeManager.interpolateEnd();
+    mStrokePressures << mStrokeManager.getPressure();
     mStrokePoints.clear();
     mStrokePressures.clear();
 
@@ -158,9 +188,9 @@ void StrokeTool::drawStroke()
     if (pixel != mLastPixel || !mFirstDraw)
     {
         // get last pixel before interpolation initializes
-        QPointF startStrokes = strokeManager()->interpolateStart(getLastPixel());
+        QPointF startStrokes = mStrokeManager.interpolateStart(getLastPixel());
         mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
-        mStrokePressures << strokeManager()->getPressure();
+        mStrokePressures << mStrokeManager.getPressure();
     }
     else
     {

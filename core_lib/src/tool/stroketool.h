@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "basetool.h"
 #include "pointerevent.h"
 #include "preferencesdef.h"
+#include "strokemanager.h"
 
 #include "canvascursorpainter.h"
 
@@ -50,6 +51,7 @@ public:
     static const qreal WIDTH_MAX;
 
     void loadSettings() override;
+    bool isActive() const override { return mStrokeManager.isActive(); };
 
     bool keyPressEvent(QKeyEvent* event) override;
     void pointerPressEvent(PointerEvent* event) override;
@@ -66,6 +68,13 @@ public slots:
     void onViewUpdated();
 
 protected:
+    QPointF getCurrentPressPixel() const;
+    QPointF getCurrentPressPoint() const;
+    QPointF getCurrentPixel() const;
+    QPointF getCurrentPoint() const;
+    QPointF getLastPixel() const;
+    QPointF getLastPoint() const;
+
     // dynamic cursor adjustment
     virtual bool startAdjusting(Qt::KeyboardModifiers modifiers);
     virtual void stopAdjusting();
@@ -98,6 +107,8 @@ protected:
     QPointF mAdjustPosition;
 
     CanvasCursorPainter mCanvasCursorPainter;
+
+    StrokeManager mStrokeManager;
 };
 
 #endif // STROKETOOL_H

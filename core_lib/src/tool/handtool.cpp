@@ -65,9 +65,9 @@ QCursor HandTool::cursor()
     return mIsHeld ? QCursor(Qt::ClosedHandCursor) : QCursor(Qt::OpenHandCursor);
 }
 
-void HandTool::pointerPressEvent(PointerEvent*)
+void HandTool::pointerPressEvent(PointerEvent* event)
 {
-    mLastPixel = getCurrentPixel();
+    mLastPixel = event->posF();
     mStartPoint = mEditor->view()->mapScreenToCanvas(mLastPixel);
     mIsHeld = true;
 
@@ -81,8 +81,8 @@ void HandTool::pointerMoveEvent(PointerEvent* event)
         return;
     }
 
-    transformView(event->modifiers(), event->buttons());
-    mLastPixel = getCurrentPixel();
+    transformView(event->modifiers(), event->posF(), event->buttons());
+    mLastPixel = event->posF();
 }
 
 void HandTool::pointerReleaseEvent(PointerEvent* event)
@@ -100,7 +100,7 @@ void HandTool::pointerDoubleClickEvent(PointerEvent* event)
     }
 }
 
-void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons)
+void HandTool::transformView(Qt::KeyboardModifiers keyMod, const QPointF& pos, Qt::MouseButtons buttons)
 {
     bool isTranslate = keyMod == Qt::NoModifier;
     bool isRotate = keyMod & Qt::AltModifier;
@@ -110,15 +110,15 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
 
     if (isTranslate)
     {
-        QPointF d = getCurrentPoint() - getLastPoint();
+        QPointF d = viewMgr->mapScreenToCanvas(pos) - viewMgr->mapScreenToCanvas(mLastPixel);
         QPointF offset = viewMgr->translation() + d;
         viewMgr->translate(offset);
     }
     else if (isRotate)
     {
         QPoint centralPixel(mScribbleArea->width() / 2, mScribbleArea->height() / 2);
-        QVector2D startV(getLastPixel() - centralPixel);
-        QVector2D curV(getCurrentPixel() - centralPixel);
+        QVector2D startV(mLastPixel - centralPixel);
+        QVector2D curV(pos - centralPixel);
 
         qreal angleOffset = static_cast<qreal>(std::atan2(curV.y(), curV.x()) - std::atan2(startV.y(), startV.x()));
         angleOffset = qRadiansToDegrees(angleOffset);
@@ -129,7 +129,7 @@ void HandTool::transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons butt
     }
     else if (isScale)
     {
-        const float delta = (static_cast<float>(getCurrentPixel().y() - mLastPixel.y())) / 100.f;
+        const float delta = (static_cast<float>(pos.y() - mLastPixel.y())) / 100.f;
         const qreal scaleValue = viewMgr->scaling() * (1 + (delta * mDeltaFactor));
         viewMgr->scaleAtOffset(scaleValue, mStartPoint);
     }

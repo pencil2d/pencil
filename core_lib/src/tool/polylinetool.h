@@ -47,7 +47,7 @@ public:
 
     bool leavingThisTool() override;
 
-    virtual bool isActive() override;
+    bool isActive() const override;
 
 private:
     QList<QPointF> mPoints;

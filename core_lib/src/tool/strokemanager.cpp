@@ -20,9 +20,6 @@
 
 #include "strokemanager.h"
 
-#include <cmath>
-#include <limits>
-#include <QDebug>
 #include <QLineF>
 #include <QPainterPath>
 #include "object.h"
@@ -31,8 +28,6 @@
 
 StrokeManager::StrokeManager()
 {
-    m_timeshot = 0;
-
     mTabletInUse = false;
     mTabletPressure = 0;
 
@@ -61,8 +56,6 @@ void StrokeManager::pointerPressEvent(PointerEvent* event)
     reset();
     if (!(event->button() == Qt::NoButton)) // if the user is pressing the left/right button
     {
-        //qDebug() << "press";
-        mLastPressPixel = mCurrentPressPixel;
         mCurrentPressPixel = event->posF();
     }
 
@@ -70,6 +63,8 @@ void StrokeManager::pointerPressEvent(PointerEvent* event)
 
     mStrokeStarted = true;
     setPressure(event->pressure());
+
+    mTabletInUse = mTabletInUse || event->isTabletEvent();
 }
 
 void StrokeManager::pointerMoveEvent(PointerEvent* event)
@@ -101,6 +96,7 @@ void StrokeManager::pointerReleaseEvent(PointerEvent* event)
     }
 
     mStrokeStarted = false;
+    mTabletInUse = mTabletInUse && !event->isTabletEvent();
 }
 
 void StrokeManager::setStabilizerLevel(int level)
@@ -144,8 +140,6 @@ void StrokeManager::smoothMousePos(QPointF pos)
         mLastPixel = mLastInterpolated;
     }
 
-    mousePos = pos;
-
     if (!mStrokeStarted)
     {
         return;
@@ -166,16 +160,10 @@ QPointF StrokeManager::interpolateStart(QPointF firstPoint)
         strokeQueue.clear();
         pressureQueue.clear();
 
-        mSingleshotTime.start();
-        previousTime = mSingleshotTime.elapsed();
-
         mLastPixel = firstPoint;
     }
     else if (mStabilizerLevel == StabilizationLevel::STRONG)
     {
-        mSingleshotTime.start();
-        previousTime = mSingleshotTime.elapsed();
-
         // Clear queue
         strokeQueue.clear();
         pressureQueue.clear();
@@ -266,7 +254,6 @@ QList<QPointF> StrokeManager::noInpolOp(QList<QPointF> points)
 
 QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
 {
-    int time = mSingleshotTime.elapsed();
     static const qreal smoothness = 1.f;
     QLineF line(mLastPixel, mCurrentPixel);
 
@@ -314,7 +301,6 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
         m_previousTangent = newTangent;
     }
 
-    previousTime = time;
     return points;
 }
 

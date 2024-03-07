@@ -35,16 +35,16 @@ public:
 
     void pointerPressEvent( PointerEvent* ) override;
     void pointerReleaseEvent( PointerEvent* event ) override;
-    void pointerMoveEvent( PointerEvent* ) override;
+    void pointerMoveEvent( PointerEvent* event ) override;
 
     /** Updates front color for bitmap and color index for vector */
-    void updateFrontColor();
+    void updateFrontColor(const QPointF& pos);
 
 private:
     /** Retrieves color of the pixel under the cursor for a bitmap layer */
-    QColor getBitmapColor(LayerBitmap* layer);
+    QColor getBitmapColor(LayerBitmap* layer, const QPointF& pos);
     /** Retrieves the color index of the pixel under the cursor for a vector layer */
-    int getVectorColor(LayerVector *layer);
+    int getVectorColor(LayerVector *layer, const QPointF& pos);
 };
 
 #endif // EYEDROPPERTOOL_H

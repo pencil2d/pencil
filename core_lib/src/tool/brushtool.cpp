@@ -141,6 +141,7 @@ QCursor BrushTool::cursor()
 
 void BrushTool::pointerPressEvent(PointerEvent *event)
 {
+    mStrokeManager.pointerPressEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -155,16 +156,19 @@ void BrushTool::pointerPressEvent(PointerEvent *event)
 
 void BrushTool::pointerMoveEvent(PointerEvent* event)
 {
+    mStrokeManager.pointerMoveEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
 
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
-        mCurrentPressure = strokeManager()->getPressure();
+        mCurrentPressure = mStrokeManager.getPressure();
         drawStroke();
-        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
-            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
+        if (properties.stabilizerLevel != mStrokeManager.getStabilizerLevel())
+        {
+            mStrokeManager.setStabilizerLevel(properties.stabilizerLevel);
+        }
     }
 
     StrokeTool::pointerMoveEvent(event);
@@ -172,6 +176,7 @@ void BrushTool::pointerMoveEvent(PointerEvent* event)
 
 void BrushTool::pointerReleaseEvent(PointerEvent *event)
 {
+    mStrokeManager.pointerReleaseEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -223,7 +228,7 @@ void BrushTool::paintAt(QPointF point)
 void BrushTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mStrokeManager.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 #include "layermanager.h"
-#include "strokemanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
 
@@ -139,6 +138,7 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
 
 void SmudgeTool::pointerPressEvent(PointerEvent* event)
 {
+    mStrokeManager.pointerPressEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -196,6 +196,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
 
 void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 {
+    mStrokeManager.pointerMoveEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -256,6 +257,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 {
+    mStrokeManager.pointerReleaseEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -307,7 +309,7 @@ void SmudgeTool::drawStroke()
     if (sourceImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     BitmapImage targetImage = sourceImage->copy();
     StrokeTool::drawStroke();
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mStrokeManager.interpolateStroke();
 
     for (int i = 0; i < p.size(); i++)
     {
@@ -321,7 +323,6 @@ void SmudgeTool::drawStroke()
     //opacity = currentPressure; // todo: Probably not interesting?!
     //brushWidth = brushWidth * opacity;
 
-    BlitRect rect;
     QPointF a = mLastBrushPoint;
     QPointF b = getCurrentPoint();
 

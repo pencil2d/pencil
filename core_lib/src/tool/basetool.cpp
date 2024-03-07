@@ -81,7 +81,6 @@ void BaseTool::initialize(Editor* editor)
     mScribbleArea = editor->getScribbleArea();
     Q_ASSERT(mScribbleArea);
 
-    mStrokeManager = mEditor->getScribbleArea()->getStrokeManager();
     loadSettings();
 }
 
@@ -119,49 +118,9 @@ bool BaseTool::isDrawingTool()
     return true;
 }
 
-bool BaseTool::isActive()
+bool BaseTool::isActive() const
 {
-    return strokeManager()->isActive();
-}
-
-QPointF BaseTool::getCurrentPressPixel() const
-{
-    return strokeManager()->getCurrentPressPixel();
-}
-
-QPointF BaseTool::getCurrentPressPoint() const
-{
-    return mEditor->view()->mapScreenToCanvas(strokeManager()->getCurrentPressPixel());
-}
-
-QPointF BaseTool::getCurrentPixel() const
-{
-    return strokeManager()->getCurrentPixel();
-}
-
-QPointF BaseTool::getCurrentPoint() const
-{
-    return mEditor->view()->mapScreenToCanvas(getCurrentPixel());
-}
-
-QPointF BaseTool::getLastPixel() const
-{
-    return strokeManager()->getLastPixel();
-}
-
-QPointF BaseTool::getLastPoint() const
-{
-    return mEditor->view()->mapScreenToCanvas(getLastPixel());
-}
-
-QPointF BaseTool::getLastPressPixel() const
-{
-    return strokeManager()->getLastPressPixel();
-}
-
-QPointF BaseTool::getLastPressPoint() const
-{
-    return mEditor->view()->mapScreenToCanvas(getLastPressPixel());
+    return false;
 }
 
 void BaseTool::setWidth(const qreal width)
