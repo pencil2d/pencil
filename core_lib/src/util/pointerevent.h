@@ -14,6 +14,13 @@ public:
         Unknown
     };
 
+    enum Type {
+        Press,
+        Move,
+        Release,
+        Unmapped
+    };
+
     PointerEvent(QMouseEvent* event);
     PointerEvent(QTabletEvent* event);
     ~PointerEvent();
@@ -70,7 +77,7 @@ public:
 
     bool isAccepted();
 
-    QEvent::Type eventType() const;
+    Type eventType() const;
     InputType inputType() const;
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)

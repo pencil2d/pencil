@@ -999,7 +999,6 @@ void MainWindow2::preferences()
     {
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
-        ui->scribbleArea->updateCanvasCursor();
         mPrefDialog = nullptr;
     });
 

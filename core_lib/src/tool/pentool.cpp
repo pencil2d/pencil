@@ -38,6 +38,8 @@ PenTool::PenTool(QObject* parent) : StrokeTool(parent)
 
 void PenTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[VECTORMERGE] = true;
@@ -118,14 +120,24 @@ QCursor PenTool::cursor()
 
 void PenTool::pointerPressEvent(PointerEvent *event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
     startStroke(event->inputType());
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void PenTool::pointerMoveEvent(PointerEvent* event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = strokeManager()->getPressure();
@@ -133,10 +145,16 @@ void PenTool::pointerMoveEvent(PointerEvent* event)
         if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
             strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void PenTool::pointerReleaseEvent(PointerEvent *event)
 {
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     mEditor->backup(typeName());
@@ -157,6 +175,8 @@ void PenTool::pointerReleaseEvent(PointerEvent *event)
         paintVectorStroke(layer);
     }
     endStroke();
+
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 // draw a single paint dab at the given location

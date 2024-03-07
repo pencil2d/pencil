@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPointF>
 #include <QHash>
+#include <QEvent>
 #include "pencildef.h"
 
 class QPixmap;
@@ -90,17 +91,8 @@ public:
     virtual bool keyPressEvent(QKeyEvent*) { return false; }
     virtual bool keyReleaseEvent(QKeyEvent*) { return false; }
 
-    // dynamic cursor adjustment
-    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers, qreal argStep);
-    virtual void stopAdjusting();
-    virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
-
     virtual void clearToolData() {}
     virtual void resetToDefault() {}
-
-    static QPixmap canvasCursor(float brushWidth, float brushFeather, bool useFeather, float scalingFac, int windowWidth);
-    QPixmap quickSizeCursor(qreal scalingFac);
-    static bool isAdjusting() { return msIsAdjusting; }
 
     /** Check if the tool is active.
      *
@@ -133,9 +125,14 @@ public:
     virtual void setPathDotColorType(const DotColorType dotColorType);
     virtual void resetCameraPath();
 
-    virtual void paint(QPainter& painter) { Q_UNUSED(painter) };
+    virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 
-    virtual bool leavingThisTool() { return true; }
+    /// Will clean up `active` connections
+    virtual bool leavingThisTool();
+
+    /// Setup `active` connections here that should only emit while tool is active
+    /// `leavingThisTool` will handle the cleanup of `active` connections
+    virtual bool enteringThisTool() { return true; }
 
     Properties properties;
 
@@ -162,15 +159,10 @@ protected:
 
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
-
-    QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
+    QList<QMetaObject::Connection> mActiveConnections;
 
 private:
     StrokeManager* mStrokeManager = nullptr;
-    qreal mAdjustmentStep = 0.0f;
-
-    static bool msIsAdjusting;
-    static qreal msOriginalPropertyValue;  // start from previous value (width, or feather ...)
 };
 
 #endif // BASETOOL_H
