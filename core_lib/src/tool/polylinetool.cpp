@@ -123,7 +123,7 @@ void PolylineTool::clearToolData()
 
 void PolylineTool::pointerPressEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerPressEvent(event);
+    mInterpolator.pointerPressEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -156,7 +156,7 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
 
 void PolylineTool::pointerMoveEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerMoveEvent(event);
+    mInterpolator.pointerMoveEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -172,7 +172,7 @@ void PolylineTool::pointerMoveEvent(PointerEvent* event)
 
 void PolylineTool::pointerReleaseEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerReleaseEvent(event);
+    mInterpolator.pointerReleaseEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -182,7 +182,7 @@ void PolylineTool::pointerReleaseEvent(PointerEvent* event)
 
 void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerPressEvent(event);
+    mInterpolator.pointerPressEvent(event);
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
 

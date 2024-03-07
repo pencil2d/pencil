@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "basetool.h"
 #include "pointerevent.h"
 #include "preferencesdef.h"
-#include "strokemanager.h"
+#include "strokeinterpolator.h"
 
 #include "canvascursorpainter.h"
 
@@ -51,7 +51,7 @@ public:
     static const qreal WIDTH_MAX;
 
     void loadSettings() override;
-    bool isActive() const override { return mStrokeManager.isActive(); };
+    bool isActive() const override { return mInterpolator.isActive(); };
 
     bool keyPressEvent(QKeyEvent* event) override;
     void pointerPressEvent(PointerEvent* event) override;
@@ -108,7 +108,7 @@ protected:
 
     CanvasCursorPainter mCanvasCursorPainter;
 
-    StrokeManager mStrokeManager;
+    StrokeInterpolator mInterpolator;
 };
 
 #endif // STROKETOOL_H

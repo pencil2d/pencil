@@ -15,8 +15,8 @@ GNU General Public License for more details.
 
 */
 
-#ifndef STROKEMANAGER_H
-#define STROKEMANAGER_H
+#ifndef STROKEINTERPOLATOR_H
+#define STROKEINTERPOLATOR_H
 
 #include <QQueue>
 #include <QPointF>
@@ -26,10 +26,10 @@ GNU General Public License for more details.
 
 class PointerEvent;
 
-class StrokeManager : public QObject
+class StrokeInterpolator : public QObject
 {
 public:
-    StrokeManager();
+    StrokeInterpolator();
 
     void pointerPressEvent(PointerEvent* event);
     void pointerMoveEvent(PointerEvent* event);
@@ -80,4 +80,4 @@ private:
     int     mStabilizerLevel = 0;
 };
 
-#endif // STROKEMANAGER_H
+#endif // STROKEINTERPOLATOR_H

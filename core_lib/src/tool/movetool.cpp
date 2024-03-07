@@ -25,7 +25,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "toolmanager.h"
 #include "viewmanager.h"
-#include "strokemanager.h"
+#include "strokeinterpolator.h"
 #include "selectionmanager.h"
 #include "overlaymanager.h"
 #include "scribblearea.h"

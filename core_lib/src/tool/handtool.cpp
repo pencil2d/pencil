@@ -18,14 +18,13 @@ GNU General Public License for more details.
 #include "handtool.h"
 
 #include <QtMath>
-#include <QPixmap>
 #include <QVector2D>
 #include <pointerevent.h>
 
 #include "layer.h"
 #include "layercamera.h"
 #include "editor.h"
-#include "strokemanager.h"
+#include "strokeinterpolator.h"
 #include "viewmanager.h"
 #include "scribblearea.h"
 

@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "blitrect.h"
 #include "scribblearea.h"
-#include "strokemanager.h"
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "layervector.h"
@@ -151,7 +150,7 @@ QCursor EraserTool::cursor()
 
 void EraserTool::pointerPressEvent(PointerEvent *event)
 {
-    mStrokeManager.pointerPressEvent(event);
+    mInterpolator.pointerPressEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -165,18 +164,18 @@ void EraserTool::pointerPressEvent(PointerEvent *event)
 
 void EraserTool::pointerMoveEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerMoveEvent(event);
+    mInterpolator.pointerMoveEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
 
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
-        mCurrentPressure = mStrokeManager.getPressure();
+        mCurrentPressure = mInterpolator.getPressure();
         updateStrokes();
-        if (properties.stabilizerLevel != mStrokeManager.getStabilizerLevel())
+        if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
         {
-            mStrokeManager.setStabilizerLevel(properties.stabilizerLevel);
+            mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
         }
     }
 
@@ -185,7 +184,7 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
 
 void EraserTool::pointerReleaseEvent(PointerEvent *event)
 {
-    mStrokeManager.pointerReleaseEvent(event);
+    mInterpolator.pointerReleaseEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -235,7 +234,7 @@ void EraserTool::paintAt(QPointF point)
 void EraserTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = mStrokeManager.interpolateStroke();
+    QList<QPointF> p = mInterpolator.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -280,7 +279,7 @@ void EraserTool::drawStroke()
         mCurrentWidth = properties.width;
         if (properties.pressure)
         {
-            mCurrentWidth = (mCurrentWidth + (mStrokeManager.getPressure() * mCurrentWidth)) * 0.5;
+            mCurrentWidth = (mCurrentWidth + (mInterpolator.getPressure() * mCurrentWidth)) * 0.5;
         }
         qreal brushWidth = mCurrentWidth;
 

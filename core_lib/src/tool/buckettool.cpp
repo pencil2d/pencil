@@ -27,7 +27,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layermanager.h"
 #include "colormanager.h"
-#include "strokemanager.h"
 #include "viewmanager.h"
 #include "vectorimage.h"
 #include "editor.h"
@@ -167,7 +166,7 @@ void BucketTool::setFillReferenceMode(int referenceMode)
 
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerPressEvent(event);
+    mInterpolator.pointerPressEvent(event);
     startStroke(event->inputType());
 
     Layer* targetLayer = mEditor->layers()->currentLayer();
@@ -190,7 +189,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerMoveEvent(event);
+    mInterpolator.pointerMoveEvent(event);
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         Layer* layer = mEditor->layers()->currentLayer();
@@ -208,7 +207,7 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
 
 void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerReleaseEvent(event);
+    mInterpolator.pointerReleaseEvent(event);
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = editor()->layers()->currentLayer();
@@ -276,12 +275,12 @@ void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
 
-    if (properties.stabilizerLevel != mStrokeManager.getStabilizerLevel())
+    if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
     {
-        mStrokeManager.setStabilizerLevel(properties.stabilizerLevel);
+        mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
     }
 
-    QList<QPointF> p = mStrokeManager.interpolateStroke();
+    QList<QPointF> p = mInterpolator.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

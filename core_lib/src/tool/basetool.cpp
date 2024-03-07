@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "viewmanager.h"
 #include "scribblearea.h"
-#include "strokemanager.h"
+#include "strokeinterpolator.h"
 #include "pointerevent.h"
 
 QString BaseTool::TypeName(ToolType type)

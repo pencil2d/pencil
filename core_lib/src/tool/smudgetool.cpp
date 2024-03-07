@@ -138,7 +138,7 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
 
 void SmudgeTool::pointerPressEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerPressEvent(event);
+    mInterpolator.pointerPressEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -196,7 +196,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
 
 void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerMoveEvent(event);
+    mInterpolator.pointerMoveEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -257,7 +257,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 {
-    mStrokeManager.pointerReleaseEvent(event);
+    mInterpolator.pointerReleaseEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -309,7 +309,7 @@ void SmudgeTool::drawStroke()
     if (sourceImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     BitmapImage targetImage = sourceImage->copy();
     StrokeTool::drawStroke();
-    QList<QPointF> p = mStrokeManager.interpolateStroke();
+    QList<QPointF> p = mInterpolator.interpolateStroke();
 
     for (int i = 0; i < p.size(); i++)
     {
