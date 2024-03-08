@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "pointerevent.h"
 #include "editor.h"
 #include "toolmanager.h"
-#include "viewmanager.h"
 #include "strokeinterpolator.h"
 #include "selectionmanager.h"
 #include "overlaymanager.h"
@@ -101,19 +100,18 @@ void MoveTool::pointerPressEvent(PointerEvent* event)
     Layer* currentLayer = currentPaintableLayer();
     if (currentLayer == nullptr) return;
 
-    const QPointF currentPoint = mEditor->view()->mapScreenToCanvas(event->posF());
     if (mEditor->select()->somethingSelected())
     {
-        beginInteraction(currentPoint, event->modifiers(), currentLayer);
+        beginInteraction(event->canvasPos(), event->modifiers(), currentLayer);
     }
     else if (mEditor->overlays()->anyOverlayEnabled())
     {
         LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
         Q_ASSERT(layerCam);
 
-        mPerspMode = mEditor->overlays()->getMoveModeForPoint(currentPoint, layerCam->getViewAtFrame(mEditor->currentFrame()));
+        mPerspMode = mEditor->overlays()->getMoveModeForPoint(event->canvasPos(), layerCam->getViewAtFrame(mEditor->currentFrame()));
         mEditor->overlays()->setMoveMode(mPerspMode);
-        QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(currentPoint).toPoint();
+        QPoint mapped = layerCam->getViewAtFrame(mEditor->currentFrame()).map(event->canvasPos()).toPoint();
         mEditor->overlays()->updatePerspective(mapped);
     }
 
@@ -125,38 +123,37 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
     Layer* currentLayer = currentPaintableLayer();
     if (currentLayer == nullptr) return;
 
-    QPointF currentPoint = mEditor->view()->mapScreenToCanvas(event->posF());
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
-        transformSelection(currentPoint, event->modifiers());
+        transformSelection(event->canvasPos(), event->modifiers());
 
         if (mEditor->overlays()->anyOverlayEnabled())
         {
             LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
             Q_ASSERT(layerCam);
-            mEditor->overlays()->updatePerspective(layerCam->getViewAtFrame(mEditor->currentFrame()).map(currentPoint));
+            mEditor->overlays()->updatePerspective(layerCam->getViewAtFrame(mEditor->currentFrame()).map(event->canvasPos()));
         }
         if (mEditor->select()->somethingSelected())
         {
-            transformSelection(currentPoint, event->modifiers());
+            transformSelection(event->canvasPos(), event->modifiers());
         }
     }
     else
     {
         // the user is moving the mouse without pressing it
         // update cursor to reflect selection corner interaction
-        mEditor->select()->setMoveModeForAnchorInRange(currentPoint);
+        mEditor->select()->setMoveModeForAnchorInRange(event->canvasPos());
         if (mEditor->overlays()->anyOverlayEnabled())
         {
             LayerCamera *layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
             Q_ASSERT(layerCam);
-            mPerspMode = mEditor->overlays()->getMoveModeForPoint(currentPoint, layerCam->getViewAtFrame(mEditor->currentFrame()));
+            mPerspMode = mEditor->overlays()->getMoveModeForPoint(event->canvasPos(), layerCam->getViewAtFrame(mEditor->currentFrame()));
         }
         mScribbleArea->updateToolCursor();
 
         if (currentLayer->type() == Layer::VECTOR)
         {
-            storeClosestVectorCurve(currentPoint, currentLayer);
+            storeClosestVectorCurve(event->canvasPos(), currentLayer);
         }
     }
     mEditor->updateFrame();

@@ -55,10 +55,10 @@ void StrokeInterpolator::pointerPressEvent(PointerEvent* event)
     reset();
     if (!(event->button() == Qt::NoButton)) // if the user is pressing the left/right button
     {
-        mCurrentPressPixel = event->posF();
+        mCurrentPressPixel = event->viewportPos();
     }
 
-    mLastPixel = mCurrentPixel = event->posF();
+    mLastPixel = mCurrentPixel = event->viewportPos();
 
     mStrokeStarted = true;
     setPressure(event->pressure());
@@ -71,13 +71,13 @@ void StrokeInterpolator::pointerMoveEvent(PointerEvent* event)
     // only applied to drawing tools.
     if (mStabilizerLevel != -1)
     {
-        smoothMousePos(event->posF());
+        smoothMousePos(event->viewportPos());
     }
     else
     {
         // No smoothing
         mLastPixel = mCurrentPixel;
-        mCurrentPixel = event->posF();
+        mCurrentPixel = event->viewportPos();
         mLastInterpolated = mCurrentPixel;
     }
     if(event->isTabletEvent())

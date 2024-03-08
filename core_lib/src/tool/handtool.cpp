@@ -66,8 +66,8 @@ QCursor HandTool::cursor()
 
 void HandTool::pointerPressEvent(PointerEvent* event)
 {
-    mLastPixel = event->posF();
-    mStartPoint = mEditor->view()->mapScreenToCanvas(mLastPixel);
+    mLastPixel = event->viewportPos();
+    mStartPoint = event->canvasPos();
     mIsHeld = true;
 
     mScribbleArea->updateToolCursor();
@@ -80,8 +80,8 @@ void HandTool::pointerMoveEvent(PointerEvent* event)
         return;
     }
 
-    transformView(event->modifiers(), event->posF(), event->buttons());
-    mLastPixel = event->posF();
+    transformView(event->modifiers(), event->viewportPos(), event->buttons());
+    mLastPixel = event->viewportPos();
 }
 
 void HandTool::pointerReleaseEvent(PointerEvent* event)

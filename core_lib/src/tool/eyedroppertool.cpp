@@ -27,7 +27,6 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layerbitmap.h"
 #include "colormanager.h"
-#include "viewmanager.h"
 #include "object.h"
 #include "editor.h"
 #include "layermanager.h"
@@ -88,7 +87,7 @@ void EyedropperTool::pointerMoveEvent(PointerEvent* event)
 
     if (layer->type() == Layer::BITMAP)
     {
-        QColor pickedColor = getBitmapColor(static_cast<LayerBitmap*>(layer), mEditor->view()->mapScreenToCanvas(event->posF()));
+        QColor pickedColor = getBitmapColor(static_cast<LayerBitmap*>(layer), event->canvasPos());
         if (pickedColor.isValid())
         {
             mScribbleArea->setCursor(cursor(pickedColor));
@@ -100,7 +99,7 @@ void EyedropperTool::pointerMoveEvent(PointerEvent* event)
     }
     if (layer->type() == Layer::VECTOR)
     {
-        int pickedColor = getVectorColor(static_cast<LayerVector*>(layer), mEditor->view()->mapScreenToCanvas(event->posF()));
+        int pickedColor = getVectorColor(static_cast<LayerVector*>(layer), event->canvasPos());
         if (pickedColor >= 0)
         {
             mScribbleArea->setCursor(cursor(mEditor->object()->getColor(pickedColor).color));
@@ -116,7 +115,7 @@ void EyedropperTool::pointerReleaseEvent(PointerEvent* event)
 {
     if (event->button() == Qt::LeftButton)
     {
-        updateFrontColor(mEditor->view()->mapScreenToCanvas(event->posF()));
+        updateFrontColor(event->canvasPos());
 
         // reset cursor
         mScribbleArea->setCursor(cursor());

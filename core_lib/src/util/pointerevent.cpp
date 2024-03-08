@@ -1,34 +1,27 @@
 #include "pointerevent.h"
 
-PointerEvent::PointerEvent(QMouseEvent* event)
+PointerEvent::PointerEvent(QMouseEvent* event, const QPointF& canvasPos)
 {
     mMouseEvent = event;
+    mCanvasPos = canvasPos;
 }
 
-PointerEvent::PointerEvent(QTabletEvent* event)
+PointerEvent::PointerEvent(QTabletEvent* event, const QPointF& canvasPos)
 {
     mTabletEvent = event;
+    mCanvasPos = canvasPos;
 }
 
 PointerEvent::~PointerEvent()
 {
 }
 
-QPoint PointerEvent::pos() const
+QPointF PointerEvent::canvasPos() const
 {
-    if (mMouseEvent)
-    {
-        return mMouseEvent->pos();
-    }
-    else if (mTabletEvent)
-    {
-        return mTabletEvent->pos();
-    }
-    Q_ASSERT(false);
-    return QPoint();
+    return mCanvasPos;
 }
 
-QPointF PointerEvent::posF() const
+QPointF PointerEvent::viewportPos() const
 {
     if (mMouseEvent)
     {

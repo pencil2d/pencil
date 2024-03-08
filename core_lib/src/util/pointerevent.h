@@ -21,19 +21,20 @@ public:
         Unmapped
     };
 
-    PointerEvent(QMouseEvent* event);
-    PointerEvent(QTabletEvent* event);
+    PointerEvent(QMouseEvent* event, const QPointF& canvasPos);
+    PointerEvent(QTabletEvent* event, const QPointF& canvasPos);
     ~PointerEvent();
 
     /**
-     * Returns QPoint of the device */
-    QPoint pos() const;
+     * Returns the QPointF of the device, in canvas coordinates
+     */
+    QPointF canvasPos() const;
 
     /**
-     * Returns the QPointF of the device
+     * Returns the QPointF of the device, in viewport coordinates
      * Returns pos() if used on mouse event
      */
-    QPointF posF() const;
+    QPointF viewportPos() const;
 
     /**
      * Returns a value between 0 and 1 for tablet events,
@@ -91,6 +92,7 @@ public:
 private:
     QTabletEvent* mTabletEvent = nullptr;
     QMouseEvent* mMouseEvent = nullptr;
+    QPointF mCanvasPos;
 };
 
 #endif // POINTEREVENT_H

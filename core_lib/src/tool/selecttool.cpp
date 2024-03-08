@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 #include "selectionmanager.h"
-#include "viewmanager.h"
 
 SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
 {
@@ -126,7 +125,7 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     if (event->button() != Qt::LeftButton) { return; }
     auto selectMan = mEditor->select();
 
-    mPressPoint = mEditor->view()->mapScreenToCanvas(event->posF());
+    mPressPoint = event->canvasPos();
     selectMan->setMoveModeForAnchorInRange(mPressPoint);
     mMoveMode = selectMan->getMoveMode();
     mStartMoveMode = mMoveMode;
@@ -143,14 +142,13 @@ void SelectTool::pointerMoveEvent(PointerEvent* event)
 
     if (!selectMan->somethingSelected()) { return; }
 
-    const QPointF currentPoint = mEditor->view()->mapScreenToCanvas(event->posF());
-    selectMan->setMoveModeForAnchorInRange(currentPoint);
+    selectMan->setMoveModeForAnchorInRange(event->canvasPos());
     mMoveMode = selectMan->getMoveMode();
     mScribbleArea->updateToolCursor();
 
     if (mScribbleArea->isPointerInUse())
     {
-        controlOffsetOrigin(currentPoint, mAnchorOriginPoint);
+        controlOffsetOrigin(event->canvasPos(), mAnchorOriginPoint);
 
         if (currentLayer->type() == Layer::VECTOR)
         {
@@ -173,12 +171,11 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     // if there's a small very small distance between current and last point
     // discard the selection...
     // TODO: improve by adding a timer to check if the user is deliberately selecting
-    const QPointF &pos = mEditor->view()->mapScreenToCanvas(event->posF());
-    if (QLineF(mAnchorOriginPoint, pos).length() < 5.0)
+    if (QLineF(mAnchorOriginPoint, event->canvasPos()).length() < 5.0)
     {
         mEditor->deselectAll();
     }
-    if (maybeDeselect(pos))
+    if (maybeDeselect(event->canvasPos()))
     {
         mEditor->deselectAll();
     }
