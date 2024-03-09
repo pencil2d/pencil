@@ -84,7 +84,7 @@ HEADERS +=  \
     src/tool/polylinetool.h \
     src/tool/selecttool.h \
     src/tool/smudgetool.h \
-    src/tool/strokemanager.h \
+    src/tool/strokeinterpolator.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
     src/util/cameraeasingtype.h \
@@ -169,7 +169,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tool/polylinetool.cpp \
     src/tool/selecttool.cpp \
     src/tool/smudgetool.cpp \
-    src/tool/strokemanager.cpp \
+    src/tool/strokeinterpolator.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp \
     src/util/cameraeasingtype.cpp \

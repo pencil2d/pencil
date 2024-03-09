@@ -22,7 +22,6 @@ GNU General Public License for more details.
 
 #include "layermanager.h"
 #include "colormanager.h"
-#include "strokemanager.h"
 #include "viewmanager.h"
 #include "preferencemanager.h"
 #include "selectionmanager.h"
@@ -146,6 +145,7 @@ QCursor PencilTool::cursor()
 
 void PencilTool::pointerPressEvent(PointerEvent *event)
 {
+    mInterpolator.pointerPressEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -166,22 +166,26 @@ void PencilTool::pointerPressEvent(PointerEvent *event)
 
 void PencilTool::pointerMoveEvent(PointerEvent* event)
 {
+    mInterpolator.pointerMoveEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
 
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
-        mCurrentPressure = strokeManager()->getPressure();
+        mCurrentPressure = mInterpolator.getPressure();
         drawStroke();
-        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
-            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
+        if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
+        {
+            mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
+        }
     }
     StrokeTool::pointerMoveEvent(event);
 }
 
 void PencilTool::pointerReleaseEvent(PointerEvent *event)
 {
+    mInterpolator.pointerReleaseEvent(event);
     if (handleQuickSizing(event)) {
         return;
     }
@@ -233,7 +237,7 @@ void PencilTool::paintAt(QPointF point)
 void PencilTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mInterpolator.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

@@ -19,7 +19,6 @@ GNU General Public License for more details.
 
 #include <QKeyEvent>
 #include "scribblearea.h"
-#include "strokemanager.h"
 #include "viewmanager.h"
 #include "preferencemanager.h"
 #include "editor.h"
@@ -91,6 +90,36 @@ void StrokeTool::onViewUpdated()
     updateCanvasCursor();
 }
 
+QPointF StrokeTool::getCurrentPressPixel() const
+{
+    return mInterpolator.getCurrentPressPixel();
+}
+
+QPointF StrokeTool::getCurrentPressPoint() const
+{
+    return mEditor->view()->mapScreenToCanvas(mInterpolator.getCurrentPressPixel());
+}
+
+QPointF StrokeTool::getCurrentPixel() const
+{
+    return mInterpolator.getCurrentPixel();
+}
+
+QPointF StrokeTool::getCurrentPoint() const
+{
+    return mEditor->view()->mapScreenToCanvas(getCurrentPixel());
+}
+
+QPointF StrokeTool::getLastPixel() const
+{
+    return mInterpolator.getLastPixel();
+}
+
+QPointF StrokeTool::getLastPoint() const
+{
+    return mEditor->view()->mapScreenToCanvas(getLastPixel());
+}
+
 void StrokeTool::startStroke(PointerEvent::InputType inputType)
 {
     if (emptyFrameActionEnabled())
@@ -104,11 +133,11 @@ void StrokeTool::startStroke(PointerEvent::InputType inputType)
     mStrokePoints.clear();
 
     //Experimental
-    QPointF startStrokes = strokeManager()->interpolateStart(mLastPixel);
+    QPointF startStrokes = mInterpolator.interpolateStart(mLastPixel);
     mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
 
     mStrokePressures.clear();
-    mStrokePressures << strokeManager()->getPressure();
+    mStrokePressures << mInterpolator.getPressure();
 
     mCurrentInputType = inputType;
 
@@ -141,8 +170,8 @@ bool StrokeTool::emptyFrameActionEnabled()
 
 void StrokeTool::endStroke()
 {
-    strokeManager()->interpolateEnd();
-    mStrokePressures << strokeManager()->getPressure();
+    mInterpolator.interpolateEnd();
+    mStrokePressures << mInterpolator.getPressure();
     mStrokePoints.clear();
     mStrokePressures.clear();
 
@@ -158,9 +187,9 @@ void StrokeTool::drawStroke()
     if (pixel != mLastPixel || !mFirstDraw)
     {
         // get last pixel before interpolation initializes
-        QPointF startStrokes = strokeManager()->interpolateStart(getLastPixel());
+        QPointF startStrokes = mInterpolator.interpolateStart(getLastPixel());
         mStrokePoints << mEditor->view()->mapScreenToCanvas(startStrokes);
-        mStrokePressures << strokeManager()->getPressure();
+        mStrokePressures << mInterpolator.getPressure();
     }
     else
     {

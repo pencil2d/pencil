@@ -45,7 +45,6 @@ QCursor SelectTool::cursor()
     // Don't update cursor while we're moving the selection
     if (mScribbleArea->isPointerInUse()) { return QCursor(mCursorPixmap); }
 
-    mEditor->select()->setMoveModeForAnchorInRange(getCurrentPoint());
     MoveMode mode = mEditor->select()->getMoveMode();
 
     mCursorPixmap.fill(QColor(255, 255, 255, 0));
@@ -94,7 +93,7 @@ void SelectTool::setShowSelectionInfo(const bool b)
     settings.setValue("ShowSelectionInfo", b);
 }
 
-void SelectTool::beginSelection(Layer* currentLayer)
+void SelectTool::beginSelection(Layer* currentLayer, const QPointF& pos)
 {
     auto selectMan = mEditor->select();
 
@@ -111,8 +110,8 @@ void SelectTool::beginSelection(Layer* currentLayer)
     }
     else
     {
-        selectMan->setSelection(QRectF(getCurrentPoint().x(), getCurrentPoint().y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
-        mAnchorOriginPoint = getLastPoint();
+        selectMan->setSelection(QRectF(pos.x(), pos.y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
+        mAnchorOriginPoint = pos;
     }
 
     mScribbleArea->updateFrame();
@@ -126,14 +125,15 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     if (event->button() != Qt::LeftButton) { return; }
     auto selectMan = mEditor->select();
 
-    selectMan->setMoveModeForAnchorInRange(getCurrentPoint());
+    mPressPoint = event->canvasPos();
+    selectMan->setMoveModeForAnchorInRange(mPressPoint);
     mMoveMode = selectMan->getMoveMode();
     mStartMoveMode = mMoveMode;
 
-    beginSelection(currentLayer);
+    beginSelection(currentLayer, mPressPoint);
 }
 
-void SelectTool::pointerMoveEvent(PointerEvent*)
+void SelectTool::pointerMoveEvent(PointerEvent* event)
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
     if (currentLayer == nullptr) { return; }
@@ -142,13 +142,13 @@ void SelectTool::pointerMoveEvent(PointerEvent*)
 
     if (!selectMan->somethingSelected()) { return; }
 
-    selectMan->setMoveModeForAnchorInRange(getCurrentPoint());
+    selectMan->setMoveModeForAnchorInRange(event->canvasPos());
     mMoveMode = selectMan->getMoveMode();
     mScribbleArea->updateToolCursor();
 
     if (mScribbleArea->isPointerInUse())
     {
-        controlOffsetOrigin(getCurrentPoint(), mAnchorOriginPoint);
+        controlOffsetOrigin(event->canvasPos(), mAnchorOriginPoint);
 
         if (currentLayer->type() == Layer::VECTOR)
         {
@@ -171,11 +171,11 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     // if there's a small very small distance between current and last point
     // discard the selection...
     // TODO: improve by adding a timer to check if the user is deliberately selecting
-    if (QLineF(mAnchorOriginPoint, getCurrentPoint()).length() < 5.0)
+    if (QLineF(mAnchorOriginPoint, event->canvasPos()).length() < 5.0)
     {
         mEditor->deselectAll();
     }
-    if (maybeDeselect())
+    if (maybeDeselect(event->canvasPos()))
     {
         mEditor->deselectAll();
     }
@@ -191,9 +191,9 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     mScribbleArea->updateFrame();
 }
 
-bool SelectTool::maybeDeselect()
+bool SelectTool::maybeDeselect(const QPointF& pos)
 {
-    return (!isSelectionPointValid() && mEditor->select()->getMoveMode() == MoveMode::NONE);
+    return (!isSelectionPointValid(pos) && mEditor->select()->getMoveMode() == MoveMode::NONE);
 }
 
 /**
@@ -202,11 +202,11 @@ bool SelectTool::maybeDeselect()
  */
 void SelectTool::keepSelection(Layer* currentLayer)
 {
-    auto selectMan = mEditor->select();
     if (currentLayer->type() == Layer::VECTOR)
     {
         VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         if (vectorImage == nullptr) { return; }
+        auto selectMan = mEditor->select();
         selectMan->setSelection(vectorImage->getSelectionRect(), false);
     }
 }
@@ -217,7 +217,7 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
     if (mStartMoveMode != MoveMode::NONE) {
         QRectF rect = mSelectionRect;
 
-        QPointF offset = offsetFromPressPos();
+        QPointF offset = offsetFromPressPos(currentPoint);
         if (mStartMoveMode == MoveMode::TOPLEFT) {
             rect.adjust(offset.x(), offset.y(), 0, 0);
         } else if (mStartMoveMode == MoveMode::TOPRIGHT) {
@@ -300,7 +300,7 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
     return BaseTool::keyPressEvent(event);
 }
 
-QPointF SelectTool::offsetFromPressPos()
+QPointF SelectTool::offsetFromPressPos(const QPointF& pos)
 {
-    return getCurrentPoint() - getCurrentPressPoint();
+    return pos - mPressPoint;
 }

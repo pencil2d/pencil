@@ -18,8 +18,6 @@ GNU General Public License for more details.
 
 #include <QPixmap>
 #include <QPainter>
-#include <QPointer>
-#include <QtMath>
 #include <QSettings>
 #include "pointerevent.h"
 
@@ -29,7 +27,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layermanager.h"
 #include "colormanager.h"
-#include "strokemanager.h"
 #include "viewmanager.h"
 #include "vectorimage.h"
 #include "editor.h"
@@ -169,6 +166,7 @@ void BucketTool::setFillReferenceMode(int referenceMode)
 
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
+    mInterpolator.pointerPressEvent(event);
     startStroke(event->inputType());
 
     Layer* targetLayer = mEditor->layers()->currentLayer();
@@ -183,14 +181,15 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
                                  getCurrentPoint(),
                                  properties);
 
-    // Because we can change layer to on the fly but we do not act reactively on it
-    // it's neccesary to invalidate layer cache on press event, otherwise the cache
-    // will be drawn until a move event has been initiated.
+    // Because we can change layer to on the fly, but we do not act reactively
+    // on it, it's necessary to invalidate layer cache on press event.
+    // Otherwise, the cache will be drawn until a move event has been initiated.
     mScribbleArea->invalidatePainterCaches();
 }
 
 void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
+    mInterpolator.pointerMoveEvent(event);
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         Layer* layer = mEditor->layers()->currentLayer();
@@ -208,6 +207,7 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
 
 void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
+    mInterpolator.pointerReleaseEvent(event);
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = editor()->layers()->currentLayer();
@@ -275,12 +275,12 @@ void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
 
-    if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
+    if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
     {
-        strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
+        mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
     }
 
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mInterpolator.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

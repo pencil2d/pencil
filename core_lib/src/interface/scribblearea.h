@@ -36,7 +36,6 @@ GNU General Public License for more details.
 #include "canvaspainter.h"
 #include "overlaypainter.h"
 #include "preferencemanager.h"
-#include "strokemanager.h"
 #include "selectionpainter.h"
 #include "camerapainter.h"
 #include "tiledbuffer.h"
@@ -63,7 +62,6 @@ public:
 
     bool init();
     void setEditor(Editor* e) { mEditor = e; }
-    StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
     Editor* editor() const { return mEditor; }
 
     void deleteSelection();
@@ -217,8 +215,6 @@ private:
     BitmapImage* currentBitmapImage(Layer* layer) const;
     VectorImage* currentVectorImage(Layer* layer) const;
 
-    std::unique_ptr<StrokeManager> mStrokeManager;
-
     Editor* mEditor = nullptr;
 
     LayerVisibility mLayerVisibility = LayerVisibility::ALL;
@@ -246,6 +242,7 @@ private:
     // Microsoft suggests that a double click action should be no more than 500 ms
     const int DOUBLE_CLICK_THRESHOLD = 500;
     QTimer* mDoubleClickTimer = nullptr;
+    QPointF mTabletPressPos;
     int mTabletReleaseMillisAgo;
     const int MOUSE_FILTER_THRESHOLD = 200;
 

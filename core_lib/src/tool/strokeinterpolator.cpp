@@ -18,29 +18,23 @@
  *   59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.             *
  ***************************************************************************/
 
-#include "strokemanager.h"
+#include "strokeinterpolator.h"
 
-#include <cmath>
-#include <limits>
-#include <QDebug>
 #include <QLineF>
 #include <QPainterPath>
 #include "object.h"
 #include "pointerevent.h"
 
-
-StrokeManager::StrokeManager()
+StrokeInterpolator::StrokeInterpolator()
 {
-    m_timeshot = 0;
-
     mTabletInUse = false;
     mTabletPressure = 0;
 
     reset();
-    connect(&timer, &QTimer::timeout, this, &StrokeManager::interpolatePollAndPaint);
+    connect(&timer, &QTimer::timeout, this, &StrokeInterpolator::interpolatePollAndPaint);
 }
 
-void StrokeManager::reset()
+void StrokeInterpolator::reset()
 {
     mStrokeStarted = false;
     pressureQueue.clear();
@@ -51,39 +45,39 @@ void StrokeManager::reset()
     mStabilizerLevel = -1;
 }
 
-void StrokeManager::setPressure(float pressure)
+void StrokeInterpolator::setPressure(float pressure)
 {
     mTabletPressure = pressure;
 }
 
-void StrokeManager::pointerPressEvent(PointerEvent* event)
+void StrokeInterpolator::pointerPressEvent(PointerEvent* event)
 {
     reset();
     if (!(event->button() == Qt::NoButton)) // if the user is pressing the left/right button
     {
-        //qDebug() << "press";
-        mLastPressPixel = mCurrentPressPixel;
-        mCurrentPressPixel = event->posF();
+        mCurrentPressPixel = event->viewportPos();
     }
 
-    mLastPixel = mCurrentPixel = event->posF();
+    mLastPixel = mCurrentPixel = event->viewportPos();
 
     mStrokeStarted = true;
     setPressure(event->pressure());
+
+    mTabletInUse = mTabletInUse || event->isTabletEvent();
 }
 
-void StrokeManager::pointerMoveEvent(PointerEvent* event)
+void StrokeInterpolator::pointerMoveEvent(PointerEvent* event)
 {
     // only applied to drawing tools.
     if (mStabilizerLevel != -1)
     {
-        smoothMousePos(event->posF());
+        smoothMousePos(event->viewportPos());
     }
     else
     {
         // No smoothing
         mLastPixel = mCurrentPixel;
-        mCurrentPixel = event->posF();
+        mCurrentPixel = event->viewportPos();
         mLastInterpolated = mCurrentPixel;
     }
     if(event->isTabletEvent())
@@ -92,7 +86,7 @@ void StrokeManager::pointerMoveEvent(PointerEvent* event)
     }
 }
 
-void StrokeManager::pointerReleaseEvent(PointerEvent* event)
+void StrokeInterpolator::pointerReleaseEvent(PointerEvent* event)
 {
     // flush out stroke
     if (mStrokeStarted)
@@ -101,14 +95,15 @@ void StrokeManager::pointerReleaseEvent(PointerEvent* event)
     }
 
     mStrokeStarted = false;
+    mTabletInUse = mTabletInUse && !event->isTabletEvent();
 }
 
-void StrokeManager::setStabilizerLevel(int level)
+void StrokeInterpolator::setStabilizerLevel(int level)
 {
     mStabilizerLevel = level;
 }
 
-void StrokeManager::smoothMousePos(QPointF pos)
+void StrokeInterpolator::smoothMousePos(QPointF pos)
 {
     // Smooth mouse position before drawing
     QPointF smoothPos;
@@ -144,8 +139,6 @@ void StrokeManager::smoothMousePos(QPointF pos)
         mLastPixel = mLastInterpolated;
     }
 
-    mousePos = pos;
-
     if (!mStrokeStarted)
     {
         return;
@@ -158,7 +151,7 @@ void StrokeManager::smoothMousePos(QPointF pos)
 }
 
 
-QPointF StrokeManager::interpolateStart(QPointF firstPoint)
+QPointF StrokeInterpolator::interpolateStart(QPointF firstPoint)
 {
     if (mStabilizerLevel == StabilizationLevel::SIMPLE)
     {
@@ -166,16 +159,10 @@ QPointF StrokeManager::interpolateStart(QPointF firstPoint)
         strokeQueue.clear();
         pressureQueue.clear();
 
-        mSingleshotTime.start();
-        previousTime = mSingleshotTime.elapsed();
-
         mLastPixel = firstPoint;
     }
     else if (mStabilizerLevel == StabilizationLevel::STRONG)
     {
-        mSingleshotTime.start();
-        previousTime = mSingleshotTime.elapsed();
-
         // Clear queue
         strokeQueue.clear();
         pressureQueue.clear();
@@ -207,7 +194,7 @@ QPointF StrokeManager::interpolateStart(QPointF firstPoint)
     return firstPoint;
 }
 
-void StrokeManager::interpolatePoll()
+void StrokeInterpolator::interpolatePoll()
 {
     // remove oldest stroke
     strokeQueue.dequeue();
@@ -216,7 +203,7 @@ void StrokeManager::interpolatePoll()
     strokeQueue.enqueue(mLastInterpolated);
 }
 
-void StrokeManager::interpolatePollAndPaint()
+void StrokeInterpolator::interpolatePollAndPaint()
 {
     //qDebug() <<"inpol:" << mStabilizerLevel << "strokes"<< strokeQueue;
     if (!strokeQueue.isEmpty())
@@ -226,7 +213,7 @@ void StrokeManager::interpolatePollAndPaint()
     }
 }
 
-QList<QPointF> StrokeManager::interpolateStroke()
+QList<QPointF> StrokeInterpolator::interpolateStroke()
 {
     // is nan initially
     QList<QPointF> result;
@@ -251,7 +238,7 @@ QList<QPointF> StrokeManager::interpolateStroke()
     return result;
 }
 
-QList<QPointF> StrokeManager::noInpolOp(QList<QPointF> points)
+QList<QPointF> StrokeInterpolator::noInpolOp(QList<QPointF> points)
 {
     setPressure(getPressure());
 
@@ -264,9 +251,8 @@ QList<QPointF> StrokeManager::noInpolOp(QList<QPointF> points)
     return points;
 }
 
-QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
+QList<QPointF> StrokeInterpolator::tangentInpolOp(QList<QPointF> points)
 {
-    int time = mSingleshotTime.elapsed();
     static const qreal smoothness = 1.f;
     QLineF line(mLastPixel, mCurrentPixel);
 
@@ -314,12 +300,11 @@ QList<QPointF> StrokeManager::tangentInpolOp(QList<QPointF> points)
         m_previousTangent = newTangent;
     }
 
-    previousTime = time;
     return points;
 }
 
 // Mean sampling interpolation operation
-QList<QPointF> StrokeManager::meanInpolOp(QList<QPointF> points, qreal x, qreal y, qreal pressure)
+QList<QPointF> StrokeInterpolator::meanInpolOp(QList<QPointF> points, qreal x, qreal y, qreal pressure)
 {
     for (int i = 0; i < strokeQueue.size(); i++)
     {
@@ -345,7 +330,7 @@ QList<QPointF> StrokeManager::meanInpolOp(QList<QPointF> points, qreal x, qreal 
     return points;
 }
 
-void StrokeManager::interpolateEnd()
+void StrokeInterpolator::interpolateEnd()
 {
     // Stop timer
     timer.stop();

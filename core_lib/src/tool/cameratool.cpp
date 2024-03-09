@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include "cameratool.h"
 
+#include "object.h"
 #include "editor.h"
 #include "pointerevent.h"
 #include "layermanager.h"
@@ -117,7 +118,7 @@ QCursor CameraTool::cursor()
 
     QImage moveTypeImage;
     QPoint offset = QPoint(6, 6);
-    switch(moveMode())
+    switch(mCamMoveMode)
     {
     case CameraMoveType::TOPLEFT:
     case CameraMoveType::BOTTOMRIGHT:
@@ -160,36 +161,33 @@ QCursor CameraTool::cursor()
     return QCursor(cursorPixmap);
 }
 
-CameraMoveType CameraTool::moveMode()
+void CameraTool::updateMoveMode(const QPointF& pos)
 {
 
     if (mScribbleArea->isPointerInUse()) {
-        // Pointer in use, return previous used mode
-        return mCamMoveMode;
+        // Pointer in use, keep previous used mode
+        return;
     }
 
     Layer* layer = mEditor->layers()->currentLayer();
-    CameraMoveType mode = CameraMoveType::NONE;
+    mCamMoveMode = CameraMoveType::NONE;
     qreal selectionTolerance = mEditor->select()->selectionTolerance();
-    QPointF currentPoint = getCurrentPoint();
 
     Q_ASSERT(layer->type() == Layer::CAMERA);
     LayerCamera* cam = static_cast<LayerCamera*>(layer);
     if (layer->keyExists(mEditor->currentFrame()))
     {
-        mode = getCameraMoveMode(currentPoint,
-                           selectionTolerance);
-        mCamMoveMode = mode;
+        mCamMoveMode = getCameraMoveMode(pos,
+                                         selectionTolerance);
     } else if (properties.cameraShowPath) {
         int keyPos = cam->firstKeyFramePosition();
         while (keyPos <= cam->getMaxKeyFramePosition())
         {
-            mode = getPathMoveMode(cam,
-                                   keyPos,
-                                   currentPoint,
-                                   selectionTolerance);
-            mCamPathMoveMode = mode;
-            if (mode != CameraMoveType::NONE)
+            mCamMoveMode = getPathMoveMode(cam,
+                                           keyPos,
+                                           pos,
+                                           selectionTolerance);
+            if (mCamMoveMode != CameraMoveType::NONE)
             {
                 mDragPathFrame = keyPos;
                 break;
@@ -202,7 +200,6 @@ CameraMoveType CameraTool::moveMode()
             keyPos = cam->getNextKeyFramePosition(keyPos);
         }
     }
-    return mode;
 }
 
 void CameraTool::setShowCameraPath(const bool showCameraPath)
@@ -245,32 +242,32 @@ void CameraTool::resetTransform(CameraFieldOption option)
     emit mEditor->frameModified(mEditor->currentFrame());
 }
 
-void CameraTool::transformCamera(Qt::KeyboardModifiers keyMod)
+void CameraTool::transformCamera(const QPointF& pos, Qt::KeyboardModifiers keyMod)
 {
     Q_ASSERT(editor()->layers()->currentLayer()->type() == Layer::CAMERA);
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
     qreal angleDeg = 0;
     if (mCamMoveMode == CameraMoveType::ROTATION) {
-        angleDeg = getAngleBetween(getCurrentPoint(), mCameraRect.center()) - mStartAngle;
+        angleDeg = getAngleBetween(pos, mCameraRect.center()) - mStartAngle;
         if (keyMod == Qt::ShiftModifier) {
             angleDeg = constrainedRotation(angleDeg, mRotationIncrement);
         }
         mCurrentAngle = angleDeg;
     }
 
-    transformView(layer, mCamMoveMode, getCurrentPoint(), mTransformOffset, -angleDeg, mEditor->currentFrame());
+    transformView(layer, mCamMoveMode, pos, mTransformOffset, -angleDeg, mEditor->currentFrame());
 
     mEditor->updateFrame();
-    mTransformOffset = getCurrentPoint();
+    mTransformOffset = pos;
 }
 
-void CameraTool::transformCameraPath()
+void CameraTool::transformCameraPath(const QPointF& pos)
 {
     Q_ASSERT(editor()->layers()->currentLayer()->type() == Layer::CAMERA);
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
-    layer->updatePathControlPointAtFrame(getCurrentPoint(), mDragPathFrame);
+    layer->updatePathControlPointAtFrame(pos, mDragPathFrame);
     mEditor->updateFrame();
 }
 
@@ -279,27 +276,29 @@ int CameraTool::constrainedRotation(const qreal rotatedAngle, const int rotation
     return qRound(rotatedAngle / rotationIncrement) * rotationIncrement;
 }
 
-void CameraTool::pointerPressEvent(PointerEvent*)
+void CameraTool::pointerPressEvent(PointerEvent* event)
 {
+    updateMoveMode(event->canvasPos());
     updateUIAssists(mEditor->layers()->currentLayer());
 
-    mStartAngle = getAngleBetween(getCurrentPoint(), mCameraRect.center()) - mCurrentAngle;
-    mTransformOffset = getCurrentPoint();
+    mStartAngle = getAngleBetween(event->canvasPos(), mCameraRect.center()) - mCurrentAngle;
+    mTransformOffset = event->canvasPos();
 }
 
 void CameraTool::pointerMoveEvent(PointerEvent* event)
 {
     Layer* currentLayer = mEditor->layers()->currentLayer();
+    updateMoveMode(event->canvasPos());
     updateUIAssists(currentLayer);
 
     if (mScribbleArea->isPointerInUse())   // the user is also pressing the mouse (dragging)
     {
         if (currentLayer->keyExists(mEditor->currentFrame())) {
-            transformCamera(event->modifiers());
+            transformCamera(event->canvasPos(), event->modifiers());
         }
-        else if (mCamPathMoveMode == CameraMoveType::PATH)
+        else if (mCamMoveMode == CameraMoveType::PATH)
         {
-            transformCameraPath();
+            transformCameraPath(event->canvasPos());
         }
     }
     mScribbleArea->updateToolCursor();
@@ -310,14 +309,15 @@ void CameraTool::pointerMoveEvent(PointerEvent* event)
 void CameraTool::pointerReleaseEvent(PointerEvent* event)
 {
     Layer* layer = editor()->layers()->currentLayer();
+    updateMoveMode(event->canvasPos());
     updateUIAssists(layer);
 
     int frame = mEditor->currentFrame();
     if (layer->keyExists(frame)) {
-        transformCamera(event->modifiers());
+        transformCamera(event->canvasPos(), event->modifiers());
         mEditor->view()->forceUpdateViewTransform();
-    } else if (mCamPathMoveMode == CameraMoveType::PATH) {
-        transformCameraPath();
+    } else if (mCamMoveMode == CameraMoveType::PATH) {
+        transformCameraPath(event->canvasPos());
         mEditor->view()->forceUpdateViewTransform();
     }
     emit mEditor->frameModified(frame);

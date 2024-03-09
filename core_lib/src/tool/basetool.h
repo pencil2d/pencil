@@ -33,7 +33,6 @@ class ScribbleArea;
 class QKeyEvent;
 class QMouseEvent;
 class QTabletEvent;
-class StrokeManager;
 class PointerEvent;
 
 class Properties
@@ -101,7 +100,7 @@ public:
      *
      * @return Returns true if the tool is currently active, else returns false.
      */
-    virtual bool isActive();
+    virtual bool isActive() const;
 
     virtual void setWidth(const qreal width);
     virtual void setFeather(const qreal feather);
@@ -136,15 +135,6 @@ public:
 
     Properties properties;
 
-    QPointF getCurrentPressPixel() const;
-    QPointF getCurrentPressPoint() const;
-    QPointF getCurrentPixel() const;
-    QPointF getCurrentPoint() const;
-    QPointF getLastPixel() const;
-    QPointF getLastPoint() const;
-    QPointF getLastPressPixel() const;
-    QPointF getLastPressPoint() const;
-
     bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
 
@@ -152,7 +142,6 @@ signals:
     bool isActiveChanged(ToolType, bool);
 
 protected:
-    StrokeManager* strokeManager() const { return mStrokeManager; }
     Editor* editor() { return mEditor; }
 
     QHash<ToolPropertyType, bool> mPropertyEnabled;
@@ -160,9 +149,6 @@ protected:
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
     QList<QMetaObject::Connection> mActiveConnections;
-
-private:
-    StrokeManager* mStrokeManager = nullptr;
 };
 
 #endif // BASETOOL_H
