@@ -3,6 +3,28 @@
 trap 'echo "::error::Command failed"' ERR
 set -eE
 
+harvest_files() {
+  echo "<?xml version='1.0' encoding='utf-8'?>"
+  echo "<Wix xmlns='http://wixtoolset.org/schemas/v4/wxs'>"
+  echo "  <Fragment>"
+  echo "    <ComponentGroup Id='$1' Directory='INSTALLDIR'>"
+
+  while IFS= read -r filepath; do
+    local subdirectory="$(dirname "${filepath}")"
+    if [ "${subdirectory}" = "." ]; then
+      echo "      <Component>"
+    else
+      echo "      <Component Subdirectory='${subdirectory}'>"
+    fi
+    echo "        <File Source='${filepath}' />"
+    echo "      </Component>"
+  done
+
+  echo "    </ComponentGroup>"
+  echo "  </Fragment>"
+  echo "</Wix>"
+}
+
 create_package_linux() {
   echo "::group::Set up AppImage contents"
   make install INSTALL_ROOT="${PWD}/Pencil2D"
@@ -40,7 +62,7 @@ wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-inte
     ${update_info} \
     -appimage
   local qtsuffix="-qt${INPUT_QT}"
-  local output_name="pencil2d${qtsuffix/-qt5/}-linux-$1-$(date +%F)"
+  local output_name="pencil2d${qtsuffix/-qt5/}-linux-$3"
   mv Pencil2D*.AppImage "$output_name.AppImage"
   mv Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" \
     && sed -i '1,/^$/s/^\(Filename\|URL\): .*$/\1: '"$output_name.AppImage/" "$output_name.AppImage.zsync" \
@@ -84,8 +106,8 @@ create_package_macos() {
   popd >/dev/null
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
-  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-$1-$(date +%F).zip" Pencil2D
-  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-$1-$(date +%F)" > "${GITHUB_OUTPUT}"
+  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-$3.zip" Pencil2D
+  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-$3" > "${GITHUB_OUTPUT}"
 }
 
 create_package_windows() {
@@ -104,19 +126,56 @@ create_package_windows() {
 
   echo "Remove files"
   find \( -name '*.pdb' -o -name '*.ilk' \) -delete
-  echo "::group::Deploy Qt libraries"
-  windeployqt Pencil2D/pencil2d.exe
-  echo "::endgroup::"
+  echo "Deploy Qt libraries"
+  # windeployqt lists some translation files that it doesn't actually copy, and the MSVC redistributable is handled by the bundle, so skip those
+  windeployqt --list relative Pencil2D/pencil2d.exe | grep -v '^translations\\qtbase_' | grep -v '^translations\\qtmultimedia_' | grep -v '^vc_' | harvest_files windeployqt > windeployqt.wxs
   echo "Copy OpenSSL DLLs"
   curl -fsSLO https://download.firedaemon.com/FireDaemon-OpenSSL/openssl-1.1.1w.zip
   "${WINDIR}\\System32\\tar" xf openssl-1.1.1w.zip
-  local xbits="x${platform#win}"
-  local _xbits="-${xbits}"
+  local wordsize="${platform#win}"
+  local xbits="x${wordsize}"
+  local _xbits="-x${wordsize}"
   cp "openssl-1.1\\${xbits/32/86}\\bin\\lib"{ssl,crypto}"-1_1${_xbits/-x32/}.dll" Pencil2D/
+  echo "::group::Create Installer"
+  env -C ../util/installer qmake CONFIG-=debug_and_release CONFIG+=release
+  env -C ../util/installer "PATH=${PATH/\/usr\/bin:/}" nmake
+  env -C Pencil2D find resources/ -type f | harvest_files resources > resources.wxs
+  for i in ../util/installer/translations/pencil2d_*.wxl.xlf; do
+    local basename="$(basename -s .wxl.xlf "$i")"
+    local locale="${basename#*_}"
+    local culture="${locale/_/-}"
+    local lcid="$(pwsh -c "(Get-Culture -Name ${culture}).LCID")"
+    sed "s/Culture=\"en\"/Culture=\"${culture}\"/;s/Language=\"9\"/Language=\"${lcid}\"/" ../util/installer/pencil2d.wxl > "../util/installer/pencil2d_${locale}.wxl"
+    tikal.bat -m -fc ../util/installer/okf_xml_wxl -ie utf-8 -oe utf-8 -sd ../util/installer -od ../util/installer "${i}"
+  done
+  local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%F)"
+  if [ "$IS_RELEASE" = "true" ]; then
+    versiondefines="-d Edition=Release -d Version=$2"
+  fi
+  wix build -pdbtype none -arch "x${wordsize/32/86}" -dcl high -b ../util/installer -b Pencil2D \
+    -d "ProductCode=$(python -c "import uuid; print(str(uuid.uuid5(uuid.NAMESPACE_URL, '-Nhttps://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}#${platform}')).upper())")" \
+    $versiondefines \
+    -out "pencil2d-${platform}-$3.msi" \
+    ../util/installer/pencil2d.wxs windeployqt.wxs resources.wxs
+  wix build -pdbtype none -arch "x${wordsize/32/86}" -dcl high -sw1133 -b ../util/installer -b Pencil2D \
+    -ext WixToolset.Util.wixext -ext WixToolset.Bal.wixext \
+    $versiondefines \
+    -out "pencil2d-${platform}-$3.exe" \
+    ../util/installer/pencil2d.bundle.wxs
+  echo "::endgroup::"
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
-  "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$1-$(date +%F).zip" Pencil2D
-  echo "output-basename=pencil2d${qtsuffix/-qt5/}-${platform}-$1-$(date +%F)" > "${GITHUB_OUTPUT}"
+  "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$3.zip" Pencil2D
+  # This basename pattern deliberately does not include the installer for the Qt 6 build.
+  # Should this ever be changed so that more than one installer is uploaded per workflow run,
+  # absolutely make sure not to break any Windows Installer rules.
+  echo "output-basename=pencil2d${qtsuffix/-qt5/}-${platform}-$3" > "${GITHUB_OUTPUT}"
 }
 
-"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}"
+eval "$(grep '^VERSION =' ../util/common.pri | tr -d '[:blank:]')"
+buildversion="${GITHUB_RUN_NUMBER}-$(date +%F)"
+if [ "$IS_RELEASE" = "true" ]; then
+  buildversion="${VERSION}"
+fi
+
+"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}" "${VERSION}" "${buildversion}"

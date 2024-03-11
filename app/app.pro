@@ -14,6 +14,11 @@ TARGET = pencil2d
 
 RESOURCES += data/app.qrc
 
+MUI_TRANSLATIONS += \
+        translations/mui_de.po
+
+RC_LANGS.de = --lang LANG_GERMAN --sublang SUBLANG_NEUTRAL
+
 EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_ar.ts \
 	$$PWD/../translations/pencil_ca.ts \
@@ -225,7 +230,7 @@ win32 {
 
     PRI_CONFIG = data/resources.xml
     PRI_INDEX_NAME = Pencil2D
-    RC_FILE = data/pencil2d.rc
+    RC_FILES = data/version.rc data/mui.rc
     INSTALLS += target visualelements resources
 
     makepri.name = makepri
@@ -235,6 +240,40 @@ win32 {
     silent: makepri.commands = @echo makepri ${QMAKE_FILE_IN} && $$makepri.commands
     makepri.CONFIG = no_link
     QMAKE_EXTRA_COMPILERS += makepri
+
+    ensurePathEnv()
+    isEmpty(PO2RC): for(dir, QMAKE_PATH_ENV) {
+        exists("$$dir/po2rc.exe") {
+            PO2RC = "$$dir/po2rc.exe"
+            break()
+        }
+    }
+    !isEmpty(PO2RC) {
+        defineReplace(rcLang) {
+            name = $$basename(1)
+            base = $$section(name, ., 0, -2)
+            return($$member(RC_LANGS.$$section(base, _, 1), 0, -1))
+        }
+        po2rc.name = po2rc
+        po2rc.input = MUI_TRANSLATIONS
+        po2rc.output = ${QMAKE_FILE_IN_BASE}.rc
+        po2rc.commands = $$shell_path($$PO2RC) -t $$PWD/data/mui.rc ${QMAKE_FILE_IN} ${QMAKE_FUNC_FILE_IN_rcLang} ${QMAKE_FILE_OUT}
+        silent: makepri.commands = @echo po2rc ${QMAKE_FILE_IN} && $$makepri.commands
+        po2rc.CONFIG = no_link
+        QMAKE_EXTRA_COMPILERS += po2rc
+        # variable_out doesn't seem to work in this case
+        for(file, MUI_TRANSLATIONS): {
+            name = $$basename(file)
+            RC_FILES += $$replace(name, .po, .rc)
+        }
+    } else {
+        warning("po2rc was not found. MUI resources will not be translated. You can safely ignore this warning if you do not plan to distribute this build of Pencil2D through its installer.")
+    }
+
+    for(file, RC_FILES): RC_INCLUDES += "$${LITERAL_HASH}include \"$$file\""
+    write_file($$OUT_PWD/pencil2d.rc, RC_INCLUDES)|error()
+    RC_FILE = $$OUT_PWD/pencil2d.rc
+    RC_INCLUDEPATH += $$PWD $$PWD/data
 }
 
 unix:!macx {

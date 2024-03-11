@@ -1,0 +1,66 @@
+#if defined(__MINGW32__) || defined(__MINGW64__)
+// This is needed for MinGW versions < 8
+// (not to be confused with the GCC version by which Qt labels their MinGW packages)
+#include <winresrc.h>
+#else
+#include <winres.h>
+#endif
+
+#define STRINGIFY_(x) #x
+#define STRINGIFY(x) STRINGIFY_(x)
+
+#if defined(PENCIL2D_RELEASE_BUILD)
+#define BUILD_FILEFLAG 0
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+#define BUILD_FILEFLAG VS_FF_PRERELEASE
+#else
+#define BUILD_FILEFLAG VS_FF_PRIVATEBUILD
+#endif
+
+#if defined(QT_NO_DEBUG)
+#define DEBUG_FILEFLAG 0
+#else
+#define DEBUG_FILEFLAG VS_FF_DEBUG
+#endif
+
+IDI_ICON1 ICON "pencil2d.ico"
+
+VS_VERSION_INFO VERSIONINFO
+FILEVERSION APP_VERSION_RC
+PRODUCTVERSION APP_VERSION_RC
+FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+FILEFLAGS DEBUG_FILEFLAG|BUILD_FILEFLAG
+FILEOS VOS_NT_WINDOWS32
+FILETYPE VFT_APP
+{
+    BLOCK "StringFileInfo"
+    {
+        BLOCK "000904B0"
+        {
+            VALUE "ProductName", "Pencil2D"
+#ifdef __GNUC__
+            VALUE "ProductVersion", STRINGIFY(APP_VERSION)
+#else
+            VALUE "ProductVersion", APP_VERSION
+#endif
+            VALUE "CompanyName", "The Pencil2D Team"
+            VALUE "LegalCopyright", "\xA9 The Pencil2D Team"
+            VALUE "FileDescription", "Pencil2D"
+#ifdef __GNUC__
+            VALUE "FileVersion", STRINGIFY(APP_VERSION)
+#else
+            VALUE "FileVersion", APP_VERSION
+#endif
+            VALUE "InternalName", "pencil2d"
+            VALUE "OriginalFilename", "pencil2d.exe"
+#if !defined(PENCIL2D_RELEASE_BUILD) && !defined(PENCIL2D_NIGHTLY_BUILD)
+            VALUE "PrivateBuild", "Private Build"
+#endif
+        }
+    }
+
+    BLOCK "VarFileInfo"
+    {
+        VALUE "Translation", 0x0009, 0x04B0
+    }
+}

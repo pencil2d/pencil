@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include <QCoreApplication>
 #include <QSettings>
 
+#include <ShObjIdl.h>
+
 #include "pencildef.h"
 
 namespace PlatformHandler
@@ -29,6 +31,16 @@ namespace PlatformHandler
     bool isDarkMode() { return false; };
     void initialise()
     {
+#if _WIN32_WINNT >= _WIN32_WINNT_WIN7
+#if defined(PENCIL2D_RELEASE_BUILD)
+        SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D.Release");
+#elif defined(PENCIL2D_NIGHTLY_BUILD)
+        SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D.Nightly");
+#else
+        SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D");
+#endif
+#endif // _WIN32_WINNT >= _WIN32_WINNT_WIN7
+
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         // Temporary solution for high DPI displays
         // EnableHighDpiScaling is a just in case mechanism in the event that we
