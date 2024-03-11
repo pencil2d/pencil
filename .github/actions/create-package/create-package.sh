@@ -152,12 +152,12 @@ create_package_windows() {
   if [ "$IS_RELEASE" = "true" ]; then
     versiondefines="-d Edition=Release -d Version=$2"
   fi
-  wix build -arch "x${wordsize/32/86}" -dcl high -b ../util/installer -b Pencil2D \
-    -d "ProductCode=$(python -c "import uuid; print(str(uuid.uuid5(uuid.NAMESPACE_URL, '-Nhttps://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}')).upper())")" \
+  wix build -pdbtype none -arch "x${wordsize/32/86}" -dcl high -b ../util/installer -b Pencil2D \
+    -d "ProductCode=$(python -c "import uuid; print(str(uuid.uuid5(uuid.NAMESPACE_URL, '-Nhttps://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}#${platform}')).upper())")" \
     $versiondefines \
     -out "pencil2d-${platform}-$3.msi" \
     ../util/installer/pencil2d.wxs windeployqt.wxs resources.wxs
-  wix build -arch "x${wordsize/32/86}" -dcl high -sw1133 -b ../util/installer -b Pencil2D \
+  wix build -pdbtype none -arch "x${wordsize/32/86}" -dcl high -sw1133 -b ../util/installer -b Pencil2D \
     -ext WixToolset.Util.wixext -ext WixToolset.Bal.wixext \
     $versiondefines \
     -out "pencil2d-${platform}-$3.exe" \
@@ -166,6 +166,9 @@ create_package_windows() {
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
   "${WINDIR}\\System32\\tar" caf "pencil2d${qtsuffix/-qt5/}-${platform}-$3.zip" Pencil2D
+  # This basename pattern deliberately does not include the installer for the Qt 6 build.
+  # Should this ever be changed so that more than one installer is uploaded per workflow run,
+  # absolutely make sure not to break any Windows Installer rules.
   echo "output-basename=pencil2d${qtsuffix/-qt5/}-${platform}-$3" > "${GITHUB_OUTPUT}"
 }
 
