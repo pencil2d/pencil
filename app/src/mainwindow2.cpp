@@ -1212,8 +1212,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionRotate_Clockwise->setShortcut(cmdKeySeq(CMD_ROTATE_CLOCK));
     ui->actionRotate_Anticlockwise->setShortcut(cmdKeySeq(CMD_ROTATE_ANTI_CLOCK));
     ui->actionReset_Rotation->setShortcut(cmdKeySeq(CMD_RESET_ROTATION));
-    ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_DISPLAY_FLIP_HORIZONTAL));
-    ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_DISPLAY_FLIP_VERTICAL));
+    ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_FLIP_HORIZONTAL));
+    ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
     ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));
     ui->actionGrid->setShortcut(cmdKeySeq(CMD_GRID));
     ui->actionOnionPrev->setShortcut(cmdKeySeq(CMD_ONIONSKIN_PREV));
