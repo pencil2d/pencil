@@ -180,6 +180,8 @@ const static int MaxFramesBound = 9999;
 #define CMD_REMOVE_SELECTED_FRAMES "CmdRemoveSelectedFrames"
 #define CMD_SELECTION_ADD_FRAME_EXPOSURE "CmdSelectionAddFrameExposure"
 #define CMD_SELECTION_SUBTRACT_FRAME_EXPOSURE "CmdSelectionSubtractFrameExposure"
+#define CMD_SELECTION_FLIP_HORIZONTAL "CmdSelectionFlipHorizontal"
+#define CMD_SELECTION_FLIP_VERTICAL "CmdSelectionFlipVertical"
 #define CMD_MOVE_FRAME_BACKWARD "CmdMoveFrameBackward"
 #define CMD_MOVE_FRAME_FORWARD "CmdMoveFrameForward"
 #define CMD_TOOL_MOVE "CmdToolMove"
