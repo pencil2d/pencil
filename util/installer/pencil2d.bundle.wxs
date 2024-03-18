@@ -44,6 +44,7 @@
       <!-- Translations -->
       <Payload SourceFile="pencil2d_de.wxl" Name="7\thm.wxl" />
       <!-- Assets -->
+      <Payload SourceFile="pencil2d.ico" />
       <Payload SourceFile="pencil2d.png" />
       <Payload SourceFile="pencil2d@2x.png" />
       <Payload SourceFile="cog.png" />

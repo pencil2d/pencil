@@ -13,8 +13,8 @@
 #include "verutil.h"
 #include "xmlutil.h"
 
-#include "BootstrapperEngine.h"
-#include "BootstrapperApplication.h"
+#include "BootstrapperEngineTypes.h"
+#include "BootstrapperApplicationTypes.h"
 #include "BAFunctions.h"
 
 #include "IBootstrapperEngine.h"
@@ -37,17 +37,55 @@ class Pencil2DBAFunctions : public CBalBaseBAFunctions
 {
 public:
     Pencil2DBAFunctions(
-        __in HMODULE hModule,
-        __in IBootstrapperEngine* pEngine,
-        __in const BA_FUNCTIONS_CREATE_ARGS* pArgs,
-        __in WIX_LOCALIZATION* pWixLoc
-        ) : CBalBaseBAFunctions(hModule, pEngine, pArgs), m_pWixLoc(pWixLoc)
+        __in HMODULE hModule
+        ) : CBalBaseBAFunctions(hModule)
     {
     }
 
     ~Pencil2DBAFunctions()
     {
         LocFree(m_pWixLoc);
+    }
+
+    virtual STDMETHODIMP OnCreate(
+        __in IBootstrapperEngine* pEngine,
+        __in BOOTSTRAPPER_COMMAND* pCommand
+        )
+    {
+        memcpy_s(&m_command, sizeof(m_command), pCommand, sizeof(BOOTSTRAPPER_COMMAND));
+
+        return __super::OnCreate(pEngine, pCommand);
+    }
+
+    virtual STDMETHODIMP OnThemeLoaded(
+        __in HWND hWnd
+    )
+    {
+        HRESULT hr = S_OK;
+        LPWSTR sczModulePath = NULL;
+        LPWSTR sczLanguage = NULL;
+        LPWSTR sczLocPath = NULL;
+
+        hr = PathRelativeToModule(&sczModulePath, NULL, m_hModule);
+        BalExitOnFailure(hr, "Failed to get module path.");
+
+        hr = BalGetStringVariable(L"WixStdBALanguageId", &sczLanguage);
+        BalExitOnFailure(hr, "Failed to get language id.");
+
+        hr = LocProbeForFile(sczModulePath, L"thm.wxl", sczLanguage, &sczLocPath);
+        BalExitOnFailure(hr, "Failed to probe for loc file: %ls in path: %ls", L"thm.wxl", sczModulePath);
+
+        hr = LocLoadFromFile(sczLocPath, &m_pWixLoc);
+        BalExitOnFailure(hr, "Failed to load loc file from path: %ls", sczLocPath);
+
+        hr = __super::OnThemeLoaded(hWnd);
+
+    LExit:
+        ReleaseStr(sczLanguage);
+        ReleaseStr(sczLocPath);
+        ReleaseStr(sczModulePath);
+
+        return hr;
     }
 
     virtual STDMETHODIMP OnThemeControlLoading(
@@ -311,6 +349,7 @@ private:
     }
 
     WIX_LOCALIZATION *m_pWixLoc = NULL;
+    BOOTSTRAPPER_COMMAND m_command;
     HWND m_hwndControlProgressActionText = NULL;
 };
 
@@ -343,34 +382,18 @@ extern "C" HRESULT WINAPI BAFunctionsCreate(
     )
 {
     HRESULT hr = S_OK;
-
-    IBootstrapperEngine* pEngine = NULL;
-    LPWSTR sczModulePath = NULL;
-    LPWSTR sczLanguage = NULL;
-    LPWSTR sczLocPath = NULL;
-    WIX_LOCALIZATION *pWixLoc = NULL;
     Pencil2DBAFunctions* pBAFunctions = NULL;
 
-    hr = BalInitializeFromCreateArgs(pArgs->pBootstrapperCreateArgs, &pEngine);
-    ExitOnFailure(hr, "Failed to initialize Bal.");
+    BalInitialize(pArgs->pEngine);
 
     hr = XmlInitialize();
     BalExitOnFailure(hr, "Failed to initialize XML util.");
 
-    hr = PathRelativeToModule(&sczModulePath, NULL, vhInstance);
-    BalExitOnFailure(hr, "Failed to get module path.");
-
-    hr = BalGetStringVariable(L"WixStdBALanguageId", &sczLanguage);
-    BalExitOnFailure(hr, "Failed to get language id.");
-
-    hr = LocProbeForFile(sczModulePath, L"thm.wxl", sczLanguage, &sczLocPath);
-    BalExitOnFailure(hr, "Failed to probe for loc file: %ls in path: %ls", L"thm.wxl", sczModulePath);
-
-    hr = LocLoadFromFile(sczLocPath, &pWixLoc);
-    BalExitOnFailure(hr, "Failed to load loc file from path: %ls", sczLocPath);
-
-    pBAFunctions = new Pencil2DBAFunctions(vhInstance, pEngine, pArgs, pWixLoc);
+    pBAFunctions = new Pencil2DBAFunctions(vhInstance);
     BalExitOnNull(pBAFunctions, hr, E_OUTOFMEMORY, "Failed to create new Pencil2DBAFunctions object.");
+
+    hr = pBAFunctions->OnCreate(pArgs->pEngine, pArgs->pCommand);
+    ExitOnFailure(hr, "Failed to call OnCreate Pencil2DBAFunctions.");
 
     pResults->pfnBAFunctionsProc = BalBaseBAFunctionsProc;
     pResults->pvBAFunctionsProcContext = pBAFunctions;
@@ -378,10 +401,6 @@ extern "C" HRESULT WINAPI BAFunctionsCreate(
 
 LExit:
     ReleaseObject(pBAFunctions);
-    ReleaseStr(sczLanguage);
-    ReleaseStr(sczLocPath);
-    ReleaseStr(sczModulePath);
-    ReleaseObject(pEngine);
 
     return hr;
 }
