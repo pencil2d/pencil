@@ -88,6 +88,11 @@ enum StabilizationLevel
     STRONG
 };
 
+enum SelectionType {
+    SELECTION,
+    DESELECT
+};
+
 enum TimecodeTextLevel
 {
     NOTEXT,
@@ -297,6 +302,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_FLIP_INBETWEEN_MSEC     "FlipInbetween"
 #define SETTING_SOUND_SCRUB_ACTIVE      "SoundScrubActive"
 #define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
+#define SETTING_NEW_UNDO_REDO_ON        "NewUndoRedoOn"
 
 #define SETTING_BUCKET_TOLERANCE "Tolerance"
 #define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"

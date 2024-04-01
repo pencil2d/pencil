@@ -194,3 +194,17 @@ VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increme
 {
     return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
+
+void LayerVector::replaceLastVectorImageAtFrame(const VectorImage* replaceWithImage)
+{
+    *static_cast<VectorImage*>(getLastKeyFrameAtPosition(replaceWithImage->pos())) = *replaceWithImage;
+}
+
+void LayerVector::putVectorImageIntoFrame(VectorImage* keyframe, int frameIndex)
+{
+    VectorImage* currentVectorImg = getVectorImageAtFrame(frameIndex);
+
+    VectorImage newVectorImg = *static_cast<VectorImage*>(keyframe);
+    static_cast<VectorImage*>(currentVectorImg)->paste(newVectorImg);
+}
+

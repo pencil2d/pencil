@@ -114,6 +114,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
     connect(ui->invertScrollDirectionBox, &QCheckBox::stateChanged, this, &GeneralPage::invertScrollDirectionBoxStateChanged);
+    connect(ui->newUndoRedoCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::newUndoRedoCheckBoxStateChanged);
 }
 
 GeneralPage::~GeneralPage()
@@ -172,6 +173,9 @@ void GeneralPage::updateValues()
 
     QSignalBlocker b12(ui->framePoolSizeSpin);
     ui->framePoolSizeSpin->setValue(mManager->getInt(SETTING::FRAME_POOL_SIZE));
+
+    QSignalBlocker bNewUndoRedoCheckBox(ui->newUndoRedoCheckBox);
+    ui->newUndoRedoCheckBox->setChecked(mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON));
 
     int buttonIdx = 1;
     if (bgName == "checkerboard") buttonIdx = 1;
@@ -299,4 +303,24 @@ void GeneralPage::frameCacheNumberChanged(int value)
 void GeneralPage::invertScrollDirectionBoxStateChanged(int b)
 {
     mManager->set(SETTING::INVERT_SCROLL_ZOOM_DIRECTION, b != Qt::Unchecked);
+}
+
+void GeneralPage::newUndoRedoCheckBoxStateChanged(bool b)
+{
+    if (b) {
+        QMessageBox messageBox(this);
+        messageBox.setIcon(QMessageBox::Warning);
+        messageBox.setText(tr("Experimental feature! (restart required)"));
+        messageBox.setInformativeText(tr("We do not recommend using this right now as it's not as feature rich as the current system. Do you still want to try?"));
+        messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+
+        if (messageBox.exec() != QMessageBox::Yes) {
+            mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
+            ui->newUndoRedoCheckBox->setCheckState(Qt::Unchecked);
+        } else {
+            mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, true);
+        }
+    } else {
+        mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
+    }
 }
