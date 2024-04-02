@@ -24,10 +24,6 @@ class BackupManager : public BaseManager
 {
     Q_OBJECT
 
-    friend class RemoveKeyFrameElement;
-    friend class AddKeyFrameElement;
-    friend class DeleteLayerElement;
-
 public:
     explicit BackupManager(Editor* editor);
     ~BackupManager();
@@ -36,43 +32,11 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    bool hasUnsavedChanges() const;
-
-    void keyAdded(const int& keySpacing, const bool& keyExisted, const QString& description);
-    void keyAdded(const QString& description = "");
-    void keyRemoved();
     void bitmap(const QString& description);
     void vector(const QString& description);
-    void cameraMotion(const QString& description = "");
-    void layerAdded();
-    void layerDeleted(const std::map<int, KeyFrame*, std::greater<int>>& oldKeys);
-    void layerRenamed();
-    void layerMoved(const int& backupNewLayerIndex);
 
-    void importBitmap(const std::map<int, KeyFrame*, std::greater<int>>& canvasKeys,
-                      const std::map<int, KeyFrame*, std::less<int>>& importedKeys);
-    void selection();
-    void deselect();
-    void transform(const QString& description);
-    void cameraProperties(const QRect& backupViewRect);
-    void frameMoved(const int offset);
-    void framesMoved(const int offset,
-                     const int scrubberFrameIndex);
-
-    void frameSelected(const QList<int> newSelectedIndexes, const int frameIndex, const bool isSelected);
-    void frameDeselected(const QList<int> newDeselectedIndexes, const int frameIndex);
-    void frameDeselected(const int frameIndex);
-    void flipView(const bool& backupIsFlipped, const Direction& backupFlipDirection);
-    void toggleSetting(bool backupToggleState, const SETTING& backupType);
+    bool hasUnsavedChanges() const;
     void saveStates();
-
-    void restoreKey(const int& layerId, const int& frame, KeyFrame* keyFrame);
-
-    static int getActiveFrameIndex(Layer* layer, const int frameIndex, const DrawOnEmptyFrameAction& frameAction);
-
-    // const BackupElement* currentBackup();
-
-    QUndoStack* undoStack() { return mUndoStack; }
 
     QAction* createUndoAction(QObject* parent, const QString& description, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QString& description, const QIcon& icon);
@@ -104,7 +68,7 @@ private:
     void restoreKey(const BackupElement* element);
     void restoreLayerKeys(const BackupElement* element);
 
-    QUndoStack* mUndoStack;
+    QUndoStack* mUndoStack = nullptr;
 
     int mLayerId = 0;
     int mFrameIndex = 0;

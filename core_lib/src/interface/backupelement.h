@@ -65,25 +65,19 @@ class BitmapElement : public BackupElement
 {
 public:
     BitmapElement(const BitmapImage* backupBitmap,
-                     const int& backupLayerId,
-                     const DrawOnEmptyFrameAction& frameAction,
-                     QString description,
-                     Editor* editor,
-                     QUndoCommand* parent = nullptr);
+                  const int backupLayerId,
+                  Editor* editor,
+                  QString description,
+                  QUndoCommand* parent = nullptr);
 
     int oldLayerIndex = 0;
     int newLayerIndex = 0;
 
     int oldFrameIndex = 0;
     int newFrameIndex = 0;
-    int previousFrameIndex = 0;
-
-    int otherFrameIndex = 0;
 
     int oldLayerId = 0;
     int newLayerId = 0;
-
-    int emptyFrameSettingVal = -1;
 
     BitmapImage* oldBitmap = nullptr;
     BitmapImage* newBitmap = nullptr;

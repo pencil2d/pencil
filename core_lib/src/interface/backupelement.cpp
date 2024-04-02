@@ -48,11 +48,10 @@ BackupElement::~BackupElement()
 }
 
 BitmapElement::BitmapElement(const BitmapImage* backupBitmap,
-                                   const int& backupLayerId,
-                                   const DrawOnEmptyFrameAction& frameAction,
-                                   QString description,
-                                   Editor *editor,
-                                   QUndoCommand *parent) : BackupElement(editor, parent)
+                             const int backupLayerId,
+                             Editor *editor,
+                             QString description,
+                             QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
     oldBitmap = backupBitmap->clone();
