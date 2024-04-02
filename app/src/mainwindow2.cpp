@@ -1393,8 +1393,8 @@ void MainWindow2::openPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
-    connect(editor->backups(), &BackupManager::updateBackup, this, &MainWindow2::updateSaveState);
-    connect(editor->backups(), &BackupManager::updateBackup, this, &MainWindow2::updateBackupActionState);
+    connect(editor->backups(), &BackupManager::didUpdateUndoStack, this, &MainWindow2::updateSaveState);
+    connect(editor->backups(), &BackupManager::didUpdateUndoStack, this, &MainWindow2::updateBackupActionState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);

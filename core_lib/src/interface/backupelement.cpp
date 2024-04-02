@@ -47,7 +47,7 @@ BackupElement::~BackupElement()
 {
 }
 
-AddBitmapElement::AddBitmapElement(const BitmapImage* backupBitmap,
+BitmapElement::BitmapElement(const BitmapImage* backupBitmap,
                                    const int& backupLayerId,
                                    const DrawOnEmptyFrameAction& frameAction,
                                    QString description,
@@ -82,7 +82,7 @@ AddBitmapElement::AddBitmapElement(const BitmapImage* backupBitmap,
     setText(description);
 }
 
-void AddBitmapElement::undo()
+void BitmapElement::undo()
 {
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
 
@@ -99,7 +99,7 @@ void AddBitmapElement::undo()
     editor()->scrubTo(/*oldLayerId, */oldFrameIndex);
 }
 
-void AddBitmapElement::redo()
+void BitmapElement::redo()
 {
     if (isFirstRedo) { isFirstRedo = false; return; }
 
@@ -117,7 +117,7 @@ void AddBitmapElement::redo()
     editor()->scrubTo(/*newLayerId, */newFrameIndex);
 }
 
-void AddBitmapElement::undoTransform(const TransformElement* childElem)
+void BitmapElement::undoTransform(const TransformElement* childElem)
 {
 
     BitmapImage* oldBitmapClone = oldBitmap->clone();
@@ -138,7 +138,7 @@ void AddBitmapElement::undoTransform(const TransformElement* childElem)
     // editor()->canvas()->paintTransformedSelection(layer, oldBitmapClone, childElem->oldTransform, childElem->oldSelectionRect);
 }
 
-void AddBitmapElement::redoTransform(const TransformElement* childElem)
+void BitmapElement::redoTransform(const TransformElement* childElem)
 {
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
 
@@ -156,7 +156,7 @@ void AddBitmapElement::redoTransform(const TransformElement* childElem)
     // editor()->canvas()->paintTransformedSelection(layer, newBitmapClone, childElem->oldTransform, childElem->oldSelectionRect);
 }
 
-AddVectorElement::AddVectorElement(const VectorImage* backupVector,
+VectorElement::VectorElement(const VectorImage* backupVector,
                                    const int& backupLayerId,
                                    const DrawOnEmptyFrameAction& backupFrameAction,
                                    QString description,
@@ -180,7 +180,7 @@ AddVectorElement::AddVectorElement(const VectorImage* backupVector,
     setText(description);
 }
 
-void AddVectorElement::undo()
+void VectorElement::undo()
 {
     qDebug() << "BackupVectorElement: undo";
 
@@ -191,7 +191,7 @@ void AddVectorElement::undo()
     editor()->scrubTo(/*oldLayerId, */oldFrameIndex);
 }
 
-void AddVectorElement::redo()
+void VectorElement::redo()
 {
     qDebug() << "BackupVectorElement: redo";
 

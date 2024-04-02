@@ -84,15 +84,15 @@ public:
 
     // Legacy System
 
-    void backup(const QString& undoText);
-    bool backup(int backupLayer, int backupFrame, const QString& undoText);
+    void legacyBackup(const QString& undoText);
+    bool legacyBackup(int backupLayer, int backupFrame, const QString& undoText);
     void sanitizeLegacyBackupElementsAfterLayerDeletion(int layerIndex);
     void restoreLegacyKey();
 
     void rememberLastModifiedFrame(int layerNumber, int frameNumber);
 
 Q_SIGNALS:
-    void updateBackup();
+    void didUpdateUndoStack();
 
 private:
 

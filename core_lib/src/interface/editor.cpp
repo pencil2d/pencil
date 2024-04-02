@@ -1053,13 +1053,13 @@ bool Editor::canCopyVectorImage(const VectorImage* vectorImage) const
 
 void Editor::backup(const QString &undoText)
 {
-    backups()->backup(undoText);
+    backups()->legacyBackup(undoText);
     updateAutoSaveCounter();
 }
 
 bool Editor::backup(int layerNumber, int frameNumber, const QString &undoText)
 {
-    bool didBackup = backups()->backup(layerNumber, frameNumber, undoText);
+    bool didBackup = backups()->legacyBackup(layerNumber, frameNumber, undoText);
 
     updateAutoSaveCounter();
     return didBackup;

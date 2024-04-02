@@ -99,7 +99,7 @@ bool BackupManager::hasUnsavedChanges() const
 void BackupManager::bitmap(const QString& description)
 {
     if (mBitmap == nullptr) { return; }
-    AddBitmapElement* element = new AddBitmapElement(mBitmap,
+    BitmapElement* element = new BitmapElement(mBitmap,
                                                      mLayerId,
                                                      mEmptyFrameSettingVal,
                                                      description,
@@ -120,19 +120,19 @@ void BackupManager::bitmap(const QString& description)
                              editor(), element);
     }
     mUndoStack->push(element);
-    emit updateBackup();
+    emit didUpdateUndoStack();
 }
 
 void BackupManager::vector(const QString& description)
 {
     if (mVector == nullptr) { return; }
-    AddVectorElement* element = new AddVectorElement(mVector,
+    VectorElement* element = new VectorElement(mVector,
                                                      mLayerId,
                                                      mEmptyFrameSettingVal,
                                                      description,
                                                      editor());
     mUndoStack->push(element);
-    emit updateBackup();
+    emit didUpdateUndoStack();
 }
 
 /**
@@ -225,7 +225,7 @@ QAction* BackupManager::createUndoAction(QObject* parent, const QString& descrip
     undoAction->setIcon(icon);
 
     if (newUndoRedoSystemEnabled()) {
-        // The new system takes care of this
+        // The new system takes care of this automatically
     } else {
         connect(undoAction, &QAction::triggered, this, &BackupManager::legacyUndo);
     }
@@ -244,7 +244,7 @@ QAction* BackupManager::createRedoAction(QObject* parent, const QString& descrip
     redoAction->setIcon(icon);
 
     if (newUndoRedoSystemEnabled()) {
-        // The new system takes care of this
+        // The new system takes care of this automatically
     } else {
         connect(redoAction, &QAction::triggered, this, &BackupManager::legacyRedo);
     }
@@ -315,8 +315,13 @@ void BackupManager::clearStack()
 
 // Legacy backup system
 
-void BackupManager::backup(const QString& undoText)
+void BackupManager::legacyBackup(const QString& undoText)
 {
+
+    if (newUndoRedoSystemEnabled()) {
+        return;
+    }
+
     KeyFrame* frame = nullptr;
     int currentFrame = editor()->currentFrame();
     if (mLegacyLastModifiedLayer > -1 && mLegacyLastModifiedFrame > 0)
@@ -326,12 +331,12 @@ void BackupManager::backup(const QString& undoText)
             frame = editor()->layers()->currentLayer()->getKeyFrameWhichCovers(mLegacyLastModifiedFrame);
             if (frame != nullptr)
             {
-                backup(mLegacyLastModifiedLayer, frame->pos(), undoText);
+                legacyBackup(mLegacyLastModifiedLayer, frame->pos(), undoText);
             }
         }
         else
         {
-            backup(mLegacyLastModifiedLayer, mLegacyLastModifiedFrame, undoText);
+            legacyBackup(mLegacyLastModifiedLayer, mLegacyLastModifiedFrame, undoText);
         }
     }
     if (mLegacyLastModifiedLayer != editor()->layers()->currentLayerIndex() || mLegacyLastModifiedFrame != currentFrame)
@@ -342,18 +347,22 @@ void BackupManager::backup(const QString& undoText)
 
             if (frame != nullptr)
             {
-                backup(editor()->layers()->currentLayerIndex(), frame->pos(), undoText);
+                legacyBackup(editor()->layers()->currentLayerIndex(), frame->pos(), undoText);
             }
         }
         else
         {
-            backup(editor()->layers()->currentLayerIndex(), currentFrame, undoText);
+            legacyBackup(editor()->layers()->currentLayerIndex(), currentFrame, undoText);
         }
     }
 }
 
-bool BackupManager::backup(int backupLayer, int backupFrame, const QString& undoText)
+bool BackupManager::legacyBackup(int backupLayer, int backupFrame, const QString& undoText)
 {
+    if (newUndoRedoSystemEnabled()) {
+        return false;
+    }
+
     while (mLegacyBackupList.size() - 1 > mLegacyBackupIndex && !mLegacyBackupList.empty())
     {
         delete mLegacyBackupList.takeLast();
@@ -457,13 +466,17 @@ bool BackupManager::backup(int backupLayer, int backupFrame, const QString& undo
         }
     }
 
-    emit updateBackup();
+    emit didUpdateUndoStack();
 
     return true;
 }
 
 void BackupManager::sanitizeLegacyBackupElementsAfterLayerDeletion(int layerIndex)
 {
+    if (newUndoRedoSystemEnabled()) {
+        return;
+    }
+
     for (int i = 0; i < mLegacyBackupList.size(); i++)
     {
         LegacyBackupElement *backupElement = mLegacyBackupList[i];
@@ -525,6 +538,10 @@ void BackupManager::sanitizeLegacyBackupElementsAfterLayerDeletion(int layerInde
 
 void BackupManager::restoreLegacyKey()
 {
+    if (newUndoRedoSystemEnabled()) {
+        return;
+    }
+
     LegacyBackupElement* lastBackupElement = mLegacyBackupList[mLegacyBackupIndex];
 
     Layer* layer = nullptr;
@@ -584,7 +601,7 @@ void BackupManager::legacyUndo()
             if (lastBackupElement->type() == LegacyBackupElement::BITMAP_MODIF)
             {
                 BackupLegacyBitmapElement* lastBackupBitmapElement = static_cast<BackupLegacyBitmapElement*>(lastBackupElement);
-                if (backup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp"))
+                if (legacyBackup(lastBackupBitmapElement->layer, lastBackupBitmapElement->frame, "NoOp"))
                 {
                     mLegacyBackupIndex--;
                 }
@@ -592,7 +609,7 @@ void BackupManager::legacyUndo()
             if (lastBackupElement->type() == LegacyBackupElement::VECTOR_MODIF)
             {
                 BackupLegacyVectorElement* lastBackupVectorElement = static_cast<BackupLegacyVectorElement*>(lastBackupElement);
-                if (backup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp"))
+                if (legacyBackup(lastBackupVectorElement->layer, lastBackupVectorElement->frame, "NoOp"))
                 {
                     mLegacyBackupIndex--;
                 }
@@ -600,7 +617,7 @@ void BackupManager::legacyUndo()
             if (lastBackupElement->type() == LegacyBackupElement::SOUND_MODIF)
             {
                 BackupLegacySoundElement* lastBackupSoundElement = static_cast<BackupLegacySoundElement*>(lastBackupElement);
-                if (backup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp"))
+                if (legacyBackup(lastBackupSoundElement->layer, lastBackupSoundElement->frame, "NoOp"))
                 {
                     mLegacyBackupIndex--;
                 }
@@ -611,7 +628,7 @@ void BackupManager::legacyUndo()
         mLegacyBackupList[mLegacyBackupIndex]->restore(editor());
         mLegacyBackupIndex--;
 
-        emit updateBackup();
+        emit didUpdateUndoStack();
     }
 }
 
@@ -622,7 +639,7 @@ void BackupManager::legacyRedo()
         mLegacyBackupIndex++;
 
         mLegacyBackupList[mLegacyBackupIndex + 1]->restore(editor());
-        emit updateBackup();
+        emit didUpdateUndoStack();
     }
 }
 

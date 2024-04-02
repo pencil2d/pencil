@@ -61,10 +61,10 @@ private:
     Editor* mEditor = nullptr;
 };
 
-class AddBitmapElement : public BackupElement
+class BitmapElement : public BackupElement
 {
 public:
-    AddBitmapElement(const BitmapImage* backupBitmap,
+    BitmapElement(const BitmapImage* backupBitmap,
                      const int& backupLayerId,
                      const DrawOnEmptyFrameAction& frameAction,
                      QString description,
@@ -97,10 +97,10 @@ public:
     void undoTransform(const TransformElement* childElem);
 };
 
-class AddVectorElement : public BackupElement
+class VectorElement : public BackupElement
 {
 public:
-    AddVectorElement(const VectorImage* backupVector,
+    VectorElement(const VectorImage* backupVector,
                      const int& backupLayerId,
                      const DrawOnEmptyFrameAction& backupFrameAction,
                      QString description,
