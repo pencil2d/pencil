@@ -122,6 +122,7 @@ void Editor::setFps(int fps)
 void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
+    connect(mBackupManager, &BackupManager::didUpdateUndoStack, this, &Editor::updateAutoSaveCounter);
 
     // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
     connect(mLayerManager, &LayerManager::layerDeleted, mBackupManager, &BackupManager::sanitizeLegacyBackupElementsAfterLayerDeletion);
