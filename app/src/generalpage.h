@@ -66,6 +66,8 @@ private:
 
     Ui::GeneralPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
+
+    bool mInitialNewUndoSystemStateEnabled = false;
 };
 
 #endif // GENERALPAGE_H

@@ -188,6 +188,7 @@ void GeneralPage::updateValues()
     ui->backgroundButtons->button(buttonIdx)->setChecked(true);
 
     ui->invertScrollDirectionBox->setChecked(mManager->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION));
+    mInitialNewUndoSystemStateEnabled = mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
 }
 
 void GeneralPage::languageChanged(int i)
@@ -314,13 +315,19 @@ void GeneralPage::newUndoRedoCheckBoxStateChanged(bool b)
         messageBox.setInformativeText(tr("This feature is work in progress and may not currently allow for the same features as the current backup system. Once enabled, you'll need to restart the application to start using it. \n\nDo you still want to try?"));
         messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 
-        if (messageBox.exec() != QMessageBox::Yes) {
-            mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
-            ui->newUndoRedoCheckBox->setCheckState(Qt::Unchecked);
-        } else {
+        if (messageBox.exec() == QMessageBox::Yes) {
             mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, true);
+        } else {
+            ui->newUndoRedoCheckBox->setCheckState(Qt::Unchecked);
+            mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
         }
     } else {
+        if (mInitialNewUndoSystemStateEnabled) {
+            QMessageBox messageBox(this);
+            messageBox.setIcon(QMessageBox::Information);
+            messageBox.setText(tr("This will first take effect after a restart."));
+            messageBox.exec();
+        }
         mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
     }
 }
