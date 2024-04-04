@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "editor.h"
 #include "toolmanager.h"
+#include "backupmanager.h"
 #include "mathutils.h"
 
 #include "canvascursorpainter.h"
@@ -179,6 +180,8 @@ void StrokeTool::endStroke()
 
     mEditor->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->endStroke();
+
+     mEditor->backups()->backup(BackupType::STROKE);
 }
 
 void StrokeTool::drawStroke()

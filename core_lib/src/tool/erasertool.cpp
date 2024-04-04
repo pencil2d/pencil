@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "layermanager.h"
 #include "viewmanager.h"
+#include "backupmanager.h"
 #include "layervector.h"
 #include "vectorimage.h"
 #include "pointerevent.h"
@@ -191,6 +192,7 @@ void EraserTool::pointerReleaseEvent(PointerEvent *event)
 
     if (event->inputType() != mCurrentInputType) return;
 
+    mEditor->backups()->saveStates();
     mEditor->backup(typeName());
 
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();

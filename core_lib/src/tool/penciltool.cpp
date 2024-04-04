@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "preferencemanager.h"
 #include "selectionmanager.h"
+#include "backupmanager.h"
 
 #include "editor.h"
 #include "scribblearea.h"
@@ -192,6 +193,7 @@ void PencilTool::pointerReleaseEvent(PointerEvent *event)
 
     if (event->inputType() != mCurrentInputType) return;
 
+    mEditor->backups()->saveStates();
     mEditor->backup(typeName());
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
     if (distance < 1)

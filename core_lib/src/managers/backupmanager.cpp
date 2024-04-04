@@ -79,6 +79,37 @@ Status BackupManager::save(Object* /*o*/)
     return Status::OK;
 }
 
+void BackupManager::backup(BackupType type)
+{
+    switch (type)
+    {
+        case BackupType::STROKE: {
+            Layer* currentLayer = editor()->layers()->currentLayer();
+            if (currentLayer->type() == Layer::BITMAP) {
+                bitmap(tr("Bitmap stroke"));
+            } else if (currentLayer->type() == Layer::VECTOR) {
+                vector(tr("Vector stroke"));
+            } else {
+                Q_ASSERT_X(false, "BackupManager", "A stroke can only be applied to either the Bitmap or Vector layer");
+            }
+            break;
+        }
+        case BackupType::POLYLINE: {
+            Layer* currentLayer = editor()->layers()->currentLayer();
+            if (currentLayer->type() == Layer::BITMAP) {
+                bitmap(tr("Bitmap polyline"));
+            } else if (currentLayer->type() == Layer::VECTOR) {
+                vector(tr("Vector polyline"));
+            } else {
+                Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
+            }
+        break;
+        }
+        default:
+            Q_ASSERT_X(false, "BackupManager", "Tried to make a backup for a case which hasn't been handled yet");
+    }
+}
+
 const BackupElement* BackupManager::latestBackupElement() const
 {
     return static_cast<const BackupElement*>(mUndoStack->command(mUndoStack->index() - 1));
@@ -150,6 +181,10 @@ void BackupManager::vector(const QString& description)
  */
 void BackupManager::saveStates()
 {
+    if (!mNewBackupSystemEnabled) {
+        return;
+    }
+
     mBitmap = nullptr;
     mVector = nullptr;
     mCamera = nullptr;

@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
+#include "backupmanager.h"
 #include "pointerevent.h"
 #include "layervector.h"
 #include "layerbitmap.h"
@@ -187,6 +188,7 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
     mPoints << getCurrentPoint();
 
     mEditor->backup(typeName());
+    mEditor->backups()->saveStates();
 
     endPolyline(mPoints);
     clearToolData();
@@ -302,5 +304,6 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         drawPolyline(points, points.last());
     }
     mScribbleArea->endStroke();
+    mEditor->backups()->backup(BackupType::POLYLINE);
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

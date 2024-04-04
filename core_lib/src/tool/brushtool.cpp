@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+#include "backupmanager.h"
 #include "scribblearea.h"
 #include "pointerevent.h"
 
@@ -183,6 +184,7 @@ void BrushTool::pointerReleaseEvent(PointerEvent *event)
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
+    mEditor->backups()->saveStates();
     mEditor->backup(typeName());
 
     qreal distance = QLineF(getCurrentPoint(), mMouseDownPoint).length();
@@ -200,6 +202,7 @@ void BrushTool::pointerReleaseEvent(PointerEvent *event)
     }
 
     endStroke();
+
     StrokeTool::pointerReleaseEvent(event);
 }
 

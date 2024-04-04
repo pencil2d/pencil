@@ -20,6 +20,11 @@ class KeyFrame;
 class LegacyBackupElement;
 class BackupElement;
 
+enum class BackupType {
+    STROKE,
+    POLYLINE,
+};
+
 class BackupManager : public BaseManager
 {
     Q_OBJECT
@@ -32,8 +37,7 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    void bitmap(const QString& description);
-    void vector(const QString& description);
+    void backup(BackupType backupType);
 
     bool hasUnsavedChanges() const;
     void saveStates();
@@ -63,6 +67,9 @@ Q_SIGNALS:
     void didUpdateUndoStack();
 
 private: // functions
+
+    void bitmap(const QString& description);
+    void vector(const QString& description);
 
     void legacyUndo();
     void legacyRedo();
