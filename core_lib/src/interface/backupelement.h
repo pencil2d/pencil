@@ -54,15 +54,20 @@ public:
 
     Editor* editor() { return mEditor; }
 
+    bool isFirstRedo() const { return mIsFirstRedo; }
+    void setFirstRedo(bool state) { mIsFirstRedo = state; }
+
     virtual int type() const { return UNDEFINED; }
     virtual void undo() { Q_ASSUME(true); } // should never end here
     virtual void redo() { Q_ASSUME(true); } // should never end here
 private:
     Editor* mEditor = nullptr;
+    bool mIsFirstRedo = true;
 };
 
 class BitmapElement : public BackupElement
 {
+
 public:
     BitmapElement(const BitmapImage* backupBitmap,
                   const int backupLayerId,
@@ -70,9 +75,13 @@ public:
                   QString description,
                   QUndoCommand* parent = nullptr);
 
-    int oldLayerIndex = 0;
-    int newLayerIndex = 0;
+    void undo() override;
+    void redo() override;
 
+    void redoTransform(const TransformElement* childElem);
+    void undoTransform(const TransformElement* childElem);
+
+private:
     int oldFrameIndex = 0;
     int newFrameIndex = 0;
 
@@ -81,14 +90,6 @@ public:
 
     BitmapImage* oldBitmap = nullptr;
     BitmapImage* newBitmap = nullptr;
-
-    bool isFirstRedo = true;
-
-    void undo() override;
-    void redo() override;
-
-    void redoTransform(const TransformElement* childElem);
-    void undoTransform(const TransformElement* childElem);
 };
 
 class VectorElement : public BackupElement
@@ -111,8 +112,6 @@ public:
 
     VectorImage* oldVector = nullptr;
     VectorImage* newVector = nullptr;
-
-    bool isFirstRedo = true;
 
     void undo() override;
     void redo() override;

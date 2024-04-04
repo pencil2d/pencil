@@ -55,16 +55,12 @@ BitmapElement::BitmapElement(const BitmapImage* backupBitmap,
 {
 
     oldBitmap = backupBitmap->clone();
-
     oldFrameIndex = oldBitmap->pos();
-    newLayerIndex = editor->currentLayerIndex();
     oldLayerId = backupLayerId;
 
     Layer* layer = editor->layers()->currentLayer();
     newLayerId = layer->id();
-
     newFrameIndex = editor->currentFrame();
-
     newBitmap = static_cast<LayerBitmap*>(layer)->
             getBitmapImageAtFrame(newFrameIndex)->clone();
 
@@ -100,7 +96,7 @@ void BitmapElement::undo()
 
 void BitmapElement::redo()
 {
-    if (isFirstRedo) { isFirstRedo = false; return; }
+    if (isFirstRedo()) { setFirstRedo(false); return; }
 
     const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
     if (childElem)
@@ -194,7 +190,7 @@ void VectorElement::redo()
 {
     qDebug() << "BackupVectorElement: redo";
 
-    if (isFirstRedo) { isFirstRedo = false; return; }
+    if (isFirstRedo()) { setFirstRedo(false); return; }
 
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
 
@@ -280,9 +276,7 @@ void TransformElement::undo()
 
 void TransformElement::redo()
 {
-    // if (isFirstRedo) {
-    //     isFirstRedo = false; return;
-    // }
+    // if (isFirstRedo()) { setFirstRedo(false); return; }
 
     // apply(newBitmap,
     //       newVector,

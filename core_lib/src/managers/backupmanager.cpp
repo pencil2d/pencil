@@ -72,11 +72,16 @@ Status BackupManager::load(Object* /*o*/)
 Status BackupManager::save(Object* /*o*/)
 {
     if (newUndoRedoSystemEnabled()) {
-        mBackupAtSave = static_cast<const BackupElement*>(mUndoStack->command(mUndoStack->index() - 1));
+        mBackupAtSave = latestBackupElement();
     } else {
         mLegacyBackupAtSave = mLegacyBackupList[mLegacyBackupIndex];
     }
     return Status::OK;
+}
+
+const BackupElement* BackupManager::latestBackupElement() const
+{
+    return static_cast<const BackupElement*>(mUndoStack->command(mUndoStack->index() - 1));
 }
 
 bool BackupManager::newUndoRedoSystemEnabled() const
@@ -87,7 +92,7 @@ bool BackupManager::newUndoRedoSystemEnabled() const
 bool BackupManager::hasUnsavedChanges() const
 {
     if (newUndoRedoSystemEnabled()) {
-        return mBackupAtSave != static_cast<const BackupElement*>(mUndoStack->command(mUndoStack->index() - 1));
+        return mBackupAtSave != latestBackupElement();
     } else {
         if (mLegacyBackupIndex >= 0) {
             return mLegacyBackupAtSave != mLegacyBackupList[mLegacyBackupIndex];
@@ -96,31 +101,35 @@ bool BackupManager::hasUnsavedChanges() const
     }
 }
 
+void BackupManager::pushCommand(QUndoCommand* command)
+{
+    mUndoStack->push(command);
+    emit didUpdateUndoStack();
+}
+
 void BackupManager::bitmap(const QString& description)
 {
     if (mBitmap == nullptr) { return; }
     BitmapElement* element = new BitmapElement(mBitmap,
-                                                     mLayerId,
-                                                     mEmptyFrameSettingVal,
-                                                     description,
-                                                     editor());
+                                               mLayerId,
+                                               editor(),
+                                               description);
 
-    if (mIsSelected)
-    {
-        new TransformElement(mKeyframe,
-                             mLayerId,
-                             mEmptyFrameSettingVal,
-                             mSelectionRect,
-                             mSelectionTranslation,
-                             mSelectionRotationAngle,
-                             mSelectionScaleX,
-                             mSelectionScaleY,
-                             mSelectionAnchor,
-                             description,
-                             editor(), element);
-    }
-    mUndoStack->push(element);
-    emit didUpdateUndoStack();
+    // if (mIsSelected)
+    // {
+    //     new TransformElement(mKeyframe,
+    //                          mLayerId,
+    //                          mEmptyFrameSettingVal,
+    //                          mSelectionRect,
+    //                          mSelectionTranslation,
+    //                          mSelectionRotationAngle,
+    //                          mSelectionScaleX,
+    //                          mSelectionScaleY,
+    //                          mSelectionAnchor,
+    //                          description,
+    //                          editor(), element);
+    // }
+    pushCommand(element);
 }
 
 void BackupManager::vector(const QString& description)
@@ -131,13 +140,13 @@ void BackupManager::vector(const QString& description)
                                                      mEmptyFrameSettingVal,
                                                      description,
                                                      editor());
-    mUndoStack->push(element);
-    emit didUpdateUndoStack();
+    pushCommand(element);
 }
 
 /**
  * @brief BackupManager::saveStates
  * This method should be called prior to a backup taking place.
+ * Only the most essential values should be retrieved here.
  */
 void BackupManager::saveStates()
 {
@@ -211,7 +220,6 @@ void BackupManager::saveStates()
             break;
     }
 }
-
 
 QAction* BackupManager::createUndoAction(QObject* parent, const QString& description, const QIcon& icon)
 {

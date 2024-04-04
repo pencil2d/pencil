@@ -44,6 +44,8 @@ public:
     void updateUndoAction(QAction* undoAction);
     void updateRedoAction(QAction* redoAction);
 
+    const BackupElement* latestBackupElement() const;
+
     void clearStack();
 
     // Legacy System
@@ -55,10 +57,12 @@ public:
 
     void rememberLastModifiedFrame(int layerNumber, int frameNumber);
 
+    void pushCommand(QUndoCommand* command);
+
 Q_SIGNALS:
     void didUpdateUndoStack();
 
-private:
+private: // functions
 
     void legacyUndo();
     void legacyRedo();
@@ -67,6 +71,8 @@ private:
 
     void restoreKey(const BackupElement* element);
     void restoreLayerKeys(const BackupElement* element);
+
+private: // variables
 
     QUndoStack* mUndoStack = nullptr;
 
