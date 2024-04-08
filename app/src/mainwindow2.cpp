@@ -1309,35 +1309,6 @@ void MainWindow2::clearKeyboardShortcuts()
     }
 }
 
-// void MainWindow2::undoActSetText()
-// {
-//     if (mEditor->mBackupIndex < 0)
-//     {
-//         ui->actionUndo->setText(tr("Undo", "Menu item text"));
-//         ui->actionUndo->setEnabled(false);
-//     }
-//     else
-//     {
-//         ui->actionUndo->setText(QString("%1   %2 %3").arg(tr("Undo", "Menu item text"))
-//                                 .arg(mEditor->mBackupIndex + 1)
-//                                 .arg(mEditor->mBackupList.at(mEditor->mBackupIndex)->undoText));
-//         ui->actionUndo->setEnabled(true);
-//     }
-
-//     if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
-//     {
-//         ui->actionRedo->setText(QString("%1   %2 %3").arg(tr("Redo", "Menu item text"))
-//                                 .arg(mEditor->mBackupIndex + 2)
-//                                 .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
-//         ui->actionRedo->setEnabled(true);
-//     }
-//     else
-//     {
-//         ui->actionRedo->setText(tr("Redo", "Menu item text"));
-//         ui->actionRedo->setEnabled(false);
-//     }
-// }
-
 void MainWindow2::exportPalette()
 {
     QString filePath = FileDialog::getSaveFileName(this, FileType::PALETTE);
