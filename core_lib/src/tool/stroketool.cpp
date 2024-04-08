@@ -181,7 +181,7 @@ void StrokeTool::endStroke()
     mEditor->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->endStroke();
 
-     mEditor->backups()->backup(BackupType::STROKE);
+    mEditor->backups()->backup(BackupType::STROKE);
 }
 
 void StrokeTool::drawStroke()
