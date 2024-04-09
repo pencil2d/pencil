@@ -35,6 +35,7 @@ Q_MOC_INCLUDE("selectionmanager.h")
 Q_MOC_INCLUDE("soundmanager.h")
 Q_MOC_INCLUDE("overlaymanager.h")
 Q_MOC_INCLUDE("clipboardmanager.h")
+Q_MOC_INCLUDE("backupmanager.h")
 #endif
 
 class QClipboard;
@@ -268,8 +269,6 @@ private:
 
     QList<QTemporaryDir*> mTemporaryDirs;
 
-    // backup
-    void clearUndoStack();
     void updateAutoSaveCounter();
 };
 

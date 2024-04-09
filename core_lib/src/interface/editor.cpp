@@ -1063,8 +1063,3 @@ bool Editor::backup(int layerNumber, int frameNumber, const QString &undoText)
     updateAutoSaveCounter();
     return didBackup;
 }
-
-void Editor::clearUndoStack()
-{
-    backups()->clearStack();
-}
