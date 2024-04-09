@@ -67,6 +67,7 @@ bool BackupManager::init()
 
 Status BackupManager::load(Object* /*o*/)
 {
+    clearStack();
     return Status::OK;
 }
 

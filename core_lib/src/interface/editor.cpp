@@ -56,7 +56,6 @@ Editor::Editor(QObject* parent) : QObject(parent)
 Editor::~Editor()
 {
     // a lot more probably needs to be cleaned here...
-    clearUndoStack();
     clearTemporary();
 }
 
@@ -554,7 +553,6 @@ Status Editor::setObject(Object* newObject)
         return Status::SAFE;
     }
 
-    clearUndoStack();
     mObject.reset(newObject);
 
     updateObject();
