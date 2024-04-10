@@ -337,6 +337,10 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
 
     const bool isDrawing = mTiledBuffer->isValid();
 
+    if (mRenderTransform) {
+        vectorImage->setSelectionTransformation(mSelectionTransform);
+    }
+
     // Paint existing vector image to the painter
     vectorImage->paintImage(currentVectorPainter, *mObject, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
 
@@ -348,8 +352,6 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
             for (const Tile* tile : tiles) {
                 currentVectorPainter.drawPixmap(tile->posF(), tile->pixmap());
             }
-        } else if (mRenderTransform) {
-            vectorImage->setSelectionTransformation(mSelectionTransform);
         }
     }
 
