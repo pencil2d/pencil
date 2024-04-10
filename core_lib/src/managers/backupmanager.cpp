@@ -83,6 +83,10 @@ Status BackupManager::save(Object* /*o*/)
 
 void BackupManager::backup(BackupType type)
 {
+    if (!newUndoRedoSystemEnabled()) {
+        return;
+    }
+
     switch (type)
     {
         case BackupType::STROKE: {
