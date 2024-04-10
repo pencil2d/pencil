@@ -49,12 +49,11 @@ void LayerBitmap::replaceLastBitmapAtFrame(const BitmapImage* replaceWithImage)
     *static_cast<BitmapImage*>(getLastKeyFrameAtPosition(replaceWithImage->pos())) = *replaceWithImage;
 }
 
-void LayerBitmap::putBitmapIntoFrame(KeyFrame* keyframe, int frameIndex)
+void LayerBitmap::putBitmapIntoFrame(BitmapImage* bitmapImage, int frameIndex)
 {
     BitmapImage* currentBitmap = getBitmapImageAtFrame(frameIndex);
 
-    BitmapImage newBitmap = *static_cast<BitmapImage*>(keyframe);
-    static_cast<BitmapImage*>(currentBitmap)->paste(&newBitmap);
+    static_cast<BitmapImage*>(currentBitmap)->paste(bitmapImage);
 }
 
 void LayerBitmap::repositionFrame(QPoint point, int frame)
