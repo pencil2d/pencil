@@ -298,20 +298,15 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
     painter.setOpacity(paintedImage->getOpacity() - (1.0-painter.opacity()));
     painter.setWorldMatrixEnabled(false);
 
+    currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
+
     if (isCurrentLayer && isDrawing)
     {
-        currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
-
         currentBitmapPainter.setCompositionMode(mOptions.cmBufferBlendMode);
         const auto tiles = mTiledBuffer->tiles();
         for (const Tile* tile : tiles) {
             currentBitmapPainter.drawPixmap(tile->posF(), tile->pixmap());
         }
-    } else {
-        // When we're drawing using a tool, the surface will be painted by the tiled buffer,
-        // and thus we don't want to paint the current image again
-        // When we're on another layer though, the tiled buffer is not used
-        currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
     }
 
     // We do not wish to draw selection transformations on anything but the current layer
@@ -344,14 +339,12 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     // Paint existing vector image to the painter
     vectorImage->paintImage(currentVectorPainter, *mObject, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
 
-    if (isCurrentLayer) {
-        if (isDrawing) {
-            currentVectorPainter.setCompositionMode(mOptions.cmBufferBlendMode);
+    if (isCurrentLayer && isDrawing) {
+        currentVectorPainter.setCompositionMode(mOptions.cmBufferBlendMode);
 
-            const auto tiles = mTiledBuffer->tiles();
-            for (const Tile* tile : tiles) {
-                currentVectorPainter.drawPixmap(tile->posF(), tile->pixmap());
-            }
+        const auto tiles = mTiledBuffer->tiles();
+        for (const Tile* tile : tiles) {
+            currentVectorPainter.drawPixmap(tile->posF(), tile->pixmap());
         }
     }
 
