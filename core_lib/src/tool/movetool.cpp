@@ -193,7 +193,6 @@ void MoveTool::transformSelection(const QPointF& pos, Qt::KeyboardModifiers keyM
         if (selectMan->getMoveMode() == MoveMode::ROTATION) {
             QPointF anchorPoint = selectMan->currentTransformAnchor();
             newAngle = selectMan->angleFromPoint(pos, anchorPoint) - mRotatedAngle;
-            mPreviousAngle = newAngle;
         }
 
         selectMan->adjustSelection(pos, mOffset, newAngle, rotationIncrement);
@@ -240,7 +239,7 @@ void MoveTool::beginInteraction(const QPointF& pos, Qt::KeyboardModifiers keyMod
     mOffset = selectMan->myTranslation();
 
     if(selectMan->getMoveMode() == MoveMode::ROTATION) {
-        mRotatedAngle = selectMan->angleFromPoint(pos, selectMan->currentTransformAnchor()) - mPreviousAngle;
+        mRotatedAngle = selectMan->angleFromPoint(pos, selectMan->currentTransformAnchor()) - selectMan->myRotation();
     }
 }
 
@@ -316,7 +315,6 @@ void MoveTool::applyTransformation()
     // This ensures that if the selection has been rotated, it will still fit the bounds of the image.
     selectMan->setSelection(selectMan->mapToSelection(QPolygonF(selectMan->mySelectionRect())).boundingRect());
     mRotatedAngle = 0;
-    mPreviousAngle = 0;
 }
 
 bool MoveTool::leavingThisTool()
