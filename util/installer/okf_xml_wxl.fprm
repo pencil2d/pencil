@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<its:rules xmlns:its="http://www.w3.org/2005/11/its"
+           xmlns:okp="okapi-framework:xmlfilter-options"
+           xmlns:wxl="http://wixtoolset.org/schemas/v4/wxl"
+           version="2.0">
+  <its:translateRule selector="/wxl:WixLocalization" translate="no"/>
+  <its:translateRule selector="//wxl:String[not(@Overridable) or @Overridable='yes']/@Value" translate="yes"/>
+  <its:idValueRule selector="//wxl:String[not(@Overridable) or @Overridable='yes']/@Value" idValue="../@Id"/>
+  <its:preserveSpaceRule selector="//wxl:String[not(@Overridable) or @Overridable='yes']/@Value" space="preserve"/>
+  <okp:options lineBreakAsCode="yes"/>
+  <!-- Transifex doesn't seem to support placeholders, so disable them for now -->
+  <okp:codeFinder useCodeFinder="no">#v1
+count.i=1
+rule0=\[[A-Z]\w*\]
+  </okp:codeFinder>
+</its:rules>

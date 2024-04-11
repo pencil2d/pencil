@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <?if $(sys.BUILDARCH)="x86" ?>
+    <?define OpenSSLSuffix = "" ?>
+  <?elseif $(sys.BUILDARCH)="x64" ?>
+    <?define OpenSSLSuffix = "-x64" ?>
+  <?else?>
+    <?error Unrecognized architecture ?>
+  <?endif?>
+  <?if $(Edition)="Release" ?>
+    <?define Name = "Pencil2D" ?>
+    <?define ExeName = "pencil2d" ?>
+    <?define IdEditionSuffix = ".Release" ?>
+    <?define UpgradeCode = "0E763ED3-AD30-4F27-A65C-B901D6F42AAD" ?>
+  <?elseif $(Edition)="Nightly" ?>
+    <?define Name = "Pencil2D Nightly" ?>
+    <?define ExeName = "pencil2d-nightly" ?>
+    <?define IdEditionSuffix = ".Nightly" ?>
+    <?define Version = "0.0.$(NightlyBuildNumber)" ?>
+    <?define UpgradeCode = "FBFFF5CD-656C-4B8E-90A0-A72017C0116A" ?>
+  <?else?>
+    <?error Unrecognized Edition $(Edition) ?>
+  <?endif?>
+  <Package Name="$(Name)" Manufacturer="The Pencil2D Team"
+    UpgradeCode="$(UpgradeCode)"
+    Language="0" Codepage="0" Version="$(Version)"
+    InstallerVersion="500" ProductCode="$(ProductCode)" Scope="perUser">
+    <SummaryInformation Keywords="Installer" Description="$(Name) Installer" Codepage="0" />
+    <MajorUpgrade Schedule="afterInstallInitialize" IgnoreLanguage="yes" DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+    <Media Id="1" Cabinet="pencil2d.cab" EmbedCab="yes" />
+
+    <Property Id="ALLUSERS" Value="2" />
+    <Property Id="MSIINSTALLPERUSER" Value="1" />
+    <Property Id="ARPCOMMENTS" Value="2D animation software supporting bitmap and vector graphics" />
+    <Property Id="ARPCONTACT" Value="info@pencil2d.org" />
+    <Property Id="ARPHELPLINK" Value="https://www.pencil2d.org/doc/" />
+    <Property Id="ARPURLINFOABOUT" Value="https://www.pencil2d.org/" />
+    <Property Id="ARPURLUPDATEINFO" Value="https://www.pencil2d.org/download/" />
+    <Property Id="ARPPRODUCTICON" Value="pencil2d.exe" />
+    <Property Id="ARPNOMODIFY" Value="1" />
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLDIR]" After="CostFinalize" />
+
+    <Icon Id="pencil2d.exe" SourceFile="pencil2d.ico" />
+    <Icon Id="win_pclx_icon.ico" SourceFile="win_pclx_icon.ico" />
+    <Icon Id="win_pcl_icon.ico" SourceFile="win_pcl_icon.ico" />
+
+    <StandardDirectory Id="ProgramFiles6432Folder">
+      <Directory Id="INSTALLDIR" Name="$(Name)" />
+    </StandardDirectory>
+
+    <Feature Id="Pencil2D" ConfigurableDirectory="INSTALLDIR">
+      <Component Directory="INSTALLDIR">
+        <File Source="pencil2d.exe" Id="pencil2d.exe" Name="$(ExeName).exe" KeyPath="yes">
+          <Shortcut Directory="ProgramMenuFolder" Name="$(Name)" Icon="pencil2d.exe" Advertise="yes">
+            <ShortcutProperty Key="System.AppUserModel.ID" Value="Pencil2D.Pencil2D$(IdEditionSuffix)" />
+          </Shortcut>
+        </File>
+
+        <ProgId Id="Pencil2D.Animation$(IdEditionSuffix)" Icon="win_pclx_icon.ico" Advertise="yes">
+          <Extension Id="pclx" Advertise="yes">
+            <MIME ContentType="application/x-pencil2d-pclx" Default="yes" />
+            <Verb Id="open" Argument="&quot;%1&quot;"/>
+          </Extension>
+        </ProgId>
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Pencil2D.Animation$(IdEditionSuffix)" Name="AppUserModelID" Type="string" Value="Pencil2D.Pencil2D$(IdEditionSuffix)" />
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Pencil2D.Animation$(IdEditionSuffix)" Name="FriendlyTypeName" Type="string" Value="@[#pencil2d.exe],-1" />
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Pencil2D.Animation$(IdEditionSuffix)\shell\open" Name="MultiSelectModel" Type="string" Value="single" />
+
+        <ProgId Id="Pencil2D.LegacyAnimation$(IdEditionSuffix)" Icon="win_pcl_icon.ico" Advertise="yes">
+          <Extension Id="pcl" Advertise="yes">
+            <MIME ContentType="application/x-pencil2d-pcl" Default="yes" />
+            <Verb Id="open" Argument="&quot;%1&quot;"/>
+          </Extension>
+        </ProgId>
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Pencil2D.LegacyAnimation$(IdEditionSuffix)" Name="AppUserModelID" Type="string" Value="Pencil2D.Pencil2D$(IdEditionSuffix)" />
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Pencil2D.LegacyAnimation$(IdEditionSuffix)" Name="FriendlyTypeName" Type="string" Value="@[#pencil2d.exe],-2" />
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Pencil2D.LegacyAnimation$(IdEditionSuffix)\shell\open" Name="MultiSelectModel" Type="string" Value="single" />
+
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe" Name="AppUserModelID" Type="string" Value="Pencil2D.Pencil2D$(IdEditionSuffix)" />
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe" Name="FriendlyAppName" Type="string" Value="@[#pencil2d.exe],-0" />
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe\shell\open" Type="string" Value="&quot;[#pencil2d.exe]&quot; &quot;%1&quot;" />
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe\shell\open" Name="MultiSelectModel" Type="string" Value="single" />
+        <RegistryKey Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe\SupportedTypes\.pclx" ForceCreateOnInstall="yes" />
+        <RegistryKey Root="HKMU" Key="SOFTWARE\Classes\Applications\$(ExeName).exe\SupportedTypes\.pcl" ForceCreateOnInstall="yes" />
+
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\$(ExeName).exe" Type="string" Value="[#pencil2d.exe]" />
+      </Component>
+      <Component Directory="DesktopFolder" Guid="BA837852-7D78-4ED4-BDBA-CAC6B314A4F7" Condition="DESKTOPSHORTCUT">
+        <Shortcut Name="$(Name)" Icon="pencil2d.exe" Target="[#pencil2d.exe]">
+          <ShortcutProperty Key="System.AppUserModel.ID" Value="Pencil2D.Pencil2D$(IdEditionSuffix)" />
+        </Shortcut>
+        <RegistryValue Root="HKMU" Key="SOFTWARE\Pencil\Pencil" Name="DesktopShortcutPresent" Type="integer" Value="1" />
+      </Component>
+      <Component Directory="INSTALLDIR">
+        <File Source="pencil2d.VisualElementsManifest.xml" Name="$(ExeName).VisualElementsManifest.xml" />
+      </Component>
+      <Component Directory="INSTALLDIR">
+        <File Source="resources.pri" />
+      </Component>
+      <ComponentGroupRef Id="resources" />
+      <Component Directory="INSTALLDIR">
+        <File Source="libcrypto-1_1$(OpenSSLSuffix).dll" />
+      </Component>
+      <Component Directory="INSTALLDIR">
+        <File Source="libssl-1_1$(OpenSSLSuffix).dll" />
+      </Component>
+      <Component Directory="INSTALLDIR" Subdirectory="plugins">
+        <File Source="plugins\ffmpeg.exe" />
+      </Component>
+      <ComponentGroupRef Id="windeployqt" />
+    </Feature>
+  </Package>
+</Wix>

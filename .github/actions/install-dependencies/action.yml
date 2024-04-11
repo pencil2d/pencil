@@ -9,15 +9,15 @@ inputs:
 runs:
   using: composite
   steps:
-  - run: ${GITHUB_ACTION_PATH}/install-dependencies.sh
-    shell: bash
-    env:
-      RUNNER_OS: ${{runner.os}}
-      INPUT_ARCH: ${{inputs.arch}}
-      INPUT_QT: ${{inputs.qt}}
   - if: runner.os == 'Windows'
     uses: jurplel/install-qt-action@v3
     with:
       arch: ${{inputs.arch}}
       version: ${{matrix.qt == 6 && '6.4.2' || '5.15.2'}}
       modules: ${{matrix.qt == 6 && 'qtmultimedia' || ''}}
+  - run: ${GITHUB_ACTION_PATH}/install-dependencies.sh
+    shell: bash
+    env:
+      RUNNER_OS: ${{runner.os}}
+      INPUT_ARCH: ${{inputs.arch}}
+      INPUT_QT: ${{inputs.qt}}

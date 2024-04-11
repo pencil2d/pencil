@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en" Language="9" xmlns="http://wixtoolset.org/schemas/v4/wxl">
+  <!-- Standard BA -->
+  <String Id="ConfirmCancelMessage" Value="Are you sure you want to cancel?" />
+  <String Id="FilesInUseTitle" Value="Files In Use" />
+  <String Id="FilesInUseLabel" Value="The following applications are using files that need to be updated:" />
+  <String Id="FilesInUseCloseRadioButton" Value="Close the &amp;applications and attempt to restart them." />
+  <String Id="FilesInUseDontCloseRadioButton" Value="&amp;Do not close applications. A reboot will be required." />
+  <String Id="FilesInUseRetryButton" Value="&amp;Retry" />
+  <String Id="FilesInUseIgnoreButton" Value="&amp;Ignore" />
+  <String Id="FilesInUseExitButton" Value="E&amp;xit" />
+  <String Id="FilesInUseNetfxCloseRadioButton" Value="Close the &amp;applications." />
+  <!-- BAFunctions -->
+  <String Id="CacheMessage" Value="Preparing files" />
+  <String Id="PauseAutomaticUpdatesMessage" Value="Pausing Windows automatic updates" />
+  <String Id="SystemRestorePointMessage" Value="Creating system restore point" />
+  <String Id="ExecuteUninstallPackagesMessage" Value="Uninstalling packages" />
+  <String Id="ExecuteInstallPackagesMessage" Value="Installing packages" />
+  <String Id="ExecuteModifyPackagesMessage" Value="Modifying packages" />
+  <String Id="ExecuteRepairPackagesMessage" Value="Repairing packages" />
+  <String Id="ExecuteUpgradePackagesMessage" Value="Upgrading packages" />
+  <!-- Theme -->
+  <String Id="Caption" Value="[WixBundleName] Setup" />
+  <String Id="Version" Value="Version [WixBundleVersion]" />
+  <String Id="VersionNightly" Value="Build [NightlyBuildNumber] ([NightlyBuildTimestamp])" />
+  <String Id="CheckingForUpdatesLabel" Value="Checking for updates" />
+  <String Id="UpdateButton" Value="&amp;Update to version [WixStdBAUpdateAvailable]" />
+  <String Id="HelpText" Value="/install | /repair | /uninstall | /layout [directory] &#x2013; install, repair, uninstall or create a complete local copy of the bundle in directory.&#xA;&#xA;/passive | /quiet &#x2013; suppress interactive prompts or both UI and prompts.&#xA;/norestart &#x2013; suppress any attempts to restart. By default UI will prompt before restart.&#xA;/log [logfile] &#x2013; log to a custom file. By default a log file is created in %TEMP%.&#xA;&#xA;InstallFolder=[directory] | DesktopShortcut=[0|1] &#x2013; Overwrite installation options." />
+  <String Id="InstallAcceptCheckbox" Value="I &amp;accept the terms and conditions of the GNU General Public License, version 2" />
+  <String Id="InstallLicenseLinkText" Value="View license terms" />
+  <String Id="InstallInstallButton" Value="&amp;Install [WixBundleName]" />
+  <String Id="InstallUpgradeButton" Value="&amp;Upgrade [WixBundleName]" />
+  <String Id="InstallOptionsButton" Value="Options" />
+  <String Id="OptionsLocationLabel" Value="Install location:" />
+  <String Id="OptionsBrowseButton" Value="&amp;Browse" />
+  <String Id="OptionsDesktopShortcutCheckbox" Value="Create &amp;desktop shortcut" />
+  <String Id="OptionsOkButton" Value="&amp;OK" />
+  <String Id="OptionsCancelButton" Value="&amp;Cancel" />
+  <String Id="ProgressLabel" Value="Status:" />
+  <String Id="ProgressActionText" Value="Initializing" />
+  <String Id="ProgressCancelButton" Value="&amp;Cancel" />
+  <String Id="ModifyRepairButton" Value="&amp;Repair" />
+  <String Id="ModifyUninstallButton" Value="&amp;Uninstall" />
+  <String Id="SuccessText" Value="[WixBundleName] was successfully set up." />
+  <String Id="SuccessLayoutText" Value="[WixBundleName] was successfully layouted." />
+  <String Id="SuccessUninstallText" Value="[WixBundleName] was successfully uninstalled." />
+  <String Id="SuccessCacheText" Value="[WixBundleName] was successfully cached." />
+  <String Id="SuccessInstallText" Value="[WixBundleName] was successfully installed." />
+  <String Id="SuccessUpgradeText" Value="[WixBundleName] was successfully upgraded." />
+  <String Id="SuccessModifyText" Value="[WixBundleName] was successfully modified." />
+  <String Id="SuccessRepairText" Value="[WixBundleName] was successfully repaired." />
+  <String Id="SuccessRestartText" Value="To start using [WixBundleName], please restart your computer." />
+  <String Id="SuccessUninstallRestartText" Value="To complete the removal of [WixBundleName], please restart your computer." />
+  <String Id="SuccessLaunchButton" Value="&amp;Launch [WixBundleName]" />
+  <String Id="SuccessRestartButton" Value="&amp;Restart computer" />
+  <String Id="FailureText" Value="Failed to set up [WixBundleName]." />
+  <String Id="FailureLayoutText" Value="Failed to layout [WixBundleName]." />
+  <String Id="FailureUninstallText" Value="Failed to uninstall [WixBundleName]." />
+  <String Id="FailureCacheText" Value="Failed to cache [WixBundleName]." />
+  <String Id="FailureInstallText" Value="Failed to install [WixBundleName]." />
+  <String Id="FailureUpgradeText" Value="Failed to upgrade [WixBundleName]." />
+  <String Id="FailureModifyText" Value="Failed to modify [WixBundleName]." />
+  <String Id="FailureRepairText" Value="Failed to repair [WixBundleName]." />
+  <String Id="FailureHyperlinkLogText" Value="One or more issues caused the operation to fail. Please fix the issues and then retry. For more information see the &lt;a href=&quot;#&quot;&gt;log file&lt;/a&gt;." />
+  <String Id="FailureRestartText" Value="To complete the rollback of [WixBundleName], please restart your computer." />
+  <String Id="FailureRestartButton" Value="&amp;Restart" />
+  <String Id="FailureCloseButton" Value="&amp;Close" />
+</WixLocalization>

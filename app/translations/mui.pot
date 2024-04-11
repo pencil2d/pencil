@@ -1,0 +1,27 @@
+#. extracted from data\mui.rc
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-22 15:26+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Accelerator-Marker: &\n"
+"X-Generator: Translate Toolkit 3.9.0\n"
+"X-Merge-On: location\n"
+
+#: STRINGTABLE.0
+msgid "Pencil2D"
+msgstr ""
+
+#: STRINGTABLE.1
+msgid "Pencil2D Animation"
+msgstr ""
+
+#: STRINGTABLE.2
+msgid "Pencil2D Animation (Old Format)"
+msgstr ""
