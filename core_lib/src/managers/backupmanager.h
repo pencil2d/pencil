@@ -40,6 +40,7 @@ class BackupElement;
 enum class BackupType {
     STROKE,
     POLYLINE,
+    SELECTION,
 };
 
 class BackupManager : public BaseManager
@@ -87,6 +88,7 @@ private: // functions
 
     void bitmap(const QString& description);
     void vector(const QString& description);
+    void selection(const QString& description);
 
     void legacyUndo();
     void legacyRedo();

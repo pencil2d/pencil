@@ -79,9 +79,6 @@ public:
     void undo() override;
     void redo() override;
 
-    void redoTransform(const TransformElement* childElem);
-    void undoTransform(const TransformElement* childElem);
-
 private:
     int oldFrameIndex = 0;
     int newFrameIndex = 0;
@@ -98,7 +95,6 @@ class VectorElement : public BackupElement
 public:
     VectorElement(const VectorImage* backupVector,
                      const int& backupLayerId,
-                     const DrawOnEmptyFrameAction& backupFrameAction,
                      QString description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
@@ -125,9 +121,8 @@ class TransformElement : public BackupElement
 public:
 
     enum { Id = 2 };
-    TransformElement(const KeyFrame* backupKeyFrame,
+    TransformElement(KeyFrame* backupKeyFrame,
                      const int backupLayerId,
-                     const DrawOnEmptyFrameAction& backupFrameAction,
                      const QRectF& backupSelectionRect,
                      const QPointF backupTranslation,
                      const qreal backupRotationAngle,
@@ -182,8 +177,6 @@ public:
 
     int oldLayerId = 0;
     int newLayerId = 0;
-
-    bool isFirstRedo = true;
 };
 
 #endif // BACKUPELEMENT_H

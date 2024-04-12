@@ -89,7 +89,8 @@ void BackupManager::backup(BackupType type)
 
     switch (type)
     {
-        case BackupType::STROKE: {
+        case BackupType::STROKE:
+        {
             Layer* currentLayer = editor()->layers()->currentLayer();
             if (currentLayer->type() == Layer::BITMAP) {
                 bitmap(tr("Bitmap stroke"));
@@ -100,7 +101,8 @@ void BackupManager::backup(BackupType type)
             }
             break;
         }
-        case BackupType::POLYLINE: {
+        case BackupType::POLYLINE:
+        {
             Layer* currentLayer = editor()->layers()->currentLayer();
             if (currentLayer->type() == Layer::BITMAP) {
                 bitmap(tr("Bitmap polyline"));
@@ -109,7 +111,19 @@ void BackupManager::backup(BackupType type)
             } else {
                 Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
             }
-        break;
+            break;
+        }
+        case BackupType::SELECTION:
+        {
+            Layer* currentLayer = editor()->layers()->currentLayer();
+            if (currentLayer->type() == Layer::BITMAP) {
+                selection(tr("Bitmap selection"));
+            } else if (currentLayer->type() == Layer::VECTOR) {
+                selection(tr("Vector selection"));
+            } else {
+                Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
+            }
+            break;
         }
         default:
             Q_ASSERT_X(false, "BackupManager", "Tried to make a backup for a case which hasn't been handled yet");
@@ -154,18 +168,18 @@ void BackupManager::bitmap(const QString& description)
 
     // if (mIsSelected)
     // {
-    //     new TransformElement(mKeyframe,
-    //                          mLayerId,
-    //                          mEmptyFrameSettingVal,
-    //                          mSelectionRect,
-    //                          mSelectionTranslation,
-    //                          mSelectionRotationAngle,
-    //                          mSelectionScaleX,
-    //                          mSelectionScaleY,
-    //                          mSelectionAnchor,
-    //                          description,
-    //                          editor(), element);
+        new TransformElement(mKeyframe,
+                             mLayerId,
+                             mSelectionRect,
+                             mSelectionTranslation,
+                             mSelectionRotationAngle,
+                             mSelectionScaleX,
+                             mSelectionScaleY,
+                             mSelectionAnchor,
+                             description,
+                             editor(), element);
     // }
+
     pushCommand(element);
 }
 
@@ -173,10 +187,25 @@ void BackupManager::vector(const QString& description)
 {
     if (mVector == nullptr) { return; }
     VectorElement* element = new VectorElement(mVector,
-                                                     mLayerId,
-                                                     mEmptyFrameSettingVal,
-                                                     description,
-                                                     editor());
+                                                 mLayerId,
+                                                 description,
+                                                 editor());
+    pushCommand(element);
+}
+
+void BackupManager::selection(const QString& description)
+{
+    TransformElement* element = new TransformElement(mKeyframe,
+                         mLayerId,
+                         mSelectionRect,
+                         mSelectionTranslation,
+                         mSelectionRotationAngle,
+                         mSelectionScaleX,
+                         mSelectionScaleY,
+                         mSelectionAnchor,
+                         description,
+                         editor());
+
     pushCommand(element);
 }
 

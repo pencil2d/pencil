@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "strokeinterpolator.h"
 #include "selectionmanager.h"
 #include "overlaymanager.h"
+#include "backupmanager.h"
 #include "scribblearea.h"
 #include "layervector.h"
 #include "layermanager.h"
@@ -161,6 +162,8 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
+    mEditor->backups()->backup(BackupType::SELECTION);
+
     if (mEditor->overlays()->anyOverlayEnabled())
     {
         mEditor->overlays()->setMoveMode(MoveMode::NONE);
@@ -209,6 +212,7 @@ void MoveTool::beginInteraction(const QPointF& pos, Qt::KeyboardModifiers keyMod
     QRectF selectionRect = selectMan->mySelectionRect();
     if (!selectionRect.isNull())
     {
+        mEditor->backups()->saveStates();
         mEditor->backup(typeName());
     }
 

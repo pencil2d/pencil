@@ -65,32 +65,15 @@ BitmapElement::BitmapElement(const BitmapImage* backupBitmap,
     newBitmap = static_cast<LayerBitmap*>(layer)->
             getBitmapImageAtFrame(newFrameIndex)->clone();
 
-    auto selectMan = editor->select();
-    if (selectMan->somethingSelected()) {
-        BitmapImage selectionBitmap = newBitmap->transformed(selectMan->mySelectionRect().toRect(),
-                                                              selectMan->selectionTransform(),
-                                                              false);
-
-        newBitmap->clear(selectMan->mySelectionRect().toRect());
-        newBitmap->paste(&selectionBitmap, QPainter::CompositionMode_SourceOver);
-    }
-
     setText(description);
 }
 
 void BitmapElement::undo()
 {
-    Layer* layer = editor()->layers()->findLayerById(oldLayerId);
+    QUndoCommand::undo();
 
-    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
-    if (childElem)
-    {
-        undoTransform(childElem);
-    }
-    else
-    {
-        static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(oldBitmap);
-    }
+    Layer* layer = editor()->layers()->findLayerById(oldLayerId);
+    static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(oldBitmap);
 
     editor()->scrubTo(/*oldLayerId, */oldFrameIndex);
 }
@@ -99,62 +82,16 @@ void BitmapElement::redo()
 {
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
-    const TransformElement* childElem = static_cast<const TransformElement*>(this->child(0));
-    if (childElem)
-    {
-        redoTransform(childElem);
-    }
-    else
-    {
-        Layer* layer = editor()->layers()->findLayerById(newLayerId);
-        static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(newBitmap);
-    }
+    QUndoCommand::redo();
+
+    Layer* layer = editor()->layers()->findLayerById(newLayerId);
+    static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(newBitmap);
 
     editor()->scrubTo(/*newLayerId, */newFrameIndex);
 }
 
-void BitmapElement::undoTransform(const TransformElement* childElem)
-{
-
-    BitmapImage* oldBitmapClone = oldBitmap->clone();
-
-    // make the cloned bitmap the new canvas image.
-    Layer* layer = editor()->layers()->findLayerById(oldLayerId);
-    static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(oldBitmapClone);
-
-    // set selections so the transform will be correct
-    auto selectMan = editor()->select();
-
-    selectMan->setSelection(childElem->oldSelectionRect);
-    selectMan->setTransformAnchor(childElem->oldAnchor);
-    selectMan->setTranslation(childElem->oldTranslation);
-    selectMan->setScale(childElem->oldScaleX, childElem->oldScaleY);
-    selectMan->setRotation(childElem->oldRotationAngle);
-
-    // editor()->canvas()->paintTransformedSelection(layer, oldBitmapClone, childElem->oldTransform, childElem->oldSelectionRect);
-}
-
-void BitmapElement::redoTransform(const TransformElement* childElem)
-{
-    Layer* layer = editor()->layers()->findLayerById(newLayerId);
-
-    BitmapImage* newBitmapClone = newBitmap->clone();
-
-    static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(newBitmapClone);
-
-    auto selectMan = editor()->select();
-    selectMan->setSelection(childElem->newSelectionRect);
-    selectMan->setTransformAnchor(childElem->newAnchor);
-    selectMan->setTranslation(childElem->newTranslation);
-    selectMan->setScale(childElem->newScaleX, childElem->newScaleY);
-    selectMan->setRotation(childElem->newRotationAngle);
-
-    // editor()->canvas()->paintTransformedSelection(layer, newBitmapClone, childElem->oldTransform, childElem->oldSelectionRect);
-}
-
 VectorElement::VectorElement(const VectorImage* backupVector,
                                    const int& backupLayerId,
-                                   const DrawOnEmptyFrameAction& backupFrameAction,
                                    QString description,
                                    Editor* editor,
                                    QUndoCommand* parent) : BackupElement(editor, parent)
@@ -180,6 +117,8 @@ void VectorElement::undo()
 {
     qDebug() << "BackupVectorElement: undo";
 
+    QUndoCommand::undo();
+
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
 
     static_cast<LayerVector*>(layer)->replaceLastVectorImageAtFrame(oldVector);
@@ -193,6 +132,8 @@ void VectorElement::redo()
 
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
+    QUndoCommand::redo();
+
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
 
     static_cast<LayerVector*>(layer)->replaceLastVectorImageAtFrame(newVector);
@@ -200,9 +141,8 @@ void VectorElement::redo()
     editor()->scrubTo(/*newLayerId, */newFrameIndex);
 }
 
-TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
+TransformElement::TransformElement(KeyFrame* backupKeyFrame,
                                    const int backupLayerId,
-                                   const DrawOnEmptyFrameAction& backupFrameAction,
                                    const QRectF& backupSelectionRect,
                                    const QPointF backupTranslation,
                                    const qreal backupRotationAngle,
@@ -238,19 +178,17 @@ TransformElement::TransformElement(const KeyFrame* backupKeyFrame,
 
     Layer* layer = editor->layers()->findLayerById(backupLayerId);
 
-    KeyFrame* oldKeyFrame = backupKeyFrame->clone();
-
     switch(layer->type())
     {
         case Layer::BITMAP:
         {
-            oldBitmap = static_cast<BitmapImage*>(oldKeyFrame)->clone();
+            oldBitmap = static_cast<BitmapImage*>(backupKeyFrame)->clone();
             newBitmap = static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(newFrameIndex)->clone();
             break;
         }
         case Layer::VECTOR:
         {
-            oldVector = static_cast<VectorImage*>(oldKeyFrame)->clone();
+            oldVector = static_cast<VectorImage*>(backupKeyFrame)->clone();
             newVector = static_cast<LayerVector*>(layer)->
                     getVectorImageAtFrame(newFrameIndex)->clone();
             break;
@@ -277,19 +215,17 @@ void TransformElement::undo()
 
 void TransformElement::redo()
 {
-    // if (isFirstRedo()) { setFirstRedo(false); return; }
+    if (isFirstRedo()) { setFirstRedo(false); return; }
 
-    // apply(newBitmap,
-    //       newVector,
-    //       newSelectionRect,
-    //       newSelectionRectTemp,
-    //       newTransformedSelectionRect,
-    //       newRotationAngle,
-    //       newScaleX,
-    //       newScaleY,
-    //       newIsSelected,
-    //       newTransform,
-    //       newLayerId);
+    apply(newBitmap,
+          newVector,
+          newSelectionRect,
+          newTranslation,
+          newRotationAngle,
+          newScaleX,
+          newScaleY,
+          newAnchor,
+          newLayerId);
 }
 
 void TransformElement::apply(const BitmapImage* bitmapImage,
@@ -303,46 +239,44 @@ void TransformElement::apply(const BitmapImage* bitmapImage,
                              const int layerId)
 {
 
-    // Layer* layer = editor()->layers()->findLayerById(layerId);
-    // Layer* currentLayer = editor()->layers()->currentLayer();
+    Layer* layer = editor()->layers()->findLayerById(layerId);
+    Layer* currentLayer = editor()->layers()->currentLayer();
 
-    // if (layer->type() != currentLayer->type())
-    // {
-    //     editor()->layers()->setCurrentLayer(layer);
-    // }
+    if (layer->type() != currentLayer->type())
+    {
+        editor()->layers()->setCurrentLayer(layer);
+    }
 
-    // auto selectMan = editor()->select();
-    // selectMan->setSelection(selectionRect);
-    // selectMan->setRotation(rotationAngle);
-    // selectMan->setScale(scaleX, scaleY);
-    // selectMan->setTranslation(translation);
-    // selectMan->setTransformAnchor(selectionAnchor);
+    int frameNumber = 0;
+    bool roundPixels = true;
+    switch(layer->type())
+    {
+        case Layer::BITMAP:
+        {
+            static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(bitmapImage);
+            frameNumber = bitmapImage->pos();
+            break;
+        }
+        case Layer::VECTOR:
+        {
+            LayerVector* vlayer = static_cast<LayerVector*>(layer);
+            vlayer->replaceLastVectorImageAtFrame(vectorImage);
+            frameNumber = vectorImage->pos();
+            roundPixels = false;
+            break;
+        }
+        default:
+            break;
+    }
 
-    // switch(layer->type())
-    // {
-    //     case Layer::BITMAP:
-    //     {
-    //         if (bitmapImage->isMinimallyBounded()) {
-    //             static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(bitmapImage);
-    //             KeyFrame* cKeyFrame = layer->getLastKeyFrameAtPosition(editor()->currentFrame());
-    //             // editor()->canvas()->paintTransformedSelection(layer,
-    //             //                                               cKeyFrame,
-    //             //                                               transform,
-    //             //                                               selectionRect);
-    //         }
-    //         break;
-    //     }
-    //     case Layer::VECTOR:
-    //     {
-    //         LayerVector* vlayer = static_cast<LayerVector*>(layer);
-    //         vlayer->replaceLastVectorImageAtFrame(vectorImage);
-    //         VectorImage* vecImage = vlayer->getLastVectorImageAtFrame(editor()->currentFrame(), 0);
-    //         // vecImage->setSelectionTransformation(transform); // Maybe not needed
-    //         editor()->updateFrame();
-    //         break;
-    //     }
-    //     default:
-    //         break;
+    auto selectMan = editor()->select();
+    selectMan->setSelection(selectionRect, roundPixels);
+    selectMan->setTransformAnchor(selectionAnchor);
+    selectMan->setTranslation(translation);
+    selectMan->setRotation(rotationAngle);
+    selectMan->setScale(scaleX, scaleY);
 
-    // }
+    selectMan->calculateSelectionTransformation();
+
+    emit editor()->frameModified(frameNumber);
 }
