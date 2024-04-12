@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include "basemanager.h"
 #include "preferencemanager.h"
 #include "layer.h"
-#include "direction.h"
 #include "movemode.h"
 #include "vectorselection.h"
 
@@ -106,24 +105,12 @@ private: // variables
     int mFrameIndex = 0;
     int mLayerIndex = 0;
 
-    qreal mViewRotation = 0;
-    qreal mViewScale = 0;
-    QPointF mViewTranslation;
-
-    QString mLayerName;
-
     Layer* mLayer = nullptr;
     BitmapImage* mBitmap = nullptr;
     VectorImage* mVector = nullptr;
     SoundClip* mClip = nullptr;
     Camera* mCamera = nullptr;
     KeyFrame* mKeyframe = nullptr;
-
-    QList<int> mFrameIndexes;
-
-    bool mIsSelected = false;
-
-    VectorSelection mVectorSelection;
 
     QRectF mSelectionRect = QRectF();
     qreal mSelectionRotationAngle = 0.0;
@@ -132,11 +119,6 @@ private: // variables
     QPointF mSelectionTranslation;
     QPointF mSelectionAnchor;
 
-    MoveMode mMoveMode;
-
-    Layer::LAYER_TYPE mLayerType;
-
-    DrawOnEmptyFrameAction mEmptyFrameSettingVal;
     const BackupElement* mBackupAtSave = nullptr;
 
     // Legacy system

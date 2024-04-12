@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include <QRectF>
 #include <QTransform>
 
-#include "direction.h"
 #include "movemode.h"
 #include "pencildef.h"
 #include "layer.h"

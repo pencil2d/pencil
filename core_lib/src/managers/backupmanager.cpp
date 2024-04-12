@@ -87,11 +87,11 @@ void BackupManager::backup(BackupType type)
         return;
     }
 
+    Layer* currentLayer = editor()->layers()->currentLayer();
     switch (type)
     {
         case BackupType::STROKE:
         {
-            Layer* currentLayer = editor()->layers()->currentLayer();
             if (currentLayer->type() == Layer::BITMAP) {
                 bitmap(tr("Bitmap stroke"));
             } else if (currentLayer->type() == Layer::VECTOR) {
@@ -103,7 +103,6 @@ void BackupManager::backup(BackupType type)
         }
         case BackupType::POLYLINE:
         {
-            Layer* currentLayer = editor()->layers()->currentLayer();
             if (currentLayer->type() == Layer::BITMAP) {
                 bitmap(tr("Bitmap polyline"));
             } else if (currentLayer->type() == Layer::VECTOR) {
@@ -115,7 +114,6 @@ void BackupManager::backup(BackupType type)
         }
         case BackupType::SELECTION:
         {
-            Layer* currentLayer = editor()->layers()->currentLayer();
             if (currentLayer->type() == Layer::BITMAP) {
                 selection(tr("Bitmap selection"));
             } else if (currentLayer->type() == Layer::VECTOR) {
@@ -166,19 +164,16 @@ void BackupManager::bitmap(const QString& description)
                                                editor(),
                                                description);
 
-    // if (mIsSelected)
-    // {
-        new TransformElement(mKeyframe,
-                             mLayerId,
-                             mSelectionRect,
-                             mSelectionTranslation,
-                             mSelectionRotationAngle,
-                             mSelectionScaleX,
-                             mSelectionScaleY,
-                             mSelectionAnchor,
-                             description,
-                             editor(), element);
-    // }
+    new TransformElement(mKeyframe,
+                         mLayerId,
+                         mSelectionRect,
+                         mSelectionTranslation,
+                         mSelectionRotationAngle,
+                         mSelectionScaleX,
+                         mSelectionScaleY,
+                         mSelectionAnchor,
+                         description,
+                         editor(), element);
 
     pushCommand(element);
 }
@@ -229,31 +224,15 @@ void BackupManager::saveStates()
     mLayer = editor()->layers()->currentLayer();
     mLayerId = mLayer->id();
 
-    mEmptyFrameSettingVal = static_cast<DrawOnEmptyFrameAction>(editor()->preference()->getInt(SETTING::DRAW_ON_EMPTY_FRAME_ACTION));
-
     mFrameIndex = editor()->currentFrame();
 
     auto selectMan = editor()->select();
-    mIsSelected = selectMan->somethingSelected();
     mSelectionRect = selectMan->mySelectionRect();
     mSelectionRotationAngle = selectMan->myRotation();
     mSelectionTranslation = selectMan->myTranslation();
     mSelectionAnchor = selectMan->currentTransformAnchor();
     mSelectionScaleX = selectMan->myScaleX();
     mSelectionScaleY = selectMan->myScaleY();
-    mMoveMode = selectMan->getMoveMode();
-    mVectorSelection = selectMan->vectorSelection;
-
-    mFrameIndexes = mLayer->getSelectedFramesByPos();
-
-    mLayerName = mLayer->name();
-    mLayerIndex = editor()->currentLayerIndex();
-    mLayerType = mLayer->type();
-
-    ViewManager* viewMgr = editor()->view();
-    mViewTranslation = viewMgr->translation();
-    mViewScale = viewMgr->scaling();
-    mViewRotation = viewMgr->rotation();
 
     if (mLayer->keyExists(mFrameIndex))
     {

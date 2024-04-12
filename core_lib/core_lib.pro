@@ -92,7 +92,6 @@ HEADERS +=  \
     src/util/cameraeasingtype.h \
     src/util/camerafieldoption.h \
     src/util/colordictionary.h \
-    src/util/direction.h \
     src/util/fileformat.h \
     src/util/filetype.h \
     src/util/mathutils.h \
