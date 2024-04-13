@@ -17,12 +17,9 @@ GNU General Public License for more details.
 
 #include "editor.h"
 
-#include <QApplication>
-#include <QClipboard>
 #include <QTimer>
 #include <QImageReader>
 #include <QDropEvent>
-#include <QMimeData>
 #include <QTemporaryDir>
 
 #include "object.h"
@@ -1218,7 +1215,7 @@ KeyFrame* Editor::addNewKey()
     return addKeyFrame(layers()->currentLayerIndex(), currentFrame());
 }
 
-KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
+KeyFrame* Editor::addKeyFrame(const int layerNumber, int frameIndex)
 {
     Layer* layer = mObject->getLayer(layerNumber);
     Q_ASSERT(layer);
@@ -1244,13 +1241,11 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         }
     }
 
-    bool ok = layer->addNewKeyFrameAt(frameIndex);
-    if (ok)
-    {
-        scrubTo(frameIndex); // currentFrameChanged() emit inside.
-        emit frameModified(frameIndex);
-        layers()->notifyAnimationLengthChanged();
-    }
+    const bool ok = layer->addNewKeyFrameAt(frameIndex);
+    Q_ASSERT(ok); // We already ensured that there is no keyframe at frameIndex, so this should always succeed
+    scrubTo(frameIndex); // currentFrameChanged() emit inside.
+    emit frameModified(frameIndex);
+    layers()->notifyAnimationLengthChanged();
     return layer->getKeyFrameAt(frameIndex);
 }
 
