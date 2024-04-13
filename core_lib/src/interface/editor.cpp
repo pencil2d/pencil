@@ -919,7 +919,13 @@ Status Editor::importBitmapImage(const QString& filePath)
     QImageReader reader(filePath);
 
     Q_ASSERT(layers()->currentLayer()->type() == Layer::BITMAP);
-    auto layer = static_cast<LayerBitmap*>(layers()->currentLayer());
+    const auto layer = static_cast<LayerBitmap*>(layers()->currentLayer());
+
+    if (!layer->visible())
+    {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return Status::SAFE;
+    }
 
     Status status = Status::OK;
     DebugDetails dd;
@@ -942,7 +948,7 @@ Status Editor::importBitmapImage(const QString& filePath)
             break;
         case QImageReader::UnsupportedFormatError:
             errorDesc = tr("Image format is not supported. Please convert the image file to one of the following formats and try again:\n%1")
-                        .arg((QString)reader.supportedImageFormats().join(", "));
+                        .arg(QString::fromUtf8(reader.supportedImageFormats().join(", ")));
             break;
         default:
             errorDesc = tr("An error has occurred while reading the image. Please check that the file is a valid image and try again.");
@@ -956,7 +962,8 @@ Status Editor::importBitmapImage(const QString& filePath)
 
     if (!layer->keyExists(mFrame))
     {
-        addNewKey();
+        const bool ok = addNewKey();
+        Q_ASSERT(ok);
     }
     BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(mFrame);
     BitmapImage importedBitmapImage(pos, img);
