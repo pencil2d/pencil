@@ -182,6 +182,12 @@ public: //slots
     void scrubForward();
     void scrubBackward();
 
+    /**
+     * Attempts to create a new keyframe at the current frame and layer. If the current frame already holds a keyframe,
+     * the new one will instead be created on the first empty frame that follows. If the current layer is not visible, a
+     * warning dialog will be shown to the user and no new keyframe is created.
+     * @return The newly created keyframe or `nullptr` if the layer is not visible
+     */
     KeyFrame* addNewKey();
     void removeKey();
 
@@ -268,7 +274,16 @@ private:
     bool mAutosaveNeverAskAgain = false;
 
     void makeConnections();
-    KeyFrame* addKeyFrame(int layerNumber, int frameNumber);
+    /**
+     * Attempts to create a new keyframe at the given position and layer. If a keyframe already exists at the position,
+     * the new one will instead be created on the first empty frame that follows. If the layer is not visible, a warning
+     * dialog will be shown to the user and no new keyframe is created.
+     * @param layerNumber The number of an existing layer on which the keyframe is to be created
+     * @param frameIndex The desired position of the new keyframe
+     * @return The newly created keyframe or `nullptr` if the layer is not visible
+     * @see Editor::addNewKey()
+     */
+    KeyFrame* addKeyFrame(int layerNumber, int frameIndex);
 
     QList<QTemporaryDir*> mTemporaryDirs;
 
