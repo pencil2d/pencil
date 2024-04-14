@@ -549,20 +549,19 @@ void ScribbleArea::wheelEvent(QWheelEvent* event)
 #endif
 
     const qreal currentScale = mEditor->view()->scaling();
+
     // From the pixelDelta documentation: On X11 this value is driver-specific and unreliable, use angleDelta() instead
+    int delta = 0;
     if (!isX11 && !pixels.isNull())
     {
-        // XXX: This pixel-based zooming algorithm currently has some shortcomings compared to the angle-based one:
-        //      Zooming in is faster than zooming out and scrolling twice with delta x yields different zoom than
-        //      scrolling once with delta 2x. Someone with the ability to test this code might want to "upgrade" it.
-        const int delta = pixels.y();
-        const qreal newScale = currentScale * (1 + ((delta * mDeltaFactor) * 0.01));
-        mEditor->view()->scaleAtOffset(newScale, offset);
+        delta = pixels.y();
     }
-    else if (!angle.isNull())
+    else if (!angle.isNull()) // Wheel based delta
     {
-        const int delta = angle.y();
-        // 12 rotation steps at "standard" wheel resolution (120/step) result in 100x zoom
+        delta = angle.y();
+    }
+
+    if (delta != 0) {
         const qreal newScale = currentScale * std::pow(100, (delta * mDeltaFactor) / (12.0 * 120));
         mEditor->view()->scaleAtOffset(newScale, offset);
     }
