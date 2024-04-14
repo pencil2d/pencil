@@ -17,12 +17,9 @@ GNU General Public License for more details.
 
 #include "editor.h"
 
-#include <QApplication>
-#include <QClipboard>
 #include <QTimer>
 #include <QImageReader>
 #include <QDropEvent>
-#include <QMimeData>
 #include <QTemporaryDir>
 
 #include "object.h"
@@ -588,7 +585,13 @@ Status Editor::importBitmapImage(const QString& filePath)
     QImageReader reader(filePath);
 
     Q_ASSERT(layers()->currentLayer()->type() == Layer::BITMAP);
-    auto layer = static_cast<LayerBitmap*>(layers()->currentLayer());
+    const auto layer = static_cast<LayerBitmap*>(layers()->currentLayer());
+
+    if (!layer->visible())
+    {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return Status::SAFE;
+    }
 
     Status status = Status::OK;
     DebugDetails dd;
@@ -611,7 +614,7 @@ Status Editor::importBitmapImage(const QString& filePath)
             break;
         case QImageReader::UnsupportedFormatError:
             errorDesc = tr("Image format is not supported. Please convert the image file to one of the following formats and try again:\n%1")
-                        .arg((QString)reader.supportedImageFormats().join(", "));
+                        .arg(QString::fromUtf8(reader.supportedImageFormats().join(", ")));
             break;
         default:
             errorDesc = tr("An error has occurred while reading the image. Please check that the file is a valid image and try again.");
@@ -625,7 +628,8 @@ Status Editor::importBitmapImage(const QString& filePath)
 
     if (!layer->keyExists(mFrame))
     {
-        addNewKey();
+        const bool ok = addNewKey();
+        Q_ASSERT(ok);
     }
     BitmapImage* bitmapImage = layer->getBitmapImageAtFrame(mFrame);
     BitmapImage importedBitmapImage(pos, img);
@@ -880,7 +884,7 @@ KeyFrame* Editor::addNewKey()
     return addKeyFrame(layers()->currentLayerIndex(), currentFrame());
 }
 
-KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
+KeyFrame* Editor::addKeyFrame(const int layerNumber, int frameIndex)
 {
     Layer* layer = mObject->getLayer(layerNumber);
     Q_ASSERT(layer);
@@ -906,13 +910,11 @@ KeyFrame* Editor::addKeyFrame(int layerNumber, int frameIndex)
         }
     }
 
-    bool ok = layer->addNewKeyFrameAt(frameIndex);
-    if (ok)
-    {
-        scrubTo(frameIndex); // currentFrameChanged() emit inside.
-        emit frameModified(frameIndex);
-        layers()->notifyAnimationLengthChanged();
-    }
+    const bool ok = layer->addNewKeyFrameAt(frameIndex);
+    Q_ASSERT(ok); // We already ensured that there is no keyframe at frameIndex, so this should always succeed
+    scrubTo(frameIndex); // currentFrameChanged() emit inside.
+    emit frameModified(frameIndex);
+    layers()->notifyAnimationLengthChanged();
     return layer->getKeyFrameAt(frameIndex);
 }
 
