@@ -94,8 +94,19 @@ public:
     */
     bool insertExposureAt(int position);
 
+    /**
+     * Creates a new keyframe at the given position, unless one already exists.
+     * @param position The position of the new keyframe
+     * @return false if a keyframe already exists at the position, true if the new keyframe was successfully added
+     */
     bool addNewKeyFrameAt(int position);
     void addOrReplaceKeyFrame(int position, KeyFrame* pKeyFrame);
+    /**
+     * Adds a keyframe at the given position, unless one already exists.
+     * @param position The new position of the keyframe
+     * @param pKeyFrame The keyframe to add. Its previous position will be overwritten
+     * @return false if a keyframe already exists at the position, true if the keyframe was successfully added
+     */
     virtual bool addKeyFrame(int position, KeyFrame* pKeyFrame);
     virtual bool removeKeyFrame(int position);
     bool swapKeyFrames(int position1, int position2);
