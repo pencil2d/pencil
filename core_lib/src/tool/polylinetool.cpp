@@ -100,7 +100,6 @@ bool PolylineTool::leavingThisTool()
     if (mPoints.size() > 0)
     {
         cancelPolyline();
-        clearToolData();
     }
     return true;
 }
@@ -117,8 +116,16 @@ QCursor PolylineTool::cursor()
 
 void PolylineTool::clearToolData()
 {
+    if (mPoints.empty()) {
+        return;
+    }
+
     mPoints.clear();
     emit isActiveChanged(POLYLINE, false);
+
+    // Clear the in-progress polyline from the bitmap buffer.
+    mScribbleArea->clearDrawingBuffer();
+    mScribbleArea->updateFrame();
 }
 
 void PolylineTool::pointerPressEvent(PointerEvent* event)
@@ -189,7 +196,6 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
     mEditor->backup(typeName());
 
     endPolyline(mPoints);
-    clearToolData();
 }
 
 
@@ -201,7 +207,6 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         if (mPoints.size() > 0)
         {
             endPolyline(mPoints);
-            clearToolData();
             return true;
         }
         break;
@@ -210,7 +215,6 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         if (mPoints.size() > 0)
         {
             cancelPolyline();
-            clearToolData();
             return true;
         }
         break;
@@ -269,9 +273,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 
 void PolylineTool::cancelPolyline()
 {
-    // Clear the in-progress polyline from the bitmap buffer.
-    mScribbleArea->clearDrawingBuffer();
-    mScribbleArea->updateFrame();
+    clearToolData();
 }
 
 void PolylineTool::endPolyline(QList<QPointF> points)
@@ -303,4 +305,6 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     }
     mScribbleArea->endStroke();
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+
+    clearToolData();
 }
