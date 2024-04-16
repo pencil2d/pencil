@@ -78,9 +78,6 @@ public:
     void undo() override;
     void redo() override;
 
-    int oldFrameIndex = 0;
-    int newFrameIndex = 0;
-
     int oldLayerId = 0;
     int newLayerId = 0;
 
@@ -97,13 +94,8 @@ public:
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
-    int newLayerIndex = 0;
-    int oldFrameIndex = 0;
-    int newFrameIndex = 0;
-
-    int newLayerId = 0;
     int oldLayerId = 0;
-    int emptyFrameSettingVal = -1;
+    int newLayerId = 0;
 
     VectorImage oldVector;
     VectorImage newVector;
@@ -145,9 +137,6 @@ public:
 
     int id() const override { return Id; }
 
-    int oldFrameIndex = 0;
-    int newFrameIndex = 0;
-
     QRectF oldSelectionRect;
     QRectF newSelectionRect;
 
@@ -165,7 +154,6 @@ public:
 
     qreal oldRotationAngle;
     qreal newRotationAngle;
-
 
     BitmapImage oldBitmap;
     BitmapImage newBitmap;

@@ -54,14 +54,12 @@ BitmapElement::BitmapElement(const BitmapImage* backupBitmap,
 {
 
     oldBitmap = *backupBitmap;
-    oldFrameIndex = oldBitmap.pos();
     oldLayerId = backupLayerId;
 
     Layer* layer = editor->layers()->currentLayer();
     newLayerId = layer->id();
-    newFrameIndex = editor->currentFrame();
     newBitmap = *static_cast<LayerBitmap*>(layer)->
-            getBitmapImageAtFrame(newFrameIndex);
+            getBitmapImageAtFrame(editor->currentFrame());
 
     setText(description);
 }
@@ -73,7 +71,7 @@ void BitmapElement::undo()
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
     static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(&oldBitmap);
 
-    editor()->scrubTo(/*oldLayerId, */oldFrameIndex);
+    editor()->scrubTo(oldBitmap.pos());
 }
 
 void BitmapElement::redo()
@@ -85,7 +83,7 @@ void BitmapElement::redo()
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
     static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(&newBitmap);
 
-    editor()->scrubTo(/*newLayerId, */newFrameIndex);
+    editor()->scrubTo(newBitmap.pos());
 }
 
 VectorElement::VectorElement(const VectorImage* backupVector,
@@ -96,17 +94,13 @@ VectorElement::VectorElement(const VectorImage* backupVector,
 {
 
     oldVector = *backupVector;
-    oldFrameIndex = oldVector.pos();
-
-    newLayerIndex = editor->layers()->currentLayerIndex();
-    newFrameIndex = editor->currentFrame();
 
     oldLayerId = backupLayerId;
     Layer* layer = editor->layers()->currentLayer();
     newLayerId = layer->id();
 
     newVector = *static_cast<LayerVector*>(layer)->
-            getVectorImageAtFrame(newFrameIndex);
+            getVectorImageAtFrame(editor->currentFrame());
 
     setText(description);
 }
@@ -121,7 +115,7 @@ void VectorElement::undo()
 
     static_cast<LayerVector*>(layer)->replaceLastVectorImageAtFrame(&oldVector);
 
-    editor()->scrubTo(/*oldLayerId, */oldFrameIndex);
+    editor()->scrubTo(oldVector.pos());
 }
 
 void VectorElement::redo()
@@ -136,7 +130,7 @@ void VectorElement::redo()
 
     static_cast<LayerVector*>(layer)->replaceLastVectorImageAtFrame(&newVector);
 
-    editor()->scrubTo(/*newLayerId, */newFrameIndex);
+    editor()->scrubTo(newVector.pos());
 }
 
 TransformElement::TransformElement(KeyFrame* backupKeyFrame,
@@ -154,7 +148,6 @@ TransformElement::TransformElement(KeyFrame* backupKeyFrame,
 
 
     oldLayerId = backupLayerId;
-    oldFrameIndex = backupKeyFrame->pos();
     oldSelectionRect = backupSelectionRect;
     oldAnchor = backupTransformAnchor;
     oldTranslation = backupTranslation;
@@ -164,7 +157,6 @@ TransformElement::TransformElement(KeyFrame* backupKeyFrame,
 
     Layer* newLayer = editor->layers()->currentLayer();
     newLayerId = newLayer->id();
-    newFrameIndex = editor->currentFrame();
 
     auto selectMan = editor->select();
     newSelectionRect = selectMan->mySelectionRect();
@@ -176,19 +168,20 @@ TransformElement::TransformElement(KeyFrame* backupKeyFrame,
 
     Layer* layer = editor->layers()->findLayerById(backupLayerId);
 
+    const int currentFrame = editor->currentFrame();
     switch(layer->type())
     {
         case Layer::BITMAP:
         {
             oldBitmap = *static_cast<BitmapImage*>(backupKeyFrame);
-            newBitmap = *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(newFrameIndex);
+            newBitmap = *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(currentFrame);
             break;
         }
         case Layer::VECTOR:
         {
             oldVector = *static_cast<VectorImage*>(backupKeyFrame);
             newVector = *static_cast<LayerVector*>(layer)->
-                    getVectorImageAtFrame(newFrameIndex);
+                    getVectorImageAtFrame(currentFrame);
             break;
         }
         default:
