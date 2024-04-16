@@ -29,12 +29,12 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "vectorselection.h"
 #include "preferencemanager.h"
+#include "bitmapimage.h"
+#include "vectorimage.h"
 
 class Editor;
 class BackupManager;
 class PreferenceManager;
-class BitmapImage;
-class VectorImage;
 class SoundClip;
 class Camera;
 class Layer;
@@ -78,15 +78,14 @@ public:
     void undo() override;
     void redo() override;
 
-private:
     int oldFrameIndex = 0;
     int newFrameIndex = 0;
 
     int oldLayerId = 0;
     int newLayerId = 0;
 
-    BitmapImage* oldBitmap = nullptr;
-    BitmapImage* newBitmap = nullptr;
+    BitmapImage oldBitmap;
+    BitmapImage newBitmap;
 };
 
 class VectorElement : public BackupElement
@@ -106,8 +105,8 @@ public:
     int oldLayerId = 0;
     int emptyFrameSettingVal = -1;
 
-    VectorImage* oldVector = nullptr;
-    VectorImage* newVector = nullptr;
+    VectorImage oldVector;
+    VectorImage newVector;
 
     void undo() override;
     void redo() override;
@@ -134,8 +133,8 @@ public:
 
     void undo() override;
     void redo() override;
-    void apply(const BitmapImage* bitmapImage,
-               const VectorImage* vectorImage,
+    void apply(const BitmapImage& bitmapImage,
+               const VectorImage& vectorImage,
                const QRectF& selectionRect,
                const QPointF translation,
                const qreal rotationAngle,
@@ -168,11 +167,11 @@ public:
     qreal newRotationAngle;
 
 
-    BitmapImage* oldBitmap = nullptr;
-    BitmapImage* newBitmap = nullptr;
+    BitmapImage oldBitmap;
+    BitmapImage newBitmap;
 
-    VectorImage* oldVector = nullptr;
-    VectorImage* newVector = nullptr;
+    VectorImage oldVector;
+    VectorImage newVector;
 
     int oldLayerId = 0;
     int newLayerId = 0;
