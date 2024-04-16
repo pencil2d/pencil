@@ -69,7 +69,7 @@ void BitmapElement::undo()
     QUndoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
-    static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(&oldBitmap);
+    static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&oldBitmap);
 
     editor()->scrubTo(oldBitmap.pos());
 }
@@ -81,7 +81,7 @@ void BitmapElement::redo()
     QUndoCommand::redo();
 
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
-    static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(&newBitmap);
+    static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&newBitmap);
 
     editor()->scrubTo(newBitmap.pos());
 }
@@ -113,7 +113,7 @@ void VectorElement::undo()
 
     Layer* layer = editor()->layers()->findLayerById(oldLayerId);
 
-    static_cast<LayerVector*>(layer)->replaceLastVectorImageAtFrame(&oldVector);
+    static_cast<LayerVector*>(layer)->replaceKeyFrame(&oldVector);
 
     editor()->scrubTo(oldVector.pos());
 }
@@ -128,7 +128,7 @@ void VectorElement::redo()
 
     Layer* layer = editor()->layers()->findLayerById(newLayerId);
 
-    static_cast<LayerVector*>(layer)->replaceLastVectorImageAtFrame(&newVector);
+    static_cast<LayerVector*>(layer)->replaceKeyFrame(&newVector);
 
     editor()->scrubTo(newVector.pos());
 }
@@ -244,14 +244,14 @@ void TransformElement::apply(const BitmapImage& bitmapImage,
     {
         case Layer::BITMAP:
         {
-            static_cast<LayerBitmap*>(layer)->replaceLastBitmapAtFrame(&bitmapImage);
+            static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&bitmapImage);
             frameNumber = bitmapImage.pos();
             break;
         }
         case Layer::VECTOR:
         {
             LayerVector* vlayer = static_cast<LayerVector*>(layer);
-            vlayer->replaceLastVectorImageAtFrame(&vectorImage);
+            vlayer->replaceKeyFrame(&vectorImage);
             frameNumber = vectorImage.pos();
             roundPixels = false;
             break;

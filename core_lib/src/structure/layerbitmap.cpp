@@ -44,11 +44,6 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
 
-void LayerBitmap::replaceLastBitmapAtFrame(const BitmapImage* replaceWithImage)
-{
-    *static_cast<BitmapImage*>(getLastKeyFrameAtPosition(replaceWithImage->pos())) = *replaceWithImage;
-}
-
 void LayerBitmap::putBitmapIntoFrame(BitmapImage* bitmapImage, int frameIndex)
 {
     BitmapImage* currentBitmap = getBitmapImageAtFrame(frameIndex);

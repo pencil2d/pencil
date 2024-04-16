@@ -232,6 +232,11 @@ bool Layer::removeKeyFrame(int position)
     return true;
 }
 
+void Layer::replaceKeyFrame(const KeyFrame* pKeyFrame)
+{
+    *getLastKeyFrameAtPosition(pKeyFrame->pos()) = *pKeyFrame;
+}
+
 void Layer::removeFromSelectionList(int position)
 {
     mSelectedFrames_byLast.removeAll(position);
