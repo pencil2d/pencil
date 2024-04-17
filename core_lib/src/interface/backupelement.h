@@ -19,16 +19,9 @@ GNU General Public License for more details.
 #ifndef BACKUPELEMENT_H
 #define BACKUPELEMENT_H
 
-#include <QObject>
 #include <QUndoCommand>
 #include <QRectF>
-#include <QTransform>
 
-#include "movemode.h"
-#include "pencildef.h"
-#include "layer.h"
-#include "vectorselection.h"
-#include "preferencemanager.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 
@@ -41,25 +34,21 @@ class Layer;
 class KeyFrame;
 class TransformElement;
 
-enum types { UNDEFINED,
-             ADD_KEY_MODIF,
-             REMOVE_KEY_MODIF
-           };
-
 class BackupElement : public QUndoCommand
 {
 public:
     explicit BackupElement(Editor* editor, QUndoCommand* parent = nullptr);
-    virtual ~BackupElement();
+    ~BackupElement() override;
 
+    void undo() override { Q_ASSUME(true); } // should never end here
+    void redo() override { Q_ASSUME(true); } // should never end here
+
+protected:
     Editor* editor() { return mEditor; }
 
     bool isFirstRedo() const { return mIsFirstRedo; }
-    void setFirstRedo(bool state) { mIsFirstRedo = state; }
+    void setFirstRedo(const bool state) { mIsFirstRedo = state; }
 
-    virtual int type() const { return UNDEFINED; }
-    virtual void undo() { Q_ASSUME(true); } // should never end here
-    virtual void redo() { Q_ASSUME(true); } // should never end here
 private:
     Editor* mEditor = nullptr;
     bool mIsFirstRedo = true;
@@ -70,14 +59,15 @@ class BitmapElement : public BackupElement
 
 public:
     BitmapElement(const BitmapImage* backupBitmap,
-                  const int backupLayerId,
+                  int backupLayerId,
+                  const QString& description,
                   Editor* editor,
-                  QString description,
                   QUndoCommand* parent = nullptr);
 
     void undo() override;
     void redo() override;
 
+private:
     int oldLayerId = 0;
     int newLayerId = 0;
 
@@ -90,19 +80,19 @@ class VectorElement : public BackupElement
 public:
     VectorElement(const VectorImage* backupVector,
                      const int& backupLayerId,
-                     QString description,
+                     const QString& description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
+    void undo() override;
+    void redo() override;
+
+private:
     int oldLayerId = 0;
     int newLayerId = 0;
 
     VectorImage oldVector;
     VectorImage newVector;
-
-    void undo() override;
-    void redo() override;
-
 };
 
 class TransformElement : public BackupElement
@@ -112,30 +102,32 @@ public:
 
     enum { Id = 2 };
     TransformElement(KeyFrame* backupKeyFrame,
-                     const int backupLayerId,
+                     int backupLayerId,
                      const QRectF& backupSelectionRect,
-                     const QPointF backupTranslation,
-                     const qreal backupRotationAngle,
-                     const qreal backupScaleX,
-                     const qreal backupScaleY,
-                     const QPointF backupTransformAnchor,
+                     QPointF backupTranslation,
+                     qreal backupRotationAngle,
+                     qreal backupScaleX,
+                     qreal backupScaleY,
+                     QPointF backupTransformAnchor,
                      const QString& description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
 
     void undo() override;
     void redo() override;
+
+    int id() const override { return Id; }
+
+private:
     void apply(const BitmapImage& bitmapImage,
                const VectorImage& vectorImage,
                const QRectF& selectionRect,
-               const QPointF translation,
-               const qreal rotationAngle,
-               const qreal scaleX,
-               const qreal scaleY,
-               const QPointF selectionAnchor,
-               const int layerId);
-
-    int id() const override { return Id; }
+               QPointF translation,
+               qreal rotationAngle,
+               qreal scaleX,
+               qreal scaleY,
+               QPointF selectionAnchor,
+               int layerId);
 
     QRectF oldSelectionRect;
     QRectF newSelectionRect;

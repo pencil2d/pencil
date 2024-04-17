@@ -312,7 +312,7 @@ void GeneralPage::newUndoRedoCheckBoxStateChanged(bool b)
         QMessageBox messageBox(this);
         messageBox.setIcon(QMessageBox::Warning);
         messageBox.setText(tr("Experimental feature!"));
-        messageBox.setInformativeText(tr("This feature is work in progress and may not currently allow for the same features as the current backup system. Once enabled, you'll need to restart the application to start using it. \n\nDo you still want to try?"));
+        messageBox.setInformativeText(tr("This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. \n\nDo you still want to try?"));
         messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 
         if (messageBox.exec() == QMessageBox::Yes) {

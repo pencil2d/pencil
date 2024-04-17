@@ -1060,8 +1060,7 @@ void MainWindow2::newObject()
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
 
-    mEditor->backups()->updateUndoAction(ui->actionUndo);
-    mEditor->backups()->updateRedoAction(ui->actionRedo);
+    updateBackupActionState();
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
@@ -1643,7 +1642,7 @@ void MainWindow2::createToolbars()
     mOverlayToolbar->setIconSize(QSize(22,22));
     mViewToolbar->setIconSize(QSize(22,22));
     mMainToolbar->setIconSize(QSize(22,22));
-    
+
     QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
     perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
     perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);

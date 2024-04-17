@@ -16,25 +16,17 @@ GNU General Public License for more details.
 
 */
 
-#include <QCoreApplication>
-#include "QProgressDialog"
 #include <QDebug>
 
 #include "layermanager.h"
-#include "backupmanager.h"
-#include "viewmanager.h"
 #include "selectionmanager.h"
 
 #include "layersound.h"
 #include "layerbitmap.h"
 #include "layervector.h"
-#include "layercamera.h"
 
 #include "editor.h"
 #include "backupelement.h"
-
-#include "soundclip.h"
-#include "camera.h"
 
 BackupElement::BackupElement(Editor* editor, QUndoCommand* parent) : QUndoCommand(parent)
 {
@@ -48,8 +40,8 @@ BackupElement::~BackupElement()
 
 BitmapElement::BitmapElement(const BitmapImage* backupBitmap,
                              const int backupLayerId,
+                             const QString& description,
                              Editor *editor,
-                             QString description,
                              QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
@@ -76,6 +68,7 @@ void BitmapElement::undo()
 
 void BitmapElement::redo()
 {
+    // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
     QUndoCommand::redo();
@@ -88,7 +81,7 @@ void BitmapElement::redo()
 
 VectorElement::VectorElement(const VectorImage* backupVector,
                                    const int& backupLayerId,
-                                   QString description,
+                                   const QString& description,
                                    Editor* editor,
                                    QUndoCommand* parent) : BackupElement(editor, parent)
 {
@@ -122,6 +115,7 @@ void VectorElement::redo()
 {
     qDebug() << "BackupVectorElement: redo";
 
+    // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
     QUndoCommand::redo();
@@ -206,6 +200,7 @@ void TransformElement::undo()
 
 void TransformElement::redo()
 {
+    // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
     apply(newBitmap,

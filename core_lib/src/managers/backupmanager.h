@@ -18,15 +18,14 @@ GNU General Public License for more details.
 #ifndef BACKUPMANAGER_H
 #define BACKUPMANAGER_H
 
-#include <QUndoStack>
-#include <QUndoView>
 #include "basemanager.h"
-#include "preferencemanager.h"
 #include "layer.h"
-#include "movemode.h"
-#include "vectorselection.h"
 
-#include <QAction>
+#include <QRectF>
+
+class QAction;
+class QUndoCommand;
+class QUndoStack;
 
 class BitmapImage;
 class VectorImage;
@@ -48,7 +47,7 @@ class BackupManager : public BaseManager
 
 public:
     explicit BackupManager(Editor* editor);
-    ~BackupManager();
+    ~BackupManager() override;
 
     bool init() override;
     Status load(Object*) override;
@@ -73,43 +72,44 @@ public:
 
     void legacyBackup(const QString& undoText);
     bool legacyBackup(int backupLayer, int backupFrame, const QString& undoText);
+    /**
+     * Restores integrity of the backup elements after a layer has been deleted.
+     * Removes backup elements affecting the deleted layer and adjusts the layer
+     * index on other backup elements as necessary.
+     *
+     * @param layerIndex The index of the layer that was deleted
+     *
+     * @warning This serves as a temporary hack to prevent crashes until #864 is
+     *          done (see #1412).
+     */
     void sanitizeLegacyBackupElementsAfterLayerDeletion(int layerIndex);
     void restoreLegacyKey();
 
     void rememberLastModifiedFrame(int layerNumber, int frameNumber);
 
-    void pushCommand(QUndoCommand* command);
-
-Q_SIGNALS:
+signals:
     void didUpdateUndoStack();
 
-private: // functions
+private:
+
+    // functions
 
     void bitmap(const QString& description);
     void vector(const QString& description);
     void selection(const QString& description);
 
+    void pushCommand(QUndoCommand* command);
+
     void legacyUndo();
     void legacyRedo();
 
-    bool newUndoRedoSystemEnabled() const;
-
-    void restoreKey(const BackupElement* element);
-    void restoreLayerKeys(const BackupElement* element);
-
-private: // variables
+    // variables
 
     QUndoStack* mUndoStack = nullptr;
 
     int mLayerId = 0;
-    int mFrameIndex = 0;
-    int mLayerIndex = 0;
 
-    Layer* mLayer = nullptr;
-    BitmapImage* mBitmap = nullptr;
-    VectorImage* mVector = nullptr;
-    SoundClip* mClip = nullptr;
-    Camera* mCamera = nullptr;
+    Layer::LAYER_TYPE mType = Layer::UNDEFINED;
     KeyFrame* mKeyframe = nullptr;
 
     QRectF mSelectionRect = QRectF();
@@ -122,7 +122,7 @@ private: // variables
     const BackupElement* mBackupAtSave = nullptr;
 
     // Legacy system
-    int mLegacyBackupIndex;
+    int mLegacyBackupIndex = -1;
     LegacyBackupElement* mLegacyBackupAtSave = nullptr;
     QList<LegacyBackupElement*> mLegacyBackupList;
 
