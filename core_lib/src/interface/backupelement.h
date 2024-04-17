@@ -96,8 +96,6 @@ class TransformElement : public BackupElement
 
 {
 public:
-
-    enum { Id = 2 };
     TransformElement(KeyFrame* backupKeyFrame,
                      int backupLayerId,
                      const QRectF& backupSelectionRect,
@@ -112,8 +110,6 @@ public:
 
     void undo() override;
     void redo() override;
-
-    int id() const override { return Id; }
 
 private:
     void apply(const BitmapImage& bitmapImage,
