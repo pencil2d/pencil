@@ -40,9 +40,6 @@ public:
     explicit BackupElement(Editor* editor, QUndoCommand* parent = nullptr);
     ~BackupElement() override;
 
-    void undo() override { Q_ASSUME(true); } // should never end here
-    void redo() override { Q_ASSUME(true); } // should never end here
-
 protected:
     Editor* editor() { return mEditor; }
 
