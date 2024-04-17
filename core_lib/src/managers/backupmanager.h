@@ -21,6 +21,8 @@ GNU General Public License for more details.
 #include "basemanager.h"
 #include "layer.h"
 
+#include <QRectF>
+
 class QAction;
 class QUndoCommand;
 class QUndoStack;
