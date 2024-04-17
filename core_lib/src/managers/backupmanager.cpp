@@ -244,6 +244,7 @@ QAction* BackupManager::createUndoAction(QObject* parent, const QString& descrip
         undoAction = mUndoStack->createUndoAction(parent, description);
     } else {
         undoAction = new QAction(parent);
+        undoAction->setDisabled(true);
     }
     undoAction->setText(description);
     undoAction->setIcon(icon);
@@ -263,6 +264,7 @@ QAction* BackupManager::createRedoAction(QObject* parent, const QString& descrip
         redoAction = mUndoStack->createRedoAction(parent, description);
     } else {
         redoAction = new QAction(parent);
+        redoAction->setDisabled(true);
     }
     redoAction->setText(description);
     redoAction->setIcon(icon);
