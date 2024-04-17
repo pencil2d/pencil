@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "editor.h"
 
+#include <QAction>
 #include <QDebug>
 #include <QSettings>
 
@@ -27,15 +28,12 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "soundmanager.h"
 #include "backupmanager.h"
-#include "viewmanager.h"
 #include "selectionmanager.h"
-#include "soundmanager.h"
 
 #include "backupelement.h"
 #include "legacybackupelement.h"
 
 #include "layerbitmap.h"
-#include "layercamera.h"
 #include "layervector.h"
 #include "layersound.h"
 
@@ -43,7 +41,6 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
-#include "camera.h"
 
 BackupManager::BackupManager(Editor* editor) : BaseManager(editor, "BackupManager")
 {
@@ -52,6 +49,11 @@ BackupManager::BackupManager(Editor* editor) : BaseManager(editor, "BackupManage
 
 BackupManager::~BackupManager()
 {
+    if (!mNewBackupSystemEnabled)
+    {
+        clearStack();
+    }
+    delete mUndoStack;
     qDebug() << "BackupManager: destroyed";
 }
 
@@ -73,7 +75,7 @@ Status BackupManager::load(Object* /*o*/)
 
 Status BackupManager::save(Object* /*o*/)
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         mBackupAtSave = latestBackupElement();
     } else {
         mLegacyBackupAtSave = mLegacyBackupList[mLegacyBackupIndex];
@@ -83,7 +85,7 @@ Status BackupManager::save(Object* /*o*/)
 
 void BackupManager::backup(BackupType type)
 {
-    if (!newUndoRedoSystemEnabled()) {
+    if (!mNewBackupSystemEnabled) {
         return;
     }
 
@@ -93,9 +95,9 @@ void BackupManager::backup(BackupType type)
         case BackupType::STROKE:
         {
             if (currentLayer->type() == Layer::BITMAP) {
-                bitmap(tr("Bitmap stroke"));
+                bitmap(tr("Bitmap Stroke"));
             } else if (currentLayer->type() == Layer::VECTOR) {
-                vector(tr("Vector stroke"));
+                vector(tr("Vector Stroke"));
             } else {
                 Q_ASSERT_X(false, "BackupManager", "A stroke can only be applied to either the Bitmap or Vector layer");
             }
@@ -104,9 +106,9 @@ void BackupManager::backup(BackupType type)
         case BackupType::POLYLINE:
         {
             if (currentLayer->type() == Layer::BITMAP) {
-                bitmap(tr("Bitmap polyline"));
+                bitmap(tr("Bitmap Polyline"));
             } else if (currentLayer->type() == Layer::VECTOR) {
-                vector(tr("Vector polyline"));
+                vector(tr("Vector Polyline"));
             } else {
                 Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
             }
@@ -115,9 +117,9 @@ void BackupManager::backup(BackupType type)
         case BackupType::SELECTION:
         {
             if (currentLayer->type() == Layer::BITMAP) {
-                selection(tr("Bitmap selection"));
+                selection(tr("Bitmap Selection"));
             } else if (currentLayer->type() == Layer::VECTOR) {
-                selection(tr("Vector selection"));
+                selection(tr("Vector Selection"));
             } else {
                 Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
             }
@@ -133,14 +135,9 @@ const BackupElement* BackupManager::latestBackupElement() const
     return static_cast<const BackupElement*>(mUndoStack->command(mUndoStack->index() - 1));
 }
 
-bool BackupManager::newUndoRedoSystemEnabled() const
-{
-    return mNewBackupSystemEnabled;
-}
-
 bool BackupManager::hasUnsavedChanges() const
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         return mBackupAtSave != latestBackupElement();
     } else {
         if (mLegacyBackupIndex >= 0) {
@@ -158,11 +155,11 @@ void BackupManager::pushCommand(QUndoCommand* command)
 
 void BackupManager::bitmap(const QString& description)
 {
-    if (mBitmap == nullptr) { return; }
-    BitmapElement* element = new BitmapElement(mBitmap,
+    if (mKeyframe == nullptr || mType != Layer::BITMAP) { return; }
+    BitmapElement* element = new BitmapElement(static_cast<BitmapImage*>(mKeyframe),
                                                mLayerId,
-                                               editor(),
-                                               description);
+                                               description,
+                                               editor());
 
     new TransformElement(mKeyframe,
                          mLayerId,
@@ -180,8 +177,8 @@ void BackupManager::bitmap(const QString& description)
 
 void BackupManager::vector(const QString& description)
 {
-    if (mVector == nullptr) { return; }
-    VectorElement* element = new VectorElement(mVector,
+    if (mKeyframe == nullptr || mType != Layer::VECTOR) { return; }
+    VectorElement* element = new VectorElement(static_cast<VectorImage*>(mKeyframe),
                                                  mLayerId,
                                                  description,
                                                  editor());
@@ -215,16 +212,11 @@ void BackupManager::saveStates()
         return;
     }
 
-    mBitmap = nullptr;
-    mVector = nullptr;
-    mCamera = nullptr;
-    mClip = nullptr;
     mKeyframe = nullptr;
 
-    mLayer = editor()->layers()->currentLayer();
-    mLayerId = mLayer->id();
-
-    mFrameIndex = editor()->currentFrame();
+    const Layer* layer = editor()->layers()->currentLayer();
+    mType = layer->type();
+    mLayerId = layer->id();
 
     auto selectMan = editor()->select();
     mSelectionRect = selectMan->mySelectionRect();
@@ -234,46 +226,21 @@ void BackupManager::saveStates()
     mSelectionScaleX = selectMan->myScaleX();
     mSelectionScaleY = selectMan->myScaleY();
 
-    if (mLayer->keyExists(mFrameIndex))
+    const int frameIndex = editor()->currentFrame();
+    if (layer->keyExists(frameIndex))
     {
-        mKeyframe = mLayer->getLastKeyFrameAtPosition(mFrameIndex)->clone();
+        mKeyframe = layer->getLastKeyFrameAtPosition(frameIndex)->clone();
     }
-    else if (mLayer->getKeyFrameWhichCovers(mFrameIndex) != nullptr)
+    else if (layer->getKeyFrameWhichCovers(frameIndex) != nullptr)
     {
-        mKeyframe = mLayer->getKeyFrameWhichCovers(mFrameIndex)->clone();
-    }
-
-    switch(mLayer->type())
-    {
-        case Layer::BITMAP:
-        {
-            mBitmap = static_cast<BitmapImage*>(mKeyframe);
-            break;
-        }
-        case Layer::VECTOR:
-        {
-            mVector = static_cast<VectorImage*>(mKeyframe);
-            break;
-        }
-        case Layer::SOUND:
-        {
-            mClip = static_cast<SoundClip*>(mKeyframe);
-            break;
-        }
-        case Layer::CAMERA:
-        {
-            mCamera = static_cast<Camera*>(mKeyframe);
-            break;
-        }
-        default:
-            break;
+        mKeyframe = layer->getKeyFrameWhichCovers(frameIndex)->clone();
     }
 }
 
 QAction* BackupManager::createUndoAction(QObject* parent, const QString& description, const QIcon& icon)
 {
     QAction* undoAction = nullptr;
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         undoAction = mUndoStack->createUndoAction(parent, description);
     } else {
         undoAction = new QAction(parent);
@@ -281,7 +248,7 @@ QAction* BackupManager::createUndoAction(QObject* parent, const QString& descrip
     undoAction->setText(description);
     undoAction->setIcon(icon);
 
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         // The new system takes care of this automatically
     } else {
         connect(undoAction, &QAction::triggered, this, &BackupManager::legacyUndo);
@@ -292,7 +259,7 @@ QAction* BackupManager::createUndoAction(QObject* parent, const QString& descrip
 QAction* BackupManager::createRedoAction(QObject* parent, const QString& description, const QIcon& icon)
 {
     QAction* redoAction = nullptr;
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         redoAction = mUndoStack->createRedoAction(parent, description);
     } else {
         redoAction = new QAction(parent);
@@ -300,7 +267,7 @@ QAction* BackupManager::createRedoAction(QObject* parent, const QString& descrip
     redoAction->setText(description);
     redoAction->setIcon(icon);
 
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         // The new system takes care of this automatically
     } else {
         connect(redoAction, &QAction::triggered, this, &BackupManager::legacyRedo);
@@ -310,7 +277,7 @@ QAction* BackupManager::createRedoAction(QObject* parent, const QString& descrip
 
 void BackupManager::updateUndoAction(QAction* undoAction)
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         // Not used
         // function can be removed when we have replaced the legacy system
     } else {
@@ -336,7 +303,7 @@ void BackupManager::updateUndoAction(QAction* undoAction)
 
 void BackupManager::updateRedoAction(QAction* redoAction)
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         // Not used
         // function can be removed when we have replaced the legacy system
     } else {
@@ -357,7 +324,7 @@ void BackupManager::updateRedoAction(QAction* redoAction)
 
 void BackupManager::clearStack()
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         mUndoStack->clear();
     } else {
         mLegacyBackupIndex = -1;
@@ -375,7 +342,7 @@ void BackupManager::clearStack()
 void BackupManager::legacyBackup(const QString& undoText)
 {
 
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         return;
     }
 
@@ -416,7 +383,7 @@ void BackupManager::legacyBackup(const QString& undoText)
 
 bool BackupManager::legacyBackup(int backupLayer, int backupFrame, const QString& undoText)
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         return false;
     }
 
@@ -530,7 +497,7 @@ bool BackupManager::legacyBackup(int backupLayer, int backupFrame, const QString
 
 void BackupManager::sanitizeLegacyBackupElementsAfterLayerDeletion(int layerIndex)
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         return;
     }
 
@@ -595,7 +562,7 @@ void BackupManager::sanitizeLegacyBackupElementsAfterLayerDeletion(int layerInde
 
 void BackupManager::restoreLegacyKey()
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         return;
     }
 
@@ -702,7 +669,7 @@ void BackupManager::legacyRedo()
 
 void BackupManager::rememberLastModifiedFrame(int layerNumber, int frameNumber)
 {
-    if (newUndoRedoSystemEnabled()) {
+    if (mNewBackupSystemEnabled) {
         // not required
     } else {
         mLegacyLastModifiedLayer = layerNumber;

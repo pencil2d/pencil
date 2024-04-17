@@ -507,7 +507,7 @@
           <item>
            <widget class="QCheckBox" name="newUndoRedoCheckBox">
             <property name="text">
-             <string>Enable new Backup System (experimental)</string>
+             <string>Enable New Undo/Redo System (Experimental)</string>
             </property>
            </widget>
           </item>

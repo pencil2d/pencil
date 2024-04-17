@@ -194,10 +194,3 @@ VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increme
 {
     return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
 }
-
-void LayerVector::putVectorImageIntoFrame(VectorImage* vectorImage, int frameIndex)
-{
-    VectorImage* currentVectorImg = getVectorImageAtFrame(frameIndex);
-    static_cast<VectorImage*>(currentVectorImg)->paste(*vectorImage);
-}
-

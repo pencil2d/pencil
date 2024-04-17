@@ -187,7 +187,7 @@ public: //slots
      * @return The newly created keyframe or `nullptr` if the layer is not visible
      */
     KeyFrame* addNewKey();
-        /**
+    /**
      * Attempts to create a new keyframe at the given position and layer. If a keyframe already exists at the position,
      * the new one will instead be created on the first empty frame that follows. If the layer is not visible, a warning
      * dialog will be shown to the user and no new keyframe is created.
@@ -205,17 +205,6 @@ public: //slots
 
     void backup(const QString& undoText);
     bool backup(int layerNumber, int frameNumber, const QString& undoText);
-    /**
-     * Restores integrity of the backup elements after a layer has been deleted.
-     * Removes backup elements affecting the deleted layer and adjusts the layer
-     * index on other backup elements as necessary.
-     *
-     * @param layerIndex The index of the layer that was deleted
-     *
-     * @warning This serves as a temporary hack to prevent crashes until #864 is done
-     *          (see #1412).
-     */
-    void sanitizeBackupElementsAfterLayerDeletion(int layerIndex);
 
     void onCurrentLayerWillChange(int index);
 
