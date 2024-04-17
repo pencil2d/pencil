@@ -252,6 +252,8 @@ void TransformElement::apply(const BitmapImage& bitmapImage,
             break;
         }
         default:
+            // Only canvas related KeyFrame types are relevant for transforms.
+            Q_UNREACHABLE();
             break;
     }
 
