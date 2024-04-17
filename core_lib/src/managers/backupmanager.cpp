@@ -75,7 +75,7 @@ Status BackupManager::load(Object* /*o*/)
 Status BackupManager::save(Object* /*o*/)
 {
     if (mNewBackupSystemEnabled) {
-        mBackupAtSave = latestBackupElement();
+        mUndoStack->setClean();
     } else {
         mLegacyBackupAtSave = mLegacyBackupList[mLegacyBackupIndex];
     }
@@ -137,7 +137,7 @@ const BackupElement* BackupManager::latestBackupElement() const
 bool BackupManager::hasUnsavedChanges() const
 {
     if (mNewBackupSystemEnabled) {
-        return mBackupAtSave != latestBackupElement();
+        return !mUndoStack->isClean();
     } else {
         if (mLegacyBackupIndex >= 0) {
             return mLegacyBackupAtSave != mLegacyBackupList[mLegacyBackupIndex];

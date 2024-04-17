@@ -119,8 +119,6 @@ private:
     QPointF mSelectionTranslation;
     QPointF mSelectionAnchor;
 
-    const BackupElement* mBackupAtSave = nullptr;
-
     // Legacy system
     int mLegacyBackupIndex = -1;
     LegacyBackupElement* mLegacyBackupAtSave = nullptr;
