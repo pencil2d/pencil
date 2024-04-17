@@ -280,7 +280,7 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer">
+        <spacer name="verticalSpacer1">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>
