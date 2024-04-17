@@ -53,7 +53,6 @@ BackupManager::~BackupManager()
     {
         clearStack();
     }
-    delete mUndoStack;
     qDebug() << "BackupManager: destroyed";
 }
 
