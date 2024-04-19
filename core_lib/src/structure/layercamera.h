@@ -28,6 +28,7 @@ class Camera;
 
 class LayerCamera : public Layer
 {
+    Q_OBJECT
 public:
     explicit LayerCamera(int id);
     ~LayerCamera() override;
