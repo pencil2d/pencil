@@ -28,168 +28,192 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="78"/>
+        <location filename="../app/src/actioncommands.cpp" line="123"/>
         <source>Importing movie...</source>
         <translation>Импорт фильма…</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="78"/>
-        <location filename="../app/src/actioncommands.cpp" line="200"/>
-        <location filename="../app/src/actioncommands.cpp" line="418"/>
+        <location filename="../app/src/actioncommands.cpp" line="89"/>
+        <location filename="../app/src/actioncommands.cpp" line="123"/>
+        <location filename="../app/src/actioncommands.cpp" line="246"/>
+        <location filename="../app/src/actioncommands.cpp" line="473"/>
         <source>Abort</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="86"/>
+        <location filename="../app/src/actioncommands.cpp" line="89"/>
+        <source>Importing Animated Image...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="131"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
         <translation>Вы импортируете много кадров, это может занять некоторое время. Продолжить?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="133"/>
+        <location filename="../app/src/actioncommands.cpp" line="179"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Звуковой слой отсутствует в качестве места назначения для вашего импорта. Создать новый звуковой слой?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="134"/>
+        <location filename="../app/src/actioncommands.cpp" line="180"/>
         <source>Create sound layer</source>
         <translation>Создать звуковой слой</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="135"/>
+        <location filename="../app/src/actioncommands.cpp" line="181"/>
         <source>Don&apos;t create layer</source>
         <translation>Не создавать слой</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="145"/>
+        <location filename="../app/src/actioncommands.cpp" line="191"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>Свойства слоя</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="146"/>
-        <location filename="../app/src/actioncommands.cpp" line="765"/>
-        <location filename="../app/src/actioncommands.cpp" line="778"/>
-        <location filename="../app/src/actioncommands.cpp" line="791"/>
-        <location filename="../app/src/actioncommands.cpp" line="804"/>
+        <location filename="../app/src/actioncommands.cpp" line="192"/>
+        <location filename="../app/src/actioncommands.cpp" line="847"/>
+        <location filename="../app/src/actioncommands.cpp" line="860"/>
+        <location filename="../app/src/actioncommands.cpp" line="873"/>
+        <location filename="../app/src/actioncommands.cpp" line="886"/>
         <source>Layer name:</source>
         <translation>Имя слоя:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="147"/>
+        <location filename="../app/src/actioncommands.cpp" line="193"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>Звуковой слой</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="200"/>
+        <location filename="../app/src/actioncommands.cpp" line="246"/>
         <source>Importing sound...</source>
         <translation>Импорт звука…</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="290"/>
+        <location filename="../app/src/actioncommands.cpp" line="287"/>
+        <source>Something went wrong</source>
+        <translation>Что-то пошло не так</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="287"/>
+        <location filename="../app/src/actioncommands.cpp" line="1024"/>
+        <source>You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="345"/>
         <source>Exporting movie</source>
         <translation>Экспорт фильма</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="334"/>
+        <location filename="../app/src/actioncommands.cpp" line="389"/>
         <source>Finished. Open file location?</source>
         <translation>Завершено. Открыть файл в Проводнике Windows?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="344"/>
+        <location filename="../app/src/actioncommands.cpp" line="399"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>Завершено. Открыть фильм сейчас?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="352"/>
+        <location filename="../app/src/actioncommands.cpp" line="407"/>
         <source>Unknown export error</source>
         <translation>Неизвестная ошибка экспорта</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="352"/>
+        <location filename="../app/src/actioncommands.cpp" line="407"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
         <translation>При экспорте не произошло ошибок, но найти выходной файл не удалось. Скорее всего, экспорт не был успешно завершён.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="418"/>
+        <location filename="../app/src/actioncommands.cpp" line="473"/>
         <source>Exporting image sequence...</source>
         <translation>Экспорт последовательности изображений...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="500"/>
-        <location filename="../app/src/actioncommands.cpp" line="919"/>
+        <location filename="../app/src/actioncommands.cpp" line="555"/>
+        <location filename="../app/src/actioncommands.cpp" line="1005"/>
+        <location filename="../app/src/actioncommands.cpp" line="1024"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="501"/>
+        <location filename="../app/src/actioncommands.cpp" line="556"/>
         <source>Unable to export image.</source>
         <translation>Не удалось экспортировать изображение.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="655"/>
+        <location filename="../app/src/actioncommands.cpp" line="712"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="656"/>
+        <location filename="../app/src/actioncommands.cpp" line="713"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="764"/>
-        <location filename="../app/src/actioncommands.cpp" line="777"/>
-        <location filename="../app/src/actioncommands.cpp" line="803"/>
+        <location filename="../app/src/actioncommands.cpp" line="753"/>
+        <source>%1 (copy)</source>
+        <comment>Default duplicate layer name</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="846"/>
+        <location filename="../app/src/actioncommands.cpp" line="859"/>
+        <location filename="../app/src/actioncommands.cpp" line="885"/>
         <source>Layer Properties</source>
         <translation>Свойства слоя</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="766"/>
+        <location filename="../app/src/actioncommands.cpp" line="848"/>
         <source>Bitmap Layer</source>
         <translation>Слой битовой карты</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="779"/>
+        <location filename="../app/src/actioncommands.cpp" line="861"/>
         <source>Vector Layer</source>
         <translation>Векторный слой</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="790"/>
+        <location filename="../app/src/actioncommands.cpp" line="872"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
         <translation>Свойства слоя</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="792"/>
+        <location filename="../app/src/actioncommands.cpp" line="874"/>
         <source>Camera Layer</source>
         <translation>Слой камеры</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="805"/>
+        <location filename="../app/src/actioncommands.cpp" line="887"/>
         <source>Sound Layer</source>
         <translation>Звуковой слой</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="820"/>
+        <location filename="../app/src/actioncommands.cpp" line="906"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Удалить слой</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="821"/>
+        <location filename="../app/src/actioncommands.cpp" line="907"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
         <translation>Удалить слой %1? Это действие нельзя отменить.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="830"/>
+        <location filename="../app/src/actioncommands.cpp" line="916"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Пожалуйста, оставьте хотя бы один слой камеры в проекте</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="919"/>
+        <location filename="../app/src/actioncommands.cpp" line="1005"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
         <translation>Временный каталог предназначен для использования только программой Pencil2D. Не изменяйте его, если вы не полностью уверены в своих действиях.</translation>
     </message>
@@ -197,57 +221,57 @@
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="33"/>
         <source>Pencil</source>
         <translation>Карандаш</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="34"/>
         <source>Eraser</source>
         <translation>Ластик</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="35"/>
         <source>Select</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="36"/>
         <source>Move</source>
         <translation>Перемещение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="37"/>
         <source>Hand</source>
         <translation>Рука</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="38"/>
         <source>Smudge</source>
         <translation>Коррекция</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="39"/>
         <source>Pen</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
         <source>Polyline</source>
         <translation>Ломаная</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Bucket</source>
         <translation>Заливка</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Eyedropper</source>
         <translation>Пипетка</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Brush</source>
         <translation>Кисть</translation>
     </message>
@@ -260,17 +284,12 @@
         <translation>Форма</translation>
     </message>
     <message>
-        <location filename="../app/ui/bucketoptionswidget.ui" line="42"/>
-        <source>Fill to</source>
-        <translation>Залить</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/bucketoptionswidget.ui" line="66"/>
+        <location filename="../app/ui/bucketoptionswidget.ui" line="48"/>
         <source>Reference</source>
         <translation>Ссылка</translation>
     </message>
     <message>
-        <location filename="../app/ui/bucketoptionswidget.ui" line="90"/>
+        <location filename="../app/ui/bucketoptionswidget.ui" line="72"/>
         <source>Blend mode</source>
         <translation>Режим смешивания</translation>
     </message>
@@ -292,73 +311,474 @@
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="52"/>
         <source>Current layer</source>
-        <translation>Текущий слой</translation>
-    </message>
-    <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="53"/>
-        <source>Layer below</source>
-        <translation>Слой ниже</translation>
-    </message>
-    <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="54"/>
-        <source>Fill to the current layer or the layer below</source>
-        <translation>Залить текущий слой или слой ниже</translation>
-    </message>
-    <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
-        <source>Current layer</source>
         <comment>Reference Layer Options</comment>
         <translation>Текущий слой</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="53"/>
         <source>All layers</source>
         <comment>Reference Layer Options</comment>
         <translation>Все слои</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="54"/>
         <source>Refers to the layer that used to flood fill from</source>
         <translation>Относится к используемому для заливку слою</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="60"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
         <source>Overlay</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Наложение</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="61"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
         <source>Replace</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Замена</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="62"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
         <source>Behind</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Позади</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="63"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="59"/>
         <source>Defines how the fill will behave when the new color is not opaque</source>
         <translation>Определяет поведение заливки в том случае, когда новый цвет не является непрозрачным</translation>
     </message>
 </context>
 <context>
+    <name>CameraContextMenu</name>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="30"/>
+        <source>Easing: frame %1 to %2</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="36"/>
+        <source>Selected: </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="40"/>
+        <source>Linear</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="42"/>
+        <source>In</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="43"/>
+        <source>Out</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="44"/>
+        <source>In-Out</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="45"/>
+        <source>Out-In</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="47"/>
+        <source>Slow</source>
+        <translation>Медленно</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="48"/>
+        <source>Moderate</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="49"/>
+        <source>Quick</source>
+        <translation>Оперативно</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="50"/>
+        <source>Fast</source>
+        <translation>Быстро</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="51"/>
+        <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
+        <source>Faster</source>
+        <translation>Ещё быстрее</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="53"/>
+        <source>Circle-based</source>
+        <translation>На основе круга</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="54"/>
+        <source>Overshoot</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="55"/>
+        <source>Elastic</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="56"/>
+        <source>Bounce</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="99"/>
+        <source>Transform</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="100"/>
+        <source>Reset all</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="102"/>
+        <source>Reset position</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="103"/>
+        <source>Reset scale</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="104"/>
+        <source>Reset rotation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="106"/>
+        <source>Align horizontally to frame %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="107"/>
+        <source>Align vertically to frame %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="109"/>
+        <source>Hold to keyframe %1</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>CameraEasingType</name>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="24"/>
+        <source>Linear</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="25"/>
+        <source>Normal Ease-in</source>
+        <translation>Нормальное замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="26"/>
+        <source>Normal Ease-out</source>
+        <translation>Нормальное замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="27"/>
+        <source>Normal Ease-in - Ease-out</source>
+        <translation>Нормальное замедление в начале — замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="28"/>
+        <source>Normal Ease-out - Ease-in</source>
+        <translation>Нормальное замедление в конце — замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="29"/>
+        <source>Quick Ease-in</source>
+        <translation>Оперативное замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="30"/>
+        <source>Quick Ease-out</source>
+        <translation>Оперативное замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="31"/>
+        <source>Quick Ease-in - Ease-out</source>
+        <translation>Оперативное замедление в начале — замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="32"/>
+        <source>Quick Ease-out - Ease-in</source>
+        <translation>Оперативное замедление в конце — замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="33"/>
+        <source>Fast Ease-in</source>
+        <translation>Быстрое замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="34"/>
+        <source>Fast Ease-out</source>
+        <translation>Быстрое замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="35"/>
+        <source>Fast Ease-in - Ease-out</source>
+        <translation>Быстрое замедление в начале — замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="36"/>
+        <source>Fast Ease-out - Ease-in</source>
+        <translation>Быстрое замедление в конце — замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="37"/>
+        <source>Faster Ease-in</source>
+        <translation>Более быстрое замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="38"/>
+        <source>Faster Ease-out</source>
+        <translation>Более быстрое замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="39"/>
+        <source>Faster Ease-in - Ease-out</source>
+        <translation>Более быстрое замедление в начале — замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="40"/>
+        <source>Faster Ease-out - Ease-in</source>
+        <translation>Более быстрое замедление в конце — замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="41"/>
+        <source>Slow Ease-in</source>
+        <translation>Медленное замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="42"/>
+        <source>Slow Ease-out</source>
+        <translation>Медленное замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="43"/>
+        <source>Slow Ease-in - Ease-out</source>
+        <translation>Медленное замедление в начале — замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="44"/>
+        <source>Slow Ease-out - Ease-in</source>
+        <translation>Медленное замедление в конце — замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="45"/>
+        <source>Fastest Ease-in</source>
+        <translation>Максимально быстрое замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="46"/>
+        <source>Fastest Ease-out</source>
+        <translation>Максимально быстрое замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="47"/>
+        <source>Fastest Ease-in - Ease-out</source>
+        <translation>Максимально быстрое замедление в начале — замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="48"/>
+        <source>Fastest Ease-out - Ease-in</source>
+        <translation>Максимально быстрое замедление в конце — замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="49"/>
+        <source>Circle-based Ease-in</source>
+        <translation>На основе круга: замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="50"/>
+        <source>Circle-based Ease-out</source>
+        <translation>На основе круга: замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="51"/>
+        <source>Circle-based Ease-in - Ease-out</source>
+        <translation>На основе круга: замедление в начале — замедление в конце</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="52"/>
+        <source>Circle-based Ease-out - Ease-in</source>
+        <translation>На основе круга: замедление в конце — замедление в начале</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="53"/>
+        <source>Elastic Ease-in</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="54"/>
+        <source>Elastic Ease-out</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="55"/>
+        <source>Elastic Ease-in - Ease-out</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="56"/>
+        <source>Elastic Ease-out - Ease-in</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="57"/>
+        <source>Overshoot Ease-in</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="58"/>
+        <source>Overshoot Ease-out</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="59"/>
+        <source>Overshoot Ease-in - Ease-out</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="60"/>
+        <source>Overshoot Ease-out - Ease-in</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="61"/>
+        <source>Bounce Ease-in</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="62"/>
+        <source>Bounce Ease-out</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="63"/>
+        <source>Bounce Ease-in - Ease-out</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="64"/>
+        <source>Bounce Ease-out - Ease-in</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
+    <name>CameraOptionsWidget</name>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="29"/>
+        <source>Transform</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="50"/>
+        <source>Reset scaling</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="67"/>
+        <source>Reset rotation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="84"/>
+        <source>Reset</source>
+        <translation>Сброс</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="91"/>
+        <source>Reset translation</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="108"/>
+        <source>Reset all transforms</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="111"/>
+        <source>Reset all</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="121"/>
+        <source>Camera path</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="144"/>
+        <source>Show interpolation path</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="147"/>
+        <source>Show path</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="155"/>
+        <source>Red</source>
+        <translation>Красный</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="160"/>
+        <source>Blue</source>
+        <translation>Синий</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="165"/>
+        <source>Green</source>
+        <translation>Зелёный</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="170"/>
+        <source>Black</source>
+        <translation>Чёрный</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="175"/>
+        <source>White</source>
+        <translation>Белый</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="200"/>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="203"/>
+        <source>Reset path</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
+        <location filename="../app/ui/camerapropertiesdialog.ui" line="14"/>
         <source>Camera Properties</source>
         <translation>Свойства камеры</translation>
     </message>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="22"/>
+        <location filename="../app/ui/camerapropertiesdialog.ui" line="22"/>
         <source>Camera name:</source>
         <translation>Имя камеры:</translation>
     </message>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="46"/>
+        <location filename="../app/ui/camerapropertiesdialog.ui" line="36"/>
         <source>Camera size:</source>
         <translation>Размер камеры:</translation>
     </message>
@@ -366,74 +786,74 @@
 <context>
     <name>CheckUpdatesDialog</name>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="45"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="46"/>
         <source>Checking for Updates...</source>
         <comment>status description in the check-for-update dialog</comment>
         <translation>Проверка обновлений...</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="57"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="58"/>
         <source>Download</source>
         <translation>Загрузить</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="58"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="59"/>
         <source>Close</source>
         <translation>Закрыть</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="111"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="112"/>
         <source>&lt;b&gt;You are using a Pencil2D nightly build&lt;/b&gt;</source>
         <translation>&lt;b&gt;Вы используете ночную сборку Pencil2D&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="112"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="113"/>
         <source>Please go %1 here %2 to check new nightly builds.</source>
         <translation>Пожалуйста, перейдите %1 сюда %2, чтобы проверить новые ночные сборки.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="122"/>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="131"/>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="140"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="123"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
         <source>&lt;b&gt;An error occurred while checking for updates&lt;/b&gt;</source>
         <comment>error msg of check-for-update</comment>
         <translation>&lt;b&gt;Произошла ошибка при проверке обновлений&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="123"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="124"/>
         <source>Please check your internet connection and try again later.</source>
         <comment>error msg of check-for-update</comment>
         <translation>Пожалуйста, проверьте подключение к Интернету и повторите попытку позже.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
         <source>Network response is empty</source>
         <comment>error msg of check-for-update</comment>
         <translation>Сетевой ответ пуст</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
         <source>Couldn&apos;t retrieve the version information</source>
         <comment>error msg of check-for-update</comment>
         <translation>Не удалось получить сведения о версии</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="177"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="178"/>
         <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
         <translation>&lt;b&gt;Доступна новая версия Pencil2D!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="178"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="179"/>
         <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
         <translation>Pencil2D %1 теперь доступен - у вас %2. Хотите скачать?</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="185"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="186"/>
         <source>&lt;b&gt;Pencil2D is up to date&lt;/b&gt;</source>
         <translation>&lt;b&gt;Pencil2D обновлён&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="186"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="187"/>
         <source>Version %1</source>
         <translation>Версия %1</translation>
     </message>
@@ -528,77 +948,77 @@
         <translation>Добавить цвет</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="76"/>
+        <location filename="../app/ui/colorpalette.ui" line="82"/>
         <source>Remove Color</source>
         <translation>Удалить цвет</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="130"/>
+        <location filename="../app/ui/colorpalette.ui" line="142"/>
         <source>Native color dialog window</source>
         <translation>Родное окно диалога цвета</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="267"/>
+        <location filename="../app/ui/colorpalette.ui" line="279"/>
         <source>List Mode</source>
         <translation>Режим списка</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="270"/>
+        <location filename="../app/ui/colorpalette.ui" line="282"/>
         <source>Show palette as a list</source>
         <translation>Показать палитру в виде списка</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="278"/>
+        <location filename="../app/ui/colorpalette.ui" line="290"/>
         <source>Grid Mode</source>
         <translation>Режим сетки</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="281"/>
+        <location filename="../app/ui/colorpalette.ui" line="293"/>
         <source>Show palette as icons</source>
         <translation>Показать палитру в виде значков</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="291"/>
+        <location filename="../app/ui/colorpalette.ui" line="303"/>
         <source>Small swatch</source>
         <translation>Маленький образец</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="294"/>
+        <location filename="../app/ui/colorpalette.ui" line="306"/>
         <source>Sets swatch size to: 16x16px</source>
         <translation>Устанавливает размер образца: 16x16px</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="302"/>
+        <location filename="../app/ui/colorpalette.ui" line="314"/>
         <source>Medium Swatch</source>
         <translation>Средний образец</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="305"/>
+        <location filename="../app/ui/colorpalette.ui" line="317"/>
         <source>Sets swatch size to: 26x26px</source>
         <translation>Устанавливает размер образца: 26x26px</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="316"/>
+        <location filename="../app/ui/colorpalette.ui" line="328"/>
         <source>Large Swatch</source>
         <translation>Большой образец</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="319"/>
+        <location filename="../app/ui/colorpalette.ui" line="331"/>
         <source>Sets swatch size to: 36x36px</source>
         <translation>Устанавливает размер образца: 36x36px</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="327"/>
+        <location filename="../app/ui/colorpalette.ui" line="339"/>
         <source>Fit Swatch</source>
         <translation>Образец под размер окна</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="330"/>
+        <location filename="../app/ui/colorpalette.ui" line="342"/>
         <source>Fit swatch to window (19-36 px)</source>
         <translation>Вместить образец в окно (19-36 px)</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="333"/>
+        <location filename="../app/ui/colorpalette.ui" line="345"/>
         <source>Swatch fits window</source>
         <translation>Образец вмещается в окно</translation>
     </message>
@@ -621,33 +1041,33 @@
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="272"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="273"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="266"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="267"/>
         <source>Color name</source>
         <translation>Имя цвета</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="640"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="644"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation>Цвет(а), которые вы собираетесь удалить, в настоящее время используются одним или несколькими штрихами.</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="641"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="645"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="642"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="646"/>
         <source>Delete</source>
         <translation>Удалить</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="658"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="662"/>
         <source>Palette Restriction</source>
         <translation>Ограничение палитры</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="659"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="663"/>
         <source>The palette requires at least one swatch to remain functional</source>
         <translation>Для работы палитры требуется как минимум один образец</translation>
     </message>
@@ -2007,42 +2427,42 @@
 <context>
     <name>CommandLineExporter</name>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="53"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="59"/>
         <source>Error: No input file specified. An input project file argument is required when output path(s) are specified.</source>
         <translation>Ошибка: не указан входной файл. При указании путей вывода требуется аргумент входного файла проекта.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="72"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="78"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
         <translation>Предупреждение: указанный слой камеры %1 не найден, игнорируется.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="104"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="110"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
         <translation>Предупреждение: выходной формат не указан или не поддерживается. Используется PNG.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="129"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="135"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
         <translation>Предупреждение: текущая версия программы не поддерживает прозрачность в файлах фильмов</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="132"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="138"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
         <translation>Экспорт фильма…</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="144"/>
-        <location filename="../app/src/commandlineexporter.cpp" line="168"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="150"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="174"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
         <translation>Готово.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="155"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="161"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
         <translation>Экспорт последовательности изображений…</translation>
@@ -2051,247 +2471,103 @@
 <context>
     <name>CommandLineParser</name>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="24"/>
+        <location filename="../app/src/commandlineparser.cpp" line="30"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
         <translation>Pencil2D — программа для рисования и анимации, которая работает в Mac OS X, Windows и Linux. С помощью неё можно создавать традиционную рисованную анимацию (мультфильмы) на основе как растровой, так и векторной графики.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="28"/>
+        <location filename="../app/src/commandlineparser.cpp" line="34"/>
         <source>Path to the input pencil file.</source>
         <translation>Путь к входному файлу программы.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="31"/>
         <location filename="../app/src/commandlineparser.cpp" line="37"/>
+        <location filename="../app/src/commandlineparser.cpp" line="43"/>
         <source>Render the file to &lt;output_path&gt;</source>
         <translation>Преобразовать файл для просмотра в &lt;путь_вывода&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="32"/>
         <location filename="../app/src/commandlineparser.cpp" line="38"/>
+        <location filename="../app/src/commandlineparser.cpp" line="44"/>
         <source>output_path</source>
         <translation>путь_вывода</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="45"/>
+        <location filename="../app/src/commandlineparser.cpp" line="51"/>
         <source>Name of the camera layer to use</source>
         <translation>Имя слоя камеры, который следует использовать</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="46"/>
+        <location filename="../app/src/commandlineparser.cpp" line="52"/>
         <source>layer_name</source>
         <translation>имя_слоя</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="50"/>
+        <location filename="../app/src/commandlineparser.cpp" line="56"/>
         <source>Width of the output frames</source>
         <translation>Ширина выходных кадров</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="51"/>
-        <location filename="../app/src/commandlineparser.cpp" line="56"/>
+        <location filename="../app/src/commandlineparser.cpp" line="57"/>
+        <location filename="../app/src/commandlineparser.cpp" line="62"/>
         <source>integer</source>
         <translation>целое_число</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="55"/>
+        <location filename="../app/src/commandlineparser.cpp" line="61"/>
         <source>Height of the output frames</source>
         <translation>Высота выходных кадров</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="60"/>
+        <location filename="../app/src/commandlineparser.cpp" line="66"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>Первый кадр, который следует включить в экспортируемый фильм</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="61"/>
-        <location filename="../app/src/commandlineparser.cpp" line="68"/>
+        <location filename="../app/src/commandlineparser.cpp" line="67"/>
+        <location filename="../app/src/commandlineparser.cpp" line="74"/>
         <source>frame</source>
         <translation>кадр</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="65"/>
+        <location filename="../app/src/commandlineparser.cpp" line="71"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
         <translation>Последний кадр, который вы хотите включить в экспортированный фильм. Также может быть последним анимационным или последним звуковым для автоматического использования, соответственно, анимации или звука</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="72"/>
+        <location filename="../app/src/commandlineparser.cpp" line="78"/>
         <source>Render transparency when possible</source>
         <translation>Визуализировать прозрачность, когда это возможно</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="99"/>
+        <location filename="../app/src/commandlineparser.cpp" line="105"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
         <translation>Предупреждение: значение ширины %1 не является целым числом, игнорируется.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="110"/>
+        <location filename="../app/src/commandlineparser.cpp" line="116"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
         <translation>Предупреждение: значение высоты %1 не является целым числом, игнорируется.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="121"/>
+        <location filename="../app/src/commandlineparser.cpp" line="127"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
         <translation>Предупреждение: начальное значение %1 не является целым числом, игнорируется.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="126"/>
+        <location filename="../app/src/commandlineparser.cpp" line="132"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
         <translation>Предупреждение: начальное значение должно быть по крайней мере 1, игнорируется.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="147"/>
+        <location filename="../app/src/commandlineparser.cpp" line="153"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
         <translation>Предупреждение: конечное значение %1 не является целым числом, последней анимацией или последним звуком, игнорируется.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="153"/>
+        <location filename="../app/src/commandlineparser.cpp" line="159"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
         <translation>Предупреждение: конечное значение %1 меньше начального значения %2, игнорируется.</translation>
-    </message>
-</context>
-<context>
-    <name>DisplayOption</name>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="14"/>
-        <source>Display</source>
-        <comment>Window title of display options like .</comment>
-        <translation>Отображение</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="72"/>
-        <source>Horizontal flip</source>
-        <translation>Отразить по горизонтали</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="104"/>
-        <source>Vertical flip</source>
-        <translation>Отразить по вертикали</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="107"/>
-        <location filename="../app/ui/displayoption.ui" line="139"/>
-        <location filename="../app/ui/displayoption.ui" line="165"/>
-        <location filename="../app/ui/displayoption.ui" line="191"/>
-        <location filename="../app/ui/displayoption.ui" line="217"/>
-        <location filename="../app/ui/displayoption.ui" line="243"/>
-        <location filename="../app/ui/displayoption.ui" line="269"/>
-        <location filename="../app/ui/displayoption.ui" line="292"/>
-        <location filename="../app/ui/displayoption.ui" line="315"/>
-        <location filename="../app/ui/displayoption.ui" line="338"/>
-        <location filename="../app/ui/displayoption.ui" line="361"/>
-        <source>...</source>
-        <translation>...</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="136"/>
-        <source>Show invisible lines</source>
-        <translation>Показать скрытые линии</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="162"/>
-        <source>Show outlines only</source>
-        <translation>Показать только контуры</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="188"/>
-        <source>Overlay shows field center</source>
-        <translation>Наложение показывает центр поля</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="214"/>
-        <source>Overlay shows field in Golden Ratio</source>
-        <translation>Наложение показывает поле в золотом сечении</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="240"/>
-        <source>Overlay shows field in thirds</source>
-        <translation>Наложение показывает поле третями</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="266"/>
-        <source>Overlay shows field safe areas</source>
-        <translation>Наложение показывает защищённые области поля</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="395"/>
-        <source>5 degrees</source>
-        <translation>5 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="398"/>
-        <source>Angles = 5 degrees</source>
-        <translation>Углы = 5 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="406"/>
-        <source>10 degrees</source>
-        <translation>10 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="409"/>
-        <source>Angles = 10 degrees</source>
-        <translation>Углы = 10 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="417"/>
-        <source>15 degrees</source>
-        <translation>15 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="420"/>
-        <source>Angles = 15 degrees</source>
-        <translation>Углы = 15 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="428"/>
-        <source>30 degrees</source>
-        <translation>30 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="431"/>
-        <source>Angles = 30 degrees</source>
-        <translation>Углы = 30 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="439"/>
-        <source>3 degrees</source>
-        <translation>3 градуса</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="442"/>
-        <source>Angles = 3 degrees</source>
-        <translation>Углы = 3 градуса</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="450"/>
-        <source>7.5 degrees</source>
-        <translation>7,5 градуса</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="453"/>
-        <source>Angles = 7.5 degrees</source>
-        <translation>Углы = 7,5 градуса</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="461"/>
-        <source>2 degrees</source>
-        <translation>2 градуса</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="464"/>
-        <source>Angles = 2 degrees</source>
-        <translation>Углы = 2 градуса</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="472"/>
-        <source>20 degrees</source>
-        <translation>20 градусов</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="475"/>
-        <source>Angles = 20 degrees</source>
-        <translation>Углы = 20 градусов</translation>
     </message>
 </context>
 <context>
@@ -2310,51 +2586,118 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="519"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="645"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="577"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="591"/>
+        <source>Paste from Previous Keyframe</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="689"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="737"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="746"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="755"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="787"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="711"/>
+        <source>Flip selection vertically</source>
+        <translation>Отразить выделение по вертикали</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="713"/>
+        <source>Flip selection horizontally</source>
+        <translation>Отразить выделение по горизонтали</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="729"/>
+        <source>Reposition frame</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="813"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="822"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="831"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="863"/>
         <source>Could not open file</source>
         <translation>Невозможно открыть файл</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="738"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="814"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>Выбранный вами файл является каталогом, поэтому его невозможно открыть. Если вы пытаетесь открыть проект, который использует старую структуру, пожалуйста, откройте файл, заканчивающийся на .pcl, а не каталог данных.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="747"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="823"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>Выбранный вами файл не существует, поэтому его невозможно открыть. Убедитесь, что вы ввели правильный путь и что файл доступен, и повторите попытку.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="756"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="832"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Эта программа не имеет разрешения на чтение выбранного вами файла. Пожалуйста, убедитесь, что у вас есть права на чтение этого файла, и попробуйте снова.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="788"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="864"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>При попытке загрузить файл произошла неизвестная ошибка, и загрузку выполнить не удалось.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="876"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="909"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="941"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1070"/>
+        <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="944"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1073"/>
+        <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
+%1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="948"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1077"/>
+        <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="951"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1001"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1031"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1046"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1053"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1080"/>
+        <source>Import failed</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="968"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="998"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1099"/>
         <source>Import Image</source>
         <translation>Импорт изображения</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1116"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1001"/>
+        <source>You cannot import images into a vector layer.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1031"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1046"/>
+        <source>You can only import images to a bitmap layer.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1053"/>
+        <source>The selected image has a format that does not support animation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1267"/>
         <source>Remove frame</source>
         <translation>Удалить кадр</translation>
     </message>
@@ -2428,47 +2771,52 @@
         <translation>TIFF</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="106"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="103"/>
+        <source>WEBP</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="111"/>
         <source>Transparency</source>
         <translation>Прозрачность</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="116"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="121"/>
         <source>Range</source>
         <translation>Диапазон</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="149"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="154"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation>Последний кадр, который вы хотите включить в экспортированный фильм</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="152"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="157"/>
         <source>End Frame</source>
         <translation>Конечный кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="177"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="182"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Конечный кадр установлен на последний окрашиваемый ключевой кадр (полезно, если вы хотите экспортировать только в последний анимированный кадр)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="183"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="188"/>
         <source>To the end of sound clips</source>
         <translation>К концу звуковых клипов</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="215"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="220"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>Первый кадр, который вы хотите включить в экспортированный фильм</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="223"/>
         <source>Start Frame</source>
         <translation>Начальный кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="238"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="243"/>
         <source>Export keyframes only</source>
         <translation>Экспортировать только ключевые кадры</translation>
     </message>
@@ -2572,163 +2920,158 @@
 <context>
     <name>FileDialog</name>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="141"/>
+        <location filename="../app/src/filedialog.cpp" line="167"/>
         <source>Open animation</source>
         <translation>Открыть анимацию</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="142"/>
+        <location filename="../app/src/filedialog.cpp" line="168"/>
         <source>Import image</source>
         <translation>Импорт изображения</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="143"/>
+        <location filename="../app/src/filedialog.cpp" line="169"/>
         <source>Import image sequence</source>
         <translation>Импорт последовательности изображений</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="144"/>
+        <location filename="../app/src/filedialog.cpp" line="170"/>
         <source>Import Animated GIF</source>
         <translation>Импорт анимированного GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="145"/>
+        <location filename="../app/src/filedialog.cpp" line="171"/>
+        <source>Import animated image</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="172"/>
         <source>Import movie</source>
         <translation>Импорт фильма</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="146"/>
+        <location filename="../app/src/filedialog.cpp" line="173"/>
         <source>Import sound</source>
         <translation>Импорт звука</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="147"/>
+        <location filename="../app/src/filedialog.cpp" line="174"/>
         <source>Open palette</source>
         <translation>Открыть палитру</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="156"/>
+        <location filename="../app/src/filedialog.cpp" line="183"/>
         <source>Save animation</source>
         <translation>Сохранить анимацию</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="157"/>
+        <location filename="../app/src/filedialog.cpp" line="184"/>
         <source>Export image</source>
         <translation>Экспорт изображения</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="158"/>
+        <location filename="../app/src/filedialog.cpp" line="185"/>
         <source>Export image sequence</source>
         <translation>Экспорт последовательности изображений</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="159"/>
+        <location filename="../app/src/filedialog.cpp" line="186"/>
         <source>Export Animated GIF</source>
         <translation>Экспорт анимированного GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="160"/>
+        <location filename="../app/src/filedialog.cpp" line="187"/>
+        <source>Export animated image</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="188"/>
         <source>Export movie</source>
         <translation>Экспорт фильма</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="161"/>
+        <location filename="../app/src/filedialog.cpp" line="189"/>
         <source>Export sound</source>
         <translation>Экспорт звука</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="162"/>
+        <location filename="../app/src/filedialog.cpp" line="190"/>
         <source>Export palette</source>
         <translation>Экспорт палитры</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="189"/>
+        <location filename="../app/src/filedialog.cpp" line="218"/>
         <source>Animated GIF</source>
         <translation>Анимированный GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="229"/>
-        <source>MyAnimation.pclx</source>
-        <translation>МояАнимация.pclx</translation>
+        <location filename="../app/src/filedialog.cpp" line="273"/>
+        <source>untitled</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="231"/>
-        <source>untitled.png</source>
-        <translation>безымянный.png</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialog.cpp" line="232"/>
-        <source>untitled.gif</source>
-        <translation>безымянный.gif</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialog.cpp" line="233"/>
-        <source>untitled.mp4</source>
-        <translation>безымянный.mp4</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialog.cpp" line="234"/>
-        <source>untitled.wav</source>
-        <translation>безымянный.wav</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialog.cpp" line="235"/>
-        <source>untitled.xml</source>
-        <translation>безымянный.xml</translation>
+        <location filename="../app/src/filedialog.cpp" line="280"/>
+        <source>MyAnimation</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>FileFormat</name>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
         <source>Pencil2D formats</source>
         <translation>Форматы Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="34"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
         <source>Pencil2D Project</source>
         <translation>Проект Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="34"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
         <source>Legacy Pencil2D Project</source>
         <translation>Устаревший проект Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="37"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
         <source>Movie formats</source>
         <translation>Форматы фильмов</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="42"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="45"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="43"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="46"/>
         <source>Image formats</source>
         <translation>Форматы изображений</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>Palette formats</source>
         <translation>Форматы палитр</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>Pencil2D Palette</source>
         <translation>Палитра Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>GIMP Palette</source>
         <translation>Палитра GIMP</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="51"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="52"/>
         <source>Animated GIF</source>
         <translation>Анимированный GIF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="54"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="55"/>
+        <source>Animated image formats</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="58"/>
         <source>Sound formats</source>
         <translation>Форматы звука</translation>
     </message>
@@ -2736,97 +3079,99 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="220"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="235"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="243"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="250"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="229"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="244"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="252"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="259"/>
         <source>Invalid Save Path</source>
         <translation>Недопустимый путь сохранения</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="221"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
         <source>The path is empty.</source>
         <translation>Путь пуст.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="236"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Путь (&quot;%1&quot;) указывает на каталог.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="244"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Папка (&quot;%1&quot;) не существует.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="251"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="260"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Путь (&quot;%1&quot;) не доступен для записи.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="287"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="296"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="297"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="306"/>
         <source>Cannot Create Data Directory</source>
         <translation>Не удаётся создать каталог данных</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="288"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>Не удалось создать каталог &quot;%1&quot;. Убедитесь, что у вас есть достаточные права.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="297"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="307"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; - это файл. Удалите файл и повторите попытку.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="325"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="340"/>
         <source>Miniz Error</source>
         <translation>Ошибка Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="326"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="331"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="341"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="356"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Возникла внутренняя ошибка. Возможно, файл не сохранён.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="340"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="330"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="355"/>
         <source>Internal Error</source>
         <translation>Внутренняя ошибка</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="511"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="524"/>
         <source>Could not open file</source>
         <translation>Невозможно открыть файл</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="521"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="534"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="526"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="539"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="532"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="545"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="940"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="976"/>
         <source>Bitmap Layer %1</source>
         <translation>Слой битовой карты %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="942"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="978"/>
         <source>Vector Layer %1</source>
         <translation>Векторный слой %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="944"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="980"/>
         <source>Sound Layer %1</source>
         <translation>Звуковой слой %1</translation>
     </message>
@@ -2942,8 +3287,8 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="120"/>
-        <source>Dotted Cursor</source>
-        <translation>Пунктирный курсор</translation>
+        <source>Canvas Cursor</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="130"/>
@@ -3021,17 +3366,27 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="416"/>
+        <source>Scroll Wheel Zoom</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="434"/>
+        <source>Invert Scroll Direction</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="444"/>
         <source>Advanced</source>
         <comment>groupBox title in Preference</comment>
         <translation>Расширенный</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="431"/>
+        <location filename="../app/ui/generalpage.ui" line="459"/>
         <source>Memory Cache Budget</source>
         <translation>Размер кэша памяти</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="462"/>
+        <location filename="../app/ui/generalpage.ui" line="490"/>
         <source>MB</source>
         <translation>МБ</translation>
     </message>
@@ -3166,12 +3521,12 @@
         <translation>Китайский (Тайвань)</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="192"/>
+        <location filename="../app/src/generalpage.cpp" line="195"/>
         <source>Restart Required</source>
         <translation>Необходим перезапуск</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="193"/>
+        <location filename="../app/src/generalpage.cpp" line="196"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Изменение языка вступит в силу после перезапуска Pencil2D</translation>
     </message>
@@ -3207,61 +3562,56 @@
 <context>
     <name>ImportImageSeqDialog</name>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="61"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="64"/>
         <source>Import Animated GIF</source>
         <translation>Импорт анимированного GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="63"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="67"/>
         <source>Import image sequence</source>
         <translation>Импорт последовательности изображений</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="72"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="70"/>
+        <source>Import animated image</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="79"/>
         <source>Import predefined keyframe set</source>
         <translation>Импортировать предустановленный набор ключевых кадров</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="73"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="80"/>
         <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
 The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
         <translation>Выберите изображение, которое соответствует шаблону: мой_файл000.png, например, Иван001.png 
 Средство импорта выполнит поиск изображений, которые соответствуют этому же шаблону. Результаты поиска показаны в расположенной ниже области предварительного просмотра.</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="172"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="179"/>
         <source>Importing image sequence...</source>
         <translation>Импорт последовательности изображений…</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="172"/>
-        <location filename="../app/src/importimageseqdialog.cpp" line="310"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="179"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="296"/>
         <source>Abort</source>
         <translation>Прервать</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="223"/>
-        <source>Warning</source>
-        <translation>Предупреждение</translation>
-    </message>
-    <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="224"/>
-        <source>Unable to import</source>
-        <translation>Не удалось импортировать</translation>
-    </message>
-    <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="310"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="296"/>
         <source>Importing images...</source>
         <translation>Импорт изображений…</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="366"/>
-        <location filename="../app/src/importimageseqdialog.cpp" line="391"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="356"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="381"/>
         <source>Invalid path</source>
         <translation>Недопустимый путь</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="367"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="357"/>
         <source>The following file did not meet the criteria: 
 %1 
 
@@ -3272,7 +3622,7 @@ Read the instructions and try again</source>
 Прочтите инструкции и попробуйте снова</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="392"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="382"/>
         <source>The following file(-s) did not meet the criteria: 
 %1</source>
         <translation>Следующие файлы не соответствуют шаблону: 
@@ -3328,17 +3678,17 @@ Read the instructions and try again</source>
         <translation>Импортировать слои</translation>
     </message>
     <message>
-        <location filename="../app/src/importlayersdialog.cpp" line="62"/>
+        <location filename="../app/src/importlayersdialog.cpp" line="63"/>
         <source>Choose file</source>
         <translation>Выбрать файл</translation>
     </message>
     <message>
-        <location filename="../app/src/importlayersdialog.cpp" line="125"/>
+        <location filename="../app/src/importlayersdialog.cpp" line="140"/>
         <source>Opening document...</source>
         <translation>Открытие документа…</translation>
     </message>
     <message>
-        <location filename="../app/src/importlayersdialog.cpp" line="125"/>
+        <location filename="../app/src/importlayersdialog.cpp" line="140"/>
         <source>Abort</source>
         <translation>Прервать</translation>
     </message>
@@ -3356,24 +3706,48 @@ Read the instructions and try again</source>
         <translation>Импортировать изображения относительно:</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="31"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
         <source>Center of current view</source>
         <translation>Центра текущего представления</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="32"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="35"/>
         <source>Center of canvas (0,0)</source>
         <translation>Центра холста (0,0)</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="33"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="36"/>
         <source>Center of camera, current frame</source>
         <translation>Центра камеры, текущий кадр</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="37"/>
         <source>Center of camera, follow camera</source>
         <translation>Центра камеры, следовать за камерой</translation>
+    </message>
+</context>
+<context>
+    <name>Layer</name>
+    <message>
+        <location filename="../core_lib/src/structure/layer.cpp" line="37"/>
+        <source>Undefined Layer</source>
+        <translation>Неопределённый слой</translation>
+    </message>
+</context>
+<context>
+    <name>LayerBitmap</name>
+    <message>
+        <location filename="../core_lib/src/structure/layerbitmap.cpp" line="28"/>
+        <source>Bitmap Layer</source>
+        <translation>Растровый слой</translation>
+    </message>
+</context>
+<context>
+    <name>LayerCamera</name>
+    <message>
+        <location filename="../core_lib/src/structure/layercamera.cpp" line="27"/>
+        <source>Camera Layer</source>
+        <translation>Слой камеры</translation>
     </message>
 </context>
 <context>
@@ -3461,6 +3835,22 @@ Read the instructions and try again</source>
     </message>
 </context>
 <context>
+    <name>LayerSound</name>
+    <message>
+        <location filename="../core_lib/src/structure/layersound.cpp" line="28"/>
+        <source>Sound Layer</source>
+        <translation>Звуковой слой</translation>
+    </message>
+</context>
+<context>
+    <name>LayerVector</name>
+    <message>
+        <location filename="../core_lib/src/structure/layervector.cpp" line="27"/>
+        <source>Vector Layer</source>
+        <translation>Векторный слой</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow2</name>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="14"/>
@@ -3493,874 +3883,908 @@ Read the instructions and try again</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="129"/>
+        <location filename="../app/ui/mainwindow2.ui" line="130"/>
         <source>View</source>
         <translation>Вид</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="133"/>
+        <location filename="../app/ui/mainwindow2.ui" line="134"/>
         <source>Onion Skin</source>
         <translation>Калька</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="140"/>
+        <location filename="../app/ui/mainwindow2.ui" line="141"/>
         <source>Zoom</source>
         <translation>Масштаб</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="152"/>
+        <location filename="../app/ui/mainwindow2.ui" line="157"/>
         <source>Layer Visibility</source>
         <translation>Видимость слоя</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="183"/>
+        <location filename="../app/ui/mainwindow2.ui" line="165"/>
+        <source>Overlays</source>
+        <translation>Наложения</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="169"/>
+        <source>Perspective Lines Angle</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="219"/>
         <source>Animation</source>
         <translation>Анимация</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="187"/>
+        <location filename="../app/ui/mainwindow2.ui" line="223"/>
         <source>Timeline Selection</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="218"/>
-        <location filename="../app/ui/mainwindow2.ui" line="873"/>
+        <location filename="../app/ui/mainwindow2.ui" line="255"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="236"/>
+        <location filename="../app/ui/mainwindow2.ui" line="273"/>
         <source>Layer</source>
         <translation>Слой</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="240"/>
+        <location filename="../app/ui/mainwindow2.ui" line="277"/>
         <source>Change line color</source>
         <translation>Изменить цвет линии</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="258"/>
-        <location filename="../app/ui/mainwindow2.ui" line="804"/>
+        <location filename="../app/ui/mainwindow2.ui" line="295"/>
+        <location filename="../app/ui/mainwindow2.ui" line="824"/>
         <source>Help</source>
         <translation>Помощь</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="275"/>
+        <location filename="../app/ui/mainwindow2.ui" line="312"/>
         <source>Windows</source>
         <translation>Окна</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="296"/>
+        <location filename="../app/ui/mainwindow2.ui" line="316"/>
+        <source>Toolbars</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="340"/>
         <source>New</source>
         <translation>Создать</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="305"/>
+        <location filename="../app/ui/mainwindow2.ui" line="349"/>
         <source>Open</source>
         <translation>Открыть</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="314"/>
+        <location filename="../app/ui/mainwindow2.ui" line="358"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="323"/>
+        <location filename="../app/ui/mainwindow2.ui" line="367"/>
         <source>Save As...</source>
         <translation>Сохранить как...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="332"/>
+        <location filename="../app/ui/mainwindow2.ui" line="372"/>
         <source>Exit</source>
         <translation>Выход</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="337"/>
-        <location filename="../app/ui/mainwindow2.ui" line="365"/>
+        <location filename="../app/ui/mainwindow2.ui" line="377"/>
+        <location filename="../app/ui/mainwindow2.ui" line="405"/>
         <source>Image Sequence...</source>
         <translation>Последовательность изображений...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="342"/>
-        <location filename="../app/ui/mainwindow2.ui" line="360"/>
+        <location filename="../app/ui/mainwindow2.ui" line="382"/>
+        <location filename="../app/ui/mainwindow2.ui" line="400"/>
         <source>Image...</source>
         <translation>Изображение...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="347"/>
+        <location filename="../app/ui/mainwindow2.ui" line="387"/>
         <source>Movie...</source>
         <translation>Ролик...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="355"/>
+        <location filename="../app/ui/mainwindow2.ui" line="395"/>
         <source>Palette</source>
         <translation>Палитра</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="370"/>
+        <location filename="../app/ui/mainwindow2.ui" line="410"/>
         <source>Movie Video...</source>
         <translation>Видео ролика…</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="375"/>
+        <location filename="../app/ui/mainwindow2.ui" line="415"/>
         <source>Sound...</source>
         <translation>Звук...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="380"/>
+        <location filename="../app/ui/mainwindow2.ui" line="420"/>
         <source>Image Predefined set...</source>
         <translation>Предустановленный набор изображений…</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="389"/>
+        <location filename="../app/ui/mainwindow2.ui" line="429"/>
         <source>Undo</source>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="398"/>
+        <location filename="../app/ui/mainwindow2.ui" line="438"/>
         <source>Redo</source>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="410"/>
+        <location filename="../app/ui/mainwindow2.ui" line="450"/>
         <source>Cut</source>
         <translation>Вырезать</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="422"/>
+        <location filename="../app/ui/mainwindow2.ui" line="462"/>
         <source>Copy</source>
         <translation>Копировать</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="434"/>
+        <location filename="../app/ui/mainwindow2.ui" line="474"/>
         <source>Paste</source>
         <translation>Вставить</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="439"/>
-        <source>Crop</source>
-        <translation>Обрезать</translation>
+        <location filename="../app/ui/mainwindow2.ui" line="1110"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1113"/>
+        <source>Paste from Previous Keyframe</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="444"/>
-        <source>Crop To Selection</source>
-        <translation>Кадрировать</translation>
+        <location filename="../app/ui/mainwindow2.ui" line="1125"/>
+        <source>Show Invisible Lines</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="449"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1137"/>
+        <source>Show Outlines Only</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1161"/>
+        <source>Thirds</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1173"/>
+        <source>Golden Ratio</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1185"/>
+        <source>Safe Areas</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1197"/>
+        <source>One Point Perspective</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1209"/>
+        <source>Two Point Perspective</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1221"/>
+        <source>Three Point Perspective</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1229"/>
+        <source>2°</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1237"/>
+        <source>3°</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1245"/>
+        <source>5°</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1253"/>
+        <source>7.5°</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1261"/>
+        <source>10°</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1269"/>
+        <source>15°</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1277"/>
+        <source>20°</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1285"/>
+        <source>30°</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="479"/>
         <source>Select All</source>
         <translation>Выделить всё</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="454"/>
+        <location filename="../app/ui/mainwindow2.ui" line="484"/>
         <source>Deselect All</source>
         <translation>Снять выделение</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="463"/>
-        <location filename="../app/ui/mainwindow2.ui" line="668"/>
+        <location filename="../app/ui/mainwindow2.ui" line="493"/>
         <source>Clear Frame</source>
         <translation>Очистить кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="468"/>
+        <location filename="../app/ui/mainwindow2.ui" line="498"/>
         <source>Preferences</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="476"/>
+        <location filename="../app/ui/mainwindow2.ui" line="506"/>
         <source>Reset Windows</source>
         <translation>Окна по умолчанию</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="485"/>
+        <location filename="../app/ui/mainwindow2.ui" line="515"/>
         <source>Zoom In</source>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="494"/>
+        <location filename="../app/ui/mainwindow2.ui" line="524"/>
         <source>Zoom Out</source>
         <translation>Отдалить</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="499"/>
+        <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Rotate Clockwise</source>
         <translation>Вращать по часовой стрелке</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="504"/>
+        <location filename="../app/ui/mainwindow2.ui" line="534"/>
         <source>Rotate Anticlockwise</source>
         <translation>Вращать против часовой стрелки</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="509"/>
+        <location filename="../app/ui/mainwindow2.ui" line="543"/>
         <source>Reset</source>
         <translation>Сброс</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="521"/>
+        <location filename="../app/ui/mainwindow2.ui" line="555"/>
         <source>Horizontal Flip</source>
         <translation>Отразить по горизонтали</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="533"/>
+        <location filename="../app/ui/mainwindow2.ui" line="567"/>
         <source>Vertical Flip</source>
         <translation>Отразить по вертикали</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="541"/>
+        <location filename="../app/ui/mainwindow2.ui" line="575"/>
         <source>Preview</source>
         <translation>Предпросмотр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="549"/>
+        <location filename="../app/ui/mainwindow2.ui" line="587"/>
         <source>Grid</source>
         <translation>Сетка</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="561"/>
+        <location filename="../app/ui/mainwindow2.ui" line="599"/>
         <source>Previous</source>
         <translation>Предыдущий кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="564"/>
+        <location filename="../app/ui/mainwindow2.ui" line="602"/>
         <source>Show previous onion skin</source>
         <translation>Показать предыдущую кальку</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="576"/>
+        <location filename="../app/ui/mainwindow2.ui" line="614"/>
         <source>Next</source>
         <translation>Следующий кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="579"/>
+        <location filename="../app/ui/mainwindow2.ui" line="617"/>
         <source>Show next onion skin</source>
         <translation>Показать следующую кальку</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="588"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1490"/>
+        <location filename="../app/ui/mainwindow2.ui" line="626"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1515"/>
         <source>Play</source>
         <translation>Воспроизведение</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="600"/>
+        <location filename="../app/ui/mainwindow2.ui" line="638"/>
         <source>Loop</source>
         <translation>Повтор</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="609"/>
+        <location filename="../app/ui/mainwindow2.ui" line="643"/>
         <source>Next Frame</source>
         <translation>Следующий кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="618"/>
+        <location filename="../app/ui/mainwindow2.ui" line="648"/>
         <source>Previous Frame</source>
         <translation>Предыдущий кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="623"/>
-        <source>Extend Frame</source>
-        <translation>Продлить кадр</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="632"/>
+        <location filename="../app/ui/mainwindow2.ui" line="657"/>
         <source>Add Frame</source>
         <translation>Добавить кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="641"/>
+        <location filename="../app/ui/mainwindow2.ui" line="666"/>
         <source>Duplicate Frame</source>
         <translation>Дублировать кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="650"/>
+        <location filename="../app/ui/mainwindow2.ui" line="675"/>
         <source>Remove Frame</source>
         <translation>Удалить кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="659"/>
+        <location filename="../app/ui/mainwindow2.ui" line="684"/>
         <source>Move</source>
         <translation>Перемещение</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="677"/>
+        <location filename="../app/ui/mainwindow2.ui" line="693"/>
         <source>Select</source>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="686"/>
+        <location filename="../app/ui/mainwindow2.ui" line="702"/>
         <source>Brush</source>
         <translation>Кисть</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="695"/>
+        <location filename="../app/ui/mainwindow2.ui" line="711"/>
         <source>Polyline</source>
         <translation>Ломаная</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="704"/>
+        <location filename="../app/ui/mainwindow2.ui" line="720"/>
         <source>Smudge</source>
         <translation>Коррекция</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="713"/>
+        <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>Pen</source>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="722"/>
+        <location filename="../app/ui/mainwindow2.ui" line="738"/>
         <source>Hand</source>
         <translation>Рука</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="731"/>
+        <location filename="../app/ui/mainwindow2.ui" line="747"/>
         <source>Pencil</source>
         <translation>Карандаш</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="740"/>
+        <location filename="../app/ui/mainwindow2.ui" line="756"/>
         <source>Bucket</source>
         <translation>Заливка</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="749"/>
+        <location filename="../app/ui/mainwindow2.ui" line="765"/>
         <source>Eyedropper</source>
         <translation>Пипетка</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="758"/>
+        <location filename="../app/ui/mainwindow2.ui" line="774"/>
         <source>Eraser</source>
         <translation>Ластик</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="767"/>
+        <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>New Bitmap Layer</source>
         <translation>Новый растровый слой</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="776"/>
+        <location filename="../app/ui/mainwindow2.ui" line="792"/>
         <source>New Vector Layer</source>
         <translation>Новый векторный слой</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="785"/>
+        <location filename="../app/ui/mainwindow2.ui" line="801"/>
         <source>New Sound Layer</source>
         <translation>Новый звуковой слой</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="794"/>
+        <location filename="../app/ui/mainwindow2.ui" line="810"/>
         <source>New Camera Layer</source>
         <translation>Новый слой камеры</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="799"/>
+        <location filename="../app/ui/mainwindow2.ui" line="819"/>
         <source>Delete Current Layer</source>
         <translation>Удалить текущий слой</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="809"/>
+        <location filename="../app/ui/mainwindow2.ui" line="829"/>
         <source>About</source>
         <translation>О программе</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="814"/>
-        <location filename="../app/ui/mainwindow2.ui" line="817"/>
+        <location filename="../app/ui/mainwindow2.ui" line="834"/>
+        <location filename="../app/ui/mainwindow2.ui" line="837"/>
         <source>Reset to default</source>
         <translation>Вернуть настройки по умолчанию</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="827"/>
-        <location filename="../app/ui/mainwindow2.ui" line="830"/>
+        <location filename="../app/ui/mainwindow2.ui" line="847"/>
+        <location filename="../app/ui/mainwindow2.ui" line="850"/>
         <source>Next Keyframe</source>
         <translation>Следующий ключевой кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="840"/>
-        <location filename="../app/ui/mainwindow2.ui" line="843"/>
+        <location filename="../app/ui/mainwindow2.ui" line="860"/>
+        <location filename="../app/ui/mainwindow2.ui" line="863"/>
         <source>Previous KeyFrame</source>
         <translation>Предыдущий ключевой кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="854"/>
-        <source>Multilayer Onion Skin</source>
-        <translation>Многослойная калька</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="865"/>
+        <location filename="../app/ui/mainwindow2.ui" line="874"/>
         <source>Range</source>
         <translation>Диапазон</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="881"/>
-        <source>Timeline</source>
-        <translation>Временная шкала</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="889"/>
-        <source>Options</source>
-        <translation>Параметры</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="897"/>
-        <source>Color Wheel</source>
-        <translation>Цветовой круг</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="905"/>
-        <source>Color Palette</source>
-        <translation>Палитра</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="913"/>
-        <source>Display Options</source>
-        <translation>Настройки отображения</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="918"/>
+        <location filename="../app/ui/mainwindow2.ui" line="879"/>
         <source>Flip X</source>
         <translation>Отразить по оси X</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="923"/>
+        <location filename="../app/ui/mainwindow2.ui" line="884"/>
         <source>Flip Y</source>
         <translation>Отразить по оси Y</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="928"/>
+        <location filename="../app/ui/mainwindow2.ui" line="889"/>
         <source>Move Frame Forward</source>
         <translation>Переместить кадр вперёд</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="933"/>
+        <location filename="../app/ui/mainwindow2.ui" line="894"/>
         <source>Move Frame Backward</source>
         <translation>Переместить кадр назад</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="938"/>
+        <location filename="../app/ui/mainwindow2.ui" line="899"/>
         <source>Pencil2D Website</source>
         <translation>Сайт Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="943"/>
+        <location filename="../app/ui/mainwindow2.ui" line="904"/>
         <source>Report a Bug</source>
         <translation>Сообщить о проблеме</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="948"/>
+        <location filename="../app/ui/mainwindow2.ui" line="909"/>
         <source>Quick Reference Guide</source>
         <translation>Краткое руководство</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="951"/>
+        <location filename="../app/ui/mainwindow2.ui" line="912"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="956"/>
-        <location filename="../app/ui/mainwindow2.ui" line="961"/>
+        <location filename="../app/ui/mainwindow2.ui" line="917"/>
+        <source>Animated Image...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="922"/>
         <source>Animated GIF...</source>
         <translation>Анимированный GIF...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="966"/>
+        <location filename="../app/ui/mainwindow2.ui" line="927"/>
         <source>Check for Updates</source>
         <translation>Проверить обновления</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="971"/>
+        <location filename="../app/ui/mainwindow2.ui" line="932"/>
         <source>Pencil2D Forum</source>
         <translation>Форум Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="976"/>
+        <location filename="../app/ui/mainwindow2.ui" line="937"/>
         <source>Pencil2D Discord</source>
         <translation>Pencil2D Discord-мессенджер</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="981"/>
+        <location filename="../app/ui/mainwindow2.ui" line="942"/>
         <source>200%</source>
         <translation>200%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="986"/>
+        <location filename="../app/ui/mainwindow2.ui" line="947"/>
         <source>300%</source>
         <translation>300%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="991"/>
+        <location filename="../app/ui/mainwindow2.ui" line="952"/>
         <source>400%</source>
         <translation>400%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="996"/>
+        <location filename="../app/ui/mainwindow2.ui" line="957"/>
         <source>50%</source>
         <translation>50%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1001"/>
+        <location filename="../app/ui/mainwindow2.ui" line="962"/>
         <source>33%</source>
         <translation>33%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1006"/>
+        <location filename="../app/ui/mainwindow2.ui" line="967"/>
         <source>25%</source>
         <translation>25%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1011"/>
+        <location filename="../app/ui/mainwindow2.ui" line="972"/>
         <source>100%</source>
         <translation>100%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1016"/>
+        <location filename="../app/ui/mainwindow2.ui" line="977"/>
         <source>Flip In-Between</source>
         <translation>Отразить в промежутке</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1021"/>
+        <location filename="../app/ui/mainwindow2.ui" line="982"/>
         <source>Flip Rolling</source>
         <translation>Отражённая прокатка</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1026"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1084"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1025"/>
         <source>Current layer only</source>
         <translation>Только текущий слой</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1031"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1092"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1033"/>
         <source>Relative</source>
         <translation>Относительно</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1036"/>
-        <source>All Layers</source>
-        <translation>Все слои</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1041"/>
+        <location filename="../app/ui/mainwindow2.ui" line="987"/>
         <source>Peg bar Alignment</source>
         <translation>Выравнивание панели штифтов</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1046"/>
+        <location filename="../app/ui/mainwindow2.ui" line="992"/>
         <source>Movie Audio...</source>
         <translation>Звук ролика…</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1051"/>
+        <location filename="../app/ui/mainwindow2.ui" line="997"/>
         <source>Append to Palette...</source>
         <translation>Добавить к палитре…</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1056"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1002"/>
         <source>Replace Palette...</source>
         <translation>Заменить палитру…</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1061"/>
-        <source>Other Palette format...</source>
-        <translation>Другой формат палитры…</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1066"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1007"/>
         <source>Current keyframe</source>
         <translation>Текущий ключевой кадр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1071"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1012"/>
         <source>All keyframes on layer</source>
         <translation>Все ключевые кадры на слое</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1076"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1017"/>
         <source>Layers from Project file...</source>
         <translation>Слои из файла проекта…</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1100"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1041"/>
         <source>All layers</source>
         <translation>Все слои</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1108"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1111"/>
-        <source>Onion Skins</source>
-        <translation>Кальки</translation>
+        <location filename="../app/ui/mainwindow2.ui" line="1046"/>
+        <source>Reposition Selected Frames</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1116"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1051"/>
         <source>Layer / Keyframe opacity</source>
         <translation>Непрозрачность слоя / ключевого кадра</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1121"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1056"/>
         <source>Open Temporary Directory</source>
         <translation>Открыть временный каталог</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1129"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1064"/>
         <source>Lock Windows</source>
         <translation>Закрепить окна</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1134"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1069"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1149"/>
         <source>Center</source>
         <translation>Центр</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1139"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1074"/>
         <source>Reset Rotation</source>
         <translation>Сбросить вращение</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1144"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1079"/>
         <source>Add Exposure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1149"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1084"/>
         <source>Subtract Exposure</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1154"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1089"/>
         <source>Reverse Frames Order</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1159"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1094"/>
         <source>Remove Frames</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1170"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1105"/>
         <source>Status Bar</source>
         <translation>Строка состояния</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="149"/>
+        <location filename="../app/src/mainwindow2.cpp" line="154"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Цветовая палитра: &lt;br&gt;используйте &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt; переключатель на курсоре</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="153"/>
+        <location filename="../app/src/mainwindow2.cpp" line="158"/>
         <source>Color inspector</source>
         <translation>Инспектор цвета</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="416"/>
+        <location filename="../app/src/mainwindow2.cpp" line="460"/>
         <source>Open Recent</source>
         <translation>Последние документы</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="444"/>
-        <location filename="../app/src/mainwindow2.cpp" line="468"/>
+        <location filename="../app/src/mainwindow2.cpp" line="485"/>
+        <location filename="../app/src/mainwindow2.cpp" line="509"/>
         <source>Dialog is already open!</source>
         <translation>Диалог уже открыт!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="580"/>
+        <location filename="../app/src/mainwindow2.cpp" line="531"/>
+        <source>Please select at least 2 frames!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="659"/>
         <source>Opening document...</source>
         <translation>Открытие документа...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="580"/>
-        <location filename="../app/src/mainwindow2.cpp" line="636"/>
-        <location filename="../app/src/mainwindow2.cpp" line="903"/>
+        <location filename="../app/src/mainwindow2.cpp" line="659"/>
+        <location filename="../app/src/mainwindow2.cpp" line="716"/>
         <source>Abort</source>
         <translation>Прервать</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="624"/>
-        <location filename="../app/src/mainwindow2.cpp" line="726"/>
-        <location filename="../app/src/mainwindow2.cpp" line="799"/>
-        <location filename="../app/src/mainwindow2.cpp" line="924"/>
+        <location filename="../app/src/mainwindow2.cpp" line="704"/>
+        <location filename="../app/src/mainwindow2.cpp" line="806"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="625"/>
+        <location filename="../app/src/mainwindow2.cpp" line="705"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Эта программа в настоящее время не имеет разрешения на запись в выбранный вами файл. Пожалуйста, убедитесь, что у вас есть разрешение на запись этого файла, прежде чем пытаться сохранить его. Кроме того, вы можете использовать опцию меню Сохранить как..., чтобы сохранить в доступном для записи месте.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="636"/>
+        <location filename="../app/src/mainwindow2.cpp" line="716"/>
         <source>Saving document...</source>
         <translation>Сохранение документа...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="679"/>
+        <location filename="../app/src/mainwindow2.cpp" line="759"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Произошла ошибка, и ваш файл, возможно, не был успешно сохранён. Если вы считаете, что эта ошибка связана с Pencil2D, создайте новую проблему по адресу: &lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https: //github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;. Обязательно укажите следующие детали в вашем обращении:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="727"/>
+        <location filename="../app/src/mainwindow2.cpp" line="807"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Эта анимация была изменена.
  Вы хотите сохранить свои изменения?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="750"/>
+        <location filename="../app/src/mainwindow2.cpp" line="830"/>
         <source>AutoSave Reminder</source>
         <translation>Напоминание автосохранения</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="751"/>
+        <location filename="../app/src/mainwindow2.cpp" line="831"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Анимация ещё не сохранена.
  Вы хотите сохранить её сейчас?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="752"/>
+        <location filename="../app/src/mainwindow2.cpp" line="832"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Больше не спрашивать</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="800"/>
-        <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>Невозможно импортировать изображение. &lt;br&gt;&lt;b&gt;СОВЕТ&lt;/b&gt;: Используйте растровый слой для импорта растровых изображений.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="903"/>
-        <source>Importing Animated GIF...</source>
-        <translation>Импорт анимированного GIF...</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="925"/>
-        <source>was unable to import %1</source>
-        <translation>не удалось импортировать %1</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1270"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1275"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1300"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1305"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1283"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1290"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1313"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1320"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Повторить</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1332"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1356"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>Открытие палитры приведёт к замене старой палитры.
 Это действие изменит цвета в штрихах!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1334"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1358"/>
         <source>Open Palette</source>
         <translation>Открыть палитру</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1485"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1510"/>
         <source>Stop</source>
         <translation>Стоп</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1535"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1559"/>
         <source>Restore Project?</source>
         <translation>Восстановить проект?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1536"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1560"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Работа Pencil2D была завершена некорректно. Восстановить проект?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1541"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1565"/>
         <source>Restore project</source>
         <translation>Восстановить проект</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1575"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1599"/>
         <source>Recovery Failed.</source>
         <translation>Ошибка восстановления.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1576"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1600"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>Извините! Pencil2D не удалось восстановить ваш проект</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1585"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1610"/>
         <source>Recovery Succeeded!</source>
         <translation>Восстановление выполнено успешно!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1586"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1611"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>Пожалуйста, сразу же сохраните свою работу для предотвращения потери данных</translation>
     </message>
-</context>
-<context>
-    <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="406"/>
-        <source>Layer switch</source>
-        <comment>Windows title of layer switch pop-up.</comment>
-        <translation>Смена слоя</translation>
+        <location filename="../app/src/mainwindow2.cpp" line="1617"/>
+        <source>Main Toolbar</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="407"/>
-        <source>You are about to switch away, do you want to apply the transformation?</source>
-        <translation>Вы собираетесь сменить, хотите применить преобразование?</translation>
+        <location filename="../app/src/mainwindow2.cpp" line="1631"/>
+        <source>View Toolbar</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1643"/>
+        <source>Overlay Toolbar</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
     <name>MovieExporter</name>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="79"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="86"/>
         <source>Checking environment...</source>
         <translation>Проверка среды…</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="113"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
         <source>Generating GIF...</source>
         <translation>Создание GIF…</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="127"/>
         <source>Assembling audio...</source>
         <translation>Сборка звука…</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="125"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="132"/>
         <source>Generating movie...</source>
         <translation>Создание ролика…</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="130"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="137"/>
         <source>Done</source>
         <translation>Готово</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="566"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="578"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="703"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="715"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="595"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="607"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="732"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="744"/>
         <source>Something went wrong</source>
         <translation>Что-то пошло не так</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="567"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="704"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="596"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="733"/>
         <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
         <translation>Похоже, что работа модуля видео не завершилась в штатном режиме. Ролик мог быть экспортирован некорректно. Пожалуйста, попробуйте снова. Если эта ошибка повторится, сообщите о ней разработчикам.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="579"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="716"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="608"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="745"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
         <translation>Не удалось запустить модуль видео. Пожалуйста, попробуйте снова.</translation>
     </message>
@@ -4368,99 +4792,99 @@ Color(s) in strokes will be altered by this action!</source>
 <context>
     <name>MovieImporter</name>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="53"/>
-        <location filename="../core_lib/src/movieimporter.cpp" line="243"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="54"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="248"/>
         <source>Bitmap only</source>
         <translation>Только растр</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="54"/>
-        <location filename="../core_lib/src/movieimporter.cpp" line="244"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="55"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="249"/>
         <source>You need to be on the bitmap layer to import a movie clip</source>
         <translation>Для импорта ролика необходимо перейти на растровый слой</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="150"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="155"/>
         <source>Loading video failed</source>
         <translation>Ошибка загрузки видео</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="151"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="156"/>
         <source>Could not get duration from the specified video. Are you sure you are importing a valid video file?</source>
         <translation>Не удалось определить продолжительность указанного видео. Вы уверены, что импортируете корректный видеофайл?</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="176"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="181"/>
         <source>Error creating folder</source>
         <translation>Ошибка создания папки</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="177"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="182"/>
         <source>Unable to create a temporary folder, cannot import video.</source>
         <translation>Не удалось создать временную папку. Импорт видео невозможен.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="191"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="196"/>
         <source>Imported movie too big!</source>
         <translation>Импортированный фильм слишком велик!</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="192"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="197"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
         <translation>Ролик слишком длинный. Pencil2D поддерживает только %1 кадров, но этот ролик содержит %2. Пожалуйста, сделайте видео короче и попробуйте снова.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="227"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="232"/>
         <source>Unknown error</source>
         <translation>Неизвестная ошибка</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="228"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="233"/>
         <source>This should not happen...</source>
         <translation>Этого не должно происходить…</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="260"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="265"/>
         <source>Video processed, adding frames...</source>
         <translation>Видео обработано, добавляются кадры…</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="307"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="312"/>
         <source>Failed import</source>
         <translation>Ошибка импорта</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="308"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="313"/>
         <source>Was unable to find internal files, import unsuccessful.</source>
         <translation>Не удалось найти внутренние файлы. Импорт не выполнен.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="323"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="328"/>
         <source>Sound only</source>
         <translation>Только звук</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="324"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="329"/>
         <source>You need to be on a sound layer to import the audio</source>
         <translation>Для импорта звука необходимо перейти на звуковой слой</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="336"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="341"/>
         <source>Move to an empty frame</source>
         <translation>Перейти к пустому кадру</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="337"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="342"/>
         <source>A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again</source>
         <translation>Кадр уже существует: %1 Переместите ползунок на пустую позицию временной шкалы и попробуйте снова</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="379"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="384"/>
         <source>FFmpeg Not Found</source>
         <translation>FFmpeg не найден</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="380"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="385"/>
         <source>Please place the ffmpeg binary in plugins directory and try again</source>
         <translation>Пожалуйста, поместите двоичный файл ffmpeg в каталог плагинов и попробуйте снова</translation>
     </message>
@@ -4468,127 +4892,127 @@ Color(s) in strokes will be altered by this action!</source>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="339"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="388"/>
         <source>error</source>
         <translation>ошибка</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="631"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
         <source>Black</source>
         <translation>Чёрный</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="632"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
         <source>Red</source>
         <translation>Красный</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="633"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
         <source>Dark Red</source>
         <translation>Тёмно-красный</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="634"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
         <source>Orange</source>
         <translation>Оранжевый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="635"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
         <source>Dark Orange</source>
         <translation>Тёмно-оранжевый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="636"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
         <source>Yellow</source>
         <translation>Жёлтый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="637"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
         <source>Dark Yellow</source>
         <translation>Тёмно-жёлтый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="638"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
         <source>Green</source>
         <translation>Зелёный</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="639"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
         <source>Dark Green</source>
         <translation>Тёмно-зелёный</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="640"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
         <source>Cyan</source>
         <translation>Сине-зелёный</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="641"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
         <source>Dark Cyan</source>
         <translation>Тёмный сине-зелёный</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="642"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
         <source>Blue</source>
         <translation>Синий</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="643"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
         <source>Dark Blue</source>
         <translation>Тёмно-синий</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="644"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
         <source>White</source>
         <translation>Белый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="645"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
         <source>Very Light Grey</source>
         <translation>Очень светло-серый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="646"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
         <source>Light Grey</source>
         <translation>Светло-серый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="647"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
         <source>Grey</source>
         <translation>Серый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="648"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
         <source>Dark Grey</source>
         <translation>Тёмно-серый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="649"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
         <source>Pale Orange Yellow</source>
         <translation>Бледный оранжево-жёлтый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="650"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
         <source>Pale Grayish Orange Yellow</source>
         <translation>Бледный сероватый оранжево-жёлтый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="651"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
         <source>Orange Yellow </source>
         <translation>Оранжево-жёлтый </translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="652"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
         <source>Grayish Orange Yellow</source>
         <translation>Сероватый оранжево-жёлтый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="653"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="705"/>
         <source>Light Orange Yellow</source>
         <translation>Светлый оранжево-жёлтый</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="654"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="706"/>
         <source>Light Grayish Orange Yellow</source>
         <translation>Светлый сероватый оранжево-жёлтый</translation>
     </message>
@@ -4607,70 +5031,56 @@ Color(s) in strokes will be altered by this action!</source>
         <translation>Предыдущие кадры</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="126"/>
-        <location filename="../app/ui/onionskin.ui" line="129"/>
-        <source>Onion skin previous frame</source>
-        <translation>Калька предыдущего кадра</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/onionskin.ui" line="135"/>
-        <location filename="../app/ui/onionskin.ui" line="189"/>
-        <location filename="../app/ui/onionskin.ui" line="242"/>
-        <location filename="../app/ui/onionskin.ui" line="308"/>
+        <location filename="../app/ui/onionskin.ui" line="160"/>
+        <location filename="../app/ui/onionskin.ui" line="253"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="183"/>
-        <location filename="../app/ui/onionskin.ui" line="186"/>
+        <location filename="../app/ui/onionskin.ui" line="154"/>
+        <location filename="../app/ui/onionskin.ui" line="157"/>
         <source>Onion skin color: red</source>
         <translation>Цвет кальки: красный</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="215"/>
+        <location filename="../app/ui/onionskin.ui" line="186"/>
         <source>Next Frames</source>
         <translation>Следующие кадры</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="236"/>
-        <location filename="../app/ui/onionskin.ui" line="239"/>
-        <source>Onion skin next frame</source>
-        <translation>Калька следующего кадра</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/onionskin.ui" line="299"/>
-        <location filename="../app/ui/onionskin.ui" line="302"/>
+        <location filename="../app/ui/onionskin.ui" line="244"/>
+        <location filename="../app/ui/onionskin.ui" line="247"/>
         <source>Onion skin color: blue</source>
         <translation>Цвет кальки: синий</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="334"/>
+        <location filename="../app/ui/onionskin.ui" line="279"/>
         <source>Distributed Opacity</source>
         <translation>Распределённая непрозрачность</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="376"/>
+        <location filename="../app/ui/onionskin.ui" line="321"/>
         <source>Min</source>
         <translation>Мин.</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="398"/>
-        <location filename="../app/ui/onionskin.ui" line="457"/>
+        <location filename="../app/ui/onionskin.ui" line="343"/>
+        <location filename="../app/ui/onionskin.ui" line="402"/>
         <source> %</source>
         <translation> %</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="435"/>
+        <location filename="../app/ui/onionskin.ui" line="380"/>
         <source>Max</source>
         <translation>Макс.</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="476"/>
+        <location filename="../app/ui/onionskin.ui" line="421"/>
         <source>Show Keyframes Only</source>
         <translation>Показывать только ключевые кадры</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="483"/>
+        <location filename="../app/ui/onionskin.ui" line="428"/>
         <source>Show During Playback</source>
         <translation>Показывать при воспроизведении</translation>
     </message>
@@ -4678,12 +5088,12 @@ Color(s) in strokes will be altered by this action!</source>
 <context>
     <name>OverlayPainter</name>
     <message>
-        <location filename="../core_lib/src/overlaypainter.cpp" line="192"/>
+        <location filename="../core_lib/src/overlaypainter.cpp" line="215"/>
         <source>Safe Action area %1 %</source>
         <translation>Область, защищённая от действий, %1 %</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/overlaypainter.cpp" line="206"/>
+        <location filename="../core_lib/src/overlaypainter.cpp" line="242"/>
         <source>Safe Title area %1 %</source>
         <translation>Область, защищённая от изменения названия, %1 %</translation>
     </message>
@@ -4764,6 +5174,19 @@ Check selection, and please try again.</source>
     </message>
 </context>
 <context>
+    <name>Pencil2D</name>
+    <message>
+        <location filename="../app/src/pencil2d.cpp" line="116"/>
+        <source>Warning</source>
+        <translation>Предупреждение</translation>
+    </message>
+    <message>
+        <location filename="../app/src/pencil2d.cpp" line="116"/>
+        <source>An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior.</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>PredefinedKeySet</name>
     <message>
         <location filename="../app/src/predefinedsetmodel.h" line="65"/>
@@ -4784,27 +5207,27 @@ Check selection, and please try again.</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="65"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="68"/>
         <source>General</source>
         <translation>Общие</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="80"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="83"/>
         <source>Files</source>
         <translation>Файлы</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="95"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="98"/>
         <source>Timeline</source>
         <translation>Временная шкала</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="110"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="113"/>
         <source>Tools</source>
         <translation>Инструменты</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="125"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="128"/>
         <source>Shortcuts</source>
         <translation>Горячие клавиши</translation>
     </message>
@@ -4833,34 +5256,6 @@ Check selection, and please try again.</source>
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../core_lib/src/structure/layer.cpp" line="40"/>
-        <source>Undefined Layer</source>
-        <translation>Неопределённый слой</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/layerbitmap.cpp" line="30"/>
-        <source>Bitmap Layer</source>
-        <translation>Растровый слой</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/layercamera.cpp" line="29"/>
-        <source>Camera Layer</source>
-        <translation>Слой камеры</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/layersound.cpp" line="29"/>
-        <source>Sound Layer</source>
-        <translation>Звуковой слой</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/layervector.cpp" line="27"/>
-        <source>Vector Layer</source>
-        <translation>Векторный слой</translation>
-    </message>
-</context>
-<context>
     <name>RecentFileMenu</name>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="31"/>
@@ -4881,80 +5276,88 @@ Check selection, and please try again.</source>
     </message>
 </context>
 <context>
+    <name>RepositionFramesDialog</name>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="14"/>
+        <source>Reposition Frames</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="30"/>
+        <source>(Please move selection to desired destination.)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="43"/>
+        <source>Reposition (x,y): </source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="50"/>
+        <source>Reposition on other layers?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="57"/>
+        <source>Same keyframes as selected</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="64"/>
+        <source>All keyframes on layer</source>
+        <translation>Все ключевые кадры на слое</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="93"/>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="100"/>
+        <source>Reposition</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="72"/>
+        <source>Repositioned: ( %1, %2 )</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="78"/>
+        <source>Selected on Layer: %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="91"/>
+        <source>Please move selection to desired destination
+or cancel</source>
+        <translation type="unfinished"/>
+    </message>
+</context>
+<context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="772"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="776"/>
         <source>Warning</source>
         <translation>Предупреждение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="773"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="777"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Вы пытаетесь изменить скрытый слой! Пожалуйста, выберите другой слой или сделайте текущий видимым.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1650"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1467"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Удалить выделение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1676"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1688"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1493"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1505"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Очистить изображение</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1724"/>
-        <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
-        <translation>В вашем рисунке есть промежуток (или, может быть, вы слишком сильно увеличили масштаб).</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1727"/>
-        <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
-        <translation>Сожалеем! Это не всегда работает. Пожалуйста, попробуйте ещё раз (немного увеличьте масштаб, щёлкните в другом месте...), &lt;br&gt;если это не работает, немного увеличьте масштаб и проверьте, что ваши пути связаны, нажав F1.).</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1732"/>
-        <source>Out of bound.</source>
-        <comment>Bucket tool fill error message</comment>
-        <translation>За пределами границы.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1733"/>
-        <source>Could not find a closed path.</source>
-        <comment>Bucket tool fill error message</comment>
-        <translation>Не удалось найти замкнутый контур.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1734"/>
-        <source>Could not find the root index.</source>
-        <comment>Bucket tool fill error message</comment>
-        <translation>Не удалось найти корневой индекс.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1735"/>
-        <source>Flood fill error</source>
-        <translation>Ошибка заливки</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1735"/>
-        <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
-        <translation>%1&lt;br&gt;&lt;br&gt;Ошибка: %2</translation>
-    </message>
-</context>
-<context>
-    <name>SelectionManager</name>
-    <message>
-        <location filename="../core_lib/src/managers/selectionmanager.cpp" line="361"/>
-        <source>Flip selection vertically</source>
-        <translation>Отразить выделение по вертикали</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/managers/selectionmanager.cpp" line="365"/>
-        <source>Flip selection horizontally</source>
-        <translation>Отразить выделение по горизонтали</translation>
     </message>
 </context>
 <context>
@@ -5000,65 +5403,71 @@ Check selection, and please try again.</source>
         <translation>Вернуть горячие клавиши по умолчанию</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="44"/>
+        <location filename="../app/src/shortcutspage.cpp" line="43"/>
         <source>Action</source>
         <comment>Shortcut table header</comment>
         <translation>Действие</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="44"/>
+        <location filename="../app/src/shortcutspage.cpp" line="43"/>
         <source>Shortcut</source>
         <comment>Shortcut table header</comment>
         <translation>Горячая клавиша</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="105"/>
+        <location filename="../app/src/shortcutspage.cpp" line="104"/>
         <source>Shortcut Conflict!</source>
         <translation>Конфликт горячих клавиш!</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="106"/>
+        <location filename="../app/src/shortcutspage.cpp" line="105"/>
         <source>%1 is already used, overwrite?</source>
         <translation>%1 уже используется, перезаписать?</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="140"/>
+        <location filename="../app/src/shortcutspage.cpp" line="139"/>
         <source>Save Pencil2D Shortcut file</source>
         <translation>Сохранить файл горячих клавиш Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="141"/>
+        <location filename="../app/src/shortcutspage.cpp" line="140"/>
         <source>untitled.pcls</source>
         <translation>безымянный.pcls</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="142"/>
-        <location filename="../app/src/shortcutspage.cpp" line="168"/>
+        <location filename="../app/src/shortcutspage.cpp" line="141"/>
+        <location filename="../app/src/shortcutspage.cpp" line="167"/>
         <source>Pencil2D Shortcut File(*.pcls)</source>
         <translation>Файл горячих клавиш Pencil2D (*.pcls)</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="166"/>
+        <location filename="../app/src/shortcutspage.cpp" line="165"/>
         <source>Open Pencil2D Shortcut file</source>
         <translation>Открыть файл горячих клавиш Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="302"/>
+        <location filename="../app/src/shortcutspage.cpp" line="301"/>
         <source>Add Frame</source>
         <comment>Shortcut</comment>
         <translation>Добавить кадр</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="303"/>
+        <location filename="../app/src/shortcutspage.cpp" line="302"/>
         <source>Clear Frame</source>
         <comment>Shortcut</comment>
         <translation>Очистить кадр</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="304"/>
+        <location filename="../app/src/shortcutspage.cpp" line="303"/>
         <source>Copy</source>
         <comment>Shortcut</comment>
         <translation>Копировать</translation>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="304"/>
+        <source>Paste from Previous Keyframe</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="305"/>
@@ -5416,156 +5825,150 @@ Check selection, and please try again.</source>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="364"/>
-        <source>Toggle Display Window Visibility</source>
-        <comment>Shortcut</comment>
-        <translation>Переключить видимость окна параметров отображения</translation>
-    </message>
-    <message>
-        <location filename="../app/src/shortcutspage.cpp" line="365"/>
         <source>Toggle Onion Skins Window Visibility</source>
         <comment>Shortcut</comment>
         <translation>Переключить видимость окна калек</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="366"/>
+        <location filename="../app/src/shortcutspage.cpp" line="365"/>
         <source>Toggle Timeline Window Visibility</source>
         <comment>Shortcut</comment>
         <translation>Переключить видимость окна временной шкалы</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="367"/>
+        <location filename="../app/src/shortcutspage.cpp" line="366"/>
         <source>Toggle Tools Window Visibility</source>
         <comment>Shortcut</comment>
         <translation>Переключить видимость окна инструментов</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="368"/>
+        <location filename="../app/src/shortcutspage.cpp" line="367"/>
         <source>Toggle Options Window Visibility</source>
         <comment>Shortcut</comment>
         <translation>Переключить видимость окна настроек</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="369"/>
+        <location filename="../app/src/shortcutspage.cpp" line="368"/>
         <source>Brush Tool</source>
         <comment>Shortcut</comment>
         <translation>Кисть</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="370"/>
+        <location filename="../app/src/shortcutspage.cpp" line="369"/>
         <source>Bucket Tool</source>
         <comment>Shortcut</comment>
         <translation>Заливка</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="371"/>
+        <location filename="../app/src/shortcutspage.cpp" line="370"/>
         <source>Eraser Tool</source>
         <comment>Shortcut</comment>
         <translation>Ластик</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="372"/>
+        <location filename="../app/src/shortcutspage.cpp" line="371"/>
         <source>Eyedropper Tool</source>
         <comment>Shortcut</comment>
         <translation>Пипетка</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="373"/>
+        <location filename="../app/src/shortcutspage.cpp" line="372"/>
         <source>Hand Tool</source>
         <comment>Shortcut</comment>
         <translation>Рука</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="374"/>
+        <location filename="../app/src/shortcutspage.cpp" line="373"/>
         <source>Move Tool</source>
         <comment>Shortcut</comment>
         <translation>Перемещение</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="375"/>
+        <location filename="../app/src/shortcutspage.cpp" line="374"/>
         <source>Pen Tool</source>
         <comment>Shortcut</comment>
         <translation>Перо</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="376"/>
+        <location filename="../app/src/shortcutspage.cpp" line="375"/>
         <source>Pencil Tool</source>
         <comment>Shortcut</comment>
         <translation>Карандаш</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="377"/>
+        <location filename="../app/src/shortcutspage.cpp" line="376"/>
         <source>Polyline Tool</source>
         <comment>Shortcut</comment>
         <translation>Ломаная</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="378"/>
+        <location filename="../app/src/shortcutspage.cpp" line="377"/>
         <source>Select Tool</source>
         <comment>Shortcut</comment>
         <translation>Выделение</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="379"/>
+        <location filename="../app/src/shortcutspage.cpp" line="378"/>
         <source>Smudge Tool</source>
         <comment>Shortcut</comment>
         <translation>Коррекция</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="380"/>
+        <location filename="../app/src/shortcutspage.cpp" line="379"/>
         <source>Undo</source>
         <comment>Shortcut</comment>
         <translation>Отменить</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="381"/>
+        <location filename="../app/src/shortcutspage.cpp" line="380"/>
         <source>Set Zoom to 100%</source>
         <comment>Shortcut</comment>
         <translation>Установить масштаб в значение 100%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="382"/>
+        <location filename="../app/src/shortcutspage.cpp" line="381"/>
         <source>Set Zoom to 200%</source>
         <comment>Shortcut</comment>
         <translation>Установить масштаб в значение 200%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="383"/>
+        <location filename="../app/src/shortcutspage.cpp" line="382"/>
         <source>Set Zoom to 25%</source>
         <comment>Shortcut</comment>
         <translation>Установить масштаб в значение 25%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="384"/>
+        <location filename="../app/src/shortcutspage.cpp" line="383"/>
         <source>Set Zoom to 300%</source>
         <comment>Shortcut</comment>
         <translation>Установить масштаб в значение 300%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="385"/>
+        <location filename="../app/src/shortcutspage.cpp" line="384"/>
         <source>Set Zoom to 33%</source>
         <comment>Shortcut</comment>
         <translation>Установить масштаб в значение 33%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="386"/>
+        <location filename="../app/src/shortcutspage.cpp" line="385"/>
         <source>Set Zoom to 400%</source>
         <comment>Shortcut</comment>
         <translation>Установить масштаб в значение 400%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="387"/>
+        <location filename="../app/src/shortcutspage.cpp" line="386"/>
         <source>Set Zoom to 50%</source>
         <comment>Shortcut</comment>
         <translation>Установить масштаб в значение 50%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="388"/>
+        <location filename="../app/src/shortcutspage.cpp" line="387"/>
         <source>Zoom In</source>
         <comment>Shortcut</comment>
         <translation>Приблизить</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="389"/>
+        <location filename="../app/src/shortcutspage.cpp" line="388"/>
         <source>Zoom Out</source>
         <comment>Shortcut</comment>
         <translation>Отдалить</translation>
@@ -5607,68 +6010,73 @@ Check selection, and please try again.</source>
 <context>
     <name>StatusBar</name>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="94"/>
-        <location filename="../app/src/statusbar.cpp" line="112"/>
+        <location filename="../app/src/statusbar.cpp" line="98"/>
+        <location filename="../app/src/statusbar.cpp" line="119"/>
         <source>Click to draw. Hold Ctrl and Shift to erase or Alt to select a color from the canvas.</source>
         <translation>Щёлкните для рисования. Чтобы стереть, удерживайте Ctrl и Shift, а чтобы выбрать цвет с холста — Alt.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="97"/>
+        <location filename="../app/src/statusbar.cpp" line="101"/>
         <source>Click to erase.</source>
         <translation>Щёлкните, чтобы стереть.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="100"/>
+        <location filename="../app/src/statusbar.cpp" line="104"/>
         <source>Click and drag to create or modify a selection. Hold Alt to modify its contents or press Backspace to clear them.</source>
         <translation>Щёлкните и перетащите для создания или изменения выделения. Удерживайте Alt, чтобы изменить его содержимое, или нажмите Backspace, чтобы удалить это содержимое.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="103"/>
+        <location filename="../app/src/statusbar.cpp" line="107"/>
         <source>Click and drag to move an object. Hold Ctrl to rotate.</source>
         <translation>Щёлкните и перетащите для перемещения объекта. Чтобы вращать объект, удерживайте Ctrl.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="106"/>
+        <location filename="../app/src/statusbar.cpp" line="110"/>
+        <source>Click and drag to move the camera. While on in-between frames, drag handle to change interpolation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/statusbar.cpp" line="113"/>
         <source>Click and drag to pan. Hold Ctrl to zoom or Alt to rotate.</source>
         <translation>Щёлкните и перетащите для сдвига. Чтобы масштабировать, удерживайте Ctrl, а чтобы вращать — Alt.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="109"/>
+        <location filename="../app/src/statusbar.cpp" line="116"/>
         <source>Click to liquefy pixels or modify a vector line. Hold Alt to smooth.</source>
         <translation>Щёлкните для искажения пикселов или изменения векторной линии. Чтобы сгладить, удерживайте Alt.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="117"/>
+        <location filename="../app/src/statusbar.cpp" line="124"/>
         <source>Click to continue the polyline. Double-click or press enter to complete the line or press Escape to discard it.</source>
         <translation>Щёлкните для продолжения ломаной. Чтобы завершить линию, сделайте двойной щелчок или нажмите Enter. Чтобы отменить создание ломаной, нажмите Escape.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="121"/>
+        <location filename="../app/src/statusbar.cpp" line="128"/>
         <source>Click to create a new polyline. Hold Ctrl and Shift to erase.</source>
         <translation>Щёлкните для создания новой ломаной. Чтобы стереть, удерживайте Ctrl и Shift.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="125"/>
+        <location filename="../app/src/statusbar.cpp" line="132"/>
         <source>Click to fill an area with the current color. Hold Alt to select a color from the canvas.</source>
         <translation>Щёлкните для заполнения области текущим цветом. Чтобы выбрать цвет с холста, удерживайте Alt.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="128"/>
+        <location filename="../app/src/statusbar.cpp" line="135"/>
         <source>Click to select a color from the canvas.</source>
         <translation>Щёлкните для выбора цвета с холста.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="131"/>
+        <location filename="../app/src/statusbar.cpp" line="138"/>
         <source>Click to paint. Hold Ctrl and Shift to erase or Alt to select a color from the canvas.</source>
         <translation>Щёлкните для рисования. Чтобы стереть, удерживайте Ctrl и Shift, а чтобы выбрать цвет с холста — Alt.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="159"/>
+        <location filename="../app/src/statusbar.cpp" line="167"/>
         <source>This file has unsaved changes</source>
         <translation>В файле имеются несохранённые изменения</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="163"/>
+        <location filename="../app/src/statusbar.cpp" line="171"/>
         <source>This file has no unsaved changes</source>
         <translation>В файле нет несохранённых изменений</translation>
     </message>
@@ -5676,108 +6084,114 @@ Check selection, and please try again.</source>
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="47"/>
+        <location filename="../app/src/timecontrols.cpp" line="47"/>
         <source> fps</source>
         <translation> кадр/с</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="48"/>
+        <location filename="../app/src/timecontrols.cpp" line="48"/>
         <source>Frames per second</source>
         <translation>Кадров в секунду</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="55"/>
+        <location filename="../app/src/timecontrols.cpp" line="54"/>
+        <source>Display timecode</source>
+        <comment>Timeline menu for choose a timecode</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/timecontrols.cpp" line="57"/>
         <source>No text</source>
         <translation>Без текста</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="56"/>
+        <location filename="../app/src/timecontrols.cpp" line="58"/>
         <source>Frames</source>
         <translation>Кадры</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="57"/>
+        <location filename="../app/src/timecontrols.cpp" line="59"/>
         <source>SMPTE Timecode</source>
         <translation>Код времени SMPTE</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="58"/>
+        <location filename="../app/src/timecontrols.cpp" line="60"/>
         <source>SFF Timecode</source>
         <translation>Код времени SFF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="70"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="337"/>
+        <location filename="../app/src/timecontrols.cpp" line="75"/>
+        <location filename="../app/src/timecontrols.cpp" line="336"/>
         <source>Actual frame number</source>
         <translation>Фактический номер кадра</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="73"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="355"/>
+        <location filename="../app/src/timecontrols.cpp" line="78"/>
+        <location filename="../app/src/timecontrols.cpp" line="354"/>
         <source>Timecode format MM:SS:FF</source>
         <translation>Формат кода времени MM:SS:FF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="76"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="346"/>
+        <location filename="../app/src/timecontrols.cpp" line="81"/>
+        <location filename="../app/src/timecontrols.cpp" line="345"/>
         <source>Timecode format S:FF</source>
         <translation>Формат кода времени S:FF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
+        <location filename="../app/src/timecontrols.cpp" line="92"/>
         <source>Start of playback loop</source>
         <translation>Начало цикла воспроизведения</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="95"/>
+        <location filename="../app/src/timecontrols.cpp" line="100"/>
         <source>End of playback loop</source>
         <translation>Конец цикла воспроизведения</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="98"/>
+        <location filename="../app/src/timecontrols.cpp" line="103"/>
         <source>Range</source>
         <translation>Диапазон</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="100"/>
+        <location filename="../app/src/timecontrols.cpp" line="105"/>
         <source>Playback range</source>
         <translation>Диапазон воспроизведения</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="127"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="251"/>
+        <location filename="../app/src/timecontrols.cpp" line="134"/>
+        <location filename="../app/src/timecontrols.cpp" line="258"/>
         <source>Play</source>
         <translation>Воспроизведение</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="128"/>
+        <location filename="../app/src/timecontrols.cpp" line="135"/>
         <source>Loop</source>
         <translation>Повтор</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="129"/>
+        <location filename="../app/src/timecontrols.cpp" line="136"/>
         <source>Sound on/off</source>
         <translation>Звук</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="130"/>
+        <location filename="../app/src/timecontrols.cpp" line="137"/>
         <source>Sound scrub on/off</source>
         <translation>Ползунок звука</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="131"/>
+        <location filename="../app/src/timecontrols.cpp" line="138"/>
         <source>Jump to the End</source>
         <comment>Tooltip of the jump to end button</comment>
         <translation>Перейти в конец</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="132"/>
+        <location filename="../app/src/timecontrols.cpp" line="139"/>
         <source>Jump to the Start</source>
         <comment>Tooltip of the jump to start button</comment>
         <translation>Перейти в начало</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="246"/>
+        <location filename="../app/src/timecontrols.cpp" line="253"/>
         <source>Stop</source>
         <translation>Стоп</translation>
     </message>
@@ -5785,334 +6199,99 @@ Check selection, and please try again.</source>
 <context>
     <name>TimeLine</name>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
+        <location filename="../app/src/timeline.cpp" line="45"/>
         <source>Timeline</source>
         <comment>Subpanel title</comment>
         <translation>Временная шкала</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
+        <location filename="../app/src/timeline.cpp" line="71"/>
         <source>Layers:</source>
         <translation>Слои:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="76"/>
+        <location filename="../app/src/timeline.cpp" line="76"/>
         <source>Add Layer</source>
         <translation>Добавить слой</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="81"/>
-        <source>Remove Layer</source>
+        <location filename="../app/src/timeline.cpp" line="80"/>
+        <source>Delete Layer</source>
         <translation>Удалить слой</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
+        <location filename="../app/src/timeline.cpp" line="84"/>
+        <source>Duplicate Layer</source>
+        <translation>Дублировать слой</translation>
+    </message>
+    <message>
+        <location filename="../app/src/timeline.cpp" line="97"/>
         <source>New Bitmap Layer</source>
         <translation>Новый растровый слой</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
+        <location filename="../app/src/timeline.cpp" line="98"/>
         <source>New Vector Layer</source>
         <translation>Новый векторный слой</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
+        <location filename="../app/src/timeline.cpp" line="99"/>
         <source>New Sound Layer</source>
         <translation>Новый звуковой слой</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="97"/>
+        <location filename="../app/src/timeline.cpp" line="100"/>
         <source>New Camera Layer</source>
         <translation>Новый слой камеры</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="99"/>
-        <source>&amp;Layer</source>
+        <location filename="../app/src/timeline.cpp" line="102"/>
+        <source>Layer</source>
         <comment>Timeline add-layer menu</comment>
-        <translation>&amp;Слой</translation>
+        <translation>Слоя</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="117"/>
+        <location filename="../app/src/timeline.cpp" line="121"/>
         <source>Keys:</source>
         <translation>Кадры:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="122"/>
+        <location filename="../app/src/timeline.cpp" line="126"/>
         <source>Add Frame</source>
         <translation>Добавить кадр</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="127"/>
+        <location filename="../app/src/timeline.cpp" line="130"/>
         <source>Remove Frame</source>
         <translation>Удалить кадр</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="132"/>
+        <location filename="../app/src/timeline.cpp" line="134"/>
         <source>Duplicate Frame</source>
         <translation>Дублировать кадр</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="135"/>
+        <location filename="../app/src/timeline.cpp" line="136"/>
         <source>Zoom:</source>
         <translation>Масштаб:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="142"/>
+        <location filename="../app/src/timeline.cpp" line="143"/>
         <source>Adjust frame width</source>
         <translation>Отрегулировать ширину кадра</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="294"/>
-        <source>Delete Layer</source>
-        <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation>Удалить слой</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
-        <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
-        <translation>Удалить слой %1? Это действие нельзя отменить.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="304"/>
-        <source>Please keep at least one camera layer in project</source>
-        <translation>Пожалуйста, оставьте хотя бы один слой камеры в проекте</translation>
     </message>
 </context>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="236"/>
-        <source>Interpolate frames from: %1 to %2</source>
-        <translation>Интерполировать кадры с: %1 по %2</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="237"/>
-        <source>Clear interpolation on: %1</source>
-        <translation>Очистить интерполяцию на: %1</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="245"/>
-        <source>Slow</source>
-        <translation>Медленно</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="246"/>
-        <source>Normal</source>
-        <translation>Нормально</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="247"/>
-        <source>Quick</source>
-        <translation>Оперативно</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="248"/>
-        <source>Fast</source>
-        <translation>Быстро</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="249"/>
-        <source>Faster</source>
-        <translation>Ещё быстрее</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="250"/>
-        <source>Fastest</source>
-        <translation>Максимально быстро</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="253"/>
-        <source>Circle-based</source>
-        <translation>На основе круга</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="254"/>
-        <source>Other</source>
-        <translation>Другое</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="256"/>
-        <source>Slow Ease-in</source>
-        <translation>Медленное замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="257"/>
-        <source>Slow Ease-out</source>
-        <translation>Медленное замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="258"/>
-        <source>Slow Ease-in - Ease-out</source>
-        <translation>Медленное замедление в начале — замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="259"/>
-        <source>Slow Ease-out - Ease-in</source>
-        <translation>Медленное замедление в конце — замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="260"/>
-        <source>Normal Ease-in</source>
-        <translation>Нормальное замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="261"/>
-        <source>Normal Ease-out</source>
-        <translation>Нормальное замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="262"/>
-        <source>Normal Ease-in - Ease-out</source>
-        <translation>Нормальное замедление в начале — замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="263"/>
-        <source>Normal Ease-out - Ease-in</source>
-        <translation>Нормальное замедление в конце — замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="264"/>
-        <source>Quick Ease-in</source>
-        <translation>Оперативное замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="265"/>
-        <source>Quick Ease-out</source>
-        <translation>Оперативное замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="266"/>
-        <source>Quick Ease-in - Ease-out</source>
-        <translation>Оперативное замедление в начале — замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="267"/>
-        <source>Quick Ease-out - Ease-in</source>
-        <translation>Оперативное замедление в конце — замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="268"/>
-        <source>Fast Ease-in</source>
-        <translation>Быстрое замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="269"/>
-        <source>Fast Ease-out</source>
-        <translation>Быстрое замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="270"/>
-        <source>Fast Ease-in - Ease-out</source>
-        <translation>Быстрое замедление в начале — замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="271"/>
-        <source>Fast Ease-out - Ease-in</source>
-        <translation>Быстрое замедление в конце — замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="272"/>
-        <source>Faster Ease-in</source>
-        <translation>Более быстрое замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="273"/>
-        <source>Faster Ease-out</source>
-        <translation>Более быстрое замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="274"/>
-        <source>Faster Ease-in - Ease-out</source>
-        <translation>Более быстрое замедление в начале — замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="275"/>
-        <source>Faster Ease-out - Ease-in</source>
-        <translation>Более быстрое замедление в конце — замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="276"/>
-        <source>Fastest Ease-in</source>
-        <translation>Максимально быстрое замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="277"/>
-        <source>Fastest Ease-out</source>
-        <translation>Максимально быстрое замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="278"/>
-        <source>Fastest Ease-in - Ease-out</source>
-        <translation>Максимально быстрое замедление в начале — замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="279"/>
-        <source>Fastest Ease-out - Ease-in</source>
-        <translation>Максимально быстрое замедление в конце — замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="280"/>
-        <source>Circle-based Ease-in</source>
-        <translation>На основе круга: замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="281"/>
-        <source>Circle-based Ease-out</source>
-        <translation>На основе круга: замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="282"/>
-        <source>Circle-based Ease-in - Ease-out</source>
-        <translation>На основе круга: замедление в начале — замедление в конце</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="283"/>
-        <source>Circle-based Ease-out - Ease-in</source>
-        <translation>На основе круга: замедление в конце — замедление в начале</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="284"/>
-        <source>Hold to frame %1</source>
-        <translation>Удерживать до кадра %1</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="285"/>
-        <source>Linear interpolation</source>
-        <translation>Линейная интерполяция</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="302"/>
-        <source>Interpolate frames at: %1</source>
-        <translation>Интерполировать кадры на: %1</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="1259"/>
+        <location filename="../app/src/timelinecells.cpp" line="1185"/>
         <source>Layer Properties</source>
         <translation>Свойства слоя</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="1260"/>
+        <location filename="../app/src/timelinecells.cpp" line="1186"/>
         <source>Layer name:</source>
         <translation>Имя слоя:</translation>
-    </message>
-</context>
-<context>
-    <name>Timeline2</name>
-    <message>
-        <location filename="../app/ui/timeline2.ui" line="14"/>
-        <source>Timeline</source>
-        <translation>Временная шкала</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/timeline2.ui" line="54"/>
-        <source>Layers</source>
-        <translation>Слои</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/timeline2.ui" line="68"/>
-        <location filename="../app/ui/timeline2.ui" line="82"/>
-        <source>...</source>
-        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -6243,6 +6422,11 @@ Check selection, and please try again.</source>
         <translation>Инструменты</translation>
     </message>
     <message>
+        <location filename="../app/ui/toolboxwidget.ui" line="416"/>
+        <source>Smudge</source>
+        <translation>Коррекция</translation>
+    </message>
+    <message>
         <location filename="../app/src/toolbox.cpp" line="78"/>
         <source>Pencil Tool (%1): Sketch with pencil</source>
         <translation>Карандаш (%1): Эскиз карандашом</translation>
@@ -6294,71 +6478,61 @@ Check selection, and please try again.</source>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="99"/>
-        <source>Clear Frame (%1): Erases content of selected frame</source>
-        <translation>Очистить кадр (%1): Стирает содержимое выбранного кадра</translation>
-    </message>
-    <message>
-        <location filename="../app/src/toolbox.cpp" line="101"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
         <translation>Коррекция (%1): &lt;br&gt;редактирование ломаной/кривых,&lt;br&gt; исправление растровых пикселей&lt;br&gt; (%1) + [Alt]: Сглаживание</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="105"/>
+        <location filename="../app/src/toolbox.cpp" line="103"/>
         <source>Pencil Tool (%1)</source>
         <translation>Карандаш (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="107"/>
+        <location filename="../app/src/toolbox.cpp" line="105"/>
         <source>Select Tool (%1)</source>
         <translation>Выделение (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="109"/>
+        <location filename="../app/src/toolbox.cpp" line="107"/>
         <source>Move Tool (%1)</source>
         <translation>Перемещение (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="111"/>
+        <location filename="../app/src/toolbox.cpp" line="109"/>
         <source>Hand Tool (%1)</source>
         <translation>Рука (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="113"/>
+        <location filename="../app/src/toolbox.cpp" line="111"/>
         <source>Pen Tool (%1)</source>
         <translation>Перо (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="115"/>
+        <location filename="../app/src/toolbox.cpp" line="113"/>
         <source>Eraser Tool (%1)</source>
         <translation>Ластик (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="117"/>
+        <location filename="../app/src/toolbox.cpp" line="115"/>
         <source>Polyline Tool (%1)</source>
         <translation>Ломаная (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="119"/>
+        <location filename="../app/src/toolbox.cpp" line="117"/>
         <source>Paint Bucket Tool (%1)</source>
         <translation>Заливка (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="121"/>
+        <location filename="../app/src/toolbox.cpp" line="119"/>
         <source>Brush Tool (%1)</source>
         <translation>Кисть (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="123"/>
+        <location filename="../app/src/toolbox.cpp" line="121"/>
         <source>Eyedropper Tool (%1)</source>
         <translation>Пипетка (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="125"/>
-        <source>Clear Tool (%1)</source>
-        <translation>Очистка (%1)</translation>
-    </message>
-    <message>
-        <location filename="../app/src/toolbox.cpp" line="127"/>
+        <location filename="../app/src/toolbox.cpp" line="123"/>
         <source>Smudge Tool (%1)</source>
         <translation>Коррекция (%1)</translation>
     </message>
@@ -6366,19 +6540,19 @@ Check selection, and please try again.</source>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="33"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="35"/>
         <source>Options</source>
         <comment>Window title of tool option panel like pen width, feather etc..</comment>
         <translation>Параметры</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="53"/>
-        <location filename="../app/src/tooloptionwidget.cpp" line="200"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="57"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="213"/>
         <source>Width</source>
         <translation>Ширина</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="57"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="61"/>
         <source>Feather</source>
         <translation>Перо</translation>
     </message>
@@ -6411,131 +6585,116 @@ Check selection, and please try again.</source>
         <translation>Использовать оперение</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="135"/>
+        <location filename="../app/ui/tooloptions.ui" line="136"/>
+        <source>Show Size and Diff.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="159"/>
         <source>Contour will be filled</source>
         <translation>Контур будет заполнен</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="138"/>
+        <location filename="../app/ui/tooloptions.ui" line="162"/>
         <source>Fill Contour</source>
         <translation>Заполнить контур</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="145"/>
+        <location filename="../app/ui/tooloptions.ui" line="169"/>
         <source>Use Bézier curves to create curved lines</source>
         <translation>Использовать кривые Безье для создания кривых линий</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="148"/>
+        <location filename="../app/ui/tooloptions.ui" line="172"/>
         <source>Bézier</source>
         <comment>Tool options</comment>
         <translation>Безье</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="155"/>
+        <location filename="../app/ui/tooloptions.ui" line="179"/>
         <source>Vary strokes based on pressure when drawing on a tablet</source>
         <translation>Менять штрихи в зависимости от давления при рисовании на планшете</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="158"/>
+        <location filename="../app/ui/tooloptions.ui" line="182"/>
         <source>Pressure</source>
         <comment>Tool options</comment>
         <translation>Давление</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="165"/>
+        <location filename="../app/ui/tooloptions.ui" line="189"/>
         <source>Use anti-aliasing to create smooth edges</source>
         <translation>Использовать сглаживание для создания гладких краёв</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="168"/>
+        <location filename="../app/ui/tooloptions.ui" line="192"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
         <translation>Сглаживание</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="175"/>
+        <location filename="../app/ui/tooloptions.ui" line="199"/>
         <source>Make invisible</source>
         <translation>Сделать невидимым</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="178"/>
+        <location filename="../app/ui/tooloptions.ui" line="202"/>
         <source>Invisible</source>
         <comment>Tool options</comment>
         <translation>Невидимый</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="185"/>
+        <location filename="../app/ui/tooloptions.ui" line="209"/>
         <source>Preserve Alpha</source>
         <translation>Сохранить Альфа</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="188"/>
+        <location filename="../app/ui/tooloptions.ui" line="212"/>
         <source>Alpha</source>
         <comment>Tool options</comment>
         <translation>Альфа</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="195"/>
+        <location filename="../app/ui/tooloptions.ui" line="219"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Объединить векторные линии, когда они близко друг к другу</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="198"/>
+        <location filename="../app/ui/tooloptions.ui" line="222"/>
         <source>Merge</source>
         <comment>Vector line merge (Tool options)</comment>
         <translation>Объединить</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="220"/>
-        <source>Transparency</source>
-        <translation>Прозрачность</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="233"/>
-        <source>Defines how the fill will behave when the new color is not opaque</source>
-        <translation>Определяет поведение заливки в случае, когда новый цвет не является непрозрачным</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="237"/>
-        <source>Overlay</source>
-        <translation>Наложение</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="242"/>
-        <source>Replace</source>
-        <translation>Заменить</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="261"/>
         <source>Stabilizer</source>
         <translation>Стабилизация</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="268"/>
+        <location filename="../app/ui/tooloptions.ui" line="244"/>
         <source>Use stabilizer to interpolate strokes</source>
         <translation>Использовать стабилизатор для интерполяции штрихов</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="271"/>
+        <location filename="../app/ui/tooloptions.ui" line="247"/>
         <source>None</source>
         <comment>Stablizer level</comment>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="275"/>
+        <location filename="../app/ui/tooloptions.ui" line="251"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="280"/>
+        <location filename="../app/ui/tooloptions.ui" line="256"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
         <translation>Простая</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="285"/>
+        <location filename="../app/ui/tooloptions.ui" line="261"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
         <translation>Сильный</translation>
@@ -6569,7 +6728,22 @@ Check selection, and please try again.</source>
         <translation>15 градусов</translation>
     </message>
     <message>
-        <location filename="../app/src/toolspage.cpp" line="64"/>
+        <location filename="../app/ui/toolspage.ui" line="99"/>
+        <source>Hand Tool</source>
+        <translation>Рука</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/toolspage.ui" line="117"/>
+        <source>Zoom in by dragging the cursor up instead of down</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/toolspage.ui" line="120"/>
+        <source>Invert Zoom Direction</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/toolspage.cpp" line="71"/>
         <source>%1 degrees</source>
         <translation>%1 градусов</translation>
     </message>
