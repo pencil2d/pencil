@@ -24,7 +24,7 @@ class QDir;
 
 class LayerBitmap : public Layer
 {
-    Q_OBJECT
+    Q_DECLARE_TR_FUNCTIONS(LayerBitmap)
 
 public:
     explicit LayerBitmap(int id);
