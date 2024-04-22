@@ -147,8 +147,45 @@ TransformCommand::TransformCommand(KeyFrame* undoKeyFrame,
     this->undoScaleX = undoScaleX;
     this->undoScaleY = undoScaleY;
 
+    Layer* undoLayer = editor->layers()->findLayerById(undoLayerId);
+
+    switch(undoLayer->type())
+    {
+        case Layer::BITMAP:
+        {
+            undoBitmap = *static_cast<BitmapImage*>(undoKeyFrame);
+            break;
+        }
+        case Layer::VECTOR:
+        {
+            undoVector = *static_cast<VectorImage*>(undoKeyFrame);
+            break;
+        }
+        default:
+            break;
+    }
+
     Layer* redoLayer = editor->layers()->currentLayer();
     redoLayerId = redoLayer->id();
+
+    const int currentFrame = editor->currentFrame();
+
+    switch(redoLayer->type())
+    {
+        case Layer::BITMAP:
+        {
+            redoBitmap = *static_cast<LayerBitmap*>(redoLayer)->getBitmapImageAtFrame(currentFrame);
+            break;
+        }
+        case Layer::VECTOR:
+        {
+            redoVector = *static_cast<LayerVector*>(redoLayer)->
+                    getVectorImageAtFrame(currentFrame);
+            break;
+        }
+        default:
+            break;
+    }
 
     auto selectMan = editor->select();
     redoSelectionRect = selectMan->mySelectionRect();
@@ -157,29 +194,6 @@ TransformCommand::TransformCommand(KeyFrame* undoKeyFrame,
     redoRotationAngle = selectMan->myRotation();
     redoScaleX = selectMan->myScaleX();
     redoScaleY = selectMan->myScaleY();
-
-    Layer* layer = editor->layers()->findLayerById(undoLayerId);
-
-    // TODO: this could become a bug.. should we check layer type for undo and redo layer respectively?
-    const int currentFrame = editor->currentFrame();
-    switch(layer->type())
-    {
-        case Layer::BITMAP:
-        {
-            undoBitmap = *static_cast<BitmapImage*>(undoKeyFrame);
-            redoBitmap = *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(currentFrame);
-            break;
-        }
-        case Layer::VECTOR:
-        {
-            undoVector = *static_cast<VectorImage*>(undoKeyFrame);
-            redoVector = *static_cast<LayerVector*>(layer)->
-                    getVectorImageAtFrame(currentFrame);
-            break;
-        }
-        default:
-            break;
-    }
 
     setText(description);
 }
