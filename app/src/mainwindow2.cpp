@@ -467,8 +467,8 @@ void MainWindow2::replaceUndoRedoActions()
 {
     ui->menuEdit->removeAction(ui->actionUndo);
     ui->menuEdit->removeAction(ui->actionRedo);
-    ui->actionUndo = mEditor->undoRedo()->createUndoAction(this, tr("Undo"), ui->actionUndo->icon());
-    ui->actionRedo = mEditor->undoRedo()->createRedoAction(this, tr("Redo"), ui->actionRedo->icon());
+    ui->actionUndo = mEditor->undoRedo()->createUndoAction(this, ui->actionUndo->icon());
+    ui->actionRedo = mEditor->undoRedo()->createRedoAction(this, ui->actionRedo->icon());
     ui->menuEdit->insertAction(ui->actionCut, ui->actionUndo);
     ui->menuEdit->insertAction(ui->actionCut, ui->actionRedo);
 }

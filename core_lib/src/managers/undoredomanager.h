@@ -76,8 +76,8 @@ public:
     bool hasUnsavedChanges() const;
     void saveStates();
 
-    QAction* createUndoAction(QObject* parent, const QString& description, const QIcon& icon);
-    QAction* createRedoAction(QObject* parent, const QString& description, const QIcon& icon);
+    QAction* createUndoAction(QObject* parent, const QIcon& icon);
+    QAction* createRedoAction(QObject* parent, const QIcon& icon);
 
     void updateUndoAction(QAction* undoAction);
     void updateRedoAction(QAction* redoAction);

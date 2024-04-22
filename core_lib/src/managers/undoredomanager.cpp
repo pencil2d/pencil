@@ -249,16 +249,16 @@ void UndoRedoManager::saveStates()
     mUndoSaveState = std::move(undoSaveState);
 }
 
-QAction* UndoRedoManager::createUndoAction(QObject* parent, const QString& description, const QIcon& icon)
+QAction* UndoRedoManager::createUndoAction(QObject* parent, const QIcon& icon)
 {
     QAction* undoAction = nullptr;
     if (mNewBackupSystemEnabled) {
-        undoAction = mUndoStack->createUndoAction(parent, description);
+        undoAction = mUndoStack->createUndoAction(parent);
     } else {
         undoAction = new QAction(parent);
+        undoAction->setText(tr("Undo"));
         undoAction->setDisabled(true);
     }
-    undoAction->setText(description);
     undoAction->setIcon(icon);
 
     if (mNewBackupSystemEnabled) {
@@ -269,16 +269,16 @@ QAction* UndoRedoManager::createUndoAction(QObject* parent, const QString& descr
     return undoAction;
 }
 
-QAction* UndoRedoManager::createRedoAction(QObject* parent, const QString& description, const QIcon& icon)
+QAction* UndoRedoManager::createRedoAction(QObject* parent, const QIcon& icon)
 {
     QAction* redoAction = nullptr;
     if (mNewBackupSystemEnabled) {
-        redoAction = mUndoStack->createRedoAction(parent, description);
+        redoAction = mUndoStack->createRedoAction(parent);
     } else {
         redoAction = new QAction(parent);
+        redoAction->setText(tr("Redo"));
         redoAction->setDisabled(true);
     }
-    redoAction->setText(description);
     redoAction->setIcon(icon);
 
     if (mNewBackupSystemEnabled) {
