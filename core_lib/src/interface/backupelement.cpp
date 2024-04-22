@@ -38,19 +38,19 @@ BackupElement::~BackupElement()
 {
 }
 
-BitmapElement::BitmapElement(const BitmapImage* backupBitmap,
-                             const int backupLayerId,
+BitmapElement::BitmapElement(const BitmapImage* undoBitmap,
+                             const int undoLayerId,
                              const QString& description,
                              Editor *editor,
                              QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
-    oldBitmap = *backupBitmap;
-    oldLayerId = backupLayerId;
+    this->undoBitmap = *undoBitmap;
+    this->undoLayerId = undoLayerId;
 
     Layer* layer = editor->layers()->currentLayer();
-    newLayerId = layer->id();
-    newBitmap = *static_cast<LayerBitmap*>(layer)->
+    redoLayerId = layer->id();
+    redoBitmap = *static_cast<LayerBitmap*>(layer)->
             getBitmapImageAtFrame(editor->currentFrame());
 
     setText(description);
@@ -60,10 +60,10 @@ void BitmapElement::undo()
 {
     QUndoCommand::undo();
 
-    Layer* layer = editor()->layers()->findLayerById(oldLayerId);
-    static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&oldBitmap);
+    Layer* layer = editor()->layers()->findLayerById(undoLayerId);
+    static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&undoBitmap);
 
-    editor()->scrubTo(oldBitmap.pos());
+    editor()->scrubTo(undoBitmap.pos());
 }
 
 void BitmapElement::redo()
@@ -73,26 +73,24 @@ void BitmapElement::redo()
 
     QUndoCommand::redo();
 
-    Layer* layer = editor()->layers()->findLayerById(newLayerId);
-    static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&newBitmap);
+    Layer* layer = editor()->layers()->findLayerById(redoLayerId);
+    static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&redoBitmap);
 
-    editor()->scrubTo(newBitmap.pos());
+    editor()->scrubTo(redoBitmap.pos());
 }
 
-VectorElement::VectorElement(const VectorImage* backupVector,
-                                   const int& backupLayerId,
+VectorElement::VectorElement(const VectorImage* undoVector,
+                                   const int& undoLayerId,
                                    const QString& description,
                                    Editor* editor,
                                    QUndoCommand* parent) : BackupElement(editor, parent)
 {
 
-    oldVector = *backupVector;
-
-    oldLayerId = backupLayerId;
+    this->undoVector = *undoVector;
+    this->undoLayerId = undoLayerId;
     Layer* layer = editor->layers()->currentLayer();
-    newLayerId = layer->id();
-
-    newVector = *static_cast<LayerVector*>(layer)->
+    redoLayerId = layer->id();
+    redoVector = *static_cast<LayerVector*>(layer)->
             getVectorImageAtFrame(editor->currentFrame());
 
     setText(description);
@@ -104,11 +102,11 @@ void VectorElement::undo()
 
     QUndoCommand::undo();
 
-    Layer* layer = editor()->layers()->findLayerById(oldLayerId);
+    Layer* layer = editor()->layers()->findLayerById(undoLayerId);
 
-    static_cast<LayerVector*>(layer)->replaceKeyFrame(&oldVector);
+    static_cast<LayerVector*>(layer)->replaceKeyFrame(&undoVector);
 
-    editor()->scrubTo(oldVector.pos());
+    editor()->scrubTo(undoVector.pos());
 }
 
 void VectorElement::redo()
@@ -120,61 +118,62 @@ void VectorElement::redo()
 
     QUndoCommand::redo();
 
-    Layer* layer = editor()->layers()->findLayerById(newLayerId);
+    Layer* layer = editor()->layers()->findLayerById(redoLayerId);
 
-    static_cast<LayerVector*>(layer)->replaceKeyFrame(&newVector);
+    static_cast<LayerVector*>(layer)->replaceKeyFrame(&redoVector);
 
-    editor()->scrubTo(newVector.pos());
+    editor()->scrubTo(redoVector.pos());
 }
 
-TransformElement::TransformElement(KeyFrame* backupKeyFrame,
-                                   const int backupLayerId,
-                                   const QRectF& backupSelectionRect,
-                                   const QPointF backupTranslation,
-                                   const qreal backupRotationAngle,
-                                   const qreal backupScaleX,
-                                   const qreal backupScaleY,
-                                   const QPointF backupTransformAnchor,
+TransformElement::TransformElement(KeyFrame* undoKeyFrame,
+                                   const int undoLayerId,
+                                   const QRectF& undoSelectionRect,
+                                   const QPointF undoTranslation,
+                                   const qreal undoRotationAngle,
+                                   const qreal undoScaleX,
+                                   const qreal undoScaleY,
+                                   const QPointF undoTransformAnchor,
                                    const QString& description,
                                    Editor* editor,
                                    QUndoCommand *parent) : BackupElement(editor, parent)
 {
 
 
-    oldLayerId = backupLayerId;
-    oldSelectionRect = backupSelectionRect;
-    oldAnchor = backupTransformAnchor;
-    oldTranslation = backupTranslation;
-    oldRotationAngle = backupRotationAngle;
-    oldScaleX = backupScaleX;
-    oldScaleY = backupScaleY;
+    this->undoLayerId = undoLayerId;
+    this->undoSelectionRect = undoSelectionRect;
+    this->undoAnchor = undoTransformAnchor;
+    this->undoTranslation = undoTranslation;
+    this->undoRotationAngle = undoRotationAngle;
+    this->undoScaleX = undoScaleX;
+    this->undoScaleY = undoScaleY;
 
-    Layer* newLayer = editor->layers()->currentLayer();
-    newLayerId = newLayer->id();
+    Layer* redoLayer = editor->layers()->currentLayer();
+    redoLayerId = redoLayer->id();
 
     auto selectMan = editor->select();
-    newSelectionRect = selectMan->mySelectionRect();
-    newAnchor = selectMan->currentTransformAnchor();
-    newTranslation = selectMan->myTranslation();
-    newRotationAngle = selectMan->myRotation();
-    newScaleX = selectMan->myScaleX();
-    newScaleY = selectMan->myScaleY();
+    redoSelectionRect = selectMan->mySelectionRect();
+    redoAnchor = selectMan->currentTransformAnchor();
+    redoTranslation = selectMan->myTranslation();
+    redoRotationAngle = selectMan->myRotation();
+    redoScaleX = selectMan->myScaleX();
+    redoScaleY = selectMan->myScaleY();
 
-    Layer* layer = editor->layers()->findLayerById(backupLayerId);
+    Layer* layer = editor->layers()->findLayerById(undoLayerId);
 
+    // TODO: this could become a bug.. should we check layer type for undo and redo layer respectively?
     const int currentFrame = editor->currentFrame();
     switch(layer->type())
     {
         case Layer::BITMAP:
         {
-            oldBitmap = *static_cast<BitmapImage*>(backupKeyFrame);
-            newBitmap = *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(currentFrame);
+            undoBitmap = *static_cast<BitmapImage*>(undoKeyFrame);
+            redoBitmap = *static_cast<LayerBitmap*>(layer)->getBitmapImageAtFrame(currentFrame);
             break;
         }
         case Layer::VECTOR:
         {
-            oldVector = *static_cast<VectorImage*>(backupKeyFrame);
-            newVector = *static_cast<LayerVector*>(layer)->
+            undoVector = *static_cast<VectorImage*>(undoKeyFrame);
+            redoVector = *static_cast<LayerVector*>(layer)->
                     getVectorImageAtFrame(currentFrame);
             break;
         }
@@ -187,15 +186,15 @@ TransformElement::TransformElement(KeyFrame* backupKeyFrame,
 
 void TransformElement::undo()
 {
-    apply(oldBitmap,
-          oldVector,
-          oldSelectionRect,
-          oldTranslation,
-          oldRotationAngle,
-          oldScaleX,
-          oldScaleY,
-          oldAnchor,
-          oldLayerId);
+    apply(undoBitmap,
+          undoVector,
+          undoSelectionRect,
+          undoTranslation,
+          undoRotationAngle,
+          undoScaleX,
+          undoScaleY,
+          undoAnchor,
+          undoLayerId);
 }
 
 void TransformElement::redo()
@@ -203,15 +202,15 @@ void TransformElement::redo()
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
-    apply(newBitmap,
-          newVector,
-          newSelectionRect,
-          newTranslation,
-          newRotationAngle,
-          newScaleX,
-          newScaleY,
-          newAnchor,
-          newLayerId);
+    apply(redoBitmap,
+          redoVector,
+          redoSelectionRect,
+          redoTranslation,
+          redoRotationAngle,
+          redoScaleX,
+          redoScaleY,
+          redoAnchor,
+          redoLayerId);
 }
 
 void TransformElement::apply(const BitmapImage& bitmapImage,
@@ -226,12 +225,6 @@ void TransformElement::apply(const BitmapImage& bitmapImage,
 {
 
     Layer* layer = editor()->layers()->findLayerById(layerId);
-    Layer* currentLayer = editor()->layers()->currentLayer();
-
-    if (layer->type() != currentLayer->type())
-    {
-        editor()->layers()->setCurrentLayer(layer);
-    }
 
     int frameNumber = 0;
     bool roundPixels = true;

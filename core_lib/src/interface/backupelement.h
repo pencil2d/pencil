@@ -65,18 +65,18 @@ public:
     void redo() override;
 
 private:
-    int oldLayerId = 0;
-    int newLayerId = 0;
+    int undoLayerId = 0;
+    int redoLayerId = 0;
 
-    BitmapImage oldBitmap;
-    BitmapImage newBitmap;
+    BitmapImage undoBitmap;
+    BitmapImage redoBitmap;
 };
 
 class VectorElement : public BackupElement
 {
 public:
-    VectorElement(const VectorImage* backupVector,
-                     const int& backupLayerId,
+    VectorElement(const VectorImage* undoVector,
+                     const int& undoLayerId,
                      const QString& description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
@@ -85,25 +85,25 @@ public:
     void redo() override;
 
 private:
-    int oldLayerId = 0;
-    int newLayerId = 0;
+    int undoLayerId = 0;
+    int redoLayerId = 0;
 
-    VectorImage oldVector;
-    VectorImage newVector;
+    VectorImage undoVector;
+    VectorImage redoVector;
 };
 
 class TransformElement : public BackupElement
 
 {
 public:
-    TransformElement(KeyFrame* backupKeyFrame,
-                     int backupLayerId,
-                     const QRectF& backupSelectionRect,
-                     QPointF backupTranslation,
-                     qreal backupRotationAngle,
-                     qreal backupScaleX,
-                     qreal backupScaleY,
-                     QPointF backupTransformAnchor,
+    TransformElement(KeyFrame* undoKeyFrame,
+                     int undoLayerId,
+                     const QRectF& undoSelectionRect,
+                     QPointF undoTranslation,
+                     qreal undoRotationAngle,
+                     qreal undoScaleX,
+                     qreal undoScaleY,
+                     QPointF undoTransformAnchor,
                      const QString& description,
                      Editor* editor,
                      QUndoCommand* parent = nullptr);
@@ -122,32 +122,32 @@ private:
                QPointF selectionAnchor,
                int layerId);
 
-    QRectF oldSelectionRect;
-    QRectF newSelectionRect;
+    QRectF undoSelectionRect;
+    QRectF redoSelectionRect;
 
-    QPointF oldAnchor;
-    QPointF newAnchor;
+    QPointF undoAnchor;
+    QPointF redoAnchor;
 
-    QPointF oldTranslation;
-    QPointF newTranslation;
+    QPointF undoTranslation;
+    QPointF redoTranslation;
 
-    qreal oldScaleX;
-    qreal oldScaleY;
+    qreal undoScaleX;
+    qreal undoScaleY;
 
-    qreal newScaleX;
-    qreal newScaleY;
+    qreal redoScaleX;
+    qreal redoScaleY;
 
-    qreal oldRotationAngle;
-    qreal newRotationAngle;
+    qreal undoRotationAngle;
+    qreal redoRotationAngle;
 
-    BitmapImage oldBitmap;
-    BitmapImage newBitmap;
+    BitmapImage undoBitmap;
+    BitmapImage redoBitmap;
 
-    VectorImage oldVector;
-    VectorImage newVector;
+    VectorImage undoVector;
+    VectorImage redoVector;
 
-    int oldLayerId = 0;
-    int newLayerId = 0;
+    int undoLayerId = 0;
+    int redoLayerId = 0;
 };
 
 #endif // BACKUPELEMENT_H

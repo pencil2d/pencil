@@ -108,9 +108,9 @@ private:
 
     // functions
 
-    void bitmap(const UndoSaveState* saveState, const QString& description);
-    void vector(const UndoSaveState* saveState, const QString& description);
-    void selection(const UndoSaveState* saveState, const QString& description);
+    void bitmap(const UndoSaveState* undoState, const QString& description);
+    void vector(const UndoSaveState* undoState, const QString& description);
+    void selection(const UndoSaveState* undoState, const QString& description);
 
     void pushCommand(QUndoCommand* command);
 

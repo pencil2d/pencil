@@ -161,49 +161,49 @@ void BackupManager::pushCommand(QUndoCommand* command)
     emit didUpdateUndoStack();
 }
 
-void BackupManager::bitmap(const UndoSaveState* saveState, const QString& description)
+void BackupManager::bitmap(const UndoSaveState* undoState, const QString& description)
 {
-    if (saveState->keyframe == nullptr || saveState->layerType != Layer::BITMAP) { return; }
-    BitmapElement* element = new BitmapElement(static_cast<BitmapImage*>(saveState->keyframe.get()),
-                                               saveState->layerId,
+    if (undoState->keyframe == nullptr || undoState->layerType != Layer::BITMAP) { return; }
+    BitmapElement* element = new BitmapElement(static_cast<BitmapImage*>(undoState->keyframe.get()),
+                                               undoState->layerId,
                                                description,
                                                editor());
 
-    new TransformElement(saveState->keyframe.get(),
-                         saveState->layerId,
-                         saveState->selectionRect,
-                         saveState->selectionTranslation,
-                         saveState->selectionRotationAngle,
-                         saveState->selectionScaleX,
-                         saveState->selectionScaleY,
-                         saveState->selectionAnchor,
+    new TransformElement(undoState->keyframe.get(),
+                         undoState->layerId,
+                         undoState->selectionRect,
+                         undoState->selectionTranslation,
+                         undoState->selectionRotationAngle,
+                         undoState->selectionScaleX,
+                         undoState->selectionScaleY,
+                         undoState->selectionAnchor,
                          description,
                          editor(), element);
 
     pushCommand(element);
 }
 
-void BackupManager::vector(const UndoSaveState* saveState, const QString& description)
+void BackupManager::vector(const UndoSaveState* undoState, const QString& description)
 {
-    if (saveState->keyframe == nullptr || saveState->layerType != Layer::VECTOR) { return; }
-    VectorElement* element = new VectorElement(static_cast<VectorImage*>(saveState->keyframe.get()),
-                                                 saveState->layerId,
+    if (undoState->keyframe == nullptr || undoState->layerType != Layer::VECTOR) { return; }
+    VectorElement* element = new VectorElement(static_cast<VectorImage*>(undoState->keyframe.get()),
+                                                 undoState->layerId,
                                                  description,
                                                  editor());
     pushCommand(element);
 }
 
-void BackupManager::selection(const UndoSaveState* saveState, const QString& description)
+void BackupManager::selection(const UndoSaveState* undoState, const QString& description)
 {
     TransformElement* element = new TransformElement(
-                                    saveState->keyframe.get(),
-                                    saveState->layerId,
-                                    saveState->selectionRect,
-                                    saveState->selectionTranslation,
-                                    saveState->selectionRotationAngle,
-                                    saveState->selectionScaleX,
-                                    saveState->selectionScaleY,
-                                    saveState->selectionAnchor,
+                                    undoState->keyframe.get(),
+                                    undoState->layerId,
+                                    undoState->selectionRect,
+                                    undoState->selectionTranslation,
+                                    undoState->selectionRotationAngle,
+                                    undoState->selectionScaleX,
+                                    undoState->selectionScaleY,
+                                    undoState->selectionAnchor,
                                     description,
                                     editor());
 
