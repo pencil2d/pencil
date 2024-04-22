@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include "basemanager.h"
 #include "layer.h"
+#include "keyframe.h"
 
 #include <QRectF>
 
@@ -39,6 +40,19 @@ enum class BackupType {
     STROKE,
     POLYLINE,
     SELECTION,
+};
+
+struct UndoSaveState {
+    int layerId = 0;
+    Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
+    std::unique_ptr<KeyFrame> keyframe = nullptr;
+
+    QRectF  selectionRect;
+    qreal   selectionRotationAngle = 0.0;
+    qreal   selectionScaleX = 0.0;
+    qreal   selectionScaleY = 0.0;
+    QPointF selectionTranslation;
+    QPointF selectionAnchor;
 };
 
 class BackupManager : public BaseManager
@@ -94,9 +108,9 @@ private:
 
     // functions
 
-    void bitmap(const QString& description);
-    void vector(const QString& description);
-    void selection(const QString& description);
+    void bitmap(const UndoSaveState* saveState, const QString& description);
+    void vector(const UndoSaveState* saveState, const QString& description);
+    void selection(const UndoSaveState* saveState, const QString& description);
 
     void pushCommand(QUndoCommand* command);
 
@@ -107,17 +121,7 @@ private:
 
     QUndoStack* mUndoStack = nullptr;
 
-    int mLayerId = 0;
-
-    Layer::LAYER_TYPE mType = Layer::UNDEFINED;
-    KeyFrame* mKeyframe = nullptr;
-
-    QRectF mSelectionRect = QRectF();
-    qreal mSelectionRotationAngle = 0.0;
-    qreal mSelectionScaleX = 0.0;
-    qreal mSelectionScaleY = 0.0;
-    QPointF mSelectionTranslation;
-    QPointF mSelectionAnchor;
+    std::unique_ptr<UndoSaveState> mUndoSaveState = nullptr;
 
     // Legacy system
     int mLegacyBackupIndex = -1;
@@ -128,7 +132,6 @@ private:
     int mLegacyLastModifiedFrame = -1;
 
     bool mNewBackupSystemEnabled = false;
-
 };
 
 #endif // BACKUPMANAGER_H

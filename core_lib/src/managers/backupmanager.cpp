@@ -88,15 +88,21 @@ void BackupManager::backup(BackupType type)
         return;
     }
 
+    if (!mUndoSaveState) {
+        Q_ASSERT_X(false, "BackupManager::backup", "Missing save state, no undo/redo state saved");
+        return;
+    }
+
     Layer* currentLayer = editor()->layers()->currentLayer();
+    const UndoSaveState* undoSaveState = mUndoSaveState.get();
     switch (type)
     {
         case BackupType::STROKE:
         {
             if (currentLayer->type() == Layer::BITMAP) {
-                bitmap(tr("Bitmap Stroke"));
+                bitmap(undoSaveState, tr("Bitmap Stroke"));
             } else if (currentLayer->type() == Layer::VECTOR) {
-                vector(tr("Vector Stroke"));
+                vector(undoSaveState, tr("Vector Stroke"));
             } else {
                 Q_ASSERT_X(false, "BackupManager", "A stroke can only be applied to either the Bitmap or Vector layer");
             }
@@ -105,9 +111,9 @@ void BackupManager::backup(BackupType type)
         case BackupType::POLYLINE:
         {
             if (currentLayer->type() == Layer::BITMAP) {
-                bitmap(tr("Bitmap Polyline"));
+                bitmap(undoSaveState, tr("Bitmap Polyline"));
             } else if (currentLayer->type() == Layer::VECTOR) {
-                vector(tr("Vector Polyline"));
+                vector(undoSaveState, tr("Vector Polyline"));
             } else {
                 Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
             }
@@ -116,9 +122,9 @@ void BackupManager::backup(BackupType type)
         case BackupType::SELECTION:
         {
             if (currentLayer->type() == Layer::BITMAP) {
-                selection(tr("Bitmap Selection"));
+                selection(undoSaveState, tr("Bitmap Selection"));
             } else if (currentLayer->type() == Layer::VECTOR) {
-                selection(tr("Vector Selection"));
+                selection(undoSaveState, tr("Vector Selection"));
             } else {
                 Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
             }
@@ -149,53 +155,57 @@ bool BackupManager::hasUnsavedChanges() const
 void BackupManager::pushCommand(QUndoCommand* command)
 {
     mUndoStack->push(command);
+
+    mUndoSaveState.reset();
+
     emit didUpdateUndoStack();
 }
 
-void BackupManager::bitmap(const QString& description)
+void BackupManager::bitmap(const UndoSaveState* saveState, const QString& description)
 {
-    if (mKeyframe == nullptr || mType != Layer::BITMAP) { return; }
-    BitmapElement* element = new BitmapElement(static_cast<BitmapImage*>(mKeyframe),
-                                               mLayerId,
+    if (saveState->keyframe == nullptr || saveState->layerType != Layer::BITMAP) { return; }
+    BitmapElement* element = new BitmapElement(static_cast<BitmapImage*>(saveState->keyframe.get()),
+                                               saveState->layerId,
                                                description,
                                                editor());
 
-    new TransformElement(mKeyframe,
-                         mLayerId,
-                         mSelectionRect,
-                         mSelectionTranslation,
-                         mSelectionRotationAngle,
-                         mSelectionScaleX,
-                         mSelectionScaleY,
-                         mSelectionAnchor,
+    new TransformElement(saveState->keyframe.get(),
+                         saveState->layerId,
+                         saveState->selectionRect,
+                         saveState->selectionTranslation,
+                         saveState->selectionRotationAngle,
+                         saveState->selectionScaleX,
+                         saveState->selectionScaleY,
+                         saveState->selectionAnchor,
                          description,
                          editor(), element);
 
     pushCommand(element);
 }
 
-void BackupManager::vector(const QString& description)
+void BackupManager::vector(const UndoSaveState* saveState, const QString& description)
 {
-    if (mKeyframe == nullptr || mType != Layer::VECTOR) { return; }
-    VectorElement* element = new VectorElement(static_cast<VectorImage*>(mKeyframe),
-                                                 mLayerId,
+    if (saveState->keyframe == nullptr || saveState->layerType != Layer::VECTOR) { return; }
+    VectorElement* element = new VectorElement(static_cast<VectorImage*>(saveState->keyframe.get()),
+                                                 saveState->layerId,
                                                  description,
                                                  editor());
     pushCommand(element);
 }
 
-void BackupManager::selection(const QString& description)
+void BackupManager::selection(const UndoSaveState* saveState, const QString& description)
 {
-    TransformElement* element = new TransformElement(mKeyframe,
-                         mLayerId,
-                         mSelectionRect,
-                         mSelectionTranslation,
-                         mSelectionRotationAngle,
-                         mSelectionScaleX,
-                         mSelectionScaleY,
-                         mSelectionAnchor,
-                         description,
-                         editor());
+    TransformElement* element = new TransformElement(
+                                    saveState->keyframe.get(),
+                                    saveState->layerId,
+                                    saveState->selectionRect,
+                                    saveState->selectionTranslation,
+                                    saveState->selectionRotationAngle,
+                                    saveState->selectionScaleX,
+                                    saveState->selectionScaleY,
+                                    saveState->selectionAnchor,
+                                    description,
+                                    editor());
 
     pushCommand(element);
 }
@@ -211,29 +221,32 @@ void BackupManager::saveStates()
         return;
     }
 
-    mKeyframe = nullptr;
+    mUndoSaveState.reset();
 
+    std::unique_ptr<UndoSaveState> undoSaveState(new UndoSaveState());
     const Layer* layer = editor()->layers()->currentLayer();
-    mType = layer->type();
-    mLayerId = layer->id();
+    undoSaveState->layerType = layer->type();
+    undoSaveState->layerId = layer->id();
 
     auto selectMan = editor()->select();
-    mSelectionRect = selectMan->mySelectionRect();
-    mSelectionRotationAngle = selectMan->myRotation();
-    mSelectionTranslation = selectMan->myTranslation();
-    mSelectionAnchor = selectMan->currentTransformAnchor();
-    mSelectionScaleX = selectMan->myScaleX();
-    mSelectionScaleY = selectMan->myScaleY();
+    undoSaveState->selectionRect = selectMan->mySelectionRect();
+    undoSaveState->selectionRotationAngle = selectMan->myRotation();
+    undoSaveState->selectionTranslation = selectMan->myTranslation();
+    undoSaveState->selectionAnchor = selectMan->currentTransformAnchor();
+    undoSaveState->selectionScaleX = selectMan->myScaleX();
+    undoSaveState->selectionScaleY = selectMan->myScaleY();
+
 
     const int frameIndex = editor()->currentFrame();
     if (layer->keyExists(frameIndex))
     {
-        mKeyframe = layer->getLastKeyFrameAtPosition(frameIndex)->clone();
+        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(layer->getLastKeyFrameAtPosition(frameIndex)->clone());
     }
     else if (layer->getKeyFrameWhichCovers(frameIndex) != nullptr)
     {
-        mKeyframe = layer->getKeyFrameWhichCovers(frameIndex)->clone();
+        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(layer->getKeyFrameWhichCovers(frameIndex)->clone());
     }
+    mUndoSaveState = std::move(undoSaveState);
 }
 
 QAction* BackupManager::createUndoAction(QObject* parent, const QString& description, const QIcon& icon)
