@@ -44,7 +44,7 @@ GNU General Public License for more details.
 
 UndoRedoManager::UndoRedoManager(Editor* editor) : BaseManager(editor, "UndoRedoManager")
 {
-    qDebug() << "BackupManager: created";
+    qDebug() << "UndoRedoManager: created";
 }
 
 UndoRedoManager::~UndoRedoManager()
@@ -53,13 +53,13 @@ UndoRedoManager::~UndoRedoManager()
     {
         clearStack();
     }
-    qDebug() << "BackupManager: destroyed";
+    qDebug() << "UndoRedoManager: destroyed";
 }
 
 bool UndoRedoManager::init()
 {
     mUndoStack = new QUndoStack(this);
-    qDebug() << "BackupManager: init";
+    qDebug() << "UndoRedoManager: init";
 
     mNewBackupSystemEnabled = editor()->preference()->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
 
@@ -89,7 +89,7 @@ void UndoRedoManager::add(UndoRedoType undoRedoType)
     }
 
     if (!mUndoSaveState) {
-        Q_ASSERT_X(false, "BackupManager::backup", "Missing save state, no undo/redo state saved");
+        Q_ASSERT_X(false, "UndoRedoManager::backup", "Missing save state, no undo/redo state saved");
         return;
     }
 
@@ -104,7 +104,7 @@ void UndoRedoManager::add(UndoRedoType undoRedoType)
             } else if (currentLayer->type() == Layer::VECTOR) {
                 vector(undoSaveState, tr("Vector Stroke"));
             } else {
-                Q_ASSERT_X(false, "BackupManager", "A stroke can only be applied to either the Bitmap or Vector layer");
+                Q_ASSERT_X(false, "UndoRedoManager", "A stroke can only be applied to either the Bitmap or Vector layer");
             }
             break;
         }
@@ -115,7 +115,7 @@ void UndoRedoManager::add(UndoRedoType undoRedoType)
             } else if (currentLayer->type() == Layer::VECTOR) {
                 vector(undoSaveState, tr("Vector Polyline"));
             } else {
-                Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
+                Q_ASSERT_X(false, "UndoRedoManager", "A polyline can only be applied to either the Bitmap or Vector layer");
             }
             break;
         }
@@ -126,12 +126,12 @@ void UndoRedoManager::add(UndoRedoType undoRedoType)
             } else if (currentLayer->type() == Layer::VECTOR) {
                 selection(undoSaveState, tr("Vector Selection"));
             } else {
-                Q_ASSERT_X(false, "BackupManager", "A polyline can only be applied to either the Bitmap or Vector layer");
+                Q_ASSERT_X(false, "UndoRedoManager", "A polyline can only be applied to either the Bitmap or Vector layer");
             }
             break;
         }
         default:
-            Q_ASSERT_X(false, "BackupManager", "Tried to make a backup for a case which hasn't been handled yet");
+            Q_ASSERT_X(false, "UndoRedoManager", "Tried to make a backup for a case which hasn't been handled yet");
     }
 }
 
