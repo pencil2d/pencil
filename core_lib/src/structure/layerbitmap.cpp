@@ -46,7 +46,7 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 
 void LayerBitmap::replaceKeyFrame(const KeyFrame* bitmapImage)
 {
-    *getLastBitmapImageAtFrame(bitmapImage->pos()) = *static_cast<const BitmapImage*>(bitmapImage);
+    *getBitmapImageAtFrame(bitmapImage->pos()) = *static_cast<const BitmapImage*>(bitmapImage);
 }
 
 void LayerBitmap::repositionFrame(QPoint point, int frame)

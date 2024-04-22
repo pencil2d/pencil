@@ -58,7 +58,7 @@ bool LayerCamera::removeKeyFrame(int position)
 
 void LayerCamera::replaceKeyFrame(const KeyFrame* camera)
 {
-    *getLastCameraAtFrame(camera->pos(), 0) = *static_cast<const Camera*>(camera);
+    *getCameraAtFrame(camera->pos()) = *static_cast<const Camera*>(camera);
 }
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber) const
