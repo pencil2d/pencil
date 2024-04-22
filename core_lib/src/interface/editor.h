@@ -57,10 +57,10 @@ class SelectionManager;
 class SoundManager;
 class OverlayManager;
 class ClipboardManager;
-class BackupManager;
+class UndoRedoManager;
 class ScribbleArea;
 class TimeLine;
-class BackupElement;
+class UndoRedoCommand;
 class ActiveFramePool;
 class Layer;
 
@@ -80,7 +80,7 @@ class Editor : public QObject
         Q_PROPERTY(SelectionManager* select  READ select)
         Q_PROPERTY(OverlayManager*  overlays READ overlays)
         Q_PROPERTY(ClipboardManager* clipboards READ clipboards)
-        Q_PROPERTY(BackupManager* backups READ backups)
+        Q_PROPERTY(UndoRedoManager* undoRedo READ undoRedo)
 
 
 public:
@@ -102,7 +102,7 @@ public:
     SelectionManager*  select() const { return mSelectionManager; }
     OverlayManager*    overlays() const { return mOverlayManager; }
     ClipboardManager*  clipboards() const { return mClipboardManager; }
-    BackupManager*     backups() const { return mBackupManager; }
+    UndoRedoManager*     undoRedo() const { return mUndoRedoManager; }
 
     Object* object() const { return mObject.get(); }
     Status openObject(const QString& strFilePath, const std::function<void(int)>& progressChanged, const std::function<void(int)>& progressRangeChanged);
@@ -260,7 +260,7 @@ private:
     SelectionManager*  mSelectionManager = nullptr;
     OverlayManager*    mOverlayManager = nullptr;
     ClipboardManager*  mClipboardManager = nullptr;
-    BackupManager*     mBackupManager = nullptr;
+    UndoRedoManager*     mUndoRedoManager = nullptr;
 
     std::vector< BaseManager* > mAllManagers;
 

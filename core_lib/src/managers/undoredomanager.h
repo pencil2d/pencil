@@ -15,8 +15,8 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#ifndef BACKUPMANAGER_H
-#define BACKUPMANAGER_H
+#ifndef UNDOREDOMANAGER_H
+#define UNDOREDOMANAGER_H
 
 #include "basemanager.h"
 #include "layer.h"
@@ -34,9 +34,9 @@ class Camera;
 class SoundClip;
 class KeyFrame;
 class LegacyBackupElement;
-class BackupElement;
+class UndoRedoCommand;
 
-enum class BackupType {
+enum class UndoRedoType {
     STROKE,
     POLYLINE,
     SELECTION,
@@ -55,19 +55,23 @@ struct UndoSaveState {
     QPointF selectionAnchor;
 };
 
-class BackupManager : public BaseManager
+class UndoRedoManager : public BaseManager
 {
     Q_OBJECT
 
 public:
-    explicit BackupManager(Editor* editor);
-    ~BackupManager() override;
+    explicit UndoRedoManager(Editor* editor);
+    ~UndoRedoManager() override;
 
     bool init() override;
     Status load(Object*) override;
     Status save(Object*) override;
 
-    void backup(BackupType backupType);
+    /**
+     * Adds a undo/redo state of the given UndoRedoType
+     * @param undoRedoType The type to add
+    */
+    void add(UndoRedoType undoRedoType);
 
     bool hasUnsavedChanges() const;
     void saveStates();
@@ -78,7 +82,7 @@ public:
     void updateUndoAction(QAction* undoAction);
     void updateRedoAction(QAction* redoAction);
 
-    const BackupElement* latestBackupElement() const;
+    const UndoRedoCommand* latestBackupElement() const;
 
     void clearStack();
 
@@ -134,4 +138,4 @@ private:
     bool mNewBackupSystemEnabled = false;
 };
 
-#endif // BACKUPMANAGER_H
+#endif // UNDOREDOMANAGER_H

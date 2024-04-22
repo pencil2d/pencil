@@ -41,7 +41,7 @@ class ColorInspector;
 class RecentFileMenu;
 class ActionCommands;
 class ImportImageSeqDialog;
-class BackupElement;
+class UndoRedoCommand;
 class LayerOpacityDialog;
 class PegBarAlignmentDialog;
 class RepositionFramesDialog;

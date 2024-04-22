@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "toolmanager.h"
 #include "selectionmanager.h"
-#include "backupmanager.h"
+#include "undoredomanager.h"
 
 SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
 {
@@ -126,7 +126,7 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     if (event->button() != Qt::LeftButton) { return; }
     auto selectMan = mEditor->select();
 
-    mEditor->backups()->saveStates();
+    mEditor->undoRedo()->saveStates();
 
     mPressPoint = event->canvasPos();
     selectMan->setMoveModeForAnchorInRange(mPressPoint);
@@ -187,7 +187,7 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
         keepSelection(currentLayer);
     }
 
-    mEditor->backups()->backup(BackupType::SELECTION);
+    mEditor->undoRedo()->add(UndoRedoType::SELECTION);
 
     mStartMoveMode = MoveMode::NONE;
     mSelectionRect = mEditor->select()->mapToSelection(mEditor->select()->mySelectionRect()).boundingRect();

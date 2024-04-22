@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
-#include "backupmanager.h"
+#include "undoredomanager.h"
 
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -270,7 +270,7 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
-        mEditor->backups()->saveStates();
+        mEditor->undoRedo()->saveStates();
         mEditor->backup(typeName());
 
         if (layer->type() == Layer::BITMAP)

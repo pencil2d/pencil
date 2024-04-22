@@ -16,8 +16,8 @@ GNU General Public License for more details.
 
 */
 
-#ifndef BACKUPELEMENT_H
-#define BACKUPELEMENT_H
+#ifndef UNDOREDOCOMMAND_H
+#define UNDOREDOCOMMAND_H
 
 #include <QUndoCommand>
 #include <QRectF>
@@ -26,19 +26,19 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 class Editor;
-class BackupManager;
+class UndoRedoManager;
 class PreferenceManager;
 class SoundClip;
 class Camera;
 class Layer;
 class KeyFrame;
-class TransformElement;
+class TransformCommand;
 
-class BackupElement : public QUndoCommand
+class UndoRedoCommand : public QUndoCommand
 {
 public:
-    explicit BackupElement(Editor* editor, QUndoCommand* parent = nullptr);
-    ~BackupElement() override;
+    explicit UndoRedoCommand(Editor* editor, QUndoCommand* parent = nullptr);
+    ~UndoRedoCommand() override;
 
 protected:
     Editor* editor() { return mEditor; }
@@ -51,11 +51,11 @@ private:
     bool mIsFirstRedo = true;
 };
 
-class BitmapElement : public BackupElement
+class BitmapCommand : public UndoRedoCommand
 {
 
 public:
-    BitmapElement(const BitmapImage* backupBitmap,
+    BitmapCommand(const BitmapImage* backupBitmap,
                   int backupLayerId,
                   const QString& description,
                   Editor* editor,
@@ -72,10 +72,10 @@ private:
     BitmapImage redoBitmap;
 };
 
-class VectorElement : public BackupElement
+class VectorCommand : public UndoRedoCommand
 {
 public:
-    VectorElement(const VectorImage* undoVector,
+    VectorCommand(const VectorImage* undoVector,
                      const int& undoLayerId,
                      const QString& description,
                      Editor* editor,
@@ -92,11 +92,11 @@ private:
     VectorImage redoVector;
 };
 
-class TransformElement : public BackupElement
+class TransformCommand : public UndoRedoCommand
 
 {
 public:
-    TransformElement(KeyFrame* undoKeyFrame,
+    TransformCommand(KeyFrame* undoKeyFrame,
                      int undoLayerId,
                      const QRectF& undoSelectionRect,
                      QPointF undoTranslation,
@@ -150,4 +150,4 @@ private:
     int redoLayerId = 0;
 };
 
-#endif // BACKUPELEMENT_H
+#endif // UNDOREDOCOMMAND_H

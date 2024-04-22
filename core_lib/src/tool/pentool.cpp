@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "layermanager.h"
 #include "viewmanager.h"
-#include "backupmanager.h"
+#include "undoredomanager.h"
 #include "selectionmanager.h"
 #include "editor.h"
 #include "scribblearea.h"
@@ -162,7 +162,7 @@ void PenTool::pointerReleaseEvent(PointerEvent *event)
 
     if (event->inputType() != mCurrentInputType) return;
 
-    mEditor->backups()->saveStates();
+    mEditor->undoRedo()->saveStates();
     mEditor->backup(typeName());
 
     Layer* layer = mEditor->layers()->currentLayer();

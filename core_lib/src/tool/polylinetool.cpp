@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
-#include "backupmanager.h"
+#include "undoredomanager.h"
 #include "pointerevent.h"
 #include "layervector.h"
 #include "layerbitmap.h"
@@ -188,7 +188,7 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
     mPoints << getCurrentPoint();
 
     mEditor->backup(typeName());
-    mEditor->backups()->saveStates();
+    mEditor->undoRedo()->saveStates();
 
     endPolyline(mPoints);
     clearToolData();
@@ -202,7 +202,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
-            mEditor->backups()->saveStates();
+            mEditor->undoRedo()->saveStates();
             endPolyline(mPoints);
             clearToolData();
             return true;
@@ -305,6 +305,6 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         drawPolyline(points, points.last());
     }
     mScribbleArea->endStroke();
-    mEditor->backups()->backup(BackupType::POLYLINE);
+    mEditor->undoRedo()->add(UndoRedoType::POLYLINE);
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 }

@@ -26,23 +26,23 @@ GNU General Public License for more details.
 #include "layervector.h"
 
 #include "editor.h"
-#include "backupelement.h"
+#include "undoredocommand.h"
 
-BackupElement::BackupElement(Editor* editor, QUndoCommand* parent) : QUndoCommand(parent)
+UndoRedoCommand::UndoRedoCommand(Editor* editor, QUndoCommand* parent) : QUndoCommand(parent)
 {
     qDebug() << "backupElement created";
     mEditor = editor;
 }
 
-BackupElement::~BackupElement()
+UndoRedoCommand::~UndoRedoCommand()
 {
 }
 
-BitmapElement::BitmapElement(const BitmapImage* undoBitmap,
+BitmapCommand::BitmapCommand(const BitmapImage* undoBitmap,
                              const int undoLayerId,
                              const QString& description,
                              Editor *editor,
-                             QUndoCommand *parent) : BackupElement(editor, parent)
+                             QUndoCommand *parent) : UndoRedoCommand(editor, parent)
 {
 
     this->undoBitmap = *undoBitmap;
@@ -56,7 +56,7 @@ BitmapElement::BitmapElement(const BitmapImage* undoBitmap,
     setText(description);
 }
 
-void BitmapElement::undo()
+void BitmapCommand::undo()
 {
     QUndoCommand::undo();
 
@@ -66,7 +66,7 @@ void BitmapElement::undo()
     editor()->scrubTo(undoBitmap.pos());
 }
 
-void BitmapElement::redo()
+void BitmapCommand::redo()
 {
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
@@ -79,11 +79,11 @@ void BitmapElement::redo()
     editor()->scrubTo(redoBitmap.pos());
 }
 
-VectorElement::VectorElement(const VectorImage* undoVector,
+VectorCommand::VectorCommand(const VectorImage* undoVector,
                                    const int& undoLayerId,
                                    const QString& description,
                                    Editor* editor,
-                                   QUndoCommand* parent) : BackupElement(editor, parent)
+                                   QUndoCommand* parent) : UndoRedoCommand(editor, parent)
 {
 
     this->undoVector = *undoVector;
@@ -96,7 +96,7 @@ VectorElement::VectorElement(const VectorImage* undoVector,
     setText(description);
 }
 
-void VectorElement::undo()
+void VectorCommand::undo()
 {
     qDebug() << "BackupVectorElement: undo";
 
@@ -109,7 +109,7 @@ void VectorElement::undo()
     editor()->scrubTo(undoVector.pos());
 }
 
-void VectorElement::redo()
+void VectorCommand::redo()
 {
     qDebug() << "BackupVectorElement: redo";
 
@@ -125,7 +125,7 @@ void VectorElement::redo()
     editor()->scrubTo(redoVector.pos());
 }
 
-TransformElement::TransformElement(KeyFrame* undoKeyFrame,
+TransformCommand::TransformCommand(KeyFrame* undoKeyFrame,
                                    const int undoLayerId,
                                    const QRectF& undoSelectionRect,
                                    const QPointF undoTranslation,
@@ -135,7 +135,7 @@ TransformElement::TransformElement(KeyFrame* undoKeyFrame,
                                    const QPointF undoTransformAnchor,
                                    const QString& description,
                                    Editor* editor,
-                                   QUndoCommand *parent) : BackupElement(editor, parent)
+                                   QUndoCommand *parent) : UndoRedoCommand(editor, parent)
 {
 
 
@@ -184,7 +184,7 @@ TransformElement::TransformElement(KeyFrame* undoKeyFrame,
     setText(description);
 }
 
-void TransformElement::undo()
+void TransformCommand::undo()
 {
     apply(undoBitmap,
           undoVector,
@@ -197,7 +197,7 @@ void TransformElement::undo()
           undoLayerId);
 }
 
-void TransformElement::redo()
+void TransformCommand::redo()
 {
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
@@ -213,7 +213,7 @@ void TransformElement::redo()
           redoLayerId);
 }
 
-void TransformElement::apply(const BitmapImage& bitmapImage,
+void TransformCommand::apply(const BitmapImage& bitmapImage,
                              const VectorImage& vectorImage,
                              const QRectF& selectionRect,
                              const QPointF translation,

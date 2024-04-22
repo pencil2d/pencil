@@ -50,12 +50,12 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
-#include "backupmanager.h"
+#include "undoredomanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
-#include "backupelement.h"
+#include "undoredocommand.h"
 
 // app headers
 #include "colorbox.h"
@@ -467,8 +467,8 @@ void MainWindow2::replaceUndoRedoActions()
 {
     ui->menuEdit->removeAction(ui->actionUndo);
     ui->menuEdit->removeAction(ui->actionRedo);
-    ui->actionUndo = mEditor->backups()->createUndoAction(this, tr("Undo"), ui->actionUndo->icon());
-    ui->actionRedo = mEditor->backups()->createRedoAction(this, tr("Redo"), ui->actionRedo->icon());
+    ui->actionUndo = mEditor->undoRedo()->createUndoAction(this, tr("Undo"), ui->actionUndo->icon());
+    ui->actionRedo = mEditor->undoRedo()->createRedoAction(this, tr("Redo"), ui->actionRedo->icon());
     ui->menuEdit->insertAction(ui->actionCut, ui->actionUndo);
     ui->menuEdit->insertAction(ui->actionCut, ui->actionRedo);
 }
@@ -481,15 +481,15 @@ void MainWindow2::setOpacity(int opacity)
 
 void MainWindow2::updateSaveState()
 {
-    const bool hasUnsavedChanges = mEditor->backups()->hasUnsavedChanges();
+    const bool hasUnsavedChanges = mEditor->undoRedo()->hasUnsavedChanges();
     setWindowModified(hasUnsavedChanges);
     ui->statusBar->updateModifiedStatus(hasUnsavedChanges);
 }
 
 void MainWindow2::updateBackupActionState()
 {
-    mEditor->backups()->updateUndoAction(ui->actionUndo);
-    mEditor->backups()->updateRedoAction(ui->actionRedo);
+    mEditor->undoRedo()->updateUndoAction(ui->actionUndo);
+    mEditor->undoRedo()->updateRedoAction(ui->actionRedo);
 }
 
 void MainWindow2::openPegAlignDialog()
@@ -812,7 +812,7 @@ bool MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if (!mEditor->backups()->hasUnsavedChanges())
+    if (!mEditor->undoRedo()->hasUnsavedChanges())
     {
         return true;
     }
@@ -1365,8 +1365,8 @@ void MainWindow2::openPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
-    connect(editor->backups(), &BackupManager::didUpdateUndoStack, this, &MainWindow2::updateSaveState);
-    connect(editor->backups(), &BackupManager::didUpdateUndoStack, this, &MainWindow2::updateBackupActionState);
+    connect(editor->undoRedo(), &UndoRedoManager::didUpdateUndoStack, this, &MainWindow2::updateSaveState);
+    connect(editor->undoRedo(), &UndoRedoManager::didUpdateUndoStack, this, &MainWindow2::updateBackupActionState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);

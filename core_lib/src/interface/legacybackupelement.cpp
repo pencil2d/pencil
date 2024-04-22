@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "selectionmanager.h"
 #include "layermanager.h"
-#include "backupmanager.h"
+#include "undoredomanager.h"
 
 void BackupLegacyBitmapElement::restore(Editor* editor)
 {
@@ -38,7 +38,7 @@ void BackupLegacyBitmapElement::restore(Editor* editor)
 
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
-        editor->backups()->restoreLegacyKey();
+        editor->undoRedo()->restoreLegacyKey();
     }
     else
     {
@@ -88,7 +88,7 @@ void BackupLegacyVectorElement::restore(Editor* editor)
 
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
-        editor->backups()->restoreLegacyKey();
+        editor->undoRedo()->restoreLegacyKey();
     }
     else
     {
@@ -128,6 +128,6 @@ void BackupLegacySoundElement::restore(Editor* editor)
     // TODO: soundclip won't restore if overlapping on first frame
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
-        editor->backups()->restoreLegacyKey();
+        editor->undoRedo()->restoreLegacyKey();
     }
 }

@@ -29,7 +29,7 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layercamera.h"
-#include "backupelement.h"
+#include "undoredocommand.h"
 
 #include "colormanager.h"
 #include "filemanager.h"
@@ -42,7 +42,7 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "overlaymanager.h"
 #include "clipboardmanager.h"
-#include "backupmanager.h"
+#include "undoredomanager.h"
 
 #include "scribblearea.h"
 
@@ -69,7 +69,7 @@ bool Editor::init()
     mSelectionManager = new SelectionManager(this);
     mOverlayManager = new OverlayManager(this);
     mClipboardManager = new ClipboardManager(this);
-    mBackupManager = new BackupManager(this);
+    mUndoRedoManager = new UndoRedoManager(this);
 
     mAllManagers =
     {
@@ -83,7 +83,7 @@ bool Editor::init()
         mSelectionManager,
         mOverlayManager,
         mClipboardManager,
-        mBackupManager
+        mUndoRedoManager
     };
 
     for (BaseManager* pManager : mAllManagers)
@@ -118,10 +118,10 @@ void Editor::setFps(int fps)
 void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
-    connect(mBackupManager, &BackupManager::didUpdateUndoStack, this, &Editor::updateAutoSaveCounter);
+    connect(mUndoRedoManager, &UndoRedoManager::didUpdateUndoStack, this, &Editor::updateAutoSaveCounter);
 
     // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
-    connect(mLayerManager, &LayerManager::layerDeleted, mBackupManager, &BackupManager::sanitizeLegacyBackupElementsAfterLayerDeletion);
+    connect(mLayerManager, &LayerManager::layerDeleted, mUndoRedoManager, &UndoRedoManager::sanitizeLegacyBackupElementsAfterLayerDeletion);
     connect(mLayerManager, &LayerManager::currentLayerWillChange, this, &Editor::onCurrentLayerWillChange);
 }
 
@@ -405,7 +405,7 @@ void Editor::setModified(int layerNumber, int frameNumber)
     if (layer == nullptr) { return; }
 
     layer->setModified(frameNumber, true);
-    backups()->rememberLastModifiedFrame(layerNumber, frameNumber);
+    undoRedo()->rememberLastModifiedFrame(layerNumber, frameNumber);
 
     emit frameModified(frameNumber);
 }
@@ -1054,13 +1054,13 @@ bool Editor::canCopyVectorImage(const VectorImage* vectorImage) const
 
 void Editor::backup(const QString &undoText)
 {
-    backups()->legacyBackup(undoText);
+    undoRedo()->legacyBackup(undoText);
     updateAutoSaveCounter();
 }
 
 bool Editor::backup(int layerNumber, int frameNumber, const QString &undoText)
 {
-    bool didBackup = backups()->legacyBackup(layerNumber, frameNumber, undoText);
+    bool didBackup = undoRedo()->legacyBackup(layerNumber, frameNumber, undoText);
 
     updateAutoSaveCounter();
     return didBackup;
