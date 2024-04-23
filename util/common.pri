@@ -11,10 +11,11 @@ PENCIL2D_RELEASE {
     DEFINES += PENCIL2D_RELEASE_BUILD
 }
 
-CONFIG += c++11
-
-win32-g++ {
-    QMAKE_CXXFLAGS += -std=c++11
+CONFIG += strict_c strict_c++
+greaterThan(QT_MAJOR_VERSION, 5) {
+    CONFIG += c++17
+} else {
+    CONFIG += c++11
 }
 
 win32-msvc* {
@@ -35,12 +36,11 @@ WIN_LEGACY {
 win32:!WIN_LEGACY: DEFINES += _WIN32_WINNT=0x0601
 
 macx {
-    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
+    QMAKE_CXXFLAGS += -stdlib=libc++
     LIBS += -lobjc -framework Carbon -framework AppKit
 }
 
 unix:!macx {
-    QMAKE_CXXFLAGS += -std=c++11
     QMAKE_LINK = $$QMAKE_CXX
     QMAKE_LINK_SHLIB = $$QMAKE_CXX
 }

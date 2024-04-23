@@ -94,7 +94,6 @@ jobs:
       run: mkdir build; ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
         -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
         CONFIG+=PENCIL2D_${{github.ref == 'refs/heads/release' && 'RELEASE' || 'NIGHTLY'}}
-        ${{matrix.qt == 6 && 'CONFIG+=c++17 QMAKE_CXX_FLAGS+=-std=c++17' || ''}}
 
     - name: Build Pencil2D
       working-directory: build
