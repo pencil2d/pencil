@@ -1178,6 +1178,33 @@ void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor,
     mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_Source, useAA);
 }
 
+void ScribbleArea::snappingDrawPen(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth, QColor fillColor, bool useAA)
+{
+    QPainterPath path;
+    path.moveTo(origin);
+    path.lineTo(currentPoint);
+    
+    // Functionality explained in drawPolyLine
+    BlitRect blitRect;
+    blitRect.extend(mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect());
+    QRect updateRect = mEditor->view()->mapCanvasToScreen(path.boundingRect()).toRect();
+    blitRect.extend(updateRect);
+    mTiledBuffer.clear();
+    
+    qreal distance = 4 * QLineF(currentPoint, origin).length();
+    int steps = qRound(distance / brushStep);
+    
+    for (int i = 0; i < steps; i++)
+    {
+        QPointF point = origin + (i + 1) * brushStep * (currentPoint - origin) / distance;
+        drawPen(point,
+                brushWidth,
+                fillColor,
+                useAA);
+    }
+    update(blitRect.adjusted(-1, -1, 1, 1));
+}
+
 void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
 {
     drawBrush(thePoint, brushWidth, fixedBrushFeather, fillColor, QPainter::CompositionMode_SourceOver, opacity, true);
@@ -1215,6 +1242,17 @@ void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
     mTiledBuffer.drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_SourceOver, useAA);
 
     // And update only the affected area
+    update(blitRect.adjusted(-1, -1, 1, 1));
+}
+
+void ScribbleArea::snappingVectorDraw(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm)
+{
+    BlitRect blitRect;
+    blitRect.extend(mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect());
+    QRect updateRect = mEditor->view()->mapCanvasToScreen(path.boundingRect()).toRect();
+    blitRect.extend(updateRect);
+    mTiledBuffer.clear();
+    drawPath(path, pen, brush, cm);
     update(blitRect.adjusted(-1, -1, 1, 1));
 }
 
