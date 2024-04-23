@@ -18,32 +18,23 @@ greaterThan(QT_MAJOR_VERSION, 5) {
     CONFIG += c++11
 }
 
-win32-msvc* {
-    QMAKE_CXXFLAGS += /MP /utf-8
-    CONFIG(release,debug|release) {
-        QMAKE_CXXFLAGS += /Gy /GL
-        CONFIG += ltcg
-        CONFIG += force_debug_info
-    }
+# utf8_source is only for Qt 5, it is the default since Qt 6
+CONFIG += msvc_mp utf8_source
+
+win32-msvc*:CONFIG(release,debug|release) {
+    QMAKE_CXXFLAGS += /Gy /GL
+    CONFIG += ltcg
+    CONFIG += force_debug_info
 }
 
 WIN_LEGACY {
-    QMAKE_CXXFLAGS -= /utf-8
     QMAKE_LFLAGS += /SUBSYSTEM:CONSOLE,5.01
     QMAKE_CXX += /D_USING_V110_SDK71_
     DEFINES += _WIN32_WINNT=0x0501
 }
 win32:!WIN_LEGACY: DEFINES += _WIN32_WINNT=0x0601
 
-macx {
-    QMAKE_CXXFLAGS += -stdlib=libc++
-    LIBS += -lobjc -framework Carbon -framework AppKit
-}
-
-unix:!macx {
-    QMAKE_LINK = $$QMAKE_CXX
-    QMAKE_LINK_SHLIB = $$QMAKE_CXX
-}
+macx: LIBS += -lobjc -framework Carbon -framework AppKit
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
