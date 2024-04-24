@@ -1205,6 +1205,78 @@ void ScribbleArea::snappingDrawPen(QPointF origin, QPointF currentPoint, qreal b
     update(blitRect.adjusted(-1, -1, 1, 1));
 }
 
+void ScribbleArea::snappingDrawEraser(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth, qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather, bool useAA)
+{
+    QPainterPath path;
+    path.moveTo(origin);
+    path.lineTo(currentPoint);
+    
+    // Functionality explained in drawPolyLine
+    BlitRect blitRect;
+    blitRect.extend(mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect());
+    QRect updateRect = mEditor->view()->mapCanvasToScreen(path.boundingRect()).toRect();
+    blitRect.extend(updateRect);
+    mTiledBuffer.clear();
+    
+    qreal distance = 4 * QLineF(currentPoint, origin).length();
+    int steps = qRound(distance / brushStep);
+    
+    for (int i = 0; i < steps; i++)
+    {
+        QPointF point = origin + (i + 1) * brushStep * (currentPoint - origin) / distance;
+        drawBrush(point, brushWidth, offset, fillColor, compMode, opacity, usingFeather, useAA);
+    }
+    update(blitRect.adjusted(-1, -1, 1, 1));
+}
+
+void ScribbleArea::snappingDrawPencil(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
+{
+    QPainterPath path;
+    path.moveTo(origin);
+    path.lineTo(currentPoint);
+    
+    // Functionality explained in drawPolyLine
+    BlitRect blitRect;
+    blitRect.extend(mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect());
+    QRect updateRect = mEditor->view()->mapCanvasToScreen(path.boundingRect()).toRect();
+    blitRect.extend(updateRect);
+    mTiledBuffer.clear();
+    
+    qreal distance = 4 * QLineF(currentPoint, origin).length();
+    int steps = qRound(distance / brushStep);
+    
+    for (int i = 0; i < steps; i++)
+    {
+        QPointF point = origin + (i + 1) * brushStep * (currentPoint - origin) / distance;
+        drawPencil(point, brushWidth, fixedBrushFeather, fillColor, opacity);
+    }
+    update(blitRect.adjusted(-1, -1, 1, 1));
+}
+
+void ScribbleArea::snappingDrawBrush(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth,  qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather, bool useAA)
+{
+    QPainterPath path;
+    path.moveTo(origin);
+    path.lineTo(currentPoint);
+    
+    // Functionality explained in drawPolyLine
+    BlitRect blitRect;
+    blitRect.extend(mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect());
+    QRect updateRect = mEditor->view()->mapCanvasToScreen(path.boundingRect()).toRect();
+    blitRect.extend(updateRect);
+    mTiledBuffer.clear();
+    
+    qreal distance = 4 * QLineF(currentPoint, origin).length();
+    int steps = qRound(distance / brushStep);
+    
+    for (int i = 0; i < steps; i++)
+    {
+        QPointF point = origin + (i + 1) * brushStep * (currentPoint - origin) / distance;
+        drawBrush(point, brushWidth, offset, fillColor, compMode, opacity, true);
+    }
+    update(blitRect.adjusted(-1, -1, 1, 1));
+
+}
 void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
 {
     drawBrush(thePoint, brushWidth, fixedBrushFeather, fillColor, QPainter::CompositionMode_SourceOver, opacity, true);
