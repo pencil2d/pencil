@@ -58,10 +58,9 @@ UndoRedoManager::~UndoRedoManager()
 
 bool UndoRedoManager::init()
 {
-    mUndoStack = new QUndoStack(this);
     qDebug() << "UndoRedoManager: init";
 
-    mUndoStack->setUndoLimit(editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+    mUndoStack.setUndoLimit(editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS));
     mNewBackupSystemEnabled = editor()->preference()->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
 
     return true;
@@ -73,7 +72,7 @@ void UndoRedoManager::onSettingChanged(SETTING setting)
         // The stack needs to be cleared in order to change the undo redo limit
         clearStack();
         qDebug() << "updated undo stack limit";
-        mUndoStack->setUndoLimit(editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+        mUndoStack.setUndoLimit(editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS));
     }
 }
 
@@ -86,7 +85,7 @@ Status UndoRedoManager::load(Object* /*o*/)
 Status UndoRedoManager::save(Object* /*o*/)
 {
     if (mNewBackupSystemEnabled) {
-        mUndoStack->setClean();
+        mUndoStack.setClean();
     } else {
         mLegacyBackupAtSave = mLegacyBackupList[mLegacyBackupIndex];
     }
@@ -149,7 +148,7 @@ void UndoRedoManager::add(UndoRedoType undoRedoType)
 bool UndoRedoManager::hasUnsavedChanges() const
 {
     if (mNewBackupSystemEnabled) {
-        return !mUndoStack->isClean();
+        return !mUndoStack.isClean();
     } else {
         if (mLegacyBackupIndex >= 0) {
             return mLegacyBackupAtSave != mLegacyBackupList[mLegacyBackupIndex];
@@ -160,7 +159,7 @@ bool UndoRedoManager::hasUnsavedChanges() const
 
 void UndoRedoManager::pushCommand(QUndoCommand* command)
 {
-    mUndoStack->push(command);
+    mUndoStack.push(command);
 
     mUndoSaveState.reset();
 
@@ -259,7 +258,7 @@ QAction* UndoRedoManager::createUndoAction(QObject* parent, const QIcon& icon)
 {
     QAction* undoAction = nullptr;
     if (mNewBackupSystemEnabled) {
-        undoAction = mUndoStack->createUndoAction(parent);
+        undoAction = mUndoStack.createUndoAction(parent);
     } else {
         undoAction = new QAction(parent);
         undoAction->setText(tr("Undo"));
@@ -279,7 +278,7 @@ QAction* UndoRedoManager::createRedoAction(QObject* parent, const QIcon& icon)
 {
     QAction* redoAction = nullptr;
     if (mNewBackupSystemEnabled) {
-        redoAction = mUndoStack->createRedoAction(parent);
+        redoAction = mUndoStack.createRedoAction(parent);
     } else {
         redoAction = new QAction(parent);
         redoAction->setText(tr("Redo"));
@@ -345,7 +344,7 @@ void UndoRedoManager::updateRedoAction(QAction* redoAction)
 void UndoRedoManager::clearStack()
 {
     if (mNewBackupSystemEnabled) {
-        mUndoStack->clear();
+        mUndoStack.clear();
     } else {
         mLegacyBackupIndex = -1;
         while (!mLegacyBackupList.isEmpty())

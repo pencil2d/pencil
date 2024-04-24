@@ -24,11 +24,11 @@ GNU General Public License for more details.
 
 #include "preferencesdef.h"
 
+#include <QUndoStack>
 #include <QRectF>
 
 class QAction;
 class QUndoCommand;
-class QUndoStack;
 
 class BitmapImage;
 class VectorImage;
@@ -125,7 +125,7 @@ private:
 
     // variables
 
-    QUndoStack* mUndoStack = nullptr;
+    QUndoStack mUndoStack;
 
     std::unique_ptr<UndoSaveState> mUndoSaveState = nullptr;
 
