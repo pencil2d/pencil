@@ -92,6 +92,9 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     ui->backgroundButtons->setId(ui->dotsBackgroundButton, 4);
     ui->backgroundButtons->setId(ui->weaveBackgroundButton, 5);
 
+    ui->undoRedoGroupApplyButton->setDisabled(true);
+    ui->undoRedoGroupCancelButton->setDisabled(true);
+
     auto buttonClicked = static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked);
     auto curIndexChanged = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
     auto spinValueChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
@@ -115,6 +118,9 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
     connect(ui->invertScrollDirectionBox, &QCheckBox::stateChanged, this, &GeneralPage::invertScrollDirectionBoxStateChanged);
     connect(ui->newUndoRedoCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::newUndoRedoCheckBoxStateChanged);
+    connect(ui->undoStepsBox, spinValueChanged, this, &GeneralPage::undoRedoMaxStepsChanged);
+    connect(ui->undoRedoGroupApplyButton, &QPushButton::clicked, this, &GeneralPage::undoRedoApplyButtonPressed);
+    connect(ui->undoRedoGroupCancelButton, &QPushButton::clicked, this, &GeneralPage::undoRedoCancelButtonPressed);
 }
 
 GeneralPage::~GeneralPage()
@@ -177,6 +183,9 @@ void GeneralPage::updateValues()
     QSignalBlocker bNewUndoRedoCheckBox(ui->newUndoRedoCheckBox);
     ui->newUndoRedoCheckBox->setChecked(mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON));
 
+    QSignalBlocker bUndoRedoLimitSpinBox(ui->undoStepsBox);
+    ui->undoStepsBox->setValue(mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+
     int buttonIdx = 1;
     if (bgName == "checkerboard") buttonIdx = 1;
     else if (bgName == "white")   buttonIdx = 2;
@@ -188,7 +197,6 @@ void GeneralPage::updateValues()
     ui->backgroundButtons->button(buttonIdx)->setChecked(true);
 
     ui->invertScrollDirectionBox->setChecked(mManager->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION));
-    mInitialNewUndoSystemStateEnabled = mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
 }
 
 void GeneralPage::languageChanged(int i)
@@ -308,7 +316,33 @@ void GeneralPage::invertScrollDirectionBoxStateChanged(int b)
 
 void GeneralPage::newUndoRedoCheckBoxStateChanged(bool b)
 {
-    if (b) {
+    ui->undoRedoGroupCancelButton->setDisabled(b == mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON));
+    ui->undoRedoGroupApplyButton->setDisabled(b == mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON));
+}
+
+void GeneralPage::undoRedoMaxStepsChanged(int value)
+{
+    ui->undoRedoGroupCancelButton->setDisabled(value == mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+    ui->undoRedoGroupApplyButton->setDisabled(value == mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+}
+
+void GeneralPage::undoRedoApplyButtonPressed()
+{
+    if (ui->undoStepsBox->value() != mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS)) {
+        QMessageBox messageBox(this);
+        messageBox.setIcon(QMessageBox::Warning);
+        messageBox.setText(tr("Resets your current undo history"));
+        messageBox.setInformativeText(tr("Changing the max undo/redo step value, resets your current undo/redo history, are you sure you want to proceed?"));
+        messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+
+        if (messageBox.exec() == QMessageBox::Yes) {
+            mManager->set(SETTING::UNDO_REDO_MAX_STEPS, ui->undoStepsBox->value());
+        } else {
+            ui->undoStepsBox->setValue(mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+        }
+    }
+
+    if (ui->newUndoRedoCheckBox->isChecked()) {
         QMessageBox messageBox(this);
         messageBox.setIcon(QMessageBox::Warning);
         messageBox.setText(tr("Experimental feature!"));
@@ -322,12 +356,21 @@ void GeneralPage::newUndoRedoCheckBoxStateChanged(bool b)
             mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
         }
     } else {
-        if (mInitialNewUndoSystemStateEnabled) {
-            QMessageBox messageBox(this);
-            messageBox.setIcon(QMessageBox::Information);
-            messageBox.setText(tr("This will first take effect after a restart."));
-            messageBox.exec();
-        }
+        QMessageBox messageBox(this);
+        messageBox.setIcon(QMessageBox::Information);
+        messageBox.setText(tr("The undo/redo system will be changed on the next launch of the application"));
+        messageBox.exec();
         mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
     }
+
+    ui->undoRedoGroupCancelButton->setDisabled(true);
+    ui->undoRedoGroupApplyButton->setDisabled(true);
+}
+
+void GeneralPage::undoRedoCancelButtonPressed()
+{
+    ui->undoStepsBox->setValue(mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+    ui->newUndoRedoCheckBox->setCheckState(mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON) ? Qt::Checked : Qt::Unchecked);
+    ui->undoRedoGroupCancelButton->setDisabled(true);
+    ui->undoRedoGroupApplyButton->setDisabled(true);
 }

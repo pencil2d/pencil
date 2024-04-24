@@ -61,9 +61,20 @@ bool UndoRedoManager::init()
     mUndoStack = new QUndoStack(this);
     qDebug() << "UndoRedoManager: init";
 
+    mUndoStack->setUndoLimit(editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS));
     mNewBackupSystemEnabled = editor()->preference()->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
 
     return true;
+}
+
+void UndoRedoManager::onSettingChanged(SETTING setting)
+{
+    if (setting == SETTING::UNDO_REDO_MAX_STEPS) {
+        // The stack needs to be cleared in order to change the undo redo limit
+        clearStack();
+        qDebug() << "updated undo stack limit";
+        mUndoStack->setUndoLimit(editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+    }
 }
 
 Status UndoRedoManager::load(Object* /*o*/)
@@ -133,11 +144,6 @@ void UndoRedoManager::add(UndoRedoType undoRedoType)
         default:
             Q_ASSERT_X(false, "UndoRedoManager", "Tried to make a backup for a case which hasn't been handled yet");
     }
-}
-
-const UndoRedoCommand* UndoRedoManager::latestBackupElement() const
-{
-    return static_cast<const UndoRedoCommand*>(mUndoStack->command(mUndoStack->index() - 1));
 }
 
 bool UndoRedoManager::hasUnsavedChanges() const
@@ -405,7 +411,7 @@ bool UndoRedoManager::legacyBackup(int backupLayer, int backupFrame, const QStri
     {
         delete mLegacyBackupList.takeLast();
     }
-    while (mLegacyBackupList.size() > 19)   // we authorize only 20 levels of cancellation
+    while (mLegacyBackupList.size() > editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS))
     {
         delete mLegacyBackupList.takeFirst();
         mLegacyBackupIndex--;

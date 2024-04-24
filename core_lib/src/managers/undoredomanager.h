@@ -22,6 +22,8 @@ GNU General Public License for more details.
 #include "layer.h"
 #include "keyframe.h"
 
+#include "preferencesdef.h"
+
 #include <QRectF>
 
 class QAction;
@@ -82,8 +84,6 @@ public:
     void updateUndoAction(QAction* undoAction);
     void updateRedoAction(QAction* redoAction);
 
-    const UndoRedoCommand* latestBackupElement() const;
-
     void clearStack();
 
     // Legacy System
@@ -104,6 +104,8 @@ public:
     void restoreLegacyKey();
 
     void rememberLastModifiedFrame(int layerNumber, int frameNumber);
+
+    void onSettingChanged(SETTING setting);
 
 signals:
     void didUpdateUndoStack();

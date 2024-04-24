@@ -119,6 +119,7 @@ void Editor::makeConnections()
 {
     connect(mPreferenceManager, &PreferenceManager::optionChanged, this, &Editor::settingUpdated);
     connect(mUndoRedoManager, &UndoRedoManager::didUpdateUndoStack, this, &Editor::updateAutoSaveCounter);
+    connect(mPreferenceManager, &PreferenceManager::optionChanged, mUndoRedoManager, &UndoRedoManager::onSettingChanged);
 
     // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
     connect(mLayerManager, &LayerManager::layerDeleted, mUndoRedoManager, &UndoRedoManager::sanitizeLegacyBackupElementsAfterLayerDeletion);

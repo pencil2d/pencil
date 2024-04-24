@@ -59,6 +59,10 @@ private slots:
     void frameCacheNumberChanged(int value);
     void invertScrollDirectionBoxStateChanged(int b);
     void newUndoRedoCheckBoxStateChanged(bool b);
+    void undoRedoMaxStepsChanged(int value);
+
+    void undoRedoApplyButtonPressed();
+    void undoRedoCancelButtonPressed();
 
 private:
 
@@ -66,8 +70,6 @@ private:
 
     Ui::GeneralPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
-
-    bool mInitialNewUndoSystemStateEnabled = false;
 };
 
 #endif // GENERALPAGE_H

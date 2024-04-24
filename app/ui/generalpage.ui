@@ -504,12 +504,78 @@
             </item>
            </layout>
           </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupBox_3">
+         <property name="title">
+          <string>Undo/Redo</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
           <item>
            <widget class="QCheckBox" name="newUndoRedoCheckBox">
             <property name="text">
-             <string>Enable New Undo/Redo System (Experimental)</string>
+             <string>Enable New System (Experimental)</string>
             </property>
            </widget>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QLabel" name="undoStepsLabel">
+              <property name="toolTip">
+               <string>How many steps you're allowed to undo/redo</string>
+              </property>
+              <property name="text">
+               <string>Max undo steps</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSpinBox" name="undoStepsBox">
+              <property name="maximumSize">
+               <size>
+                <width>80</width>
+                <height>16777215</height>
+               </size>
+              </property>
+              <property name="minimum">
+               <number>20</number>
+              </property>
+              <property name="maximum">
+               <number>250</number>
+              </property>
+              <property name="value">
+               <number>100</number>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_3">
+            <property name="topMargin">
+             <number>0</number>
+            </property>
+            <item>
+             <widget class="QPushButton" name="undoRedoGroupApplyButton">
+              <property name="text">
+               <string>Apply</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="undoRedoGroupCancelButton">
+              <property name="text">
+               <string>Cancel</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
           </item>
          </layout>
         </widget>
