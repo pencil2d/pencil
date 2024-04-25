@@ -21,6 +21,7 @@ RC_LANGS.de = --lang LANG_GERMAN --sublang SUBLANG_NEUTRAL
 
 EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_ar.ts \
+	$$PWD/../translations/pencil_bg.ts \
 	$$PWD/../translations/pencil_ca.ts \
 	$$PWD/../translations/pencil_cs.ts \
 	$$PWD/../translations/pencil_da.ts \
@@ -29,6 +30,7 @@ EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_en.ts \
 	$$PWD/../translations/pencil_es.ts \
 	$$PWD/../translations/pencil_et.ts \
+	$$PWD/../translations/pencil_fa.ts \
 	$$PWD/../translations/pencil_fr.ts \
 	$$PWD/../translations/pencil_he.ts \
 	$$PWD/../translations/pencil_hu_HU.ts \
@@ -36,6 +38,9 @@ EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_it.ts \
 	$$PWD/../translations/pencil_ja.ts \
 	$$PWD/../translations/pencil_kab.ts \
+	$$PWD/../translations/pencil_ko.ts \
+	$$PWD/../translations/pencil_nb.ts \
+	$$PWD/../translations/pencil_nl_NL.ts \
 	$$PWD/../translations/pencil_pl.ts \
 	$$PWD/../translations/pencil_pt.ts \
 	$$PWD/../translations/pencil_pt_BR.ts \
@@ -44,6 +49,7 @@ EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_sv.ts \
 	$$PWD/../translations/pencil_tr.ts \
 	$$PWD/../translations/pencil_vi.ts \
+	$$PWD/../translations/pencil_yue.ts \
 	$$PWD/../translations/pencil_zh_CN.ts \
 	$$PWD/../translations/pencil_zh_TW.ts
 

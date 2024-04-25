@@ -3399,136 +3399,166 @@
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="38"/>
-        <source>Catalan</source>
+        <source>Bulgarian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="39"/>
-        <source>Czech</source>
+        <source>Catalan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="40"/>
-        <source>Danish</source>
+        <source>Czech</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="41"/>
-        <source>German</source>
+        <source>Danish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="42"/>
-        <source>Greek</source>
+        <source>German</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="43"/>
-        <source>English</source>
+        <source>Greek</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="44"/>
-        <source>Spanish</source>
+        <source>English</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="45"/>
-        <source>Estonian</source>
+        <source>Spanish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="46"/>
-        <source>French</source>
+        <source>Estonian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="47"/>
-        <source>Hebrew</source>
+        <source>Persian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="48"/>
-        <source>Hungarian</source>
+        <source>French</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="49"/>
-        <source>Indonesian</source>
+        <source>Hebrew</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="50"/>
-        <source>Italian</source>
+        <source>Hungarian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="51"/>
-        <source>Japanese</source>
+        <source>Indonesian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="52"/>
-        <source>Kabyle</source>
+        <source>Italian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="53"/>
-        <source>Polish</source>
+        <source>Japanese</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="54"/>
-        <source>Portuguese – Portugal</source>
+        <source>Kabyle</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="55"/>
-        <source>Portuguese – Brazil</source>
+        <source>Korean</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="56"/>
-        <source>Russian</source>
+        <source>Norwegian Bokmål</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="57"/>
-        <source>Slovene</source>
+        <source>Dutch – Netherlands</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="58"/>
-        <source>Swedish</source>
+        <source>Polish</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="59"/>
-        <source>Turkish</source>
+        <source>Portuguese – Portugal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="60"/>
-        <source>Vietnamese</source>
+        <source>Portuguese – Brazil</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="61"/>
-        <source>Chinese – China</source>
+        <source>Russian</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="62"/>
+        <source>Slovene</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="63"/>
+        <source>Swedish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="64"/>
+        <source>Turkish</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="65"/>
+        <source>Vietnamese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="66"/>
+        <source>Cantonese</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="67"/>
+        <source>Chinese – China</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="68"/>
         <source>Chinese – Taiwan</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="195"/>
+        <location filename="../app/src/generalpage.cpp" line="201"/>
         <source>Restart Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="196"/>
+        <location filename="../app/src/generalpage.cpp" line="202"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation type="unfinished"></translation>
     </message>

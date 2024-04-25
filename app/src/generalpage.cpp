@@ -35,6 +35,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
         {
             // translatable string, endonym, locale code
             { tr("Arabic"), QStringLiteral("العربية"), "ar" },
+            { tr("Bulgarian"), QStringLiteral("Български"), "bg" },
             { tr("Catalan"), QStringLiteral("Català"), "ca" },
             { tr("Czech"), QStringLiteral("Čeština"), "cs" },
             { tr("Danish"), QStringLiteral("Dansk"), "da" },
@@ -43,6 +44,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
             { tr("English"), QStringLiteral("English"), "en" },
             { tr("Spanish"), QStringLiteral("Español"), "es" },
             { tr("Estonian"), QStringLiteral("Eesti"), "et" },
+            { tr("Persian"), QStringLiteral("فارسی"), "fa" },
             { tr("French"), QStringLiteral("Français"), "fr" },
             { tr("Hebrew"), QStringLiteral("עברית"), "he" },
             { tr("Hungarian"), QStringLiteral("Magyar"), "hu_HU" },
@@ -50,6 +52,9 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
             { tr("Italian"), QStringLiteral("Italiano"), "it" },
             { tr("Japanese"), QStringLiteral("日本語"), "ja" },
             { tr("Kabyle"), QStringLiteral("Taqbaylit"), "kab" },
+            { tr("Korean"), QStringLiteral("한국어"), "ko" },
+            { tr("Norwegian Bokmål"), QStringLiteral("Norsk bokmål"), "nb" },
+            { tr("Dutch \u2013 Netherlands"), QStringLiteral("Nederlands \u2013 Nederland"), "nl_NL" },
             { tr("Polish"), QStringLiteral("Polski"), "pl" },
             { tr("Portuguese \u2013 Portugal"), QStringLiteral("Português \u2013 Portugal"), "pt_PT" },
             { tr("Portuguese \u2013 Brazil"), QStringLiteral("Português \u2013 Brasil"), "pt_BR" },
@@ -58,6 +63,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
             { tr("Swedish"), QStringLiteral("Svenska"), "sv" },
             { tr("Turkish"), QStringLiteral("Türkçe"), "tr" },
             { tr("Vietnamese"), QStringLiteral("Tiếng Việt"), "vi" },
+            { tr("Cantonese"), QStringLiteral("粵语"), "yue" },
             { tr("Chinese \u2013 China"), QStringLiteral("简体中文"), "zh_CN" },
             { tr("Chinese \u2013 Taiwan"), QStringLiteral("繁體中文"), "zh_TW" },
         };
