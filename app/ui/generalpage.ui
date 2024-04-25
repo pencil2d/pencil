@@ -531,7 +531,7 @@
                <string>How many steps you're allowed to undo/redo</string>
               </property>
               <property name="text">
-               <string>Max undo steps</string>
+               <string>Maximum Number of Undo/Redo Steps</string>
               </property>
              </widget>
             </item>
