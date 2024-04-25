@@ -410,7 +410,7 @@ bool UndoRedoManager::legacyBackup(int backupLayer, int backupFrame, const QStri
     {
         delete mLegacyBackupList.takeLast();
     }
-    while (mLegacyBackupList.size() > editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS))
+    while (mLegacyBackupList.size() >= editor()->preference()->getInt(SETTING::UNDO_REDO_MAX_STEPS))
     {
         delete mLegacyBackupList.takeFirst();
         mLegacyBackupIndex--;
