@@ -110,7 +110,7 @@ void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPain
 void TiledBuffer::drawPath(QPainterPath path, QPen pen, QBrush brush,
                            QPainter::CompositionMode cm, bool antialiasing)
 {
-    const int width = pen.width();;
+    const int width = pen.width();
     const float tileSize = UNIFORM_TILE_SIZE;
     const QRectF pathRect = path.boundingRect();
 

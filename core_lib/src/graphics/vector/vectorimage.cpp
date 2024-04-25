@@ -412,7 +412,7 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
                     if (dist1 + dist2 <= 3 * tol3)   // pre-selection, to speed up
                     {
                         QPointF nearestPoint = Q;
-                        qreal t = -1.0;;
+                        qreal t = -1.0;
                         qreal distance = BezierCurve::findDistance(mCurves[i], j, Q, nearestPoint, t);
                         if (distance < tolerance)
                         {
@@ -521,7 +521,7 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
                     {
                         // TO DO: find a better intersection point
                         QPointF nearestPoint = Q;
-                        qreal t = -1.0;;
+                        qreal t = -1.0;
                         qreal distance = BezierCurve::findDistance(newCurve, k, Q, nearestPoint, t);
                         //qDebug() << "OK2" << t;
                         if (distance < tolerance)
