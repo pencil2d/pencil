@@ -48,7 +48,7 @@ Tile* TiledBuffer::getTileFromIndex(const TileIndex& tileIndex)
     return selectedTile;
 }
 
-void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
+void TiledBuffer::drawBrush(const QPointF& point, qreal brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
     const QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
     const float tileSize = UNIFORM_TILE_SIZE;
 
