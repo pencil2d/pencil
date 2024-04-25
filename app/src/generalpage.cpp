@@ -332,7 +332,7 @@ void GeneralPage::undoRedoApplyButtonPressed()
         QMessageBox messageBox(this);
         messageBox.setIcon(QMessageBox::Warning);
         messageBox.setText(tr("Resets your current undo history"));
-        messageBox.setInformativeText(tr("Changing the max undo/redo step value, resets your current undo/redo history, are you sure you want to proceed?"));
+        messageBox.setInformativeText(tr("Changing the maximum number of undo/redo steps resets your current undo/redo history. Are you sure you want to proceed?"));
         messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 
         if (messageBox.exec() == QMessageBox::Yes) {
