@@ -1253,7 +1253,7 @@ void ScribbleArea::snappingDrawPencil(QPointF origin, QPointF currentPoint, qrea
     update(blitRect.adjusted(-1, -1, 1, 1));
 }
 
-void ScribbleArea::snappingDrawBrush(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth,  qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather, bool useAA)
+void ScribbleArea::snappingDrawBrush(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth,  qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather)
 {
     QPainterPath path;
     path.moveTo(origin);
@@ -1314,17 +1314,6 @@ void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
     mTiledBuffer.drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_SourceOver, useAA);
 
     // And update only the affected area
-    update(blitRect.adjusted(-1, -1, 1, 1));
-}
-
-void ScribbleArea::snappingVectorDraw(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm)
-{
-    BlitRect blitRect;
-    blitRect.extend(mEditor->view()->mapCanvasToScreen(mTiledBuffer.bounds()).toRect());
-    QRect updateRect = mEditor->view()->mapCanvasToScreen(path.boundingRect()).toRect();
-    blitRect.extend(updateRect);
-    mTiledBuffer.clear();
-    drawPath(path, pen, brush, cm);
     update(blitRect.adjusted(-1, -1, 1, 1));
 }
 

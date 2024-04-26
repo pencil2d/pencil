@@ -282,19 +282,6 @@ void PenTool::drawStroke()
 
         if (p.size() == 4)
         {
-            /* Could not get snapping to work for vector layer
-            if(mXYSnappingMode)
-            {
-                if((p[0].x() != p[3].x() && p[0].y() != p[3].y()) ||
-                   QLineF(mMouseDownPoint, p[0]).length() > QLineF(mMouseDownPoint, p[3]).length())
-                {
-                    QPainterPath path(mMouseDownPoint);
-                    path.lineTo(p[3]);
-                    mScribbleArea->snappingVectorDraw(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-                    return;
-                }
-            }
-            */
             QPainterPath path(p[0]);
             path.cubicTo(p[1], p[2], p[3]);
             mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
