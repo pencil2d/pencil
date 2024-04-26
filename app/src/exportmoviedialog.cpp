@@ -32,8 +32,8 @@ ExportMovieDialog::ExportMovieDialog(QWidget *parent, Mode mode, FileType fileTy
         setWindowTitle(tr("Export Movie"));
     }
     connect(this, &ExportMovieDialog::filePathsChanged, this, &ExportMovieDialog::onFilePathsChanged);
-    connect(ui->widthSpinBox, &QSpinBox::valueChanged, this, &ExportMovieDialog::validateResolution);
-    connect(ui->heightSpinBox, &QSpinBox::valueChanged, this, &ExportMovieDialog::validateResolution);
+    connect(ui->widthSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ExportMovieDialog::validateResolution);
+    connect(ui->heightSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ExportMovieDialog::validateResolution);
 }
 
 ExportMovieDialog::~ExportMovieDialog()
