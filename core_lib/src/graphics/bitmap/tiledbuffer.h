@@ -59,7 +59,7 @@ public:
     bool isValid() const { return !mTiles.isEmpty(); }
 
     /** Draws a brush with the specified parameters to the tiled buffer */
-    void drawBrush(const QPointF& point, qreal brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
+    void drawBrush(QPointF point, qreal brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     /** Draws a path with the specified parameters to the tiled buffer */
     void drawPath(QPainterPath path, QPen pen, QBrush brush,
                   QPainter::CompositionMode cm, bool antialiasing);
