@@ -32,6 +32,8 @@ ExportMovieDialog::ExportMovieDialog(QWidget *parent, Mode mode, FileType fileTy
         setWindowTitle(tr("Export Movie"));
     }
     connect(this, &ExportMovieDialog::filePathsChanged, this, &ExportMovieDialog::onFilePathsChanged);
+    connect(ui->widthSpinBox, &QSpinBox::valueChanged, this, &ExportMovieDialog::validateResolution);
+    connect(ui->heightSpinBox, &QSpinBox::valueChanged, this, &ExportMovieDialog::validateResolution);
 }
 
 ExportMovieDialog::~ExportMovieDialog()
@@ -66,6 +68,7 @@ void ExportMovieDialog::updateResolutionCombo( int index )
 
     ui->widthSpinBox->setValue( camSize.width() );
     ui->heightSpinBox->setValue( camSize.height() );
+    validateResolution();
 }
 
 void ExportMovieDialog::setDefaultRange(int startFrame, int endFrame, int endFrameWithSounds)
@@ -128,6 +131,7 @@ void ExportMovieDialog::onFilePathsChanged(QStringList filePaths)
         ui->loopCheckBox->setChecked(false);
     }
     ui->transparencyCheckBox->setEnabled(supportsTransparency(filePath));
+    validateResolution();
 }
 
 bool ExportMovieDialog::supportsLooping(QString filePath) const
@@ -140,4 +144,14 @@ bool ExportMovieDialog::supportsTransparency(QString filePath) const
 {
     return filePath.endsWith(".apng", Qt::CaseInsensitive) ||
            filePath.endsWith(".webm", Qt::CaseInsensitive);
+}
+
+void ExportMovieDialog::validateResolution()
+{
+    const bool isMp4 = getFilePath().endsWith(".mp4", Qt::CaseInsensitive);
+    const bool widthValid = !isMp4 || ui->widthSpinBox->value() % 2 == 0;
+    const bool heightValid = !isMp4 || ui->heightSpinBox->value() % 2 == 0;
+    ui->unevenWidthLabel->setHidden(widthValid);
+    ui->unevenHeightLabel->setHidden(heightValid);
+    setOkButtonEnabled(widthValid && heightValid);
 }
