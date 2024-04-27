@@ -76,7 +76,7 @@ public:
      * Adds a undo/redo state of the given UndoRedoType
      * @param undoRedoType The type to add
     */
-    void add(UndoSaveState& undoSaveState, UndoRedoType undoRedoType);
+    void add(UndoSaveState& undoState, UndoRedoType undoRedoType);
 
     bool hasUnsavedChanges() const;
 
@@ -124,8 +124,9 @@ private:
 
     // functions
 
-    void invalidateSaveState(UndoSaveState& undoSaveState);
+    void invalidateSaveState(UndoSaveState& undoState);
 
+    void stroke(const UndoSaveState& undoState, const QString& description);
     void bitmap(const UndoSaveState& undoState, const QString& description);
     void vector(const UndoSaveState& undoState, const QString& description);
     void selection(const UndoSaveState& undoState, const QString& description);

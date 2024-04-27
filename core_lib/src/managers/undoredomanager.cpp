@@ -92,50 +92,31 @@ Status UndoRedoManager::save(Object* /*o*/)
     return Status::OK;
 }
 
-void UndoRedoManager::add(UndoSaveState& undoSaveState, UndoRedoType undoRedoType)
+void UndoRedoManager::add(UndoSaveState& undoState, UndoRedoType undoRedoType)
 {
     if (!mNewBackupSystemEnabled) {
         return;
     }
 
-    if (undoSaveState.invalidated) {
+    if (undoState.invalidated) {
         return;
     }
 
-    Layer* currentLayer = editor()->layers()->currentLayer();
     switch (undoRedoType)
     {
         case UndoRedoType::STROKE:
         {
-            if (currentLayer->type() == Layer::BITMAP) {
-                bitmap(undoSaveState, tr("Bitmap Stroke"));
-            } else if (currentLayer->type() == Layer::VECTOR) {
-                vector(undoSaveState, tr("Vector Stroke"));
-            } else {
-                Q_ASSERT_X(false, "UndoRedoManager", "A stroke can only be applied to either the Bitmap or Vector layer");
-            }
+            stroke(undoState, tr("Stroke"));
             break;
         }
         case UndoRedoType::POLYLINE:
         {
-            if (currentLayer->type() == Layer::BITMAP) {
-                bitmap(undoSaveState, tr("Bitmap Polyline"));
-            } else if (currentLayer->type() == Layer::VECTOR) {
-                vector(undoSaveState, tr("Vector Polyline"));
-            } else {
-                Q_ASSERT_X(false, "UndoRedoManager", "A polyline can only be applied to either the Bitmap or Vector layer");
-            }
+            stroke(undoState, tr("Polyline"));
             break;
         }
         case UndoRedoType::SELECTION:
         {
-            if (currentLayer->type() == Layer::BITMAP) {
-                selection(undoSaveState, tr("Bitmap Selection"));
-            } else if (currentLayer->type() == Layer::VECTOR) {
-                selection(undoSaveState, tr("Vector Selection"));
-            } else {
-                Q_ASSERT_X(false, "UndoRedoManager", "A polyline can only be applied to either the Bitmap or Vector layer");
-            }
+            selection(undoState, tr("Selection"));
             break;
         }
         default:
@@ -143,7 +124,7 @@ void UndoRedoManager::add(UndoSaveState& undoSaveState, UndoRedoType undoRedoTyp
     }
 
     // The save state has now been used and should be invalidated so we can't use it again.
-    invalidateSaveState(undoSaveState);
+    invalidateSaveState(undoState);
 }
 
 bool UndoRedoManager::hasUnsavedChanges() const
@@ -164,6 +145,19 @@ void UndoRedoManager::pushCommand(QUndoCommand* command)
 
     emit didUpdateUndoStack();
 }
+
+void UndoRedoManager::stroke(const UndoSaveState& undoState, const QString& description)
+{
+    const Layer* currentLayer = editor()->layers()->currentLayer();
+    if (currentLayer->type() == Layer::BITMAP) {
+        bitmap(undoState, description);
+    } else if (currentLayer->type() == Layer::VECTOR) {
+        vector(undoState, description);
+    } else {
+        Q_ASSERT_X(false, "UndoRedoManager", "A stroke can only be applied to either the Bitmap or Vector layer");
+    }
+}
+
 
 void UndoRedoManager::bitmap(const UndoSaveState& undoState, const QString& description)
 {
@@ -249,10 +243,10 @@ UndoSaveState UndoRedoManager::saveStates() const
     return undoSaveState;
 }
 
-void UndoRedoManager::invalidateSaveState(UndoSaveState& undoSaveState)
+void UndoRedoManager::invalidateSaveState(UndoSaveState& undoState)
 {
-    undoSaveState = UndoSaveState();
-    undoSaveState.invalidated = true;
+    undoState = UndoSaveState();
+    undoState.invalidated = true;
 }
 
 QAction* UndoRedoManager::createUndoAction(QObject* parent, const QIcon& icon)
