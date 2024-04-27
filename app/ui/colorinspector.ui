@@ -7,9 +7,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>271</width>
+    <width>120</width>
     <height>263</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>120</width>
+    <height>0</height>
+   </size>
   </property>
   <property name="baseSize">
    <size>
@@ -17,18 +23,23 @@
     <height>114</height>
    </size>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>11</pointsize>
+   </font>
+  </property>
   <layout class="QVBoxLayout">
    <property name="leftMargin">
-    <number>5</number>
+    <number>3</number>
    </property>
    <property name="topMargin">
-    <number>2</number>
+    <number>3</number>
    </property>
    <property name="rightMargin">
-    <number>2</number>
+    <number>3</number>
    </property>
    <property name="bottomMargin">
-    <number>2</number>
+    <number>3</number>
    </property>
    <item>
     <widget class="QTabWidget" name="colorSpecTabWidget">
@@ -39,13 +50,25 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>1</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="hsvTab">
       <attribute name="title">
        <string>HSV</string>
       </attribute>
       <layout class="QGridLayout" name="hsvLayout">
+       <property name="leftMargin">
+        <number>3</number>
+       </property>
+       <property name="topMargin">
+        <number>3</number>
+       </property>
+       <property name="rightMargin">
+        <number>3</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
        <item row="0" column="0">
         <widget class="QLabel" name="hueLabel">
          <property name="text">
@@ -75,16 +98,44 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="ColorSlider" name="saturationSlider" native="true"/>
+        <widget class="ColorSlider" name="saturationSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="3" column="1">
-        <widget class="ColorSlider" name="hsvAlphaSlider" native="true"/>
+        <widget class="ColorSlider" name="hsvAlphaSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="2" column="1">
-        <widget class="ColorSlider" name="valueSlider" native="true"/>
+        <widget class="ColorSlider" name="valueSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="0" column="1">
-        <widget class="ColorSlider" name="hueSlider" native="true"/>
+        <widget class="ColorSlider" name="hueSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="0" column="2">
         <widget class="QSpinBox" name="hueSpinBox">
@@ -133,6 +184,18 @@
        <string>RGB</string>
       </attribute>
       <layout class="QGridLayout" name="rgbLayout">
+       <property name="leftMargin">
+        <number>3</number>
+       </property>
+       <property name="topMargin">
+        <number>3</number>
+       </property>
+       <property name="rightMargin">
+        <number>3</number>
+       </property>
+       <property name="bottomMargin">
+        <number>3</number>
+       </property>
        <item row="3" column="0">
         <widget class="QLabel" name="rgbAlphaLabel">
          <property name="text">
@@ -148,10 +211,24 @@
         </widget>
        </item>
        <item row="3" column="1">
-        <widget class="ColorSlider" name="rgbAlphaSlider" native="true"/>
+        <widget class="ColorSlider" name="rgbAlphaSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="0" column="1">
-        <widget class="ColorSlider" name="redSlider" native="true"/>
+        <widget class="ColorSlider" name="redSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="blueLabel">
@@ -161,10 +238,24 @@
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="ColorSlider" name="greenSlider" native="true"/>
+        <widget class="ColorSlider" name="greenSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="2" column="1">
-        <widget class="ColorSlider" name="blueSlider" native="true"/>
+        <widget class="ColorSlider" name="blueSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="redLabel">

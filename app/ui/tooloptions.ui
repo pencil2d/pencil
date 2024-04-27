@@ -6,9 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>174</width>
+    <width>140</width>
     <height>355</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>140</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>11</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -42,12 +53,12 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>174</width>
-        <height>355</height>
+        <width>166</width>
+        <height>340</height>
        </rect>
       </property>
       <property name="autoFillBackground">
-       <bool>false</bool>
+       <bool>true</bool>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">

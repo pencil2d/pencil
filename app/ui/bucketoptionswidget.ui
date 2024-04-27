@@ -6,9 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>140</width>
     <height>221</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>140</width>
+    <height>0</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>11</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string>Form</string>
@@ -44,6 +55,11 @@
        </property>
        <item>
         <widget class="QLabel" name="referenceLayerDescLabel">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Reference</string>
          </property>
@@ -57,6 +73,11 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
         </widget>
        </item>
       </layout>
@@ -68,6 +89,11 @@
        </property>
        <item>
         <widget class="QLabel" name="blendModeLabel">
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
          <property name="text">
           <string>Blend mode</string>
          </property>
@@ -81,6 +107,11 @@
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="font">
+          <font>
+           <pointsize>11</pointsize>
+          </font>
+         </property>
         </widget>
        </item>
       </layout>
@@ -92,8 +123,17 @@
      <property name="sizeConstraint">
       <enum>QLayout::SetDefaultConstraint</enum>
      </property>
+     <property name="leftMargin">
+      <number>3</number>
+     </property>
      <property name="topMargin">
-      <number>0</number>
+      <number>3</number>
+     </property>
+     <property name="rightMargin">
+      <number>3</number>
+     </property>
+     <property name="bottomMargin">
+      <number>3</number>
      </property>
      <property name="verticalSpacing">
       <number>6</number>
@@ -117,6 +157,11 @@
      </item>
      <item row="1" column="2">
       <widget class="QSpinBox" name="expandSpinBox">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="maximum">
         <number>0</number>
        </property>
@@ -124,6 +169,11 @@
      </item>
      <item row="0" column="2">
       <widget class="QSpinBox" name="colorToleranceSpinbox">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
        <property name="maximum">
         <number>0</number>
        </property>
@@ -161,7 +211,13 @@
       </widget>
      </item>
      <item>
-      <widget class="QDoubleSpinBox" name="strokeThicknessSpinBox"/>
+      <widget class="QDoubleSpinBox" name="strokeThicknessSpinBox">
+       <property name="font">
+        <font>
+         <pointsize>11</pointsize>
+        </font>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

@@ -6,9 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>268</width>
+    <width>140</width>
     <height>241</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>140</width>
+    <height>132</height>
+   </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>11</pointsize>
+   </font>
   </property>
   <property name="windowTitle">
    <string comment="Window title of color palette.">Color Palette</string>

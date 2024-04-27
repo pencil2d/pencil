@@ -6,15 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>219</width>
-    <height>238</height>
+    <width>140</width>
+    <height>291</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>190</width>
-    <height>124</height>
+    <width>140</width>
+    <height>122</height>
    </size>
+  </property>
+  <property name="font">
+   <font>
+    <pointsize>11</pointsize>
+   </font>
   </property>
   <property name="floating">
    <bool>false</bool>
@@ -28,6 +33,11 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>11</pointsize>
+    </font>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
@@ -79,8 +89,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>219</width>
-         <height>214</height>
+         <width>160</width>
+         <height>254</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -107,6 +117,11 @@
         </property>
         <item>
          <widget class="QGroupBox" name="prevFramesGroup">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
           <property name="title">
            <string>Previous Frames</string>
           </property>
@@ -191,6 +206,11 @@
         </item>
         <item>
          <widget class="QGroupBox" name="nextFramesGroup">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
           <property name="title">
            <string>Next Frames</string>
           </property>
@@ -287,6 +307,11 @@
         </item>
         <item>
          <widget class="QGroupBox" name="opacityGroup">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+           </font>
+          </property>
           <property name="title">
            <string>Distributed Opacity</string>
           </property>
@@ -331,6 +356,11 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
+                </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
                 </property>
                 <property name="text">
                  <string>Max</string>
@@ -397,6 +427,11 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
+                <property name="font">
+                 <font>
+                  <pointsize>11</pointsize>
+                 </font>
+                </property>
                 <property name="text">
                  <string>Min</string>
                 </property>
@@ -440,18 +475,35 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="onionSkinMode">
-          <property name="text">
-           <string>Show Keyframes Only</string>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="topMargin">
+           <number>0</number>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="onionWhilePlayback">
-          <property name="text">
-           <string>Show During Playback</string>
-          </property>
-         </widget>
+          <item>
+           <widget class="QCheckBox" name="onionSkinMode">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Show Keyframes Only</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="onionWhilePlayback">
+            <property name="font">
+             <font>
+              <pointsize>11</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Show During Playback</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <spacer name="verticalSpacer">
