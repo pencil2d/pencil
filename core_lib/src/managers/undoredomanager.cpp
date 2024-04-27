@@ -211,7 +211,7 @@ void UndoRedoManager::selection(const UndoSaveState& undoState, const QString& d
 UndoSaveState UndoRedoManager::saveStates() const
 {
     if (!mNewBackupSystemEnabled) {
-        auto invalidState = UndoSaveState();
+        UndoSaveState invalidState;
         invalidState.invalidated = true;
         return invalidState;
     }
