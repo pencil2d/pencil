@@ -162,7 +162,6 @@ void PenTool::pointerReleaseEvent(PointerEvent *event)
 
     if (event->inputType() != mCurrentInputType) return;
 
-    mEditor->undoRedo()->saveStates();
     mEditor->backup(typeName());
 
     Layer* layer = mEditor->layers()->currentLayer();

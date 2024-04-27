@@ -270,7 +270,6 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 
     if (event->button() == Qt::LeftButton)
     {
-        mEditor->undoRedo()->saveStates();
         mEditor->backup(typeName());
 
         if (layer->type() == Layer::BITMAP)

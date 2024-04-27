@@ -23,7 +23,6 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "editor.h"
 #include "toolmanager.h"
-#include "undoredomanager.h"
 #include "mathutils.h"
 
 #include "canvascursorpainter.h"
@@ -141,6 +140,7 @@ void StrokeTool::startStroke(PointerEvent::InputType inputType)
     mStrokePressures << mInterpolator.getPressure();
 
     mCurrentInputType = inputType;
+    mUndoSaveState = mEditor->undoRedo()->saveStates();
 
     disableCoalescing();
 }
@@ -181,7 +181,7 @@ void StrokeTool::endStroke()
     mEditor->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->endStroke();
 
-    mEditor->undoRedo()->add(UndoRedoType::STROKE);
+    mEditor->undoRedo()->add(mUndoSaveState, UndoRedoType::STROKE);
 }
 
 void StrokeTool::drawStroke()

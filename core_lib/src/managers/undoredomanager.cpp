@@ -92,19 +92,17 @@ Status UndoRedoManager::save(Object* /*o*/)
     return Status::OK;
 }
 
-void UndoRedoManager::add(UndoRedoType undoRedoType)
+void UndoRedoManager::add(UndoSaveState& undoSaveState, UndoRedoType undoRedoType)
 {
     if (!mNewBackupSystemEnabled) {
         return;
     }
 
-    if (!mUndoSaveState) {
-        Q_ASSERT_X(false, "UndoRedoManager::backup", "Missing save state, no undo/redo state saved");
+    if (undoSaveState.invalidated) {
         return;
     }
 
     Layer* currentLayer = editor()->layers()->currentLayer();
-    const UndoSaveState* undoSaveState = mUndoSaveState.get();
     switch (undoRedoType)
     {
         case UndoRedoType::STROKE:
@@ -143,6 +141,9 @@ void UndoRedoManager::add(UndoRedoType undoRedoType)
         default:
             Q_ASSERT_X(false, "UndoRedoManager", "Tried to make a backup for a case which hasn't been handled yet");
     }
+
+    // The save state has now been used and should be invalidated so we can't use it again.
+    invalidateSaveState(undoSaveState);
 }
 
 bool UndoRedoManager::hasUnsavedChanges() const
@@ -161,97 +162,97 @@ void UndoRedoManager::pushCommand(QUndoCommand* command)
 {
     mUndoStack.push(command);
 
-    mUndoSaveState.reset();
-
     emit didUpdateUndoStack();
 }
 
-void UndoRedoManager::bitmap(const UndoSaveState* undoState, const QString& description)
+void UndoRedoManager::bitmap(const UndoSaveState& undoState, const QString& description)
 {
-    if (undoState->keyframe == nullptr || undoState->layerType != Layer::BITMAP) { return; }
-    BitmapCommand* element = new BitmapCommand(static_cast<BitmapImage*>(undoState->keyframe.get()),
-                                               undoState->layerId,
+    if (undoState.keyframe == nullptr || undoState.layerType != Layer::BITMAP) { return; }
+    BitmapCommand* element = new BitmapCommand(static_cast<BitmapImage*>(undoState.keyframe.get()),
+                                               undoState.layerId,
                                                description,
                                                editor());
 
-    new TransformCommand(undoState->keyframe.get(),
-                         undoState->layerId,
-                         undoState->selectionRect,
-                         undoState->selectionTranslation,
-                         undoState->selectionRotationAngle,
-                         undoState->selectionScaleX,
-                         undoState->selectionScaleY,
-                         undoState->selectionAnchor,
+    new TransformCommand(undoState.keyframe.get(),
+                         undoState.layerId,
+                         undoState.selectionRect,
+                         undoState.selectionTranslation,
+                         undoState.selectionRotationAngle,
+                         undoState.selectionScaleX,
+                         undoState.selectionScaleY,
+                         undoState.selectionAnchor,
                          description,
                          editor(), element);
 
     pushCommand(element);
 }
 
-void UndoRedoManager::vector(const UndoSaveState* undoState, const QString& description)
+void UndoRedoManager::vector(const UndoSaveState& undoState, const QString& description)
 {
-    if (undoState->keyframe == nullptr || undoState->layerType != Layer::VECTOR) { return; }
-    VectorCommand* element = new VectorCommand(static_cast<VectorImage*>(undoState->keyframe.get()),
-                                                 undoState->layerId,
+    if (undoState.keyframe == nullptr || undoState.layerType != Layer::VECTOR) { return; }
+    VectorCommand* element = new VectorCommand(static_cast<VectorImage*>(undoState.keyframe.get()),
+                                                 undoState.layerId,
                                                  description,
                                                  editor());
     pushCommand(element);
 }
 
-void UndoRedoManager::selection(const UndoSaveState* undoState, const QString& description)
+void UndoRedoManager::selection(const UndoSaveState& undoState, const QString& description)
 {
     TransformCommand* element = new TransformCommand(
-                                    undoState->keyframe.get(),
-                                    undoState->layerId,
-                                    undoState->selectionRect,
-                                    undoState->selectionTranslation,
-                                    undoState->selectionRotationAngle,
-                                    undoState->selectionScaleX,
-                                    undoState->selectionScaleY,
-                                    undoState->selectionAnchor,
+                                    undoState.keyframe.get(),
+                                    undoState.layerId,
+                                    undoState.selectionRect,
+                                    undoState.selectionTranslation,
+                                    undoState.selectionRotationAngle,
+                                    undoState.selectionScaleX,
+                                    undoState.selectionScaleY,
+                                    undoState.selectionAnchor,
                                     description,
                                     editor());
 
     pushCommand(element);
 }
 
-/**
- * @brief UndoRedoManager::saveStates
- * This method should be called prior to a backup taking place.
- * Only the most essential values should be retrieved here.
- */
-void UndoRedoManager::saveStates()
+UndoSaveState UndoRedoManager::saveStates() const
 {
     if (!mNewBackupSystemEnabled) {
-        return;
+        auto invalidState = UndoSaveState();
+        invalidState.invalidated = true;
+        return invalidState;
     }
 
-    mUndoSaveState.reset();
+    UndoSaveState undoSaveState;
 
-    std::unique_ptr<UndoSaveState> undoSaveState(new UndoSaveState());
     const Layer* layer = editor()->layers()->currentLayer();
-    undoSaveState->layerType = layer->type();
-    undoSaveState->layerId = layer->id();
+    undoSaveState.layerType = layer->type();
+    undoSaveState.layerId = layer->id();
 
     auto selectMan = editor()->select();
-    undoSaveState->selectionRect = selectMan->mySelectionRect();
-    undoSaveState->selectionRotationAngle = selectMan->myRotation();
-    undoSaveState->selectionTranslation = selectMan->myTranslation();
-    undoSaveState->selectionAnchor = selectMan->currentTransformAnchor();
-    undoSaveState->selectionScaleX = selectMan->myScaleX();
-    undoSaveState->selectionScaleY = selectMan->myScaleY();
-
+    undoSaveState.selectionRect = selectMan->mySelectionRect();
+    undoSaveState.selectionRotationAngle = selectMan->myRotation();
+    undoSaveState.selectionTranslation = selectMan->myTranslation();
+    undoSaveState.selectionAnchor = selectMan->currentTransformAnchor();
+    undoSaveState.selectionScaleX = selectMan->myScaleX();
+    undoSaveState.selectionScaleY = selectMan->myScaleY();
 
     const int frameIndex = editor()->currentFrame();
     if (layer->keyExists(frameIndex))
     {
-        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(layer->getLastKeyFrameAtPosition(frameIndex)->clone());
+        undoSaveState.keyframe = std::shared_ptr<KeyFrame>(layer->getLastKeyFrameAtPosition(frameIndex)->clone());
     }
     else if (layer->getKeyFrameWhichCovers(frameIndex) != nullptr)
     {
-        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(layer->getKeyFrameWhichCovers(frameIndex)->clone());
+        undoSaveState.keyframe = std::shared_ptr<KeyFrame>(layer->getKeyFrameWhichCovers(frameIndex)->clone());
     }
-    mUndoSaveState = std::move(undoSaveState);
+
+    return undoSaveState;
+}
+
+void UndoRedoManager::invalidateSaveState(UndoSaveState& undoSaveState)
+{
+    undoSaveState = UndoSaveState();
+    undoSaveState.invalidated = true;
 }
 
 QAction* UndoRedoManager::createUndoAction(QObject* parent, const QIcon& icon)

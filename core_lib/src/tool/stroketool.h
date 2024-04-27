@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include "pointerevent.h"
 #include "preferencesdef.h"
 #include "strokeinterpolator.h"
+#include "undoredomanager.h"
 
 #include "canvascursorpainter.h"
 
@@ -109,6 +110,8 @@ protected:
     CanvasCursorPainter mCanvasCursorPainter;
 
     StrokeInterpolator mInterpolator;
+
+    UndoSaveState mUndoSaveState;
 };
 
 #endif // STROKETOOL_H

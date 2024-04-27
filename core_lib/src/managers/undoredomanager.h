@@ -45,9 +45,10 @@ enum class UndoRedoType {
 };
 
 struct UndoSaveState {
+
     int layerId = 0;
     Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
-    std::unique_ptr<KeyFrame> keyframe = nullptr;
+    std::shared_ptr<KeyFrame> keyframe = nullptr;
 
     QRectF  selectionRect;
     qreal   selectionRotationAngle = 0.0;
@@ -55,6 +56,8 @@ struct UndoSaveState {
     qreal   selectionScaleY = 0.0;
     QPointF selectionTranslation;
     QPointF selectionAnchor;
+
+    bool invalidated = false;
 };
 
 class UndoRedoManager : public BaseManager
@@ -73,10 +76,17 @@ public:
      * Adds a undo/redo state of the given UndoRedoType
      * @param undoRedoType The type to add
     */
-    void add(UndoRedoType undoRedoType);
+    void add(UndoSaveState& undoSaveState, UndoRedoType undoRedoType);
 
     bool hasUnsavedChanges() const;
-    void saveStates();
+
+    /**
+     * @brief UndoRedoManager::saveStates
+     * This method should be called prior to a backup taking place.
+     * Only the most essential values should be retrieved here.
+     * @return A struct with the most recent state
+     */
+    UndoSaveState saveStates() const;
 
     QAction* createUndoAction(QObject* parent, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QIcon& icon);
@@ -114,9 +124,11 @@ private:
 
     // functions
 
-    void bitmap(const UndoSaveState* undoState, const QString& description);
-    void vector(const UndoSaveState* undoState, const QString& description);
-    void selection(const UndoSaveState* undoState, const QString& description);
+    void invalidateSaveState(UndoSaveState& undoSaveState);
+
+    void bitmap(const UndoSaveState& undoState, const QString& description);
+    void vector(const UndoSaveState& undoState, const QString& description);
+    void selection(const UndoSaveState& undoState, const QString& description);
 
     void pushCommand(QUndoCommand* command);
 
@@ -126,8 +138,6 @@ private:
     // variables
 
     QUndoStack mUndoStack;
-
-    std::unique_ptr<UndoSaveState> mUndoSaveState = nullptr;
 
     // Legacy system
     int mLegacyBackupIndex = -1;
