@@ -314,16 +314,29 @@ void GeneralPage::invertScrollDirectionBoxStateChanged(int b)
     mManager->set(SETTING::INVERT_SCROLL_ZOOM_DIRECTION, b != Qt::Unchecked);
 }
 
-void GeneralPage::newUndoRedoCheckBoxStateChanged(bool b)
+void GeneralPage::newUndoRedoCheckBoxStateChanged()
 {
-    ui->undoRedoGroupCancelButton->setDisabled(b == mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON));
-    ui->undoRedoGroupApplyButton->setDisabled(b == mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON));
+    ui->undoRedoGroupApplyButton->setEnabled(canApplyOrCancelUndoRedoChanges());
+    ui->undoRedoGroupCancelButton->setEnabled(canApplyOrCancelUndoRedoChanges());
 }
 
-void GeneralPage::undoRedoMaxStepsChanged(int value)
+void GeneralPage::undoRedoMaxStepsChanged()
 {
-    ui->undoRedoGroupCancelButton->setDisabled(value == mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
-    ui->undoRedoGroupApplyButton->setDisabled(value == mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+    ui->undoRedoGroupApplyButton->setEnabled(canApplyOrCancelUndoRedoChanges());
+    ui->undoRedoGroupCancelButton->setEnabled(canApplyOrCancelUndoRedoChanges());
+}
+
+bool GeneralPage::canApplyOrCancelUndoRedoChanges() const
+{
+    const bool newSystemIsOnCurrent = mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
+    const int maxUndoRedoStepNumCurrent = mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS);
+
+    if (newSystemIsOnCurrent != ui->newUndoRedoCheckBox->isChecked()
+            || maxUndoRedoStepNumCurrent != ui->undoStepsBox->value()) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 void GeneralPage::undoRedoApplyButtonPressed()
@@ -342,25 +355,28 @@ void GeneralPage::undoRedoApplyButtonPressed()
         }
     }
 
-    if (ui->newUndoRedoCheckBox->isChecked()) {
-        QMessageBox messageBox(this);
-        messageBox.setIcon(QMessageBox::Warning);
-        messageBox.setText(tr("Experimental feature!"));
-        messageBox.setInformativeText(tr("This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. \n\nDo you still want to try?"));
-        messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    const bool systemIsOn = mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
+    if (ui->newUndoRedoCheckBox->isChecked() != systemIsOn) {
+        if (ui->newUndoRedoCheckBox->isChecked()) {
+            QMessageBox messageBox(this);
+            messageBox.setIcon(QMessageBox::Warning);
+            messageBox.setText(tr("Experimental feature!"));
+            messageBox.setInformativeText(tr("This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. \n\nDo you still want to try?"));
+            messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
 
-        if (messageBox.exec() == QMessageBox::Yes) {
-            mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, true);
+            if (messageBox.exec() == QMessageBox::Yes) {
+                mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, true);
+            } else {
+                ui->newUndoRedoCheckBox->setCheckState(Qt::Unchecked);
+                mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
+            }
         } else {
-            ui->newUndoRedoCheckBox->setCheckState(Qt::Unchecked);
+            QMessageBox messageBox(this);
+            messageBox.setIcon(QMessageBox::Information);
+            messageBox.setText(tr("The undo/redo system will be changed on the next launch of the application"));
+            messageBox.exec();
             mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
         }
-    } else {
-        QMessageBox messageBox(this);
-        messageBox.setIcon(QMessageBox::Information);
-        messageBox.setText(tr("The undo/redo system will be changed on the next launch of the application"));
-        messageBox.exec();
-        mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
     }
 
     ui->undoRedoGroupCancelButton->setDisabled(true);
