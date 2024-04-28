@@ -109,7 +109,9 @@ void UndoRedoManager::record(const UndoSaveState*& undoState, const QString& des
             break;
         }
         default: {
-            Q_ASSERT_X(false, "UndoRedoManager::record", "Expected a value record but found INVALID");
+            QString reason("Unhandled case for: ");
+            reason.append(description);
+            Q_ASSERT_X(false, "UndoRedoManager::record", qPrintable(reason));
             break;
         }
     }
