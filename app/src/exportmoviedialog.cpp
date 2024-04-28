@@ -31,6 +31,14 @@ ExportMovieDialog::ExportMovieDialog(QWidget *parent, Mode mode, FileType fileTy
     } else {
         setWindowTitle(tr("Export Movie"));
     }
+
+    QSizePolicy policy = ui->unevenWidthLabel->sizePolicy();
+    policy.setRetainSizeWhenHidden(true);
+    ui->unevenWidthLabel->setSizePolicy(policy);
+    policy = ui->unevenHeightLabel->sizePolicy();
+    policy.setRetainSizeWhenHidden(true);
+    ui->unevenHeightLabel->setSizePolicy(policy);
+
     connect(this, &ExportMovieDialog::filePathsChanged, this, &ExportMovieDialog::onFilePathsChanged);
     connect(ui->widthSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ExportMovieDialog::validateResolution);
     connect(ui->heightSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ExportMovieDialog::validateResolution);
