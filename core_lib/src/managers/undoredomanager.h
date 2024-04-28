@@ -39,7 +39,6 @@ class LegacyBackupElement;
 class UndoRedoCommand;
 
 /// The undo/redo type which correspond to what is being recorded
-///
 enum class UndoRedoRecordType {
     KEYFRAME_MODIFY, // Any modification that involve a keyframe
 
@@ -112,9 +111,9 @@ public:
      *  @return true if there are unsaved changes, otherwise false */
     bool hasUnsavedChanges() const;
 
-    /** This method should be called prior to a backup taking place.
+    /** Prepares and returns a save state with the given scope.
      * @return A struct with state of the given record type */
-    const UndoSaveState* saveStates(UndoRedoRecordType recordType) const;
+    const UndoSaveState* state(UndoRedoRecordType recordType) const;
 
     QAction* createUndoAction(QObject* parent, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QIcon& icon);
@@ -157,7 +156,7 @@ private:
     void replaceBitmap(const UndoSaveState& undoState, const QString& description);
     void replaceVector(const UndoSaveState& undoState, const QString& description);
 
-    const UndoSaveState* saveKeyFrameState() const;
+    const UndoSaveState* savedKeyFrameState() const;
 
     void pushCommand(QUndoCommand* command);
 

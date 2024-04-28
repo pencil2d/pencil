@@ -195,7 +195,7 @@ void UndoRedoManager::replaceVector(const UndoSaveState& undoState, const QStrin
     pushCommand(element);
 }
 
-const UndoSaveState* UndoRedoManager::saveStates(UndoRedoRecordType recordType) const
+const UndoSaveState* UndoRedoManager::state(UndoRedoRecordType recordType) const
 {
     if (!mNewBackupSystemEnabled) {
         return nullptr;
@@ -204,14 +204,14 @@ const UndoSaveState* UndoRedoManager::saveStates(UndoRedoRecordType recordType) 
     switch (recordType)
     {
         case UndoRedoRecordType::KEYFRAME_MODIFY: {
-            return saveKeyFrameState();
+            return savedKeyFrameState();
         default:
             return nullptr;
         }
     }
 }
 
-const UndoSaveState* UndoRedoManager::saveKeyFrameState() const
+const UndoSaveState* UndoRedoManager::savedKeyFrameState() const
 {
     UndoSaveState* undoSaveState = new UndoSaveState();
     undoSaveState->recordType = UndoRedoRecordType::KEYFRAME_MODIFY;
