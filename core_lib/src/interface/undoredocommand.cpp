@@ -68,10 +68,10 @@ void BitmapCommand::undo()
 
 void BitmapCommand::redo()
 {
+    QUndoCommand::redo();
+
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
-
-    QUndoCommand::redo();
 
     Layer* layer = editor()->layers()->findLayerById(redoLayerId);
     static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&redoBitmap);
@@ -112,11 +112,10 @@ void VectorCommand::undo()
 void VectorCommand::redo()
 {
     qDebug() << "BackupVectorElement: redo";
+    QUndoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
-
-    QUndoCommand::redo();
 
     Layer* layer = editor()->layers()->findLayerById(redoLayerId);
 
