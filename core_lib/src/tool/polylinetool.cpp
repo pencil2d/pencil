@@ -194,11 +194,11 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
 
-    auto saveState = mEditor->undoRedo()->saveStates();
+    const UndoSaveState* saveState = mEditor->undoRedo()->saveStates(UndoRedoRecordType::KEYFRAME_MODIFY);
     mEditor->backup(typeName());
 
     endPolyline(mPoints);
-    mEditor->undoRedo()->add(saveState, UndoRedoType::POLYLINE);
+    mEditor->undoRedo()->record(saveState, typeName());
 }
 
 
@@ -209,9 +209,9 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
-            auto saveState = mEditor->undoRedo()->saveStates();
+            const UndoSaveState* saveState = mEditor->undoRedo()->saveStates(UndoRedoRecordType::KEYFRAME_MODIFY);
             endPolyline(mPoints);
-            mEditor->undoRedo()->add(saveState, UndoRedoType::POLYLINE);
+            mEditor->undoRedo()->record(saveState, typeName());
             return true;
         }
         break;

@@ -80,7 +80,7 @@ void BitmapReplaceCommand::redo()
 }
 
 VectorReplaceCommand::VectorReplaceCommand(const VectorImage* undoVector,
-                                   const int& undoLayerId,
+                                   const int undoLayerId,
                                    const QString& description,
                                    Editor* editor,
                                    QUndoCommand* parent) : UndoRedoCommand(editor, parent)
@@ -98,8 +98,6 @@ VectorReplaceCommand::VectorReplaceCommand(const VectorImage* undoVector,
 
 void VectorReplaceCommand::undo()
 {
-    qDebug() << "BackupVectorElement: undo";
-
     QUndoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
@@ -111,7 +109,6 @@ void VectorReplaceCommand::undo()
 
 void VectorReplaceCommand::redo()
 {
-    qDebug() << "BackupVectorElement: redo";
     QUndoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
@@ -124,68 +121,25 @@ void VectorReplaceCommand::redo()
     editor()->scrubTo(redoVector.pos());
 }
 
-TransformCommand::TransformCommand(KeyFrame* undoKeyFrame,
-                                   const int undoLayerId,
-                                   const QRectF& undoSelectionRect,
-                                   const QPointF undoTranslation,
+TransformCommand::TransformCommand(const QRectF& undoSelectionRect,
+                                   const QPointF& undoTranslation,
                                    const qreal undoRotationAngle,
                                    const qreal undoScaleX,
                                    const qreal undoScaleY,
-                                   const QPointF undoTransformAnchor,
+                                   const QPointF& undoTransformAnchor,
+                                   const bool roundPixels,
                                    const QString& description,
                                    Editor* editor,
                                    QUndoCommand *parent) : UndoRedoCommand(editor, parent)
 {
+    this->roundPixels = roundPixels;
 
-
-    qDebug() << "add transform command";
-    this->undoLayerId = undoLayerId;
     this->undoSelectionRect = undoSelectionRect;
     this->undoAnchor = undoTransformAnchor;
     this->undoTranslation = undoTranslation;
     this->undoRotationAngle = undoRotationAngle;
     this->undoScaleX = undoScaleX;
     this->undoScaleY = undoScaleY;
-
-    Layer* undoLayer = editor->layers()->findLayerById(undoLayerId);
-
-    switch(undoLayer->type())
-    {
-        case Layer::BITMAP:
-        {
-            undoBitmap = *static_cast<BitmapImage*>(undoKeyFrame);
-            break;
-        }
-        case Layer::VECTOR:
-        {
-            undoVector = *static_cast<VectorImage*>(undoKeyFrame);
-            break;
-        }
-        default:
-            break;
-    }
-
-    Layer* redoLayer = editor->layers()->currentLayer();
-    redoLayerId = redoLayer->id();
-
-    const int currentFrame = editor->currentFrame();
-
-    switch(redoLayer->type())
-    {
-        case Layer::BITMAP:
-        {
-            redoBitmap = *static_cast<LayerBitmap*>(redoLayer)->getBitmapImageAtFrame(currentFrame);
-            break;
-        }
-        case Layer::VECTOR:
-        {
-            redoVector = *static_cast<LayerVector*>(redoLayer)->
-                    getVectorImageAtFrame(currentFrame);
-            break;
-        }
-        default:
-            break;
-    }
 
     auto selectMan = editor->select();
     redoSelectionRect = selectMan->mySelectionRect();
@@ -200,15 +154,13 @@ TransformCommand::TransformCommand(KeyFrame* undoKeyFrame,
 
 void TransformCommand::undo()
 {
-    apply(undoBitmap,
-          undoVector,
-          undoSelectionRect,
+    apply(undoSelectionRect,
           undoTranslation,
           undoRotationAngle,
           undoScaleX,
           undoScaleY,
           undoAnchor,
-          undoLayerId);
+          roundPixels);
 }
 
 void TransformCommand::redo()
@@ -216,54 +168,23 @@ void TransformCommand::redo()
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
-    apply(redoBitmap,
-          redoVector,
-          redoSelectionRect,
+    apply(redoSelectionRect,
           redoTranslation,
           redoRotationAngle,
           redoScaleX,
           redoScaleY,
           redoAnchor,
-          redoLayerId);
+          roundPixels);
 }
 
-void TransformCommand::apply(const BitmapImage& bitmapImage,
-                             const VectorImage& vectorImage,
-                             const QRectF& selectionRect,
-                             const QPointF translation,
+void TransformCommand::apply(const QRectF& selectionRect,
+                             const QPointF& translation,
                              const qreal rotationAngle,
                              const qreal scaleX,
                              const qreal scaleY,
-                             const QPointF selectionAnchor,
-                             const int layerId)
+                             const QPointF& selectionAnchor,
+                             const bool roundPixels)
 {
-
-    Layer* layer = editor()->layers()->findLayerById(layerId);
-
-    int frameNumber = 0;
-    bool roundPixels = true;
-    switch(layer->type())
-    {
-        case Layer::BITMAP:
-        {
-            static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&bitmapImage);
-            frameNumber = bitmapImage.pos();
-            break;
-        }
-        case Layer::VECTOR:
-        {
-            LayerVector* vlayer = static_cast<LayerVector*>(layer);
-            vlayer->replaceKeyFrame(&vectorImage);
-            frameNumber = vectorImage.pos();
-            roundPixels = false;
-            break;
-        }
-        default:
-            // Only canvas related KeyFrame types are relevant for transforms.
-            Q_UNREACHABLE();
-            break;
-    }
-
     auto selectMan = editor()->select();
     selectMan->setSelection(selectionRect, roundPixels);
     selectMan->setTransformAnchor(selectionAnchor);
@@ -272,6 +193,4 @@ void TransformCommand::apply(const BitmapImage& bitmapImage,
     selectMan->setScale(scaleX, scaleY);
 
     selectMan->calculateSelectionTransformation();
-
-    emit editor()->frameModified(frameNumber);
 }

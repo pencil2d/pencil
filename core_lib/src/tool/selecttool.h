@@ -69,7 +69,7 @@ private:
 
     QPixmap mCursorPixmap = QPixmap(24, 24);
 
-    UndoSaveState mUndoState;
+    const UndoSaveState* mUndoState = nullptr;
 };
 
 #endif

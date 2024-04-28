@@ -140,7 +140,7 @@ void StrokeTool::startStroke(PointerEvent::InputType inputType)
     mStrokePressures << mInterpolator.getPressure();
 
     mCurrentInputType = inputType;
-    mUndoSaveState = mEditor->undoRedo()->saveStates();
+    mUndoSaveState = mEditor->undoRedo()->saveStates(UndoRedoRecordType::KEYFRAME_MODIFY);
 
     disableCoalescing();
 }
@@ -181,7 +181,7 @@ void StrokeTool::endStroke()
     mEditor->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->endStroke();
 
-    mEditor->undoRedo()->add(mUndoSaveState, UndoRedoType::STROKE);
+    mEditor->undoRedo()->record(mUndoSaveState, typeName());
 }
 
 void StrokeTool::drawStroke()

@@ -162,7 +162,7 @@ void MoveTool::pointerMoveEvent(PointerEvent* event)
 
 void MoveTool::pointerReleaseEvent(PointerEvent*)
 {
-    mEditor->undoRedo()->add(mUndoSaveState, UndoRedoType::SELECTION);
+    mEditor->undoRedo()->record(mUndoSaveState, typeName());
 
     if (mEditor->overlays()->anyOverlayEnabled())
     {
@@ -212,7 +212,7 @@ void MoveTool::beginInteraction(const QPointF& pos, Qt::KeyboardModifiers keyMod
     QRectF selectionRect = selectMan->mySelectionRect();
     if (!selectionRect.isNull())
     {
-        mUndoSaveState = mEditor->undoRedo()->saveStates();
+        mUndoSaveState = mEditor->undoRedo()->saveStates(UndoRedoRecordType::KEYFRAME_MODIFY);
         mEditor->backup(typeName());
     }
 

@@ -111,7 +111,7 @@ protected:
 
     StrokeInterpolator mInterpolator;
 
-    UndoSaveState mUndoSaveState;
+    const UndoSaveState* mUndoSaveState = nullptr;
 };
 
 #endif // STROKETOOL_H

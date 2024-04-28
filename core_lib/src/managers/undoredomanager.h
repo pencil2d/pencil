@@ -38,26 +38,54 @@ class KeyFrame;
 class LegacyBackupElement;
 class UndoRedoCommand;
 
-enum class UndoRedoType {
-    STROKE,
-    POLYLINE,
-    SELECTION,
+/// The undo/redo type which correspond to what is being recorded
+///
+enum class UndoRedoRecordType {
+    KEYFRAME_MODIFY, // Any modification that involve a keyframe
+
+    // Possible future actions
+    // KEYFRAME_REMOVE, // Removing a keyframe
+    // KEYFRAME_ADD, // Adding a keyframe
+    // SCRUB_LAYER, // Scrubbing layer
+    // SCRUB_KEYFRAME, // Scrubbing keyframe
+    INVALID
 };
 
-struct UndoSaveState {
+struct SelectionSaveState {
 
+    SelectionSaveState(const QRectF& rect,
+                       const qreal rotationAngle,
+                       const qreal scaleX,
+                       const qreal scaleY,
+                       const QPointF& translation,
+                       const QPointF& anchor)
+    {
+        this->bounds = rect;
+        this->rotationAngle = rotationAngle;
+        this->scaleX = scaleX;
+        this->scaleY = scaleY;
+        this->translation = translation;
+        this->anchor = anchor;
+    }
+
+    QRectF  bounds;
+    qreal   rotationAngle = 0.0;
+    qreal   scaleX = 0.0;
+    qreal   scaleY = 0.0;
+    QPointF translation;
+    QPointF anchor;
+};
+
+/// This is the main undo/redo state structure which is meant to populate
+/// whatever states that needs to be stored temporarily.
+struct UndoSaveState {
     int layerId = 0;
     Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
-    std::shared_ptr<KeyFrame> keyframe = nullptr;
 
-    QRectF  selectionRect;
-    qreal   selectionRotationAngle = 0.0;
-    qreal   selectionScaleX = 0.0;
-    qreal   selectionScaleY = 0.0;
-    QPointF selectionTranslation;
-    QPointF selectionAnchor;
+    std::unique_ptr<KeyFrame> keyframe = nullptr;
+    std::unique_ptr<SelectionSaveState> selectionState = nullptr;
 
-    bool invalidated = false;
+    UndoRedoRecordType recordType = UndoRedoRecordType::INVALID;
 };
 
 class UndoRedoManager : public BaseManager
@@ -72,21 +100,21 @@ public:
     Status load(Object*) override;
     Status save(Object*) override;
 
-    /**
-     * Adds a undo/redo state of the given UndoRedoType
-     * @param undoRedoType The type to add
+    /** Records the given save state.
+     *  The input save state is cleaned up and set to nullptr after use.
+    * @param undoState The state to record.
+    * @param description The description that will bound to the undo/redo action.
     */
-    void add(UndoSaveState& undoState, UndoRedoType undoRedoType);
+    void record(const UndoSaveState*& undoState, const QString& description);
 
+
+    /** Checks whether there are unsaved changes.
+     *  @return true if there are unsaved changes, otherwise false */
     bool hasUnsavedChanges() const;
 
-    /**
-     * @brief UndoRedoManager::saveStates
-     * This method should be called prior to a backup taking place.
-     * Only the most essential values should be retrieved here.
-     * @return A struct with the most recent state
-     */
-    UndoSaveState saveStates() const;
+    /** This method should be called prior to a backup taking place.
+     * @return A struct with state of the given record type */
+    const UndoSaveState* saveStates(UndoRedoRecordType recordType) const;
 
     QAction* createUndoAction(QObject* parent, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QIcon& icon);
@@ -94,9 +122,12 @@ public:
     void updateUndoAction(QAction* undoAction);
     void updateRedoAction(QAction* redoAction);
 
+    /** Clears the undo stack */
     void clearStack();
 
-    // Legacy System
+    // Developer note:
+    // Our legacy undo/redo system is not meant to be build upon anymore.
+    // The implementation should however be kept until the new undo/redo system takes over.
 
     void legacyBackup(const QString& undoText);
     bool legacyBackup(int backupLayer, int backupFrame, const QString& undoText);
@@ -122,21 +153,16 @@ signals:
 
 private:
 
-    // functions
+    void replaceKeyFrame(const UndoSaveState& undoState, const QString& description);
+    void replaceBitmap(const UndoSaveState& undoState, const QString& description);
+    void replaceVector(const UndoSaveState& undoState, const QString& description);
 
-    void invalidateSaveState(UndoSaveState& undoState);
-
-    void stroke(const UndoSaveState& undoState, const QString& description);
-    void bitmap(const UndoSaveState& undoState, const QString& description);
-    void vector(const UndoSaveState& undoState, const QString& description);
-    void selection(const UndoSaveState& undoState, const QString& description);
+    const UndoSaveState* saveKeyFrameState() const;
 
     void pushCommand(QUndoCommand* command);
 
     void legacyUndo();
     void legacyRedo();
-
-    // variables
 
     QUndoStack mUndoStack;
 
