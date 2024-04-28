@@ -141,10 +141,9 @@ void UndoRedoManager::pushCommand(QUndoCommand* command)
 
 void UndoRedoManager::replaceKeyFrame(const UndoSaveState& undoState, const QString& description)
 {
-    const Layer* currentLayer = editor()->layers()->currentLayer();
-    if (currentLayer->type() == Layer::BITMAP) {
+    if (undoState.layerType == Layer::BITMAP) {
         replaceBitmap(undoState, description);
-    } else if (currentLayer->type() == Layer::VECTOR) {
+    } else if (undoState.layerType == Layer::VECTOR) {
         replaceVector(undoState, description);
     } else {
         // Implement other cases
