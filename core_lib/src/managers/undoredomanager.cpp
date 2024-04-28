@@ -150,11 +150,11 @@ void UndoRedoManager::stroke(const UndoSaveState& undoState, const QString& desc
 {
     const Layer* currentLayer = editor()->layers()->currentLayer();
     if (currentLayer->type() == Layer::BITMAP) {
-        bitmap(undoState, description);
+        replaceBitmap(undoState, description);
     } else if (currentLayer->type() == Layer::VECTOR) {
-        vector(undoState, description);
+        replaceVector(undoState, description);
     } else {
-        Q_ASSERT_X(false, "UndoRedoManager", "A stroke can only be applied to either the Bitmap or Vector layer");
+        // Implement other cases
     }
 }
 
@@ -162,7 +162,7 @@ void UndoRedoManager::stroke(const UndoSaveState& undoState, const QString& desc
 void UndoRedoManager::bitmap(const UndoSaveState& undoState, const QString& description)
 {
     if (undoState.keyframe == nullptr || undoState.layerType != Layer::BITMAP) { return; }
-    BitmapCommand* element = new BitmapCommand(static_cast<BitmapImage*>(undoState.keyframe.get()),
+    BitmapReplaceCommand* element = new BitmapReplaceCommand(static_cast<BitmapImage*>(undoState.keyframe.get()),
                                                undoState.layerId,
                                                description,
                                                editor());
@@ -184,7 +184,7 @@ void UndoRedoManager::bitmap(const UndoSaveState& undoState, const QString& desc
 void UndoRedoManager::vector(const UndoSaveState& undoState, const QString& description)
 {
     if (undoState.keyframe == nullptr || undoState.layerType != Layer::VECTOR) { return; }
-    VectorCommand* element = new VectorCommand(static_cast<VectorImage*>(undoState.keyframe.get()),
+    VectorReplaceCommand* element = new VectorReplaceCommand(static_cast<VectorImage*>(undoState.keyframe.get()),
                                                  undoState.layerId,
                                                  description,
                                                  editor());

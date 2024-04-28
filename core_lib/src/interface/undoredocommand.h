@@ -51,11 +51,11 @@ private:
     bool mIsFirstRedo = true;
 };
 
-class BitmapCommand : public UndoRedoCommand
+class BitmapReplaceCommand : public UndoRedoCommand
 {
 
 public:
-    BitmapCommand(const BitmapImage* backupBitmap,
+    BitmapReplaceCommand(const BitmapImage* backupBitmap,
                   int backupLayerId,
                   const QString& description,
                   Editor* editor,
@@ -72,10 +72,10 @@ private:
     BitmapImage redoBitmap;
 };
 
-class VectorCommand : public UndoRedoCommand
+class VectorReplaceCommand : public UndoRedoCommand
 {
 public:
-    VectorCommand(const VectorImage* undoVector,
+    VectorReplaceCommand(const VectorImage* undoVector,
                      const int& undoLayerId,
                      const QString& description,
                      Editor* editor,

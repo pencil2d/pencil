@@ -38,7 +38,7 @@ UndoRedoCommand::~UndoRedoCommand()
 {
 }
 
-BitmapCommand::BitmapCommand(const BitmapImage* undoBitmap,
+BitmapReplaceCommand::BitmapReplaceCommand(const BitmapImage* undoBitmap,
                              const int undoLayerId,
                              const QString& description,
                              Editor *editor,
@@ -56,7 +56,7 @@ BitmapCommand::BitmapCommand(const BitmapImage* undoBitmap,
     setText(description);
 }
 
-void BitmapCommand::undo()
+void BitmapReplaceCommand::undo()
 {
     QUndoCommand::undo();
 
@@ -66,7 +66,7 @@ void BitmapCommand::undo()
     editor()->scrubTo(undoBitmap.pos());
 }
 
-void BitmapCommand::redo()
+void BitmapReplaceCommand::redo()
 {
     QUndoCommand::redo();
 
@@ -79,7 +79,7 @@ void BitmapCommand::redo()
     editor()->scrubTo(redoBitmap.pos());
 }
 
-VectorCommand::VectorCommand(const VectorImage* undoVector,
+VectorReplaceCommand::VectorReplaceCommand(const VectorImage* undoVector,
                                    const int& undoLayerId,
                                    const QString& description,
                                    Editor* editor,
@@ -96,7 +96,7 @@ VectorCommand::VectorCommand(const VectorImage* undoVector,
     setText(description);
 }
 
-void VectorCommand::undo()
+void VectorReplaceCommand::undo()
 {
     qDebug() << "BackupVectorElement: undo";
 
@@ -109,7 +109,7 @@ void VectorCommand::undo()
     editor()->scrubTo(undoVector.pos());
 }
 
-void VectorCommand::redo()
+void VectorReplaceCommand::redo()
 {
     qDebug() << "BackupVectorElement: redo";
     QUndoCommand::redo();
@@ -138,6 +138,7 @@ TransformCommand::TransformCommand(KeyFrame* undoKeyFrame,
 {
 
 
+    qDebug() << "add transform command";
     this->undoLayerId = undoLayerId;
     this->undoSelectionRect = undoSelectionRect;
     this->undoAnchor = undoTransformAnchor;
