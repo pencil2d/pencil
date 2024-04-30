@@ -35,7 +35,7 @@ void ColorBox::initUI()
     mColorWheel = new ColorWheel(this);
 
     QVBoxLayout* layout = new QVBoxLayout;
-    layout->setContentsMargins(5, 5, 5, 5);
+    layout->setContentsMargins(3, 3, 3, 3);
     layout->addWidget(mColorWheel);
     layout->setStretch(0, 1);
     layout->setStretch(1, 0);
