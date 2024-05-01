@@ -24,11 +24,7 @@ GNU General Public License for more details.
 #include <QDomElement>
 #include "pencilerror.h"
 
-class QMouseEvent;
-class QPainter;
-
 class KeyFrame;
-class TimeLineCells;
 class Status;
 
 typedef std::function<void()> ProgressCallback;
