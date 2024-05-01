@@ -138,7 +138,7 @@ void ToolBoxWidget::initUI()
     connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &ToolBoxWidget::onLayerDidChange);
 
 
-    FlowLayout* flowlayout = new FlowLayout;
+    FlowLayout* flowlayout = new FlowLayout(0,3,3);
 
     flowlayout->addWidget(ui->pencilButton);
     flowlayout->addWidget(ui->eraserButton);
