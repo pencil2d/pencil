@@ -98,8 +98,9 @@ create_package_macos() {
   popd >/dev/null
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
-  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-$3.zip" Pencil2D
-  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-$3" > "${GITHUB_OUTPUT}"
+  local arch=`uname -m`
+  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-${arch}-$3.zip" Pencil2D
+  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-${arch}-$3" > "${GITHUB_OUTPUT}"
 }
 
 create_package_windows() {
