@@ -154,6 +154,7 @@ void ToolBoxWidget::initUI()
 
     delete ui->scrollAreaWidgetContents_2->layout();
     ui->scrollAreaWidgetContents_2->setLayout(flowlayout);
+    ui->scrollAreaWidgetContents_2->setContentsMargins(3,3,3,3);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
