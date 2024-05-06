@@ -300,10 +300,8 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 
 void SmudgeTool::drawStroke()
 {
-    if (!mScribbleArea->isLayerPaintable()) return;
-
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) { return; }
+    if (layer == nullptr || !layer->isPaintable()) { return; }
 
     BitmapImage *sourceImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
     if (sourceImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing

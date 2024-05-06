@@ -715,14 +715,6 @@ void ScribbleArea::tabletReleaseEventFired()
     }
 }
 
-bool ScribbleArea::isLayerPaintable() const
-{
-    Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) { return false; }
-
-    return layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR;
-}
-
 void ScribbleArea::mousePressEvent(QMouseEvent* e)
 {
     if (mTabletInUse || (mMouseFilterTimer->isActive() && mTabletReleaseMillisAgo < MOUSE_FILTER_THRESHOLD))

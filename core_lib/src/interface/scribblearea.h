@@ -69,8 +69,6 @@ public:
     void applyTransformedSelection();
     void cancelTransformedSelection();
 
-    bool isLayerPaintable() const;
-
     void setEffect(SETTING e, bool isOn);
 
     LayerVisibility getLayerVisibility() const { return mLayerVisibility; }
