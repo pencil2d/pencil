@@ -4068,6 +4068,12 @@ Read the instructions and try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1066"/>
+        <source>Center</source>
+        <comment>To move sth. to the center</comment>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../app/ui/mainwindow2.ui" line="1107"/>
         <location filename="../app/ui/mainwindow2.ui" line="1110"/>
         <source>Paste from Previous Keyframe</source>
@@ -4081,6 +4087,12 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1134"/>
         <source>Show Outlines Only</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1146"/>
+        <source>Center</source>
+        <comment>The middle point of an area</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4565,12 +4577,6 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1061"/>
         <source>Lock Windows</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1066"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1146"/>
-        <source>Center</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
