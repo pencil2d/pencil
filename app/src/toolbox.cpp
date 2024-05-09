@@ -137,8 +137,17 @@ void ToolBoxWidget::initUI()
 
     connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &ToolBoxWidget::onLayerDidChange);
 
+    connect(this, &QDockWidget::dockLocationChanged, this, [=](Qt::DockWidgetArea area) {
 
-    FlowLayout* flowlayout = new FlowLayout(0,3,3);
+        mDockArea = area;
+        if (area == Qt::DockWidgetArea::TopDockWidgetArea || area == Qt::BottomDockWidgetArea) {
+            ui->scrollArea->setMinimumHeight(getMinHeightForWidth(width()));
+        } else {
+            ui->scrollArea->setMinimumHeight(1);
+        }
+    });
+
+    FlowLayout* flowlayout = new FlowLayout(3,3,3);
 
     flowlayout->addWidget(ui->pencilButton);
     flowlayout->addWidget(ui->eraserButton);
@@ -154,14 +163,33 @@ void ToolBoxWidget::initUI()
 
     delete ui->scrollAreaWidgetContents_2->layout();
     ui->scrollAreaWidgetContents_2->setLayout(flowlayout);
-    ui->scrollAreaWidgetContents_2->setContentsMargins(3,3,3,3);
+    ui->scrollAreaWidgetContents_2->setContentsMargins(0,0,0,0);
+
+    setMinimumHeight(1);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
+
+    ui->scrollArea->setMinimumHeight(getMinHeightForWidth(width()));
 }
 
 void ToolBoxWidget::updateUI()
 {
+}
+
+void ToolBoxWidget::resizeEvent(QResizeEvent* event)
+{
+    BaseDockWidget::resizeEvent(event);
+
+    setMinimumSize(QSize(layout()->minimumSize().width(), ui->scrollArea->minimumHeight()));
+}
+
+int ToolBoxWidget::getMinHeightForWidth(int width)
+{
+    if (mDockArea != Qt::LeftDockWidgetArea && mDockArea != Qt::RightDockWidgetArea) {
+        return ui->scrollAreaWidgetContents_2->layout()->heightForWidth(width);
+    }
+    return BaseDockWidget::getMinHeightForWidth(width);
 }
 
 void ToolBoxWidget::onToolSetActive(ToolType toolType)
@@ -264,11 +292,6 @@ void ToolBoxWidget::brushOn()
 void ToolBoxWidget::smudgeOn()
 {
     toolOn(SMUDGE, ui->smudgeButton);
-}
-
-int ToolBoxWidget::getMinHeightForWidth(int width)
-{
-    return ui->toolGroup->layout()->heightForWidth(width);
 }
 
 void ToolBoxWidget::deselectAllTools()

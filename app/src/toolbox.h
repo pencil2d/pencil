@@ -60,12 +60,15 @@ public slots:
 
 protected:
     int getMinHeightForWidth(int width) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
     void deselectAllTools();
     void toolOn(ToolType toolType, QToolButton* toolButton);
 
     Ui::ToolBoxWidget* ui = nullptr;
+
+    Qt::DockWidgetArea mDockArea;
 };
 
 #endif
