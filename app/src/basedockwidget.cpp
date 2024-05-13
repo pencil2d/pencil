@@ -35,6 +35,8 @@ BaseDockWidget::BaseDockWidget(QWidget* pParent)
     }
 #endif
 
+    setStyleSheet("QWidget { font-size: 11px } ");
+
 }
 
 BaseDockWidget::~BaseDockWidget()

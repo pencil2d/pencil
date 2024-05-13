@@ -16,11 +16,6 @@
     <height>132</height>
    </size>
   </property>
-  <property name="font">
-   <font>
-    <pointsize>11</pointsize>
-   </font>
-  </property>
   <property name="windowTitle">
    <string comment="Window title of color palette.">Color Palette</string>
   </property>

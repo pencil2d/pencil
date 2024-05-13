@@ -16,11 +16,6 @@
     <height>0</height>
    </size>
   </property>
-  <property name="font">
-   <font>
-    <pointsize>11</pointsize>
-   </font>
-  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <property name="leftMargin">
     <number>0</number>
@@ -36,11 +31,6 @@
    </property>
    <item>
     <widget class="QGroupBox" name="transformGroupBox">
-     <property name="font">
-      <font>
-       <pointsize>11</pointsize>
-      </font>
-     </property>
      <property name="title">
       <string>Transform</string>
      </property>

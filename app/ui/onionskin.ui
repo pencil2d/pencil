@@ -16,11 +16,6 @@
     <height>122</height>
    </size>
   </property>
-  <property name="font">
-   <font>
-    <pointsize>11</pointsize>
-   </font>
-  </property>
   <property name="floating">
    <bool>false</bool>
   </property>
@@ -33,11 +28,6 @@
      <horstretch>0</horstretch>
      <verstretch>0</verstretch>
     </sizepolicy>
-   </property>
-   <property name="font">
-    <font>
-     <pointsize>11</pointsize>
-    </font>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <property name="spacing">
@@ -117,11 +107,6 @@
         </property>
         <item>
          <widget class="QGroupBox" name="prevFramesGroup">
-          <property name="font">
-           <font>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
           <property name="title">
            <string>Previous Frames</string>
           </property>
@@ -206,11 +191,6 @@
         </item>
         <item>
          <widget class="QGroupBox" name="nextFramesGroup">
-          <property name="font">
-           <font>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
           <property name="title">
            <string>Next Frames</string>
           </property>
@@ -307,11 +287,6 @@
         </item>
         <item>
          <widget class="QGroupBox" name="opacityGroup">
-          <property name="font">
-           <font>
-            <pointsize>11</pointsize>
-           </font>
-          </property>
           <property name="title">
            <string>Distributed Opacity</string>
           </property>
@@ -356,11 +331,6 @@
                   <horstretch>0</horstretch>
                   <verstretch>0</verstretch>
                  </sizepolicy>
-                </property>
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
                 </property>
                 <property name="text">
                  <string>Max</string>
@@ -427,11 +397,6 @@
                   <verstretch>0</verstretch>
                  </sizepolicy>
                 </property>
-                <property name="font">
-                 <font>
-                  <pointsize>11</pointsize>
-                 </font>
-                </property>
                 <property name="text">
                  <string>Min</string>
                 </property>
@@ -481,11 +446,6 @@
           </property>
           <item>
            <widget class="QCheckBox" name="onionSkinMode">
-            <property name="font">
-             <font>
-              <pointsize>11</pointsize>
-             </font>
-            </property>
             <property name="text">
              <string>Show Keyframes Only</string>
             </property>
@@ -493,11 +453,6 @@
           </item>
           <item>
            <widget class="QCheckBox" name="onionWhilePlayback">
-            <property name="font">
-             <font>
-              <pointsize>11</pointsize>
-             </font>
-            </property>
             <property name="text">
              <string>Show During Playback</string>
             </property>
