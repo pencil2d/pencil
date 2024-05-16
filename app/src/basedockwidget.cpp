@@ -34,9 +34,6 @@ BaseDockWidget::BaseDockWidget(QWidget* pParent)
                       "border-width: 1px; }");
     }
 #endif
-
-    setStyleSheet("QWidget { font-size: 11px } ");
-
 }
 
 BaseDockWidget::~BaseDockWidget()
