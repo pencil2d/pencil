@@ -410,8 +410,12 @@
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="51"/>
-        <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
         <source>Faster</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
+        <source>Fastest</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -484,22 +488,22 @@
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="25"/>
-        <source>Normal Ease-in</source>
+        <source>Moderate Ease-in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="26"/>
-        <source>Normal Ease-out</source>
+        <source>Moderate Ease-out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="27"/>
-        <source>Normal Ease-in - Ease-out</source>
+        <source>Moderate Ease-in - Ease-out</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="28"/>
-        <source>Normal Ease-out - Ease-in</source>
+        <source>Moderate Ease-out - Ease-in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
