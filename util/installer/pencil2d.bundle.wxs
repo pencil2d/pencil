@@ -44,6 +44,7 @@
       <!-- Translations -->
       <Payload SourceFile="pencil2d_de.wxl" Name="7\thm.wxl" />
       <!-- Assets -->
+      <Payload SourceFile="pencil2d.ico" />
       <Payload SourceFile="pencil2d.png" />
       <Payload SourceFile="pencil2d@2x.png" />
       <Payload SourceFile="cog.png" />
@@ -58,8 +59,9 @@
       <Variable Name="NightlyBuildTimestamp" Type="string" Value="$(NightlyBuildTimestamp)" />
     <?endif?>
     <Chain>
+      <!-- Set Cache to remove to work around WiX issue #8063 -->
       <!-- Set InstallSize to 0 to ensure the size in the ARP entry is correct (since the redist entry is separate) -->
-      <BundlePackage SourceFile="vc_redist.$(sys.BUILDARCH).exe" Permanent="yes" InstallSize="0" />
+      <BundlePackage SourceFile="vc_redist.$(sys.BUILDARCH).exe" Cache="remove" Permanent="yes" InstallSize="0" />
       <MsiPackage SourceFile="$(MsiName).msi">
         <MsiProperty Name="INSTALLDIR" Value="[InstallFolder]" />
         <!-- Need an explicit condition here - Windows Installer and the options page cancel button

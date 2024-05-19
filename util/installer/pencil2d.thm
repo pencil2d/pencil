@@ -11,7 +11,7 @@
       <AlternateResolution ImageFile="cog-hover@2x.png" />
     </Image>
 
-    <Window Width="640" Height="413" HexStyle="100a0000" FontId="Normal" Caption="#(loc.Caption)">
+    <Window Width="640" Height="413" HexStyle="100a0000" FontId="Normal" IconFile="pencil2d.ico" Caption="#(loc.Caption)">
         <ImageControl X="20" Y="20" Width="600" Height="175" ImageId="pencil2d" Visible="yes"/>
         <Label Name="Version" X="20" Y="-22" Width="246" Height="17" FontId="Normal" DisablePrefix="yes" VisibleCondition="WixStdBAShowVersion">
           <Text>#(loc.Version)</Text>
