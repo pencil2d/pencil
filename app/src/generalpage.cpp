@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "generalpage.h"
 
+#include <memory>
 #include <QMessageBox>
 #include <QSettings>
 #include <QTranslator>
