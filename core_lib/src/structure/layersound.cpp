@@ -93,24 +93,42 @@ void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath,
     while (!soundTag.isNull())
     {
         QDomElement soundElement = soundTag.toElement();
-        if (soundElement.isNull())
-        {
-            continue;
-        }
 
-        if (soundElement.tagName() == "sound")
+        if (!soundElement.isNull() && soundElement.tagName() == "sound")
         {
             const QString soundFile = soundElement.attribute("src");
             const QString sSoundClipName = soundElement.attribute("name", "My Sound Clip");
 
             if (!soundFile.isEmpty())
             {
-                // the file is supposed to be in the data directory
-                const QString sFullPath = QDir(dataDirPath).filePath(soundFile);
+                bool shouldLoad = true;
 
-                int position = soundElement.attribute("frame").toInt();
-                Status st = loadSoundClipAtFrame(sSoundClipName, sFullPath, position);
-                Q_ASSERT(st.ok());
+                // Make sure src path is relative
+                shouldLoad &= QFileInfo(soundFile).isRelative();
+                // Make sure file is in data directory after resolving relative components and symlinks
+                QFileInfo fi(dataDirPath, soundFile);
+                QString canonicalPath = fi.canonicalFilePath();
+                fi = !canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath();
+                QDir dataDir(dataDirPath);
+                QDir ancestor = fi.dir();
+                while (ancestor != dataDir)
+                {
+                    QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
+                    if (ancestor == newAncestor)
+                    {
+                        // Data dir was not found in ancestors of the src path
+                        shouldLoad = false;
+                        break;
+                    }
+                    ancestor = newAncestor;
+                }
+
+                if (shouldLoad)
+                {
+                    int position = soundElement.attribute("frame").toInt();
+                    Status st = loadSoundClipAtFrame(sSoundClipName, fi.absoluteFilePath(), position);
+                    Q_ASSERT(st.ok());
+                }
             }
             progressStep();
         }

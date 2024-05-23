@@ -202,24 +202,41 @@ void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath
     while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
-        if (!imageElement.isNull())
+        if (!imageElement.isNull() && imageElement.tagName() == "image")
         {
-            if (imageElement.tagName() == "image")
+            bool shouldLoad = true;
+
+            // Make sure src path is relative
+            shouldLoad &= QFileInfo(imageElement.attribute("src")).isRelative();
+            QFileInfo fi(dataDirPath, imageElement.attribute("src"));
+            // Make sure file is in data directory after resolving relative components and symlinks
+            QString canonicalPath = fi.canonicalFilePath();
+            fi = !canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath();
+            QDir dataDir(dataDirPath);
+            QDir ancestor = fi.dir();
+            while (ancestor != dataDir)
             {
-                QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
-                QFileInfo fi(path);
-                if (!fi.exists()) path = imageElement.attribute("src");
+                QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
+                if (ancestor == newAncestor)
+                {
+                    // Data dir was not found in ancestors of the src path
+                    shouldLoad = false;
+                    break;
+                }
+                ancestor = newAncestor;
+            }
+
+            if (shouldLoad)
+            {
+                QString path = fi.absoluteFilePath();
                 int position = imageElement.attribute("frame").toInt();
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();
-                qreal opacity = 1.0;
-                if (imageElement.hasAttribute("opacity")) {
-                    opacity = imageElement.attribute("opacity").toDouble();
-                }
+                qreal opacity = imageElement.attribute("opacity", "1.0").toDouble();
                 loadImageAtFrame(path, QPoint(x, y), position, opacity);
-
-                progressStep();
             }
+
+            progressStep();
         }
         imageTag = imageTag.nextSibling();
     }

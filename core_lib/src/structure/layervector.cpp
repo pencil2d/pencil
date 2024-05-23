@@ -155,31 +155,53 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
     while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
-        if (!imageElement.isNull())
+        if (!imageElement.isNull() && imageElement.tagName() == "image")
         {
-            if (imageElement.tagName() == "image")
+            int position;
+            QString rawPath = imageElement.attribute("src");
+            if (!rawPath.isNull())
             {
-                int position;
-                if (!imageElement.attribute("src").isNull())
+                bool shouldLoad = true;
+
+                // Make sure src path is relative
+                shouldLoad &= QFileInfo(rawPath).isRelative();
+                QFileInfo fi(dataDirPath, rawPath);
+                // Make sure file is in data directory after resolving relative components and symlinks
+                QString canonicalPath = fi.canonicalFilePath();
+                fi = !canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath();
+                QDir dataDir(dataDirPath);
+                QDir ancestor = fi.dir();
+                while (ancestor != dataDir)
                 {
-                    QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
-                    QFileInfo fi(path);
-                    if (!fi.exists()) path = imageElement.attribute("src");
+                    QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
+                    if (ancestor == newAncestor)
+                    {
+                        // Data dir was not found in ancestors of the src path
+                        shouldLoad = false;
+                        break;
+                    }
+                    ancestor = newAncestor;
+                }
+
+                if (shouldLoad)
+                {
+                    QString path = fi.absoluteFilePath();
                     position = imageElement.attribute("frame").toInt();
                     loadImageAtFrame(path, position);
+                    getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity", "1.0").toDouble());
                 }
-                else
-                {
-                    position = imageElement.attribute("frame").toInt();
-                    addNewKeyFrameAt(position);
-                    getVectorImageAtFrame(position)->loadDomElement(imageElement);
-                }
-                if (imageElement.hasAttribute("opacity"))
-                    getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity").toDouble());
-                else
-                    getVectorImageAtFrame(position)->setOpacity(1.0);
-                progressStep();
             }
+            else
+            {
+                position = imageElement.attribute("frame").toInt();
+                addNewKeyFrameAt(position);
+                getVectorImageAtFrame(position)->loadDomElement(imageElement);
+                getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity", "1.0").toDouble());
+            }
+
+
+
+            progressStep();
         }
         imageTag = imageTag.nextSibling();
     }
