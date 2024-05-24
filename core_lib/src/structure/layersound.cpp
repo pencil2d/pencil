@@ -108,7 +108,7 @@ void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath,
                 // Make sure file is in data directory after resolving relative components and symlinks
                 QFileInfo fi(dataDirPath, soundFile);
                 QString canonicalPath = fi.canonicalFilePath();
-                fi = !canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath();
+                fi.setFile(!canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath());
                 QDir dataDir(dataDirPath);
                 QDir ancestor = fi.dir();
                 while (ancestor != dataDir)

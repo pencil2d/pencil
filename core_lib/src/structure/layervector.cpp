@@ -168,7 +168,7 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
                 QFileInfo fi(dataDirPath, rawPath);
                 // Make sure file is in data directory after resolving relative components and symlinks
                 QString canonicalPath = fi.canonicalFilePath();
-                fi = !canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath();
+                fi.setFile(!canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath());
                 QDir dataDir(dataDirPath);
                 QDir ancestor = fi.dir();
                 while (ancestor != dataDir)
