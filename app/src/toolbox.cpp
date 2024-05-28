@@ -181,6 +181,8 @@ void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 {
     BaseDockWidget::resizeEvent(event);
 
+    if (ui->scrollArea->minimumHeight() <= 0) { return; }
+
     setMinimumSize(QSize(layout()->minimumSize().width(), ui->scrollArea->minimumHeight()));
 }
 
