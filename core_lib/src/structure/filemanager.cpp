@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "fileformat.h"
 #include "object.h"
 #include "layercamera.h"
+#include "util/util.h"
 
 FileManager::FileManager(QObject* parent) : QObject(parent)
 {
@@ -612,8 +613,8 @@ bool FileManager::loadPalette(Object* obj)
 {
     FILEMANAGER_LOG("Load Palette..");
 
-    QString paletteFilePath = QDir(obj->dataDir()).filePath(PFF_PALETTE_FILE);
-    if (!obj->importPalette(paletteFilePath))
+    QString paletteFilePath = validateDataPath(PFF_PALETTE_FILE, obj->dataDir());
+    if (paletteFilePath.isEmpty() || !obj->importPalette(paletteFilePath))
     {
         obj->loadDefaultPalette();
     }
