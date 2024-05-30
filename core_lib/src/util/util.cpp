@@ -17,6 +17,8 @@ GNU General Public License for more details.
 #include "util.h"
 #include <QAbstractSpinBox>
 #include <QApplication>
+#include <QDir>
+#include <QFileInfo>
 #include <QStandardPaths>
 
 static inline bool clipLineToEdge(qreal& t0, qreal& t1, qreal p, qreal q)
@@ -125,4 +127,60 @@ QString uniqueString(int len)
     }
     s[len] = 0;
     return QString::fromUtf8(s);
+}
+
+QString validateDataPath(QString filePath, QString dataDirPath)
+{
+    // Make sure src path is relative
+    if (!QFileInfo(filePath).isRelative()) return QString();
+
+    QFileInfo fi(dataDirPath, filePath);
+    // Recursively resolve symlinks
+    QString canonicalPath = fi.canonicalFilePath();
+
+    // Iterate over parent directories of the file path to see if one of them equals the data directory
+    QDir dataDir(dataDirPath);
+    if (dataDir.exists()) dataDir.setPath(dataDir.canonicalPath());
+    if (canonicalPath.isEmpty())
+    {
+        // File does not exist, use absolute path and attempt to resolve symlinks again for each parent directory
+        fi.setFile(fi.absoluteFilePath());
+        QDir ancestor(fi.absoluteFilePath());
+        while (true) {
+            QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
+            if (newAncestor.exists())
+            {
+                // Resolve directory symlinks
+                newAncestor.setPath(newAncestor.canonicalPath());
+            }
+            if (ancestor == dataDir)
+            {
+                // Found data dir in parents
+                return fi.absoluteFilePath();
+            }
+            if (ancestor == newAncestor)
+            {
+                // Reached root directory without finding data dir
+                return QString();
+            }
+            ancestor = newAncestor;
+        };
+    }
+    else
+    {
+        // File exists and all symlinks have been resolved in canonicalPath
+        fi.setFile(canonicalPath);
+        QDir ancestor = fi.dir();
+        while (ancestor != dataDir)
+        {
+            QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
+            if (ancestor == newAncestor)
+            {
+                // Data dir was not found in ancestors of the src path
+                return QString();
+            }
+            ancestor = newAncestor;
+        }
+        return fi.absoluteFilePath();
+    }
 }

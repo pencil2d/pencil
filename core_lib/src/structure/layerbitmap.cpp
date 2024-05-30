@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QFile>
 #include "keyframe.h"
 #include "bitmapimage.h"
-
+#include "util/util.h"
 
 LayerBitmap::LayerBitmap(int id) : Layer(id, Layer::BITMAP)
 {
@@ -204,31 +204,9 @@ void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath
         QDomElement imageElement = imageTag.toElement();
         if (!imageElement.isNull() && imageElement.tagName() == "image")
         {
-            bool shouldLoad = true;
-
-            // Make sure src path is relative
-            shouldLoad &= QFileInfo(imageElement.attribute("src")).isRelative();
-            QFileInfo fi(dataDirPath, imageElement.attribute("src"));
-            // Make sure file is in data directory after resolving relative components and symlinks
-            QString canonicalPath = fi.canonicalFilePath();
-            fi.setFile(!canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath());
-            QDir dataDir(dataDirPath);
-            QDir ancestor = fi.dir();
-            while (ancestor != dataDir)
+            QString path = validateDataPath(imageElement.attribute("src"), dataDirPath);
+            if (!path.isEmpty())
             {
-                QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
-                if (ancestor == newAncestor)
-                {
-                    // Data dir was not found in ancestors of the src path
-                    shouldLoad = false;
-                    break;
-                }
-                ancestor = newAncestor;
-            }
-
-            if (shouldLoad)
-            {
-                QString path = fi.absoluteFilePath();
                 int position = imageElement.attribute("frame").toInt();
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();

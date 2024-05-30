@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QFileInfo>
 #include <QDir>
 #include "soundclip.h"
+#include "util/util.h"
 
 
 LayerSound::LayerSound(int id) : Layer(id, Layer::SOUND)
@@ -101,32 +102,11 @@ void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath,
 
             if (!soundFile.isEmpty())
             {
-                bool shouldLoad = true;
-
-                // Make sure src path is relative
-                shouldLoad &= QFileInfo(soundFile).isRelative();
-                // Make sure file is in data directory after resolving relative components and symlinks
-                QFileInfo fi(dataDirPath, soundFile);
-                QString canonicalPath = fi.canonicalFilePath();
-                fi.setFile(!canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath());
-                QDir dataDir(dataDirPath);
-                QDir ancestor = fi.dir();
-                while (ancestor != dataDir)
-                {
-                    QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
-                    if (ancestor == newAncestor)
-                    {
-                        // Data dir was not found in ancestors of the src path
-                        shouldLoad = false;
-                        break;
-                    }
-                    ancestor = newAncestor;
-                }
-
-                if (shouldLoad)
+                QString path = validateDataPath(soundFile, dataDirPath);
+                if (!path.isEmpty())
                 {
                     int position = soundElement.attribute("frame").toInt();
-                    Status st = loadSoundClipAtFrame(sSoundClipName, fi.absoluteFilePath(), position);
+                    Status st = loadSoundClipAtFrame(sSoundClipName, path, position);
                     Q_ASSERT(st.ok());
                 }
             }

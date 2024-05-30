@@ -20,7 +20,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-
+#include "util/util.h"
 
 LayerVector::LayerVector(int id) : Layer(id, Layer::VECTOR)
 {
@@ -161,31 +161,9 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
             QString rawPath = imageElement.attribute("src");
             if (!rawPath.isNull())
             {
-                bool shouldLoad = true;
-
-                // Make sure src path is relative
-                shouldLoad &= QFileInfo(rawPath).isRelative();
-                QFileInfo fi(dataDirPath, rawPath);
-                // Make sure file is in data directory after resolving relative components and symlinks
-                QString canonicalPath = fi.canonicalFilePath();
-                fi.setFile(!canonicalPath.isEmpty() ? canonicalPath : fi.absoluteFilePath());
-                QDir dataDir(dataDirPath);
-                QDir ancestor = fi.dir();
-                while (ancestor != dataDir)
+                QString path = validateDataPath(rawPath, dataDirPath);
+                if (!path.isEmpty())
                 {
-                    QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
-                    if (ancestor == newAncestor)
-                    {
-                        // Data dir was not found in ancestors of the src path
-                        shouldLoad = false;
-                        break;
-                    }
-                    ancestor = newAncestor;
-                }
-
-                if (shouldLoad)
-                {
-                    QString path = fi.absoluteFilePath();
                     position = imageElement.attribute("frame").toInt();
                     loadImageAtFrame(path, position);
                     getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity", "1.0").toDouble());
