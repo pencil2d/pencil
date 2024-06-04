@@ -32,6 +32,10 @@ jobs:
           container: { image: "ubuntu:16.04", options: --privileged }
           qt: 5
         - name: Qt 5 / macOS x86_64
+          os: macos-12
+          container:
+          qt: 5
+        - name: Qt 5 / macOS arm64
           os: macos-latest
           container:
           qt: 5
@@ -53,6 +57,10 @@ jobs:
           container: { image: "ubuntu:22.04", options: --privileged }
           qt: 6
         - name: Qt 6 / macOS x86_64
+          os: macos-12
+          container:
+          qt: 6
+        - name: Qt 6 / macOS arm64
           os: macos-latest
           container:
           qt: 6
@@ -94,7 +102,6 @@ jobs:
       run: mkdir build; ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
         -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
         CONFIG+=PENCIL2D_${{github.ref == 'refs/heads/release' && 'RELEASE' || 'NIGHTLY'}}
-        ${{matrix.qt == 6 && 'CONFIG+=c++17 QMAKE_CXX_FLAGS+=-std=c++17' || ''}}
 
     - name: Build Pencil2D
       working-directory: build

@@ -24,7 +24,7 @@ GNU General Public License for more details.
 class SoundClip;
 class LayerSound : public Layer
 {
-    Q_OBJECT
+    Q_DECLARE_TR_FUNCTIONS(LayerSound)
 
 public:
     explicit LayerSound(int id);

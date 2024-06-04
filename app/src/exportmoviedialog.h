@@ -54,6 +54,7 @@ private:
 
     bool supportsLooping(QString filePath) const;
     bool supportsTransparency(QString filePath) const;
+    void validateResolution();
 
     int mEndFrameWithSounds = 0;
     int mEndFrame = 0;

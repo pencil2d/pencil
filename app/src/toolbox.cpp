@@ -285,15 +285,19 @@ void ToolBoxWidget::deselectAllTools()
     ui->smudgeButton->setChecked(false);
 }
 
-bool ToolBoxWidget::toolOn(ToolType toolType, QToolButton* toolButton)
+void ToolBoxWidget::toolOn(ToolType toolType, QToolButton* toolButton)
 {
+    if (editor()->tools()->currentTool()->type() == toolType) {
+        // Prevent un-checking the current tool and do nothing
+        toolButton->setChecked(true);
+        return;
+    }
     if (!editor()->tools()->leavingThisTool())
     {
         toolButton->setChecked(false);
-        return false;
+        return;
     }
     editor()->tools()->setCurrentTool(toolType);
-    return true;
 }
 
 void ToolBoxWidget::onLayerDidChange(int)

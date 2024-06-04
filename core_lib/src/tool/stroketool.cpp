@@ -235,19 +235,22 @@ void StrokeTool::pointerReleaseEvent(PointerEvent*)
     updateCanvasCursor();
 }
 
-bool StrokeTool::event(QEvent *event)
+bool StrokeTool::enterEvent(QEnterEvent*)
 {
-    if (event->type() == QEvent::Leave && !isActive()) {
-        mCanvasCursorEnabled = false;
-        updateCanvasCursor();
-        QObject::event(event);
-        return true;
-    } else if (event->type() == QEvent::Enter) {
-        mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::CANVAS_CURSOR);
-        QObject::event(event);
-        return true;
+    mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::CANVAS_CURSOR);
+    return true;
+}
+
+bool StrokeTool::leaveEvent(QEvent*)
+{
+    if (isActive())
+    {
+        return false;
     }
-    return QObject::event(event);
+
+    mCanvasCursorEnabled = false;
+    updateCanvasCursor();
+    return true;
 }
 
 void StrokeTool::updateCanvasCursor()

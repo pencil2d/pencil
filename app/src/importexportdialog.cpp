@@ -71,6 +71,11 @@ void ImportExportDialog::setInstructionsLabel(const QString& text)
     ui->instructionsLabel->setText(text);
 }
 
+void ImportExportDialog::setOkButtonEnabled(const bool enabled)
+{
+    ui->buttonBox->button(QDialogButtonBox::Ok)->setEnabled(enabled);
+}
+
 void ImportExportDialog::init()
 {
     switch (mMode)

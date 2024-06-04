@@ -98,8 +98,9 @@ create_package_macos() {
   popd >/dev/null
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
-  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-$3.zip" Pencil2D
-  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-$3" > "${GITHUB_OUTPUT}"
+  local arch=`uname -m`
+  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-${arch}-$3.zip" Pencil2D
+  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-${arch}-$3" > "${GITHUB_OUTPUT}"
 }
 
 create_package_windows() {
@@ -150,7 +151,7 @@ create_package_windows() {
     -out "pencil2d-${platform}-$3.msi" \
     ../util/installer/pencil2d.wxs windeployqt.wxs resources.wxs
   wix build -pdbtype none -arch "x${wordsize/32/86}" -dcl high -sw1133 -b ../util/installer -b Pencil2D \
-    -ext WixToolset.Util.wixext -ext WixToolset.Bal.wixext \
+    -ext WixToolset.Util.wixext -ext WixToolset.BootstrapperApplications.wixext \
     $versiondefines \
     -out "pencil2d-${platform}-$3.exe" \
     ../util/installer/pencil2d.bundle.wxs

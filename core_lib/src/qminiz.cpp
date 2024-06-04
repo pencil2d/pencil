@@ -86,7 +86,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Miniz writer init failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));;
+        dd << QString("Miniz writer init failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
     }
 
     // Add special uncompressed mimetype file to help with the identification of projects

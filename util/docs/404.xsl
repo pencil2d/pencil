@@ -5,20 +5,20 @@
   <xsl:text>404 Error | </xsl:text>
   <xsl:value-of select="substring-after(., ' | ')"></xsl:value-of>
  </xsl:template>
- <xsl:template match="//h:section[@class='page-header']/h:h1[@class='project-name']|//h:div[@class='headertitle']/h:div[@class='title']">
+ <xsl:template match="//h:div[@class='header']/h:div[@class='headertitle']/h:div[@class='title']">
   <xsl:copy>
    <xsl:apply-templates select="@*"/>
    <xsl:text>404 Error</xsl:text>
   </xsl:copy>
  </xsl:template>
- <xsl:template match="//h:section[@class='page-header']/h:h2[@class='project-tagline']/text()">
+ <xsl:template match="//h:div[@class='header']/h:div[@class='subtitle']/text()">
   <xsl:text>Ah snap! We could not find what you are looking for!</xsl:text>
  </xsl:template>
- <xsl:template match="//h:section[@class='page-header']">
+ <xsl:template match="//h:div[@class='header']">
   <xsl:copy>
    <xsl:apply-templates select="@*|node()"/>
-   <xsl:if test="not(h:h2[@class='project-tagline'])">
-    <h2 class="project-tagline">Ah snap! We could not find what you are looking for!</h2>
+   <xsl:if test="not(h:div[@class='subtitle'])">
+    <div class="subtitle">Ah snap! We could not find what you are looking for!</div>
    </xsl:if>
   </xsl:copy>
  </xsl:template>

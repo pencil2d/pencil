@@ -24,7 +24,7 @@ class VectorImage;
 
 class LayerVector : public Layer
 {
-    Q_OBJECT
+    Q_DECLARE_TR_FUNCTIONS(LayerVector)
 
 public:
     explicit LayerVector(int id);

@@ -63,7 +63,7 @@ protected:
 
 private:
     void deselectAllTools();
-    bool toolOn(ToolType toolType, QToolButton* toolButton);
+    void toolOn(ToolType toolType, QToolButton* toolButton);
 
     Ui::ToolBoxWidget* ui = nullptr;
 };
