@@ -18,13 +18,14 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "soundclip.h"
 
+#include <memory>
 #include <QDir>
 #include <QDomElement>
 #include <QTemporaryDir>
 
 TEST_CASE("Load sound layer from XML")
 {
-    Layer* soundLayer = new LayerSound(1);
+    std::unique_ptr<Layer> soundLayer(new LayerSound(1));
     QTemporaryDir dataDir;
     REQUIRE(dataDir.isValid());
     QDomDocument doc;

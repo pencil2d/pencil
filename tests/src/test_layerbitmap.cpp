@@ -18,13 +18,14 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "bitmapimage.h"
 
+#include <memory>
 #include <QDir>
 #include <QDomElement>
 #include <QTemporaryDir>
 
 TEST_CASE("Load bitmap layer from XML")
 {
-    Layer* bitmapLayer = new LayerBitmap(1);
+    std::unique_ptr<Layer> bitmapLayer(new LayerBitmap(1));
     QTemporaryDir dataDir;
     REQUIRE(dataDir.isValid());
     QDomDocument doc;

@@ -18,6 +18,8 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "vectorimage.h"
 
+
+#include <memory>
 #include <QDir>
 #include <QDomElement>
 #include <QTemporaryDir>
@@ -25,7 +27,7 @@ GNU General Public License for more details.
 
 TEST_CASE("Load vector layer from XML")
 {
-    Layer* vectorLayer = new LayerVector(1);
+    std::unique_ptr<Layer> vectorLayer(new LayerVector(1));
     QTemporaryDir dataDir;
     REQUIRE(dataDir.isValid());
     QDomDocument doc;
