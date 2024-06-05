@@ -26,8 +26,9 @@
   <url type="translate">https://www.transifex.com/pencil2d/pencil2d/</url>
   <url type="contact">https://www.pencil2d.org/community/</url>
   <screenshots>
-    <screenshot type="default">
+    <screenshot environment="plasma" type="default">
       <image>https://www.pencil2d.org/images/pencil2d-linux.png</image>
+      <caption>The Pencil2D main window.</caption>
     </screenshot>
   </screenshots>
   <content_rating type="oars-1.1"/>
