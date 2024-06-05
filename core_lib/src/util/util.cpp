@@ -138,25 +138,29 @@ QString validateDataPath(QString filePath, QString dataDirPath)
     // Recursively resolve symlinks
     QString canonicalPath = fi.canonicalFilePath();
 
-    // Iterate over parent directories of the file path to see if one of them equals the data directory
     QDir dataDir(dataDirPath);
-    if (dataDir.exists()) dataDir.setPath(dataDir.canonicalPath());
+    // Resolve symlinks in data dir path so it can be compared against file paths with resolved symlinks
+    if (dataDir.exists())
+    {
+        dataDir.setPath(dataDir.canonicalPath());
+    }
+    // Iterate over parent directories of the file path to see if one of them equals the data directory
     if (canonicalPath.isEmpty())
     {
         // File does not exist, use absolute path and attempt to resolve symlinks again for each parent directory
         fi.setFile(fi.absoluteFilePath());
         QDir ancestor(fi.absoluteFilePath());
         while (true) {
+            if (ancestor == dataDir)
+            {
+                // Found data dir in parents
+                return fi.absoluteFilePath();
+            }
             QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
             if (newAncestor.exists())
             {
                 // Resolve directory symlinks
                 newAncestor.setPath(newAncestor.canonicalPath());
-            }
-            if (ancestor == dataDir)
-            {
-                // Found data dir in parents
-                return fi.absoluteFilePath();
             }
             if (ancestor == newAncestor)
             {
