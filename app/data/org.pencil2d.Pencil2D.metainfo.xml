@@ -34,99 +34,13 @@
   <content_rating type="oars-1.1"/>
   <releases>
     <release version="0.7.0" date="TODO">
-      <url type="details">https://www.pencil2d.org/2024/TODO/pencil2d-0.7.0-release.html</url>
       <description>
-        <p>Feature Highlights:</p>
-        <ul>
-          <li>Added the ability to adjust layer and keyframe opacity</li>
-          <li>Greatly improved the ease of use of the camera system</li>
-          <li>Added the ability to reposition the content of multiple frames at once</li>
-          <li>Added the ability to copy, paste, remove, reverse or alter the exposure of multi-frame selections</li>
-          <li>Improved frame dragging on the timeline so that no changes are made until the frames are dropped at their final position</li>
-          <li>Greatly improved the move tool’s handling of rotated selections</li>
-          <li>Added perspective overlays</li>
-        </ul>
-        <p>Interface Enhancements and Changes:</p>
-        <ul>
-          <li>Introduced a comprehensive new icon set</li>
-          <li>Replaced the zoom text on the status bar with an interactive control</li>
-          <li>Added help text for the currently active tool to the status bar</li>
-          <li>Added toolbars for commonly used actions</li>
-          <li>Improved layout of the onion skin tool window</li>
-          <li>Changed the default export file path to the file path of the current project</li>
-          <li>Removed vector layer from default timeline setup</li>
-          <li>Added a warning when adding more sound clips than can be exported</li>
-          <li>Added a warning when opening multiple instances of Pencil2D</li>
-          <li>Replaced the display option window with a toolbar</li>
-          <li>Improved error messages when importing images</li>
-          <li>Added an abortable progress dialog when importing animated images</li>
-          <li>Added support for importing animated WebP images</li>
-          <li>Added support for importing and exporting static WebP images</li>
-          <li>Improved usability and reliability of quick sizing</li>
-          <li>Added an option to configure keyboard shortcuts to flip the current selection</li>
-          <li>Improved zoom behavior for devices that report pixel-based scrolling data</li>
-          <li>Added translations for Bulgarian, Persian, Korean, Norwegian Bokmål, Dutch (Netherlands) and Cantonese</li>
-          <li>Changed the warning dialog when switching the application language to display in the new language instead of the current one</li>
-          <li>Improved the movie export dialog to prevent exporting MP4 files in an invalid resolution</li>
-        </ul>
-        <p>Bucket Tool Enhancements and Changes:</p>
-        <ul>
-          <li>Added an option to set the fill reference layer</li>
-          <li>Added an option to toggle tolerance on/off</li>
-          <li>Added an option to expand the fill area</li>
-          <li>Added the ability to drag to fill</li>
-          <li>Improved fill performance <em>significantly</em></li>
-          <li>Added an option to fill using a blend mode: Overlay/Behind/Replace</li>
-          <li>Removed nonsensical quick sizing support</li>
-        </ul>
-        <p>Workflow Improvements:</p>
-        <ul>
-          <li>Aligned color palette behavior on vector and bitmap layers so that palette colors and their associated vector strokes are only updated when the replace function is used</li>
-          <li>Added an action to paste content from the previous frame</li>
-          <li>Added an action to duplicate layers</li>
-          <li>Optimized the peg bar alignment workflow by activating the select tool, creating an initial selection and pre-selecting the first layer upon opening the dialog</li>
-        </ul>
-        <p>Behind the Curtain:</p>
-        <ul>
-          <li>Optimized visual updates of the timeline window</li>
-          <li>Improved painting performance</li>
-          <li>Reworked switching tools temporarily through modifier keys or right-clicking to be more reliable</li>
-        </ul>
-        <p>Bug Fixes:</p>
-        <ul>
-          <li>Fixed an issue where undoing after deleting a layer caused the program to crash</li>
-          <li>Fixed several issues where the canvas did not immediately update after using certain actions</li>
-          <li>Fixed an issue where undoing the deletion of a keyframe caused the program to perform an additional undo operation or crash</li>
-          <li>Fixed an issue where the hand tool icon remained active after zooming with a stylus</li>
-          <li>Fixed an issue where transforming areas in certain imported footage would color them black</li>
-          <li>Fixed an issue where fill operations were performed twice when performed with a tablet</li>
-          <li>Fixed an issue where the system language was detected incorrecty on systems that have secondary languages configured</li>
-          <li>Fixed an issue where mouse wheel zoom misbehaved on some systems using the X Window System</li>
-          <li>Fixed an issue where undo information was recorded improperly for the first change made after navigating between frames</li>
-          <li>Fixed an issue where the project recovery dialog appeared behind the main window on some systems</li>
-          <li>Fixed an issue where rotated selections boundaries were not visualised properly</li>
-          <li>Fixed an issue where transforms were applied incorrectly to rotated selections</li>
-          <li>Fixed an issue where the undo and redo shortcuts were erroneously disabled under certain circumstances</li>
-          <li>Fixed an issue where the use of valid file name extensions was not properly enforced in file save dialogs</li>
-          <li>Fixed several issues where the timeline was drawn incorrectly</li>
-          <li>Fixed an issue where dragging the timeline with the middle mouse button could alter the frame selection</li>
-          <li>Fixed an issue where tool windows briefly appeared and disappeared on startup before the main window was shown</li>
-          <li>Fixed an issue where the follow camera image import option used the wrong transform and resulted in general inaccuracies</li>
-          <li>Fixed an issue where the movie exporter sometimes failed to export sounds when exporting a range that does not start at the first frame</li>
-          <li>Fixed an issue where the movie exporter erroneously included hidden sound layers</li>
-          <li>Fixed an issue where importing vector layers from a project file did not preserve their original colors</li>
-          <li>Fixed an issue where importing vector layers from a project file caused the program to crash</li>
-          <li>Fixed an issue where exporting a movie did not prevent interaction with the rest of the program</li>
-          <li>Fixed an issue where importing an image did not account for certain types of potential errors</li>
-          <li>Fixed an issue where trying to import an image onto a hidden layer caused the program to crash if a keyframe did not already exist on the target frame</li>
-          <li>Fixed an issue where trying to import an image onto a hidden layer did not produce an error if a keyframe already existed on the target frame</li>
-          <li>Fixed various memory leaks</li>
-        </ul>
-        <p>Miscellaneous Changes:</p>
-        <ul>
-          <li>Improved robustness of project save/load logic</li>
-        </ul>
+        <p>This release of Pencil2D brings more than three years worth of exciting new features, enhancements and bug fixes. We have made it easier to manage keyframes, allowing you to copy, paste or delete several of them at once, or to reposition their contents or adjust their exposure in bulk. Entire layers can now be easily duplicated. On top of that, dragging keyframes across the timeline will no longer cause any changes until the moment you drop them at their new position, and the opacity of keyframes and whole layers is now adjustable as well.</p>
+        <p>We also haven’t forgotten about the canvas: Its performance should now be noticeably better than before. New overlays have been added to help with perspective drawing. The bucket tool has become more flexible with the addition of several new options and features. The move tool has also seen some love and handles rotated selections much better than it used to, and it will now apply changes automatically when switching to a different layer. Cursor quick sizing is now much more intuitive and more reliable than before. And last but not least, the camera system has been completely overhauled and is now considerably easier to work with.</p>
+        <p>Besides keyframe management and canvas tools, we’ve also given the user interface a facelift. The icon set was completely redesigned from scratch and is now finally consistent across the entire program. We’ve also added toolbars for a number of commonly used actions, and updated the status bar to include help text for the current tool. Moreover, the software is now available in seven additional languages!</p>
+        <p>Of course, these are only the most notable changes. For a more detailed look at all the improvements in this release, as well as the many bug fixes, check out the full release announcements on our website!</p>
       </description>
+      <url type="details">https://www.pencil2d.org/2024/TODO/pencil2d-0.7.0-release.html</url>
     </release>
     <release version="0.6.6" date="2021-02-17">
       <url type="details">https://www.pencil2d.org/2021/02/pencil2d-0.6.6-release.html</url>
