@@ -150,11 +150,11 @@ QString validateDataPath(QString filePath, QString dataDirPath)
         // File does not exist, use absolute path and attempt to resolve symlinks again for each parent directory
         fi.setFile(fi.absoluteFilePath());
         QDir ancestor(fi.absoluteFilePath());
-        while (true) {
-            if (ancestor == dataDir)
+        while (ancestor != dataDir) {
+            if (ancestor.isRoot())
             {
-                // Found data dir in parents
-                return fi.absoluteFilePath();
+                // Reached root directory without finding data dir
+                return QString();
             }
             QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
             if (newAncestor.exists())
@@ -162,29 +162,25 @@ QString validateDataPath(QString filePath, QString dataDirPath)
                 // Resolve directory symlinks
                 newAncestor.setPath(newAncestor.canonicalPath());
             }
-            if (ancestor == newAncestor)
-            {
-                // Reached root directory without finding data dir
-                return QString();
-            }
             ancestor = newAncestor;
-        };
+        }
+        // One of the parent directories of filePath matches dataDir
+        return fi.absoluteFilePath();
     }
     else
     {
-        // File exists and all symlinks have been resolved in canonicalPath
+        // File exists and all symlinks have been resolved in canonicalPath so no further attempts to resolve symlinks are necessary
         fi.setFile(canonicalPath);
         QDir ancestor = fi.dir();
         while (ancestor != dataDir)
         {
-            QDir newAncestor = QFileInfo(ancestor.absolutePath()).dir();
-            if (ancestor == newAncestor)
-            {
+            if (ancestor.isRoot()) {
                 // Data dir was not found in ancestors of the src path
                 return QString();
             }
-            ancestor = newAncestor;
+            ancestor = QFileInfo(ancestor.absolutePath()).dir();
         }
+        // One of the parent directories of filePath matches dataDir
         return fi.absoluteFilePath();
     }
 }
