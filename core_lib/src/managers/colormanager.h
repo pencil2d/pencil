@@ -47,6 +47,8 @@ public:
     void setColorNumber(int n);
     int frontColorNumber() const;
 
+    
+
 signals:
     void colorChanged(QColor, int); // new color and color index
     void colorNumberChanged(int);

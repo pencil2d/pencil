@@ -893,6 +893,13 @@ Status ActionCommands::addNewSoundLayer()
     return Status::OK;
 }
 
+void ActionCommands::SwapColor()
+{
+   QColor temp = frontcolor
+   setFrontColor(indexedColor);
+   setIndexedColor(temp);
+}
+
 Status ActionCommands::deleteCurrentLayer()
 {
     LayerManager* layerMgr = mEditor->layers();
@@ -950,6 +957,8 @@ void ActionCommands::changeallKeyframeLineColor()
         mEditor->updateFrame();
     }
 }
+
+
 
 void ActionCommands::help()
 {
