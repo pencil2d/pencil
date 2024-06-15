@@ -408,9 +408,13 @@
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="51"/>
-        <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
         <source>Faster</source>
         <translation>Hurtigere</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
+        <source>Fastest</source>
+        <translation>Hurtigst</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="53"/>
@@ -482,23 +486,23 @@
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="25"/>
-        <source>Normal Ease-in</source>
-        <translation>Normal ease-in</translation>
+        <source>Moderate Ease-in</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="26"/>
-        <source>Normal Ease-out</source>
-        <translation>Normal ease-in</translation>
+        <source>Moderate Ease-out</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="27"/>
-        <source>Normal Ease-in - Ease-out</source>
-        <translation>Normal ease-in - ease-out</translation>
+        <source>Moderate Ease-in - Ease-out</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="28"/>
-        <source>Normal Ease-out - Ease-in</source>
-        <translation>Normal ease-out - ease-in</translation>
+        <source>Moderate Ease-out - Ease-in</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="29"/>
@@ -2852,67 +2856,77 @@
         <translation>Bredde</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="88"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="66"/>
+        <source>The MP4 format does not support odd width. Please specify an even width or use a different file format.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="98"/>
         <source>Height</source>
         <translation>Højde</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="108"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="105"/>
+        <source>The MP4 format does not support odd height. Please specify an even height or use a different file format.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="128"/>
         <source>Range</source>
         <translation>Område</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="154"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="174"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation>Den sidste frame du ønsker at have med i den eksporterede video</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="157"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="177"/>
         <source>End Frame</source>
         <translation>Sidste frame</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="176"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="196"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>Den første frame du ønsker at have med i den eksporterede video</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="179"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="199"/>
         <source>Start Frame</source>
         <translation>Start frame</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="204"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="224"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sidste frame er sat til den sidst redigerbare keyframe (Kun anvendeligt hvis du kun ønsker at eksportere til den sidst animerede frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="210"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="230"/>
         <source>To the end of sound clips</source>
         <translation>Til enden af lydklippene</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="233"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="253"/>
         <source>GIF and APNG only</source>
         <translation>Kun GIF og APNG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="236"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="256"/>
         <source>Loop</source>
         <translation>Løkke</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="249"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="269"/>
         <source>Exporter Settings</source>
         <translation>Eksporter indstillinger</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="267"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="287"/>
         <source>WebM and APNG only</source>
         <translation>Kun WebM og APNG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="270"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="290"/>
         <source>Transparency</source>
         <translation>Gennemsigtighed</translation>
     </message>
@@ -3391,172 +3405,172 @@
         <translation>Mb</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="37"/>
+        <location filename="../app/src/generalpage.cpp" line="39"/>
         <source>Arabic</source>
         <translation>Arabisk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="38"/>
+        <location filename="../app/src/generalpage.cpp" line="40"/>
         <source>Bulgarian</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="39"/>
+        <location filename="../app/src/generalpage.cpp" line="41"/>
         <source>Catalan</source>
         <translation>Catalansk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="40"/>
+        <location filename="../app/src/generalpage.cpp" line="42"/>
         <source>Czech</source>
         <translation>Tjekkisk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="41"/>
+        <location filename="../app/src/generalpage.cpp" line="43"/>
         <source>Danish</source>
         <translation>Dansk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="42"/>
+        <location filename="../app/src/generalpage.cpp" line="44"/>
         <source>German</source>
         <translation>Tysk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="43"/>
+        <location filename="../app/src/generalpage.cpp" line="45"/>
         <source>Greek</source>
         <translation>Græsk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="44"/>
+        <location filename="../app/src/generalpage.cpp" line="46"/>
         <source>English</source>
         <translation>Engelsk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="45"/>
+        <location filename="../app/src/generalpage.cpp" line="47"/>
         <source>Spanish</source>
         <translation>Spansk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="46"/>
+        <location filename="../app/src/generalpage.cpp" line="48"/>
         <source>Estonian</source>
         <translation>Estonisk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="47"/>
+        <location filename="../app/src/generalpage.cpp" line="49"/>
         <source>Persian</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="48"/>
+        <location filename="../app/src/generalpage.cpp" line="50"/>
         <source>French</source>
         <translation>Fransk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="49"/>
+        <location filename="../app/src/generalpage.cpp" line="51"/>
         <source>Hebrew</source>
         <translation>Hebraisk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="50"/>
+        <location filename="../app/src/generalpage.cpp" line="52"/>
         <source>Hungarian</source>
         <translation>Ungarsk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="51"/>
+        <location filename="../app/src/generalpage.cpp" line="53"/>
         <source>Indonesian</source>
         <translation>Indonesisk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="52"/>
+        <location filename="../app/src/generalpage.cpp" line="54"/>
         <source>Italian</source>
         <translation>Italiensk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="53"/>
+        <location filename="../app/src/generalpage.cpp" line="55"/>
         <source>Japanese</source>
         <translation>Japansk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="54"/>
+        <location filename="../app/src/generalpage.cpp" line="56"/>
         <source>Kabyle</source>
         <translation>Kabylsk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="55"/>
+        <location filename="../app/src/generalpage.cpp" line="57"/>
         <source>Korean</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="56"/>
+        <location filename="../app/src/generalpage.cpp" line="58"/>
         <source>Norwegian Bokmål</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="57"/>
+        <location filename="../app/src/generalpage.cpp" line="59"/>
         <source>Dutch – Netherlands</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="58"/>
+        <location filename="../app/src/generalpage.cpp" line="60"/>
         <source>Polish</source>
         <translation>Polsk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="59"/>
+        <location filename="../app/src/generalpage.cpp" line="61"/>
         <source>Portuguese – Portugal</source>
         <translation>Portugisisk - Portugal</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="60"/>
+        <location filename="../app/src/generalpage.cpp" line="62"/>
         <source>Portuguese – Brazil</source>
         <translation>Portugisisk - Brasilien</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="61"/>
+        <location filename="../app/src/generalpage.cpp" line="63"/>
         <source>Russian</source>
         <translation>Russisk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="62"/>
+        <location filename="../app/src/generalpage.cpp" line="64"/>
         <source>Slovene</source>
         <translation>Slovensk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="63"/>
+        <location filename="../app/src/generalpage.cpp" line="65"/>
         <source>Swedish</source>
         <translation>Svensk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="64"/>
+        <location filename="../app/src/generalpage.cpp" line="66"/>
         <source>Turkish</source>
         <translation>Tyrkisk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="65"/>
+        <location filename="../app/src/generalpage.cpp" line="67"/>
         <source>Vietnamese</source>
         <translation>Vietnamesisk</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="66"/>
+        <location filename="../app/src/generalpage.cpp" line="68"/>
         <source>Cantonese</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="67"/>
+        <location filename="../app/src/generalpage.cpp" line="69"/>
         <source>Chinese – China</source>
         <translation>Kinesisk - Kina</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="68"/>
+        <location filename="../app/src/generalpage.cpp" line="70"/>
         <source>Chinese – Taiwan</source>
         <translation>Kinesisk - Taiwan</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="201"/>
+        <location filename="../app/src/generalpage.cpp" line="212"/>
         <source>Restart Required</source>
         <translation>Genstart nødvendig</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="202"/>
+        <location filename="../app/src/generalpage.cpp" line="213"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Sprogændringen træder i kraft efter genstart af Pencil2D</translation>
     </message>
@@ -5374,24 +5388,24 @@ eller annuler</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="775"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="772"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="776"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="773"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Du prøver at ændre et skjult lag. Vælg venligst et andet lag, eller gør det nuværende lag synligt.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1466"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1463"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Slet markering</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1492"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1504"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1489"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1501"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Rens billede</translation>

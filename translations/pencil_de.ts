@@ -48,7 +48,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="131"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
-        <translation>Sie importieren viele Einzelbilder. Dies könnte einige Zeit dauern. Sind Sie sicher, dass Sie fortfahren möchten?</translation>
+        <translation>Sie importieren viele Bilder. Dies könnte einige Zeit dauern. Sind Sie sicher, dass Sie fortfahren möchten?</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="179"/>
@@ -149,12 +149,12 @@
         <location filename="../app/src/actioncommands.cpp" line="712"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
-        <translation>Ausgewählte Einzelbilder entfernen</translation>
+        <translation>Ausgewählte Phasen entfernen</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="713"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
-        <translation>Sind Sie sicher, dass Sie die ausgewählten Einzelbilder entfernen möchten? Diese Aktion ist derzeit unumkehrbar!</translation>
+        <translation>Sind Sie sicher, dass Sie die ausgewählten Phasen entfernen möchten? Diese Aktion ist derzeit unumkehrbar!</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="753"/>
@@ -354,7 +354,7 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="30"/>
         <source>Easing: frame %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>Übergang: Phase %1 zu %2</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="36"/>
@@ -364,32 +364,32 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="40"/>
         <source>Linear</source>
-        <translation type="unfinished"/>
+        <translation>Linear</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="42"/>
         <source>In</source>
-        <translation type="unfinished"/>
+        <translation>Beschleunigen</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="43"/>
         <source>Out</source>
-        <translation type="unfinished"/>
+        <translation>Entschleunigen</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="44"/>
         <source>In-Out</source>
-        <translation type="unfinished"/>
+        <translation>Be- und Entschleunigen</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="45"/>
         <source>Out-In</source>
-        <translation type="unfinished"/>
+        <translation>Ent- und Beschleunigen</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="47"/>
         <source>Slow</source>
-        <translation type="unfinished"/>
+        <translation>Langsam</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="48"/>
@@ -399,28 +399,32 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="49"/>
         <source>Quick</source>
-        <translation type="unfinished"/>
+        <translation>Schnell</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="50"/>
         <source>Fast</source>
-        <translation>Schnell</translation>
+        <translation>Schneller</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="51"/>
-        <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
         <source>Faster</source>
-        <translation>Schneller</translation>
+        <translation>Sehr schnell</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
+        <source>Fastest</source>
+        <translation>Am schnellsten</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="53"/>
         <source>Circle-based</source>
-        <translation>Kreis-basiert</translation>
+        <translation>Kreisbasiert</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="54"/>
         <source>Overshoot</source>
-        <translation type="unfinished"/>
+        <translation>Darüber hinausschießen</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="55"/>
@@ -430,7 +434,7 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="56"/>
         <source>Bounce</source>
-        <translation type="unfinished"/>
+        <translation>Hüpfen</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="99"/>
@@ -460,17 +464,17 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="106"/>
         <source>Align horizontally to frame %1</source>
-        <translation type="unfinished"/>
+        <translation>Horizontal an Phase %1 ausrichten</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="107"/>
         <source>Align vertically to frame %1</source>
-        <translation type="unfinished"/>
+        <translation>Vertikal an Phase %1 ausrichten</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="109"/>
         <source>Hold to keyframe %1</source>
-        <translation type="unfinished"/>
+        <translation>Bis Phase %1 halten</translation>
     </message>
 </context>
 <context>
@@ -478,207 +482,207 @@
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="24"/>
         <source>Linear</source>
-        <translation type="unfinished"/>
+        <translation>Linear</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="25"/>
-        <source>Normal Ease-in</source>
-        <translation type="unfinished"/>
+        <source>Moderate Ease-in</source>
+        <translation>Moderates Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="26"/>
-        <source>Normal Ease-out</source>
-        <translation type="unfinished"/>
+        <source>Moderate Ease-out</source>
+        <translation>Moderates Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="27"/>
-        <source>Normal Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <source>Moderate Ease-in - Ease-out</source>
+        <translation>Moderates Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="28"/>
-        <source>Normal Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <source>Moderate Ease-out - Ease-in</source>
+        <translation>Moderates Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="29"/>
         <source>Quick Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Schnelles Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="30"/>
         <source>Quick Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Schnelles Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="31"/>
         <source>Quick Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Schnelles Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="32"/>
         <source>Quick Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Schnelles Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="33"/>
         <source>Fast Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Schnelleres Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="34"/>
         <source>Fast Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Schnelleres Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="35"/>
         <source>Fast Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Schnelleres Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="36"/>
         <source>Fast Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Schnelleres Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="37"/>
         <source>Faster Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Sehr schnelles Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="38"/>
         <source>Faster Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Sehr schnelles Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="39"/>
         <source>Faster Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Sehr schnelles Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="40"/>
         <source>Faster Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Sehr schnelles Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="41"/>
         <source>Slow Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Langsames Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="42"/>
         <source>Slow Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Langsames Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="43"/>
         <source>Slow Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Langsames Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="44"/>
         <source>Slow Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Langsames Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="45"/>
         <source>Fastest Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Schnellstes Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="46"/>
         <source>Fastest Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Schnellstes Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="47"/>
         <source>Fastest Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Schnellstes Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="48"/>
         <source>Fastest Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Schnellstes Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="49"/>
         <source>Circle-based Ease-in</source>
-        <translation>Kreisbasiertes Ease-in</translation>
+        <translation>Kreisbasiertes Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="50"/>
         <source>Circle-based Ease-out</source>
-        <translation>Kreisbasiertes Ease-out</translation>
+        <translation>Kreisbasiertes Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="51"/>
         <source>Circle-based Ease-in - Ease-out</source>
-        <translation>Kreisbasiertes Ease-in - Ease-out</translation>
+        <translation>Kreisbasiertes Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="52"/>
         <source>Circle-based Ease-out - Ease-in</source>
-        <translation>Kreisbasiertes Ease-out - Ease-in</translation>
+        <translation>Kreisbasiertes Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="53"/>
         <source>Elastic Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Elastisches Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="54"/>
         <source>Elastic Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Elastisches Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="55"/>
         <source>Elastic Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Elastisches Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="56"/>
         <source>Elastic Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Elastisches Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="57"/>
         <source>Overshoot Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Darüber hinausschießendes Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="58"/>
         <source>Overshoot Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Darüber hinausschießendes Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="59"/>
         <source>Overshoot Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Darüber hinausschießendes Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="60"/>
         <source>Overshoot Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Darüber hinausschießendes Entschleunigen – Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="61"/>
         <source>Bounce Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Hüpfendes Beschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="62"/>
         <source>Bounce Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Hüpfendes Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="63"/>
         <source>Bounce Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Hüpfendes Beschleunigen – Entschleunigen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="64"/>
         <source>Bounce Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Hüpfendes Entschleunigen – Beschleunigen</translation>
     </message>
 </context>
 <context>
@@ -1517,8 +1521,7 @@
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="371"/>
         <source>Dark Yellow</source>
-        <translation>Dunkelgelb
-</translation>
+        <translation>Dunkelgelb</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/colordictionary.h" line="372"/>
@@ -2528,7 +2531,7 @@
         <location filename="../app/src/commandlineparser.cpp" line="67"/>
         <location filename="../app/src/commandlineparser.cpp" line="74"/>
         <source>frame</source>
-        <translation>Einzelbild</translation>
+        <translation>Bild</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="71"/>
@@ -2595,7 +2598,7 @@
         <location filename="../core_lib/src/interface/editor.cpp" line="574"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="588"/>
         <source>Paste from Previous Keyframe</source>
-        <translation>Aus letztem Schlüsselbild einfügen</translation>
+        <translation>Aus letzter Phase einfügen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="686"/>
@@ -2615,7 +2618,7 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="726"/>
         <source>Reposition frame</source>
-        <translation>Bild umpositionieren</translation>
+        <translation>Phase umpositionieren</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="810"/>
@@ -2649,21 +2652,21 @@
         <location filename="../core_lib/src/interface/editor.cpp" line="944"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="1074"/>
         <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
-        <translation>Datei nicht am Pfad „%1” gefunden. Bitte prüfen Sie, dass das Bild am angegebenen Speicherort vorliegt, und versuchen Sie es erneut.</translation>
+        <translation>Datei nicht am Pfad „%1” gefunden. Bitte prüfen Sie, dass das Bild am angegebenen Speicherort vorliegt, und versuchen Sie es noch einmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="947"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="1077"/>
         <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
 %1</source>
-        <translation>Bild-Format wird nicht unterstützt. Bitte wandeln Sie die Bilddatei in eines der folgenden Formate um und versuchen Sie es erneut:
+        <translation>Bild-Format wird nicht unterstützt. Bitte wandeln Sie die Bilddatei in eines der folgenden Formate um und versuchen Sie es noch einmal:
 %1</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="951"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="1081"/>
         <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
-        <translation>Beim Lesen des Bilds ist ein Fehler aufgetreten. Bitte prüfen Sie, dass es sich um ein gültiges Bild handelt und versuchen Sie es erneut.</translation>
+        <translation>Beim Lesen des Bilds ist ein Fehler aufgetreten. Bitte prüfen Sie, dass es sich um ein gültiges Bild handelt und versuchen Sie es noch einmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="954"/>
@@ -2701,7 +2704,7 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="1269"/>
         <source>Remove frame</source>
-        <translation>Einzelbild entfernen</translation>
+        <translation>Phase entfernen</translation>
     </message>
 </context>
 <context>
@@ -2800,7 +2803,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="182"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>End Einzelbild ist auf das letzte bemalbare Schlüsselbild gesetzt (Nützlich, wenn Sie nur bis zum letzten animierten Einzelbild exportieren möchten)</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Endbild wird auf letzte bemalbare Phase gesetzt (Hilfreich, wenn Sie nur bis zum letzten animierten Bild exportieren möchten)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="188"/>
@@ -2820,7 +2823,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="243"/>
         <source>Export keyframes only</source>
-        <translation>Nur Schlüsselbilder exportieren</translation>
+        <translation>Nur Phasen exportieren</translation>
     </message>
 </context>
 <context>
@@ -2854,67 +2857,77 @@
         <translation>Breite</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="88"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="66"/>
+        <source>The MP4 format does not support odd width. Please specify an even width or use a different file format.</source>
+        <translation>Das MP4-Format unterstützt keine ungerade Breite. Bitte geben Sie eine gerade Breite an oder verwenden Sie ein anderes Format.</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="98"/>
         <source>Height</source>
         <translation>Höhe</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="108"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="105"/>
+        <source>The MP4 format does not support odd height. Please specify an even height or use a different file format.</source>
+        <translation>Das MP4-Format unterstützt keine ungerade Höhe. Bitte geben Sie eine gerade Höhe an oder verwenden Sie ein anderes Format.</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/exportmovieoptions.ui" line="128"/>
         <source>Range</source>
         <translation>Bereich</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="154"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="174"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation>Das letzte Bild, das Sie in den exportierten Film einbeziehen möchten</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="157"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="177"/>
         <source>End Frame</source>
         <translation>Endbild</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="176"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="196"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>Das erste Bild, das Sie in den exportierten Film einbeziehen möchten</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="179"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="199"/>
         <source>Start Frame</source>
         <translation>Startbild</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="204"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="224"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;End Einzelbild ist auf das letzte bemalbare Schlüsselbild gesetzt (Nützlich, wenn Sie nur bis zum letzten animierten Einzelbild exportieren möchten)&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Endbild wird auf letzte bemalbare Phase gesetzt (Hilfreich, wenn Sie nur bis zum letzten animierten Bild exportieren möchten)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="210"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="230"/>
         <source>To the end of sound clips</source>
         <translation>Zum Ende der Ton-Clips</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="233"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="253"/>
         <source>GIF and APNG only</source>
         <translation>Nur GIF und APNG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="236"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="256"/>
         <source>Loop</source>
         <translation>Wiederholen</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="249"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="269"/>
         <source>Exporter Settings</source>
         <translation>Exporteinstellungen</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="267"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="287"/>
         <source>WebM and APNG only</source>
         <translation>Nur WebM und APNG</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportmovieoptions.ui" line="270"/>
+        <location filename="../app/ui/exportmovieoptions.ui" line="290"/>
         <source>Transparency</source>
         <translation>Transparenz</translation>
     </message>
@@ -3122,7 +3135,7 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="307"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
-        <translation>„%1“ ist eine Datei. Bitte löschen Sie die Datei und versuchen Sie es erneut.</translation>
+        <translation>„%1“ ist eine Datei. Bitte löschen Sie die Datei und versuchen Sie es noch einmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="340"/>
@@ -3150,17 +3163,17 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="534"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
-        <translation>Die Datei existiert nicht, daher können wir Sie nicht öffnen. Bitte versichern Sie sich, dass der Dateipfad korrekt ist, und versuchen Sie es erneut.</translation>
+        <translation>Die Datei existiert nicht, daher können wir Sie nicht öffnen. Bitte versichern Sie sich, dass der Dateipfad korrekt ist, und versuchen Sie es noch einmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="539"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
-        <translation>Keine Berechtigung zum Lesen der Datei. Bitte prüfen Sie, dass Sie Leseberechtigungen für diese Datei haben und versuchen Sie es erneut.</translation>
+        <translation>Keine Berechtigung zum Lesen der Datei. Bitte prüfen Sie, dass Sie Leseberechtigungen für diese Datei haben und versuchen Sie es noch einmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="545"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
-        <translation>Bei der Verarbeitung Ihrer Datei ist ein Fehler aufgetreten. Dies bedeutet in der Regel, dass Ihr Projekt zumindest teilweise beschädigt ist. Versuchen Sie es mit einer neueren Version von Pencil2D erneut oder versuchen Sie, eine Sicherungsdatei zu verwenden, falls Sie eine haben. Wenn Sie uns über einen unserer offiziellen Kanäle kontaktieren, können wir Ihnen möglicherweise helfen. Für die Meldung von Problemen erreichen Sie uns am besten an den folgenden Anlaufstellen:</translation>
+        <translation>Bei der Verarbeitung Ihrer Datei ist ein Fehler aufgetreten. Dies bedeutet in der Regel, dass Ihr Projekt zumindest teilweise beschädigt ist. Versuchen Sie es mit einer neueren Version von Pencil2D noch einmal oder versuchen Sie, eine Sicherungsdatei zu verwenden, falls Sie eine haben. Wenn Sie uns über einen unserer offiziellen Kanäle kontaktieren, können wir Ihnen möglicherweise helfen. Für die Meldung von Problemen erreichen Sie uns am besten an den folgenden Anlaufstellen:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="976"/>
@@ -3393,172 +3406,172 @@
         <translation>MB</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="37"/>
+        <location filename="../app/src/generalpage.cpp" line="39"/>
         <source>Arabic</source>
         <translation>Arabisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="38"/>
+        <location filename="../app/src/generalpage.cpp" line="40"/>
         <source>Bulgarian</source>
-        <translation type="unfinished"/>
+        <translation>Bulgarisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="39"/>
+        <location filename="../app/src/generalpage.cpp" line="41"/>
         <source>Catalan</source>
         <translation>Katalanisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="40"/>
+        <location filename="../app/src/generalpage.cpp" line="42"/>
         <source>Czech</source>
         <translation>Tschechisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="41"/>
+        <location filename="../app/src/generalpage.cpp" line="43"/>
         <source>Danish</source>
         <translation>Dänisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="42"/>
+        <location filename="../app/src/generalpage.cpp" line="44"/>
         <source>German</source>
         <translation>Deutsch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="43"/>
+        <location filename="../app/src/generalpage.cpp" line="45"/>
         <source>Greek</source>
         <translation>Griechisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="44"/>
+        <location filename="../app/src/generalpage.cpp" line="46"/>
         <source>English</source>
         <translation>Englisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="45"/>
+        <location filename="../app/src/generalpage.cpp" line="47"/>
         <source>Spanish</source>
         <translation>Spanisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="46"/>
+        <location filename="../app/src/generalpage.cpp" line="48"/>
         <source>Estonian</source>
         <translation>Estnisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="47"/>
+        <location filename="../app/src/generalpage.cpp" line="49"/>
         <source>Persian</source>
-        <translation type="unfinished"/>
+        <translation>Persisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="48"/>
+        <location filename="../app/src/generalpage.cpp" line="50"/>
         <source>French</source>
         <translation>Französisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="49"/>
+        <location filename="../app/src/generalpage.cpp" line="51"/>
         <source>Hebrew</source>
         <translation>Hebräisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="50"/>
+        <location filename="../app/src/generalpage.cpp" line="52"/>
         <source>Hungarian</source>
         <translation>Ungarisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="51"/>
+        <location filename="../app/src/generalpage.cpp" line="53"/>
         <source>Indonesian</source>
         <translation>Indonesisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="52"/>
+        <location filename="../app/src/generalpage.cpp" line="54"/>
         <source>Italian</source>
         <translation>Italienisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="53"/>
+        <location filename="../app/src/generalpage.cpp" line="55"/>
         <source>Japanese</source>
         <translation>Japanisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="54"/>
+        <location filename="../app/src/generalpage.cpp" line="56"/>
         <source>Kabyle</source>
         <translation>Kabylisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="55"/>
-        <source>Korean</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/generalpage.cpp" line="56"/>
-        <source>Norwegian Bokmål</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../app/src/generalpage.cpp" line="57"/>
-        <source>Dutch – Netherlands</source>
-        <translation type="unfinished"/>
+        <source>Korean</source>
+        <translation>Koreanisch</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="58"/>
+        <source>Norwegian Bokmål</source>
+        <translation>Norwegisch Bokmål</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="59"/>
+        <source>Dutch – Netherlands</source>
+        <translation>Niederländisch – Niederlande</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="60"/>
         <source>Polish</source>
         <translation>Polnisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="59"/>
+        <location filename="../app/src/generalpage.cpp" line="61"/>
         <source>Portuguese – Portugal</source>
         <translation>Portugiesisch – Portugal</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="60"/>
+        <location filename="../app/src/generalpage.cpp" line="62"/>
         <source>Portuguese – Brazil</source>
         <translation>Portugiesisch – Brasilien</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="61"/>
+        <location filename="../app/src/generalpage.cpp" line="63"/>
         <source>Russian</source>
         <translation>Russisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="62"/>
+        <location filename="../app/src/generalpage.cpp" line="64"/>
         <source>Slovene</source>
         <translation>Slowenisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="63"/>
+        <location filename="../app/src/generalpage.cpp" line="65"/>
         <source>Swedish</source>
         <translation>Schwedisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="64"/>
+        <location filename="../app/src/generalpage.cpp" line="66"/>
         <source>Turkish</source>
         <translation>Türkisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="65"/>
+        <location filename="../app/src/generalpage.cpp" line="67"/>
         <source>Vietnamese</source>
         <translation>Vietnamesisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="66"/>
+        <location filename="../app/src/generalpage.cpp" line="68"/>
         <source>Cantonese</source>
-        <translation type="unfinished"/>
+        <translation>Kantonesisch</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="67"/>
+        <location filename="../app/src/generalpage.cpp" line="69"/>
         <source>Chinese – China</source>
         <translation>Chinesisch – China</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="68"/>
+        <location filename="../app/src/generalpage.cpp" line="70"/>
         <source>Chinese – Taiwan</source>
         <translation>Chinesisch – Taiwan</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="201"/>
+        <location filename="../app/src/generalpage.cpp" line="212"/>
         <source>Restart Required</source>
         <translation>Neustart erforderlich</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="202"/>
+        <location filename="../app/src/generalpage.cpp" line="213"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Die Sprachänderung wird nach einem Neustart von Pencil2D wirksam werden.</translation>
     </message>
@@ -3611,7 +3624,7 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="79"/>
         <source>Import predefined keyframe set</source>
-        <translation>Vordefinierte Schlüsselbildsets importieren</translation>
+        <translation>Vordefinierte Phasensets importieren</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="80"/>
@@ -3652,7 +3665,7 @@ Read the instructions and try again</source>
         <translation>Die folgende Datei erfüllt die Kriterien nicht:
 %1
 
-Lesen Sie die Anleitungen und versuchen es erneut.</translation>
+Lesen Sie die Anleitungen und versuchen es noch einmal.</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="382"/>
@@ -3667,7 +3680,7 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/importimageseqoptions.ui" line="38"/>
         <source>Import an image every # frame</source>
-        <translation>Abstand der Einzelbilder</translation>
+        <translation>Abstand der Bilder</translation>
     </message>
 </context>
 <context>
@@ -3751,7 +3764,7 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="36"/>
         <source>Center of camera, current frame</source>
-        <translation>Mitte der Kamera, aktuelles Einzelbild</translation>
+        <translation>Mitte der Kamera, aktuelles Bild</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="37"/>
@@ -3788,7 +3801,7 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="14"/>
         <source>Layer / Keyframe Opacity</source>
-        <translation>Ebenen- / Schlüsselbild-Deckkraft</translation>
+        <translation>Ebenen- / Phasen-Deckkraft</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="22"/>
@@ -3814,12 +3827,12 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="89"/>
         <source>Active keyframe</source>
-        <translation>Aktives Schlüsselbild</translation>
+        <translation>Aktive Phase</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="99"/>
         <source>Selected keyframe(s)</source>
-        <translation>Ausgewählte(s) Schlüsselbild(er)</translation>
+        <translation>Ausgewählte Phase(n)</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="106"/>
@@ -3834,7 +3847,7 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="122"/>
         <source>Fade in over selcted keyframes</source>
-        <translation>Aufblende über ausgewählte Schlüsselbilder</translation>
+        <translation>Aufblende über ausgewählte Phasen</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="125"/>
@@ -3844,7 +3857,7 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="132"/>
         <source>Fade out over selected keyframes</source>
-        <translation>Abblende über ausgewählte Schlüsselbilder</translation>
+        <translation>Abblende über ausgewählte Phasen</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="135"/>
@@ -4083,7 +4096,7 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
         <location filename="../app/ui/mainwindow2.ui" line="1107"/>
         <location filename="../app/ui/mainwindow2.ui" line="1110"/>
         <source>Paste from Previous Keyframe</source>
-        <translation>Aus letztem Schlüsselbild einfügen</translation>
+        <translation>Aus letzter Phase einfügen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1122"/>
@@ -4184,7 +4197,7 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="490"/>
         <source>Clear Frame</source>
-        <translation>Einzelbild leeren</translation>
+        <translation>Phase leeren</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="495"/>
@@ -4275,27 +4288,27 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="640"/>
         <source>Next Frame</source>
-        <translation>Folgendes Einzelbild</translation>
+        <translation>Folgendes Bild</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="645"/>
         <source>Previous Frame</source>
-        <translation>Vorheriges Einzelbild</translation>
+        <translation>Vorheriges Bild</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="654"/>
         <source>Add Frame</source>
-        <translation>Einzelbild hinzufügen</translation>
+        <translation>Phase hinzufügen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="663"/>
         <source>Duplicate Frame</source>
-        <translation>Einzelbild duplizieren</translation>
+        <translation>Phase duplizieren</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="672"/>
         <source>Remove Frame</source>
-        <translation>Einzelbild entfernen</translation>
+        <translation>Phase entfernen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="681"/>
@@ -4392,13 +4405,13 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
         <location filename="../app/ui/mainwindow2.ui" line="844"/>
         <location filename="../app/ui/mainwindow2.ui" line="847"/>
         <source>Next Keyframe</source>
-        <translation>Folgendes Schlüsselbild</translation>
+        <translation>Folgende Phase</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="857"/>
         <location filename="../app/ui/mainwindow2.ui" line="860"/>
         <source>Previous KeyFrame</source>
-        <translation>Vorheriges Schlüsselbild</translation>
+        <translation>Vorherige Phase</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="871"/>
@@ -4418,12 +4431,12 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="886"/>
         <source>Move Frame Forward</source>
-        <translation>Einzelbild nach vorne verschieben</translation>
+        <translation>Phase nach vorne verschieben</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="891"/>
         <source>Move Frame Backward</source>
-        <translation>Einzelbild nach hinten verschieben</translation>
+        <translation>Phase nach hinten verschieben</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="896"/>
@@ -4548,12 +4561,12 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1004"/>
         <source>Current keyframe</source>
-        <translation>Aktuelles Schlüsselbild</translation>
+        <translation>Aktuelle Phase</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1009"/>
         <source>All keyframes on layer</source>
-        <translation>Alle Schlüsselbilder der Ebene</translation>
+        <translation>Alle Phasen der Ebene</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1014"/>
@@ -4568,12 +4581,12 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1043"/>
         <source>Reposition Selected Frames</source>
-        <translation>Ausgewählte Bilder umpositionieren</translation>
+        <translation>Ausgewählte Phasen umpositionieren</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1048"/>
         <source>Layer / Keyframe opacity</source>
-        <translation>Ebenen- / Schlüsselbild-Deckkraft</translation>
+        <translation>Ebenen- / Phasen-Deckkraft</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1053"/>
@@ -4603,12 +4616,12 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1086"/>
         <source>Reverse Frames Order</source>
-        <translation>Bild-Reihenfolge umkehren</translation>
+        <translation>Phasen-Reihenfolge umkehren</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1091"/>
         <source>Remove Frames</source>
-        <translation>Bilder entfernen</translation>
+        <translation>Phasen entfernen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1102"/>
@@ -4639,7 +4652,7 @@ Lesen Sie die Anleitungen und versuchen es erneut.</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="531"/>
         <source>Please select at least 2 frames!</source>
-        <translation>Bitte wählen Sie mindestens 2 Bilder aus!</translation>
+        <translation>Bitte wählen Sie mindestens 2 Phasen aus!</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="659"/>
@@ -4819,13 +4832,13 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
         <location filename="../core_lib/src/movieexporter.cpp" line="596"/>
         <location filename="../core_lib/src/movieexporter.cpp" line="733"/>
         <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
-        <translation>Sieht so aus, als wäre unser Video-Backend nicht normal beendet worden. Ihr Film wurde möglicherweise nicht korrekt exportiert. Bitte versuchen Sie es erneut und melden Sie dies, falls es weiterhin auftritt.</translation>
+        <translation>Sieht so aus, als wäre unser Video-Backend nicht normal beendet worden. Ihr Film wurde möglicherweise nicht korrekt exportiert. Bitte versuchen Sie es noch einmal und melden Sie dies, falls es weiterhin auftritt.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="608"/>
         <location filename="../core_lib/src/movieexporter.cpp" line="745"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
-        <translation>Video-Backend konnte nicht gestarted werden, bitte erneut versuchen.</translation>
+        <translation>Das Video-Backend konnte nicht gestartet werden, versuchen Sie es bitte noch einmal.</translation>
     </message>
 </context>
 <context>
@@ -4870,7 +4883,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="197"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
-        <translation>Der Filmclip ist zu lang. Pencil2D kann nur %1 Einzelbilder aufnehmen, aber dieser Film würde bis etwa Einzelbild %2 reichen. Bitte kürzen sie ihr Video und versuchen Sie es erneut.</translation>
+        <translation>Der Filmclip ist zu lang. Pencil2D kann nur %1 Bilder fassen, aber dieser Film würde bis etwa Bild %2 reichen. Bitte kürzen sie ihr Video und versuchen Sie es noch einmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="232"/>
@@ -4885,7 +4898,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="265"/>
         <source>Video processed, adding frames...</source>
-        <translation>Video bearbeitet, Einzelbilder werden hinzugefügt...</translation>
+        <translation>Video verarbeitet, Bilder werden hinzugefügt...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="312"/>
@@ -4910,12 +4923,12 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="341"/>
         <source>Move to an empty frame</source>
-        <translation>Verschieben auf leeres Einzelbild</translation>
+        <translation>Auf leeres Bild verschieben</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="342"/>
         <source>A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again</source>
-        <translation>Ein Schlüsselbild existiert bereits in Bild: %1 Verschieben Sie den Positionszeiger an eine leere Position auf der Zeitleiste und versuchen Sie es erneut</translation>
+        <translation>Eine Phase existiert bereits für Bild: %1 Verschieben Sie den Positionszeiger an eine leere Position auf der Zeitleiste und versuchen Sie es noch einmal</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="384"/>
@@ -4925,7 +4938,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="385"/>
         <source>Please place the ffmpeg binary in plugins directory and try again</source>
-        <translation>Bitte legen Sie die ffmpeg-Programmdatei im plugins-Verzeichnis ab und versuchen Sie es erneut</translation>
+        <translation>Bitte legen Sie die ffmpeg-Programmdatei im plugins-Verzeichnis ab und versuchen Sie es noch einmal</translation>
     </message>
 </context>
 <context>
@@ -4958,8 +4971,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="687"/>
         <source>Dark Orange</source>
-        <translation>Dunkelorange
-</translation>
+        <translation>Dunkelorange</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="688"/>
@@ -4969,8 +4981,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="689"/>
         <source>Dark Yellow</source>
-        <translation>Dunkelgelb
-</translation>
+        <translation>Dunkelgelb</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="690"/>
@@ -5025,8 +5036,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="700"/>
         <source>Dark Grey</source>
-        <translation>Dunkelgrau
-</translation>
+        <translation>Dunkelgrau</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="701"/>
@@ -5070,7 +5080,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../app/ui/onionskin.ui" line="105"/>
         <source>Previous Frames</source>
-        <translation>Vorherige Einzelbilder</translation>
+        <translation>Vorherige Bilder</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="160"/>
@@ -5087,7 +5097,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../app/ui/onionskin.ui" line="186"/>
         <source>Next Frames</source>
-        <translation>Folgende Einzelbilder</translation>
+        <translation>Folgende Bilder</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="244"/>
@@ -5119,7 +5129,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
     <message>
         <location filename="../app/ui/onionskin.ui" line="421"/>
         <source>Show Keyframes Only</source>
-        <translation>Nur Schlüsselbilder anzeigen</translation>
+        <translation>Nur Phasen anzeigen</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="428"/>
@@ -5148,7 +5158,7 @@ Farbe(n) in Strichen werden durch diese Aktion geändert!</translation>
 Check selection, and please try again.</source>
         <comment>PegBar error message</comment>
         <translation>Lochung nicht gefunden!
-Überprüfen Sie die Auswahl und versuchen Sie es bitte erneut.</translation>
+Überprüfen Sie die Auswahl und versuchen Sie es bitte noch einmal.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/pegbaraligner.cpp" line="65"/>
@@ -5176,7 +5186,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="59"/>
         <source>2) The selection be large enough to contain the center pegs of all frames</source>
-        <translation>2) Die Auswahl sollte groß genug sein, um die mittigen Lochungen aller Einzelbilder einzuschließen</translation>
+        <translation>2) Die Auswahl sollte groß genug sein, um die mittigen Lochungen aller Phasen einzuschließen</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="75"/>
@@ -5238,7 +5248,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/src/predefinedsetmodel.h" line="67"/>
         <source>KeyFrame Pos</source>
-        <translation>Schlüsselbild-Position</translation>
+        <translation>Phasen-Position</translation>
     </message>
 </context>
 <context>
@@ -5322,7 +5332,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="14"/>
         <source>Reposition Frames</source>
-        <translation>Bilder umpositionieren</translation>
+        <translation>Phasen umpositionieren</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="30"/>
@@ -5342,12 +5352,12 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="57"/>
         <source>Same keyframes as selected</source>
-        <translation>Gleiche Schlüsselbilder wie ausgewählt</translation>
+        <translation>Gleiche Phasen wie ausgewählt</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="64"/>
         <source>All keyframes on layer</source>
-        <translation>Alle Schlüsselbilder der Ebene</translation>
+        <translation>Alle Phasen der Ebene</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="93"/>
@@ -5380,24 +5390,24 @@ oder brechen Sie ab</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="775"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="772"/>
         <source>Warning</source>
         <translation>Warnung</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="776"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="773"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Sie versuchen eine ausgeblendete Ebene zu bearbeiten! Bitte wählen sie eine andere Ebene (oder blenden Sie die aktuelle Ebene ein)</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1466"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1463"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Auswahl löschen</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1492"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1504"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1489"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1501"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Bild leeren</translation>
@@ -5492,13 +5502,13 @@ oder brechen Sie ab</translation>
         <location filename="../app/src/shortcutspage.cpp" line="301"/>
         <source>Add Frame</source>
         <comment>Shortcut</comment>
-        <translation>Einzelbild hinzufügen</translation>
+        <translation>Phase hinzufügen</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="302"/>
         <source>Clear Frame</source>
         <comment>Shortcut</comment>
-        <translation>Einzelbild leeren</translation>
+        <translation>Phase leeren</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="303"/>
@@ -5510,7 +5520,7 @@ oder brechen Sie ab</translation>
         <location filename="../app/src/shortcutspage.cpp" line="304"/>
         <source>Paste from Previous Keyframe</source>
         <comment>Shortcut</comment>
-        <translation>Aus vorherigem Schlüsselbild einfügen</translation>
+        <translation>Aus vorheriger Phase einfügen</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="305"/>
@@ -5534,7 +5544,7 @@ oder brechen Sie ab</translation>
         <location filename="../app/src/shortcutspage.cpp" line="308"/>
         <source>Duplicate Frame</source>
         <comment>Shortcut</comment>
-        <translation>Einzelbild duplizieren</translation>
+        <translation>Phase duplizieren</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="309"/>
@@ -5588,49 +5598,49 @@ oder brechen Sie ab</translation>
         <location filename="../app/src/shortcutspage.cpp" line="315"/>
         <source>View: Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ansicht horizontal spiegeln</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="316"/>
         <source>View: Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ansicht vertikal spiegeln</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="319"/>
         <source>Next Frame</source>
         <comment>Shortcut</comment>
-        <translation>Folgendes Einzelbild</translation>
+        <translation>Folgendes Bild</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="320"/>
         <source>Next Keyframe</source>
         <comment>Shortcut</comment>
-        <translation>Folgendes Schlüsselbild</translation>
+        <translation>Folgende Phase</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="321"/>
         <source>Previous Frame</source>
         <comment>Shortcut</comment>
-        <translation>Vorheriges Einzelbild</translation>
+        <translation>Vorheriges Bild</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="322"/>
         <source>Selection: Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Auswahl horizontal spiegeln</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="323"/>
         <source>Selection: Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Auswahl vertikal spiegeln</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="324"/>
         <source>Previous Keyframe</source>
         <comment>Shortcut</comment>
-        <translation>Vorheriges Schlüsselbild</translation>
+        <translation>Vorherige Phase</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="325"/>
@@ -5648,13 +5658,13 @@ oder brechen Sie ab</translation>
         <location filename="../app/src/shortcutspage.cpp" line="327"/>
         <source>Selection: Reverse Keyframes</source>
         <comment>Shortcut</comment>
-        <translation>Auswahl: Schlüsselbilder umkehren</translation>
+        <translation>Auswahl: Phasen umkehren</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="328"/>
         <source>Selection: Remove Keyframes</source>
         <comment>Shortcut</comment>
-        <translation>Auswahl: Schlüsselbilder entfernen</translation>
+        <translation>Auswahl: Phasen entfernen</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="329"/>
@@ -5708,13 +5718,13 @@ oder brechen Sie ab</translation>
         <location filename="../app/src/shortcutspage.cpp" line="337"/>
         <source>Move Frame Backward</source>
         <comment>Shortcut</comment>
-        <translation>Einzelbild nach hinten verschieben</translation>
+        <translation>Phase nach hinten verschieben</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="338"/>
         <source>Move Frame Forward</source>
         <comment>Shortcut</comment>
-        <translation>Einzelbild nach vorne verschieben</translation>
+        <translation>Phase nach vorne verschieben</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="339"/>
@@ -5798,7 +5808,7 @@ oder brechen Sie ab</translation>
         <location filename="../app/src/shortcutspage.cpp" line="352"/>
         <source>Remove Frame</source>
         <comment>Shortcut</comment>
-        <translation>Einzelbild entfernen</translation>
+        <translation>Phase entfernen</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="353"/>
@@ -6231,7 +6241,7 @@ oder brechen Sie ab</translation>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="137"/>
         <source>Sound scrub on/off</source>
-        <translation>Scrub-Ton an/aus</translation>
+        <translation>Ton-Vorschau bei Positionsänderung an/aus</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="138"/>
@@ -6308,22 +6318,22 @@ oder brechen Sie ab</translation>
     <message>
         <location filename="../app/src/timeline.cpp" line="121"/>
         <source>Keys:</source>
-        <translation>Schlüssel:</translation>
+        <translation>Phasen:</translation>
     </message>
     <message>
         <location filename="../app/src/timeline.cpp" line="126"/>
         <source>Add Frame</source>
-        <translation>Einzelbild hinzufügen</translation>
+        <translation>Phase hinzufügen</translation>
     </message>
     <message>
         <location filename="../app/src/timeline.cpp" line="130"/>
         <source>Remove Frame</source>
-        <translation>Einzelbild entfernen</translation>
+        <translation>Phase entfernen</translation>
     </message>
     <message>
         <location filename="../app/src/timeline.cpp" line="134"/>
         <source>Duplicate Frame</source>
-        <translation>Einzelbild duplizieren</translation>
+        <translation>Phase duplizieren</translation>
     </message>
     <message>
         <location filename="../app/src/timeline.cpp" line="136"/>
@@ -6333,7 +6343,7 @@ oder brechen Sie ab</translation>
     <message>
         <location filename="../app/src/timeline.cpp" line="143"/>
         <source>Adjust frame width</source>
-        <translation>Einzelbild-Breite anpassen</translation>
+        <translation>Bild-Breite anpassen</translation>
     </message>
 </context>
 <context>
@@ -6375,32 +6385,32 @@ oder brechen Sie ab</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="93"/>
         <source>When drawing on an empty frame:</source>
-        <translation>Beim Zeichnen auf ein leeres Einzelbild:</translation>
+        <translation>Beim Zeichnen auf ein leeres Bild:</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="100"/>
         <source>Create a new (blank) key-frame and start drawing on it.</source>
-        <translation>Ein neues (leeres) Schlüsselbild erstellen und darauf zu zeichnen anfangen.</translation>
+        <translation>Eine neue (leere) Phase erstellen und darauf zu zeichnen anfangen.</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="103"/>
         <source>Create a new (blank) key-frame</source>
-        <translation>Ein neues (leeres) Schlüsselbild erstellen</translation>
+        <translation>Eine neue (leere) Phase erstellen</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="113"/>
         <source>Duplicate the previous key-frame and start drawing on the duplicate.</source>
-        <translation>Vorheriges Schlüsselbild duplizieren und darauf zu zeichnen anfangen.</translation>
+        <translation>Vorherige Phase duplizieren und darauf zu zeichnen anfangen.</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="116"/>
         <source>Duplicate the previous key-frame</source>
-        <translation>Vorheriges Schlüsselbild duplizieren</translation>
+        <translation>Vorherige Phase duplizieren</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="123"/>
         <source>Keep drawing on the previous key-frame</source>
-        <translation>Auf dem vorherigen Schlüsselbild weiter zeichnen</translation>
+        <translation>Auf der vorherigen Phase weiter zeichnen</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="135"/>
