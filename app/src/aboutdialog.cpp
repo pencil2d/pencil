@@ -49,7 +49,6 @@ void AboutDialog::init()
 #else
     devText << "Development Build " __DATE__;
 #endif
-
     devText << ""; // An empty line
 
 #if defined(GIT_EXISTS)
@@ -60,7 +59,7 @@ void AboutDialog::init()
 
     devText << QString("Operating System: %1").arg(QSysInfo::prettyProductName())
             << QString("CPU Architecture: %1").arg(QSysInfo::buildCpuArchitecture());
-    if(QString(qVersion()) == QT_VERSION_STR)
+    if (QString(qVersion()) == QT_VERSION_STR)
     {
         devText << QString("Qt Version: %1").arg(QT_VERSION_STR);
     }
