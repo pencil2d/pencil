@@ -1216,6 +1216,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
     ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));
     ui->actionGrid->setShortcut(cmdKeySeq(CMD_GRID));
+    ui->actionSwapColor->setShortcut(cmdKeySeq(CMD_SWAPCOLOR));
     ui->actionOnionPrev->setShortcut(cmdKeySeq(CMD_ONIONSKIN_PREV));
     ui->actionOnionNext->setShortcut(cmdKeySeq(CMD_ONIONSKIN_NEXT));
     ui->actionStatusBar->setShortcut(cmdKeySeq(CMD_TOGGLE_STATUS_BAR));

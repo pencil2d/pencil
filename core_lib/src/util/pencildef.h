@@ -162,6 +162,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_FLIP_VERTICAL "CmdFlipVertical"
 #define CMD_PREVIEW "CmdPreview"
 #define CMD_GRID "CmdGrid"
+#define CMD_SWAPCOLOR "CmdSwapColor"
 #define CMD_ONIONSKIN_PREV "CmdOnionSkinPrevious"
 #define CMD_ONIONSKIN_NEXT "CmdOnionSkinNext"
 #define CMD_TOGGLE_STATUS_BAR "CmdToggleStatusBar"

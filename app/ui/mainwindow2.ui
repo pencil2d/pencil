@@ -179,6 +179,7 @@
       <addaction name="action30Degrees"/>
      </widget>
      <addaction name="actionGrid"/>
+     <addaction name="actionSwapColor"/>
      <addaction name="actionCenter"/>
      <addaction name="actionThirds"/>
      <addaction name="actionGoldenRatio"/>
@@ -584,6 +585,8 @@
     <string>Grid</string>
    </property>
   </action>
+
+
   <action name="actionOnionPrev">
    <property name="checkable">
     <bool>true</bool>
