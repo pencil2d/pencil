@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>268</width>
+    <width>140</width>
     <height>241</height>
    </rect>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>140</width>
+    <height>132</height>
+   </size>
   </property>
   <property name="windowTitle">
    <string comment="Window title of color palette.">Color Palette</string>
@@ -224,12 +230,6 @@
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
-        </property>
-        <property name="minimumSize">
-         <size>
-          <width>0</width>
-          <height>0</height>
-         </size>
         </property>
         <property name="maximumSize">
          <size>

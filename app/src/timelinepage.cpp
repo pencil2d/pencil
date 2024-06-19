@@ -49,6 +49,8 @@ TimelinePage::TimelinePage()
     connect(ui->visibilitySlider, &QSlider::valueChanged, this, &TimelinePage::layerVisibilityThresholdChanged);
     connect(ui->visibilitySpinbox, spinBoxValueChange, this, &TimelinePage::layerVisibilityThresholdChanged);
     ui->visibilitySpinbox->setSuffix("%");
+
+    ui->labelAppliesTo->setStyleSheet("font-size: 10px");
 }
 
 TimelinePage::~TimelinePage()

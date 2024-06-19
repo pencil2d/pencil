@@ -34,7 +34,6 @@ BaseDockWidget::BaseDockWidget(QWidget* pParent)
                       "border-width: 1px; }");
     }
 #endif
-
 }
 
 BaseDockWidget::~BaseDockWidget()
