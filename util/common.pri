@@ -1,6 +1,6 @@
 
 # Development branch build number is always 0.0.0.0
-# Nightly build version number is 0.0.0.BuildNumber
+# Nightly build version number is 99.0.0.BuildNumber
 # Release build version number is the git branch name plus the build number.
 
 isEmpty(VERSION) {
