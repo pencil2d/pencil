@@ -1130,7 +1130,10 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         if (mType == TIMELINE_CELL_TYPE::Tracks && (layerNumber != -1) && (frameNumber > 0) && layerNumber < mEditor->object()->getLayerCount())
         {
             mEditor->scrubTo(frameNumber);
-            emit insertNewKeyFrame();
+            if (!layer->getKeyFrameAt(frameNumber))
+            {
+                emit insertNewKeyFrame();
+            }
 
             // The release event will toggle the frame on again, so we make sure it gets
             // deselected now instead.
