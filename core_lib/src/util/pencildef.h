@@ -174,6 +174,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_GOTO_NEXT_KEY_FRAME "CmdGotoNextKeyFrame"
 #define CMD_GOTO_PREV_KEY_FRAME "CmdGotoPreviousKeyFrame"
 #define CMD_ADD_FRAME "CmdAddFrame"
+#define CMD_INTERPOLATE_FRAMES "CmdInterpolateFrames"
 #define CMD_DUPLICATE_FRAME "CmdDuplicateFrame"
 #define CMD_REMOVE_FRAME "CmdRemoveFrame"
 #define CMD_REVERSE_SELECTED_FRAMES "CmdReverseSelectedFrames"
