@@ -65,6 +65,10 @@ public slots:
 
     void setWidth(float);
     void setFeather(float);
+
+    void setTmpWidth(float);
+    void setTmpFeather(float);
+
     void setUseFeather(bool);
     void setInvisibility(bool);
     void setPreserveAlpha(bool);
