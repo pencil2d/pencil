@@ -166,8 +166,7 @@ void LayerOpacityDialog::fade(OpacityFadeType fadeType)
             if (initialOpacity >= 1.0) {
                 initialOpacity = 0.0;
             }
-            qreal value = 1.0 - initialOpacity;
-            opacityStepper = value / imageCount;
+            opacityStepper = (1.0 - initialOpacity) / imageCount;
             break;
         }
         case OpacityFadeType::OUT:
