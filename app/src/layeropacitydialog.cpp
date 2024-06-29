@@ -201,10 +201,11 @@ void LayerOpacityDialog::fade(OpacityFadeType fadeType)
     }
 
     keyframe = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
-    if (keyframe == nullptr) { return; }
 
-    qreal imageOpacity = getOpacityForKeyFrame(currentLayer, keyframe);
-    updateValues(imageOpacity);
+    if (keyframe) {
+        qreal imageOpacity = getOpacityForKeyFrame(currentLayer, keyframe);
+        updateValues(imageOpacity);
+    }
 
     emit mEditor->framesModified();
 }
