@@ -150,33 +150,52 @@ void LayerOpacityDialog::fade(OpacityFadeType fadeType)
 
     if (selectedKeys.count() < mMinSelectedFrames) { return; }
 
-    // OUT
     int fadeFromPos = selectedKeys.first();
-    int fadeStart = 1;
-    int fadeEnd = selectedKeys.count();
-
-    if (fadeType == OpacityFadeType::IN) {
-        fadeFromPos = selectedKeys.last();
-        fadeStart = 0;
-        fadeEnd = selectedKeys.count() - 1;
-    }
-
     KeyFrame* keyframe = currentLayer->getLastKeyFrameAtPosition(fadeFromPos);
     if (keyframe == nullptr) { return; }
 
     qreal initialOpacity = getOpacityForKeyFrame(currentLayer, keyframe);
 
-    qreal imageCount = static_cast<qreal>(selectedKeys.count());
-    for (int i = fadeStart; i < fadeEnd; i++)
-    {
+    qreal imageCount = static_cast<qreal>(selectedKeys.count() - 1);
+
+    qreal opacityStepper = 0.0;
+    switch (fadeType) {
+        case OpacityFadeType::IN:
+        {
+            // When the opacity is 100% act as we're doing a full fade in from 0-100%
+            if (initialOpacity >= 1.0) {
+                initialOpacity = 0.0;
+            }
+            qreal value = 1.0 - initialOpacity;
+            opacityStepper = value / imageCount;
+            break;
+        }
+        case OpacityFadeType::OUT:
+        {
+            // When the opacity is 0%, act as we're doing a full fade out from 100-0%
+            if (initialOpacity <= 0) {
+                initialOpacity = 1.0;
+            }
+            opacityStepper = initialOpacity / imageCount;
+            break;
+        }
+    }
+
+    for (int i = 0; i < selectedKeys.count(); i++) {
         keyframe = currentLayer->getLastKeyFrameAtPosition(selectedKeys.at(i));
         if (keyframe == nullptr) { continue; }
 
         qreal newOpacity = 0;
-        if (fadeType == OpacityFadeType::IN) {
-            newOpacity = static_cast<qreal>((i + 1) / imageCount) * initialOpacity;
-        } else {
-            newOpacity = static_cast<qreal>(initialOpacity - (i / imageCount) * initialOpacity);
+        switch (fadeType)
+        {
+            case OpacityFadeType::IN: {
+                newOpacity = initialOpacity + (i * opacityStepper);
+                break;
+            }
+            case OpacityFadeType::OUT: {
+                newOpacity = initialOpacity - (i * opacityStepper);
+                break;
+            }
         }
         setOpacityForKeyFrame(currentLayer, keyframe, newOpacity);
     }
