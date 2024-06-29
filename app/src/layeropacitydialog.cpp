@@ -74,6 +74,8 @@ void LayerOpacityDialog::updateUI()
         canAdjust = true;
     }
 
+    updateSelectedFramesUI();
+
     ui->chooseOpacitySlider->setEnabled(canAdjust);
     ui->chooseOpacitySpinBox->setEnabled(canAdjust);
 }
@@ -225,13 +227,19 @@ void LayerOpacityDialog::onCurrentFrameChanged(int frame)
 
 void LayerOpacityDialog::onSelectedFramesChanged()
 {
+    updateUI();
+}
+
+void LayerOpacityDialog::updateSelectedFramesUI()
+{
     Layer* currentLayer = mLayerManager->currentLayer();
     if (currentLayer == nullptr) { return; }
 
     QList<int> frames = currentLayer->getSelectedFramesByPos();
 
-    ui->groupBoxFade->setEnabled(frames.count() >= mMinSelectedFrames);
-    updateUI();
+    int minSelectedFrames = frames.count() >= mMinSelectedFrames;
+    ui->groupBoxFade->setEnabled(minSelectedFrames);
+    ui->rbSelectedKeyframes->setEnabled(minSelectedFrames);
 }
 
 void LayerOpacityDialog::onPlayStateChanged(bool isPlaying)
