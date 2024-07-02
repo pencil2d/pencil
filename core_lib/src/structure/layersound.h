@@ -32,6 +32,8 @@ public:
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
+    void replaceKeyFrame(const KeyFrame* soundClip) override;
+
     Status loadSoundClipAtFrame( const QString& sSoundClipName, const QString& filePathString, int frame );
     void updateFrameLengths(int fps);
 

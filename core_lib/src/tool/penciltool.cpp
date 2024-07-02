@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "preferencemanager.h"
 #include "selectionmanager.h"
+#include "undoredomanager.h"
 
 #include "editor.h"
 #include "scribblearea.h"

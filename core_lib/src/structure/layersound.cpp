@@ -117,6 +117,11 @@ void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath,
     }
 }
 
+void LayerSound::replaceKeyFrame(const KeyFrame* soundClip)
+{
+    *getSoundClipWhichCovers(soundClip->pos()) = *static_cast<const SoundClip*>(soundClip);
+}
+
 Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
 {
     Q_ASSERT(key);

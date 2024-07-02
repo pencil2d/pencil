@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
+#include "undoredomanager.h"
 #include "pointerevent.h"
 #include "layervector.h"
 #include "layerbitmap.h"
@@ -193,9 +194,11 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
 
+    const UndoSaveState* saveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
     mEditor->backup(typeName());
 
     endPolyline(mPoints);
+    mEditor->undoRedo()->record(saveState, typeName());
 }
 
 
@@ -206,7 +209,9 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
+            const UndoSaveState* saveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
             endPolyline(mPoints);
+            mEditor->undoRedo()->record(saveState, typeName());
             return true;
         }
         break;
@@ -303,6 +308,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     {
         drawPolyline(points, points.last());
     }
+
     mScribbleArea->endStroke();
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 
