@@ -1035,6 +1035,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             currentLayer->deselectAll();
                             currentLayer->setFrameSelected(mStartFrameNumber, true);
                             currentLayer->extendSelectionTo(mFramePosMoveX);
+                            emit mEditor->selectedFramesChanged();
                         }
                         mLastFrameNumber = mFramePosMoveX;
                         updateContent();

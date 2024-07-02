@@ -74,6 +74,8 @@ void LayerOpacityDialog::updateUI()
         canAdjust = true;
     }
 
+    updateSelectedFramesUI();
+
     ui->chooseOpacitySlider->setEnabled(canAdjust);
     ui->chooseOpacitySpinBox->setEnabled(canAdjust);
 }
@@ -148,42 +150,61 @@ void LayerOpacityDialog::fade(OpacityFadeType fadeType)
 
     if (selectedKeys.count() < mMinSelectedFrames) { return; }
 
-    // OUT
     int fadeFromPos = selectedKeys.first();
-    int fadeStart = 1;
-    int fadeEnd = selectedKeys.count();
-
-    if (fadeType == OpacityFadeType::IN) {
-        fadeFromPos = selectedKeys.last();
-        fadeStart = 0;
-        fadeEnd = selectedKeys.count() - 1;
-    }
-
     KeyFrame* keyframe = currentLayer->getLastKeyFrameAtPosition(fadeFromPos);
     if (keyframe == nullptr) { return; }
 
     qreal initialOpacity = getOpacityForKeyFrame(currentLayer, keyframe);
 
-    qreal imageCount = static_cast<qreal>(selectedKeys.count());
-    for (int i = fadeStart; i < fadeEnd; i++)
-    {
+    qreal imageCount = static_cast<qreal>(selectedKeys.count() - 1);
+
+    qreal opacityStepper = 0.0;
+    switch (fadeType) {
+        case OpacityFadeType::IN:
+        {
+            // When the opacity is 100% act as we're doing a full fade in from 0-100%
+            if (initialOpacity >= 1.0) {
+                initialOpacity = 0.0;
+            }
+            opacityStepper = (1.0 - initialOpacity) / imageCount;
+            break;
+        }
+        case OpacityFadeType::OUT:
+        {
+            // When the opacity is 0%, act as we're doing a full fade out from 100-0%
+            if (initialOpacity <= 0) {
+                initialOpacity = 1.0;
+            }
+            opacityStepper = initialOpacity / imageCount;
+            break;
+        }
+    }
+
+    for (int i = 0; i < selectedKeys.count(); i++) {
         keyframe = currentLayer->getLastKeyFrameAtPosition(selectedKeys.at(i));
         if (keyframe == nullptr) { continue; }
 
         qreal newOpacity = 0;
-        if (fadeType == OpacityFadeType::IN) {
-            newOpacity = static_cast<qreal>((i + 1) / imageCount) * initialOpacity;
-        } else {
-            newOpacity = static_cast<qreal>(initialOpacity - (i / imageCount) * initialOpacity);
+        switch (fadeType)
+        {
+            case OpacityFadeType::IN: {
+                newOpacity = initialOpacity + (i * opacityStepper);
+                break;
+            }
+            case OpacityFadeType::OUT: {
+                newOpacity = initialOpacity - (i * opacityStepper);
+                break;
+            }
         }
         setOpacityForKeyFrame(currentLayer, keyframe, newOpacity);
     }
 
     keyframe = currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame());
-    if (keyframe == nullptr) { return; }
 
-    qreal imageOpacity = getOpacityForKeyFrame(currentLayer, keyframe);
-    updateValues(imageOpacity);
+    if (keyframe) {
+        qreal imageOpacity = getOpacityForKeyFrame(currentLayer, keyframe);
+        updateValues(imageOpacity);
+    }
 
     emit mEditor->framesModified();
 }
@@ -225,13 +246,19 @@ void LayerOpacityDialog::onCurrentFrameChanged(int frame)
 
 void LayerOpacityDialog::onSelectedFramesChanged()
 {
+    updateUI();
+}
+
+void LayerOpacityDialog::updateSelectedFramesUI()
+{
     Layer* currentLayer = mLayerManager->currentLayer();
     if (currentLayer == nullptr) { return; }
 
     QList<int> frames = currentLayer->getSelectedFramesByPos();
 
-    ui->groupBoxFade->setEnabled(frames.count() >= mMinSelectedFrames);
-    updateUI();
+    int minSelectedFrames = frames.count() >= mMinSelectedFrames;
+    ui->groupBoxFade->setEnabled(minSelectedFrames);
+    ui->rbSelectedKeyframes->setEnabled(minSelectedFrames);
 }
 
 void LayerOpacityDialog::onPlayStateChanged(bool isPlaying)

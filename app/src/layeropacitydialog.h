@@ -55,6 +55,8 @@ private:
     void setOpacityForSelectedKeyframes();
     void setOpacityForLayer();
 
+    void updateSelectedFramesUI();
+
     Ui::LayerOpacityDialog *ui;
 
     Editor* mEditor = nullptr;
