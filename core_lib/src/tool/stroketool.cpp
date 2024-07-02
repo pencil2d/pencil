@@ -331,6 +331,10 @@ void StrokeTool::stopAdjusting()
 {
     msIsAdjusting = false;
     mAdjustPosition = QPointF();
+
+    mEditor->tools()->setWidth(properties.width);
+    mEditor->tools()->setFeather(properties.feather);
+
     updateCanvasCursor();
 }
 
@@ -343,7 +347,7 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         // map it back to its original value, we can multiply by the factor we divided with
         const qreal newValue = QLineF(mAdjustPosition, getCurrentPoint()).length() * 2.0;
 
-        mEditor->tools()->setWidth(qBound(WIDTH_MIN, newValue, WIDTH_MAX));
+        mEditor->tools()->setTmpWidth(qBound(WIDTH_MIN, newValue, WIDTH_MAX));
         break;
     }
     case FEATHER: {
@@ -357,7 +361,7 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         // We flip min and max here in order to get the inverted value for the UI
         const qreal mappedValue = MathUtils::map(distance, inputMin, inputMax, outputMax, outputMin);
 
-        mEditor->tools()->setFeather(qBound(FEATHER_MIN, mappedValue, FEATHER_MAX));
+        mEditor->tools()->setTmpFeather(qBound(FEATHER_MIN, mappedValue, FEATHER_MAX));
         break;
     }
     default:
