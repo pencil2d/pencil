@@ -15,8 +15,10 @@ TARGET = pencil2d
 RESOURCES += data/app.qrc
 
 MUI_TRANSLATIONS += \
+        translations/mui_cs.po \
         translations/mui_de.po
 
+RC_LANGS.cs = --lang LANG_CZECH --sublang SUBLANG_NEUTRAL
 RC_LANGS.de = --lang LANG_GERMAN --sublang SUBLANG_NEUTRAL
 
 EXTRA_TRANSLATIONS += \
