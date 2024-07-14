@@ -16,7 +16,7 @@ _User Showcase Reel 2022_
 
 ## Download
 
-### Pencil2D 0.6.6 (17 Feb 2021)
+### Pencil2D 0.7.0 (12 Jul 2024)
 
 Download Pencil2D from the [Official Website][p2d-download] or [Github releases][gh-release].
 
