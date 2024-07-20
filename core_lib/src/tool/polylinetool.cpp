@@ -206,6 +206,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
+            mEditor->backup(typeName());
             endPolyline(mPoints);
             return true;
         }
