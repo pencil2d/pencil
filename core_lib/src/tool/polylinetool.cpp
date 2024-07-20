@@ -220,6 +220,21 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
         }
         break;
 
+    case Qt::Key_Backspace:
+        if (mPoints.size() > 1)
+        {
+            mPoints.removeLast();
+            drawPolyline(mPoints, getCurrentPoint());
+            return true;
+        }
+        else if (mPoints.size() == 1)
+        {
+            cancelPolyline();
+            clearToolData();
+            return true;
+        }
+        break;
+
     default:
         break;
     }
