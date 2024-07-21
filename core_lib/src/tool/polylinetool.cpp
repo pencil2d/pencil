@@ -32,7 +32,6 @@ GNU General Public License for more details.
 
 PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent)
 {
-    mClosed = false;
 }
 
 ToolType PolylineTool::type()
