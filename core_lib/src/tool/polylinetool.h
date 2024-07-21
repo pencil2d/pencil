@@ -38,6 +38,7 @@ public:
     void pointerDoubleClickEvent(PointerEvent*) override;
 
     bool keyPressEvent(QKeyEvent* event) override;
+    bool keyReleaseEvent(QKeyEvent* event) override;
 
     void clearToolData() override;
 
@@ -51,6 +52,7 @@ public:
 
 private:
     QList<QPointF> mPoints;
+    bool mClosed;
 
     void drawPolyline(QList<QPointF> points, QPointF endPoint);
     void cancelPolyline();
