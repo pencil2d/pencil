@@ -311,7 +311,6 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_EXPORT_IMAGE_SEQ, ShortcutsPage::tr("Export Image Sequence", "Shortcut")},
         {CMD_EXPORT_MOVIE, ShortcutsPage::tr("Export Movie", "Shortcut")},
         {CMD_EXPORT_PALETTE, ShortcutsPage::tr("Export Palette", "Shortcut")},
-        {CMD_EXPORT_SOUND, ShortcutsPage::tr("Export Sound", "Shortcut")},
         {CMD_FLIP_HORIZONTAL, ShortcutsPage::tr("View: Horizontal Flip", "Shortcut")},
         {CMD_FLIP_VERTICAL, ShortcutsPage::tr("View: Vertical Flip", "Shortcut")},
         {CMD_FLIP_INBETWEEN, ShortcutsPage::tr("Flip In-Between", "Shortcut")},
