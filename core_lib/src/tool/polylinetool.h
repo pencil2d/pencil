@@ -52,7 +52,7 @@ public:
 
 private:
     QList<QPointF> mPoints;
-    bool mClosed = false;
+    bool mClosedOverride = false;
 
     void drawPolyline(QList<QPointF> points, QPointF endPoint);
     void cancelPolyline();

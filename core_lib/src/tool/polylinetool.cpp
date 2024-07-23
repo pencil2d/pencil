@@ -204,7 +204,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     switch (event->key())
     {
     case Qt::Key_Control:
-        mClosed = true;
+        mClosedOverride = true;
         drawPolyline(mPoints, getCurrentPoint());
         return true;
         break;
@@ -238,7 +238,7 @@ bool PolylineTool::keyReleaseEvent(QKeyEvent* event)
     switch (event->key())
     {
     case Qt::Key_Control:
-        mClosed = false;
+        mClosedOverride = false;
         drawPolyline(mPoints, getCurrentPoint());
         return true;
         break;
@@ -273,7 +273,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         }
         tempPath.lineTo(endPoint);
 
-        if (mClosed && points.size() > 1)
+        if (mClosedOverride && points.size() > 1)
         {
             tempPath.closeSubpath();
         }
