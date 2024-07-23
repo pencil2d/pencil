@@ -379,6 +379,7 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_TOOL_SELECT, ShortcutsPage::tr("Select Tool", "Shortcut")},
         {CMD_TOOL_SMUDGE, ShortcutsPage::tr("Smudge Tool", "Shortcut")},
         {CMD_UNDO, ShortcutsPage::tr("Undo", "Shortcut")},
+        {CMD_REMOVE_LAST_POLYLINE_SEGMENT, ShortcutsPage::tr("Remove Last Polyline Segment", "Shortcut")},
         {CMD_ZOOM_100, ShortcutsPage::tr("Set Zoom to 100%", "Shortcut")},
         {CMD_ZOOM_200, ShortcutsPage::tr("Set Zoom to 200%", "Shortcut")},
         {CMD_ZOOM_25, ShortcutsPage::tr("Set Zoom to 25%", "Shortcut")},

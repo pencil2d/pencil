@@ -134,6 +134,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_EXPORT_PALETTE "CmdExportPalette"
 #define CMD_EXPORT_SOUND "CmdExportSound"
 #define CMD_UNDO "CmdUndo"
+#define CMD_REMOVE_LAST_POLYLINE_SEGMENT "CmdRemoveLastPolylineSegment"
 #define CMD_REDO "CmdRedo"
 #define CMD_CUT "CmdCut"
 #define CMD_COPY "CmdCopy"

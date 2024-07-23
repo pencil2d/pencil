@@ -1282,6 +1282,14 @@
     <string>30°</string>
    </property>
   </action>
+  <action name="actionRemoveLastPolylineSegment">
+   <property name="text">
+    <string>Remove Last Polyline Segment</string>
+   </property>
+   <property name="toolTip">
+    <string>Removes the lastest Polyline segment</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
