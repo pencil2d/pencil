@@ -1165,6 +1165,7 @@ void MainWindow2::setupKeyboardShortcuts()
         return keySequence;
     };
 
+    // File menu
     ui->actionNew->setShortcut(cmdKeySeq(CMD_NEW_FILE));
     ui->actionOpen->setShortcut(cmdKeySeq(CMD_OPEN_FILE));
     ui->actionSave->setShortcut(cmdKeySeq(CMD_SAVE_FILE));
@@ -1172,14 +1173,18 @@ void MainWindow2::setupKeyboardShortcuts()
 
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
+    ui->actionImport_ImageSeqNum->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_PREDEFINED_SET));
     ui->actionImport_MovieVideo->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_VIDEO));
+    ui->actionImport_AnimatedImage->setShortcut(cmdKeySeq(CMD_IMPORT_ANIMATED_IMAGE));
+    ui->actionImportLayers_from_pclx->setShortcut(cmdKeySeq(CMD_IMPORT_LAYERS));
+    ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
     ui->actionImport_MovieAudio->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_AUDIO));
     ui->actionImport_Append_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
-    ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
 
     ui->actionExport_Image->setShortcut(cmdKeySeq(CMD_EXPORT_IMAGE));
     ui->actionExport_ImageSeq->setShortcut(cmdKeySeq(CMD_EXPORT_IMAGE_SEQ));
     ui->actionExport_Movie->setShortcut(cmdKeySeq(CMD_EXPORT_MOVIE));
+    ui->actionExport_Animated_GIF->setShortcut(cmdKeySeq(CMD_EXPORT_GIF));
     ui->actionExport_Palette->setShortcut(cmdKeySeq(CMD_EXPORT_PALETTE));
 
     // edit menu
@@ -1194,10 +1199,12 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionFlip_Y->setShortcut(cmdKeySeq(CMD_SELECTION_FLIP_VERTICAL));
     ui->actionSelect_All->setShortcut(cmdKeySeq(CMD_SELECT_ALL));
     ui->actionDeselect_All->setShortcut(cmdKeySeq(CMD_DESELECT_ALL));
+    ui->actionPegbarAlignment->setShortcut(cmdKeySeq(CMD_PEGBAR_ALIGNMENT));
     ui->actionPreference->setShortcut(cmdKeySeq(CMD_PREFERENCE));
 
     // View menu
     ui->actionResetWindows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
+    ui->actionLockWindows->setShortcut(cmdKeySeq(CMD_LOCK_WINDOWS));
     ui->actionReset_View->setShortcut(cmdKeySeq(CMD_RESET_ZOOM_ROTATE));
     ui->actionCenter_View->setShortcut(cmdKeySeq(CMD_CENTER_VIEW));
     ui->actionZoom_In->setShortcut(cmdKeySeq(CMD_ZOOM_IN));
@@ -1216,12 +1223,20 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
     ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));
     ui->actionGrid->setShortcut(cmdKeySeq(CMD_GRID));
+    ui->actionCenter->setShortcut(cmdKeySeq(CMD_OVERLAY_CENTER));
+    ui->actionThirds->setShortcut(cmdKeySeq(CMD_OVERLAY_THIRDS));
+    ui->actionGoldenRatio->setShortcut(cmdKeySeq(CMD_OVERLAY_GOLDEN_RATIO));
+    ui->actionSafeAreas->setShortcut(cmdKeySeq(CMD_OVERLAY_SAFE_AREAS));
+    ui->actionOnePointPerspective->setShortcut(cmdKeySeq(CMD_OVERLAY_ONE_POINT_PERSPECTIVE));
+    ui->actionTwoPointPerspective->setShortcut(cmdKeySeq(CMD_OVERLAY_TWO_POINT_PERSPECTIVE));
+    ui->actionThreePointPerspective->setShortcut(cmdKeySeq(CMD_OVERLAY_THREE_POINT_PERSPECTIVE));
     ui->actionOnionPrev->setShortcut(cmdKeySeq(CMD_ONIONSKIN_PREV));
     ui->actionOnionNext->setShortcut(cmdKeySeq(CMD_ONIONSKIN_NEXT));
     ui->actionStatusBar->setShortcut(cmdKeySeq(CMD_TOGGLE_STATUS_BAR));
 
     ui->actionPlay->setShortcut(cmdKeySeq(CMD_PLAY));
     ui->actionLoop->setShortcut(cmdKeySeq(CMD_LOOP));
+    ui->actionLoopControl->setShortcut(cmdKeySeq(CMD_LOOP_CONTROL));
     ui->actionPrevious_Frame->setShortcut(cmdKeySeq(CMD_GOTO_PREV_FRAME));
     ui->actionNext_Frame->setShortcut(cmdKeySeq(CMD_GOTO_NEXT_FRAME));
     ui->actionPrev_KeyFrame->setShortcut(cmdKeySeq(CMD_GOTO_PREV_KEY_FRAME));
@@ -1250,6 +1265,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionBucket->setShortcut(cmdKeySeq(CMD_TOOL_BUCKET));
     ui->actionEyedropper->setShortcut(cmdKeySeq(CMD_TOOL_EYEDROPPER));
     ui->actionEraser->setShortcut(cmdKeySeq(CMD_TOOL_ERASER));
+    ui->actionResetToolsDefault->setShortcut(cmdKeySeq(CMD_RESET_ALL_TOOLS));
 
     ui->actionMove->installEventFilter(shortcutFilter);
     ui->actionMove->installEventFilter(shortcutFilter);
@@ -1269,6 +1285,8 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionNew_Camera_Layer->setShortcut(cmdKeySeq(CMD_NEW_CAMERA_LAYER));
     ui->actionNew_Sound_Layer->setShortcut(cmdKeySeq(CMD_NEW_SOUND_LAYER));
     ui->actionDelete_Current_Layer->setShortcut(cmdKeySeq(CMD_DELETE_CUR_LAYER));
+    ui->actionChangeLineColorCurrent_keyframe->setShortcut(cmdKeySeq(CMD_CHANGE_LINE_COLOR_KEYFRAME));
+    ui->actionChangeLineColorAll_keyframes_on_layer->setShortcut(cmdKeySeq(CMD_CHANGE_LINE_COLOR_LAYER));
 
     ui->actionVisibilityCurrentLayerOnly->setShortcut(cmdKeySeq(CMD_CURRENT_LAYER_VISIBILITY));
     ui->actionVisibilityRelative->setShortcut(cmdKeySeq(CMD_RELATIVE_LAYER_VISIBILITY));
