@@ -66,7 +66,7 @@ void PolylineTool::resetToDefault()
 {
     setWidth(8.0);
     setBezier(false);
-    setClosed(false);
+    setClosedPath(false);
 }
 
 void PolylineTool::setWidth(const qreal width)
@@ -207,7 +207,7 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     switch (event->key())
     {
     case Qt::Key_Control:
-        mClosedOverride = true;
+        mClosedPathOverrideEnabled = true;
         drawPolyline(mPoints, getCurrentPoint());
         return true;
         break;
@@ -241,7 +241,7 @@ bool PolylineTool::keyReleaseEvent(QKeyEvent* event)
     switch (event->key())
     {
     case Qt::Key_Control:
-        mClosedOverride = false;
+        mClosedPathOverrideEnabled = false;
         drawPolyline(mPoints, getCurrentPoint());
         return true;
         break;
@@ -277,7 +277,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         tempPath.lineTo(endPoint);
 
         // Ctrl key inverts closed behavior while held (XOR)
-        if ((properties.closedPolylinePath == !mClosedOverride) && points.size() > 1)
+        if ((properties.closedPolylinePath == !mClosedPathOverrideEnabled) && points.size() > 1)
         {
             tempPath.closeSubpath();
         }

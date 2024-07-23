@@ -206,7 +206,7 @@ void ToolManager::setBezier(bool isBezierOn)
 
 void ToolManager::setClosedPath(bool isPathClosed)
 {
-    currentTool()->setClosed(isPathClosed);
+    currentTool()->setClosedPath(isPathClosed);
     emit toolPropertyChanged(currentTool()->type(), CLOSEDPATH);
 }
 

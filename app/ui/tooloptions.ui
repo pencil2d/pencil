@@ -193,7 +193,7 @@
           <string>Close Polyline path (hold Ctrl to temporarily invert)</string>
          </property>
          <property name="text">
-          <string>Closed</string>
+          <string>Closed Path</string>
          </property>
         </widget>
        </item>

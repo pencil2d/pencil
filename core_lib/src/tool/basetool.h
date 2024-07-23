@@ -110,7 +110,7 @@ public:
     virtual void setFeather(const qreal feather);
     virtual void setInvisibility(const bool invisibility);
     virtual void setBezier(const bool bezier_state);
-    virtual void setClosed(const bool closed);
+    virtual void setClosedPath(const bool closed);
     virtual void setPressure(const bool pressure);
     virtual void setUseFeather(const bool usingFeather);
     virtual void setPreserveAlpha(const bool preserveAlpha);

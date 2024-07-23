@@ -149,9 +149,9 @@ void BaseTool::setBezier(const bool _bezier_state)
     properties.bezier_state = _bezier_state;
 }
 
-void BaseTool::setClosed(const bool _closed)
+void BaseTool::setClosedPath(const bool closed)
 {
-    properties.closedPolylinePath = _closed;
+    properties.closedPolylinePath = closed;
 }
 
 void BaseTool::setPressure(const bool pressure)
