@@ -880,8 +880,7 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
 {
     QRgb oldColor = targetImage->constScanLine(point.x(), point.y());
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
-    QRect borderBounds = searchBounds.intersected(maxBounds);
-    searchBounds = searchBounds.adjusted(-1, -1, 1, 1).intersected(maxBounds);
+    searchBounds = searchBounds.adjusted(-1, -1, 1, 1).united(maxBounds);
 
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
@@ -921,7 +920,7 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
         int yCoord = point.y() - maxBounds.top();
 
         // In case we fill outside the searchBounds, expand the search area to the max.
-        if (!borderBounds.contains(point)) {
+        if (!searchBounds.contains(point)) {
             checkOutside = true;
         }
 
