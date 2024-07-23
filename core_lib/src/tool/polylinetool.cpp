@@ -45,6 +45,7 @@ void PolylineTool::loadSettings()
 
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[BEZIER] = true;
+    mPropertyEnabled[CLOSEDPATH] = true;
     mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -54,6 +55,7 @@ void PolylineTool::loadSettings()
     properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
+    properties.closedPolylinePath = settings.value("closedPolylinePath").toBool();
     properties.useAA = settings.value("brushAA").toBool();
     properties.stabilizerLevel = -1;
 
@@ -64,6 +66,7 @@ void PolylineTool::resetToDefault()
 {
     setWidth(8.0);
     setBezier(false);
+    setClosed(false);
 }
 
 void PolylineTool::setWidth(const qreal width)
@@ -273,7 +276,8 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         }
         tempPath.lineTo(endPoint);
 
-        if (mClosedOverride && points.size() > 1)
+        // Ctrl key inverts closed behavior while held (XOR)
+        if ((properties.closedPolylinePath == !mClosedOverride) && points.size() > 1)
         {
             tempPath.closeSubpath();
         }

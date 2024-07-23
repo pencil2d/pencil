@@ -93,6 +93,7 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     auto toolManager = editor->tools();
 
     connect(ui->useBezierBox, &QCheckBox::clicked, toolManager, &ToolManager::setBezier);
+    connect(ui->useClosedBox, &QCheckBox::clicked, toolManager, &ToolManager::setClosedPath);
     connect(ui->usePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure);
     connect(ui->makeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility);
     connect(ui->preserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha);
@@ -139,6 +140,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case FILLCONTOUR: setFillContour(p.useFillContour); break;
     case SHOWSELECTIONINFO: setShowSelectionInfo(p.showSelectionInfo); break;
     case BEZIER: setBezier(p.bezier_state); break;
+    case CLOSEDPATH: setClosedPath(p.closedPolylinePath); break;
     case CAMERAPATH: { break; }
     case TOLERANCE: break;
     case USETOLERANCE: break;
@@ -180,6 +182,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->featherSpinBox->setVisible(tool->isPropertyEnabled(FEATHER));
     ui->useFeatherBox->setVisible(tool->isPropertyEnabled(USEFEATHER));
     ui->useBezierBox->setVisible(tool->isPropertyEnabled(BEZIER));
+    ui->useClosedBox->setVisible(tool->isPropertyEnabled(CLOSEDPATH));
     ui->usePressureBox->setVisible(tool->isPropertyEnabled(PRESSURE));
     ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
     ui->preserveAlphaBox->setVisible(tool->isPropertyEnabled(PRESERVEALPHA));
@@ -345,6 +348,12 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
+void ToolOptionWidget::setClosedPath(bool useClosedPath)
+{
+    QSignalBlocker b(ui->useClosedBox);
+    ui->useClosedBox->setChecked(useClosedPath);
+}
+
 void ToolOptionWidget::setShowSelectionInfo(bool showSelectionInfo)
 {
     QSignalBlocker b(ui->showInfoBox);
@@ -359,6 +368,7 @@ void ToolOptionWidget::disableAllOptions()
     ui->featherSpinBox->hide();
     ui->useFeatherBox->hide();
     ui->useBezierBox->hide();
+    ui->useClosedBox->hide();
     ui->usePressureBox->hide();
     ui->makeInvisibleBox->hide();
     ui->preserveAlphaBox->hide();
