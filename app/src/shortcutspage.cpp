@@ -347,7 +347,7 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_CURRENT_LAYER_VISIBILITY, ShortcutsPage::tr("Show Current Layer Only", "Shortcut")},
         {CMD_RELATIVE_LAYER_VISIBILITY, ShortcutsPage::tr("Show Layers Relative to Current Layer", "Shortcut")},
         {CMD_LOOP, ShortcutsPage::tr("Toggle Loop", "Shortcut")},
-        {CMD_LOOP_CONTROL, ShortcutsPage::tr("Playback range", "Shortcut")},
+        {CMD_LOOP_CONTROL, ShortcutsPage::tr("Toggle Range Playback", "Shortcut")},
         {CMD_MOVE_FRAME_BACKWARD, ShortcutsPage::tr("Move Frame Backward", "Shortcut")},
         {CMD_MOVE_FRAME_FORWARD, ShortcutsPage::tr("Move Frame Forward", "Shortcut")},
         {CMD_NEW_BITMAP_LAYER, ShortcutsPage::tr("New Bitmap Layer", "Shortcut")},
