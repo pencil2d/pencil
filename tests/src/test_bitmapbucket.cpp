@@ -22,7 +22,7 @@ void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRect bounds, 
     QPointF movingPoint = movePoint;
 
     int fillCount = 0;
-    while (moveX < 40) {
+    while (moveX < bounds.width()) {
         moveX++;
         movingPoint.setX(movingPoint.x()+1);
 
@@ -95,7 +95,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         SECTION("When reference is current layer, only transparent color is filled")
         {
             properties.bucketFillReferenceMode = 0;
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 5);
 
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
 
@@ -108,7 +108,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         {
             properties.bucketFillReferenceMode = 1;
 
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 5);
 
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
 
@@ -126,12 +126,12 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         SECTION("When reference is current layer, only pixels matching the fill color are filled"){
             properties.bucketFillReferenceMode = 0;
 
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 5);
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
             image->writeFile(resultsPath + "test2a-first.png");
 
             fillColor = QColor(0,255,0,255);
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 5);
 
             image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
             image->writeFile(resultsPath + "test2a-second.png");
@@ -143,12 +143,12 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         {
             properties.bucketFillReferenceMode = 1;
 
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 5);
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
             image->writeFile(resultsPath + "test3a-first.png");
 
             fillColor = QColor(0,255,0,255);
-            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
+            dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 5);
 
             image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
             image->writeFile(resultsPath + "test3a-second.png");
