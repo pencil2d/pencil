@@ -83,6 +83,7 @@ void ToolOptionWidget::updateUI()
     setStabilizerLevel(p.stabilizerLevel);
     setFillContour(p.useFillContour);
     setShowSelectionInfo(p.showSelectionInfo);
+    setClosedPath(p.closedPolylinePath);
 }
 
 void ToolOptionWidget::createUI()
