@@ -342,6 +342,7 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_IMPORT_ANIMATED_IMAGE, ShortcutsPage::tr("Import Animated Image", "Shortcut")},
         {CMD_IMPORT_LAYERS, ShortcutsPage::tr("Import Layers from project file", "Shortcut")},
         {CMD_IMPORT_PALETTE, ShortcutsPage::tr("Import Palette (Append)", "Shortcut")},
+        {CMD_IMPORT_PALETTE_REPLACE, ShortcutsPage::tr("Import Palette (Replace)", "Shortcut")},
         {CMD_IMPORT_SOUND, ShortcutsPage::tr("Import Sound", "Shortcut")},
         {CMD_ALL_LAYER_VISIBILITY, ShortcutsPage::tr("Show All Layers", "Shortcut")},
         {CMD_CURRENT_LAYER_VISIBILITY, ShortcutsPage::tr("Show Current Layer Only", "Shortcut")},

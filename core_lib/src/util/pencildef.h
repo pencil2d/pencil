@@ -131,6 +131,7 @@ const static int MaxFramesBound = 9999;
 #define CMD_IMPORT_SOUND "CmdImportSound"
 #define CMD_IMPORT_MOVIE_AUDIO "CmdImportMovieAudio"
 #define CMD_IMPORT_PALETTE "CmdImportPalette"
+#define CMD_IMPORT_PALETTE_REPLACE "CmdImportPaletteReplace"
 #define CMD_EXPORT_IMAGE_SEQ "CmdExportImageSequence"
 #define CMD_EXPORT_IMAGE "CmdExportImage"
 #define CMD_EXPORT_MOVIE "CmdExportMovie"
