@@ -193,6 +193,8 @@ void TimeLine::initUI()
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
 
+    connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &TimeLine::currentLayerChanged);
+
     connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange);
     connect(mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
     connect(mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange);
@@ -282,6 +284,25 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     else
     {
         mVScrollbar->event(event);
+    }
+}
+
+void TimeLine::currentLayerChanged(int layerIndex)
+{
+    // invert index so 0 is at the top
+    int idx = mNumLayers - layerIndex - 1;
+    // number of visible layers
+    int height = mNumLayers - mVScrollbar->maximum();
+    // scroll bar position/offset
+    int pos = mVScrollbar->value();
+
+    if (idx < pos) // above visible area
+    {
+        mVScrollbar->setValue(idx);
+    }
+    else if (idx >= pos + height) // below visible area
+    {
+        mVScrollbar->setValue(idx - height + 1);
     }
 }
 

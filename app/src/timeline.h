@@ -38,6 +38,7 @@ public:
     void updateUI() override;
     void updateUICached();
 
+    void currentLayerChanged( int layerIndex );
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );
     void updateLayerView();
