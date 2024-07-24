@@ -188,7 +188,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QCheckBox" name="useClosedBox">
+        <widget class="QCheckBox" name="useClosedPathBox">
          <property name="toolTip">
           <string>Close Polyline path (hold Ctrl to temporarily invert)</string>
          </property>
