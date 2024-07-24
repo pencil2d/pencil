@@ -45,6 +45,7 @@ void PolylineTool::loadSettings()
 
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[BEZIER] = true;
+    mPropertyEnabled[CLOSEDPATH] = true;
     mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -54,6 +55,7 @@ void PolylineTool::loadSettings()
     properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
+    properties.closedPolylinePath = settings.value("closedPolylinePath").toBool();
     properties.useAA = settings.value("brushAA").toBool();
     properties.stabilizerLevel = -1;
 
@@ -64,6 +66,7 @@ void PolylineTool::resetToDefault()
 {
     setWidth(8.0);
     setBezier(false);
+    setClosedPath(false);
 }
 
 void PolylineTool::setWidth(const qreal width)
@@ -91,6 +94,16 @@ void PolylineTool::setAA(const int AA)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("brushAA", AA);
+    settings.sync();
+}
+
+void PolylineTool::setClosedPath(const bool closed)
+{
+    BaseTool::setClosedPath(closed);
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("closedPolylinePath", closed);
     settings.sync();
 }
 
@@ -203,6 +216,12 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {
+    case Qt::Key_Control:
+        mClosedPathOverrideEnabled = true;
+        drawPolyline(mPoints, getCurrentPoint());
+        return true;
+        break;
+
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
@@ -227,6 +246,23 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     return BaseTool::keyPressEvent(event);
 }
 
+bool PolylineTool::keyReleaseEvent(QKeyEvent* event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_Control:
+        mClosedPathOverrideEnabled = false;
+        drawPolyline(mPoints, getCurrentPoint());
+        return true;
+        break;
+
+    default:
+        break;
+    }
+
+    return BaseTool::keyReleaseEvent(event);
+}
+
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
     if (points.size() > 0)
@@ -249,6 +285,12 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
             tempPath = BezierCurve(points).getStraightPath();
         }
         tempPath.lineTo(endPoint);
+
+        // Ctrl key inverts closed behavior while held (XOR)
+        if ((properties.closedPolylinePath == !mClosedPathOverrideEnabled) && points.size() > 1)
+        {
+            tempPath.closeSubpath();
+        }
 
         // Vector otherwise
         if (layer->type() == Layer::VECTOR)
