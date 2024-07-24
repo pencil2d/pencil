@@ -97,6 +97,16 @@ void PolylineTool::setAA(const int AA)
     settings.sync();
 }
 
+void PolylineTool::setClosedPath(const bool closed)
+{
+    BaseTool::setClosedPath(closed);
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("closedPolylinePath", closed);
+    settings.sync();
+}
+
 bool PolylineTool::leavingThisTool()
 {
     StrokeTool::leavingThisTool();
