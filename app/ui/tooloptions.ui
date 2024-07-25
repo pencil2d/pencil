@@ -176,6 +176,16 @@
           </widget>
          </item>
          <item>
+          <widget class="QCheckBox" name="useClosedPathBox">
+           <property name="toolTip">
+            <string>Close Polyline path (hold Ctrl to temporarily invert)</string>
+           </property>
+           <property name="text">
+            <string>Closed Path</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QCheckBox" name="useBezierBox">
            <property name="toolTip">
             <string>Use Bézier curves to create curved lines</string>

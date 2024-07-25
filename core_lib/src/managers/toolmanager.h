@@ -70,6 +70,7 @@ public slots:
     void setPreserveAlpha(bool);
     void setVectorMergeEnabled(bool);
     void setBezier(bool);
+    void setClosedPath(bool);
     void setPressure(bool);
     void setAA(int);
     void setFillMode(int);

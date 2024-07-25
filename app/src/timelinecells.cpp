@@ -1035,6 +1035,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             currentLayer->deselectAll();
                             currentLayer->setFrameSelected(mStartFrameNumber, true);
                             currentLayer->extendSelectionTo(mFramePosMoveX);
+                            emit mEditor->selectedFramesChanged();
                         }
                         mLastFrameNumber = mFramePosMoveX;
                         updateContent();
@@ -1129,8 +1130,11 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks && (layerNumber != -1) && (frameNumber > 0) && layerNumber < mEditor->object()->getLayerCount())
         {
-            mEditor->scrubTo(frameNumber);
-            emit insertNewKeyFrame();
+            if (!layer->keyExistsWhichCovers(frameNumber))
+            {
+                mEditor->scrubTo(frameNumber);
+                emit insertNewKeyFrame();
+            }
 
             // The release event will toggle the frame on again, so we make sure it gets
             // deselected now instead.
