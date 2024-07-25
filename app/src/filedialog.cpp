@@ -186,6 +186,7 @@ QString FileDialog::saveDialogCaption(FileType fileType)
     case FileType::GIF: return tr("Export Animated GIF");
     case FileType::ANIMATED_IMAGE: return tr("Export animated image");
     case FileType::MOVIE: return tr("Export movie");
+    case FileType::SOUND: return "";
     case FileType::PALETTE: return tr("Export palette");
     }
     return "";
@@ -217,6 +218,7 @@ QString FileDialog::saveFileFilters(FileType fileType)
     case FileType::GIF: return QString("%1 (*.gif)").arg(tr("Animated GIF"));
     case FileType::ANIMATED_IMAGE: return "";
     case FileType::MOVIE: return "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)";
+    case FileType::SOUND: return "";
     case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
     }
     return "";
