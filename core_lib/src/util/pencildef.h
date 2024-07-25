@@ -166,7 +166,6 @@ const static int MaxFramesBound = 9999;
 #define CMD_ZOOM_25 "CmdZoom25"
 #define CMD_FLIP_HORIZONTAL "CmdFlipHorizontal"
 #define CMD_FLIP_VERTICAL "CmdFlipVertical"
-#define CMD_PREVIEW "CmdPreview"
 #define CMD_GRID "CmdGrid"
 #define CMD_OVERLAY_CENTER "CmdOverlayCenter"
 #define CMD_OVERLAY_THIRDS "CmdOverlayThirds"

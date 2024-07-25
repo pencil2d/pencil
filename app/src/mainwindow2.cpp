@@ -68,7 +68,6 @@ GNU General Public License for more details.
 #include "pegbaralignmentdialog.h"
 #include "repositionframesdialog.h"
 
-//#include "preview.h"
 #include "errordialog.h"
 #include "filedialog.h"
 #include "importimageseqdialog.h"
@@ -1222,7 +1221,6 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionReset_Rotation->setShortcut(cmdKeySeq(CMD_RESET_ROTATION));
     ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_FLIP_HORIZONTAL));
     ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
-    ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));
     ui->actionGrid->setShortcut(cmdKeySeq(CMD_GRID));
     ui->actionCenter->setShortcut(cmdKeySeq(CMD_OVERLAY_CENTER));
     ui->actionThirds->setShortcut(cmdKeySeq(CMD_OVERLAY_THIRDS));

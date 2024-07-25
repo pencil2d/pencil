@@ -363,7 +363,6 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_PLAY, ShortcutsPage::tr("Play/Stop", "Shortcut")},
         {CMD_PEGBAR_ALIGNMENT, ShortcutsPage::tr("Peg bar Alignment", "Shortcut")},
         {CMD_PREFERENCE, ShortcutsPage::tr("Preferences", "Shortcut")},
-        {CMD_PREVIEW, ShortcutsPage::tr("Preview", "Shortcut")},
         {CMD_REDO, ShortcutsPage::tr("Redo", "Shortcut")},
         {CMD_REMOVE_FRAME, ShortcutsPage::tr("Remove Frame", "Shortcut")},
         {CMD_RESET_WINDOWS, ShortcutsPage::tr("Reset Windows", "Shortcut")},
