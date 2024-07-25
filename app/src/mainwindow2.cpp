@@ -1286,6 +1286,9 @@ void MainWindow2::setupKeyboardShortcuts()
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
+
+    // Actions not in a menu won't work unless added to a widget
+    addAction(ui->actionRemoveLastPolylineSegment);
 }
 
 void MainWindow2::clearKeyboardShortcuts()
