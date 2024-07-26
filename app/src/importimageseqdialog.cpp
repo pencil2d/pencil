@@ -137,7 +137,7 @@ const PredefinedKeySet ImportImageSeqDialog::generatePredefinedKeySet() const
 
     for (int i = 0; i < filenames.size(); i++)
     {
-        const int& frameIndex = filenames[i].mid(setParams.dot - digits, digits).toInt();
+        const int& frameIndex = filenames[i].midRef(setParams.dot - digits, digits).toInt();
         const QString& absolutePath = folderPath + filenames[i];
 
         keySet.insert(frameIndex, absolutePath);
@@ -263,7 +263,7 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
     {
         if (sList[i].startsWith(prefix) &&
                 sList[i].length() == validLength &&
-                sList[i].mid(sList[i].lastIndexOf(".") - digits, digits).toInt() > 0 &&
+                sList[i].midRef(sList[i].lastIndexOf(".") - digits, digits).toInt() > 0 &&
                 sList[i].endsWith(suffix))
         {
             finalList.append(sList[i]);

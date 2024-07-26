@@ -696,7 +696,7 @@ Status MovieExporter::executeFFMpegPipe(const QString& cmd, const QStringList& a
                 }
                 if(output.startsWith("frame="))
                 {
-                    lastFrameProcessed = framesProcessed = output.mid(6, output.indexOf(' ')).toInt();
+                    lastFrameProcessed = framesProcessed = output.midRef(6, output.indexOf(' ')).toInt();
                 }
             }
 
