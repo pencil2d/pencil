@@ -67,7 +67,7 @@ Status PegBarAligner::align(const QStringList& layers)
             }
             img->moveTopLeft(QPoint(img->left() + (pegX - result.point.x()), img->top() + (pegY - result.point.y())));
 
-            mEditor->frameModified(img->pos());
+            emit mEditor->frameModified(img->pos());
         }
     }
 
