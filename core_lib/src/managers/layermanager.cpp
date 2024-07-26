@@ -139,6 +139,7 @@ void LayerManager::gotoNextLayer()
         currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
         emit currentLayerChanged(editor()->currentLayerIndex());
+        emit currentLayerChangedWithGoto(editor()->currentLayerIndex());
     }
 }
 
@@ -149,6 +150,7 @@ void LayerManager::gotoPreviouslayer()
         currentLayer()->deselectAll();
         editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
         emit currentLayerChanged(editor()->currentLayerIndex());
+        emit currentLayerChangedWithGoto(editor()->currentLayerIndex());
     }
 }
 
