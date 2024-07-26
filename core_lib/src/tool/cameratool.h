@@ -51,7 +51,7 @@ public:
     QCursor cursor() override;
     ToolType type() override { return ToolType::CAMERA; }
 
-    void paint(QPainter& painter, const QRect& blitRect) override;
+    void paint(QPainter& painter, const QRect&) override;
 
     void loadSettings() override;
 

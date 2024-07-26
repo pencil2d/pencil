@@ -438,7 +438,7 @@ void CameraTool::transformView(LayerCamera* layerCamera, CameraMoveType mode, co
     curCam->modification();
 }
 
-void CameraTool::paint(QPainter& painter, const QRect& blitRect)
+void CameraTool::paint(QPainter& painter, const QRect&)
 {
     int frameIndex = mEditor->currentFrame();
     LayerCamera* cameraLayerBelow = static_cast<LayerCamera*>(mEditor->object()->getLayerBelow(mEditor->currentLayerIndex(), Layer::CAMERA));
