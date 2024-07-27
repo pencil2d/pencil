@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "canvascursorpainter.h"
 
 #include <QPainter>
+#include <QtMath>
 
 CanvasCursorPainter::CanvasCursorPainter()
 {
@@ -45,8 +46,14 @@ void CanvasCursorPainter::preparePainter(const CanvasCursorPainterOptions& paint
 {
     mOptions = painterOptions;
     if (mOptions.isAdjusting || mOptions.showCursor) {
-        mOptions.widthRect = viewTransform.mapRect(mOptions.widthRect);
-        mOptions.featherRect = viewTransform.mapRect(mOptions.featherRect);
+        // Apply full transform to center of widthRect, but only apply scale to the rect as a whole
+        // Otherwise, view rotations will result in an incorrect rect size
+        QPointF newCenter = viewTransform.map(mOptions.widthRect.center());
+        qreal scale = qSqrt(qPow(viewTransform.m11(), 2) + qPow(viewTransform.m21(), 2));
+        mOptions.widthRect.setSize(mOptions.widthRect.size() * scale);
+        mOptions.widthRect.moveCenter(newCenter);
+        mOptions.featherRect.setSize(mOptions.featherRect.size() * scale);
+        mOptions.featherRect.moveCenter(newCenter);
     }
 }
 
