@@ -1233,6 +1233,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionOnionNext->setShortcut(cmdKeySeq(CMD_ONIONSKIN_NEXT));
     ui->actionStatusBar->setShortcut(cmdKeySeq(CMD_TOGGLE_STATUS_BAR));
 
+    // Animation menu
     ui->actionPlay->setShortcut(cmdKeySeq(CMD_PLAY));
     ui->actionLoop->setShortcut(cmdKeySeq(CMD_LOOP));
     ui->actionLoopControl->setShortcut(cmdKeySeq(CMD_LOOP_CONTROL));
@@ -1251,6 +1252,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
     ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
     ui->actionFlip_rolling->setShortcut(cmdKeySeq(CMD_FLIP_ROLLING));
+    ui->actionReposition_Selected_Frames->setShortcut(cmdKeySeq(CMD_SELECTION_REPOSITION_FRAMES));
 
     ShortcutFilter* shortcutFilter = new ShortcutFilter(ui->scribbleArea, this);
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
@@ -1279,6 +1281,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionEyedropper->installEventFilter(shortcutFilter);
     ui->actionEraser->installEventFilter(shortcutFilter);
 
+    // Layer menu
     ui->actionNew_Bitmap_Layer->setShortcut(cmdKeySeq(CMD_NEW_BITMAP_LAYER));
     ui->actionNew_Vector_Layer->setShortcut(cmdKeySeq(CMD_NEW_VECTOR_LAYER));
     ui->actionNew_Camera_Layer->setShortcut(cmdKeySeq(CMD_NEW_CAMERA_LAYER));
@@ -1286,6 +1289,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionDelete_Current_Layer->setShortcut(cmdKeySeq(CMD_DELETE_CUR_LAYER));
     ui->actionChangeLineColorCurrent_keyframe->setShortcut(cmdKeySeq(CMD_CHANGE_LINE_COLOR_KEYFRAME));
     ui->actionChangeLineColorAll_keyframes_on_layer->setShortcut(cmdKeySeq(CMD_CHANGE_LINE_COLOR_LAYER));
+    ui->actionChangeLayerOpacity->setShortcut(cmdKeySeq(CMD_CHANGE_LAYER_OPACITY));
 
     ui->actionVisibilityCurrentLayerOnly->setShortcut(cmdKeySeq(CMD_CURRENT_LAYER_VISIBILITY));
     ui->actionVisibilityRelative->setShortcut(cmdKeySeq(CMD_RELATIVE_LAYER_VISIBILITY));
