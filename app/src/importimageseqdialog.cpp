@@ -272,7 +272,7 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
     dot = finalList[0].lastIndexOf(".");
 
     QStringList absolutePaths;
-    for (const QString& fileName : qAsConst(finalList)) {
+    for (const QString& fileName : finalList) {
         absolutePaths << path + fileName;
     }
 
