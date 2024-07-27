@@ -153,7 +153,6 @@ void ToolManager::setWidth(float newWidth)
     }
 
     currentTool()->setWidth(static_cast<qreal>(newWidth));
-    emit penWidthValueChanged(newWidth);
     emit toolPropertyChanged(currentTool()->type(), WIDTH);
 }
 
@@ -165,32 +164,6 @@ void ToolManager::setFeather(float newFeather)
     }
 
     currentTool()->setFeather(static_cast<qreal>(newFeather));
-    emit penFeatherValueChanged(newFeather);
-    emit toolPropertyChanged(currentTool()->type(), FEATHER);
-}
-
-// Temporarily sets the width and feather of tool during Quick Sizing.
-void ToolManager::setTmpWidth(float newWidth)
-{
-    if (std::isnan(newWidth) || newWidth < 0)
-    {
-        newWidth = 1.f;
-    }
-
-    currentTool()->setTmpWidth(static_cast<qreal>(newWidth));
-    emit penWidthValueChanged(newWidth);
-    emit toolPropertyChanged(currentTool()->type(), WIDTH);
-}
-
-void ToolManager::setTmpFeather(float newFeather)
-{
-    if (std::isnan(newFeather) || newFeather < 0)
-    {
-        newFeather = 0.f;
-    }
-
-    currentTool()->setTmpFeather(static_cast<qreal>(newFeather));
-    emit penFeatherValueChanged(newFeather);
     emit toolPropertyChanged(currentTool()->type(), FEATHER);
 }
 
@@ -258,7 +231,6 @@ void ToolManager::setTolerance(int newTolerance)
     newTolerance = qMax(0, newTolerance);
 
     currentTool()->setTolerance(newTolerance);
-    emit toleranceValueChanged(newTolerance);
     emit toolPropertyChanged(currentTool()->type(), TOLERANCE);
 }
 

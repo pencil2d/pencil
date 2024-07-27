@@ -133,17 +133,6 @@ void BaseTool::setFeather(const qreal feather)
     properties.feather = feather;
 }
 
-// Temporarily set the Width and Feather of the tool during Quick Sizing.
-void BaseTool::setTmpWidth(const qreal width)
-{
-    properties.width = width;
-}
-
-void BaseTool::setTmpFeather(const qreal feather)
-{
-    properties.feather = feather;
-}
-
 void BaseTool::setUseFeather(const bool usingFeather)
 {
     properties.useFeather = usingFeather;
