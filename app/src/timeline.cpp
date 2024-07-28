@@ -193,7 +193,7 @@ void TimeLine::initUI()
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
 
-    connect(editor()->layers(), &LayerManager::currentLayerChangedWithGoto, this, &TimeLine::currentLayerChangedWithGoto);
+    connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &TimeLine::currentLayerChanged);
 
     connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange);
     connect(mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
@@ -287,7 +287,7 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     }
 }
 
-void TimeLine::currentLayerChangedWithGoto(int layerIndex)
+void TimeLine::currentLayerChanged(int layerIndex)
 {
     // invert index so 0 is at the top
     int idx = mNumLayers - layerIndex - 1;

@@ -81,7 +81,6 @@ public:
 signals:
     void currentLayerWillChange(int index);
     void currentLayerChanged(int index);
-    void currentLayerChangedWithGoto(int index);
     void layerCountChanged(int count);
     void animationLengthChanged(int length);
     void layerDeleted(int index);
