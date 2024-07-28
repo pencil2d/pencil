@@ -182,7 +182,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
                 selectMan->vectorSelection.add(selectMan->closestCurves());
                 selectMan->vectorSelection.add(selectMan->closestVertices());
 
-                mEditor->frameModified(mEditor->currentFrame());
+                emit mEditor->frameModified(mEditor->currentFrame());
             }
             else
             {

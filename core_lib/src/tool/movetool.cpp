@@ -172,7 +172,7 @@ void MoveTool::pointerReleaseEvent(PointerEvent*)
         return;
 
     mScribbleArea->updateToolCursor();
-    mEditor->frameModified(mEditor->currentFrame());
+    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 void MoveTool::transformSelection(const QPointF& pos, Qt::KeyboardModifiers keyMod)
