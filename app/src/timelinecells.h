@@ -152,6 +152,8 @@ private:
     int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;
 
+    bool mScrollingVertically = false;
+
     bool mCanMoveFrame   = false;
     bool mMovingFrames   = false;
 
