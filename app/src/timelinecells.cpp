@@ -1107,7 +1107,6 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
         emit mouseMovedY(0);
     }
 
-    mScrollingVertically = false;
     primaryButton = Qt::NoButton;
     mEndY = mStartY;
     mTimeLine->scrubbing = false;
@@ -1213,6 +1212,11 @@ void TimeLineCells::vScrollChange(int x)
     mLayerOffset = x;
     mScrollingVertically = true;
     updateContent();
+}
+
+void TimeLineCells::onScrollingVerticallyStopped()
+{
+    mScrollingVertically = false;
 }
 
 void TimeLineCells::setMouseMoveY(int x)

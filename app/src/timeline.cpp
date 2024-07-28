@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include <QLabel>
 #include <QWheelEvent>
 #include <QSlider>
+#include <QTimer>
 
 #include "editor.h"
 #include "layermanager.h"
@@ -191,14 +192,18 @@ void TimeLine::initUI()
     timeLineContent->setLayout(lay);
     setWidget(timeLineContent);
 
+    mScrollingStoppedTimer = new QTimer();
+    mScrollingStoppedTimer->setSingleShot(true);
+
     setWindowFlags(Qt::WindowStaysOnTopHint);
 
     connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &TimeLine::currentLayerChanged);
-
     connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange);
     connect(mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
     connect(mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange);
     connect(mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange);
+    connect(mVScrollbar, &QScrollBar::valueChanged, this, &TimeLine::scrollbarValueChanged);
+    connect(mScrollingStoppedTimer, &QTimer::timeout, mLayerList, &TimeLineCells::onScrollingVerticallyStopped);
 
     connect(splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength);
 
@@ -285,6 +290,12 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     {
         mVScrollbar->event(event);
     }
+}
+
+void TimeLine::scrollbarValueChanged()
+{
+    // After the scrollbar has been updated, prepare to trigger stopped event
+    mScrollingStoppedTimer->start(150);
 }
 
 void TimeLine::currentLayerChanged(int layerIndex)

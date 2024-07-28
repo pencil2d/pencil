@@ -25,6 +25,7 @@ class TimeLineCells;
 class TimeControls;
 
 class QToolButton;
+class QWheelEvent;
 
 
 class TimeLine : public BaseDockWidget
@@ -56,6 +57,8 @@ public:
     void onObjectLoaded();
     void onLayerChanged();
 
+    void scrollbarValueChanged();
+
 signals:
     void selectionChanged();
     void modification();
@@ -77,6 +80,7 @@ signals:
     void onionPrevClick();
     void onionNextClick();
     void playButtonTriggered();
+
 public:
     bool scrubbing = false;
 
@@ -90,6 +94,8 @@ private:
     TimeLineCells* mTracks = nullptr;
     TimeLineCells* mLayerList = nullptr;
     TimeControls* mTimeControls = nullptr;
+
+    QTimer* mScrollingStoppedTimer = nullptr;
 
     QToolButton* mLayerDeleteButton = nullptr;
     int mNumLayers = 0;

@@ -75,6 +75,7 @@ public slots:
     void updateFrame(int frameNumber);
     void hScrollChange(int);
     void vScrollChange(int);
+    void onScrollingVerticallyStopped();
     void setMouseMoveY(int x);
 
 protected:
