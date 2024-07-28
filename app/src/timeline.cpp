@@ -197,12 +197,11 @@ void TimeLine::initUI()
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
 
-    connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &TimeLine::currentLayerChanged);
     connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange);
     connect(mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
     connect(mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange);
     connect(mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange);
-    connect(mVScrollbar, &QScrollBar::valueChanged, this, &TimeLine::scrollbarValueChanged);
+    connect(mVScrollbar, &QScrollBar::valueChanged, this, &TimeLine::onScrollbarValueChanged);
     connect(mScrollingStoppedTimer, &QTimer::timeout, mLayerList, &TimeLineCells::onScrollingVerticallyStopped);
 
     connect(splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength);
@@ -239,7 +238,7 @@ void TimeLine::initUI()
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);
-    connect(layer, &LayerManager::currentLayerChanged, this, &TimeLine::onLayerChanged);
+    connect(layer, &LayerManager::currentLayerChanged, this, &TimeLine::onCurrentLayerChanged);
     mNumLayers = layer->count();
 
     scrubbing = false;
@@ -292,29 +291,10 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     }
 }
 
-void TimeLine::scrollbarValueChanged()
+void TimeLine::onScrollbarValueChanged()
 {
     // After the scrollbar has been updated, prepare to trigger stopped event
     mScrollingStoppedTimer->start(150);
-}
-
-void TimeLine::currentLayerChanged(int layerIndex)
-{
-    // invert index so 0 is at the top
-    int idx = mNumLayers - layerIndex - 1;
-    // number of visible layers
-    int height = mNumLayers - mVScrollbar->maximum();
-    // scroll bar position/offset
-    int pos = mVScrollbar->value();
-
-    if (idx < pos) // above visible area
-    {
-        mVScrollbar->setValue(idx);
-    }
-    else if (idx >= pos + height) // below visible area
-    {
-        mVScrollbar->setValue(idx - height + 1);
-    }
 }
 
 void TimeLine::updateFrame(int frameNumber)
@@ -390,7 +370,27 @@ void TimeLine::onObjectLoaded()
     updateLayerNumber(editor()->layers()->count());
 }
 
-void TimeLine::onLayerChanged()
+void TimeLine::onCurrentLayerChanged()
 {
+    updateVerticalScrollbarPosition();
     mLayerDeleteButton->setEnabled(editor()->layers()->canDeleteLayer(editor()->currentLayerIndex()));
+}
+
+void TimeLine::updateVerticalScrollbarPosition()
+{
+    // invert index so 0 is at the top
+    int idx = mNumLayers - editor()->currentLayerIndex() - 1;
+    // number of visible layers
+    int height = mNumLayers - mVScrollbar->maximum();
+    // scroll bar position/offset
+    int pos = mVScrollbar->value();
+
+    if (idx < pos) // above visible area
+    {
+        mVScrollbar->setValue(idx);
+    }
+    else if (idx >= pos + height) // below visible area
+    {
+        mVScrollbar->setValue(idx - height + 1);
+    }
 }

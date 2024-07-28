@@ -39,7 +39,6 @@ public:
     void updateUI() override;
     void updateUICached();
 
-    void currentLayerChanged( int layerIndex );
     void updateFrame( int frameNumber );
     void updateLayerNumber( int number );
     void updateLayerView();
@@ -55,9 +54,8 @@ public:
     int getRangeUpper();
 
     void onObjectLoaded();
-    void onLayerChanged();
-
-    void scrollbarValueChanged();
+    void onCurrentLayerChanged();
+    void onScrollbarValueChanged();
 
 signals:
     void selectionChanged();
@@ -89,6 +87,8 @@ protected:
     void wheelEvent( QWheelEvent* ) override;
 
 private:
+    void updateVerticalScrollbarPosition();
+
     QScrollBar* mHScrollbar = nullptr;
     QScrollBar* mVScrollbar = nullptr;
     TimeLineCells* mTracks = nullptr;
