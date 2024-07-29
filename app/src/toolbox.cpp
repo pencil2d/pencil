@@ -169,8 +169,6 @@ void ToolBoxWidget::initUI()
 
     QSettings settings(PENCIL2D, PENCIL2D);
     restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
-
-    ui->scrollArea->setMinimumHeight(getMinHeightForWidth(width()));
 }
 
 void ToolBoxWidget::updateUI()
@@ -191,7 +189,7 @@ int ToolBoxWidget::getMinHeightForWidth(int width)
     if (mDockArea != Qt::LeftDockWidgetArea && mDockArea != Qt::RightDockWidgetArea) {
         return ui->scrollAreaWidgetContents_2->layout()->heightForWidth(width);
     }
-    return BaseDockWidget::getMinHeightForWidth(width);
+    return 1;
 }
 
 void ToolBoxWidget::onToolSetActive(ToolType toolType)

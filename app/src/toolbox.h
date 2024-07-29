@@ -68,7 +68,7 @@ private:
 
     Ui::ToolBoxWidget* ui = nullptr;
 
-    Qt::DockWidgetArea mDockArea;
+    Qt::DockWidgetArea mDockArea = Qt::DockWidgetArea::LeftDockWidgetArea;
 };
 
 #endif
