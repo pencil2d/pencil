@@ -88,7 +88,6 @@ HEADERS += \
     src/shortcutspage.h \
     src/timelinepage.h \
     src/toolspage.h \
-    src/preview.h \
     src/basedockwidget.h \
     src/colorbox.h \
     src/colorinspector.h \
@@ -140,7 +139,6 @@ SOURCES += \
     src/shortcutspage.cpp \
     src/timelinepage.cpp \
     src/toolspage.cpp \
-    src/preview.cpp \
     src/basedockwidget.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \
