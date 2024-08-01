@@ -108,6 +108,7 @@ public:
 
     virtual void setWidth(const qreal width);
     virtual void setFeather(const qreal feather);
+
     virtual void setInvisibility(const bool invisibility);
     virtual void setBezier(const bool bezier_state);
     virtual void setClosedPath(const bool closed);

@@ -1083,7 +1083,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             updateContent();
         }
     }
-    if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
+    if (mType == TIMELINE_CELL_TYPE::Layers && !mScrollingVertically && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {
         mToLayer = getInbetweenLayerNumber(event->pos().y());
         if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
@@ -1210,7 +1210,13 @@ void TimeLineCells::hScrollChange(int x)
 void TimeLineCells::vScrollChange(int x)
 {
     mLayerOffset = x;
+    mScrollingVertically = true;
     updateContent();
+}
+
+void TimeLineCells::onScrollingVerticallyStopped()
+{
+    mScrollingVertically = false;
 }
 
 void TimeLineCells::setMouseMoveY(int x)

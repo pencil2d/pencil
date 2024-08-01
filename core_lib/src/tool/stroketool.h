@@ -113,6 +113,12 @@ protected:
     StrokeInterpolator mInterpolator;
 
     const UndoSaveState* mUndoSaveState = nullptr;
+
+private:
+    /// Sets the width value without calling settings to store the state
+    void setTemporaryWidth(qreal width);
+    /// Sets the feather value, without calling settings to store the state
+    void setTemporaryFeather(qreal feather);
 };
 
 #endif // STROKETOOL_H

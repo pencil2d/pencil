@@ -75,6 +75,7 @@ public slots:
     void updateFrame(int frameNumber);
     void hScrollChange(int);
     void vScrollChange(int);
+    void onScrollingVerticallyStopped();
     void setMouseMoveY(int x);
 
 protected:
@@ -151,6 +152,8 @@ private:
     int mFrameOffset = 0;
     int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;
+
+    bool mScrollingVertically = false;
 
     bool mCanMoveFrame   = false;
     bool mMovingFrames   = false;
