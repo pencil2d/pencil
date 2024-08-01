@@ -222,7 +222,7 @@ void Editor::copyAndCut()
         for (int pos : currentLayer->selectedKeyFramesPositions()) {
             currentLayer->removeKeyFrame(pos);
         }
-        layers()->currentLayerChanged(currentLayerIndex());
+        emit layers()->currentLayerChanged(currentLayerIndex());
         emit updateTimeLine();
         return;
     }

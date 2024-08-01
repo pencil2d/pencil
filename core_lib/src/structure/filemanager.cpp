@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "fileformat.h"
 #include "object.h"
 #include "layercamera.h"
+#include "util/util.h"
 
 FileManager::FileManager(QObject* parent) : QObject(parent)
 {
@@ -561,7 +562,7 @@ int FileManager::countExistingBackups(const QString& fileName) const
     const QString& baseName = fileInfo.completeBaseName();
 
     int backupCount = 0;
-    for (QFileInfo dirFileInfo : directory.entryInfoList(QDir::Filter::Files)) {
+    for (const QFileInfo &dirFileInfo : directory.entryInfoList(QDir::Filter::Files)) {
         QString searchFileBaseName = dirFileInfo.completeBaseName();
         if (baseName.compare(searchFileBaseName) == 0 && searchFileBaseName.contains(PFF_BACKUP_IDENTIFIER)) {
             backupCount++;
@@ -612,8 +613,8 @@ bool FileManager::loadPalette(Object* obj)
 {
     FILEMANAGER_LOG("Load Palette..");
 
-    QString paletteFilePath = QDir(obj->dataDir()).filePath(PFF_PALETTE_FILE);
-    if (!obj->importPalette(paletteFilePath))
+    QString paletteFilePath = validateDataPath(PFF_PALETTE_FILE, obj->dataDir());
+    if (paletteFilePath.isEmpty() || !obj->importPalette(paletteFilePath))
     {
         obj->loadDefaultPalette();
     }

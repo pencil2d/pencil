@@ -99,8 +99,11 @@ create_package_macos() {
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
   local arch=`uname -m`
-  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-${arch}-$3.zip" Pencil2D
-  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-${arch}-$3" > "${GITHUB_OUTPUT}"
+  local fileinfo="${qtsuffix/-qt5/}-mac-${arch}-$3"
+  mv Pencil2D "pencil2d${fileinfo}"
+  ditto -c -k --sequesterRsrc --keepParent "pencil2d${fileinfo}" "pencil2d${fileinfo}.zip"
+  rm -r "pencil2d${fileinfo}"
+  echo "output-basename=pencil2d${fileinfo}" > "${GITHUB_OUTPUT}"
 }
 
 create_package_windows() {
@@ -165,10 +168,11 @@ create_package_windows() {
   echo "output-basename=pencil2d${qtsuffix/-qt5/}-${platform}-$3" > "${GITHUB_OUTPUT}"
 }
 
-eval "$(grep '^VERSION =' ../util/common.pri | tr -d '[:blank:]')"
-buildversion="${GITHUB_RUN_NUMBER}-$(date +%F)"
+echo "Version: ${VERSION_NUMBER}"
+
+filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%F)"
 if [ "$IS_RELEASE" = "true" ]; then
-  buildversion="${VERSION}"
+  filename_suffix="${VERSION_NUMBER}"
 fi
 
-"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}" "${VERSION}" "${buildversion}"
+"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}" "${VERSION_NUMBER}" "${filename_suffix}"

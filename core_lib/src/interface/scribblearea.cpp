@@ -442,22 +442,22 @@ void ScribbleArea::keyEventForSelection(QKeyEvent* event)
     case Qt::Key_Right:
         selectMan->translate(QPointF(1, 0));
         selectMan->calculateSelectionTransformation();
-        mEditor->frameModified(mEditor->currentFrame());
+        emit mEditor->frameModified(mEditor->currentFrame());
         return;
     case Qt::Key_Left:
         selectMan->translate(QPointF(-1, 0));
         selectMan->calculateSelectionTransformation();
-        mEditor->frameModified(mEditor->currentFrame());
+        emit mEditor->frameModified(mEditor->currentFrame());
         return;
     case Qt::Key_Up:
         selectMan->translate(QPointF(0, -1));
         selectMan->calculateSelectionTransformation();
-        mEditor->frameModified(mEditor->currentFrame());
+        emit mEditor->frameModified(mEditor->currentFrame());
         return;
     case Qt::Key_Down:
         selectMan->translate(QPointF(0, 1));
         selectMan->calculateSelectionTransformation();
-        mEditor->frameModified(mEditor->currentFrame());
+        emit mEditor->frameModified(mEditor->currentFrame());
         return;
     case Qt::Key_Return:
         applyTransformedSelection();

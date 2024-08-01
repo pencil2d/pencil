@@ -42,8 +42,8 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>174</width>
-        <height>355</height>
+        <width>164</width>
+        <height>431</height>
        </rect>
       </property>
       <property name="autoFillBackground">
@@ -184,6 +184,16 @@
          </property>
          <property name="text">
           <string comment="Tool options">Bézier</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QCheckBox" name="useClosedPathBox">
+         <property name="toolTip">
+          <string>Close Polyline path (hold Ctrl to temporarily invert)</string>
+         </property>
+         <property name="text">
+          <string>Closed Path</string>
          </property>
         </widget>
        </item>

@@ -61,7 +61,7 @@ void BackupLegacyBitmapElement::restore(Editor* editor)
 
     selectMan->calculateSelectionTransformation();
 
-    editor->frameModified(this->frame);
+    emit editor->frameModified(this->frame);
 }
 
 void BackupLegacyVectorElement::restore(Editor* editor)
@@ -110,7 +110,7 @@ void BackupLegacyVectorElement::restore(Editor* editor)
     selectMan->setTranslation(translation);
     selectMan->calculateSelectionTransformation();
 
-    editor->frameModified(this->frame);
+    emit editor->frameModified(this->frame);
 
 }
 
@@ -123,7 +123,7 @@ void BackupLegacySoundElement::restore(Editor* editor)
     if (editor->currentFrame() != this->frame) {
         editor->scrubTo(this->frame);
     }
-    editor->frameModified(this->frame);
+    emit editor->frameModified(this->frame);
 
     // TODO: soundclip won't restore if overlapping on first frame
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)

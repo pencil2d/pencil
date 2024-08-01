@@ -31,6 +31,8 @@ jobs:
           #      figure out precisely *which* privileges are needed.
           container: { image: "ubuntu:16.04", options: --privileged }
           qt: 5
+          env:
+            ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
         - name: Qt 5 / macOS x86_64
           os: macos-12
           container:
@@ -73,7 +75,7 @@ jobs:
     name: ${{matrix.name}}
     runs-on: ${{matrix.os}}
     container: ${{matrix.container}}
-
+    env: {ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true}
     steps:
     - name: Install git (Linux)
       # GitHub runners come with git pre-installed, but our "custom" Linux
@@ -101,7 +103,8 @@ jobs:
     - name: Configure build
       run: mkdir build; ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
         -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
-        CONFIG+=PENCIL2D_${{github.ref == 'refs/heads/release' && 'RELEASE' || 'NIGHTLY'}}
+        CONFIG+=PENCIL2D_${{ startsWith(github.ref, 'refs/heads/release/') && 'RELEASE' || 'NIGHTLY' }}
+        VERSION=${{ env.VERSION_NUMBER }}
 
     - name: Build Pencil2D
       working-directory: build

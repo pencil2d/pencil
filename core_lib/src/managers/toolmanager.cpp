@@ -204,6 +204,12 @@ void ToolManager::setBezier(bool isBezierOn)
     emit toolPropertyChanged(currentTool()->type(), BEZIER);
 }
 
+void ToolManager::setClosedPath(bool isPathClosed)
+{
+    currentTool()->setClosedPath(isPathClosed);
+    emit toolPropertyChanged(currentTool()->type(), CLOSEDPATH);
+}
+
 void ToolManager::setPressure(bool isPressureOn)
 {
     currentTool()->setPressure(isPressureOn);

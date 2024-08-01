@@ -23,6 +23,13 @@ PreferencesDialog::PreferencesDialog(QWidget* parent) :
     ui(new Ui::PreferencesDialog)
 {
     ui->setupUi(this);
+
+    for (int i = 0; i < 0 + 1 * ui->contentsWidget->count(); i++) {
+        QListWidgetItem* item = ui->contentsWidget->item(i);
+        // Fill entire width
+        item->setSizeHint({std::numeric_limits<int>::max(),
+                           ui->contentsWidget->visualItemRect(item).height()});
+    }
 }
 
 PreferencesDialog::~PreferencesDialog()

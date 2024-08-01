@@ -15,7 +15,7 @@
   <?elseif $(Edition)="Nightly" ?>
     <?define Name = "Pencil2D Nightly" ?>
     <?define ExeName = "pencil2d-nightly" ?>
-    <?define MsiName = "pencil2d-win$(WordSize)-$(NightlyBuildNumber)-$(NightlyBuildTimestamp)" ?>
+    <?define MsiName = "pencil2d-win$(WordSize)-b$(NightlyBuildNumber)-$(NightlyBuildTimestamp)" ?>
     <?define Version = "0.0.$(NightlyBuildNumber)" ?>
     <?define UpgradeCode = "DB09026E-2975-43BA-BB2E-AACD1715B9C8" ?>
   <?else?>
