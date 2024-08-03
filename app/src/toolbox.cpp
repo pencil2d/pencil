@@ -138,12 +138,13 @@ void ToolBoxWidget::initUI()
     connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &ToolBoxWidget::onLayerDidChange);
 
     connect(this, &QDockWidget::dockLocationChanged, this, [=](Qt::DockWidgetArea area) {
-
-        mDockArea = area;
         if (area == Qt::DockWidgetArea::TopDockWidgetArea || area == Qt::BottomDockWidgetArea) {
-            ui->scrollArea->setMinimumHeight(getMinHeightForWidth(width()));
+            const int minimumHeight = ui->scrollAreaWidgetContents_2->layout()->heightForWidth(width());
+            ui->scrollArea->setMinimumHeight(minimumHeight);
+            setMinimumHeight(minimumHeight);
         } else {
-            ui->scrollArea->setMinimumHeight(1);
+            ui->scrollArea->setMinimumHeight(0); // Default value
+            // Don't set own minimum height and let Qt come up with a sensible value
         }
     });
 
@@ -165,8 +166,6 @@ void ToolBoxWidget::initUI()
     ui->scrollAreaWidgetContents_2->setLayout(flowlayout);
     ui->scrollAreaWidgetContents_2->setContentsMargins(0,0,0,0);
 
-    setMinimumHeight(1);
-
     QSettings settings(PENCIL2D, PENCIL2D);
     restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
 }
@@ -177,19 +176,11 @@ void ToolBoxWidget::updateUI()
 
 void ToolBoxWidget::resizeEvent(QResizeEvent* event)
 {
-    BaseDockWidget::resizeEvent(event);
+    QDockWidget::resizeEvent(event);
 
-    if (ui->scrollArea->minimumHeight() <= 0) { return; }
-
-    setMinimumSize(QSize(layout()->minimumSize().width(), ui->scrollArea->minimumHeight()));
-}
-
-int ToolBoxWidget::getMinHeightForWidth(int width)
-{
-    if (mDockArea != Qt::LeftDockWidgetArea && mDockArea != Qt::RightDockWidgetArea) {
-        return ui->scrollAreaWidgetContents_2->layout()->heightForWidth(width);
-    }
-    return 1;
+    const int minimumHeight = ui->scrollArea->minimumHeight();
+    if (minimumHeight <= 0) { return; }
+    setMinimumHeight(minimumHeight);
 }
 
 void ToolBoxWidget::onToolSetActive(ToolType toolType)

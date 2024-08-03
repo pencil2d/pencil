@@ -59,7 +59,6 @@ public slots:
     void smudgeOn();
 
 protected:
-    int getMinHeightForWidth(int width) override;
     void resizeEvent(QResizeEvent* event) override;
 
 private:
@@ -67,8 +66,6 @@ private:
     void toolOn(ToolType toolType, QToolButton* toolButton);
 
     Ui::ToolBoxWidget* ui = nullptr;
-
-    Qt::DockWidgetArea mDockArea = Qt::DockWidgetArea::LeftDockWidgetArea;
 };
 
 #endif
