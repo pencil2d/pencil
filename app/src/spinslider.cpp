@@ -93,6 +93,8 @@ void SpinSlider::setLabel(QString newText)
 
 void SpinSlider::setValue(qreal v)
 {
+    Q_ASSERT(mMin <= v && v <= mMax);
+
     int value2 = 0;
     if (mGrowthType == LINEAR)
     {

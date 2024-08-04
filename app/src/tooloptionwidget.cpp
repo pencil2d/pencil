@@ -72,8 +72,14 @@ void ToolOptionWidget::updateUI()
 
     const Properties& p = currentTool->properties;
 
-    setPenWidth(p.width);
-    setPenFeather(p.feather);
+    if (currentTool->isPropertyEnabled(WIDTH))
+    {
+        setPenWidth(p.width);
+    }
+    if (currentTool->isPropertyEnabled(FEATHER))
+    {
+        setPenFeather(p.feather);
+    }
     setUseFeather(p.useFeather);
     setPressure(p.pressure);
     setPenInvisibility(p.invisibility);
