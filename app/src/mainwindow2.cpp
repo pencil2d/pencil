@@ -50,11 +50,12 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+#include "undoredomanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
-#include "backupelement.h"
+#include "undoredocommand.h"
 
 // app headers
 #include "colorbox.h"
@@ -262,9 +263,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
-    connect(mEditor, &Editor::updateBackup, this, &MainWindow2::undoActSetText);
-    connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
-    connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
+    replaceUndoRedoActions();
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
     connect(ui->actionPaste_Previous, &QAction::triggered, mEditor, &Editor::pasteFromPreviousFrame);
@@ -463,6 +462,16 @@ void MainWindow2::createMenus()
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
 }
 
+void MainWindow2::replaceUndoRedoActions()
+{
+    ui->menuEdit->removeAction(ui->actionUndo);
+    ui->menuEdit->removeAction(ui->actionRedo);
+    ui->actionUndo = mEditor->undoRedo()->createUndoAction(this, ui->actionUndo->icon());
+    ui->actionRedo = mEditor->undoRedo()->createRedoAction(this, ui->actionRedo->icon());
+    ui->menuEdit->insertAction(ui->actionCut, ui->actionUndo);
+    ui->menuEdit->insertAction(ui->actionCut, ui->actionRedo);
+}
+
 void MainWindow2::setOpacity(int opacity)
 {
     mEditor->preference()->set(SETTING::WINDOW_OPACITY, 100 - opacity);
@@ -471,9 +480,15 @@ void MainWindow2::setOpacity(int opacity)
 
 void MainWindow2::updateSaveState()
 {
-    const bool hasUnsavedChanges = mEditor->currentBackup() != mBackupAtSave;
+    const bool hasUnsavedChanges = mEditor->undoRedo()->hasUnsavedChanges();
     setWindowModified(hasUnsavedChanges);
     ui->statusBar->updateModifiedStatus(hasUnsavedChanges);
+}
+
+void MainWindow2::updateBackupActionState()
+{
+    mEditor->undoRedo()->updateUndoAction(ui->actionUndo);
+    mEditor->undoRedo()->updateRedoAction(ui->actionRedo);
 }
 
 void MainWindow2::openPegAlignDialog()
@@ -696,7 +711,7 @@ bool MainWindow2::openObject(const QString& strFilePath)
     progress.setValue(progress.maximum());
 
     updateSaveState();
-    undoActSetText();
+    updateBackupActionState();
 
     if (!QFileInfo(strFilePath).isWritable())
     {
@@ -777,7 +792,6 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     mTimeLine->updateContent();
 
     setWindowTitle(strSavedFileName.prepend("[*]"));
-    mBackupAtSave = mEditor->currentBackup();
     updateSaveState();
 
     progress.setValue(progress.maximum());
@@ -797,7 +811,7 @@ bool MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if (mEditor->currentBackup() == mBackupAtSave)
+    if (!mEditor->undoRedo()->hasUnsavedChanges())
     {
         return true;
     }
@@ -1044,7 +1058,8 @@ void MainWindow2::newObject()
     closeDialogs();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
-    undoActSetText();
+
+    updateBackupActionState();
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
@@ -1069,7 +1084,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
     updateSaveState();
-    undoActSetText();
+    updateBackupActionState();
 
     return true;
 }
@@ -1316,35 +1331,6 @@ void MainWindow2::clearKeyboardShortcuts()
     }
 }
 
-void MainWindow2::undoActSetText()
-{
-    if (mEditor->mBackupIndex < 0)
-    {
-        ui->actionUndo->setText(tr("Undo", "Menu item text"));
-        ui->actionUndo->setEnabled(false);
-    }
-    else
-    {
-        ui->actionUndo->setText(QString("%1   %2 %3").arg(tr("Undo", "Menu item text"))
-                                .arg(mEditor->mBackupIndex + 1)
-                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex)->undoText));
-        ui->actionUndo->setEnabled(true);
-    }
-
-    if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
-    {
-        ui->actionRedo->setText(QString("%1   %2 %3").arg(tr("Redo", "Menu item text"))
-                                .arg(mEditor->mBackupIndex + 2)
-                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
-        ui->actionRedo->setEnabled(true);
-    }
-    else
-    {
-        ui->actionRedo->setText(tr("Redo", "Menu item text"));
-        ui->actionRedo->setEnabled(false);
-    }
-}
-
 void MainWindow2::exportPalette()
 {
     QString filePath = FileDialog::getSaveFileName(this, FileType::PALETTE);
@@ -1400,7 +1386,8 @@ void MainWindow2::openPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
-    connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
+    connect(editor->undoRedo(), &UndoRedoManager::didUpdateUndoStack, this, &MainWindow2::updateSaveState);
+    connect(editor->undoRedo(), &UndoRedoManager::didUpdateUndoStack, this, &MainWindow2::updateBackupActionState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
@@ -1628,7 +1615,7 @@ void MainWindow2::startProjectRecovery(int result)
     Q_ASSERT(o);
     mEditor->setObject(o);
     updateSaveState();
-    undoActSetText();
+    updateBackupActionState();
 
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
@@ -1676,7 +1663,7 @@ void MainWindow2::createToolbars()
     mOverlayToolbar->setIconSize(QSize(22,22));
     mViewToolbar->setIconSize(QSize(22,22));
     mMainToolbar->setIconSize(QSize(22,22));
-    
+
     QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
     perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
     perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);

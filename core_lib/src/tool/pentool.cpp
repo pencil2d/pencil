@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "colormanager.h"
 #include "layermanager.h"
 #include "viewmanager.h"
+#include "undoredomanager.h"
 #include "selectionmanager.h"
 #include "editor.h"
 #include "scribblearea.h"

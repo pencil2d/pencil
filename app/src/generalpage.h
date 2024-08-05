@@ -58,9 +58,15 @@ private slots:
     void backgroundChanged(QAbstractButton* button);
     void frameCacheNumberChanged(int value);
     void invertScrollDirectionBoxStateChanged(int b);
+    void newUndoRedoCheckBoxStateChanged();
+    void undoRedoMaxStepsChanged();
+
+    void undoRedoApplyButtonPressed();
+    void undoRedoCancelButtonPressed();
 
 private:
 
+    bool canApplyOrCancelUndoRedoChanges() const;
     void updateSafeHelperTextEnabledState();
 
     Ui::GeneralPage* ui = nullptr;

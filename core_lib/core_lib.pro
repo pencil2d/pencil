@@ -38,12 +38,13 @@ HEADERS +=  \
     src/graphics/vector/vectorimage.h \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
-    src/interface/backupelement.h \
     src/interface/editor.h \
     src/interface/flowlayout.h \
+    src/interface/legacybackupelement.h \
     src/interface/recentfilemenu.h \
     src/interface/scribblearea.h \
     src/interface/backgroundwidget.h \
+    src/interface/undoredocommand.h \
     src/managers/basemanager.h \
     src/managers/overlaymanager.h \
     src/managers/clipboardmanager.h \
@@ -52,6 +53,7 @@ HEADERS +=  \
     src/managers/layermanager.h \
     src/managers/toolmanager.h \
     src/managers/playbackmanager.h \
+    src/managers/undoredomanager.h \
     src/managers/viewmanager.h \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
@@ -126,12 +128,13 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/vectorimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
-    src/interface/backupelement.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
+    src/interface/legacybackupelement.cpp \
     src/interface/recentfilemenu.cpp \
     src/interface/scribblearea.cpp \
     src/interface/backgroundwidget.cpp \
+    src/interface/undoredocommand.cpp \
     src/managers/basemanager.cpp \
     src/managers/overlaymanager.cpp \
     src/managers/clipboardmanager.cpp \
@@ -141,6 +144,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/toolmanager.cpp \
     src/managers/preferencemanager.cpp \
     src/managers/playbackmanager.cpp \
+    src/managers/undoredomanager.cpp \
     src/managers/viewmanager.cpp \
     src/managers/soundmanager.cpp \
     src/movieimporter.cpp \
