@@ -264,6 +264,7 @@ void MainWindow2::createMenus()
     //--- Edit Menu ---
     connect(mEditor, &Editor::updateBackup, this, &MainWindow2::undoActSetText);
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
+    connect(ui->actionRemoveLastPolylineSegment, &QAction::triggered, mEditor, &Editor::removeLastPolylineSegment);
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
@@ -1190,6 +1191,7 @@ void MainWindow2::setupKeyboardShortcuts()
     // edit menu
     ui->actionUndo->setShortcut(cmdKeySeq(CMD_UNDO));
     ui->actionRedo->setShortcut(cmdKeySeq(CMD_REDO));
+    ui->actionRemoveLastPolylineSegment->setShortcut(cmdKeySeq(CMD_REMOVE_LAST_POLYLINE_SEGMENT));
     ui->actionCut->setShortcut(cmdKeySeq(CMD_CUT));
     ui->actionCopy->setShortcut(cmdKeySeq(CMD_COPY));
     ui->actionPaste_Previous->setShortcut(cmdKeySeq(CMD_PASTE_FROM_PREVIOUS));
@@ -1305,6 +1307,9 @@ void MainWindow2::setupKeyboardShortcuts()
 
     ui->actionHelp->setShortcut(cmdKeySeq(CMD_HELP));
     ui->actionExit->setShortcut(cmdKeySeq(CMD_EXIT));
+
+    // Actions not in a menu won't work unless added to a widget
+    addAction(ui->actionRemoveLastPolylineSegment);
 }
 
 void MainWindow2::clearKeyboardShortcuts()
