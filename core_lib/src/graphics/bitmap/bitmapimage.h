@@ -80,7 +80,7 @@ public:
 
     static bool floodFill(BitmapImage** replaceImage, const BitmapImage* targetImage, const QRect& cameraRect, const QPoint& point, const QRgb& fillColor, int tolerance, const int expandValue);
     static bool* floodFillPoints(const BitmapImage* targetImage,
-                                QRect searchBounds, const QRect& maxBounds,
+                                const QRect& searchBounds,
                                 QPoint point,
                                 const int tolerance,
                                 QRect& newBounds,
