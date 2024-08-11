@@ -24,10 +24,15 @@ GNU General Public License for more details.
 
 class TiledBuffer;
 
-
 class BitmapImage : public KeyFrame
 {
 public:
+    const QRgb transp = qRgba(0, 0, 0, 0);
+    const QRgb blackline = qRgba(1, 1, 1, 255);
+    const QRgb redline = qRgba(254,0,0,255);
+    const QRgb greenline = qRgba(0,254,0,255);
+    const QRgb blueline = qRgba(0,0,254,255);
+
     BitmapImage();
     BitmapImage(const BitmapImage&);
     BitmapImage(const QRect &rectangle, const QColor& color);
@@ -103,6 +108,7 @@ public:
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
 
+    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool redEnabled, bool greenEnabled, bool blueEnabled);
 
     QRect& bounds() { autoCrop(); return mBounds; }
 
@@ -123,6 +129,8 @@ public:
 
     Status writeFile(const QString& filename);
 
+public slots:
+    void setThreshold(int threshold) { mThreshold = threshold; }
     /** Compare colors for the purposes of flood filling
      *
      *  Calculates the Eulcidian difference of the RGB channels
@@ -180,6 +188,12 @@ private:
     /** @see isMinimallyBounded() */
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
+
+    int mThreshold = 200;
+    const int mLowThreshold = 30;   // threshold for images to be given transparency
+    const int COLORDIFF = 5; // difference in color values to decide color
+    const int GRAYSCALEDIFF = 15; // difference in grasycale values to decide color
+
     qreal mOpacity = 1.0;
 };
 

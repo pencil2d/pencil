@@ -175,7 +175,7 @@ void Editor::onCurrentLayerWillChange(int index)
 
 void Editor::updateAutoSaveCounter()
 {
-    if (mIsAutosave == false)
+    if (mIsAutosave == false || mIsDoingRepeatInColoring)
         return;
 
     mAutosaveCounter++;
@@ -857,6 +857,7 @@ void Editor::scrubTo(int frame)
         emit updateTimeLineCached(); // needs to update the timeline to update onion skin positions
     }
     mObject->updateActiveFrames(frame);
+    emit scrubbedTo(frame);
 }
 
 void Editor::scrubForward()

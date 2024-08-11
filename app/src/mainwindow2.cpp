@@ -67,6 +67,7 @@ GNU General Public License for more details.
 #include "toolbox.h"
 #include "onionskinwidget.h"
 #include "pegbaralignmentdialog.h"
+#include "addtransparencytopaperdialog.h"
 #include "repositionframesdialog.h"
 
 #include "errordialog.h"
@@ -273,6 +274,7 @@ void MainWindow2::createMenus()
     connect(ui->actionFlip_X, &QAction::triggered, mCommands, &ActionCommands::flipSelectionX);
     connect(ui->actionFlip_Y, &QAction::triggered, mCommands, &ActionCommands::flipSelectionY);
     connect(ui->actionPegbarAlignment, &QAction::triggered, this, &MainWindow2::openPegAlignDialog);
+    connect(ui->actionAdd_Transparency_to_paper, &QAction::triggered, this, &MainWindow2::openAddTranspToPaperDialog);
     connect(ui->actionSelect_All, &QAction::triggered, mCommands, &ActionCommands::selectAll);
     connect(ui->actionDeselect_All, &QAction::triggered, mCommands, &ActionCommands::deselectAll);
     connect(ui->actionReposition_Selected_Frames, &QAction::triggered, this, &MainWindow2::openRepositionDialog);
@@ -535,6 +537,26 @@ void MainWindow2::openLayerOpacityDialog()
     {
         mLayerOpacityDialog = nullptr;
     });
+}
+
+void MainWindow2::openAddTranspToPaperDialog()
+{
+    if (mAddTranspToPaper == nullptr)
+    {
+        mAddTranspToPaper = new AddTransparencyToPaperDialog();
+        mAddTranspToPaper->setCore(mEditor);
+        mAddTranspToPaper->initUI();
+        mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
+        mAddTranspToPaper->show();
+
+        connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, [=] {
+            mAddTranspToPaper->deleteLater();
+            mAddTranspToPaper = nullptr;
+        });
+
+    } else {
+        mAddTranspToPaper->raise();
+    }
 }
 
 void MainWindow2::openRepositionDialog()
