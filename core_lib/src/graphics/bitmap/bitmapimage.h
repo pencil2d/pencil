@@ -108,7 +108,7 @@ public:
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
 
-    BitmapImage* scanToTransparent(BitmapImage* bitmapimage, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    BitmapImage* scanToTransparent(BitmapImage* img, bool redEnabled, bool greenEnabled, bool blueEnabled);
 
     QRect& bounds() { autoCrop(); return mBounds; }
 
