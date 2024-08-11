@@ -847,8 +847,6 @@ void Editor::scrubTo(int frame)
     if (frame < 1) { frame = 1; }
     mFrame = frame;
 
-    emit scrubbed(frame);
-
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
     // Will remove all Timeline related code in Editor class.
@@ -857,7 +855,7 @@ void Editor::scrubTo(int frame)
         emit updateTimeLineCached(); // needs to update the timeline to update onion skin positions
     }
     mObject->updateActiveFrames(frame);
-    emit scrubbedTo(frame);
+    emit scrubbed(frame);
 }
 
 void Editor::scrubForward()

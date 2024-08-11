@@ -153,15 +153,10 @@ signals:
     void objectLoaded();
 
     void fpsChanged(int fps);
-    void scrubbedTo(int frame);
 
     void needSave();
     void needDisplayInfo(const QString& title, const QString& body);
     void needDisplayInfoNoTitle(const QString& body);
-
-
-    // Something was updated on the current frame, notify receivers
-    void currentFrameUpdated();
 
     void canCopyChanged(bool enabled);
     void canPasteChanged(bool enabled);

@@ -48,8 +48,7 @@ void AddTransparencyToPaperDialog::initUI()
         this->setEnabled(false);
     loadDrawing(mEditor->currentFrame());
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &AddTransparencyToPaperDialog::layerChanged);
-    connect(mEditor, &Editor::scrubbedTo, this, &AddTransparencyToPaperDialog::updateDrawing);
-    connect(mEditor, &Editor::currentFrameUpdated, this, &AddTransparencyToPaperDialog::updateDrawing);
+    connect(mEditor, &Editor::scrubbed, this, &AddTransparencyToPaperDialog::updateDrawing);
 
     scene.setBackgroundBrush(Qt::white);
     ui->preview->setScene(&scene);
