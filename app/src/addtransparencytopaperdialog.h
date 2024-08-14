@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 
 class Editor;
+class QAbstractButton;
 class QGraphicsPixmapItem;
 
 namespace Ui {
@@ -55,6 +56,7 @@ private slots:
     void layerChanged(int index);
     void checkerStateChanged(bool state);
     void zoomChanged(int zoomLevel);
+    void buttonClicked(QAbstractButton* button);
 
 private:
     void updatePreview();

@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 #include <QGraphicsPixmapItem>
 #include <QProgressDialog>
-#include <QDebug>
+#include <QPushButton>
 
 #include "editor.h"
 #include "layermanager.h"
@@ -33,8 +33,6 @@ AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QDialog *parent) :
     ui(new Ui::AddTransparencyToPaperDialog)
 {
     ui->setupUi(this);
-    ui->mainLayout->setStretchFactor(ui->optionsLayout, 1);
-    ui->mainLayout->setStretchFactor(ui->previewLayout, 20);
 
     connect(this, &QDialog::finished, this, &AddTransparencyToPaperDialog::closeDialog);
     connect(ui->sb_treshold, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AddTransparencyToPaperDialog::SpinboxChanged);
@@ -42,8 +40,7 @@ AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QDialog *parent) :
     connect(ui->cb_Red, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Green, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Blue, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
-    connect(ui->btnCancel, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::closeDialog);
-    connect(ui->btnApply, &QPushButton::clicked, this, &AddTransparencyToPaperDialog::traceScannedDrawings);
+    connect(ui->buttonBox, &QDialogButtonBox::clicked, this, &AddTransparencyToPaperDialog::buttonClicked);
     connect(ui->testTransparencyCheckbox, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::checkerStateChanged);
     connect(ui->zoomSlider, &QSlider::valueChanged, this, &AddTransparencyToPaperDialog::zoomChanged);
 }
@@ -71,7 +68,7 @@ void AddTransparencyToPaperDialog::initUI()
     ui->preview->show();
 
     if (!mBitmap.bounds().isValid()) {
-        ui->btnApply->setEnabled(false);
+        ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(false);
     }
 }
 
@@ -102,6 +99,20 @@ void AddTransparencyToPaperDialog::zoomChanged(int zoomLevel)
 {
     mZoomLevel = zoomLevel;
     updatePreview();
+}
+
+void AddTransparencyToPaperDialog::buttonClicked(QAbstractButton* button)
+{
+    switch (ui->buttonBox->buttonRole(button)) {
+        case QDialogButtonBox::ApplyRole:
+            traceScannedDrawings();
+            return;
+        case QDialogButtonBox::RejectRole:
+            emit closeDialog();
+            return;
+        default:
+            Q_UNREACHABLE();
+    }
 }
 
 void AddTransparencyToPaperDialog::resizeEvent(QResizeEvent*)
@@ -160,7 +171,7 @@ void AddTransparencyToPaperDialog::loadDrawing(int frame)
         mPreviewImageItem->setPixmap(mPixmapFromImage);
     }
 
-    ui->btnApply->setEnabled(true);
+    ui->buttonBox->button(QDialogButtonBox::Apply)->setEnabled(true);
 
     updatePreview();
 }
