@@ -544,16 +544,15 @@ void MainWindow2::openAddTranspToPaperDialog()
     if (mAddTranspToPaper == nullptr)
     {
         mAddTranspToPaper = new AddTransparencyToPaperDialog();
+        mAddTranspToPaper->setAttribute(Qt::WA_DeleteOnClose);
         mAddTranspToPaper->setCore(mEditor);
         mAddTranspToPaper->initUI();
         mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
         mAddTranspToPaper->show();
 
-        connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, [=] {
-            mAddTranspToPaper->deleteLater();
+        connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::finished, [=] {
             mAddTranspToPaper = nullptr;
         });
-
     } else {
         mAddTranspToPaper->raise();
     }

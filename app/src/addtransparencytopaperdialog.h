@@ -42,9 +42,6 @@ public:
 
     void initUI();
 
-signals:
-    void closeDialog();
-
 protected:
     void resizeEvent(QResizeEvent*) override;
 

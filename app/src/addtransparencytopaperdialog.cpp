@@ -34,7 +34,6 @@ AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QDialog *parent) :
 {
     ui->setupUi(this);
 
-    connect(this, &QDialog::finished, this, &AddTransparencyToPaperDialog::closeDialog);
     connect(ui->sb_treshold, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AddTransparencyToPaperDialog::SpinboxChanged);
     connect(ui->sliderThreshold, &QSlider::valueChanged, this, &AddTransparencyToPaperDialog::SliderChanged);
     connect(ui->cb_Red, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
@@ -108,7 +107,7 @@ void AddTransparencyToPaperDialog::buttonClicked(QAbstractButton* button)
             traceScannedDrawings();
             return;
         case QDialogButtonBox::RejectRole:
-            emit closeDialog();
+            reject();
             return;
         default:
             Q_UNREACHABLE();
@@ -270,7 +269,6 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
         mProgress->close();
         mEditor->setIsDoingRepeatColoring(false);
         mEditor->setAutoSaveCounter(count);
+        accept();
     }
-    if (ui->rbAllKeyframes->isChecked())
-        emit closeDialog();
 }
