@@ -22,7 +22,7 @@ void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRect bounds, 
     QPointF movingPoint = movePoint;
 
     int fillCount = 0;
-    while (moveX < 40) {
+    while (moveX < bounds.width()) {
         moveX++;
         movingPoint.setX(movingPoint.x()+1);
 

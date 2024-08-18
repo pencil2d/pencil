@@ -799,39 +799,17 @@ bool BitmapImage::floodFill(BitmapImage** replaceImage,
                             const int expandValue)
 {
     // Fill region must be 1 pixel larger than the target image to fill regions on the edge connected only by transparent pixels
-    const QRect& fillBounds = targetImage->mBounds;
+    const QRect& fillBounds = targetImage->mBounds.adjusted(-1, -1, 1, 1);
     QRect maxBounds = cameraRect.united(fillBounds).adjusted(-expandValue, -expandValue, expandValue, expandValue);
     const int maxWidth = maxBounds.width(), left = maxBounds.left(), top = maxBounds.top();
-
-    // If the point we are supposed to fill is outside the max bounds, do nothing
-    if(!maxBounds.contains(point))
-    {
-        return false;
-    }
 
     // Square tolerance for use with compareColor
     tolerance = static_cast<int>(qPow(tolerance, 2));
 
     QRect newBounds;
-    bool shouldFillBorder = false;
-    bool *filledPixels = floodFillPoints(targetImage, fillBounds, maxBounds, point, tolerance, newBounds, shouldFillBorder);
+    bool *filledPixels = floodFillPoints(targetImage, maxBounds, point, tolerance, newBounds);
 
     QRect translatedSearchBounds = newBounds.translated(-maxBounds.topLeft());
-
-    if (shouldFillBorder)
-    {
-        for (int y = 0; y < maxBounds.height(); y++)
-        {
-            for (int x = 0; x < maxBounds.width(); x++)
-            {
-                if(!translatedSearchBounds.contains(x, y))
-                {
-                    filledPixels[y*maxWidth+x] = true;
-                }
-            }
-        }
-        newBounds = maxBounds;
-    }
 
     // The scanned bounds should take the expansion into account
     const QRect& expandRect = newBounds.adjusted(-expandValue, -expandValue, expandValue, expandValue);
@@ -871,17 +849,13 @@ bool BitmapImage::floodFill(BitmapImage** replaceImage,
 // Flood filling based on this scanline algorithm
 // ----- http://lodev.org/cgtutor/floodfill.html
 bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
-                                   QRect searchBounds,
-                                   const QRect& maxBounds,
+                                   const QRect& searchBounds,
                                    QPoint point,
                                    const int tolerance,
-                                   QRect& newBounds,
-                                   bool& fillBorder)
+                                   QRect& newBounds)
 {
     QRgb oldColor = targetImage->constScanLine(point.x(), point.y());
     oldColor = qRgba(qRed(oldColor), qGreen(oldColor), qBlue(oldColor), qAlpha(oldColor));
-    QRect borderBounds = searchBounds.intersected(maxBounds);
-    searchBounds = searchBounds.adjusted(-1, -1, 1, 1).intersected(maxBounds);
 
     // Preparations
     QList<QPoint> queue; // queue all the pixels of the filled area (as they are found)
@@ -893,19 +867,10 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
     bool spanLeft = false;
     bool spanRight = false;
 
-    if (!searchBounds.contains(point))
-    {
-        // If point is outside the search area, move it anywhere in the 1px transparent border
-        point = searchBounds.topLeft();
-    }
-
     queue.append(point);
     // Preparations END
 
-    bool *filledPixels = new bool[maxBounds.height()*maxBounds.width()]{};
-
-    // True if the algorithm has attempted to fill a pixel outside the search bounds
-    bool checkOutside = false;
+    bool *filledPixels = new bool[searchBounds.height()*searchBounds.width()]{};
 
     BlitRect blitBounds(point);
     while (!queue.empty())
@@ -917,15 +882,10 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
 
         xTemp = point.x();
 
-        int xCoord = xTemp - maxBounds.left();
-        int yCoord = point.y() - maxBounds.top();
+        int xCoord = xTemp - searchBounds.left();
+        int yCoord = point.y() - searchBounds.top();
 
-        // In case we fill outside the searchBounds, expand the search area to the max.
-        if (!borderBounds.contains(point)) {
-            checkOutside = true;
-        }
-
-        if (filledPixels[yCoord*maxBounds.width()+xCoord]) continue;
+        if (filledPixels[yCoord*searchBounds.width()+xCoord]) continue;
 
         while (xTemp >= searchBounds.left() &&
                compareColor(targetImage->constScanLine(xTemp, point.y()), oldColor, tolerance, cache.data())) xTemp--;
@@ -941,9 +901,9 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
                 blitBounds.extend(floodPoint);
             }
 
-            xCoord = xTemp - maxBounds.left();
+            xCoord = xTemp - searchBounds.left();
             // This pixel is what we're going to fill later
-            filledPixels[yCoord*maxBounds.width()+xCoord] = true;
+            filledPixels[yCoord*searchBounds.width()+xCoord] = true;
 
             if (!spanLeft && (point.y() > searchBounds.top()) &&
                 compareColor(targetImage->constScanLine(xTemp, point.y() - 1), oldColor, tolerance, cache.data())) {
@@ -965,12 +925,10 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
                 spanRight = false;
             }
 
-            Q_ASSERT(queue.count() < (maxBounds.width() * maxBounds.height()));
+            Q_ASSERT(queue.count() < (searchBounds.width() * searchBounds.height()));
             xTemp++;
         }
     }
-
-    fillBorder = checkOutside && compareColor(qRgba(0,0,0,0), oldColor, tolerance, cache.data());
 
     newBounds = blitBounds;
 
