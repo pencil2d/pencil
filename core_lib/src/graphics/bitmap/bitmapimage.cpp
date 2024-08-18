@@ -803,12 +803,6 @@ bool BitmapImage::floodFill(BitmapImage** replaceImage,
     QRect maxBounds = cameraRect.united(fillBounds).adjusted(-expandValue, -expandValue, expandValue, expandValue);
     const int maxWidth = maxBounds.width(), left = maxBounds.left(), top = maxBounds.top();
 
-    // If the point we are supposed to fill is outside the max bounds, do nothing
-    if(!maxBounds.contains(point))
-    {
-        return false;
-    }
-
     // Square tolerance for use with compareColor
     tolerance = static_cast<int>(qPow(tolerance, 2));
 
@@ -872,12 +866,6 @@ bool* BitmapImage::floodFillPoints(const BitmapImage* targetImage,
     int xTemp = 0;
     bool spanLeft = false;
     bool spanRight = false;
-
-    if (!searchBounds.contains(point))
-    {
-        // If point is outside the search area, move it anywhere in the 1px transparent border
-        point = searchBounds.topLeft();
-    }
 
     queue.append(point);
     // Preparations END
