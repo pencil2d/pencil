@@ -83,8 +83,7 @@ public:
                                 const QRect& searchBounds,
                                 QPoint point,
                                 const int tolerance,
-                                QRect& newBounds,
-                                 bool &fillBorder);
+                                QRect& newBounds);
     static void expandFill(bool* fillPixels, const QRect& searchBounds, const QRect& maxBounds, int expand);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
