@@ -44,6 +44,7 @@ public:
     void setWidth(const qreal width) override;
     void setFeather(const qreal feather) override;
     void setAA(const int AA) override;
+    void removeLastPolylineSegment() override;
 
     bool leavingThisTool() override;
 
@@ -52,7 +53,6 @@ public:
 private:
     QList<QPointF> mPoints;
 
-    void removeLastSegment();
     void drawPolyline(QList<QPointF> points, QPointF endPoint);
     void cancelPolyline();
     void endPolyline(QList<QPointF> points);

@@ -151,8 +151,6 @@ signals:
     void updateLayerCount();
     void updateBackup();
 
-    void shouldRemoveLastPolylineSegment();
-
     void objectLoaded();
 
     void fpsChanged(int fps);
@@ -213,7 +211,6 @@ public: //slots
 
     void onCurrentLayerWillChange(int index);
     void undo();
-    void removeLastPolylineSegment();
     void redo();
 
     void copy();

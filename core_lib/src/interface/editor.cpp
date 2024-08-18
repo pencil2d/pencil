@@ -478,11 +478,6 @@ void Editor::undo()
     }
 }
 
-void Editor::removeLastPolylineSegment()
-{
-    emit shouldRemoveLastPolylineSegment();
-}
-
 void Editor::redo()
 {
     if (!mBackupList.empty() && mBackupIndex < mBackupList.size() - 2)

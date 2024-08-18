@@ -126,6 +126,7 @@ public:
     virtual void setShowCameraPath(const bool showCameraPath);
     virtual void setPathDotColorType(const DotColorType dotColorType);
     virtual void resetCameraPath();
+    virtual void removeLastPolylineSegment();
 
     virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 

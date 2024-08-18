@@ -265,7 +265,7 @@ void MainWindow2::createMenus()
     //--- Edit Menu ---
     connect(mEditor, &Editor::updateBackup, this, &MainWindow2::undoActSetText);
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
-    connect(ui->actionRemoveLastPolylineSegment, &QAction::triggered, mEditor, &Editor::removeLastPolylineSegment);
+    connect(ui->actionRemoveLastPolylineSegment, &QAction::triggered, mEditor->tools()->getTool(POLYLINE), &BaseTool::removeLastPolylineSegment);
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
