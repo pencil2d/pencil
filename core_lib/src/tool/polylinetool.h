@@ -46,8 +46,8 @@ public:
     void setFeather(const qreal feather) override;
     void setAA(const int AA) override;
     void setClosedPath(const bool closed) override;
-    
-    void removeLastPolylineSegment() override;
+
+    void removeLastPolylineSegment();
 
     bool leavingThisTool() override;
 

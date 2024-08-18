@@ -232,7 +232,3 @@ void BaseTool::setPathDotColorType(const DotColorType dotColorType)
 void BaseTool::resetCameraPath()
 {
 }
-
-void BaseTool::removeLastPolylineSegment()
-{
-}

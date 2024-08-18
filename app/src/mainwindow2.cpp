@@ -40,6 +40,7 @@ GNU General Public License for more details.
 #include "pencilsettings.h"
 #include "object.h"
 #include "editor.h"
+#include "polylinetool.h"
 
 #include "filemanager.h"
 #include "colormanager.h"
@@ -264,7 +265,7 @@ void MainWindow2::createMenus()
     //--- Edit Menu ---
     connect(mEditor, &Editor::updateBackup, this, &MainWindow2::undoActSetText);
     connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
-    connect(ui->actionRemoveLastPolylineSegment, &QAction::triggered, mEditor->tools()->getTool(POLYLINE), &BaseTool::removeLastPolylineSegment);
+    connect(ui->actionRemoveLastPolylineSegment, &QAction::triggered, static_cast<PolylineTool*>(mEditor->tools()->getTool(POLYLINE)), &PolylineTool::removeLastPolylineSegment);
     connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
