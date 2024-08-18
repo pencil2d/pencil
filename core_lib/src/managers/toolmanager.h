@@ -53,10 +53,6 @@ public:
     int propertySwitch(bool condition, int property);
 
 signals:
-    void penWidthValueChanged(float);
-    void penFeatherValueChanged(float);
-    void toleranceValueChanged(qreal);
-
     void toolChanged(ToolType);
     void toolPropertyChanged(ToolType, ToolPropertyType);
 
@@ -65,11 +61,13 @@ public slots:
 
     void setWidth(float);
     void setFeather(float);
+
     void setUseFeather(bool);
     void setInvisibility(bool);
     void setPreserveAlpha(bool);
     void setVectorMergeEnabled(bool);
     void setBezier(bool);
+    void setClosedPath(bool);
     void setPressure(bool);
     void setAA(int);
     void setFillMode(int);

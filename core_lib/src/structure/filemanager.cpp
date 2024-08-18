@@ -562,7 +562,7 @@ int FileManager::countExistingBackups(const QString& fileName) const
     const QString& baseName = fileInfo.completeBaseName();
 
     int backupCount = 0;
-    for (QFileInfo dirFileInfo : directory.entryInfoList(QDir::Filter::Files)) {
+    for (const QFileInfo &dirFileInfo : directory.entryInfoList(QDir::Filter::Files)) {
         QString searchFileBaseName = dirFileInfo.completeBaseName();
         if (baseName.compare(searchFileBaseName) == 0 && searchFileBaseName.contains(PFF_BACKUP_IDENTIFIER)) {
             backupCount++;

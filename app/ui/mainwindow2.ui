@@ -209,7 +209,6 @@
     <addaction name="actionShowInvisibleLines"/>
     <addaction name="actionShowOutlinesOnly"/>
     <addaction name="separator"/>
-    <addaction name="actionPreview"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -562,14 +561,6 @@
    </property>
    <property name="text">
     <string>Vertical Flip</string>
-   </property>
-  </action>
-  <action name="actionPreview">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Preview</string>
    </property>
   </action>
   <action name="actionGrid">

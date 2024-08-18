@@ -25,7 +25,7 @@ struct CanvasCursorPainterOptions
 {
     QRectF widthRect;
     QRectF featherRect;
-    bool isAdjusting;
+    bool isAdjusting = false;
     bool useFeather = false;
     bool showCursor = false;
 };

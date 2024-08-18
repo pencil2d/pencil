@@ -186,7 +186,7 @@ QString FileDialog::saveDialogCaption(FileType fileType)
     case FileType::GIF: return tr("Export Animated GIF");
     case FileType::ANIMATED_IMAGE: return tr("Export animated image");
     case FileType::MOVIE: return tr("Export movie");
-    case FileType::SOUND: return tr("Export sound");
+    case FileType::SOUND: return "";
     case FileType::PALETTE: return tr("Export palette");
     }
     return "";

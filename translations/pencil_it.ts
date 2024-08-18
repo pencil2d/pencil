@@ -43,7 +43,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="89"/>
         <source>Importing Animated Image...</source>
-        <translation type="unfinished"/>
+        <translation>Importazione dell&apos;immagine animata in corso...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="131"/>
@@ -354,7 +354,7 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="30"/>
         <source>Easing: frame %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>Effetto dolce: fotogramma da %1 a %2</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="36"/>
@@ -369,22 +369,22 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="42"/>
         <source>In</source>
-        <translation type="unfinished"/>
+        <translation>Entrata</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="43"/>
         <source>Out</source>
-        <translation type="unfinished"/>
+        <translation>Uscita</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="44"/>
         <source>In-Out</source>
-        <translation type="unfinished"/>
+        <translation>Entrata-Uscita</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="45"/>
         <source>Out-In</source>
-        <translation type="unfinished"/>
+        <translation>Uscita-Entrata</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="47"/>
@@ -399,7 +399,7 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="49"/>
         <source>Quick</source>
-        <translation type="unfinished"/>
+        <translation>Veloce</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="50"/>
@@ -414,17 +414,17 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
         <source>Fastest</source>
-        <translation type="unfinished"/>
+        <translation>Il più veloce</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="53"/>
         <source>Circle-based</source>
-        <translation type="unfinished"/>
+        <translation>Basato sul cerchio</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="54"/>
         <source>Overshoot</source>
-        <translation type="unfinished"/>
+        <translation>Superamento</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="55"/>
@@ -487,202 +487,202 @@
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="25"/>
         <source>Moderate Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Entrata dolce moderato</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="26"/>
         <source>Moderate Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Uscita dolce moderata</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="27"/>
         <source>Moderate Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Entrata-Uscita dolci moderate</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="28"/>
         <source>Moderate Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Uscita-Entrata dolci moderate</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="29"/>
         <source>Quick Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata dolce rapido</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="30"/>
         <source>Quick Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita dolce rapido</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="31"/>
         <source>Quick Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce uscita-dolce rapido</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="32"/>
         <source>Quick Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce entrata-dolce rapido</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="33"/>
         <source>Fast Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce veloce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="34"/>
         <source>Fast Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce veloce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="35"/>
         <source>Fast Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce uscita-dolce veloce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="36"/>
         <source>Fast Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce entrata-dolce veloce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="37"/>
         <source>Faster Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce più veloce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="38"/>
         <source>Faster Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce più veloce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="39"/>
         <source>Faster Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce uscita-dolce più veloce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="40"/>
         <source>Faster Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce entrata-dolce più veloce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="41"/>
         <source>Slow Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce lento</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="42"/>
         <source>Slow Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce lento</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="43"/>
         <source>Slow Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce uscita-dolce lento</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="44"/>
         <source>Slow Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce entrata-dolce lento</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="45"/>
         <source>Fastest Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce velocissimo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="46"/>
         <source>Fastest Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce velocissimo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="47"/>
         <source>Fastest Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Effetto entrata-dolce uscita-dolce velocissimo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="48"/>
         <source>Fastest Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Effetto uscita-dolce entrata-dolce velocissimo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="49"/>
         <source>Circle-based Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Entrata circolare</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="50"/>
         <source>Circle-based Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Uscita circolare</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="51"/>
         <source>Circle-based Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Entrata Uscita circolare</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="52"/>
         <source>Circle-based Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Uscita Entrata circolare</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="53"/>
         <source>Elastic Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Entrata-dolce elastica</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="54"/>
         <source>Elastic Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Uscita-dolce elastica</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="55"/>
         <source>Elastic Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Entrata-dolce Uscita-dolce elastica</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="56"/>
         <source>Elastic Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Uscita-dolce Entrata-dolce elastica</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="57"/>
         <source>Overshoot Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Superamento Entrata-dolce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="58"/>
         <source>Overshoot Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Superamento Uscita-dolce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="59"/>
         <source>Overshoot Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Superamento Entrata-dolce Uscita-dolce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="60"/>
         <source>Overshoot Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Superamento Uscita-dolce Entrata-dolce</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="61"/>
         <source>Bounce Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Entrata-dolce a rimbalzo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="62"/>
         <source>Bounce Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Uscita-dolce a rimbalzo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="63"/>
         <source>Bounce Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Entrata-dolce Uscita-dolce a rimbalzo</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="64"/>
         <source>Bounce Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Uscita-dolce Entrata-dolce a rimbalzo</translation>
     </message>
 </context>
 <context>
@@ -2699,7 +2699,7 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="1057"/>
         <source>The selected image has a format that does not support animation.</source>
-        <translation type="unfinished"/>
+        <translation>L&apos;immagine selezionata ha un formato che non supporta l&apos;animazione.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="1269"/>
@@ -2778,7 +2778,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="103"/>
         <source>WEBP</source>
-        <translation type="unfinished"/>
+        <translation>WEBP</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="111"/>
@@ -2859,7 +2859,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="66"/>
         <source>The MP4 format does not support odd width. Please specify an even width or use a different file format.</source>
-        <translation type="unfinished"/>
+        <translation>Il formato MP4 non supporta la larghezza dispari. Specificare una larghezza uniforme o utilizzare un formato file diverso.</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="98"/>
@@ -2869,7 +2869,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="105"/>
         <source>The MP4 format does not support odd height. Please specify an even height or use a different file format.</source>
-        <translation type="unfinished"/>
+        <translation>Il formato MP4 non supporta l&apos;altezza dispari. Specificare un&apos;altezza uniforme o utilizzare un formato file diverso.</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="128"/>
@@ -2957,7 +2957,7 @@
     <message>
         <location filename="../app/src/filedialog.cpp" line="171"/>
         <source>Import animated image</source>
-        <translation type="unfinished"/>
+        <translation>Importa immagine animata</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="172"/>
@@ -2997,7 +2997,7 @@
     <message>
         <location filename="../app/src/filedialog.cpp" line="187"/>
         <source>Export animated image</source>
-        <translation type="unfinished"/>
+        <translation>Esporta immagine animata</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="188"/>
@@ -3083,7 +3083,7 @@
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="55"/>
         <source>Animated image formats</source>
-        <translation type="unfinished"/>
+        <translation>Formati di immagini animate</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="58"/>
@@ -3094,99 +3094,99 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="229"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="244"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="252"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="259"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="260"/>
         <source>Invalid Save Path</source>
         <translation>Percorso di salvataggio non valido</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
         <source>The path is empty.</source>
         <translation>Il percorso è vuoto.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Il percorso (&quot;%1&quot;) punta a una directory.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="254"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>La directory (&quot;%1&quot;) non esiste.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="260"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Il percorso (&quot;%1&quot;) non è scrivibile.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="297"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="306"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="307"/>
         <source>Cannot Create Data Directory</source>
         <translation>Non posso creare una directory dati</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="299"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>Impossibile creare la directory &quot;%1&quot;. Assicurati di disporre di autorizzazioni sufficienti.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="307"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="308"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; è un file. Elimina il file e riprova.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="340"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="341"/>
         <source>Miniz Error</source>
-        <translation type="unfinished"/>
+        <translation>Errore Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="331"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="341"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="356"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="332"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="342"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="357"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Si è verificato un errore interno. Il tuo file potrebbe non essere stato salvato correttamente.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="330"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="355"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="331"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="356"/>
         <source>Internal Error</source>
         <translation>Errore interno</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="524"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="525"/>
         <source>Could not open file</source>
         <translation>Impossibile aprire il file</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="534"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="535"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
         <translation>Il file non esiste, quindi non siamo in grado di aprirlo. Controlla che il percorso sia corretto e riprova.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="539"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="540"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
         <translation>Nessuna autorizzazione per leggere il file. Controlla di avere i permessi di lettura per questo file e riprova.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="545"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="546"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
         <translation>Si è verificato un errore durante l&apos;elaborazione del tuo file. Questo di solito significa che il tuo progetto è stato almeno parzialmente danneggiato. Riprova con una versione più recente di Pencil2D o prova a utilizzare un file di backup se ne hai uno. Se ci contatti tramite uno dei nostri canali ufficiali potremmo essere in grado di aiutarti. Per segnalare problemi, i posti migliori per contattarci sono:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="976"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="977"/>
         <source>Bitmap Layer %1</source>
         <translation>Livello Bitmap %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="978"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="979"/>
         <source>Vector Layer %1</source>
         <translation>Livello Vettoriale %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="980"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="981"/>
         <source>Sound Layer %1</source>
         <translation>Livello Suono %1</translation>
     </message>
@@ -3303,7 +3303,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="120"/>
         <source>Canvas Cursor</source>
-        <translation type="unfinished"/>
+        <translation>Cursore del Canvas</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="130"/>
@@ -3413,7 +3413,7 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="40"/>
         <source>Bulgarian</source>
-        <translation type="unfinished"/>
+        <translation>Bulgaro</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="41"/>
@@ -3458,7 +3458,7 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="49"/>
         <source>Persian</source>
-        <translation type="unfinished"/>
+        <translation>Persiano</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="50"/>
@@ -3498,17 +3498,17 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="57"/>
         <source>Korean</source>
-        <translation type="unfinished"/>
+        <translation>Koreano</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="58"/>
         <source>Norwegian Bokmål</source>
-        <translation type="unfinished"/>
+        <translation>Bokmål norvegese</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="59"/>
         <source>Dutch – Netherlands</source>
-        <translation type="unfinished"/>
+        <translation>Olandese – Paesi Bassi</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="60"/>
@@ -3553,7 +3553,7 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="68"/>
         <source>Cantonese</source>
-        <translation type="unfinished"/>
+        <translation>Cantonese</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="69"/>
@@ -3619,7 +3619,7 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="70"/>
         <source>Import animated image</source>
-        <translation type="unfinished"/>
+        <translation>Importa immagine animata</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="79"/>
@@ -3842,7 +3842,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="116"/>
         <source>Fade in / Fade out</source>
-        <translation type="unfinished"/>
+        <translation>Dissolvenza entrata / Dissolvenza uscita</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="122"/>
@@ -3852,7 +3852,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="125"/>
         <source>Fade in</source>
-        <translation type="unfinished"/>
+        <translation>Dissolvenza entrata</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="132"/>
@@ -3862,7 +3862,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="135"/>
         <source>Fade out</source>
-        <translation type="unfinished"/>
+        <translation>Dissolvenza uscita</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="160"/>
@@ -3883,7 +3883,7 @@ Read the instructions and try again</source>
 <context>
     <name>LayerSound</name>
     <message>
-        <location filename="../core_lib/src/structure/layersound.cpp" line="28"/>
+        <location filename="../core_lib/src/structure/layersound.cpp" line="29"/>
         <source>Sound Layer</source>
         <translation>Livello audio</translation>
     </message>
@@ -3956,7 +3956,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="166"/>
         <source>Perspective Lines Angle</source>
-        <translation type="unfinished"/>
+        <translation>Angolo delle linee di prospettiva</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="216"/>
@@ -3981,7 +3981,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="274"/>
         <source>Change line color</source>
-        <translation type="unfinished"/>
+        <translation>Cambia il colore della linea</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="292"/>
@@ -4059,7 +4059,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="417"/>
         <source>Image Predefined set...</source>
-        <translation type="unfinished"/>
+        <translation>Imposta immagine predefinita...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="426"/>
@@ -4127,7 +4127,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1182"/>
         <source>Safe Areas</source>
-        <translation type="unfinished"/>
+        <translation>Aree sicure</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1194"/>
@@ -4227,7 +4227,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="531"/>
         <source>Rotate Anticlockwise</source>
-        <translation type="unfinished"/>
+        <translation>Ruota in senso antiorario</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="540"/>
@@ -4461,7 +4461,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="914"/>
         <source>Animated Image...</source>
-        <translation type="unfinished"/>
+        <translation>Immagine animata...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="919"/>
@@ -4596,7 +4596,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1061"/>
         <source>Lock Windows</source>
-        <translation type="unfinished"/>
+        <translation>Blocca finestre</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1071"/>
@@ -4606,17 +4606,17 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1076"/>
         <source>Add Exposure</source>
-        <translation type="unfinished"/>
+        <translation>Aggiungi esposizione</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1081"/>
         <source>Subtract Exposure</source>
-        <translation type="unfinished"/>
+        <translation>Sottrai esposizione</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1086"/>
         <source>Reverse Frames Order</source>
-        <translation type="unfinished"/>
+        <translation>Inverti ordine dei frame</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1091"/>
@@ -4626,7 +4626,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1102"/>
         <source>Status Bar</source>
-        <translation type="unfinished"/>
+        <translation>Barra di stato</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="154"/>
@@ -4696,7 +4696,7 @@ Vuoi salavare i cambiamenti?</translation>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="830"/>
         <source>AutoSave Reminder</source>
-        <translation type="unfinished"/>
+        <translation>Promemoria di salvataggio automatico</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="831"/>
@@ -4797,7 +4797,7 @@ Color(e/i) nei tratti verranno alterati da questa azione!</translation>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="86"/>
         <source>Checking environment...</source>
-        <translation type="unfinished"/>
+        <translation>Controllo dell&apos;ambiente...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
@@ -4887,7 +4887,7 @@ Color(e/i) nei tratti verranno alterati da questa azione!</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="232"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Errore sconosciuto</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="233"/>
@@ -5074,7 +5074,7 @@ Color(e/i) nei tratti verranno alterati da questa azione!</translation>
         <location filename="../app/ui/onionskin.ui" line="23"/>
         <source>Onion Skins</source>
         <comment>Window title of display options like .</comment>
-        <translation type="unfinished"/>
+        <translation>Buccia di cipolla</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="105"/>
@@ -5133,7 +5133,7 @@ Color(e/i) nei tratti verranno alterati da questa azione!</translation>
     <message>
         <location filename="../app/ui/onionskin.ui" line="428"/>
         <source>Show During Playback</source>
-        <translation type="unfinished"/>
+        <translation>Mostra durante la riproduzione</translation>
     </message>
 </context>
 <context>
@@ -5247,7 +5247,7 @@ Controlla la selezione e riprova.</translation>
     <message>
         <location filename="../app/src/predefinedsetmodel.h" line="67"/>
         <source>KeyFrame Pos</source>
-        <translation type="unfinished"/>
+        <translation>Pos Fotogramma Chiave</translation>
     </message>
 </context>
 <context>
@@ -5597,13 +5597,13 @@ o annullare</translation>
         <location filename="../app/src/shortcutspage.cpp" line="315"/>
         <source>View: Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Vista: Capovolgimento orizzontale</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="316"/>
         <source>View: Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Vista: Capovolgimento verticale</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="319"/>
@@ -5627,13 +5627,13 @@ o annullare</translation>
         <location filename="../app/src/shortcutspage.cpp" line="322"/>
         <source>Selection: Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Selezione: Capovolgimento orizzontale</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="323"/>
         <source>Selection: Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Selezione: Capovolgimento verticale</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="324"/>
@@ -5759,19 +5759,19 @@ o annullare</translation>
         <location filename="../app/src/shortcutspage.cpp" line="344"/>
         <source>Toggle Next Onion Skin</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Mostra/nascondi prossima buccia di cipolla</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="345"/>
         <source>Toggle Previous Onion Skin</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Mostra/nascondi precedente buccia di cipolla</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="346"/>
         <source>Open File</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Apri file</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="347"/>
@@ -5825,13 +5825,13 @@ o annullare</translation>
         <location filename="../app/src/shortcutspage.cpp" line="355"/>
         <source>Center View</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Vista centrale</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="356"/>
         <source>Rotate Anticlockwise</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ruota in senso antiorario</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="357"/>
@@ -5855,7 +5855,7 @@ o annullare</translation>
         <location filename="../app/src/shortcutspage.cpp" line="360"/>
         <source>Save File</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Salva file</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="361"/>
@@ -5891,7 +5891,7 @@ o annullare</translation>
         <location filename="../app/src/shortcutspage.cpp" line="366"/>
         <source>Toggle Onion Skins Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Mostra/nascondi finestra per la visibilità bucce di cipolla</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="367"/>
@@ -6161,7 +6161,7 @@ o annullare</translation>
         <location filename="../app/src/timecontrols.cpp" line="54"/>
         <source>Display timecode</source>
         <comment>Timeline menu for choose a timecode</comment>
-        <translation type="unfinished"/>
+        <translation>Visualizza il codice temporale</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="57"/>
@@ -6379,7 +6379,7 @@ o annullare</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="87"/>
         <source>Drawing</source>
-        <translation type="unfinished"/>
+        <translation>Disegno</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="93"/>

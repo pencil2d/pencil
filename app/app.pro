@@ -16,10 +16,12 @@ RESOURCES += data/app.qrc
 
 MUI_TRANSLATIONS += \
         translations/mui_cs.po \
-        translations/mui_de.po
+        translations/mui_de.po \
+        translations/mui_it.po
 
 RC_LANGS.cs = --lang LANG_CZECH --sublang SUBLANG_NEUTRAL
 RC_LANGS.de = --lang LANG_GERMAN --sublang SUBLANG_NEUTRAL
+RC_LANGS.it = --lang LANG_ITALIAN --sublang SUBLANG_NEUTRAL
 
 EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_ar.ts \
@@ -88,7 +90,6 @@ HEADERS += \
     src/shortcutspage.h \
     src/timelinepage.h \
     src/toolspage.h \
-    src/preview.h \
     src/basedockwidget.h \
     src/colorbox.h \
     src/colorinspector.h \
@@ -140,7 +141,6 @@ SOURCES += \
     src/shortcutspage.cpp \
     src/timelinepage.cpp \
     src/toolspage.cpp \
-    src/preview.cpp \
     src/basedockwidget.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \

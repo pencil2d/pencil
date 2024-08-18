@@ -38,12 +38,15 @@ public:
     void pointerDoubleClickEvent(PointerEvent*) override;
 
     bool keyPressEvent(QKeyEvent* event) override;
+    bool keyReleaseEvent(QKeyEvent* event) override;
 
     void clearToolData() override;
 
     void setWidth(const qreal width) override;
     void setFeather(const qreal feather) override;
     void setAA(const int AA) override;
+    void setClosedPath(const bool closed) override;
+    
     void removeLastPolylineSegment() override;
 
     bool leavingThisTool() override;
@@ -52,6 +55,7 @@ public:
 
 private:
     QList<QPointF> mPoints;
+    bool mClosedPathOverrideEnabled = false;
 
     void drawPolyline(QList<QPointF> points, QPointF endPoint);
     void cancelPolyline();
