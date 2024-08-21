@@ -202,26 +202,31 @@ void CanvasPainter::paint(const QRect& blitRect)
 
 void CanvasPainter::paintOnionSkin(QPainter& painter, const QRect& blitRect)
 {
-    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+    for (int i = 0; i < mObject->getLayerCount(); i++) {
+        Layer* layer = mObject->getLayer(i);
+        if (layer == nullptr) { continue; }
 
-    mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPainterOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
-        if (state == OnionSkinPaintState::PREV) {
-            switch (layer->type())
-            {
-            case Layer::BITMAP: { paintBitmapOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames); break; }
-            case Layer::VECTOR: { paintVectorOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames); break; }
-            default: break;
+        if (!layer->visible()) { continue; }
+
+        mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPainterOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
+            if (state == OnionSkinPaintState::PREV) {
+                switch (layer->type())
+                {
+                case Layer::BITMAP: { paintBitmapOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames); break; }
+                case Layer::VECTOR: { paintVectorOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames); break; }
+                default: break;
+                }
             }
-        }
-        if (state == OnionSkinPaintState::NEXT) {
-            switch (layer->type())
-            {
-            case Layer::BITMAP: { paintBitmapOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames); break; }
-            case Layer::VECTOR: { paintVectorOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames); break; }
-            default: break;
+            if (state == OnionSkinPaintState::NEXT) {
+                switch (layer->type())
+                {
+                case Layer::BITMAP: { paintBitmapOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames); break; }
+                case Layer::VECTOR: { paintVectorOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames); break; }
+                default: break;
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 void CanvasPainter::paintBitmapOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize)
