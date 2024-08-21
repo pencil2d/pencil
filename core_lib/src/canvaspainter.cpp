@@ -200,32 +200,42 @@ void CanvasPainter::paint(const QRect& blitRect)
     mPostLayersPixmapCacheValid = true;
 }
 
+void CanvasPainter::paintOnionSkinOnLayer(QPainter& painter, const QRect& blitRect, Layer* layer)
+{
+    mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPainterOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
+        if (state == OnionSkinPaintState::PREV) {
+            switch (layer->type())
+            {
+            case Layer::BITMAP: { paintBitmapOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames); break; }
+            case Layer::VECTOR: { paintVectorOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames); break; }
+            default: break;
+            }
+        }
+        if (state == OnionSkinPaintState::NEXT) {
+            switch (layer->type())
+            {
+            case Layer::BITMAP: { paintBitmapOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames); break; }
+            case Layer::VECTOR: { paintVectorOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames); break; }
+            default: break;
+            }
+        }
+    });
+}
+
 void CanvasPainter::paintOnionSkin(QPainter& painter, const QRect& blitRect)
 {
-    for (int i = 0; i < mObject->getLayerCount(); i++) {
-        Layer* layer = mObject->getLayer(i);
-        if (layer == nullptr) { continue; }
+    if (!mOptions.bOnionSkinMultiLayer || mOptions.eLayerVisibility == LayerVisibility::CURRENTONLY) {
+        Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+        paintOnionSkinOnLayer(painter, blitRect, layer);
+    } else {
+        for (int i = 0; i < mObject->getLayerCount(); i++) {
+            Layer* layer = mObject->getLayer(i);
 
-        if (!layer->visible()) { continue; }
+            if (layer == nullptr) { continue; }
+            if (!layer->visible()) { continue; }
 
-        mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPainterOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
-            if (state == OnionSkinPaintState::PREV) {
-                switch (layer->type())
-                {
-                case Layer::BITMAP: { paintBitmapOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames); break; }
-                case Layer::VECTOR: { paintVectorOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizePrevFrames); break; }
-                default: break;
-                }
-            }
-            if (state == OnionSkinPaintState::NEXT) {
-                switch (layer->type())
-                {
-                case Layer::BITMAP: { paintBitmapOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames); break; }
-                case Layer::VECTOR: { paintVectorOnionSkinFrame(painter, blitRect, layer, onionFrameNumber, mOnionSkinPainterOptions.colorizeNextFrames); break; }
-                default: break;
-                }
-            }
-        });
+            paintOnionSkinOnLayer(painter, blitRect, layer);
+        }
     }
 }
 
