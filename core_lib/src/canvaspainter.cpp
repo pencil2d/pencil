@@ -230,9 +230,7 @@ void CanvasPainter::paintOnionSkin(QPainter& painter, const QRect& blitRect)
     } else {
         for (int i = 0; i < mObject->getLayerCount(); i++) {
             Layer* layer = mObject->getLayer(i);
-
             if (layer == nullptr) { continue; }
-            if (!layer->visible()) { continue; }
 
             paintOnionSkinOnLayer(painter, blitRect, layer);
         }
