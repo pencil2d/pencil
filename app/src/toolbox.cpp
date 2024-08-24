@@ -137,8 +137,18 @@ void ToolBoxWidget::initUI()
 
     connect(editor()->layers(), &LayerManager::currentLayerChanged, this, &ToolBoxWidget::onLayerDidChange);
 
+    connect(this, &QDockWidget::dockLocationChanged, this, [=](Qt::DockWidgetArea area) {
+        if (area == Qt::DockWidgetArea::TopDockWidgetArea || area == Qt::BottomDockWidgetArea) {
+            const int minimumHeight = ui->scrollAreaWidgetContents_2->layout()->heightForWidth(width());
+            ui->scrollArea->setMinimumHeight(minimumHeight);
+            setMinimumHeight(minimumHeight);
+        } else {
+            ui->scrollArea->setMinimumHeight(0); // Default value
+            // Don't set own minimum height and let Qt come up with a sensible value
+        }
+    });
 
-    FlowLayout* flowlayout = new FlowLayout;
+    FlowLayout* flowlayout = new FlowLayout(3,3,3);
 
     flowlayout->addWidget(ui->pencilButton);
     flowlayout->addWidget(ui->eraserButton);
@@ -154,6 +164,7 @@ void ToolBoxWidget::initUI()
 
     delete ui->scrollAreaWidgetContents_2->layout();
     ui->scrollAreaWidgetContents_2->setLayout(flowlayout);
+    ui->scrollAreaWidgetContents_2->setContentsMargins(0,0,0,0);
 
     QSettings settings(PENCIL2D, PENCIL2D);
     restoreGeometry(settings.value("ToolBoxGeom").toByteArray());
@@ -161,6 +172,15 @@ void ToolBoxWidget::initUI()
 
 void ToolBoxWidget::updateUI()
 {
+}
+
+void ToolBoxWidget::resizeEvent(QResizeEvent* event)
+{
+    QDockWidget::resizeEvent(event);
+
+    const int minimumHeight = ui->scrollArea->minimumHeight();
+    if (minimumHeight <= 0) { return; }
+    setMinimumHeight(minimumHeight);
 }
 
 void ToolBoxWidget::onToolSetActive(ToolType toolType)
@@ -263,11 +283,6 @@ void ToolBoxWidget::brushOn()
 void ToolBoxWidget::smudgeOn()
 {
     toolOn(SMUDGE, ui->smudgeButton);
-}
-
-int ToolBoxWidget::getMinHeightForWidth(int width)
-{
-    return ui->toolGroup->layout()->heightForWidth(width);
 }
 
 void ToolBoxWidget::deselectAllTools()

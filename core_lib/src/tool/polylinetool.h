@@ -47,6 +47,8 @@ public:
     void setAA(const int AA) override;
     void setClosedPath(const bool closed) override;
 
+    void removeLastPolylineSegment();
+
     bool leavingThisTool() override;
 
     bool isActive() const override;

@@ -59,7 +59,7 @@ public slots:
     void smudgeOn();
 
 protected:
-    int getMinHeightForWidth(int width) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
     void deselectAllTools();

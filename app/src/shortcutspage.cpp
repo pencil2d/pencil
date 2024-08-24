@@ -400,6 +400,7 @@ static QString getHumanReadableShortcutName(const QString& cmdName)
         {CMD_CHANGE_LINE_COLOR_LAYER, ShortcutsPage::tr("Change Line Color (All keyframes on layer)", "Shortcut")},
         {CMD_CHANGE_LAYER_OPACITY, ShortcutsPage::tr("Change Layer / Keyframe Opacity", "Shortcut")},
         {CMD_UNDO, ShortcutsPage::tr("Undo", "Shortcut")},
+        {CMD_REMOVE_LAST_POLYLINE_SEGMENT, ShortcutsPage::tr("Remove Last Polyline Segment", "Shortcut")},
         {CMD_ZOOM_100, ShortcutsPage::tr("Set Zoom to 100%", "Shortcut")},
         {CMD_ZOOM_200, ShortcutsPage::tr("Set Zoom to 200%", "Shortcut")},
         {CMD_ZOOM_25, ShortcutsPage::tr("Set Zoom to 25%", "Shortcut")},

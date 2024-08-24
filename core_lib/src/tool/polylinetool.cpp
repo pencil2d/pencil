@@ -214,6 +214,21 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
     mEditor->undoRedo()->record(saveState, typeName());
 }
 
+void PolylineTool::removeLastPolylineSegment()
+{
+    if (!isActive()) return;
+
+    if (mPoints.size() > 1)
+    {
+        mPoints.removeLast();
+        drawPolyline(mPoints, getCurrentPoint());
+    }
+    else if (mPoints.size() == 1)
+    {
+        cancelPolyline();
+        clearToolData();
+    }
+}
 
 bool PolylineTool::keyPressEvent(QKeyEvent* event)
 {

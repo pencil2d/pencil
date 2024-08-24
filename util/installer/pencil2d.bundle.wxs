@@ -43,6 +43,7 @@
       <Payload SourceFile="pencil2d.dll" bal:BAFunctions="yes" />
       <!-- Translations -->
       <Payload SourceFile="pencil2d_de.wxl" Name="7\thm.wxl" />
+      <Payload SourceFile="pencil2d_it.wxl" Name="16\thm.wxl" />
       <!-- Assets -->
       <Payload SourceFile="pencil2d.ico" />
       <Payload SourceFile="pencil2d.png" />
