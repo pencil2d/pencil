@@ -112,7 +112,9 @@ void LayerManager::setCurrentLayer(int layerIndex)
 
     // Deselect frames of previous layer.
     Layer* previousLayer = currentLayer();
-    previousLayer->deselectAll();
+    if (previousLayer != object()->getLayer(layerIndex)) {
+        previousLayer->deselectAll();
+    }
 
     emit currentLayerWillChange(layerIndex);
 
