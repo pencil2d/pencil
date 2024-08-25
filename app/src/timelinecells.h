@@ -20,7 +20,11 @@ GNU General Public License for more details.
 
 #include <QString>
 #include <QWidget>
+#include <QMap>
 #include "layercamera.h"
+
+#include "timelinelayercell.h"
+#include "timelinelayerheadercell.h"
 
 class Layer;
 enum class LayerVisibility;
@@ -91,6 +95,9 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
+
+    TimeLineLayerCell getCell(int id) const { return mLayerCells.find(id).value(); }
+
     int getLayerNumber(int y) const;
     int getInbetweenLayerNumber(int y) const;
     int getLayerY(int layerNumber) const;
@@ -103,7 +110,7 @@ private:
     void drawContent();
     void paintTicks(QPainter& painter, const QPalette& palette) const;
     void paintOnionSkin(QPainter& painter) const;
-    void paintLayerGutter(QPainter& painter) const;
+    void paintLayerGutter(QPainter& painter, const QPalette&) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
     void paintCurrentFrameBorder(QPainter& painter, int recLeft, int recTop, int recWidth, int recHeight) const;
@@ -112,10 +119,6 @@ private:
     void paintLabel(QPainter& painter, const Layer* layer, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
     void paintHighlightedFrame(QPainter& painter, int framePos, int recTop, int recWidth, int recHeight) const;
-
-    void editLayerProperties(Layer* layer) const;
-    void editLayerProperties(LayerCamera *layer) const;
-    void editLayerName(Layer* layer) const;
 
     TimeLine* mTimeLine;
     Editor* mEditor; // the editor for which this timeLine operates
@@ -172,6 +175,9 @@ private:
     const static int mOffsetX = 0;
     const static int mOffsetY = 20;
     const static int mLayerDetachThreshold = 5;
+
+    QMap<int, TimeLineLayerCell> mLayerCells;
+    TimeLineLayerHeaderCell mHeaderCell;
 
 };
 

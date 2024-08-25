@@ -34,6 +34,8 @@ GNU General Public License for more details.
 #include "preferencemanager.h"
 #include "timeline.h"
 
+#include "timelinelayercell.h"
+
 #include "cameracontextmenu.h"
 
 TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE type) : QWidget(parent)
@@ -55,6 +57,8 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setMouseTracking(true);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
+
+    mHeaderCell = TimeLineLayerHeaderCell(mTimeLine, mEditor, QPoint(), size());
 }
 
 TimeLineCells::~TimeLineCells()
@@ -234,159 +238,180 @@ void TimeLineCells::drawContent()
     // Draw non-current layers
     const Object* object = mEditor->object();
     Q_ASSERT(object != nullptr);
-    for (int i = 0; i < object->getLayerCount(); i++)
-    {
-        if (i == mEditor->layers()->currentLayerIndex())
-        {
-            continue;
-        }
-        const Layer* layeri = object->getLayer(i);
 
-        if (layeri != nullptr)
+    if (mType == TIMELINE_CELL_TYPE::Layers) {
+
+        mHeaderCell.paintGlobalDotVisibility(painter, palette);
+
+        // TODO: we shouldn't have to remove all cells every time we paint.
+        mLayerCells.clear();
+
+        for (int i = 0; i < object->getLayerCount(); i++)
         {
+            Layer* layeri = object->getLayer(i);
             const int layerY = getLayerY(i);
-            switch (mType)
-            {
-            case TIMELINE_CELL_TYPE::Tracks:
-                paintTrack(painter, layeri, mOffsetX,
-                           layerY, widgetWidth - mOffsetX,
-                           mLayerHeight, false, mFrameSize);
-                break;
+            TimeLineLayerCell cell = TimeLineLayerCell(mTimeLine, mEditor, layeri, palette, QRect(0, 0, widgetWidth - 1, mLayerHeight));
+            cell.setGlobalPos(0, layerY);
+            mLayerCells.insert(layeri->id(), cell);
 
-            case TIMELINE_CELL_TYPE::Layers:
-                paintLabel(painter, layeri, 0,
-                           layerY, widgetWidth - 1,
-                           mLayerHeight, false, mEditor->layerVisibility());
-                break;
+            if (mEditor->currentLayerIndex() != i) {
+                cell.paint(painter, false, mEditor->layerVisibility());
             }
         }
-    }
 
-    // Draw current layer
-    const Layer* currentLayer = mEditor->layers()->currentLayer();
-    if (didDetachLayer())
-    {
         int layerYMouseMove = getLayerY(mEditor->layers()->currentLayerIndex()) + mMouseMoveY;
-        if (mType == TIMELINE_CELL_TYPE::Tracks)
-        {
-            paintTrack(painter, currentLayer,
-                       mOffsetX, layerYMouseMove,
-                       widgetWidth - mOffsetX, mLayerHeight,
-                       true, mFrameSize);
-        }
-        else if (mType == TIMELINE_CELL_TYPE::Layers)
-        {
-            paintLabel(painter, currentLayer,
-                       0, layerYMouseMove,
-                       widgetWidth - 1, mLayerHeight, true, mEditor->layerVisibility());
+        Layer* currentLayer = mEditor->layers()->currentLayer();
+        auto cell = getCell(currentLayer->id());
 
-            paintLayerGutter(painter);
+        if (didDetachLayer()) {
+            cell.setGlobalPos(mOffsetX, layerYMouseMove);
+            cell.paint(painter, true, mEditor->layerVisibility());
+            paintLayerGutter(painter, palette);
         }
-    }
-    else
-    {
-        if (mType == TIMELINE_CELL_TYPE::Tracks)
-        {
-            paintTrack(painter,
-                       currentLayer,
-                       mOffsetX,
-                       getLayerY(mEditor->layers()->currentLayerIndex()),
-                       widgetWidth - mOffsetX,
-                       mLayerHeight,
-                       true,
-                       mFrameSize);
-        }
-        else if (mType == TIMELINE_CELL_TYPE::Layers)
-        {
-            paintLabel(painter,
-                       currentLayer,
-                       0,
-                       getLayerY(mEditor->layers()->currentLayerIndex()),
-                       widgetWidth - 1,
-                       mLayerHeight,
-                       true,
-                       mEditor->layerVisibility());
-        }
+        cell.paint(painter, true, mEditor->layerVisibility());
+
+       //  const auto cellKeys = mLayerCells.values();
+       //  for (int i = 0; i < cellKeys.count(); i++) {
+       //      const TimeLineLayerCell& cell = cellKeys[i];
+
+       //      if (mEditor->currentLayerIndex() != i) {
+       //          cell.paintLabel(painter, palette, false, mEditor->layerVisibility());
+       //      } else {
+       //          // if (didDetachLayer()) {
+       //          //     cell.paintLabel(painter, palette, true, mEditor->layerVisibility());
+       //          //     paintLayerGutter(painter);
+       //          // } else {
+       //          //     cell.paintLabel(painter, palette, true, mEditor->layerVisibility());
+       //          // }
+       //      }
+       // }
     }
 
-    // --- draw track bar background
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(palette.color(QPalette::Base));
-    painter.drawRect(QRect(0, 0, width() - 1, mOffsetY - 1));
+    // // Draw current layer
+    // const Layer* currentLayer = mEditor->layers()->currentLayer();
+    // if (didDetachLayer())
+    // {
+    //     int layerYMouseMove = getLayerY(mEditor->layers()->currentLayerIndex()) + mMouseMoveY;
+    //     // if (mType == TIMELINE_CELL_TYPE::Tracks)
+    //     // {
+    //     //     paintTrack(painter, currentLayer,
+    //     //                mOffsetX, layerYMouseMove,
+    //     //                widgetWidth - mOffsetX, mLayerHeight,
+    //     //                true, mFrameSize);
+    //     // }
+    //     if (mType == TIMELINE_CELL_TYPE::Layers)
+    //     {
+    //         paintLabel(painter, currentLayer,
+    //                    0, layerYMouseMove,
+    //                    widgetWidth - 1, mLayerHeight, true, mEditor->layerVisibility());
 
-    // --- draw bottom line splitter for track bar
+    //         paintLayerGutter(painter);
+    //     }
+    // }
+    // else
+    // {
+    //     if (mType == TIMELINE_CELL_TYPE::Tracks)
+    //     {
+    //         paintTrack(painter,
+    //                    currentLayer,
+    //                    mOffsetX,
+    //                    getLayerY(mEditor->layers()->currentLayerIndex()),
+    //                    widgetWidth - mOffsetX,
+    //                    mLayerHeight,
+    //                    true,
+    //                    mFrameSize);
+    //     }
+    //     if (mType == TIMELINE_CELL_TYPE::Layers)
+    //     {
+    //         paintLabel(painter,
+    //                    currentLayer,
+    //                    0,
+    //                    getLayerY(mEditor->layers()->currentLayerIndex()),
+    //                    widgetWidth - 1,
+    //                    mLayerHeight,
+    //                    true,
+    //                    mEditor->layerVisibility());
+    //     }
+    // }
+
+    // // --- draw track bar background
+    // painter.setPen(Qt::NoPen);
+    // painter.setBrush(palette.color(QPalette::Base));
+    // painter.drawRect(QRect(0, 0, width() - 1, mOffsetY - 1));
+
+    // // --- draw bottom line splitter for track bar
     painter.setPen(palette.color(QPalette::Mid));
     painter.drawLine(0, mOffsetY - 2, width() - 1, mOffsetY - 2);
 
-    if (mType == TIMELINE_CELL_TYPE::Layers)
-    {
-        // --- draw circle
-        painter.setPen(palette.color(QPalette::Text));
-        if (mEditor->layerVisibility() == LayerVisibility::CURRENTONLY)
-        {
-            painter.setBrush(palette.color(QPalette::Base));
-        }
-        else if (mEditor->layerVisibility() == LayerVisibility::RELATED)
-        {
-            QColor color = palette.color(QPalette::Text);
-            color.setAlpha(128);
-            painter.setBrush(color);
-        }
-        else if (mEditor->layerVisibility() == LayerVisibility::ALL)
-        {
-            painter.setBrush(palette.brush(QPalette::Text));
-        }
-        painter.setRenderHint(QPainter::Antialiasing, true);
-        painter.drawEllipse(6, 4, 9, 9);
-        painter.setRenderHint(QPainter::Antialiasing, false);
-    }
-    else if (mType == TIMELINE_CELL_TYPE::Tracks)
-    {
-        paintTicks(painter, palette);
+    // if (mType == TIMELINE_CELL_TYPE::Layers)
+    // {
+    //     // --- draw circle
+    //     painter.setPen(palette.color(QPalette::Text));
+    //     if (mEditor->layerVisibility() == LayerVisibility::CURRENTONLY)
+    //     {
+    //         painter.setBrush(palette.color(QPalette::Base));
+    //     }
+    //     else if (mEditor->layerVisibility() == LayerVisibility::RELATED)
+    //     {
+    //         QColor color = palette.color(QPalette::Text);
+    //         color.setAlpha(128);
+    //         painter.setBrush(color);
+    //     }
+    //     else if (mEditor->layerVisibility() == LayerVisibility::ALL)
+    //     {
+    //         painter.setBrush(palette.brush(QPalette::Text));
+    //     }
+    //     painter.setRenderHint(QPainter::Antialiasing, true);
+    //     painter.drawEllipse(6, 4, 9, 9);
+    //     painter.setRenderHint(QPainter::Antialiasing, false);
+    // }
+    // else if (mType == TIMELINE_CELL_TYPE::Tracks)
+    // {
+    //     paintTicks(painter, palette);
 
-        for (int i = 0; i < object->getLayerCount(); i++) {
-            paintSelectedFrames(painter, object->getLayer(i), i);
-        }
-    }
+    //     for (int i = 0; i < object->getLayerCount(); i++) {
+    //         paintSelectedFrames(painter, object->getLayer(i), i);
+    //     }
+    // }
     mRedrawContent = false;
 }
 
-void TimeLineCells::paintTicks(QPainter& painter, const QPalette& palette) const
-{
-    painter.setPen(palette.color(QPalette::Text));
-    painter.setBrush(palette.brush(QPalette::Text));
-    int fps = mEditor->playback()->fps();
-    for (int i = mFrameOffset; i < mFrameOffset + (width() - mOffsetX) / mFrameSize; i++)
-    {
-        // line x pos + some offset
-        const int lineX = getFrameX(i) + 1;
-        if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
-        {
-            painter.setPen(Qt::NoPen);
-            painter.setBrush(palette.color(QPalette::Highlight));
+// void TimeLineCells::paintTicks(QPainter& painter, const QPalette& palette) const
+// {
+//     painter.setPen(palette.color(QPalette::Text));
+//     painter.setBrush(palette.brush(QPalette::Text));
+//     int fps = mEditor->playback()->fps();
+//     for (int i = mFrameOffset; i < mFrameOffset + (width() - mOffsetX) / mFrameSize; i++)
+//     {
+//         // line x pos + some offset
+//         const int lineX = getFrameX(i) + 1;
+//         if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
+//         {
+//             painter.setPen(Qt::NoPen);
+//             painter.setBrush(palette.color(QPalette::Highlight));
 
-            painter.drawRect(lineX, 1, mFrameSize + 1, 2);
+//             painter.drawRect(lineX, 1, mFrameSize + 1, 2);
 
-            painter.setPen(palette.color(QPalette::Text));
-            painter.setBrush(palette.brush(QPalette::Text));
-        }
+//             painter.setPen(palette.color(QPalette::Text));
+//             painter.setBrush(palette.brush(QPalette::Text));
+//         }
 
-        // Draw large tick at fps mark
-        if (i % fps == 0 || i % fps == fps / 2)
-        {
-            painter.drawLine(lineX, 1, lineX, 5);
-        }
-        else // draw small tick
-        {
-            painter.drawLine(lineX, 1, lineX, 3);
-        }
-        if (i == 0 || i % fps == fps - 1)
-        {
-            int incr = (i < 9) ? 4 : 0; // poor man’s text centering
-            painter.drawText(QPoint(lineX + incr, 15), QString::number(i + 1));
-        }
-    }
-}
+//         // Draw large tick at fps mark
+//         if (i % fps == 0 || i % fps == fps / 2)
+//         {
+//             painter.drawLine(lineX, 1, lineX, 5);
+//         }
+//         else // draw small tick
+//         {
+//             painter.drawLine(lineX, 1, lineX, 3);
+//         }
+//         if (i == 0 || i % fps == fps - 1)
+//         {
+//             int incr = (i < 9) ? 4 : 0; // poor man’s text centering
+//             painter.drawText(QPoint(lineX + incr, 15), QString::number(i + 1));
+//         }
+//     }
+// }
 
 void TimeLineCells::paintTrack(QPainter& painter, const Layer* layer,
                        int x, int y, int width, int height,
@@ -634,9 +659,9 @@ void TimeLineCells::paintSelection(QPainter& painter, int x, int y, int width, i
     painter.restore();
 }
 
-void TimeLineCells::paintLayerGutter(QPainter& painter) const
+void TimeLineCells::paintLayerGutter(QPainter& painter, const QPalette& palette) const
 {
-    painter.setPen(QApplication::palette().color(QPalette::Mid));
+    painter.setPen(palette.color(QPalette::Mid));
     if (mMouseMoveY > mLayerDetachThreshold)
     {
         painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+mLayerHeight, width(), 2);
@@ -1142,64 +1167,64 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
         {
-            editLayerProperties(layer);
+            getCell(layer->id()).editLayerProperties();
         }
     }
     QWidget::mouseDoubleClickEvent(event);
 }
 
-void TimeLineCells::editLayerProperties(Layer *layer) const
-{
-    if (layer->type() != Layer::CAMERA)
-    {
-        editLayerName(layer);
-        return;
-    }
+// void TimeLineCells::editLayerProperties(Layer *layer) const
+// {
+//     if (layer->type() != Layer::CAMERA)
+//     {
+//         editLayerName(layer);
+//         return;
+//     }
 
-    auto cameraLayer = dynamic_cast<LayerCamera*>(layer);
-    Q_ASSERT(cameraLayer);
-    editLayerProperties(cameraLayer);
-}
+//     auto cameraLayer = dynamic_cast<LayerCamera*>(layer);
+//     Q_ASSERT(cameraLayer);
+//     editLayerProperties(cameraLayer);
+// }
 
-void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
-{
-    QRegularExpression regex("([\\x{FFEF}-\\x{FFFF}])+");
+// void TimeLineCells::editLayerProperties(LayerCamera* cameraLayer) const
+// {
+//     QRegularExpression regex("([\\x{FFEF}-\\x{FFFF}])+");
 
-    CameraPropertiesDialog dialog(cameraLayer->name(), cameraLayer->getViewRect().width(),
-                                  cameraLayer->getViewRect().height());
-    if (dialog.exec() != QDialog::Accepted)
-    {
-        return;
-    }
-    QString name = dialog.getName().replace(regex, "");
+//     CameraPropertiesDialog dialog(cameraLayer->name(), cameraLayer->getViewRect().width(),
+//                                   cameraLayer->getViewRect().height());
+//     if (dialog.exec() != QDialog::Accepted)
+//     {
+//         return;
+//     }
+//     QString name = dialog.getName().replace(regex, "");
 
-    if (!name.isEmpty())
-    {
-        mEditor->layers()->renameLayer(cameraLayer, name);
-    }
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_FIELD_W, dialog.getWidth());
-    settings.setValue(SETTING_FIELD_H, dialog.getHeight());
-    cameraLayer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
-    mEditor->view()->forceUpdateViewTransform();
-}
+//     if (!name.isEmpty())
+//     {
+//         mEditor->layers()->renameLayer(cameraLayer, name);
+//     }
+//     QSettings settings(PENCIL2D, PENCIL2D);
+//     settings.setValue(SETTING_FIELD_W, dialog.getWidth());
+//     settings.setValue(SETTING_FIELD_H, dialog.getHeight());
+//     cameraLayer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
+//     mEditor->view()->forceUpdateViewTransform();
+// }
 
-void TimeLineCells::editLayerName(Layer* layer) const
-{
-    QRegularExpression regex("([\\x{FFEF}-\\x{FFFF}])+");
+// void TimeLineCells::editLayerName(Layer* layer) const
+// {
+//     QRegularExpression regex("([\\x{FFEF}-\\x{FFFF}])+");
 
-    bool ok;
-    QString name = QInputDialog::getText(nullptr, tr("Layer Properties"),
-                                         tr("Layer name:"), QLineEdit::Normal,
-                                         layer->name(), &ok);
-    name.replace(regex, "");
-    if (!ok || name.isEmpty())
-    {
-        return;
-    }
+//     bool ok;
+//     QString name = QInputDialog::getText(nullptr, tr("Layer Properties"),
+//                                          tr("Layer name:"), QLineEdit::Normal,
+//                                          layer->name(), &ok);
+//     name.replace(regex, "");
+//     if (!ok || name.isEmpty())
+//     {
+//         return;
+//     }
 
-    mEditor->layers()->renameLayer(layer, name);
-}
+//     mEditor->layers()->renameLayer(layer, name);
+// }
 
 void TimeLineCells::hScrollChange(int x)
 {

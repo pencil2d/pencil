@@ -88,7 +88,10 @@ HEADERS += \
     src/filespage.h \
     src/generalpage.h \
     src/shortcutspage.h \
+    src/timelinelayercell.h \
+    src/timelinelayerheadercell.h \
     src/timelinepage.h \
+    src/timelinetrackheadercell.h \
     src/toolspage.h \
     src/basedockwidget.h \
     src/colorbox.h \
@@ -139,7 +142,10 @@ SOURCES += \
     src/filespage.cpp \
     src/generalpage.cpp \
     src/shortcutspage.cpp \
+    src/timelinelayercell.cpp \
+    src/timelinelayerheadercell.cpp \
     src/timelinepage.cpp \
+    src/timelinetrackheadercell.cpp \
     src/toolspage.cpp \
     src/basedockwidget.cpp \
     src/colorbox.cpp \
