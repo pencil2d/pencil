@@ -170,6 +170,8 @@ public:
     /** Clear the list of dirty keyframes */
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
+    std::map<int, KeyFrame*, std::greater<int>> keyframes() const { return mKeyFrames; }
+
 protected:
     virtual KeyFrame* createKeyFrame(int position) = 0;
     bool loadKey(KeyFrame*);

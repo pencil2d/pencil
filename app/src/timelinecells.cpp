@@ -445,11 +445,18 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
 
     int recHeight = height - 4;
 
-    layer->foreachKeyFrame([&](KeyFrame* key)
+    const QList<int> selectedFrames = layer->getSelectedFramesByPos();
+    for (auto pair : layer->keyframes())
     {
+        const KeyFrame* key = pair.second;
         int framePos = key->pos();
         int recWidth = standardWidth;
         int recLeft = getFrameX(framePos) - recWidth;
+
+        // Selected frames are painted separately
+        if (selectedFrames.contains(framePos)) {
+            continue;
+        }
 
         if (key->length() > 1)
         {
@@ -464,19 +471,11 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         // Paint the frame contents
         if (selected)
         {
-            if (key->isSelected()) {
-                painter.setBrush(QColor(60, 60, 60));
-            }
-            else
-            {
-                painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
-            }
+            painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
         }
 
-        if (!key->isSelected()) {
-            painter.drawRect(recLeft, recTop, recWidth, recHeight);
-        }
-    });
+        painter.drawRect(recLeft, recTop, recWidth, recHeight);
+    }
 }
 
 void TimeLineCells::paintCurrentFrameBorder(QPainter &painter, int recLeft, int recTop, int recWidth, int recHeight) const
@@ -730,7 +729,7 @@ void TimeLineCells::paintEvent(QPaintEvent*)
         int currentFrame = mEditor->currentFrame();
         Layer* currentLayer = mEditor->layers()->currentLayer();
         KeyFrame* keyFrame = currentLayer->getKeyFrameWhichCovers(currentFrame);
-        if (keyFrame != nullptr && !keyFrame->isSelected())
+        if (keyFrame != nullptr)
         {
             int recWidth = keyFrame->length() == 1 ? mFrameSize - 2 : mFrameSize * keyFrame->length();
             int recLeft = getFrameX(keyFrame->pos()) - (mFrameSize - 2);
