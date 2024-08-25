@@ -45,9 +45,6 @@ public:
     void setModified(bool b) { mIsModified = b; }
     bool isModified() const { return mIsModified; }
 
-    void setSelected(bool b) { mIsSelected = b; }
-    bool isSelected() const { return mIsSelected; }
-
     QString fileName() const { return mAttachedFileName; }
     void    setFileName(QString strFileName) { mAttachedFileName = strFileName; }
 
@@ -65,7 +62,6 @@ private:
     int mFrame = -1;
     int mLength = 1;
     bool mIsModified = true;
-    bool mIsSelected = false;
     QString mAttachedFileName;
 
     std::vector<KeyFrameEventListener*> mEventListeners;
