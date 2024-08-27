@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QMap>
 #include "layercamera.h"
 
+#include "timelinebasecell.h"
 #include "timelinelayercell.h"
 #include "timelinelayerheadercell.h"
 

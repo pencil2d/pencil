@@ -58,7 +58,7 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
 
-    mHeaderCell = TimeLineLayerHeaderCell(mTimeLine, mEditor, QPoint(), size());
+    mHeaderCell = TimeLineLayerHeaderCell(mTimeLine, mEditor, QPoint(), QSize(width(), mLayerHeight));
 }
 
 TimeLineCells::~TimeLineCells()
@@ -241,8 +241,6 @@ void TimeLineCells::drawContent()
 
     if (mType == TIMELINE_CELL_TYPE::Layers) {
 
-        mHeaderCell.paintGlobalDotVisibility(painter, palette);
-
         // TODO: we shouldn't have to remove all cells every time we paint.
         mLayerCells.clear();
 
@@ -250,8 +248,8 @@ void TimeLineCells::drawContent()
         {
             Layer* layeri = object->getLayer(i);
             const int layerY = getLayerY(i);
-            TimeLineLayerCell cell = TimeLineLayerCell(mTimeLine, mEditor, layeri, palette, QRect(0, 0, widgetWidth - 1, mLayerHeight));
-            cell.setGlobalPos(0, layerY);
+            TimeLineLayerCell cell = TimeLineLayerCell(mTimeLine, mEditor, layeri, palette, QPoint(0, layerY), widgetWidth - 1, mLayerHeight);
+            // cell.move(0, layerY);
             mLayerCells.insert(layeri->id(), cell);
 
             if (mEditor->currentLayerIndex() != i) {
@@ -264,11 +262,16 @@ void TimeLineCells::drawContent()
         auto cell = getCell(currentLayer->id());
 
         if (didDetachLayer()) {
-            cell.setGlobalPos(mOffsetX, layerYMouseMove);
+            cell.move(mOffsetX, layerYMouseMove);
             cell.paint(painter, true, mEditor->layerVisibility());
             paintLayerGutter(painter, palette);
         }
         cell.paint(painter, true, mEditor->layerVisibility());
+
+
+        mHeaderCell.paintGlobalDotVisibility(painter, palette);
+        mHeaderCell.paintSplitter(painter, palette);
+
 
        //  const auto cellKeys = mLayerCells.values();
        //  for (int i = 0; i < cellKeys.count(); i++) {
@@ -338,10 +341,6 @@ void TimeLineCells::drawContent()
     // painter.setPen(Qt::NoPen);
     // painter.setBrush(palette.color(QPalette::Base));
     // painter.drawRect(QRect(0, 0, width() - 1, mOffsetY - 1));
-
-    // // --- draw bottom line splitter for track bar
-    painter.setPen(palette.color(QPalette::Mid));
-    painter.drawLine(0, mOffsetY - 2, width() - 1, mOffsetY - 2);
 
     // if (mType == TIMELINE_CELL_TYPE::Layers)
     // {
@@ -580,72 +579,6 @@ void TimeLineCells::paintSelectedFrames(QPainter& painter, const Layer* layer, c
     painter.restore();
 }
 
-void TimeLineCells::paintLabel(QPainter& painter, const Layer* layer,
-                       int x, int y, int width, int height,
-                       bool selected, LayerVisibility layerVisibility) const
-{
-    const QPalette palette = QApplication::palette();
-
-    if (selected)
-    {
-        painter.setBrush(palette.color(QPalette::Highlight));
-    }
-    else
-    {
-        painter.setBrush(palette.color(QPalette::Base));
-    }
-    painter.setPen(Qt::NoPen);
-    painter.drawRect(x, y - 1, width, height); // empty rectangle by default
-
-    if (!layer->visible())
-    {
-        painter.setBrush(palette.color(QPalette::Base));
-    }
-    else
-    {
-        if ((layerVisibility == LayerVisibility::ALL) || selected)
-        {
-            painter.setBrush(palette.color(QPalette::Text));
-        }
-        else if (layerVisibility == LayerVisibility::CURRENTONLY)
-        {
-            painter.setBrush(palette.color(QPalette::Base));
-        }
-        else if (layerVisibility == LayerVisibility::RELATED)
-        {
-            QColor color = palette.color(QPalette::Text);
-            color.setAlpha(128);
-            painter.setBrush(color);
-        }
-    }
-    if (selected)
-    {
-        painter.setPen(palette.color(QPalette::HighlightedText));
-    }
-    else
-    {
-        painter.setPen(palette.color(QPalette::Text));
-    }
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawEllipse(x + 6, y + 4, 9, 9);
-    painter.setRenderHint(QPainter::Antialiasing, false);
-
-    if (layer->type() == Layer::BITMAP) painter.drawPixmap(QPoint(22, y - 1), QPixmap(":icons/themes/playful/timeline/cell-bitmap.svg"));
-    if (layer->type() == Layer::VECTOR) painter.drawPixmap(QPoint(22, y - 1), QPixmap(":icons/themes/playful/timeline/cell-vector.svg"));
-    if (layer->type() == Layer::SOUND) painter.drawPixmap(QPoint(22, y - 1), QPixmap(":icons/themes/playful/timeline/cell-sound.svg"));
-    if (layer->type() == Layer::CAMERA) painter.drawPixmap(QPoint(22, y - 1), QPixmap(":icons/themes/playful/timeline/cell-camera.svg"));
-
-    if (selected)
-    {
-        painter.setPen(palette.color(QPalette::HighlightedText));
-    }
-    else
-    {
-        painter.setPen(palette.color(QPalette::Text));
-    }
-    painter.drawText(QPoint(45, y + (2 * height) / 3), layer->name());
-}
-
 void TimeLineCells::paintSelection(QPainter& painter, int x, int y, int width, int height) const
 {
     QLinearGradient linearGrad(QPointF(0, y), QPointF(0, y + height));
@@ -863,29 +796,11 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
     switch (mType)
     {
     case TIMELINE_CELL_TYPE::Layers:
-        if (layerNumber != -1 && layerNumber < mEditor->object()->getLayerCount())
-        {
-            if (event->pos().x() < 15)
-            {
-                mEditor->switchVisibilityOfLayer(layerNumber);
-            }
-            else if (mEditor->currentLayerIndex() != layerNumber)
-            {
-                mEditor->layers()->setCurrentLayer(layerNumber);
-                mEditor->layers()->currentLayer()->deselectAll();
-            }
+        if (layerNumber == -1) {
+            return;
         }
-        if (layerNumber == -1)
-        {
-            if (event->pos().x() < 15)
-            {
-                if (event->button() == Qt::LeftButton) {
-                    mEditor->increaseLayerVisibilityIndex();
-                } else if (event->button() == Qt::RightButton) {
-                    mEditor->decreaseLayerVisibilityIndex();
-                }
-            }
-        }
+        // TODO: How should we access TimeLineLayerHeaderCell
+        getCell(mEditor->layers()->getLayer(layerNumber)->id()).mousePressEvent(event);
         break;
     case TIMELINE_CELL_TYPE::Tracks:
         if (event->button() == Qt::MiddleButton)

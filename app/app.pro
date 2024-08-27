@@ -88,6 +88,7 @@ HEADERS += \
     src/filespage.h \
     src/generalpage.h \
     src/shortcutspage.h \
+    src/timelinebasecell.h \
     src/timelinelayercell.h \
     src/timelinelayerheadercell.h \
     src/timelinepage.h \
@@ -142,6 +143,7 @@ SOURCES += \
     src/filespage.cpp \
     src/generalpage.cpp \
     src/shortcutspage.cpp \
+    src/timelinebasecell.cpp \
     src/timelinelayercell.cpp \
     src/timelinelayerheadercell.cpp \
     src/timelinepage.cpp \

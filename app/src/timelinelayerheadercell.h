@@ -16,6 +16,9 @@ public:
     TimeLineLayerHeaderCell();
 
     void paintGlobalDotVisibility(QPainter& painter, const QPalette& palette);
+    void paintSplitter(QPainter& painter, const QPalette& palette);
+
+    void mousePressEvent(QMouseEvent* event, int layerNumber);
 
 private:
     TimeLine* mTimeLine = nullptr;

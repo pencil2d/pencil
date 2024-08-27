@@ -7,28 +7,32 @@
 
 #include "timeline.h"
 #include "editor.h"
+#include "timelinebasecell.h"
 
 class Layer;
 class LayerCamera;
 
 class PreferenceManager;
 
-class TimeLineLayerCell
+class TimeLineLayerCell : public TimeLineBaseCell
 {
 public:
     TimeLineLayerCell(TimeLine* parent,
                       Editor* editor,
                       Layer* layer,
                       const QPalette& palette,
-                      const QRect& rect);
+                      const QPoint& origin, int width, int height);
+    ~TimeLineLayerCell() override;
 
-    void paint(QPainter& painter, bool isSelected, const LayerVisibility& LayerVisibility) const;
 
     void editLayerProperties() const;
-    void setGlobalPos(int x, int y) { mGlobalX = x; mGlobalY = y; }
 
-    int posX() const { return mGlobalX + mLocalRect.x(); }
-    int posY() const { return mGlobalY + mLocalRect.y(); }
+    void mousePressEvent(QMouseEvent* event) override;
+    void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
+    void paint(QPainter& painter, bool isSelected, const LayerVisibility& LayerVisibility) const override;
+
+    int getLayerNumber(int posY) const;
 
 private:
 
@@ -39,18 +43,7 @@ private:
     void editLayerProperties(LayerCamera* cameraLayer) const;
     void editLayerName(Layer* layer) const;
 
-    QRect mLocalRect;
-    int mGlobalX = 0;
-    int mGlobalY = 0;
-
     QSize labelIconSize = QSize(22,22);
-
-    QPalette mPalette;
-
-    Layer* mLayer = nullptr;
-    TimeLine* mTimeLine = nullptr;
-    Editor* mEditor = nullptr;
-    PreferenceManager* mPrefs = nullptr;
 };
 
 #endif // TIMELINELAYERCELL_H

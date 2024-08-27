@@ -13,15 +13,20 @@
 #include <QPalette>
 #include <QInputDialog>
 #include <QRegularExpression>
+#include <QMouseEvent>
 
-TimeLineLayerCell::TimeLineLayerCell(TimeLine* parent, Editor* editor, Layer* layer, const QPalette& palette, const QRect& rect)
+#include <QDebug>
+
+TimeLineLayerCell::TimeLineLayerCell(TimeLine* parent,
+                                     Editor* editor,
+                                     Layer* layer,
+                                     const QPalette& palette,
+                                     const QPoint& origin, int width, int height) : TimeLineBaseCell(parent, editor, layer, palette, origin, width, height)
 {
-    mEditor = editor;
-    mTimeLine = parent;
-    mLocalRect = rect;
-    mLayer = layer;
-    mPalette = palette;
-    mPrefs = mEditor->preference();
+}
+
+TimeLineLayerCell::~TimeLineLayerCell()
+{
 }
 
 void TimeLineLayerCell::paint(QPainter& painter, bool isSelected, const LayerVisibility &LayerVisibility) const
@@ -33,8 +38,8 @@ void TimeLineLayerCell::paint(QPainter& painter, bool isSelected, const LayerVis
 
 void TimeLineLayerCell::paintLayerVisibility(QPainter& painter, const LayerVisibility& layerVisibility, bool isSelected) const
 {
-    int x = posX();
-    int y = posY();
+    int x = topLeft().x();
+    int y = topLeft().y();
     if (!mLayer->visible())
     {
         painter.setBrush(mPalette.color(QPalette::Base));
@@ -72,6 +77,8 @@ void TimeLineLayerCell::paintLayerVisibility(QPainter& painter, const LayerVisib
 
 void TimeLineLayerCell::paintBackground(QPainter& painter, bool isSelected) const
 {
+    int x = topLeft().x();
+    int y = topLeft().y();
     if (isSelected)
     {
         painter.setBrush(mPalette.color(QPalette::Highlight));
@@ -81,18 +88,19 @@ void TimeLineLayerCell::paintBackground(QPainter& painter, bool isSelected) cons
         painter.setBrush(mPalette.color(QPalette::Base));
     }
     painter.setPen(Qt::NoPen);
-    painter.drawRect(posX(), posY(), mLocalRect.width(), mLocalRect.height()); // empty rectangle by default
+    painter.drawRect(x, y, size().width(), size().height()); // empty rectangle by default
 }
 
 void TimeLineLayerCell::paintLabel(QPainter& painter, bool isSelected) const
 {
-    int y = posY();
+    int x = topLeft().x();
+    int y = topLeft().y();
 
     int paddingTop = 1;
     int paddingLeft = 22;
     int itemSpacing = 2;
 
-    const QPoint& iconPos = QPoint(posX() + paddingLeft, y - paddingTop);
+    const QPoint& iconPos = QPoint(x + paddingLeft, y - paddingTop);
     if (mLayer->type() == Layer::BITMAP) painter.drawPixmap(iconPos, QPixmap(":icons/themes/playful/timeline/cell-bitmap.svg"));
     if (mLayer->type() == Layer::VECTOR) painter.drawPixmap(iconPos, QPixmap(":icons/themes/playful/timeline/cell-vector.svg"));
     if (mLayer->type() == Layer::SOUND)  painter.drawPixmap(iconPos, QPixmap(":icons/themes/playful/timeline/cell-sound.svg"));
@@ -106,8 +114,77 @@ void TimeLineLayerCell::paintLabel(QPainter& painter, bool isSelected) const
     {
         painter.setPen(mPalette.color(QPalette::Text));
     }
-    int textCenterY = (y + paddingTop) + (2 * mLocalRect.height()) / 3;
+    int textCenterY = (y + paddingTop) + (2 * size().height()) / 3;
     painter.drawText(QPoint(iconPos.x() + labelIconSize.width() + itemSpacing, textCenterY), mLayer->name());
+}
+
+void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
+{   
+    int layerNumber = getLayerNumber(event->pos().y());
+    if (layerNumber < 0) { return; }
+    if (event->pos().x() < 15)
+    {
+        mEditor->switchVisibilityOfLayer(layerNumber);
+    }
+    else if (mEditor->currentLayerIndex() != layerNumber)
+    {
+        mEditor->layers()->setCurrentLayer(layerNumber);
+        mEditor->layers()->currentLayer()->deselectAll();
+    }
+    if (layerNumber == -1)
+    {
+        if (event->pos().x() < 15)
+        {
+            if (event->button() == Qt::LeftButton) {
+                mEditor->increaseLayerVisibilityIndex();
+            } else if (event->button() == Qt::RightButton) {
+                mEditor->decreaseLayerVisibilityIndex();
+            }
+        }
+    }
+}
+
+int TimeLineLayerCell::getLayerNumber(int posY) const
+{
+    int layerNumber = 0;
+    int totalLayerCount = mEditor->layers()->count();
+    if (posY - size().height() > 0) {
+        layerNumber = (posY - size().height()) / size().height();
+    }
+
+    // Layers numbers are displayed in descending order
+    // The last row is layer 0
+    if (layerNumber <= totalLayerCount)
+        layerNumber = (totalLayerCount - 1) - layerNumber;
+    else
+        layerNumber = 0;
+
+    if (posY < topLeft().y())
+    {
+        layerNumber = -1;
+    }
+
+    if (layerNumber >= totalLayerCount)
+    {
+        layerNumber = totalLayerCount;
+    }
+
+    if (layerNumber < -1)
+    {
+        layerNumber = -1;
+    }
+    return layerNumber;
+}
+
+
+void TimeLineLayerCell::mouseMoveEvent(QMouseEvent *event)
+{
+
+}
+
+void TimeLineLayerCell::mouseReleaseEvent(QMouseEvent *event)
+{
+
 }
 
 void TimeLineLayerCell::editLayerProperties() const
