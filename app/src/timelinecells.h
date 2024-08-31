@@ -178,7 +178,7 @@ private:
     const static int mLayerDetachThreshold = 5;
 
     QMap<int, TimeLineLayerCell> mLayerCells;
-    TimeLineLayerHeaderCell mHeaderCell;
+    TimeLineLayerHeaderCell* mHeaderCell = nullptr;
 
 };
 

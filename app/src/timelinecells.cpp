@@ -44,6 +44,7 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     mEditor = editor;
     mPrefs = editor->preference();
     mType = type;
+    mHeaderCell = new TimeLineLayerHeaderCell(mTimeLine, mEditor, QPoint(), width(), mLayerHeight);
 
     mFrameLength = mPrefs->getInt(SETTING::TIMELINE_SIZE);
     mFontSize = mPrefs->getInt(SETTING::LABEL_FONT_SIZE);
@@ -57,8 +58,6 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     setMouseTracking(true);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineCells::loadSetting);
-
-    mHeaderCell = TimeLineLayerHeaderCell(mTimeLine, mEditor, QPoint(), QSize(width(), mLayerHeight));
 }
 
 TimeLineCells::~TimeLineCells()
@@ -248,12 +247,11 @@ void TimeLineCells::drawContent()
         {
             Layer* layeri = object->getLayer(i);
             const int layerY = getLayerY(i);
-            TimeLineLayerCell cell = TimeLineLayerCell(mTimeLine, mEditor, layeri, palette, QPoint(0, layerY), widgetWidth - 1, mLayerHeight);
-            // cell.move(0, layerY);
+            TimeLineLayerCell cell = TimeLineLayerCell(mTimeLine, mEditor, layeri, QPoint(0, layerY), widgetWidth - 1, mLayerHeight);
             mLayerCells.insert(layeri->id(), cell);
 
             if (mEditor->currentLayerIndex() != i) {
-                cell.paint(painter, false, mEditor->layerVisibility());
+                cell.paint(painter, palette);
             }
         }
 
@@ -262,15 +260,13 @@ void TimeLineCells::drawContent()
         auto cell = getCell(currentLayer->id());
 
         if (didDetachLayer()) {
-            cell.move(mOffsetX, layerYMouseMove);
-            cell.paint(painter, true, mEditor->layerVisibility());
+            cell.move(mOffsetX, mMouseMoveY);
+            cell.paint(painter, palette);
             paintLayerGutter(painter, palette);
         }
-        cell.paint(painter, true, mEditor->layerVisibility());
+        cell.paint(painter, palette);
 
-
-        mHeaderCell.paintGlobalDotVisibility(painter, palette);
-        mHeaderCell.paintSplitter(painter, palette);
+        mHeaderCell->paint(painter, palette);
 
 
        //  const auto cellKeys = mLayerCells.values();
@@ -756,6 +752,7 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
     updateContent();
     event->accept();
     emit lengthChanged(getFrameLength());
+    mHeaderCell->setSize(QSize(width(), mLayerHeight));
 }
 
 bool TimeLineCells::event(QEvent* event)
@@ -797,10 +794,10 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
     {
     case TIMELINE_CELL_TYPE::Layers:
         if (layerNumber == -1) {
-            return;
+            mHeaderCell->mousePressEvent(event);
+        } else {
+            getCell(mEditor->layers()->getLayer(layerNumber)->id()).mousePressEvent(event);
         }
-        // TODO: How should we access TimeLineLayerHeaderCell
-        getCell(mEditor->layers()->getLayer(layerNumber)->id()).mousePressEvent(event);
         break;
     case TIMELINE_CELL_TYPE::Tracks:
         if (event->button() == Qt::MiddleButton)

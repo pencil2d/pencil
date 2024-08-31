@@ -77,6 +77,7 @@ public:
 
     QString nameSuggestLayer(const QString& name);
     int getLastLayerIndex() { return count() - 1; }
+    int selectedLayerId() const { return mSelectedLayerId; }
 
 signals:
     void currentLayerWillChange(int index);
@@ -87,6 +88,8 @@ signals:
 
 private:
     int getIndex(Layer*) const;
+
+    int mSelectedLayerId = -1;
 
     int mLastCameraLayerIdx = 0;
 };

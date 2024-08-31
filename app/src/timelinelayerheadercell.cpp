@@ -3,21 +3,19 @@
 #include <QPalette>
 #include <QMouseEvent>
 
-TimeLineLayerHeaderCell::TimeLineLayerHeaderCell(TimeLine* timeLine, Editor* editor, QPoint origin, QSize size)
+TimeLineLayerHeaderCell::TimeLineLayerHeaderCell(TimeLine* timeLine,
+                                                Editor* editor,
+                                                QPoint origin,
+                                                int width,
+                                                int height) : TimeLineBaseCell(timeLine, editor, origin, width, height)
 {
-    mEditor = editor;
-    mTimeLine = timeLine;
-
-    mOrigin = origin;
-    mSize = size;
 }
 
-TimeLineLayerHeaderCell::TimeLineLayerHeaderCell()
+TimeLineLayerHeaderCell::~TimeLineLayerHeaderCell()
 {
-
 }
 
-void TimeLineLayerHeaderCell::paintGlobalDotVisibility(QPainter& painter, const QPalette& palette)
+void TimeLineLayerHeaderCell::paintGlobalDotVisibility(QPainter& painter, const QPalette& palette) const
 {
     // --- draw circle
     painter.setPen(palette.color(QPalette::Text));
@@ -36,19 +34,27 @@ void TimeLineLayerHeaderCell::paintGlobalDotVisibility(QPainter& painter, const 
         painter.setBrush(palette.brush(QPalette::Text));
     }
     painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawEllipse(mOrigin.x() + 6, mOrigin.y() + 4, 9, 9);
+    painter.drawEllipse(mGlobalBounds.x() + 6, mGlobalBounds.y() + 4, 9, 9);
     painter.setRenderHint(QPainter::Antialiasing, false);
 }
 
-void TimeLineLayerHeaderCell::paintSplitter(QPainter& painter, const QPalette& palette)
+void TimeLineLayerHeaderCell::paint(QPainter &painter, const QPalette &palette) const
 {
-    painter.setPen(palette.color(QPalette::Mid));
-    int yPos = mOrigin.y() + mSize.height() - painter.pen().width();
-    painter.drawLine(mOrigin.x(), yPos, mSize.width(), yPos);
+    paintSplitter(painter, palette);
+    paintGlobalDotVisibility(painter, palette);
 }
 
-void TimeLineLayerHeaderCell::mousePressEvent(QMouseEvent* event, int layerNumber)
+void TimeLineLayerHeaderCell::paintSplitter(QPainter& painter, const QPalette& palette) const
 {
+    painter.setPen(palette.color(QPalette::Mid));
+    int yPos = mGlobalBounds.y() + mGlobalBounds.height() - painter.pen().width();
+    painter.drawLine(mGlobalBounds.x(), yPos, mGlobalBounds.width(), yPos);
+}
+
+void TimeLineLayerHeaderCell::mousePressEvent(QMouseEvent* event)
+{
+    if (!mGlobalBounds.contains(event->pos())) { return; }
+
     if (event->pos().x() < 15)
     {
         if (event->button() == Qt::LeftButton) {

@@ -20,54 +20,57 @@
 TimeLineLayerCell::TimeLineLayerCell(TimeLine* parent,
                                      Editor* editor,
                                      Layer* layer,
-                                     const QPalette& palette,
-                                     const QPoint& origin, int width, int height) : TimeLineBaseCell(parent, editor, layer, palette, origin, width, height)
+                                     const QPoint& origin, int width, int height) : TimeLineBaseCell(parent, editor, origin, width, height)
 {
+    mLayer = layer;
 }
 
 TimeLineLayerCell::~TimeLineLayerCell()
 {
 }
 
-void TimeLineLayerCell::paint(QPainter& painter, bool isSelected, const LayerVisibility &LayerVisibility) const
+void TimeLineLayerCell::paint(QPainter& painter, const QPalette& palette) const
 {
-    paintBackground(painter, isSelected);
-    paintLayerVisibility(painter, LayerVisibility, isSelected);
-    paintLabel(painter, isSelected);
+    const LayerVisibility& visibility = mEditor->layerVisibility();
+    bool isSelected = mEditor->layers()->selectedLayerId() == mLayer->id();
+    qDebug() << "isSelected: " << mEditor->layers()->selectedLayerId();
+    paintBackground(painter, palette, isSelected);
+    paintLayerVisibility(painter, palette, visibility, isSelected);
+    paintLabel(painter, palette, isSelected);
 }
 
-void TimeLineLayerCell::paintLayerVisibility(QPainter& painter, const LayerVisibility& layerVisibility, bool isSelected) const
+void TimeLineLayerCell::paintLayerVisibility(QPainter& painter, const QPalette& palette, const LayerVisibility& layerVisibility, bool isSelected) const
 {
     int x = topLeft().x();
     int y = topLeft().y();
     if (!mLayer->visible())
     {
-        painter.setBrush(mPalette.color(QPalette::Base));
+        painter.setBrush(palette.color(QPalette::Base));
     }
     else
     {
         if ((layerVisibility == LayerVisibility::ALL) || isSelected)
         {
-            painter.setBrush(mPalette.color(QPalette::Text));
+            painter.setBrush(palette.color(QPalette::Text));
         }
         else if (layerVisibility == LayerVisibility::CURRENTONLY)
         {
-            painter.setBrush(mPalette.color(QPalette::Base));
+            painter.setBrush(palette.color(QPalette::Base));
         }
         else if (layerVisibility == LayerVisibility::RELATED)
         {
-            QColor color = mPalette.color(QPalette::Text);
+            QColor color = palette.color(QPalette::Text);
             color.setAlpha(128);
             painter.setBrush(color);
         }
     }
     if (isSelected)
     {
-        painter.setPen(mPalette.color(QPalette::HighlightedText));
+        painter.setPen(palette.color(QPalette::HighlightedText));
     }
     else
     {
-        painter.setPen(mPalette.color(QPalette::Text));
+        painter.setPen(palette.color(QPalette::Text));
     }
 
     painter.setRenderHint(QPainter::Antialiasing, true);
@@ -75,23 +78,23 @@ void TimeLineLayerCell::paintLayerVisibility(QPainter& painter, const LayerVisib
     painter.setRenderHint(QPainter::Antialiasing, false);
 }
 
-void TimeLineLayerCell::paintBackground(QPainter& painter, bool isSelected) const
+void TimeLineLayerCell::paintBackground(QPainter& painter, const QPalette& palette, bool isSelected) const
 {
     int x = topLeft().x();
     int y = topLeft().y();
     if (isSelected)
     {
-        painter.setBrush(mPalette.color(QPalette::Highlight));
+        painter.setBrush(palette.color(QPalette::Highlight));
     }
     else
     {
-        painter.setBrush(mPalette.color(QPalette::Base));
+        painter.setBrush(palette.color(QPalette::Base));
     }
     painter.setPen(Qt::NoPen);
     painter.drawRect(x, y, size().width(), size().height()); // empty rectangle by default
 }
 
-void TimeLineLayerCell::paintLabel(QPainter& painter, bool isSelected) const
+void TimeLineLayerCell::paintLabel(QPainter& painter, const QPalette& palette, bool isSelected) const
 {
     int x = topLeft().x();
     int y = topLeft().y();
@@ -108,20 +111,23 @@ void TimeLineLayerCell::paintLabel(QPainter& painter, bool isSelected) const
 
     if (isSelected)
     {
-        painter.setPen(mPalette.color(QPalette::HighlightedText));
+        painter.setPen(palette.color(QPalette::HighlightedText));
     }
     else
     {
-        painter.setPen(mPalette.color(QPalette::Text));
+        painter.setPen(palette.color(QPalette::Text));
     }
     int textCenterY = (y + paddingTop) + (2 * size().height()) / 3;
-    painter.drawText(QPoint(iconPos.x() + labelIconSize.width() + itemSpacing, textCenterY), mLayer->name());
+    painter.drawText(QPoint(iconPos.x() + mLabelIconSize.width() + itemSpacing, textCenterY), mLayer->name());
 }
 
 void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
 {   
+    if (!mGlobalBounds.contains(event->pos())) { return; }
+    
     int layerNumber = getLayerNumber(event->pos().y());
     if (layerNumber < 0) { return; }
+    
     if (event->pos().x() < 15)
     {
         mEditor->switchVisibilityOfLayer(layerNumber);

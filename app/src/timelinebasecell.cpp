@@ -7,18 +7,14 @@
 #include "preferencemanager.h"
 #include "timeline.h"
 
-TimeLineBaseCell::TimeLineBaseCell(TimeLine* parent, 
-                                    Editor* editor, 
-                                    Layer* layer,
-                                    const QPalette& palette,
-                                    const QPoint& origin, 
-                                    int width, 
+TimeLineBaseCell::TimeLineBaseCell(TimeLine* parent,
+                                    Editor* editor,
+                                    const QPoint& origin,
+                                    int width,
                                     int height)
 {
     mTimeLine = parent;
     mEditor = editor;
-    mLayer = layer;
-    mPalette = palette;
     mPrefs = mEditor->preference();
     mGlobalBounds = QRect(origin, QSize(width,height));
 }
@@ -34,8 +30,7 @@ bool TimeLineBaseCell::contains(const QPoint& point) const
 
 void TimeLineBaseCell::move(int x, int y)
 {
-    mGlobalBounds.setLeft(x);
-    mGlobalBounds.setTop(y);
+    mGlobalBounds.translate(x, y);
 }
 
 QPoint TimeLineBaseCell::localPosition(QMouseEvent* event) const

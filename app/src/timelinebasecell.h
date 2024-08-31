@@ -13,26 +13,28 @@ class Layer;
 class PreferenceManager;
 class QMouseEvent;
 
-enum class TimeLineBaseCellType
+enum class TimeLineCellType
 {
     HEADER,
     LAYER,
     TRACK,
+    INVALID,
 };
 
 class TimeLineBaseCell {
 public:
     TimeLineBaseCell(TimeLine* parent,
                     Editor* editor,
-                    Layer* layer,
-                    const QPalette& palette,
                     const QPoint& origin,
                     int width,
                     int height);
     virtual ~TimeLineBaseCell();
+    
+    virtual TimeLineCellType type() const { return TimeLineCellType::INVALID; }
 
     bool contains(const QPoint& point) const;
     void move(int x, int y);
+    void setSize(const QSize& size) { mGlobalBounds.setSize(size); }
     const QSize size() const { return mGlobalBounds.size(); }
     const QPoint topLeft() const { return mGlobalBounds.topLeft(); }
 
@@ -41,18 +43,16 @@ public:
     Editor* mEditor = nullptr;
     TimeLine* mTimeLine = nullptr;
     PreferenceManager* mPrefs = nullptr;
-    Layer* mLayer = nullptr;
-    QPalette mPalette;
-
-protected:
-    virtual void mousePressEvent(QMouseEvent* event) { }
-    virtual void mouseMoveEvent(QMouseEvent* event) { }
-    virtual void mouseReleaseEvent(QMouseEvent* event) { }
-    virtual void paint(QPainter& painter, bool isSelected, const LayerVisibility &LayerVisibility) const {}
-
-private:
 
     QRect mGlobalBounds = QRect();
+
+protected:
+    virtual void mousePressEvent(QMouseEvent*) { }
+    virtual void mouseMoveEvent(QMouseEvent*) { }
+    virtual void mouseReleaseEvent(QMouseEvent*) { }
+    virtual void paint(QPainter&, const QPalette&) const { }
+
+private:
 };
 
 #endif // TIMELINEBASECELL_H
