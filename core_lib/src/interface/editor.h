@@ -148,7 +148,6 @@ signals:
 
     void updateTimeLine() const;
     void updateTimeLineCached();
-    void updateLayerCount();
     void updateBackup();
 
     void objectLoaded();

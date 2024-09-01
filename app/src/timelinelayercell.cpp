@@ -5,10 +5,9 @@
 #include "viewmanager.h"
 #include "pencilsettings.h"
 
-#include "camerapropertiesdialog.h"
-
 #include "layer.h"
 #include "layercamera.h"
+#include "camerapropertiesdialog.h"
 
 #include <QPalette>
 #include <QInputDialog>
@@ -23,6 +22,8 @@ TimeLineLayerCell::TimeLineLayerCell(TimeLine* parent,
                                      const QPoint& origin, int width, int height) : TimeLineBaseCell(parent, editor, origin, width, height)
 {
     mLayer = layer;
+
+    mOldBounds = mGlobalBounds;
 }
 
 TimeLineLayerCell::~TimeLineLayerCell()
@@ -30,10 +31,9 @@ TimeLineLayerCell::~TimeLineLayerCell()
 }
 
 void TimeLineLayerCell::paint(QPainter& painter, const QPalette& palette) const
-{
+{   
     const LayerVisibility& visibility = mEditor->layerVisibility();
     bool isSelected = mEditor->layers()->selectedLayerId() == mLayer->id();
-    qDebug() << "isSelected: " << mEditor->layers()->selectedLayerId();
     paintBackground(painter, palette, isSelected);
     paintLayerVisibility(painter, palette, visibility, isSelected);
     paintLabel(painter, palette, isSelected);
@@ -78,6 +78,12 @@ void TimeLineLayerCell::paintLayerVisibility(QPainter& painter, const QPalette& 
     painter.setRenderHint(QPainter::Antialiasing, false);
 }
 
+void TimeLineLayerCell::paintLayerGutter(QPainter& painter, const QPalette& palette) const
+{
+    painter.setPen(palette.color(QPalette::Mid));
+    painter.drawRect(0, mGlobalBounds.bottom(), mGlobalBounds.width(), 2);
+}
+
 void TimeLineLayerCell::paintBackground(QPainter& painter, const QPalette& palette, bool isSelected) const
 {
     int x = topLeft().x();
@@ -100,7 +106,7 @@ void TimeLineLayerCell::paintLabel(QPainter& painter, const QPalette& palette, b
     int y = topLeft().y();
 
     int paddingTop = 1;
-    int paddingLeft = 22;
+    int paddingLeft = mLabelIconSize.width();
     int itemSpacing = 2;
 
     const QPoint& iconPos = QPoint(x + paddingLeft, y - paddingTop);
@@ -127,6 +133,11 @@ void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
     
     int layerNumber = getLayerNumber(event->pos().y());
     if (layerNumber < 0) { return; }
+
+    if (event->buttons() & Qt::LeftButton) {
+        mIsDraggable = true;
+        mOldBounds = mGlobalBounds;
+    }
     
     if (event->pos().x() < 15)
     {
@@ -137,17 +148,27 @@ void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
         mEditor->layers()->setCurrentLayer(layerNumber);
         mEditor->layers()->currentLayer()->deselectAll();
     }
-    if (layerNumber == -1)
-    {
-        if (event->pos().x() < 15)
-        {
-            if (event->button() == Qt::LeftButton) {
-                mEditor->increaseLayerVisibilityIndex();
-            } else if (event->button() == Qt::RightButton) {
-                mEditor->decreaseLayerVisibilityIndex();
-            }
+}
+
+void TimeLineLayerCell::mouseMoveEvent(QMouseEvent *event)
+{   
+    if (event->buttons() & Qt::LeftButton) {
+        if (mIsDraggable && isDraggable(event->pos().y() - mOldBounds.center().y())) {
+            mDidDetach = true;
+            move(0, (event->pos().y() - mGlobalBounds.center().y()));
+        } else {
+            mGlobalBounds = mOldBounds;
         }
     }
+}
+
+void TimeLineLayerCell::mouseReleaseEvent(QMouseEvent *event)
+{
+    Q_UNUSED(event)
+    mIsDetaching = false;
+    mDidDetach = false;
+    mGlobalBounds = mOldBounds;
+    mIsDraggable = false;
 }
 
 int TimeLineLayerCell::getLayerNumber(int posY) const
@@ -155,7 +176,7 @@ int TimeLineLayerCell::getLayerNumber(int posY) const
     int layerNumber = 0;
     int totalLayerCount = mEditor->layers()->count();
     if (posY - size().height() > 0) {
-        layerNumber = (posY - size().height()) / size().height();
+        layerNumber = posY / size().height();
     }
 
     // Layers numbers are displayed in descending order
@@ -180,17 +201,6 @@ int TimeLineLayerCell::getLayerNumber(int posY) const
         layerNumber = -1;
     }
     return layerNumber;
-}
-
-
-void TimeLineLayerCell::mouseMoveEvent(QMouseEvent *event)
-{
-
-}
-
-void TimeLineLayerCell::mouseReleaseEvent(QMouseEvent *event)
-{
-
 }
 
 void TimeLineLayerCell::editLayerProperties() const

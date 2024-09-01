@@ -58,6 +58,8 @@ public:
     void gotoNextLayer();
     void gotoPreviouslayer();
 
+    bool swapLayers(int i, int j);
+
     /** Returns a new Layer with the given LAYER_TYPE */
     Layer* createLayer(Layer::LAYER_TYPE type, const QString& strLayerName);
     LayerBitmap* createBitmapLayer(const QString& strLayerName);
@@ -85,6 +87,7 @@ signals:
     void layerCountChanged(int count);
     void animationLengthChanged(int length);
     void layerDeleted(int index);
+    void layerOrderChanged();
 
 private:
     int getIndex(Layer*) const;

@@ -34,17 +34,33 @@ public:
 
     int getLayerNumber(int posY) const;
 
+    bool didDetach() const { return mDidDetach; }
+    bool isDraggable() const { return mIsDraggable; }
+    const Layer* layer() const { return mLayer; }
+
+    // int getInbetweenLayerNumber();
+
 private:
+
+    bool isDraggable(int yOffset) const { return abs(yOffset) > mDetachThreshold; }
 
     void paintBackground(QPainter& painter, const QPalette& palette, bool isSelected) const;
     void paintLayerVisibility(QPainter& painter, const QPalette& palette, const LayerVisibility& layerVisibility, bool isSelected) const;
     void paintLabel(QPainter& painter, const QPalette& palette, bool isSelected) const;
+    void paintLayerGutter(QPainter& painter, const QPalette& palette) const;
 
     void editLayerProperties(LayerCamera* cameraLayer) const;
     void editLayerName(Layer* layer) const;
 
     QSize mLabelIconSize = QSize(22,22);
     Layer* mLayer = nullptr;
+    bool mIsDetaching = false;
+    bool mDidDetach = false;
+    bool mIsDraggable = false;
+
+    int mDetachThreshold = 5;
+    
+    QRect mOldBounds = QRect();
 };
 
 #endif // TIMELINELAYERCELL_H

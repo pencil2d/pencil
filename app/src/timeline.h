@@ -23,9 +23,13 @@ class QScrollBar;
 class Editor;
 class TimeLineCells;
 class TimeControls;
+class LayerManager;
 
 class QToolButton;
 class QWheelEvent;
+class QScrollArea;
+class TimeLineLayerList;
+class TimeLineLayerHeaderWidget;
 
 
 class TimeLine : public BaseDockWidget
@@ -40,8 +44,7 @@ public:
     void updateUICached();
 
     void updateFrame( int frameNumber );
-    void updateLayerNumber( int number );
-    void updateLayerView();
+    void updateVerticalScrollbarPageCount(int numberOfLayers);
     void updateLength();
     void updateContent();
     void setLoop( bool loop );
@@ -56,6 +59,8 @@ public:
     void onObjectLoaded();
     void onCurrentLayerChanged();
     void onScrollbarValueChanged();
+    void onLayerCountUpdated( int number );
+    void onLayerOrderUpdated();
 
 signals:
     void selectionChanged();
@@ -92,13 +97,17 @@ private:
     QScrollBar* mHScrollbar = nullptr;
     QScrollBar* mVScrollbar = nullptr;
     TimeLineCells* mTracks = nullptr;
-    TimeLineCells* mLayerList = nullptr;
+
+    QScrollArea* mLayerScrollArea = nullptr;
+    TimeLineLayerHeaderWidget* mLayerHeader = nullptr;
+    TimeLineLayerList* mLayerList = nullptr;
     TimeControls* mTimeControls = nullptr;
+
+    LayerManager* mLayerManager = nullptr;
 
     QTimer* mScrollingStoppedTimer = nullptr;
 
     QToolButton* mLayerDeleteButton = nullptr;
-    int mNumLayers = 0;
     int mLastUpdatedFrame = 0;
 };
 

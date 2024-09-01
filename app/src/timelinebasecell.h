@@ -38,8 +38,6 @@ public:
     const QSize size() const { return mGlobalBounds.size(); }
     const QPoint topLeft() const { return mGlobalBounds.topLeft(); }
 
-    QPoint localPosition(QMouseEvent* event) const;
-
     Editor* mEditor = nullptr;
     TimeLine* mTimeLine = nullptr;
     PreferenceManager* mPrefs = nullptr;

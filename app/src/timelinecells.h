@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
 #include "timelinebasecell.h"
 #include "timelinelayercell.h"
-#include "timelinelayerheadercell.h"
+#include "timelinelayerheaderwidget.h"
 
 class Layer;
 enum class LayerVisibility;
@@ -67,6 +67,7 @@ public:
     bool didDetachLayer() const;
 
     void showCameraMenu(QPoint pos);
+    void loadLayerCells();
 
 signals:
     void mouseMovedY(int);
@@ -97,7 +98,7 @@ private slots:
 
 private:
 
-    TimeLineLayerCell getCell(int id) const { return mLayerCells.find(id).value(); }
+    TimeLineLayerCell* getCell(int id) const { return mLayerCells.find(id).value(); }
 
     int getLayerNumber(int y) const;
     int getInbetweenLayerNumber(int y) const;
@@ -111,7 +112,7 @@ private:
     void drawContent();
     void paintTicks(QPainter& painter, const QPalette& palette) const;
     void paintOnionSkin(QPainter& painter) const;
-    void paintLayerGutter(QPainter& painter, const QPalette&) const;
+    void paintLayerGutter(QPainter& painter, const QPalette&, const TimeLineLayerCell* cell) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
     void paintCurrentFrameBorder(QPainter& painter, int recLeft, int recTop, int recWidth, int recHeight) const;
@@ -177,8 +178,8 @@ private:
     const static int mOffsetY = 20;
     const static int mLayerDetachThreshold = 5;
 
-    QMap<int, TimeLineLayerCell> mLayerCells;
-    TimeLineLayerHeaderCell* mHeaderCell = nullptr;
+    QMap<int, TimeLineLayerCell*> mLayerCells;
+    TimeLineLayerHeaderWidget* mHeaderCell = nullptr;
 
 };
 

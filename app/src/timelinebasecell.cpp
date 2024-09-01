@@ -1,6 +1,7 @@
 #include "timelinebasecell.h"
 
 #include <QMouseEvent>
+#include <QDebug>
 
 #include "editor.h"
 #include "layer.h"
@@ -31,9 +32,5 @@ bool TimeLineBaseCell::contains(const QPoint& point) const
 void TimeLineBaseCell::move(int x, int y)
 {
     mGlobalBounds.translate(x, y);
-}
-
-QPoint TimeLineBaseCell::localPosition(QMouseEvent* event) const
-{
-    return QPoint(mGlobalBounds.x() + event->pos().x(), mGlobalBounds.y() + event->pos().y());
+    qDebug() << mGlobalBounds.topLeft();
 }

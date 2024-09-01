@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QRegularExpression>
 #include <QSettings>
+#include <QDebug>
 
 #include "camerapropertiesdialog.h"
 #include "editor.h"
@@ -44,7 +45,7 @@ TimeLineCells::TimeLineCells(TimeLine* parent, Editor* editor, TIMELINE_CELL_TYP
     mEditor = editor;
     mPrefs = editor->preference();
     mType = type;
-    mHeaderCell = new TimeLineLayerHeaderCell(mTimeLine, mEditor, QPoint(), width(), mLayerHeight);
+    // mHeaderCell = new TimeLineLayerHeaderWidget(mTimeLine, mEditor, QPoint(), width(), mLayerHeight);
 
     mFrameLength = mPrefs->getInt(SETTING::TIMELINE_SIZE);
     mFontSize = mPrefs->getInt(SETTING::LABEL_FONT_SIZE);
@@ -91,6 +92,28 @@ void TimeLineCells::loadSetting(SETTING setting)
     }
 
     updateContent();
+}
+
+void TimeLineCells::loadLayerCells()
+{
+    if (!mLayerCells.isEmpty()) {
+        for (const TimeLineLayerCell* cell : mLayerCells) {
+            delete cell;
+        }
+        mLayerCells.clear();
+    }
+
+    for (int i = 0; i < mEditor->layers()->count(); i++)
+    {
+        Layer* layeri = mEditor->layers()->getLayer(i);
+        const int layerY = getLayerY(i);
+        TimeLineLayerCell* cell = new TimeLineLayerCell(mTimeLine, mEditor, layeri, QPoint(0, layerY), width() - 1, mLayerHeight);
+        mLayerCells.insert(layeri->id(), cell);
+
+        // if (mEditor->currentLayerIndex() != i) {
+        //     cell.paint(painter, palette);
+        // }
+    }
 }
 
 int TimeLineCells::getFrameNumber(int x) const
@@ -232,58 +255,38 @@ void TimeLineCells::drawContent()
     painter.setBrush(palette.color(QPalette::Base));
     painter.drawRect(QRect(0, 0, width(), height()));
 
-    const int widgetWidth = width();
+    // const int widgetWidth = width();
 
     // Draw non-current layers
-    const Object* object = mEditor->object();
-    Q_ASSERT(object != nullptr);
+    // const Object* object = mEditor->object();
+    // Q_ASSERT(object != nullptr);
+
+    if (mLayerCells.isEmpty()) { return; }
 
     if (mType == TIMELINE_CELL_TYPE::Layers) {
 
-        // TODO: we shouldn't have to remove all cells every time we paint.
-        mLayerCells.clear();
+        // // TODO: we shouldn't have to remove all cells every time we paint.
+        // mLayerCells.clear();
+        // mHeaderCell->paint(painter, palette);
 
-        for (int i = 0; i < object->getLayerCount(); i++)
+        for (const TimeLineLayerCell* cell : qAsConst(mLayerCells))
         {
-            Layer* layeri = object->getLayer(i);
-            const int layerY = getLayerY(i);
-            TimeLineLayerCell cell = TimeLineLayerCell(mTimeLine, mEditor, layeri, QPoint(0, layerY), widgetWidth - 1, mLayerHeight);
-            mLayerCells.insert(layeri->id(), cell);
-
-            if (mEditor->currentLayerIndex() != i) {
-                cell.paint(painter, palette);
+            if (mEditor->layers()->currentLayer() != cell->layer()) {
+                cell->paint(painter, palette);
             }
         }
 
-        int layerYMouseMove = getLayerY(mEditor->layers()->currentLayerIndex()) + mMouseMoveY;
         Layer* currentLayer = mEditor->layers()->currentLayer();
-        auto cell = getCell(currentLayer->id());
+        const auto cell = getCell(currentLayer->id());
 
-        if (didDetachLayer()) {
-            cell.move(mOffsetX, mMouseMoveY);
-            cell.paint(painter, palette);
-            paintLayerGutter(painter, palette);
+        // Current layer should always be painted on top
+        if (cell->layer() == currentLayer) {
+            cell->paint(painter, palette);
+
+            if (cell->isDraggable()) {
+                paintLayerGutter(painter, palette, cell);
+            }
         }
-        cell.paint(painter, palette);
-
-        mHeaderCell->paint(painter, palette);
-
-
-       //  const auto cellKeys = mLayerCells.values();
-       //  for (int i = 0; i < cellKeys.count(); i++) {
-       //      const TimeLineLayerCell& cell = cellKeys[i];
-
-       //      if (mEditor->currentLayerIndex() != i) {
-       //          cell.paintLabel(painter, palette, false, mEditor->layerVisibility());
-       //      } else {
-       //          // if (didDetachLayer()) {
-       //          //     cell.paintLabel(painter, palette, true, mEditor->layerVisibility());
-       //          //     paintLayerGutter(painter);
-       //          // } else {
-       //          //     cell.paintLabel(painter, palette, true, mEditor->layerVisibility());
-       //          // }
-       //      }
-       // }
     }
 
     // // Draw current layer
@@ -588,16 +591,16 @@ void TimeLineCells::paintSelection(QPainter& painter, int x, int y, int width, i
     painter.restore();
 }
 
-void TimeLineCells::paintLayerGutter(QPainter& painter, const QPalette& palette) const
+void TimeLineCells::paintLayerGutter(QPainter& painter, const QPalette& palette, const TimeLineLayerCell* cell) const
 {
     painter.setPen(palette.color(QPalette::Mid));
-    if (mMouseMoveY > mLayerDetachThreshold)
+    if (cell->didDetach())
     {
-        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+mLayerHeight, width(), 2);
+        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+cell->mGlobalBounds.height(), width(), 2);
     }
     else
     {
-        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY)), width(), 2);
+        painter.drawRect(0, cell->mGlobalBounds.bottom(), width(), 2);
     }
 }
 
@@ -752,7 +755,7 @@ void TimeLineCells::resizeEvent(QResizeEvent* event)
     updateContent();
     event->accept();
     emit lengthChanged(getFrameLength());
-    mHeaderCell->setSize(QSize(width(), mLayerHeight));
+    // mHeaderCell->setSize(QSize(width(), mLayerHeight));
 }
 
 bool TimeLineCells::event(QEvent* event)
@@ -796,7 +799,7 @@ void TimeLineCells::mousePressEvent(QMouseEvent* event)
         if (layerNumber == -1) {
             mHeaderCell->mousePressEvent(event);
         } else {
-            getCell(mEditor->layers()->getLayer(layerNumber)->id()).mousePressEvent(event);
+            getCell(mEditor->layers()->getLayer(layerNumber)->id())->mousePressEvent(event);
         }
         break;
     case TIMELINE_CELL_TYPE::Tracks:
@@ -931,6 +934,14 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
             mEndY = event->pos().y();
             emit mouseMovedY(mEndY - mStartY);
         }
+
+        for (TimeLineLayerCell* cell : mLayerCells) {
+            cell->mouseMoveEvent(event);
+        }
+        // if (mStartY >= 0) {
+        //     auto cell = getCell(mEditor->layers()->getLayer(getLayerNumber(mStartY))->id());
+        //     cell->mouseMoveEvent(event);
+        // }
     }
     else if (mType == TIMELINE_CELL_TYPE::Tracks)
     {
@@ -1039,6 +1050,12 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
         }
     }
 
+    if (mType == TIMELINE_CELL_TYPE::Layers) {
+        for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
+            cell->mouseReleaseEvent(event);
+        }
+    }
+
     if (mType == TIMELINE_CELL_TYPE::Layers && event->button() == Qt::LeftButton)
     {
         emit mouseMovedY(0);
@@ -1079,7 +1096,7 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
         }
         else if (mType == TIMELINE_CELL_TYPE::Layers && event->pos().x() >= 15)
         {
-            getCell(layer->id()).editLayerProperties();
+            getCell(layer->id())->editLayerProperties();
         }
     }
     QWidget::mouseDoubleClickEvent(event);

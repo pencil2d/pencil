@@ -28,11 +28,15 @@ GNU General Public License for more details.
 #include <QWheelEvent>
 #include <QSlider>
 #include <QTimer>
+#include <QScrollArea>
+#include <QDebug>
 
 #include "editor.h"
 #include "layermanager.h"
 #include "timecontrols.h"
 #include "timelinecells.h"
+#include "timelinelayerlist.h"
+#include "timelinelayerheaderwidget.h"
 
 
 TimeLine::TimeLine(QWidget* parent) : BaseDockWidget(parent)
@@ -47,8 +51,11 @@ void TimeLine::initUI()
 
     QWidget* timeLineContent = new QWidget(this);
 
-    mLayerList = new TimeLineCells(this, editor(), TIMELINE_CELL_TYPE::Layers);
+    mLayerHeader = new TimeLineLayerHeaderWidget(this, editor());
+    mLayerList = new TimeLineLayerList(this, editor());
     mTracks = new TimeLineCells(this, editor(), TIMELINE_CELL_TYPE::Tracks);
+
+    mLayerHeader->setFixedHeight(mLayerList->getLayerHeight());
 
     mHScrollbar = new QScrollBar(Qt::Horizontal);
     mVScrollbar = new QScrollBar(Qt::Vertical);
@@ -108,9 +115,17 @@ void TimeLine::initUI()
     addLayerButton->setMenu(layerMenu);
     addLayerButton->setPopupMode(QToolButton::InstantPopup);
 
+    mLayerScrollArea = new QScrollArea();
+    mLayerScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
+    mLayerScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    mLayerScrollArea->setWidgetResizable(true);
+    mLayerScrollArea->setWidget(mLayerList);
+    mLayerScrollArea->setFocusPolicy(Qt::FocusPolicy::NoFocus);
+
     QGridLayout* leftLayout = new QGridLayout();
     leftLayout->addWidget(leftToolBar, 0, 0);
-    leftLayout->addWidget(mLayerList, 1, 0);
+    leftLayout->addWidget(mLayerHeader, 1, 0);
+    leftLayout->addWidget(mLayerScrollArea, 2, 0);
     leftLayout->setContentsMargins(0, 0, 0, 0);
     leftLayout->setSpacing(0);
     leftWidget->setLayout(leftLayout);
@@ -195,14 +210,16 @@ void TimeLine::initUI()
     mScrollingStoppedTimer = new QTimer();
     mScrollingStoppedTimer->setSingleShot(true);
 
+    mLayerManager = editor()->layers();
+
     setWindowFlags(Qt::WindowStaysOnTopHint);
 
     connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange);
     connect(mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
     connect(mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange);
-    connect(mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange);
+    connect(mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineLayerList::vScrollChange);
     connect(mVScrollbar, &QScrollBar::valueChanged, this, &TimeLine::onScrollbarValueChanged);
-    connect(mScrollingStoppedTimer, &QTimer::timeout, mLayerList, &TimeLineCells::onScrollingVerticallyStopped);
+    connect(mScrollingStoppedTimer, &QTimer::timeout, mLayerList, &TimeLineLayerList::onScrollingVerticallyStopped);
 
     connect(splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength);
 
@@ -226,8 +243,8 @@ void TimeLine::initUI()
     connect(newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer);
     connect(mLayerDeleteButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayerClick);
 
-    connect(mLayerList, &TimeLineCells::mouseMovedY, mLayerList, &TimeLineCells::setMouseMoveY);
-    connect(mLayerList, &TimeLineCells::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
+    connect(mLayerList, &TimeLineLayerList::mouseMovedY, mLayerList, &TimeLineLayerList::setMouseMoveY);
+    connect(mLayerList, &TimeLineLayerList::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
     connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
     connect(mTracks, &TimeLineCells::selectionChanged, this, &TimeLine::selectionChanged);
     connect(mTracks, &TimeLineCells::insertNewKeyFrame, this, &TimeLine::insertKeyClick);
@@ -236,10 +253,11 @@ void TimeLine::initUI()
     connect(editor(), &Editor::frameModified, this, &TimeLine::updateContent);
     connect(editor(), &Editor::framesModified, this, &TimeLine::updateContent);
 
-    LayerManager* layer = editor()->layers();
-    connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);
-    connect(layer, &LayerManager::currentLayerChanged, this, &TimeLine::onCurrentLayerChanged);
-    mNumLayers = layer->count();
+    connect(mLayerManager, &LayerManager::layerCountChanged, this, &TimeLine::onLayerCountUpdated);
+    connect(mLayerManager, &LayerManager::layerOrderChanged, this, &TimeLine::onLayerOrderUpdated);
+    connect(mLayerManager, &LayerManager::currentLayerChanged, this, &TimeLine::onCurrentLayerChanged);
+
+    mLayerList->loadLayerCells();
 
     scrubbing = false;
 }
@@ -276,7 +294,9 @@ void TimeLine::extendLength(int frame)
 
 void TimeLine::resizeEvent(QResizeEvent*)
 {
-    updateLayerView();
+    if (mLayerManager) {
+        updateVerticalScrollbarPageCount(mLayerManager->count());
+    }
 }
 
 void TimeLine::wheelEvent(QWheelEvent* event)
@@ -288,6 +308,7 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     else
     {
         mVScrollbar->event(event);
+        mLayerScrollArea->verticalScrollBar()->event(event);
     }
 }
 
@@ -308,19 +329,28 @@ void TimeLine::updateFrame(int frameNumber)
     mLastUpdatedFrame = frameNumber;
 }
 
-void TimeLine::updateLayerView()
+void TimeLine::updateVerticalScrollbarPageCount(int numberOfLayers)
 {
-    int pageDisplay = (mTracks->height() - mTracks->getOffsetY()) / mTracks->getLayerHeight();
+    int pageDisplay = mLayerScrollArea->height() / mLayerList->getLayerHeight();
 
     mVScrollbar->setMinimum(0);
-    mVScrollbar->setMaximum(qMax(0, mNumLayers - pageDisplay));
+    mVScrollbar->setMaximum(qMax(0, numberOfLayers - pageDisplay));
+    QScrollBar* vBar = mLayerScrollArea->verticalScrollBar();
+    vBar->setRange(0, qMax(0, (numberOfLayers - pageDisplay) + mLayerList->getLayerHeight()));
+    vBar->setPageStep(mLayerList->getLayerHeight());
+    vBar->setSingleStep(mLayerList->getLayerHeight());
     updateContent();
 }
 
-void TimeLine::updateLayerNumber(int numberOfLayers)
+void TimeLine::onLayerCountUpdated(int numberOfLayers)
 {
-    mNumLayers = numberOfLayers;
-    updateLayerView();
+    mLayerList->loadLayerCells();
+    updateVerticalScrollbarPageCount(numberOfLayers);
+}
+
+void TimeLine::onLayerOrderUpdated()
+{
+    mLayerList->loadLayerCells();
 }
 
 void TimeLine::updateLength()
@@ -367,30 +397,35 @@ int TimeLine::getRangeUpper()
 void TimeLine::onObjectLoaded()
 {
     mTimeControls->updateUI();
-    updateLayerNumber(editor()->layers()->count());
+    mLayerList->loadLayerCells();
+    onLayerCountUpdated(editor()->layers()->count());
 }
 
 void TimeLine::onCurrentLayerChanged()
 {
     updateVerticalScrollbarPosition();
     mLayerDeleteButton->setEnabled(editor()->layers()->canDeleteLayer(editor()->currentLayerIndex()));
+    mLayerList->updateContent();
 }
 
 void TimeLine::updateVerticalScrollbarPosition()
 {
     // invert index so 0 is at the top
-    int idx = mNumLayers - editor()->currentLayerIndex() - 1;
+    int layerCount = mLayerManager->count();
+    int idx = layerCount - editor()->currentLayerIndex() - 1;
     // number of visible layers
-    int height = mNumLayers - mVScrollbar->maximum();
+    int height = layerCount - mVScrollbar->maximum();
     // scroll bar position/offset
     int pos = mVScrollbar->value();
 
     if (idx < pos) // above visible area
     {
         mVScrollbar->setValue(idx);
+        mLayerScrollArea->verticalScrollBar()->setValue(idx);
     }
     else if (idx >= pos + height) // below visible area
     {
         mVScrollbar->setValue(idx - height + 1);
+        mLayerScrollArea->verticalScrollBar()->setValue(mVScrollbar->value() * mLayerList->getLayerHeight());
     }
 }
