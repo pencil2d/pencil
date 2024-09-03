@@ -9,7 +9,6 @@
 #include "timeline.h"
 
 #include "timelinelayercell.h"
-#include "timelinelayerheaderwidget.h"
 
 TimeLineLayerList::TimeLineLayerList(TimeLine* parent, Editor* editor) : QWidget(parent)
 {
@@ -133,8 +132,6 @@ void TimeLineLayerList::drawContent()
 
     if (mLayerCells.isEmpty()) { return; }
 
-    // mHeaderCell->paint(painter, palette);
-
     for (const TimeLineLayerCell* cell : qAsConst(mLayerCells))
     {
         if (mEditor->layers()->selectedLayerId() != cell->layer()->id()) {
@@ -184,8 +181,9 @@ void TimeLineLayerList::paintEvent(QPaintEvent*)
 void TimeLineLayerList::resizeEvent(QResizeEvent* event)
 {
     if (event->size() != mPixmapCache.size()) {
-        mPixmapCache = QPixmap(event->size());
+        mPixmapCache = QPixmap(event->size() * devicePixelRatioF());
         mPixmapCache.fill(Qt::transparent);
+        mPixmapCache.setDevicePixelRatio(this->devicePixelRatioF());
     }
     setMinimumHeight(mEditor->layers()->count() * mLayerHeight);;
 
