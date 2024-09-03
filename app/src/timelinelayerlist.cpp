@@ -16,8 +16,6 @@ TimeLineLayerList::TimeLineLayerList(TimeLine* parent, Editor* editor) : QWidget
     mEditor = editor;
     mPrefs = editor->preference();
 
-    mFontSize = mPrefs->getInt(SETTING::LABEL_FONT_SIZE);
-
     setMinimumSize(500, 4 * mLayerHeight);
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
     setAttribute(Qt::WA_OpaquePaintEvent, false);
@@ -32,15 +30,6 @@ TimeLineLayerList::~TimeLineLayerList()
 
 void TimeLineLayerList::loadSetting(SETTING setting)
 {
-    switch (setting)
-    {
-    case SETTING::LABEL_FONT_SIZE:
-        mFontSize = mPrefs->getInt(SETTING::LABEL_FONT_SIZE);
-        break;
-    default:
-        break;
-    }
-
     updateContent();
 }
 
@@ -79,7 +68,7 @@ int TimeLineLayerList::getLayerNumber(int y) const
 
     if (y < 0)
     {
-        layerNumber = -1;
+        layerNumber = (totalLayerCount - 1);
     }
 
     if (layerNumber >= totalLayerCount)
@@ -154,14 +143,16 @@ void TimeLineLayerList::drawContent()
 void TimeLineLayerList::paintLayerGutter(QPainter& painter, const QPalette& palette, const TimeLineLayerCell* cell) const
 {
     painter.setPen(palette.color(QPalette::Mid));
+    int layerGutterPosY = 0;
     if (cell->didDetach())
     {
-        painter.drawRect(0, getLayerY(getInbetweenLayerNumber(mEndY))+cell->mGlobalBounds.height(), width(), 2);
+        layerGutterPosY = mGutterPositionY + cell->mGlobalBounds.height();
     }
     else
     {
-        painter.drawRect(0, cell->mGlobalBounds.bottom(), width(), 2);
+        layerGutterPosY = cell->mGlobalBounds.height();
     }
+    painter.drawRect(0, layerGutterPosY, width(), 2);
 }
 
 void TimeLineLayerList::paintEvent(QPaintEvent*)
@@ -199,28 +190,21 @@ void TimeLineLayerList::resizeEvent(QResizeEvent* event)
 void TimeLineLayerList::mousePressEvent(QMouseEvent* event)
 {
     int layerNumber = getLayerNumber(event->pos().y());
-    mCurrentLayerNumber = layerNumber;
 
     mFromLayer = mToLayer = layerNumber;
-
     mStartY = event->pos().y();
-    mStartLayerNumber = layerNumber;
-    mEndY = event->pos().y();
+    mPrimaryButton = event->button();
 
-    primaryButton = event->button();
-
-    if (layerNumber != -1) {
-        getCell(mEditor->layers()->getLayer(layerNumber)->id())->mousePressEvent(event);
+    for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
+        cell->mousePressEvent(event);
     }
 }
 
 void TimeLineLayerList::mouseMoveEvent(QMouseEvent* event)
 {
-    mLayerPosMoveY = getLayerNumber(event->pos().y());
-
     if (event->buttons() & Qt::LeftButton ) {
-        mEndY = event->pos().y();
-        emit mouseMovedY(mEndY - mStartY);
+        mGutterPositionY = getLayerGutterYPosition(event);
+        emit mouseMovedY(event->pos().y() - mStartY);
     }
 
     for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
@@ -230,11 +214,11 @@ void TimeLineLayerList::mouseMoveEvent(QMouseEvent* event)
 
 void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
 {
-    if (event->button() != primaryButton) return;
+    if (event->button() != mPrimaryButton) return;
 
     int layerNumber = getLayerNumber(event->pos().y());
 
-    if (!mScrollingVertically && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
+    if (!mScrollingVertically && layerNumber != mFromLayer && layerNumber != -1)
     {
         mToLayer = getInbetweenLayerNumber(event->pos().y());
         if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
@@ -262,8 +246,8 @@ void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
         emit mouseMovedY(0);
     }
 
-    primaryButton = Qt::NoButton;
-    mEndY = mStartY;
+    mPrimaryButton = Qt::NoButton;
+    mGutterPositionY = -1;
     mTimeLine->scrubbing = false;
 }
 
@@ -283,8 +267,14 @@ void TimeLineLayerList::mouseDoubleClickEvent(QMouseEvent* event)
     QWidget::mouseDoubleClickEvent(event);
 }
 
+int TimeLineLayerList::getLayerGutterYPosition(const QMouseEvent* event) const
+{
+    return getLayerY(getInbetweenLayerNumber(event->pos().y()));
+}
+
 void TimeLineLayerList::vScrollChange(int x)
 {
+    Q_UNUSED(x)
     mScrollingVertically = true;
     updateContent();
 }

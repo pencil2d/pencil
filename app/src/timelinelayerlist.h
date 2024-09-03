@@ -28,8 +28,9 @@ public:
     TimeLineLayerList( TimeLine* parent, Editor* editor);
     ~TimeLineLayerList() override;
 
-    static int getOffsetX() { return mOffsetX; }
     int getLayerHeight() const { return mLayerHeight; }
+
+    int getLayerGutterYPosition(const QMouseEvent* event) const;
 
     void loadLayerCells();
 
@@ -65,40 +66,30 @@ private:
     void drawContent();
     void paintLayerGutter(QPainter& painter, const QPalette&, const TimeLineLayerCell* cell) const;
 
-    TimeLine* mTimeLine;
-    Editor* mEditor; // the editor for which this timeLine operates
-    PreferenceManager* mPrefs;
+    TimeLine* mTimeLine = nullptr;
+    Editor* mEditor = nullptr; // the editor for which this timeLine operates
+    PreferenceManager* mPrefs = nullptr;
 
     QPixmap mPixmapCache;
+
+    int mGutterPositionY = -1;
+    int mFromLayer = 0;
+    int mToLayer   = 0;
+
     bool mRedrawContent = false;
-    int mFontSize = 10;
     int mLayerHeight = 20;
     int mStartY = 0;
-    int mEndY   = 0;
-
-    int mCurrentLayerNumber = 0;
-
-    int mFromLayer = 0;
-    int mToLayer   = 1;
-    int mStartLayerNumber = -1;
 
     // is used to move layers, don't use this to get mousePos;
     int mMouseMoveY = 0;
-    int mScrollOffsetY = 0;
-    Qt::MouseButton primaryButton = Qt::NoButton;
+    Qt::MouseButton mPrimaryButton = Qt::NoButton;
 
     bool mScrollingVertically = false;
 
-    int mLayerPosMoveY = 0;
-
-    const static int mOffsetX = 0;
     const static int mLayerDetachThreshold = 5;
 
     QMap<int, TimeLineLayerCell*> mLayerCells;
-    // TimeLineLayerHeaderWidget* mHeaderCell = nullptr;
-
     QScrollArea* mScrollArea = nullptr;
-
 };
 
 #endif // TIMELINELAYERLIST_H
