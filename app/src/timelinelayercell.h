@@ -58,6 +58,8 @@ private:
     bool mDidDetach = false;
     bool mIsDraggable = false;
 
+    QPixmap mIconPixmap;
+
     int mDetachThreshold = 5;
     
     QRect mOldBounds = QRect();

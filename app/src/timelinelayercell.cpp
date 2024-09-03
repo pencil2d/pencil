@@ -24,6 +24,11 @@ TimeLineLayerCell::TimeLineLayerCell(TimeLine* parent,
     mLayer = layer;
 
     mOldBounds = mGlobalBounds;
+
+    if (mLayer->type() == Layer::BITMAP) mIconPixmap = QPixmap(":icons/themes/playful/timeline/cell-bitmap.svg");
+    if (mLayer->type() == Layer::VECTOR) mIconPixmap = QPixmap(":icons/themes/playful/timeline/cell-vector.svg");
+    if (mLayer->type() == Layer::SOUND)  mIconPixmap = QPixmap(":icons/themes/playful/timeline/cell-sound.svg");
+    if (mLayer->type() == Layer::CAMERA) mIconPixmap = QPixmap(":icons/themes/playful/timeline/cell-camera.svg");
 }
 
 TimeLineLayerCell::~TimeLineLayerCell()
@@ -110,10 +115,10 @@ void TimeLineLayerCell::paintLabel(QPainter& painter, const QPalette& palette, b
     int itemSpacing = 2;
 
     const QPoint& iconPos = QPoint(x + paddingLeft, y - paddingTop);
-    if (mLayer->type() == Layer::BITMAP) painter.drawPixmap(iconPos, QPixmap(":icons/themes/playful/timeline/cell-bitmap.svg"));
-    if (mLayer->type() == Layer::VECTOR) painter.drawPixmap(iconPos, QPixmap(":icons/themes/playful/timeline/cell-vector.svg"));
-    if (mLayer->type() == Layer::SOUND)  painter.drawPixmap(iconPos, QPixmap(":icons/themes/playful/timeline/cell-sound.svg"));
-    if (mLayer->type() == Layer::CAMERA) painter.drawPixmap(iconPos, QPixmap(":icons/themes/playful/timeline/cell-camera.svg"));
+    if (mLayer->type() == Layer::BITMAP) painter.drawPixmap(iconPos, mIconPixmap);
+    if (mLayer->type() == Layer::VECTOR) painter.drawPixmap(iconPos, mIconPixmap);
+    if (mLayer->type() == Layer::SOUND)  painter.drawPixmap(iconPos, mIconPixmap);
+    if (mLayer->type() == Layer::CAMERA) painter.drawPixmap(iconPos, mIconPixmap);
 
     if (isSelected)
     {
