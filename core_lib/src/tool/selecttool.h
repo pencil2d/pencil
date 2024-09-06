@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 #include "movemode.h"
+#include "undoredomanager.h"
 
 #include <QRectF>
 
@@ -67,6 +68,8 @@ private:
     QRectF mSelectionRect;
 
     QPixmap mCursorPixmap = QPixmap(24, 24);
+
+    const UndoSaveState* mUndoState = nullptr;
 };
 
 #endif

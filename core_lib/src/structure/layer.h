@@ -104,6 +104,8 @@ public:
      */
     virtual bool addKeyFrame(int position, KeyFrame* pKeyFrame);
     virtual bool removeKeyFrame(int position);
+    virtual void replaceKeyFrame(const KeyFrame* pKeyFrame) = 0;
+
     bool swapKeyFrames(int position1, int position2);
     bool moveKeyFrame(int position, int offset);
     KeyFrame* getKeyFrameAt(int position) const;

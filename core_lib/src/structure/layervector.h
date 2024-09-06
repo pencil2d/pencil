@@ -38,6 +38,7 @@ public:
 
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
+    void replaceKeyFrame(const KeyFrame* vectorImage) override;
 
     bool usesColor(int index);
     void removeColor(int index);
