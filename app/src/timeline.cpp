@@ -243,8 +243,7 @@ void TimeLine::initUI()
     connect(newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer);
     connect(mLayerDeleteButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayerClick);
 
-    connect(mLayerList, &TimeLineLayerList::mouseMovedY, mLayerList, &TimeLineLayerList::setMouseMoveY);
-    connect(mLayerList, &TimeLineLayerList::mouseMovedY, mTracks, &TimeLineCells::setMouseMoveY);
+    connect(mLayerList, &TimeLineLayerList::cellDraggedY, mTracks, &TimeLineCells::setMouseMoveY);
     connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
     connect(mTracks, &TimeLineCells::selectionChanged, this, &TimeLine::selectionChanged);
     connect(mTracks, &TimeLineCells::insertNewKeyFrame, this, &TimeLine::insertKeyClick);

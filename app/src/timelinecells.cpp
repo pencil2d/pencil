@@ -283,7 +283,7 @@ void TimeLineCells::drawContent()
         if (cell->layer() == currentLayer) {
             cell->paint(painter, palette);
 
-            if (cell->isDraggable()) {
+            if (cell->hasDetached()) {
                 paintLayerGutter(painter, palette, cell);
             }
         }

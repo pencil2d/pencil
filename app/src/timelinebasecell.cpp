@@ -12,7 +12,7 @@ TimeLineBaseCell::TimeLineBaseCell(TimeLine* parent,
                                     Editor* editor,
                                     const QPoint& origin,
                                     int width,
-                                    int height)
+                                    int height) : QObject(parent)
 {
     mTimeLine = parent;
     mEditor = editor;
@@ -32,5 +32,4 @@ bool TimeLineBaseCell::contains(const QPoint& point) const
 void TimeLineBaseCell::move(int x, int y)
 {
     mGlobalBounds.translate(x, y);
-    qDebug() << mGlobalBounds.topLeft();
 }

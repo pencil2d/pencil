@@ -4,6 +4,7 @@
 
 #include <QPainter>
 #include <QPalette>
+#include <QObject>
 
 #include "pencildef.h"
 
@@ -21,7 +22,8 @@ enum class TimeLineCellType
     INVALID,
 };
 
-class TimeLineBaseCell {
+class TimeLineBaseCell: public QObject {
+    Q_OBJECT
 public:
     TimeLineBaseCell(TimeLine* parent,
                     Editor* editor,

@@ -14,8 +14,15 @@ class LayerCamera;
 
 class PreferenceManager;
 
+enum class DragEvent {
+    STARTED,
+    DRAGGING,
+    ENDED
+};
+
 class TimeLineLayerCell : public TimeLineBaseCell
 {
+    Q_OBJECT
 public:
     TimeLineLayerCell(TimeLine* parent,
                       Editor* editor,
@@ -35,14 +42,16 @@ public:
     int getLayerNumber(int posY) const;
 
     bool didDetach() const { return mDidDetach; }
-    bool isDraggable() const { return mIsDraggable; }
+    bool hasDetached() const { return mIsDraggable; }
     const Layer* layer() const { return mLayer; }
 
-    // int getInbetweenLayerNumber();
+signals:
+    void drag(const DragEvent& dragEvent, const TimeLineLayerCell* cell, int x, int y);
 
 private:
+    void handleDraggingEnded(QMouseEvent* event);
 
-    bool isDraggable(int yOffset) const { return abs(yOffset) > mDetachThreshold; }
+    bool hasDetached(int yOffset) const { return abs(yOffset) > mDetachThreshold; }
 
     void paintBackground(QPainter& painter, const QPalette& palette, bool isSelected) const;
     void paintLayerVisibility(QPainter& painter, const QPalette& palette, const LayerVisibility& layerVisibility, bool isSelected) const;
@@ -54,7 +63,6 @@ private:
 
     QSize mLabelIconSize = QSize(22,22);
     Layer* mLayer = nullptr;
-    bool mIsDetaching = false;
     bool mDidDetach = false;
     bool mIsDraggable = false;
 

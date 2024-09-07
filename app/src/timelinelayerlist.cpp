@@ -38,6 +38,7 @@ void TimeLineLayerList::loadLayerCells()
     if (!mLayerCells.isEmpty()) {
         for (const TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
             delete cell;
+            cell = nullptr;
         }
         mLayerCells.clear();
     }
@@ -45,9 +46,11 @@ void TimeLineLayerList::loadLayerCells()
     for (int i = 0; i < mEditor->layers()->count(); i++)
     {
         Layer* layeri = mEditor->layers()->getLayer(i);
-        const int layerY = getLayerY(i);
+        const int layerY = getLayerCellY(i);
         TimeLineLayerCell* cell = new TimeLineLayerCell(mTimeLine, mEditor, layeri, QPoint(0, layerY), width() - 1, mLayerHeight);
         mLayerCells.insert(layeri->id(), cell);
+
+        connect(cell, &TimeLineLayerCell::drag, this, &TimeLineLayerList::onCellDragged);
     }
 
     setMinimumHeight(mEditor->layers()->count() * mLayerHeight);
@@ -55,50 +58,12 @@ void TimeLineLayerList::loadLayerCells()
 
 int TimeLineLayerList::getLayerNumber(int y) const
 {
-    int layerNumber =  y / mLayerHeight;
-
     int totalLayerCount = mEditor->layers()->count();
-
-    // Layers numbers are displayed in descending order
-    // The last row is layer 0
-    if (layerNumber <= totalLayerCount)
-        layerNumber = (totalLayerCount - 1) - layerNumber;
-    else
-        layerNumber = 0;
-
-    if (y < 0)
-    {
-        layerNumber = (totalLayerCount - 1);
-    }
-
-    if (layerNumber >= totalLayerCount)
-    {
-        layerNumber = totalLayerCount;
-    }
-
-    //If the mouse release event if fired with mouse off the frame of the application
-    if (layerNumber < -1)
-    {
-        layerNumber = -1;
-    }
+    int layerNumber = (totalLayerCount - 1) - (y / mLayerHeight);
     return layerNumber;
 }
 
-int TimeLineLayerList::getInbetweenLayerNumber(int y) const {
-    int layerNumber = getLayerNumber(y);
-    // Round the layer number towards the drag start
-    if(layerNumber != mFromLayer) {
-        if(mMouseMoveY > 0 && y < getLayerY(layerNumber) + mLayerHeight / 2) {
-            layerNumber++;
-        }
-        else if(mMouseMoveY < 0 && y > getLayerY(layerNumber) + mLayerHeight / 2) {
-            layerNumber--;
-        }
-    }
-    return layerNumber;
-}
-
-int TimeLineLayerList::getLayerY(int layerNumber) const
+int TimeLineLayerList::getLayerCellY(int layerNumber) const
 {
     return (mEditor->layers()->count() - 1 - layerNumber) * mLayerHeight;
 }
@@ -134,25 +99,16 @@ void TimeLineLayerList::drawContent()
 
     cell->paint(painter, palette);
 
-    if (cell->isDraggable()) {
-        paintLayerGutter(painter, palette, cell);
+    if (cell->didDetach()) {
+        paintLayerGutter(painter, palette);
     }
     mRedrawContent = false;
 }
 
-void TimeLineLayerList::paintLayerGutter(QPainter& painter, const QPalette& palette, const TimeLineLayerCell* cell) const
+void TimeLineLayerList::paintLayerGutter(QPainter& painter, const QPalette& palette) const
 {
     painter.setPen(palette.color(QPalette::Mid));
-    int layerGutterPosY = 0;
-    if (cell->didDetach())
-    {
-        layerGutterPosY = mGutterPositionY + cell->mGlobalBounds.height();
-    }
-    else
-    {
-        layerGutterPosY = cell->mGlobalBounds.height();
-    }
-    painter.drawRect(0, layerGutterPosY, width(), 2);
+    painter.drawRect(0, mGutterPositionY, width(), 2);
 }
 
 void TimeLineLayerList::paintEvent(QPaintEvent*)
@@ -189,65 +145,42 @@ void TimeLineLayerList::resizeEvent(QResizeEvent* event)
 
 void TimeLineLayerList::mousePressEvent(QMouseEvent* event)
 {
-    int layerNumber = getLayerNumber(event->pos().y());
+    QWidget::mousePressEvent(event);
 
-    mFromLayer = mToLayer = layerNumber;
-    mStartY = event->pos().y();
     mPrimaryButton = event->button();
 
-    for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
-        cell->mousePressEvent(event);
+    if (!mLayerCells.isEmpty()) {
+        const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+        for (TimeLineLayerCell* cell : layerCells) {
+            cell->mousePressEvent(event);
+        }
     }
 }
 
 void TimeLineLayerList::mouseMoveEvent(QMouseEvent* event)
 {
-    if (event->buttons() & Qt::LeftButton ) {
-        mGutterPositionY = getLayerGutterYPosition(event);
-        emit mouseMovedY(event->pos().y() - mStartY);
-    }
-
-    for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
-        cell->mouseMoveEvent(event);
+    QWidget::mouseMoveEvent(event);
+    if (!mLayerCells.isEmpty()) {
+        const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+        for (TimeLineLayerCell* cell : layerCells) {
+            cell->mouseMoveEvent(event);
+        }
     }
 }
 
 void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
 {
+    QWidget::mouseReleaseEvent(event);
     if (event->button() != mPrimaryButton) return;
 
-    int layerNumber = getLayerNumber(event->pos().y());
-
-    if (!mScrollingVertically && layerNumber != mFromLayer && layerNumber != -1)
-    {
-        mToLayer = getInbetweenLayerNumber(event->pos().y());
-        if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
-        {
-            // Bubble the from layer up or down to the to layer
-            if (mToLayer < mFromLayer) // bubble up
-            {
-                for (int i = mFromLayer - 1; i >= mToLayer; i--)
-                    mEditor->swapLayers(i, i + 1);
-            }
-            else // bubble down
-            {
-                for (int i = mFromLayer + 1; i <= mToLayer; i++)
-                    mEditor->swapLayers(i, i - 1);
-            }
+    if (!mLayerCells.isEmpty()) {
+        const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+        for (TimeLineLayerCell* cell : layerCells) {
+            cell->mouseReleaseEvent(event);
         }
     }
 
-    for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
-        cell->mouseReleaseEvent(event);
-    }
-
-    if (event->button() == Qt::LeftButton)
-    {
-        emit mouseMovedY(0);
-    }
-
     mPrimaryButton = Qt::NoButton;
-    mGutterPositionY = -1;
     mTimeLine->scrubbing = false;
 }
 
@@ -267,9 +200,13 @@ void TimeLineLayerList::mouseDoubleClickEvent(QMouseEvent* event)
     QWidget::mouseDoubleClickEvent(event);
 }
 
-int TimeLineLayerList::getLayerGutterYPosition(const QMouseEvent* event) const
+int TimeLineLayerList::getLayerGutterYPosition(int posY) const
 {
-    return getLayerY(getInbetweenLayerNumber(event->pos().y()));
+    int layerNumber = getLayerNumber(posY);
+    if(posY > getLayerCellY(layerNumber) + mLayerHeight / 2) {
+        layerNumber--;
+    }
+    return getLayerCellY(layerNumber);
 }
 
 void TimeLineLayerList::vScrollChange(int x)
@@ -284,8 +221,45 @@ void TimeLineLayerList::onScrollingVerticallyStopped()
     mScrollingVertically = false;
 }
 
-void TimeLineLayerList::setMouseMoveY(int x)
+void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLayerCell* cell, int x, int y)
 {
-    mMouseMoveY = x;
+    switch (event)
+    {
+        case DragEvent::STARTED: {
+            mGutterPositionY = getLayerGutterYPosition(y);
+            mFromLayer = getLayerNumber(y);
+            emit cellDraggedY(0);
+            break;
+        }
+            // mToLayer = mFromLayer;
+        case DragEvent::DRAGGING: {
+            mGutterPositionY = getLayerGutterYPosition(y);
+            emit cellDraggedY(y);
+            break;
+        }
+        case DragEvent::ENDED: {
+            int dragToNumber = getLayerNumber(mGutterPositionY - (mLayerHeight * 0.5));
+            if (!mScrollingVertically && dragToNumber != mFromLayer && dragToNumber > -1)
+            {
+                if (dragToNumber < mEditor->layers()->count())
+                {
+                    // Bubble the from layer up or down to the to layer
+                    if (dragToNumber < mFromLayer) // bubble up
+                    {
+                        for (int i = mFromLayer - 1; i >= dragToNumber; i--)
+                            mEditor->swapLayers(i, i + 1);
+                    }
+                    else // bubble down
+                    {
+                        for (int i = mFromLayer + 1; i <= dragToNumber; i++)
+                            mEditor->swapLayers(i, i - 1);
+                    }
+                }
+            }
+            mGutterPositionY = -1;
+            break;
+        }
+    }
+
     updateContent();
 }

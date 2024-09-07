@@ -7,6 +7,8 @@
 #include <QMouseEvent>
 #include <QPaintEvent>
 
+#include "timelinelayercell.h"
+
 class Layer;
 enum class LayerVisibility;
 class TimeLine;
@@ -16,7 +18,6 @@ class QResizeEvent;
 class Editor;
 class PreferenceManager;
 enum class SETTING;
-class TimeLineLayerCell;
 class TimeLineLayerHeaderWidget;
 class QScrollArea;
 
@@ -30,19 +31,19 @@ public:
 
     int getLayerHeight() const { return mLayerHeight; }
 
-    int getLayerGutterYPosition(const QMouseEvent* event) const;
+    int getLayerGutterYPosition(int posY) const;
 
     void loadLayerCells();
+    void onCellDragged(const DragEvent& event, const TimeLineLayerCell* cell, int x, int y);
 
 signals:
-    void mouseMovedY(int);
+    void cellDraggedY(int);
     void offsetChanged(int);
 
 public slots:
     void updateContent();
     void vScrollChange(int);
     void onScrollingVerticallyStopped();
-    void setMouseMoveY(int x);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -60,11 +61,10 @@ private:
     TimeLineLayerCell* getCell(int id) const { return mLayerCells.find(id).value(); }
 
     int getLayerNumber(int y) const;
-    int getInbetweenLayerNumber(int y) const;
-    int getLayerY(int layerNumber) const;
+    int getLayerCellY(int layerNumber) const;
 
     void drawContent();
-    void paintLayerGutter(QPainter& painter, const QPalette&, const TimeLineLayerCell* cell) const;
+    void paintLayerGutter(QPainter& painter, const QPalette&) const;
 
     TimeLine* mTimeLine = nullptr;
     Editor* mEditor = nullptr; // the editor for which this timeLine operates
@@ -74,14 +74,10 @@ private:
 
     int mGutterPositionY = -1;
     int mFromLayer = 0;
-    int mToLayer   = 0;
 
     bool mRedrawContent = false;
     int mLayerHeight = 20;
-    int mStartY = 0;
 
-    // is used to move layers, don't use this to get mousePos;
-    int mMouseMoveY = 0;
     Qt::MouseButton mPrimaryButton = Qt::NoButton;
 
     bool mScrollingVertically = false;
