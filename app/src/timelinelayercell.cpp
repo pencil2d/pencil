@@ -142,7 +142,7 @@ void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
     if (event->buttons() & Qt::LeftButton) {
         mIsDraggable = true;
         mOldBounds = mGlobalBounds;
-        emit drag(DragEvent::STARTED, this, event->pos().x(), event->pos().y());
+        emit drag(DragEvent::STARTED, this, 0, mGlobalBounds.top());
     }
     
     if (event->pos().x() < 15)
@@ -162,11 +162,12 @@ void TimeLineLayerCell::mouseMoveEvent(QMouseEvent *event)
         if (hasDetached(event->pos().y() - mOldBounds.center().y())) {
             mDidDetach = true;
             move(0, event->pos().y() - mGlobalBounds.center().y());
+            emit drag(DragEvent::DRAGGING, this, 0, mGlobalBounds.top());
         } else {
             mDidDetach = false;
             mGlobalBounds = mOldBounds;
+            emit drag(DragEvent::DRAGGING, this, 0, mOldBounds.top());
         }
-        emit drag(DragEvent::DRAGGING, this, 0, event->pos().y());
     }
 }
 
@@ -178,7 +179,7 @@ void TimeLineLayerCell::mouseReleaseEvent(QMouseEvent *event)
 void TimeLineLayerCell::handleDraggingEnded(QMouseEvent* event)
 {
     if (mDidDetach) {
-        emit drag(DragEvent::ENDED, this, event->pos().x(), event->pos().y());
+        emit drag(DragEvent::ENDED, this, 0, mOldBounds.top());
         mDidDetach = false;
     }
     mIsDraggable = false;

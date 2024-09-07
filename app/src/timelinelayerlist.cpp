@@ -236,7 +236,7 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
         case DragEvent::STARTED: {
             mGutterPositionY = getLayerGutterYPosition(y);
             mFromLayer = getLayerNumber(y);
-            emit cellDraggedY(0);
+            emit cellDraggedY(y);
             break;
         }
             // mToLayer = mFromLayer;
@@ -264,6 +264,7 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
                     }
                 }
             }
+            emit cellDraggedY(y);
             mGutterPositionY = -1;
             break;
         }
