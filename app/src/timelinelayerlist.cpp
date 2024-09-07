@@ -36,7 +36,7 @@ void TimeLineLayerList::loadSetting(SETTING setting)
 void TimeLineLayerList::loadLayerCells()
 {
     if (!mLayerCells.isEmpty()) {
-        for (const TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
+        for (TimeLineLayerCell* cell : mLayerCells) {
             delete cell;
             cell = nullptr;
         }
@@ -86,8 +86,9 @@ void TimeLineLayerList::drawContent()
 
     if (mLayerCells.isEmpty()) { return; }
 
-    for (const TimeLineLayerCell* cell : qAsConst(mLayerCells))
-    {
+    const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    for (const TimeLineLayerCell* cell : layerCells) {
+        if (layerCells.isDetached()) { return; }
         if (mEditor->layers()->selectedLayerId() != cell->layer()->id()) {
             cell->paint(painter, palette);
         }
@@ -97,10 +98,12 @@ void TimeLineLayerList::drawContent()
 
     const auto cell = getCell(selectedLayerId);
 
-    cell->paint(painter, palette);
+    if (cell) {
+        cell->paint(painter, palette);
 
-    if (cell->didDetach()) {
-        paintLayerGutter(painter, palette);
+        if (cell->didDetach()) {
+            paintLayerGutter(painter, palette);
+        }
     }
     mRedrawContent = false;
 }
@@ -134,7 +137,9 @@ void TimeLineLayerList::resizeEvent(QResizeEvent* event)
     }
     setMinimumHeight(mEditor->layers()->count() * mLayerHeight);;
 
-    for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
+    const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    for (TimeLineLayerCell* cell : layerCells) {
+        if (layerCells.isDetached()) { return; }
         cell->setSize(QSize(event->size().width(), mLayerHeight));
     }
 
@@ -152,6 +157,7 @@ void TimeLineLayerList::mousePressEvent(QMouseEvent* event)
     if (!mLayerCells.isEmpty()) {
         const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
         for (TimeLineLayerCell* cell : layerCells) {
+            if (layerCells.isDetached()) { return; }
             cell->mousePressEvent(event);
         }
     }
@@ -163,6 +169,7 @@ void TimeLineLayerList::mouseMoveEvent(QMouseEvent* event)
     if (!mLayerCells.isEmpty()) {
         const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
         for (TimeLineLayerCell* cell : layerCells) {
+            if (layerCells.isDetached()) { return; }
             cell->mouseMoveEvent(event);
         }
     }
@@ -176,6 +183,7 @@ void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
     if (!mLayerCells.isEmpty()) {
         const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
         for (TimeLineLayerCell* cell : layerCells) {
+            if (layerCells.isDetached()) { return; }
             cell->mouseReleaseEvent(event);
         }
     }
@@ -247,12 +255,12 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
                     if (dragToNumber < mFromLayer) // bubble up
                     {
                         for (int i = mFromLayer - 1; i >= dragToNumber; i--)
-                            mEditor->swapLayers(i, i + 1);
+                            mEditor->layers()->swapLayers(i, i + 1);
                     }
                     else // bubble down
                     {
                         for (int i = mFromLayer + 1; i <= dragToNumber; i++)
-                            mEditor->swapLayers(i, i - 1);
+                            mEditor->layers()->swapLayers(i, i - 1);
                     }
                 }
             }
@@ -262,4 +270,13 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
     }
 
     updateContent();
+}
+
+TimeLineLayerCell* TimeLineLayerList::getCell(int id) const
+{
+    if (mLayerCells.isDetached()) {
+        return nullptr;
+    }
+
+    return mLayerCells.find(id).value();
 }

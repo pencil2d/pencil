@@ -58,7 +58,7 @@ private slots:
 
 private:
 
-    TimeLineLayerCell* getCell(int id) const { return mLayerCells.find(id).value(); }
+    TimeLineLayerCell* getCell(int id) const;
 
     int getLayerNumber(int y) const;
     int getLayerCellY(int layerNumber) const;

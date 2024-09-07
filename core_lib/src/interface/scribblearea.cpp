@@ -76,6 +76,8 @@ bool ScribbleArea::init()
     connect(mEditor->select(), &SelectionManager::selectionChanged, this, &ScribbleArea::onSelectionChanged);
     connect(mEditor->select(), &SelectionManager::needDeleteSelection, this, &ScribbleArea::deleteSelection);
 
+    connect(mEditor->layers(), &LayerManager::layerOrderChanged, this, &ScribbleArea::onLayerChanged);
+
     connect(&mTiledBuffer, &TiledBuffer::tileUpdated, this, &ScribbleArea::onTileUpdated);
     connect(&mTiledBuffer, &TiledBuffer::tileCreated, this, &ScribbleArea::onTileCreated);
 
