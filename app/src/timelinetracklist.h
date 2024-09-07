@@ -15,17 +15,12 @@ GNU General Public License for more details.
 
 */
 
-#ifndef TIMELINECELLS_H
-#define TIMELINECELLS_H
+#ifndef TIMELINETRACKLIST_H
+#define TIMELINETRACKLIST_H
 
 #include <QString>
 #include <QWidget>
-#include <QMap>
 #include "layercamera.h"
-
-#include "timelinebasecell.h"
-#include "timelinelayercell.h"
-#include "timelinelayerheaderwidget.h"
 
 class Layer;
 enum class LayerVisibility;
@@ -45,13 +40,13 @@ enum class TIMELINE_CELL_TYPE
     Tracks
 };
 
-class TimeLineCells : public QWidget
+class TimeLineTrackList : public QWidget
 {
     Q_OBJECT
 
 public:
-    TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
-    ~TimeLineCells() override;
+    TimeLineTrackList( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
+    ~TimeLineTrackList() override;
 
     static int getOffsetX() { return mOffsetX; }
     static int getOffsetY() { return mOffsetY; }
@@ -67,7 +62,6 @@ public:
     bool didDetachLayer() const;
 
     void showCameraMenu(QPoint pos);
-    void loadLayerCells();
 
 signals:
     void mouseMovedY(int);
@@ -97,11 +91,7 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
-
-    TimeLineLayerCell* getCell(int id) const { return mLayerCells.find(id).value(); }
-
     int getLayerNumber(int y) const;
-    int getInbetweenLayerNumber(int y) const;
     int getLayerY(int layerNumber) const;
     int getFrameX(int frameNumber) const;
     int getFrameNumber(int x) const;
@@ -112,13 +102,11 @@ private:
     void drawContent();
     void paintTicks(QPainter& painter, const QPalette& palette) const;
     void paintOnionSkin(QPainter& painter) const;
-    void paintLayerGutter(QPainter& painter, const QPalette&, const TimeLineLayerCell* cell) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
     void paintCurrentFrameBorder(QPainter& painter, int recLeft, int recTop, int recWidth, int recHeight) const;
     void paintFrameCursorOnCurrentLayer(QPainter& painter, int recTop, int recWidth, int recHeight) const;
     void paintSelectedFrames(QPainter& painter, const Layer* layer, const int layerIndex) const;
-    void paintLabel(QPainter& painter, const Layer* layer, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
     void paintHighlightedFrame(QPainter& painter, int framePos, int recTop, int recWidth, int recHeight) const;
 
@@ -178,9 +166,6 @@ private:
     const static int mOffsetY = 20;
     const static int mLayerDetachThreshold = 5;
 
-    QMap<int, TimeLineLayerCell*> mLayerCells;
-    TimeLineLayerHeaderWidget* mHeaderCell = nullptr;
-
 };
 
-#endif // TIMELINECELLS_H
+#endif // TIMELINETRACKLIST_H

@@ -34,7 +34,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "layermanager.h"
 #include "timecontrols.h"
-#include "timelinecells.h"
+#include "timelinetracklist.h"
 #include "timelinelayerlist.h"
 #include "timelinelayerheaderwidget.h"
 
@@ -53,7 +53,7 @@ void TimeLine::initUI()
 
     mLayerHeader = new TimeLineLayerHeaderWidget(this, editor());
     mLayerList = new TimeLineLayerList(this, editor());
-    mTracks = new TimeLineCells(this, editor(), TIMELINE_CELL_TYPE::Tracks);
+    mTracks = new TimeLineTrackList(this, editor(), TIMELINE_CELL_TYPE::Tracks);
 
     mLayerHeader->setFixedHeight(mLayerList->getLayerHeight());
 
@@ -214,9 +214,9 @@ void TimeLine::initUI()
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
 
-    connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange);
-    connect(mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
-    connect(mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange);
+    connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineTrackList::hScrollChange);
+    connect(mTracks, &TimeLineTrackList::offsetChanged, mHScrollbar, &QScrollBar::setValue);
+    connect(mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineTrackList::vScrollChange);
     connect(mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineLayerList::vScrollChange);
     connect(mVScrollbar, &QScrollBar::valueChanged, this, &TimeLine::onScrollbarValueChanged);
     connect(mScrollingStoppedTimer, &QTimer::timeout, mLayerList, &TimeLineLayerList::onScrollingVerticallyStopped);
@@ -227,7 +227,7 @@ void TimeLine::initUI()
     connect(removeKeyButton, &QToolButton::clicked, this, &TimeLine::removeKeyClick);
     connect(duplicateLayerButton, &QToolButton::clicked, this , &TimeLine::duplicateLayerClick);
     connect(duplicateKeyButton, &QToolButton::clicked, this, &TimeLine::duplicateKeyClick);
-    connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineCells::setFrameSize);
+    connect(zoomSlider, &QSlider::valueChanged, mTracks, &TimeLineTrackList::setFrameSize);
 
     connect(mTimeControls, &TimeControls::soundToggled, this, &TimeLine::soundClick);
     connect(mTimeControls, &TimeControls::fpsChanged, this, &TimeLine::fpsChanged);
@@ -243,10 +243,10 @@ void TimeLine::initUI()
     connect(newCameraLayerAct, &QAction::triggered, this, &TimeLine::newCameraLayer);
     connect(mLayerDeleteButton, &QPushButton::clicked, this, &TimeLine::deleteCurrentLayerClick);
 
-    connect(mLayerList, &TimeLineLayerList::cellDraggedY, mTracks, &TimeLineCells::setMouseMoveY);
-    connect(mTracks, &TimeLineCells::lengthChanged, this, &TimeLine::updateLength);
-    connect(mTracks, &TimeLineCells::selectionChanged, this, &TimeLine::selectionChanged);
-    connect(mTracks, &TimeLineCells::insertNewKeyFrame, this, &TimeLine::insertKeyClick);
+    connect(mLayerList, &TimeLineLayerList::cellDraggedY, mTracks, &TimeLineTrackList::setMouseMoveY);
+    connect(mTracks, &TimeLineTrackList::lengthChanged, this, &TimeLine::updateLength);
+    connect(mTracks, &TimeLineTrackList::selectionChanged, this, &TimeLine::selectionChanged);
+    connect(mTracks, &TimeLineTrackList::insertNewKeyFrame, this, &TimeLine::insertKeyClick);
 
     connect(editor(), &Editor::scrubbed, this, &TimeLine::updateFrame);
     connect(editor(), &Editor::frameModified, this, &TimeLine::updateContent);

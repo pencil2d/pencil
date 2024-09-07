@@ -94,6 +94,7 @@ HEADERS += \
     src/timelinelayerlist.h \
     src/timelinepage.h \
     src/timelinetrackheadercell.h \
+    src/timelinetracklist.h \
     src/toolspage.h \
     src/basedockwidget.h \
     src/colorbox.h \
@@ -101,7 +102,6 @@ HEADERS += \
     src/colorpalettewidget.h \
     src/colorwheel.h \
     src/timeline.h \
-    src/timelinecells.h \
     src/timecontrols.h \
     src/cameracontextmenu.h \
     src/camerapropertiesdialog.h \
@@ -150,6 +150,7 @@ SOURCES += \
     src/timelinelayerlist.cpp \
     src/timelinepage.cpp \
     src/timelinetrackheadercell.cpp \
+    src/timelinetracklist.cpp \
     src/toolspage.cpp \
     src/basedockwidget.cpp \
     src/colorbox.cpp \
@@ -157,7 +158,6 @@ SOURCES += \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
     src/timeline.cpp \
-    src/timelinecells.cpp \
     src/timecontrols.cpp \
     src/cameracontextmenu.cpp \
     src/camerapropertiesdialog.cpp \

@@ -21,7 +21,7 @@ GNU General Public License for more details.
 
 class QScrollBar;
 class Editor;
-class TimeLineCells;
+class TimeLineTrackList;
 class TimeControls;
 class LayerManager;
 
@@ -96,7 +96,7 @@ private:
 
     QScrollBar* mHScrollbar = nullptr;
     QScrollBar* mVScrollbar = nullptr;
-    TimeLineCells* mTracks = nullptr;
+    TimeLineTrackList* mTracks = nullptr;
 
     QScrollArea* mLayerScrollArea = nullptr;
     TimeLineLayerHeaderWidget* mLayerHeader = nullptr;
