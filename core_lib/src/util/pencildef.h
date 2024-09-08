@@ -108,8 +108,7 @@ enum class LayerVisibility
 enum class DragEvent {
     STARTED,
     DRAGGING,
-    ENDED,
-    INVALID
+    ENDED
 };
 
 inline LayerVisibility& operator++(LayerVisibility& vis)

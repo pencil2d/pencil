@@ -9,17 +9,20 @@
 
 #include "timelinelayercell.h"
 
-class Layer;
 enum class LayerVisibility;
+enum class SETTING;
+
+class Layer;
 class TimeLine;
+class Editor;
+class PreferenceManager;
+class TimeLineLayerHeaderWidget;
+
+class QScrollArea;
 class QPaintEvent;
 class QMouseEvent;
 class QResizeEvent;
-class Editor;
-class PreferenceManager;
-enum class SETTING;
-class TimeLineLayerHeaderWidget;
-class QScrollArea;
+class QListWidget;
 
 class TimeLineLayerList : public QWidget
 {
@@ -85,7 +88,6 @@ private:
     const static int mLayerDetachThreshold = 5;
 
     QMap<int, TimeLineLayerCell*> mLayerCells;
-    QScrollArea* mScrollArea = nullptr;
 };
 
 #endif // TIMELINELAYERLIST_H

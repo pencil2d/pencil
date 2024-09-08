@@ -122,7 +122,7 @@ private:
     int mHighlightedFrame = -1;
     int mLayerHeight = 20;
 
-    DragEvent mDragEvent = DragEvent::INVALID;
+    DragEvent mDragEvent = DragEvent::ENDED;
 
     int mCurrentLayerNumber = 0;
     int mLastScrubFrame = 0;

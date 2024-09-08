@@ -208,8 +208,8 @@ void TimeLineLayerList::mouseDoubleClickEvent(QMouseEvent* event)
 
 int TimeLineLayerList::getLayerGutterYPosition(int posY) const
 {
-    int layerNumber = getLayerNumber(posY);
-    if(posY > getLayerCellY(layerNumber) + mLayerHeight / 2) {
+    int layerNumber = getLayerNumber(posY - (mLayerHeight * 0.5));
+    if(posY > getLayerCellY(layerNumber)) {
         layerNumber--;
     }
     return getLayerCellY(layerNumber);
@@ -244,7 +244,7 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
             break;
         }
         case DragEvent::ENDED: {
-            int dragToNumber = getLayerNumber(mGutterPositionY - (mLayerHeight * 0.5));
+            int dragToNumber = getLayerNumber(mGutterPositionY);
             if (!mScrollingVertically && dragToNumber != mFromLayer && dragToNumber > -1)
             {
                 if (dragToNumber < mEditor->layers()->count())
