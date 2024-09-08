@@ -222,6 +222,12 @@ int TimeLineLayerList::getLayerGutterYPosition(int posY) const
     if(posY > getLayerCellY(layerNumber)) {
         layerNumber--;
     }
+    int maxLayerNum = mEditor->layers()->count() - 1;
+    if (layerNumber > maxLayerNum) {
+        layerNumber = maxLayerNum;
+    } else if (layerNumber < 0) {
+        layerNumber = 0;
+    }
     return getLayerCellY(layerNumber);
 }
 
@@ -254,7 +260,7 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
             break;
         }
         case DragEvent::ENDED: {
-            int dragToNumber = getLayerNumber(mGutterPositionY);
+            int dragToNumber = getLayerNumber(mGutterPositionY - (mLayerHeight * 0.5));
             if (!mScrollingVertically && dragToNumber != mFromLayer && dragToNumber > -1)
             {
                 if (dragToNumber < mEditor->layers()->count())
@@ -274,6 +280,7 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
             }
             emit cellDraggedY(event, y);
             mGutterPositionY = -1;
+            mFromLayer = -1;
             break;
         }
     }

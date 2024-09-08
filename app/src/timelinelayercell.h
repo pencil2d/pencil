@@ -37,7 +37,6 @@ public:
     int getLayerNumber(int posY) const;
 
     bool didDetach() const { return mDidDetach; }
-    bool hasDetached() const { return mIsDraggable; }
     const Layer* layer() const { return mLayer; }
 
 signals:
