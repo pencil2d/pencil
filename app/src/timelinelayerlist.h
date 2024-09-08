@@ -37,7 +37,7 @@ public:
     void onCellDragged(const DragEvent& event, const TimeLineLayerCell* cell, int x, int y);
 
 signals:
-    void cellDraggedY(int);
+    void cellDraggedY(const DragEvent& event, int y);
     void offsetChanged(int);
 
 public slots:

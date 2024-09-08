@@ -1179,6 +1179,11 @@ void Editor::scrubTo(int frame)
 
     emit scrubbed(frame);
 
+    if (playback()->getSoundScrubActive())
+    {
+        playback()->playScrub(frame);
+    }
+
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
     // Will remove all Timeline related code in Editor class.

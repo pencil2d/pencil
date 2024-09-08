@@ -93,7 +93,7 @@ HEADERS += \
     src/timelinelayerheaderwidget.h \
     src/timelinelayerlist.h \
     src/timelinepage.h \
-    src/timelinetrackheadercell.h \
+    src/timelinetrackheaderwidget.h \
     src/timelinetracklist.h \
     src/toolspage.h \
     src/basedockwidget.h \
@@ -149,7 +149,7 @@ SOURCES += \
     src/timelinelayerheaderwidget.cpp \
     src/timelinelayerlist.cpp \
     src/timelinepage.cpp \
-    src/timelinetrackheadercell.cpp \
+    src/timelinetrackheaderwidget.cpp \
     src/timelinetracklist.cpp \
     src/toolspage.cpp \
     src/basedockwidget.cpp \

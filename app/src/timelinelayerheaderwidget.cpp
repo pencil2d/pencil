@@ -5,6 +5,7 @@
 #include <QMouseEvent>
 
 #include "editor.h"
+#include "timeline.h"
 
 TimeLineLayerHeaderWidget::TimeLineLayerHeaderWidget(TimeLine* timeLine,
                                                 Editor* editor)

@@ -14,12 +14,6 @@ class LayerCamera;
 
 class PreferenceManager;
 
-enum class DragEvent {
-    STARTED,
-    DRAGGING,
-    ENDED
-};
-
 class TimeLineLayerCell : public TimeLineBaseCell
 {
     Q_OBJECT

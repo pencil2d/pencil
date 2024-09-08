@@ -1,13 +1,13 @@
 #ifndef TIMELINELAYERHEADERWIDGET_H
 #define TIMELINELAYERHEADERWIDGET_H
 
-#include "timeline.h"
-
 #include "timelinebasecell.h"
 
 #include <QWidget>
 #include <QPainter>
 
+
+class TimeLine;
 class Editor;
 
 class TimeLineLayerHeaderWidget : public QWidget

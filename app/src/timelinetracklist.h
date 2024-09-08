@@ -48,8 +48,6 @@ public:
     TimeLineTrackList( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
     ~TimeLineTrackList() override;
 
-    static int getOffsetX() { return mOffsetX; }
-    static int getOffsetY() { return mOffsetY; }
     int getLayerHeight() const { return mLayerHeight; }
 
     int getFrameLength() const { return mFrameLength; }
@@ -58,8 +56,6 @@ public:
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
     void clearCache() { delete mCache; mCache = nullptr; }
-
-    bool didDetachLayer() const;
 
     void showCameraMenu(QPoint pos);
 
@@ -71,12 +67,12 @@ signals:
     void insertNewKeyFrame();
 
 public slots:
+    void onLayerCountChanged(int count);
     void updateContent();
     void updateFrame(int frameNumber);
     void hScrollChange(int);
     void vScrollChange(int);
-    void onScrollingVerticallyStopped();
-    void setMouseMoveY(int x);
+    void setCellDragY(const DragEvent& event, int y);
 
 protected:
     bool event(QEvent *event) override;
@@ -91,8 +87,8 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
-    int getLayerNumber(int y) const;
-    int getLayerY(int layerNumber) const;
+    int getCellNumber(int y) const;
+    int getCellY(int layerNumber) const;
     int getFrameX(int frameNumber) const;
     int getFrameNumber(int x) const;
 
@@ -101,7 +97,6 @@ private:
     bool trackScrubber();
     void drawContent();
     void paintTicks(QPainter& painter, const QPalette& palette) const;
-    void paintOnionSkin(QPainter& painter) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
     void paintCurrentFrameBorder(QPainter& painter, int recLeft, int recTop, int recWidth, int recHeight) const;
@@ -122,31 +117,23 @@ private:
     bool mbShortScrub = false;
     int mFrameLength = 1;
     int mFrameSize = 0;
-    int mFontSize = 10;
     bool mScrubbing = false;
     bool mHighlightFrameEnabled = false;
     int mHighlightedFrame = -1;
     int mLayerHeight = 20;
-    int mStartY = 0;
-    int mEndY   = 0;
+
+    DragEvent mDragEvent = DragEvent::INVALID;
 
     int mCurrentLayerNumber = 0;
     int mLastScrubFrame = 0;
 
-    int mFromLayer = 0;
-    int mToLayer   = 1;
-    int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
 
-    // is used to move layers, don't use this to get mousePos;
-    int mMouseMoveY = 0;
+    int mCellDragY = 0;
     int mPrevFrame = 0;
     int mFrameOffset = 0;
-    int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;
-
-    bool mScrollingVertically = false;
 
     bool mCanMoveFrame   = false;
     bool mMovingFrames   = false;
@@ -161,11 +148,6 @@ private:
 
     int mMouseMoveX = 0;
     int mMousePressX = 0;
-
-    const static int mOffsetX = 0;
-    const static int mOffsetY = 20;
-    const static int mLayerDetachThreshold = 5;
-
 };
 
 #endif // TIMELINETRACKLIST_H

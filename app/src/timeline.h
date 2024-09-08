@@ -30,7 +30,7 @@ class QWheelEvent;
 class QScrollArea;
 class TimeLineLayerList;
 class TimeLineLayerHeaderWidget;
-
+class TimeLineTrackHeaderWidget;
 
 class TimeLine : public BaseDockWidget
 {
@@ -58,7 +58,7 @@ public:
 
     void onObjectLoaded();
     void onCurrentLayerChanged();
-    void onScrollbarValueChanged();
+    void onScrollbarValueChanged(int value);
     void onLayerCountUpdated( int number );
     void onLayerOrderUpdated();
 
@@ -95,11 +95,12 @@ private:
     void updateVerticalScrollbarPosition();
 
     QScrollBar* mHScrollbar = nullptr;
-    QScrollBar* mVScrollbar = nullptr;
     TimeLineTrackList* mTracks = nullptr;
 
     QScrollArea* mLayerScrollArea = nullptr;
+    QScrollArea* mTrackScrollArea = nullptr;
     TimeLineLayerHeaderWidget* mLayerHeader = nullptr;
+    TimeLineTrackHeaderWidget* mTrackHeader = nullptr;
     TimeLineLayerList* mLayerList = nullptr;
     TimeControls* mTimeControls = nullptr;
 
