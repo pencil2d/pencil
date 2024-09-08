@@ -194,18 +194,16 @@ void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
 
 void TimeLineLayerList::mouseDoubleClickEvent(QMouseEvent* event)
 {
-    int layerNumber = getLayerNumber(event->pos().y());
-
-    // -- layer --
-    Layer* layer = mEditor->layers()->getLayer(layerNumber);
-    if (layer && event->buttons() & Qt::LeftButton)
-    {
-        if (event->pos().x() >= 15)
-        {
-            getCell(layer->id())->editLayerProperties();
-        }
-    }
     QWidget::mouseDoubleClickEvent(event);
+
+    const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    for (TimeLineLayerCell* cell : layerCells) {
+        if (layerCells.isDetached()) { return; }
+        if (!cell->contains(event->pos())) {
+            continue;
+        }
+        cell->mouseDoubleClickEvent(event);
+    }
 }
 
 int TimeLineLayerList::getLayerGutterYPosition(int posY) const

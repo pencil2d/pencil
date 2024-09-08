@@ -50,6 +50,7 @@ protected:
     virtual void mousePressEvent(QMouseEvent*) { }
     virtual void mouseMoveEvent(QMouseEvent*) { }
     virtual void mouseReleaseEvent(QMouseEvent*) { }
+    virtual void mouseDoubleClickEvent(QMouseEvent*) { }
     virtual void paint(QPainter&, const QPalette&) const { }
 
 private:

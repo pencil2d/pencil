@@ -31,6 +31,7 @@ public:
     void mousePressEvent(QMouseEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mouseReleaseEvent(QMouseEvent* event) override;
+    void mouseDoubleClickEvent(QMouseEvent* event) override;
     void paint(QPainter& painter, const QPalette& palette) const override;
 
     int getLayerNumber(int posY) const;
