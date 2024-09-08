@@ -36,9 +36,8 @@ void TimeLineLayerList::loadSetting(SETTING setting)
 void TimeLineLayerList::loadLayerCells()
 {
     if (!mLayerCells.isEmpty()) {
-        for (TimeLineLayerCell* cell : mLayerCells) {
-            delete cell;
-            cell = nullptr;
+        for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
+            cell->deleteLater();
         }
         mLayerCells.clear();
     }
