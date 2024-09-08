@@ -37,6 +37,8 @@ void TimeLineLayerList::loadLayerCells()
 {
     if (!mLayerCells.isEmpty()) {
         for (TimeLineLayerCell* cell : qAsConst(mLayerCells)) {
+            // The cells might still be in use when this happens, as such
+            // make sure they are set for deletion later.
             cell->deleteLater();
         }
         mLayerCells.clear();
