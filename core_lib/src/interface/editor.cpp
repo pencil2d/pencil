@@ -577,8 +577,6 @@ void Editor::updateObject()
     {
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
     }
-
-    emit layers()->layerCountChanged(layers()->count());
 }
 
 Status Editor::importBitmapImage(const QString& filePath)
@@ -848,11 +846,6 @@ void Editor::scrubTo(int frame)
     mFrame = frame;
 
     emit scrubbed(frame);
-
-    if (playback()->getSoundScrubActive())
-    {
-        playback()->playScrub(frame);
-    }
 
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.

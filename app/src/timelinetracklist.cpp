@@ -668,9 +668,14 @@ void TimeLineTrackList::mousePressEvent(QMouseEvent* event)
             {
                 if (frameNumber > 0)
                 {
-                    if (mEditor->playback()->isPlaying())
+                    PlaybackManager* playback = mEditor->playback();
+                    if (playback->isPlaying())
                     {
-                        mEditor->playback()->stop();
+                        playback->stop();
+                    }
+                    if (playback->getSoundScrubActive())
+                    {
+                        playback->playScrub(frameNumber);
                     }
                     mEditor->scrubTo(frameNumber);
 
