@@ -157,6 +157,7 @@ void TimeLineLayerList::mousePressEvent(QMouseEvent* event)
         const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
         for (TimeLineLayerCell* cell : layerCells) {
             if (layerCells.isDetached()) { return; }
+            if (!cell->contains(event->pos())) { continue; }
             cell->mousePressEvent(event);
         }
     }
@@ -169,7 +170,12 @@ void TimeLineLayerList::mouseMoveEvent(QMouseEvent* event)
         const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
         for (TimeLineLayerCell* cell : layerCells) {
             if (layerCells.isDetached()) { return; }
-            cell->mouseMoveEvent(event);
+            if (cell->didDetach()) {
+                cell->mouseMoveEvent(event);
+                break;
+            } else if (cell->contains(event->pos())) {
+                cell->mouseMoveEvent(event);
+            }
         }
     }
 }
@@ -183,7 +189,12 @@ void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
         const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
         for (TimeLineLayerCell* cell : layerCells) {
             if (layerCells.isDetached()) { return; }
-            cell->mouseReleaseEvent(event);
+            if (cell->didDetach()) {
+                cell->mouseReleaseEvent(event);
+                break;
+            } else if (cell->contains(event->pos())) {
+                cell->mouseReleaseEvent(event);
+            }
         }
     }
 
@@ -226,7 +237,7 @@ void TimeLineLayerList::onScrollingVerticallyStopped()
     mScrollingVertically = false;
 }
 
-void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLayerCell* cell, int x, int y)
+void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLayerCell* /*cell*/, int x, int y)
 {
     switch (event)
     {
