@@ -43,7 +43,11 @@ signals:
     void drag(const DragEvent& dragEvent, const TimeLineLayerCell* cell, int x, int y);
 
 private:
-    void handleDraggingEnded(QMouseEvent* event);
+    void handleDragStarted(QMouseEvent* event);
+    void handleDragging(QMouseEvent* event);
+    void handleDragEnded(QMouseEvent* event);
+
+    bool isInsideLayerVisibilityArea(QMouseEvent* event) const;
 
     bool hasDetached(int yOffset) const { return abs(yOffset) > mDetachThreshold; }
 

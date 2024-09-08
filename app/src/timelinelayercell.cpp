@@ -139,7 +139,7 @@ void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
     int layerNumber = getLayerNumber(event->pos().y());
     if (layerNumber < 0) { return; }
     
-    if (event->pos().x() < 15)
+    if (isInsideLayerVisibilityArea(event))
     {
         mEditor->switchVisibilityOfLayer(layerNumber);
     }
@@ -149,17 +149,50 @@ void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
         mEditor->layers()->currentLayer()->deselectAll();
     }
 
-    if (event->pos().x() > 15) {
-        if (event->buttons() & Qt::LeftButton) {
-            mIsDraggable = true;
-            mOldBounds = mGlobalBounds;
-            emit drag(DragEvent::STARTED, this, 0, mGlobalBounds.top());
-        }
-    }
+    handleDragStarted(event);
 }
 
 void TimeLineLayerCell::mouseMoveEvent(QMouseEvent *event)
 {   
+    handleDragging(event);
+}
+
+void TimeLineLayerCell::mouseReleaseEvent(QMouseEvent *event)
+{
+    handleDragEnded(event);
+}
+
+void TimeLineLayerCell::mouseDoubleClickEvent(QMouseEvent * event)
+{
+    if (event->buttons() & Qt::LeftButton)
+    {
+        if (!isInsideLayerVisibilityArea(event))
+        {
+            editLayerProperties();
+        }
+    }
+}
+
+bool TimeLineLayerCell::isInsideLayerVisibilityArea(QMouseEvent* event) const
+{
+    return event->pos().x() < 15;
+}
+
+void TimeLineLayerCell::handleDragStarted(QMouseEvent* event)
+{
+    if (isInsideLayerVisibilityArea(event)) {
+        return;
+    }
+
+    if (event->buttons() & Qt::LeftButton) {
+        mIsDraggable = true;
+        mOldBounds = mGlobalBounds;
+        emit drag(DragEvent::STARTED, this, 0, mGlobalBounds.top());
+    }
+}
+
+void TimeLineLayerCell::handleDragging(QMouseEvent* event)
+{
     if (event->buttons() & Qt::LeftButton && mIsDraggable) {
         if (hasDetached(event->pos().y() - mOldBounds.center().y())) {
             mDidDetach = true;
@@ -173,12 +206,7 @@ void TimeLineLayerCell::mouseMoveEvent(QMouseEvent *event)
     }
 }
 
-void TimeLineLayerCell::mouseReleaseEvent(QMouseEvent *event)
-{
-    handleDraggingEnded(event);
-}
-
-void TimeLineLayerCell::handleDraggingEnded(QMouseEvent* event)
+void TimeLineLayerCell::handleDragEnded(QMouseEvent*)
 {
     if (mDidDetach) {
         emit drag(DragEvent::ENDED, this, 0, mOldBounds.top());
