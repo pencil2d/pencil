@@ -138,12 +138,6 @@ void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
     
     int layerNumber = getLayerNumber(event->pos().y());
     if (layerNumber < 0) { return; }
-
-    if (event->buttons() & Qt::LeftButton) {
-        mIsDraggable = true;
-        mOldBounds = mGlobalBounds;
-        emit drag(DragEvent::STARTED, this, 0, mGlobalBounds.top());
-    }
     
     if (event->pos().x() < 15)
     {
@@ -153,6 +147,14 @@ void TimeLineLayerCell::mousePressEvent(QMouseEvent *event)
     {
         mEditor->layers()->setCurrentLayer(layerNumber);
         mEditor->layers()->currentLayer()->deselectAll();
+    }
+
+    if (event->pos().x() > 15) {
+        if (event->buttons() & Qt::LeftButton) {
+            mIsDraggable = true;
+            mOldBounds = mGlobalBounds;
+            emit drag(DragEvent::STARTED, this, 0, mGlobalBounds.top());
+        }
     }
 }
 
