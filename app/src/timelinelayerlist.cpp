@@ -255,14 +255,22 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
             emit cellDraggedY(event, y);
             break;
         }
-            // mToLayer = mFromLayer;
         case DragEvent::DRAGGING: {
             mGutterPositionY = getLayerGutterYPosition(y);
             emit cellDraggedY(event, y);
             break;
         }
         case DragEvent::ENDED: {
-            int dragToNumber = getLayerNumber(mGutterPositionY - (mLayerHeight * 0.5));
+            int dragToNumber = mFromLayer;
+            int fromLayerDragY = getLayerCellY(mFromLayer);
+            if (fromLayerDragY > mGutterPositionY) {
+                // If we're starting from above, adjust the drag number so we're one cell above
+                dragToNumber = getLayerNumber(mGutterPositionY + (mLayerHeight * 0.5));
+            } else if (fromLayerDragY < mGutterPositionY) {
+                // If we're starting from below, adjust the drag number so we're one cell below
+                dragToNumber = getLayerNumber(mGutterPositionY - (mLayerHeight * 0.5));
+            }
+
             if (!mScrollingVertically && dragToNumber != mFromLayer && dragToNumber > -1)
             {
                 if (dragToNumber < mEditor->layers()->count())
