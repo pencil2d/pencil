@@ -37,7 +37,7 @@ public:
     int getLayerGutterYPosition(int posY) const;
 
     void loadLayerCells();
-    void onCellDragged(const DragEvent& event, const TimeLineLayerCell* cell, int x, int y);
+    void onCellDragged(const DragEvent& event, TimeLineLayerCellEditorWidget* editorWidget, int x, int y);
 
 signals:
     void cellDraggedY(const DragEvent& event, int y);

@@ -9,6 +9,7 @@
 #include "timeline.h"
 
 #include "timelinelayercell.h"
+#include "timelinelayercelleditorwidget.h"
 
 TimeLineLayerList::TimeLineLayerList(TimeLine* parent, Editor* editor) : QWidget(parent)
 {
@@ -48,10 +49,11 @@ void TimeLineLayerList::loadLayerCells()
     {
         Layer* layeri = mEditor->layers()->getLayer(i);
         const int layerY = getLayerCellY(i);
-        TimeLineLayerCell* cell = new TimeLineLayerCell(mTimeLine, mEditor, layeri, QPoint(0, layerY), width() - 1, mLayerHeight);
+        TimeLineLayerCell* cell = new TimeLineLayerCell(mTimeLine, this, mEditor, layeri, QPoint(0, layerY), width() - 1, mLayerHeight);
         mLayerCells.insert(layeri->id(), cell);
 
-        connect(cell, &TimeLineLayerCell::drag, this, &TimeLineLayerList::onCellDragged);
+        connect(cell->editorWidget(), &TimeLineLayerCellEditorWidget::drag, this, &TimeLineLayerList::onCellDragged);
+        connect(cell->editorWidget(), &TimeLineLayerCellEditorWidget::layerVisibilityChanged, mTimeLine, &TimeLine::updateContent);
     }
 
     setMinimumHeight(mEditor->layers()->count() * mLayerHeight);
@@ -87,22 +89,24 @@ void TimeLineLayerList::drawContent()
 
     if (mLayerCells.isEmpty()) { return; }
 
-    const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-    for (const TimeLineLayerCell* cell : layerCells) {
-        if (layerCells.isDetached()) { return; }
-        if (mEditor->layers()->selectedLayerId() != cell->layer()->id()) {
-            cell->paint(painter, palette);
-        }
-    }
+    // const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    // for (const TimeLineLayerCell* cell : layerCells) {
+    //     if (layerCells.isDetached()) { return; }
+    //     if (mEditor->layers()->selectedLayerId() != cell->layer()->id()) {
+    //         cell->paint(painter, palette);
+    //     }
+    // }
 
     int selectedLayerId = mEditor->layers()->selectedLayerId();
 
     const auto cell = getCell(selectedLayerId);
 
     if (cell) {
-        cell->paint(painter, palette);
+        qDebug() << "cell";
+        // cell->paint(painter, palette);
 
-        if (cell->didDetach()) {
+        if (cell->editorWidget()->didDetach()) {
+            qDebug() << "paint layer gutter";
             paintLayerGutter(painter, palette);
         }
     }
@@ -155,31 +159,31 @@ void TimeLineLayerList::mousePressEvent(QMouseEvent* event)
 
     mPrimaryButton = event->button();
 
-    if (!mLayerCells.isEmpty()) {
-        const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-        for (TimeLineLayerCell* cell : layerCells) {
-            if (layerCells.isDetached()) { return; }
-            if (!cell->contains(event->pos())) { continue; }
-            cell->mousePressEvent(event);
-        }
-    }
+    // if (!mLayerCells.isEmpty()) {
+    //     const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    //     for (TimeLineLayerCell* cell : layerCells) {
+    //         if (layerCells.isDetached()) { return; }
+    //         if (!cell->contains(event->pos())) { continue; }
+    //         cell->mousePressEvent(event);
+    //     }
+    // }
 }
 
 void TimeLineLayerList::mouseMoveEvent(QMouseEvent* event)
 {
     QWidget::mouseMoveEvent(event);
-    if (!mLayerCells.isEmpty()) {
-        const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-        for (TimeLineLayerCell* cell : layerCells) {
-            if (layerCells.isDetached()) { return; }
-            if (cell->didDetach()) {
-                cell->mouseMoveEvent(event);
-                break;
-            } else if (cell->contains(event->pos())) {
-                cell->mouseMoveEvent(event);
-            }
-        }
-    }
+    // if (!mLayerCells.isEmpty()) {
+    //     const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    //     for (TimeLineLayerCell* cell : layerCells) {
+    //         if (layerCells.isDetached()) { return; }
+    //         if (cell->didDetach()) {
+    //             cell->mouseMoveEvent(event);
+    //             break;
+    //         } else if (cell->contains(event->pos())) {
+    //             cell->mouseMoveEvent(event);
+    //         }
+    //     }
+    // }
 }
 
 void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
@@ -187,18 +191,18 @@ void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
     QWidget::mouseReleaseEvent(event);
     if (event->button() != mPrimaryButton) return;
 
-    if (!mLayerCells.isEmpty()) {
-        const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-        for (TimeLineLayerCell* cell : layerCells) {
-            if (layerCells.isDetached()) { return; }
-            if (cell->didDetach()) {
-                cell->mouseReleaseEvent(event);
-                break;
-            } else if (cell->contains(event->pos())) {
-                cell->mouseReleaseEvent(event);
-            }
-        }
-    }
+    // if (!mLayerCells.isEmpty()) {
+    //     const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    //     for (TimeLineLayerCell* cell : layerCells) {
+    //         if (layerCells.isDetached()) { return; }
+    //         if (cell->didDetach()) {
+    //             cell->mouseReleaseEvent(event);
+    //             break;
+    //         } else if (cell->contains(event->pos())) {
+    //             cell->mouseReleaseEvent(event);
+    //         }
+    //     }
+    // }
 
     mPrimaryButton = Qt::NoButton;
     mTimeLine->scrubbing = false;
@@ -208,14 +212,14 @@ void TimeLineLayerList::mouseDoubleClickEvent(QMouseEvent* event)
 {
     QWidget::mouseDoubleClickEvent(event);
 
-    const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-    for (TimeLineLayerCell* cell : layerCells) {
-        if (layerCells.isDetached()) { return; }
-        if (!cell->contains(event->pos())) {
-            continue;
-        }
-        cell->mouseDoubleClickEvent(event);
-    }
+    // const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    // for (TimeLineLayerCell* cell : layerCells) {
+    //     if (layerCells.isDetached()) { return; }
+    //     if (!cell->contains(event->pos())) {
+    //         continue;
+    //     }
+    //     cell->mouseDoubleClickEvent(event);
+    // }
 }
 
 int TimeLineLayerList::getLayerGutterYPosition(int posY) const
@@ -245,19 +249,24 @@ void TimeLineLayerList::onScrollingVerticallyStopped()
     mScrollingVertically = false;
 }
 
-void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLayerCell* /*cell*/, int x, int y)
+void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellEditorWidget* editorWidget, int x, int y)
 {
+    // QPoint mapped = mapToParent(QPoint(x,y));
+    qDebug() << "mapped point: " << y;
+    int newY = y;
     switch (event)
     {
         case DragEvent::STARTED: {
-            mGutterPositionY = getLayerGutterYPosition(y);
-            mFromLayer = getLayerNumber(y);
-            emit cellDraggedY(event, y);
+            mGutterPositionY = getLayerGutterYPosition(newY);
+            mFromLayer = getLayerNumber(newY);
+            editorWidget->raise();
+            emit cellDraggedY(event, newY);
             break;
         }
         case DragEvent::DRAGGING: {
-            mGutterPositionY = getLayerGutterYPosition(y);
-            emit cellDraggedY(event, y);
+            editorWidget->move(0, newY);
+            mGutterPositionY = getLayerGutterYPosition(newY);
+            emit cellDraggedY(event, newY);
             break;
         }
         case DragEvent::ENDED: {
@@ -288,6 +297,7 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
                     }
                 }
             }
+            editorWidget->move(0, fromLayerDragY);
             emit cellDraggedY(event, y);
             mGutterPositionY = -1;
             mFromLayer = -1;
@@ -300,9 +310,9 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, const TimeLineLaye
 
 TimeLineLayerCell* TimeLineLayerList::getCell(int id) const
 {
-    if (mLayerCells.isDetached()) {
-        return nullptr;
-    }
+    // if (mLayerCells.isDetached()) {
+    //     return nullptr;
+    // }
 
     return mLayerCells.find(id).value();
 }

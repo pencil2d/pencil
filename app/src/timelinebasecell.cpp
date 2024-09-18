@@ -8,13 +8,14 @@
 #include "preferencemanager.h"
 #include "timeline.h"
 
-TimeLineBaseCell::TimeLineBaseCell(TimeLine* parent,
+TimeLineBaseCell::TimeLineBaseCell(TimeLine* timeline,
+                                   QWidget* parent,
                                     Editor* editor,
                                     const QPoint& origin,
                                     int width,
                                     int height) : QObject(parent)
 {
-    mTimeLine = parent;
+    mTimeLine = timeline;
     mEditor = editor;
     mPrefs = mEditor->preference();
     mGlobalBounds = QRect(origin, QSize(width,height));

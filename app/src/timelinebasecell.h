@@ -7,6 +7,7 @@
 #include <QObject>
 
 #include "pencildef.h"
+#include "timelinedef.h"
 
 class TimeLine;
 class Editor;
@@ -14,18 +15,11 @@ class Layer;
 class PreferenceManager;
 class QMouseEvent;
 
-enum class TimeLineCellType
-{
-    HEADER,
-    LAYER,
-    TRACK,
-    INVALID,
-};
-
 class TimeLineBaseCell: public QObject {
     Q_OBJECT
 public:
-    TimeLineBaseCell(TimeLine* parent,
+    TimeLineBaseCell(TimeLine* timeline,
+                     QWidget* parent,
                     Editor* editor,
                     const QPoint& origin,
                     int width,
@@ -36,7 +30,7 @@ public:
 
     bool contains(const QPoint& point) const;
     void move(int x, int y);
-    void setSize(const QSize& size) { mGlobalBounds.setSize(size); }
+    virtual void setSize(const QSize& size) { mGlobalBounds.setSize(size); }
     const QSize size() const { return mGlobalBounds.size(); }
     const QPoint topLeft() const { return mGlobalBounds.topLeft(); }
 
@@ -45,13 +39,6 @@ public:
     PreferenceManager* mPrefs = nullptr;
 
     QRect mGlobalBounds = QRect();
-
-protected:
-    virtual void mousePressEvent(QMouseEvent*) { }
-    virtual void mouseMoveEvent(QMouseEvent*) { }
-    virtual void mouseReleaseEvent(QMouseEvent*) { }
-    virtual void mouseDoubleClickEvent(QMouseEvent*) { }
-    virtual void paint(QPainter&, const QPalette&) const { }
 
 private:
 };
