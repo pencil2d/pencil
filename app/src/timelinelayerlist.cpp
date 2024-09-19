@@ -10,6 +10,7 @@
 
 #include "timelinelayercell.h"
 #include "timelinelayercelleditorwidget.h"
+#include "timelinelayercellgutterwidget.h"
 
 TimeLineLayerList::TimeLineLayerList(TimeLine* parent, Editor* editor) : QWidget(parent)
 {
@@ -23,6 +24,9 @@ TimeLineLayerList::TimeLineLayerList(TimeLine* parent, Editor* editor) : QWidget
     setMouseTracking(true);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineLayerList::loadSetting);
+
+
+    mGutterWidget = new TimeLineLayerCellGutterWidget(width(), this);
 }
 
 TimeLineLayerList::~TimeLineLayerList()
@@ -97,19 +101,6 @@ void TimeLineLayerList::drawContent()
     //     }
     // }
 
-    int selectedLayerId = mEditor->layers()->selectedLayerId();
-
-    const auto cell = getCell(selectedLayerId);
-
-    if (cell) {
-        qDebug() << "cell";
-        // cell->paint(painter, palette);
-
-        if (cell->editorWidget()->didDetach()) {
-            qDebug() << "paint layer gutter";
-            paintLayerGutter(painter, palette);
-        }
-    }
     mRedrawContent = false;
 }
 
@@ -147,6 +138,8 @@ void TimeLineLayerList::resizeEvent(QResizeEvent* event)
         if (layerCells.isDetached()) { return; }
         cell->setSize(QSize(event->size().width(), mLayerHeight));
     }
+
+    mGutterWidget->updateWidth(event->size().width());
 
     updateContent();
     event->accept();
@@ -251,22 +244,26 @@ void TimeLineLayerList::onScrollingVerticallyStopped()
 
 void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellEditorWidget* editorWidget, int x, int y)
 {
-    // QPoint mapped = mapToParent(QPoint(x,y));
-    qDebug() << "mapped point: " << y;
-    int newY = y;
     switch (event)
     {
         case DragEvent::STARTED: {
-            mGutterPositionY = getLayerGutterYPosition(newY);
-            mFromLayer = getLayerNumber(newY);
+            mGutterPositionY = getLayerGutterYPosition(y);
+            mFromLayer = getLayerNumber(y);
             editorWidget->raise();
-            emit cellDraggedY(event, newY);
+            mGutterWidget->hide();
+            mGutterWidget->raise();
+            emit cellDraggedY(event, y);
             break;
         }
         case DragEvent::DRAGGING: {
-            editorWidget->move(0, newY);
-            mGutterPositionY = getLayerGutterYPosition(newY);
-            emit cellDraggedY(event, newY);
+            editorWidget->move(0, y);
+            mGutterPositionY = getLayerGutterYPosition(y);
+
+            if (editorWidget->didDetach()) {
+                mGutterWidget->show();
+            }
+            mGutterWidget->move(0, mGutterPositionY);
+            emit cellDraggedY(event, y);
             break;
         }
         case DragEvent::ENDED: {
@@ -297,6 +294,7 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellE
                     }
                 }
             }
+            mGutterWidget->hide();
             editorWidget->move(0, fromLayerDragY);
             emit cellDraggedY(event, y);
             mGutterPositionY = -1;

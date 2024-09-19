@@ -22,17 +22,20 @@ TimeLineLayerCell::TimeLineLayerCell(TimeLine* timeline,
                                      Editor* editor,
                                      Layer* layer,
                                      const QPoint& origin, int width, int height)
-    : TimeLineBaseCell(timeline, parent, editor, origin, width, height)
+    : TimeLineBaseCell(timeline, parent, editor)
 {
-    // mOldBounds = mGlobalBounds;
-
     mEditorWidget = new TimeLineLayerCellEditorWidget(parent, editor, layer);
-    mEditorWidget->setGeometry(mGlobalBounds);
+    mEditorWidget->setGeometry(QRect(origin, QSize(width, height)));
     mEditorWidget->show();
 }
 
 TimeLineLayerCell::~TimeLineLayerCell()
 {
     mEditorWidget->deleteLater();
+}
+
+void TimeLineLayerCell::setSize(const QSize& size)
+{
+    mEditorWidget->resize(size);
 }
 

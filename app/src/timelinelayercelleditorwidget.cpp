@@ -206,12 +206,13 @@ void TimeLineLayerCellEditorWidget::handleDragging(QMouseEvent* event)
 
 void TimeLineLayerCellEditorWidget::handleDragEnded(QMouseEvent*)
 {
-    if (mDidDetach) {
+    if (mIsDraggable) {
         emit drag(DragEvent::ENDED, this, 0, y());
+
+        mIsDraggable = false;
+        mDragFromY = y();
         mDidDetach = false;
     }
-    mIsDraggable = false;
-    mDragFromY = y();
 }
 
 int TimeLineLayerCellEditorWidget::getLayerNumber(int posY) const

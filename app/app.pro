@@ -92,6 +92,7 @@ HEADERS += \
     src/timelinedef.h \
     src/timelinelayercell.h \
     src/timelinelayercelleditorwidget.h \
+    src/timelinelayercellgutterwidget.h \
     src/timelinelayerheaderwidget.h \
     src/timelinelayerlist.h \
     src/timelinepage.h \
@@ -149,6 +150,7 @@ SOURCES += \
     src/timelinebasecell.cpp \
     src/timelinelayercell.cpp \
     src/timelinelayercelleditorwidget.cpp \
+    src/timelinelayercellgutterwidget.cpp \
     src/timelinelayerheaderwidget.cpp \
     src/timelinelayerlist.cpp \
     src/timelinepage.cpp \

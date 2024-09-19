@@ -30,6 +30,8 @@ public:
 
     TimeLineLayerCellEditorWidget* editorWidget() const { return mEditorWidget; }
 
+    void setSize(const QSize& size) override;
+
 private:
     TimeLineLayerCellEditorWidget* mEditorWidget = nullptr;
 };

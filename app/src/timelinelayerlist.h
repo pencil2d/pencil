@@ -23,6 +23,7 @@ class QPaintEvent;
 class QMouseEvent;
 class QResizeEvent;
 class QListWidget;
+class TimeLineLayerCellGutterWidget;
 
 class TimeLineLayerList : public QWidget
 {
@@ -88,6 +89,7 @@ private:
     const static int mLayerDetachThreshold = 5;
 
     QMap<int, TimeLineLayerCell*> mLayerCells;
+    TimeLineLayerCellGutterWidget* mGutterWidget = nullptr;
 };
 
 #endif // TIMELINELAYERLIST_H
