@@ -10,6 +10,7 @@
 #include "viewmanager.h"
 #include "camerapropertiesdialog.h"
 #include "layervisibilitybutton.h"
+#include "lineeditwidget.h"
 
 #include <QApplication>
 #include <QInputDialog>
@@ -22,6 +23,7 @@
 #include <QLayout>
 #include <QSvgWidget>
 #include <QIcon>
+#include <QMessageBox>
 
 TimeLineLayerCellEditorWidget::TimeLineLayerCellEditorWidget(QWidget* parent,
                                                              Editor* editor,
@@ -44,13 +46,15 @@ TimeLineLayerCellEditorWidget::TimeLineLayerCellEditorWidget(QWidget* parent,
     iconLabel->setPixmap(mIcon.pixmap(mLabelIconSize));
     mHBoxLayout->addWidget(iconLabel);
     mHBoxLayout->addSpacing(4);
-    mLayerNameLabel = new QLabel(mLayer->name());
-    mHBoxLayout->addWidget(mLayerNameLabel);
+    mLayerNameEditWidget = new LineEditWidget(this, mLayer->name());
+    mHBoxLayout->addWidget(mLayerNameEditWidget);
     mHBoxLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored));
     mHBoxLayout->setContentsMargins(0,0,0,0);
     mHBoxLayout->setSpacing(0);
 
     connect(layerVisibilityButton, &LayerVisibilityButton::visibilityChanged, this, &TimeLineLayerCellEditorWidget::layerVisibilityChanged);
+    connect(mLayerNameEditWidget, &LineEditWidget::editingFinished, this, &TimeLineLayerCellEditorWidget::onFinishedEditingName);
+    connect(mEditor->layers(), &LayerManager::currentLayerChanged, mLayerNameEditWidget, &LineEditWidget::deselect);
 }
 
 void TimeLineLayerCellEditorWidget::onLayerVisibilityChanged()
@@ -97,6 +101,7 @@ void TimeLineLayerCellEditorWidget::paintBackground(QPainter& painter, const QPa
 
 void TimeLineLayerCellEditorWidget::mousePressEvent(QMouseEvent *event)
 {
+    QWidget::mousePressEvent(event);
     if (mEditor->layers()->currentLayer() != mLayer)
     {
         mEditor->layers()->setCurrentLayer(mLayer);
@@ -108,16 +113,19 @@ void TimeLineLayerCellEditorWidget::mousePressEvent(QMouseEvent *event)
 
 void TimeLineLayerCellEditorWidget::mouseMoveEvent(QMouseEvent *event)
 {
+    QWidget::mouseMoveEvent(event);
     handleDragging(event);
 }
 
 void TimeLineLayerCellEditorWidget::mouseReleaseEvent(QMouseEvent *event)
 {
+    QWidget::mouseReleaseEvent(event);
     handleDragEnded(event);
 }
 
 void TimeLineLayerCellEditorWidget::mouseDoubleClickEvent(QMouseEvent * event)
 {
+    QWidget::mouseDoubleClickEvent(event);
     if (event->buttons() & Qt::LeftButton)
     {
         if (!isInsideLayerVisibilityArea(event))
@@ -196,7 +204,7 @@ void TimeLineLayerCellEditorWidget::editLayerProperties(LayerCamera* cameraLayer
 
     if (!name.isEmpty())
     {
-        mLayerNameLabel->setText(name);
+        mLayerNameEditWidget->setText(name);
         mEditor->layers()->renameLayer(cameraLayer, name);
     }
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -220,6 +228,32 @@ void TimeLineLayerCellEditorWidget::editLayerName(Layer* layer) const
         return;
     }
 
-    mLayerNameLabel->setText(name);
+    mLayerNameEditWidget->setText(name);
     mEditor->layers()->renameLayer(layer, name);
+}
+
+void TimeLineLayerCellEditorWidget::onFinishedEditingName()
+{
+    QRegularExpression regex("([\\x{FFEF}-\\x{FFFF}])+");
+    QString newName = mLayerNameEditWidget->text();
+
+    newName.replace(regex, "");
+    if (mWarningShown) {
+        return;
+    }
+
+    if (newName.isEmpty())
+    {
+        mWarningShown = true;
+        mLayerNameEditWidget->setText(mLayer->name());
+        int result = QMessageBox::information(this, tr("Empty name"), tr("The name of the layer cannot be left empty"),
+                                 QMessageBox::Ok);
+
+        if (result == QMessageBox::Ok) {
+            mWarningShown = false;
+        }
+        return;
+    }
+
+    mEditor->layers()->renameLayer(mLayer, newName);
 }

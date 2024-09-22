@@ -19,6 +19,7 @@ class PreferenceManager;
 class QHBoxLayout;
 class QIcon;
 class QLabel;
+class LineEditWidget;
 
 class TimeLineLayerCellEditorWidget : public QWidget
 {
@@ -63,11 +64,14 @@ private:
     void editLayerProperties(LayerCamera* cameraLayer) const;
     void editLayerName(Layer* layer) const;
 
+    void onFinishedEditingName();
+
     QSize mLabelIconSize = QSize(20,20);
     bool mDidDetach = false;
     bool mIsDraggable = false;
+    bool mWarningShown = false;
 
-    QLabel* mLayerNameLabel = nullptr;
+    LineEditWidget* mLayerNameEditWidget = nullptr;
     QIcon mIcon;
 
     int mDetachThreshold = 5;
