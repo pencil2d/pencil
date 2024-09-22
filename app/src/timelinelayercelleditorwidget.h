@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QPainter>
 #include <QPalette>
+#include <QIcon>
 
 #include "pencildef.h"
 #include "timelinedef.h"
@@ -15,15 +16,20 @@ class Editor;
 class Layer;
 class LayerCamera;
 class PreferenceManager;
+class QHBoxLayout;
+class QIcon;
+class QLabel;
 
 class TimeLineLayerCellEditorWidget : public QWidget
 {
     Q_OBJECT
 public:
     TimeLineLayerCellEditorWidget(QWidget* parent,
-                                  Editor* editor, Layer* layer);
+                                  Editor* editor,
+                                  Layer* layer);
 
     TimeLineCellType type() const { return TimeLineCellType::LAYER; }
+    void setGeometry(const QRect& rect);
 
     void editLayerProperties() const;
 
@@ -33,10 +39,10 @@ public:
     void mouseDoubleClickEvent(QMouseEvent* event) override;
     void paintEvent(QPaintEvent* event) override;
 
-    int getLayerNumber(int posY) const;
-
     bool didDetach() const { return mDidDetach; }
     const Layer* layer() const { return mLayer; }
+
+    void onLayerVisibilityChanged();
 
 signals:
     void drag(const DragEvent& dragEvent, TimeLineLayerCellEditorWidget* cell, int x, int y);
@@ -52,18 +58,17 @@ private:
     bool hasDetached(int yOffset) const { return abs(yOffset) > mDetachThreshold; }
 
     void paintBackground(QPainter& painter, const QPalette& palette, bool isSelected) const;
-    void paintLayerVisibility(QPainter& painter, const QPalette& palette, const LayerVisibility& layerVisibility, bool isSelected) const;
-    void paintLabel(QPainter& painter, const QPalette& palette, bool isSelected) const;
     void paintLayerGutter(QPainter& painter, const QPalette& palette) const;
 
     void editLayerProperties(LayerCamera* cameraLayer) const;
     void editLayerName(Layer* layer) const;
 
-    QSize mLabelIconSize = QSize(22,22);
+    QSize mLabelIconSize = QSize(20,20);
     bool mDidDetach = false;
     bool mIsDraggable = false;
 
-    QPixmap mIconPixmap;
+    QLabel* mLayerNameLabel = nullptr;
+    QIcon mIcon;
 
     int mDetachThreshold = 5;
 
@@ -71,6 +76,7 @@ private:
     Layer* mLayer = nullptr;
 
     PreferenceManager* mPrefs = nullptr;
+    QHBoxLayout* mHBoxLayout = nullptr;
 
     int mDragFromY = 0;
     int mOldY = 0;

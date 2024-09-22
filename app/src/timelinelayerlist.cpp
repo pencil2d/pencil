@@ -25,7 +25,6 @@ TimeLineLayerList::TimeLineLayerList(TimeLine* parent, Editor* editor) : QWidget
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &TimeLineLayerList::loadSetting);
 
-
     mGutterWidget = new TimeLineLayerCellGutterWidget(width(), this);
 }
 
@@ -53,7 +52,7 @@ void TimeLineLayerList::loadLayerCells()
     {
         Layer* layeri = mEditor->layers()->getLayer(i);
         const int layerY = getLayerCellY(i);
-        TimeLineLayerCell* cell = new TimeLineLayerCell(mTimeLine, this, mEditor, layeri, QPoint(0, layerY), width() - 1, mLayerHeight);
+        TimeLineLayerCell* cell = new TimeLineLayerCell(mTimeLine, this, mEditor, layeri, QPoint(0, layerY), width(), mLayerHeight);
         mLayerCells.insert(layeri->id(), cell);
 
         connect(cell->editorWidget(), &TimeLineLayerCellEditorWidget::drag, this, &TimeLineLayerList::onCellDragged);

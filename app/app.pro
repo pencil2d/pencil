@@ -78,6 +78,7 @@ HEADERS += \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/layeropacitydialog.h \
+    src/layervisibilitybutton.h \
     src/mainwindow2.h \
     src/onionskinwidget.h \
     src/predefinedsetmodel.h \
@@ -136,6 +137,7 @@ SOURCES += \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/layeropacitydialog.cpp \
+    src/layervisibilitybutton.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
     src/onionskinwidget.cpp \

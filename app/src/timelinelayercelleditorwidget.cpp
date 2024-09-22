@@ -9,12 +9,19 @@
 #include "preferencemanager.h"
 #include "viewmanager.h"
 #include "camerapropertiesdialog.h"
+#include "layervisibilitybutton.h"
 
 #include <QApplication>
 #include <QInputDialog>
 #include <QLineEdit>
 #include <QRegularExpression>
 #include <QDebug>
+#include <QHBoxLayout>
+#include <QCheckBox>
+#include <QLabel>
+#include <QLayout>
+#include <QSvgWidget>
+#include <QIcon>
 
 TimeLineLayerCellEditorWidget::TimeLineLayerCellEditorWidget(QWidget* parent,
                                                              Editor* editor,
@@ -24,10 +31,37 @@ TimeLineLayerCellEditorWidget::TimeLineLayerCellEditorWidget(QWidget* parent,
       mLayer(layer)
 {
 
-    if (mLayer->type() == Layer::BITMAP) mIconPixmap = QPixmap(":icons/themes/playful/timeline/cell-bitmap.svg");
-    if (mLayer->type() == Layer::VECTOR) mIconPixmap = QPixmap(":icons/themes/playful/timeline/cell-vector.svg");
-    if (mLayer->type() == Layer::SOUND)  mIconPixmap = QPixmap(":icons/themes/playful/timeline/cell-sound.svg");
-    if (mLayer->type() == Layer::CAMERA) mIconPixmap = QPixmap(":icons/themes/playful/timeline/cell-camera.svg");
+    if (mLayer->type() == Layer::BITMAP) mIcon = QIcon(":icons/themes/playful/timeline/cell-bitmap.svg");
+    if (mLayer->type() == Layer::VECTOR) mIcon = QIcon(":icons/themes/playful/timeline/cell-vector.svg");
+    if (mLayer->type() == Layer::SOUND)  mIcon = QIcon(":icons/themes/playful/timeline/cell-sound.svg");
+    if (mLayer->type() == Layer::CAMERA) mIcon = QIcon(":icons/themes/playful/timeline/cell-camera.svg");
+
+    LayerVisibilityButton* layerVisibilityButton = new LayerVisibilityButton(this, LayerVisibilityContext::LOCAL, layer, editor);
+    mHBoxLayout = new QHBoxLayout(this);
+
+    mHBoxLayout->addWidget(layerVisibilityButton);
+    QLabel* iconLabel = new QLabel(this);
+    iconLabel->setPixmap(mIcon.pixmap(mLabelIconSize));
+    mHBoxLayout->addWidget(iconLabel);
+    mHBoxLayout->addSpacing(4);
+    mLayerNameLabel = new QLabel(mLayer->name());
+    mHBoxLayout->addWidget(mLayerNameLabel);
+    mHBoxLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored));
+    mHBoxLayout->setContentsMargins(0,0,0,0);
+    mHBoxLayout->setSpacing(0);
+
+    connect(layerVisibilityButton, &LayerVisibilityButton::visibilityChanged, this, &TimeLineLayerCellEditorWidget::layerVisibilityChanged);
+}
+
+void TimeLineLayerCellEditorWidget::onLayerVisibilityChanged()
+{
+
+}
+
+void TimeLineLayerCellEditorWidget::setGeometry(const QRect& rect)
+{
+    QWidget::setGeometry(rect);
+    mHBoxLayout->setGeometry(rect);
 }
 
 void TimeLineLayerCellEditorWidget::paintEvent(QPaintEvent*)
@@ -35,50 +69,8 @@ void TimeLineLayerCellEditorWidget::paintEvent(QPaintEvent*)
     QPainter painter(this);
     QPalette palette = QApplication::palette();
 
-    const LayerVisibility& visibility = mEditor->layerVisibility();
     bool isSelected = mEditor->layers()->selectedLayerId() == mLayer->id();
     paintBackground(painter, palette, isSelected);
-    paintLayerVisibility(painter, palette, visibility, isSelected);
-    paintLabel(painter, palette, isSelected);
-}
-
-void TimeLineLayerCellEditorWidget::paintLayerVisibility(QPainter& painter, const QPalette& palette, const LayerVisibility& layerVisibility, bool isSelected) const
-{
-    int x = rect().topLeft().x();
-    int y = rect().topLeft().y();
-    if (!mLayer->visible())
-    {
-        painter.setBrush(palette.color(QPalette::Base));
-    }
-    else
-    {
-        if ((layerVisibility == LayerVisibility::ALL) || isSelected)
-        {
-            painter.setBrush(palette.color(QPalette::Text));
-        }
-        else if (layerVisibility == LayerVisibility::CURRENTONLY)
-        {
-            painter.setBrush(palette.color(QPalette::Base));
-        }
-        else if (layerVisibility == LayerVisibility::RELATED)
-        {
-            QColor color = palette.color(QPalette::Text);
-            color.setAlpha(128);
-            painter.setBrush(color);
-        }
-    }
-    if (isSelected)
-    {
-        painter.setPen(palette.color(QPalette::HighlightedText));
-    }
-    else
-    {
-        painter.setPen(palette.color(QPalette::Text));
-    }
-
-    painter.setRenderHint(QPainter::Antialiasing, true);
-    painter.drawEllipse(x + 6, y + 4, 9, 9);
-    painter.setRenderHint(QPainter::Antialiasing, false);
 }
 
 void TimeLineLayerCellEditorWidget::paintLayerGutter(QPainter& painter, const QPalette& palette) const
@@ -103,43 +95,9 @@ void TimeLineLayerCellEditorWidget::paintBackground(QPainter& painter, const QPa
     painter.drawRect(x, y, size().width(), size().height()); // empty rectangle by default
 }
 
-void TimeLineLayerCellEditorWidget::paintLabel(QPainter& painter, const QPalette& palette, bool isSelected) const
-{
-    int x = rect().topLeft().x();
-    int y = rect().topLeft().y();
-
-    int paddingTop = 1;
-    int paddingLeft = mLabelIconSize.width();
-    int itemSpacing = 2;
-
-    const QPoint& iconPos = QPoint(x + paddingLeft, y - paddingTop);
-    if (mLayer->type() == Layer::BITMAP) painter.drawPixmap(iconPos, mIconPixmap);
-    if (mLayer->type() == Layer::VECTOR) painter.drawPixmap(iconPos, mIconPixmap);
-    if (mLayer->type() == Layer::SOUND)  painter.drawPixmap(iconPos, mIconPixmap);
-    if (mLayer->type() == Layer::CAMERA) painter.drawPixmap(iconPos, mIconPixmap);
-
-    if (isSelected)
-    {
-        painter.setPen(palette.color(QPalette::HighlightedText));
-    }
-    else
-    {
-        painter.setPen(palette.color(QPalette::Text));
-    }
-    int textCenterY = (y + paddingTop) + (2 * size().height()) / 3;
-    painter.drawText(QPoint(iconPos.x() + mLabelIconSize.width() + itemSpacing, textCenterY), mLayer->name());
-}
-
 void TimeLineLayerCellEditorWidget::mousePressEvent(QMouseEvent *event)
 {
-    qDebug() << event->pos();
-
-    if (isInsideLayerVisibilityArea(event))
-    {
-        mLayer->switchVisibility();
-        emit layerVisibilityChanged();
-    }
-    else if (mEditor->layers()->currentLayer() != mLayer)
+    if (mEditor->layers()->currentLayer() != mLayer)
     {
         mEditor->layers()->setCurrentLayer(mLayer);
         mEditor->layers()->currentLayer()->deselectAll();
@@ -215,38 +173,6 @@ void TimeLineLayerCellEditorWidget::handleDragEnded(QMouseEvent*)
     }
 }
 
-int TimeLineLayerCellEditorWidget::getLayerNumber(int posY) const
-{
-    int layerNumber = 0;
-    int totalLayerCount = mEditor->layers()->count();
-    if (posY - size().height() > 0) {
-        layerNumber = posY / size().height();
-    }
-
-    // Layers numbers are displayed in descending order
-    // The last row is layer 0
-    if (layerNumber <= totalLayerCount)
-        layerNumber = (totalLayerCount - 1) - layerNumber;
-    else
-        layerNumber = 0;
-
-    if (posY < rect().topLeft().y())
-    {
-        layerNumber = -1;
-    }
-
-    if (layerNumber >= totalLayerCount)
-    {
-        layerNumber = totalLayerCount;
-    }
-
-    if (layerNumber < -1)
-    {
-        layerNumber = -1;
-    }
-    return layerNumber;
-}
-
 void TimeLineLayerCellEditorWidget::editLayerProperties() const
 {
     if (mLayer->type() == Layer::CAMERA) {
@@ -270,6 +196,7 @@ void TimeLineLayerCellEditorWidget::editLayerProperties(LayerCamera* cameraLayer
 
     if (!name.isEmpty())
     {
+        mLayerNameLabel->setText(name);
         mEditor->layers()->renameLayer(cameraLayer, name);
     }
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -293,5 +220,6 @@ void TimeLineLayerCellEditorWidget::editLayerName(Layer* layer) const
         return;
     }
 
+    mLayerNameLabel->setText(name);
     mEditor->layers()->renameLayer(layer, name);
 }

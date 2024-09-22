@@ -9,6 +9,8 @@
 
 class TimeLine;
 class Editor;
+class LayerVisibilityButton;
+class QHBoxLayout;
 
 class TimeLineLayerHeaderWidget : public QWidget
 {
@@ -18,20 +20,11 @@ public:
                             
     ~TimeLineLayerHeaderWidget() override;
 
-    void paintGlobalDotVisibility(QPainter& painter, const QPalette& palette) const;
-    void paintSplitter(QPainter& painter, const QPalette& palette) const;
-
-    void mousePressEvent(QMouseEvent* event) override;
-    // void mouseMoveEvent(QMouseEvent* event) override;
-    // void mouseReleaseEvent(QMouseEvent* event) override;
-
-    void paintEvent(QPaintEvent* event) override;
-
 private:
 
     Editor* mEditor = nullptr;
-    QSize mVisibilityCircleSize = QSize(9,9);
-    int mLeftPadding = 7;
+    LayerVisibilityButton* mVisibilityButton = nullptr;
+    QHBoxLayout* mHLayout = nullptr;
 };
 
 #endif // TIMELINELAYERHEADERWIDGET_H
