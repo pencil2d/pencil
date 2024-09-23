@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "layermanager.h"
 #include "scribblearea.h"
+#include "camera.h"
 
 ImportPositionDialog::ImportPositionDialog(Editor* editor, QWidget *parent) :
     QDialog(parent),
@@ -76,7 +77,7 @@ void ImportPositionDialog::changeImportView()
         Q_ASSERT(layerCam);
 
         if (mImportOption == ImportPosition::Type::CenterOfCamera) {
-            KeyFrame* camKey = layerCam->getKeyFrameAt(mEditor->currentFrame());
+            KeyFrame* camKey = layerCam->getLastCameraAtFrame(mEditor->currentFrame(), 0);
             transform = layerCam->getViewAtFrame(camKey->pos()).inverted();
         } else {
             transform = layerCam->getViewAtFrame(mEditor->currentFrame()).inverted();
