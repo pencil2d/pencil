@@ -21,7 +21,6 @@
 #include <QCheckBox>
 #include <QLabel>
 #include <QLayout>
-#include <QSvgWidget>
 #include <QIcon>
 #include <QMessageBox>
 
