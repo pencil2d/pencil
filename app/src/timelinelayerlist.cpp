@@ -90,16 +90,6 @@ void TimeLineLayerList::drawContent()
     painter.setBrush(palette.color(QPalette::Base));
     painter.drawRect(QRect(0, 0, width(), height()));
 
-    if (mLayerCells.isEmpty()) { return; }
-
-    // const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-    // for (const TimeLineLayerCell* cell : layerCells) {
-    //     if (layerCells.isDetached()) { return; }
-    //     if (mEditor->layers()->selectedLayerId() != cell->layer()->id()) {
-    //         cell->paint(painter, palette);
-    //     }
-    // }
-
     mRedrawContent = false;
 }
 
@@ -143,75 +133,6 @@ void TimeLineLayerList::resizeEvent(QResizeEvent* event)
     updateContent();
     event->accept();
 
-}
-
-void TimeLineLayerList::mousePressEvent(QMouseEvent* event)
-{
-    QWidget::mousePressEvent(event);
-
-    mPrimaryButton = event->button();
-
-    // if (!mLayerCells.isEmpty()) {
-    //     const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-    //     for (TimeLineLayerCell* cell : layerCells) {
-    //         if (layerCells.isDetached()) { return; }
-    //         if (!cell->contains(event->pos())) { continue; }
-    //         cell->mousePressEvent(event);
-    //     }
-    // }
-}
-
-void TimeLineLayerList::mouseMoveEvent(QMouseEvent* event)
-{
-    QWidget::mouseMoveEvent(event);
-    // if (!mLayerCells.isEmpty()) {
-    //     const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-    //     for (TimeLineLayerCell* cell : layerCells) {
-    //         if (layerCells.isDetached()) { return; }
-    //         if (cell->didDetach()) {
-    //             cell->mouseMoveEvent(event);
-    //             break;
-    //         } else if (cell->contains(event->pos())) {
-    //             cell->mouseMoveEvent(event);
-    //         }
-    //     }
-    // }
-}
-
-void TimeLineLayerList::mouseReleaseEvent(QMouseEvent* event)
-{
-    QWidget::mouseReleaseEvent(event);
-    if (event->button() != mPrimaryButton) return;
-
-    // if (!mLayerCells.isEmpty()) {
-    //     const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-    //     for (TimeLineLayerCell* cell : layerCells) {
-    //         if (layerCells.isDetached()) { return; }
-    //         if (cell->didDetach()) {
-    //             cell->mouseReleaseEvent(event);
-    //             break;
-    //         } else if (cell->contains(event->pos())) {
-    //             cell->mouseReleaseEvent(event);
-    //         }
-    //     }
-    // }
-
-    mPrimaryButton = Qt::NoButton;
-    mTimeLine->scrubbing = false;
-}
-
-void TimeLineLayerList::mouseDoubleClickEvent(QMouseEvent* event)
-{
-    QWidget::mouseDoubleClickEvent(event);
-
-    // const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
-    // for (TimeLineLayerCell* cell : layerCells) {
-    //     if (layerCells.isDetached()) { return; }
-    //     if (!cell->contains(event->pos())) {
-    //         continue;
-    //     }
-    //     cell->mouseDoubleClickEvent(event);
-    // }
 }
 
 int TimeLineLayerList::getLayerGutterYPosition(int posY) const
@@ -303,13 +224,4 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellE
     }
 
     updateContent();
-}
-
-TimeLineLayerCell* TimeLineLayerList::getCell(int id) const
-{
-    // if (mLayerCells.isDetached()) {
-    //     return nullptr;
-    // }
-
-    return mLayerCells.find(id).value();
 }
