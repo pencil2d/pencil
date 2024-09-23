@@ -1,3 +1,141 @@
+## Pencil2D v0.8.0 - Draft
+
+### Features
++ Introduce new Undo/Redo system [#1817](https://github.com/pencil2d/pencil/pull/1817)
+
+### Enhancements
++ Add checkbox to allow polyline to close automatically [#1863](https://github.com/pencil2d/pencil/pull/1863)
++ Maintain active layer track in view - [#1867](https://github.com/pencil2d/pencil/pull/1867)
++ Update shortcuts [#1866](https://github.com/pencil2d/pencil/pull/1866)
++ Improve dock layout for lower resolutions [#1840](https://github.com/pencil2d/pencil/pull/1840)
++ Add ability to remove Last Polyline Segment using backspace [#1861](https://github.com/pencil2d/pencil/pull/1861)
+
+### Bugfixes:
++ Do not make a new keyframe if double clicking on an existing keyframe - [#1851](https://github.com/pencil2d/pencil/pull/1851)
++ Save backup when applying Polyline with Enter key [#1860](https://github.com/pencil2d/pencil/pull/1860)
++ Fix brush cursor size with canvas rotation [#1869](https://github.com/pencil2d/pencil/pull/1869)
++ Fix hanging when adjusting cursor because of too many writes to disk [#1853](https://github.com/pencil2d/pencil/pull/1853)
++ Avoid updating width/feather sliders for tools that don’t use them [cce3107](https://github.com/pencil2d/pencil/commit/cce31079c871fcc04e957c44d5c6e65990f635f1)
++ Fix fill misbehaving when drawing was partly outside border [#1865](https://github.com/pencil2d/pencil/pull/1865)
+
+## Pencil2D v0.7.0 - 12 July 2024
+
+### Enhancements/Changes
+### Interface:
++ Introduced a comprehensive new icon set - [#1356](https://github.com/pencil2d/pencil/issues/1356), [#1361](https://github.com/pencil2d/pencil/pull/1361)
++ Replaced the zoom text on the status bar with an interactive control - [#1442](https://github.com/pencil2d/pencil/pull/1442)
++ Added help text for the currently active tool to the status bar - [#1442](https://github.com/pencil2d/pencil/pull/1442)
++ Added toolbars for commonly used actions - [#1468](https://github.com/pencil2d/pencil/pull/1468)
++ Improved layout of the onion skin tool window - [#1589](https://github.com/pencil2d/pencil/pull/1589), [#1753](https://github.com/pencil2d/pencil/pull/1753)
++ Changed the default export file path to the file path of the current project - [#1657](https://github.com/pencil2d/pencil/pull/1657)
++ Removed vector layer from default timeline setup [#1666](https://github.com/pencil2d/pencil/pull/1666)
+  Please note that vector layers can still be added manually and the default layer setup can be customized by modifying the default preset in Edit → Preferences → Files. Existing custom default presets are not affected by this change.
+  
++ Added a warning when adding more sound clips than can be exported - [#1701](https://github.com/pencil2d/pencil/pull/1701)
++ Added a warning when opening multiple instances of Pencil2D - [#1702](https://github.com/pencil2d/pencil/pull/1702)
++ Replaced the display option window with a toolbar - [#1734](https://github.com/pencil2d/pencil/pull/1734)
++ Improved error messages when importing images - [#1750](https://github.com/pencil2d/pencil/pull/1750)
++ Added an abortable progress dialog when importing animated images - [#1801](https://github.com/pencil2d/pencil/pull/1801)
++ Added support for importing animated WebP images - [#1801](https://github.com/pencil2d/pencil/pull/1801)
++ Added support for importing and exporting static WebP images - [#1801](https://github.com/pencil2d/pencil/pull/1801)
++ Improved usability and reliability of quick sizing - [#1806](https://github.com/pencil2d/pencil/pull/1806)
++ Added an option to configure keyboard shortcuts to flip the current selection - [#1816](https://github.com/pencil2d/pencil/pull/1816)
++ Improved zoom behavior for devices that report pixel-based scrolling data - [06a4495](https://github.com/pencil2d/pencil/commit/06a44959bd93c8b9dc3d2c1cb803577e29391a9f)
++ Added translations for Bulgarian, Persian, Korean, Norwegian Bokmål, Dutch (Netherlands) and Cantonese - [#1826](https://github.com/pencil2d/pencil/pull/1826)
++ Changed the information dialog shown when changing the application language to display in the new language instead of the current one - [#1836](https://github.com/pencil2d/pencil/pull/1836)
++ Improved the movie export dialog to prevent exporting MP4 files in an invalid resolution - [#1833](https://github.com/pencil2d/pencil/pull/1833)
++ Improved the layout of the preferences dialog for languages with long translations - [#1856](https://github.com/pencil2d/pencil/pull/1856)
+
+### Bucket Tool:
+
++ Added an option to set the fill reference layer - [#1630](https://github.com/pencil2d/pencil/pull/1630)
++ Added an option to toggle tolerance on/off - [#1630](https://github.com/pencil2d/pencil/pull/1630)
++ Added an option to expand the fill area - [#1630](https://github.com/pencil2d/pencil/pull/1630)
++ Added the ability to drag to fill - [#1630](https://github.com/pencil2d/pencil/pull/1630)
++ Improved fill performance *significantly* - [#1707](https://github.com/pencil2d/pencil/pull/1707)
++ Added an option to fill using a blend mode: Overlay/Behind/Replace - [#1590](https://github.com/pencil2d/pencil/pull/1590)
++ Removed nonsensical quick sizing support - [#1806](https://github.com/pencil2d/pencil/pull/1806)
+
+### Workflow Improvements
++ Aligned color palette behavior on vector and bitmap layers so that palette colors and their associated vector strokes are only updated when the replace function is used - [#1265](https://github.com/pencil2d/pencil/pull/1265)
++ Added an action to paste content from the previous frame - [#1682](https://github.com/pencil2d/pencil/pull/1682)
++ Added an action to duplicate layers - [#1690](https://github.com/pencil2d/pencil/pull/1690), [#1744](https://github.com/pencil2d/pencil/pull/1744)
++ Optimized the peg bar alignment workflow by activating the select tool, creating an initial selection and pre-selecting the first layer upon opening the dialog - [#1580](https://github.com/pencil2d/pencil/pull/1580)
+
+### Behind the Curtain
++ Optimized visual updates of the timeline window - [#1737](https://github.com/pencil2d/pencil/pull/1737)
++ Improved painting performance by re-rendering only modified areas - [#1761](https://github.com/pencil2d/pencil/pull/1761), [#1789](https://github.com/pencil2d/pencil/pull/1789)
++ Improved painting performance by introducing a tiled buffer - [#1776](https://github.com/pencil2d/pencil/pull/1776)
++ Reworked switching tools temporarily through modifier keys or right-clicking to be more reliable - [#1675](https://github.com/pencil2d/pencil/pull/1675)
+
+### Bug Fixes
+
++ Fixed an issue where undoing after deleting a layer caused the program to crash - [#1412](https://github.com/pencil2d/pencil/issues/1412)
++ Fixed an issue where certain user interface controls did not display correctly when using the Direct2D platform on Windows - [#1575](https://github.com/pencil2d/pencil/pull/1575)
++ Fixed several issues where the canvas did not immediately update after using certain actions - [#1642](https://github.com/pencil2d/pencil/pull/1642), [#1581](https://github.com/pencil2d/pencil/pull/1581), [#1580](https://github.com/pencil2d/pencil/pull/1580), [#1577](https://github.com/pencil2d/pencil/pull/1577), [#1576](https://github.com/pencil2d/pencil/issues/1576)
++ Fixed an issue where undoing the deletion of a keyframe caused the program to perform an additional undo operation or crash - [#1629](https://github.com/pencil2d/pencil/pull/1629)
++ Fixed an issue where the hand tool icon remained active after zooming with a stylus - [#1633](https://github.com/pencil2d/pencil/pull/1633)
++ Fixed an issue where transforming areas in certain imported footage would color them black - [#1642](https://github.com/pencil2d/pencil/pull/1642)
++ Fixed an issue where fill operations were performed twice when performed with a tablet - [#1667](https://github.com/pencil2d/pencil/pull/1667)
++ Fixed an issue where the system language was detected incorrecty on systems that have secondary languages configured - [#1703](https://github.com/pencil2d/pencil/pull/1703)
++ Fixed an issue where mouse wheel zoom misbehaved on some systems using the X Window System - [#1716](https://github.com/pencil2d/pencil/pull/1716), [#1711](https://github.com/pencil2d/pencil/issues/1711)
++ Fixed an issue where undo information was recorded improperly for the first change made after navigating between frames - [#1717](https://github.com/pencil2d/pencil/pull/1717)
++ Fixed an issue where the project recovery dialog appeared behind the main window on some systems - [#1721](https://github.com/pencil2d/pencil/pull/1721)
++ Fixed an issue where rotated selections boundaries were not visualised properly - [#1724](https://github.com/pencil2d/pencil/pull/1724)
++ Fixed an issue where transforms were applied incorrectly to rotated selections - [#1724](https://github.com/pencil2d/pencil/pull/1724)
++ Fixed an issue where the undo and redo shortcuts were erroneously disabled under certain circumstances - [#1721](https://github.com/pencil2d/pencil/pull/1721)
++ Fixed an issue where deleting a sound layer on Windows would under certain circumstances lead to a crash - [#1731](https://github.com/pencil2d/pencil/pull/1731)
++ Fixed an issue where playback of certain sound clips was truncated on Windows - [#1733](https://github.com/pencil2d/pencil/pull/1733), [#1756](https://github.com/pencil2d/pencil/pull/1756)
+
+  Please note that in order to benefit from this bug fix in existing projects, it is necessary to re-import affected sound clips.
++ Fixed an issue where the use of valid file name extensions was not properly enforced in file save dialogs - [#1736](https://github.com/pencil2d/pencil/pull/1736)
++ Fixed several issues where the timeline was drawn incorrectly - [#1737](https://github.com/pencil2d/pencil/pull/1737)
++ Fixed an issue where dragging the timeline with the middle mouse button could inadvertently alter the frame selection - [#1737](https://github.com/pencil2d/pencil/pull/1737)
++ Fixed an issue where tool windows briefly appeared and disappeared on startup before the main window was shown - [#1737](https://github.com/pencil2d/pencil/pull/1737)
++ Fixed an issue where the follow camera image import option used the wrong transform and resulted in general inaccuracies - [ebad47e](https://github.com/pencil2d/pencil/commit/ebad47ed4102818e4ca26b1d1a9318af654f61a5)
++ Fixed an issue where opening Unicode file paths failed when the program was compiled against MinGW32 - [eefd148](https://github.com/pencil2d/pencil/commit/eefd14824efa3689eb2443222ee22287240bc61b)
++ Fixed an issue where the movie exporter sometimes failed to export sounds when exporting a range that does not start at the first frame - [e9f72dc](https://github.com/pencil2d/pencil/commit/e9f72dcc468eb9887a8ed332be6d58ffbde473a4)
++ Fixed an issue where the movie exporter erroneously included hidden sound layers - [b315f27](https://github.com/pencil2d/pencil/commit/b315f27e2016ce779782ead4889205fe1ef6913c)
++ Fixed an issue where importing vector layers from a project file did not preserve their original colors - [#1798](https://github.com/pencil2d/pencil/pull/1798)
++ Fixed an issue where importing vector layers from a project file caused the program to crash - [#1798](https://github.com/pencil2d/pencil/pull/1798)
++ Fixed an issue where exporting a movie did not prevent interaction with the rest of the program - [#1801](https://github.com/pencil2d/pencil/pull/1801)
++ Fixed an issue where importing an image did not account for certain types of potential errors - [#1801](https://github.com/pencil2d/pencil/pull/1801)
++ Fixed an issue where trying to import an image onto a hidden layer caused the program to crash if a keyframe did not already exist on the target frame - [#1820](https://github.com/pencil2d/pencil/pull/1820)
++ Fixed an issue where trying to import an image onto a hidden layer did not produce an error if a keyframe already existed on the target frame - [#1820](https://github.com/pencil2d/pencil/pull/1820)
++ Fixed an issue where opening the preferences dialog on a system using Wayland caused the program to crash under certain circumstances - [#1856](https://github.com/pencil2d/pencil/pull/1856)
++ Fixed various memory leaks
+
+### Various
++ Raised minimum system requirements of our AppImages to Ubuntu 16.04 "Xenial Xerus" or newer distributions - [#1635](https://github.com/pencil2d/pencil/pull/1635)
++ Added support for Wayland to our AppImages - [#1663](https://github.com/pencil2d/pencil/pull/1663)
++ Added update information to our AppImages - [#1680](https://github.com/pencil2d/pencil/pull/1680)
++ Added MIME type information to .pclx files - [#1698](https://github.com/pencil2d/pencil/pull/1698)
++ Improved robustness of project save/load logic - [#1710](https://github.com/pencil2d/pencil/pull/1710)
++ Added compatibility with Qt 6 when building Pencil2D from its source code - [#1743](https://github.com/pencil2d/pencil/pull/1743)
++ Clarified licence of certain files incorporated from the Qt Project - [#1757](https://github.com/pencil2d/pencil/pull/1757)
++ Added a custom start menu tile for Windows versions that support them - [#1787](https://github.com/pencil2d/pencil/pull/1787)
++ Added macOS builds for Apple Silicon - [#1835](https://github.com/pencil2d/pencil/pull/1835)
++ Added safeguards to prevent loading resources from outside the project - [#1843](https://github.com/pencil2d/pencil/pull/1843)
+
+### Known Issues & Gotchas
+
+Here is a non-exhaustive list of bugs that we are already aware of, but were unable to fix in this release. Rest assured, we will do our best to fix all of them eventually.
+
++ The vector engine is a work in progress and does not work as intended. Much work will be required, please avoid using it for production
++ The information dialog shown when changing the application langage may display without any message under certain circumstances
++ Panning the canvas by middle- or right-click-dragging with a tablet causes the application to misbehave on Windows - [#1813](https://github.com/pencil2d/pencil/issues/1813)
+
+  To pan the canvas using a tablet without triggering this issue, perform a left-click-drag while holding the space key. When the issue has already been triggered, perform a left-click on the canvas using a mouse to return the application to its original state.
++ The command line export operation consumes more memory than using the editor - [#1117](https://github.com/pencil2d/pencil/issues/1117)
++ Users of Huion tablets may experience lag and buggy strokes - [#1133](https://github.com/pencil2d/pencil/issues/1133)
+
+  To work around the issue, try disabling the “linear optimizer” option in your tablet’s device settings if it is available. For details, please see [this forum post](https://discuss.pencil2d.org/t/difficulty-with-huion-tablet/1369/9).
++ Some users may experience perceived audio delay during playback, depending on the number of layers and frames in the project. Sound scrubbing and movie export are unaffected – [#1567](https://github.com/pencil2d/pencil/issues/1567), [#1179](https://github.com/pencil2d/pencil/issues/1179)
++ Using the smudge tool in default mode on bitmap layers adds a white background to strokes. This may cause unexpected results, so please use it with caution
++ Using the smudge tool in smooth mode on bitmap layers by pressing Alt keeps smudging the pixels rather than blurring the image
++ Using the bucket tool to fill vector a vector stroke requires the stroke to be selected
+
+
 ## Pencil2D v0.6.6 - 17 Feb 2021 
 
 ### Features
@@ -5,6 +143,7 @@
 - A preliminary version of crash recovery
 - Open the last edited project when launching Pencil2D
 - Timeline now using the system palette colors
+
 
 ### Fixes
 
@@ -17,7 +156,6 @@
 - #1414 Fixed new layer naming
 - #1437 "Reset Windows" now resets all sub panels to their initial positions
 - #1433 Fixed broken polyline tool
-
 
 ## Pencil2D v0.6.5 - 31 July 2020
 
