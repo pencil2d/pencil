@@ -93,12 +93,6 @@ void TimeLineLayerList::drawContent()
     mRedrawContent = false;
 }
 
-void TimeLineLayerList::paintLayerGutter(QPainter& painter, const QPalette& palette) const
-{
-    painter.setPen(palette.color(QPalette::Mid));
-    painter.drawRect(0, mGutterPositionY, width(), 2);
-}
-
 void TimeLineLayerList::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
@@ -137,10 +131,12 @@ void TimeLineLayerList::resizeEvent(QResizeEvent* event)
 
 int TimeLineLayerList::getLayerGutterYPosition(int posY) const
 {
-    int layerNumber = getLayerNumber(posY - (mLayerHeight * 0.5));
+    int layerNumber = getLayerNumber(posY + (mLayerHeight * 0.5));
+
     if(posY > getLayerCellY(layerNumber)) {
         layerNumber--;
     }
+
     int maxLayerNum = mEditor->layers()->count() - 1;
     if (layerNumber > maxLayerNum) {
         layerNumber = maxLayerNum;
@@ -162,7 +158,7 @@ void TimeLineLayerList::onScrollingVerticallyStopped()
     mScrollingVertically = false;
 }
 
-void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellEditorWidget* editorWidget, int x, int y)
+void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellEditorWidget* editorWidget, int /*x*/, int y)
 {
     switch (event)
     {
@@ -176,28 +172,35 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellE
             break;
         }
         case DragEvent::DRAGGING: {
+
+            // The camera layer is at the bottom and must not be moved
+            if (mFromLayer <= 0) {
+                break;
+            }
+
             editorWidget->move(0, y);
             mGutterPositionY = getLayerGutterYPosition(y);
 
             if (editorWidget->didDetach()) {
-                mGutterWidget->show();
+
+                int dragToNumber = getDragToLayerNumber(getLayerCellY(mFromLayer), mGutterPositionY);
+
+                if (dragToNumber != mFromLayer && mFromLayer > 0) {
+                    mGutterWidget->show();
+                } else {
+                    mGutterWidget->hide();
+                }
             }
-            mGutterWidget->move(0, mGutterPositionY);
+
+            mGutterWidget->move(0, mGutterPositionY - mGutterWidget->rect().center().y());
             emit cellDraggedY(event, y);
             break;
         }
         case DragEvent::ENDED: {
-            int dragToNumber = mFromLayer;
             int fromLayerDragY = getLayerCellY(mFromLayer);
-            if (fromLayerDragY > mGutterPositionY) {
-                // If we're starting from above, adjust the drag number so we're one cell above
-                dragToNumber = getLayerNumber(mGutterPositionY + (mLayerHeight * 0.5));
-            } else if (fromLayerDragY < mGutterPositionY) {
-                // If we're starting from below, adjust the drag number so we're one cell below
-                dragToNumber = getLayerNumber(mGutterPositionY - (mLayerHeight * 0.5));
-            }
+            int dragToNumber = getDragToLayerNumber(getLayerCellY(mFromLayer), mGutterPositionY);
 
-            if (!mScrollingVertically && dragToNumber != mFromLayer && dragToNumber > -1)
+            if (!mScrollingVertically && dragToNumber != mFromLayer && dragToNumber > -1 && mGutterWidget->isVisible())
             {
                 if (dragToNumber < mEditor->layers()->count())
                 {
@@ -224,4 +227,17 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellE
     }
 
     updateContent();
+}
+
+int TimeLineLayerList::getDragToLayerNumber(int fromLayerDragY, int gutterPositionY) const
+{
+    if (fromLayerDragY > gutterPositionY) {
+        // If we're starting from below, adjust the drag number so we're one cell below
+        return getLayerNumber(gutterPositionY + (mLayerHeight * 0.5));
+    } else if (fromLayerDragY < gutterPositionY) {
+        // If we're starting from above, adjust the drag number so we're one cell above
+        return getLayerNumber(gutterPositionY - (mLayerHeight * 0.5));
+    }
+
+    return getLayerNumber(fromLayerDragY);
 }

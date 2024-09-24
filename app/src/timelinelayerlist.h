@@ -38,7 +38,7 @@ public:
     int getLayerGutterYPosition(int posY) const;
 
     void loadLayerCells();
-    void onCellDragged(const DragEvent& event, TimeLineLayerCellEditorWidget* editorWidget, int x, int y);
+    void onCellDragged(const DragEvent& event, TimeLineLayerCellEditorWidget* editorWidget, int, int y);
 
 signals:
     void cellDraggedY(const DragEvent& event, int y);
@@ -61,8 +61,9 @@ private:
     int getLayerNumber(int y) const;
     int getLayerCellY(int layerNumber) const;
 
+    int getDragToLayerNumber(int y, int gutterPositionY) const;
+
     void drawContent();
-    void paintLayerGutter(QPainter& painter, const QPalette&) const;
 
     TimeLine* mTimeLine = nullptr;
     Editor* mEditor = nullptr; // the editor for which this timeLine operates

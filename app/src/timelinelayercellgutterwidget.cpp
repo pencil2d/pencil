@@ -7,7 +7,7 @@ TimeLineLayerCellGutterWidget::TimeLineLayerCellGutterWidget(int width, QWidget*
     : QWidget(parent)
 {
 
-    setGeometry(0, 0, width, 2);
+    setGeometry(0, 0, width, 8);
 }
 
 void TimeLineLayerCellGutterWidget::paintEvent(QPaintEvent* event)
@@ -15,8 +15,13 @@ void TimeLineLayerCellGutterWidget::paintEvent(QPaintEvent* event)
     QPainter painter(this);
     QPalette palette = QApplication::palette();
 
-    painter.setPen(palette.color(QPalette::HighlightedText));
-    painter.drawRect(0, rect().bottom(), rect().width(), 2);
+    QPen pen = palette.color(QPalette::HighlightedText);
+    pen.setWidth(1);
+    painter.setPen(pen);
+    QColor brushColor = palette.color(QPalette::Highlight);
+    brushColor.setAlphaF(0.5);
+    painter.setBrush(brushColor);
+    painter.drawRect(rect().x()+1, rect().top()+1, rect().width()-1, rect().bottom()-1);
 }
 
 void TimeLineLayerCellGutterWidget::updateWidth(int width)
