@@ -43,10 +43,6 @@ bool LayerManager::init()
 Status LayerManager::load(Object*)
 {
     mLastCameraLayerIdx = 0;
-    if (object() && count() > 0) {
-        // Sets the top layer as selected
-        mSelectedLayerId = object()->getLayer(getLastLayerIndex())->id();
-    }
     // Do not emit layerCountChanged here because the editor has not updated to this object yet
     // Leave that to the caller of this function
     return Status::OK;
@@ -129,7 +125,6 @@ void LayerManager::setCurrentLayer(int layerIndex)
     // because the current layer may have changed either way
     editor()->setCurrentLayerIndex(layerIndex);
     emit currentLayerChanged(layerIndex);
-    mSelectedLayerId = object()->getLayer(layerIndex)->id();
 
     if (object()->getLayer(layerIndex)->type() == Layer::CAMERA)
     {

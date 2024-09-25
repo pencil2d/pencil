@@ -88,7 +88,7 @@ void TimeLineLayerCellEditorWidget::paintEvent(QPaintEvent*)
     QPainter painter(this);
     QPalette palette = QApplication::palette();
 
-    bool isSelected = mEditor->layers()->selectedLayerId() == mLayer->id();
+    bool isSelected = mEditor->layers()->currentLayer()->id() == mLayer->id();
     paintBackground(painter, palette, isSelected);
 }
 
