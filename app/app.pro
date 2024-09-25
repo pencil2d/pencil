@@ -91,7 +91,6 @@ HEADERS += \
     src/generalpage.h \
     src/shortcutspage.h \
     src/timelinebasecell.h \
-    src/timelinedef.h \
     src/timelinelayercell.h \
     src/timelinelayercelleditorwidget.h \
     src/timelinelayercellgutterwidget.h \

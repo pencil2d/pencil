@@ -18,7 +18,6 @@ GNU General Public License for more details.
 #ifndef TIMELINETRACKLIST_H
 #define TIMELINETRACKLIST_H
 
-#include <QString>
 #include <QWidget>
 
 #include "pencildef.h"
