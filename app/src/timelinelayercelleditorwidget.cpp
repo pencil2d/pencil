@@ -146,6 +146,10 @@ void TimeLineLayerCellEditorWidget::handleDragStarted(QMouseEvent* event)
     }
 
     if (event->buttons() & Qt::LeftButton) {
+        if (mLayerNameEditWidget->hasFocus()) {
+            mLayerNameEditWidget->deselect();
+        }
+
         mIsDraggable = true;
         mDragFromY = y();
         emit drag(DragEvent::STARTED, this, 0, y());
