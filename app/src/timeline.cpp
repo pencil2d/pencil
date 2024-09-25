@@ -55,7 +55,7 @@ void TimeLine::initUI()
     mLayerHeader = new TimeLineLayerHeaderWidget(this, editor());
     mTrackHeader = new TimeLineTrackHeaderWidget(this, editor());
     mLayerList = new TimeLineLayerList(this, editor());
-    mTracks = new TimeLineTrackList(this, editor(), TIMELINE_CELL_TYPE::Tracks);
+    mTracks = new TimeLineTrackList(this, editor());
 
     mLayerHeader->setFixedHeight(mLayerList->getLayerHeight());
     mTrackHeader->setFixedHeight(mLayerList->getLayerHeight());

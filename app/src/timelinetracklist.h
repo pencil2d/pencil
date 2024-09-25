@@ -20,7 +20,8 @@ GNU General Public License for more details.
 
 #include <QString>
 #include <QWidget>
-#include "layercamera.h"
+
+#include "pencildef.h"
 
 class Layer;
 enum class LayerVisibility;
@@ -34,18 +35,12 @@ class QMenu;
 class QAction;
 enum class SETTING;
 
-enum class TIMELINE_CELL_TYPE
-{
-    Layers,
-    Tracks
-};
-
 class TimeLineTrackList : public QWidget
 {
     Q_OBJECT
 
 public:
-    TimeLineTrackList( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
+    TimeLineTrackList( TimeLine* parent, Editor* editor);
     ~TimeLineTrackList() override;
 
     int getLayerHeight() const { return mLayerHeight; }
@@ -96,7 +91,6 @@ private:
 
     bool trackScrubber();
     void drawContent();
-    void paintTicks(QPainter& painter, const QPalette& palette) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
     void paintCurrentFrameBorder(QPainter& painter, int recLeft, int recTop, int recWidth, int recHeight) const;
@@ -108,8 +102,6 @@ private:
     TimeLine* mTimeLine;
     Editor* mEditor; // the editor for which this timeLine operates
     PreferenceManager* mPrefs;
-
-    TIMELINE_CELL_TYPE mType;
 
     QPixmap* mCache = nullptr;
     bool mRedrawContent = false;

@@ -64,9 +64,7 @@ void TimeLineLayerList::loadLayerCells()
 
 int TimeLineLayerList::getLayerNumber(int y) const
 {
-    int totalLayerCount = mEditor->layers()->count();
-    int layerNumber = (totalLayerCount - 1) - (y / mLayerHeight);
-    return layerNumber;
+    return (mEditor->layers()->count() - 1) - (y / mLayerHeight);
 }
 
 int TimeLineLayerList::getLayerCellY(int layerNumber) const
