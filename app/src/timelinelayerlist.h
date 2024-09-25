@@ -46,8 +46,6 @@ signals:
 
 public slots:
     void updateContent();
-    void vScrollChange(int);
-    void onScrollingVerticallyStopped();
 
 protected:
     void paintEvent(QPaintEvent* event) override;
@@ -76,12 +74,6 @@ private:
 
     bool mRedrawContent = false;
     int mLayerHeight = 20;
-
-    Qt::MouseButton mPrimaryButton = Qt::NoButton;
-
-    bool mScrollingVertically = false;
-
-    const static int mLayerDetachThreshold = 5;
 
     QMap<int, TimeLineLayerCell*> mLayerCells;
     TimeLineLayerCellGutterWidget* mGutterWidget = nullptr;

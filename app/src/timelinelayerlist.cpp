@@ -146,18 +146,6 @@ int TimeLineLayerList::getLayerGutterYPosition(int posY) const
     return getLayerCellY(layerNumber);
 }
 
-void TimeLineLayerList::vScrollChange(int x)
-{
-    Q_UNUSED(x)
-    mScrollingVertically = true;
-    updateContent();
-}
-
-void TimeLineLayerList::onScrollingVerticallyStopped()
-{
-    mScrollingVertically = false;
-}
-
 void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellEditorWidget* editorWidget, int /*x*/, int y)
 {
     switch (event)
@@ -200,7 +188,7 @@ void TimeLineLayerList::onCellDragged(const DragEvent& event, TimeLineLayerCellE
             int fromLayerDragY = getLayerCellY(mFromLayer);
             int dragToNumber = getDragToLayerNumber(getLayerCellY(mFromLayer), mGutterPositionY);
 
-            if (!mScrollingVertically && dragToNumber != mFromLayer && dragToNumber > -1 && mGutterWidget->isVisible())
+            if (dragToNumber != mFromLayer && dragToNumber > -1 && mGutterWidget->isVisible())
             {
                 if (dragToNumber < mEditor->layers()->count())
                 {

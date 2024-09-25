@@ -228,14 +228,10 @@ void TimeLine::initUI()
     connect(mTracks, &TimeLineTrackList::offsetChanged, mHScrollbar, &QScrollBar::setValue);
 
     connect(mLayerScrollArea->verticalScrollBar(), &QScrollBar::valueChanged, mTracks, &TimeLineTrackList::vScrollChange);
-    connect(mLayerScrollArea->verticalScrollBar(), &QScrollBar::valueChanged, mLayerList, &TimeLineLayerList::vScrollChange);
     connect(mLayerScrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, &TimeLine::onScrollbarValueChanged);
 
     connect(mTrackScrollArea->verticalScrollBar(), &QScrollBar::valueChanged, mTracks, &TimeLineTrackList::vScrollChange);
-    connect(mTrackScrollArea->verticalScrollBar(), &QScrollBar::valueChanged, mLayerList, &TimeLineLayerList::vScrollChange);
     connect(mTrackScrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, &TimeLine::onScrollbarValueChanged);
-
-    connect(mScrollingStoppedTimer, &QTimer::timeout, mLayerList, &TimeLineLayerList::onScrollingVerticallyStopped);
 
     connect(splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength);
 
