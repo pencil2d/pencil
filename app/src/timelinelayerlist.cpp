@@ -71,7 +71,7 @@ void TimeLineLayerList::loadLayerCells()
         Layer* layeri = mEditor->layers()->getLayer(i);
         const int layerY = getLayerCellY(i);
         TimeLineLayerCell* cell = new TimeLineLayerCell(mTimeLine, this, mEditor, layeri, QPoint(0, layerY), width(), mLayerHeight);
-        mLayerCells.insert(layeri->id(), cell);
+        mLayerCells.append(cell);
 
         connect(cell->editorWidget(), &TimeLineLayerCellEditorWidget::drag, this, &TimeLineLayerList::onCellDragged);
         connect(cell->editorWidget(), &TimeLineLayerCellEditorWidget::layerVisibilityChanged, mTimeLine, &TimeLine::updateContent);
@@ -132,7 +132,7 @@ void TimeLineLayerList::resizeEvent(QResizeEvent* event)
     }
     setMinimumHeight(mEditor->layers()->count() * mLayerHeight);;
 
-    const QMap<int, TimeLineLayerCell*> layerCells = mLayerCells;
+    const QList<TimeLineLayerCell*> layerCells = mLayerCells;
     for (TimeLineLayerCell* cell : layerCells) {
         if (layerCells.isDetached()) { return; }
         cell->setSize(QSize(event->size().width(), mLayerHeight));

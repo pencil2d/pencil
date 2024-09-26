@@ -19,7 +19,7 @@ GNU General Public License for more details.
 #ifndef TIMELINELAYERLIST_H
 #define TIMELINELAYERLIST_H
 
-#include <QMap>
+#include <QList>
 #include <QWidget>
 #include <QResizeEvent>
 #include <QMouseEvent>
@@ -93,7 +93,7 @@ private:
     bool mRedrawContent = false;
     int mLayerHeight = 20;
 
-    QMap<int, TimeLineLayerCell*> mLayerCells;
+    QList<TimeLineLayerCell*> mLayerCells;
     TimeLineLayerCellGutterWidget* mGutterWidget = nullptr;
 };
 
