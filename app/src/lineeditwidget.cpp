@@ -66,7 +66,6 @@ void LineEditWidget::mouseDoubleClickEvent(QMouseEvent* event)
 {
     QLineEdit::mouseDoubleClickEvent(event);
 
-    qDebug() << "LineEditView: double click";
     setReadOnly(false);
     setFocus();
     selectAll();
