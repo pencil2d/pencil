@@ -72,11 +72,6 @@ TimeLineLayerCellEditorWidget::TimeLineLayerCellEditorWidget(QWidget* parent,
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, mLayerNameEditWidget, &LineEditWidget::deselect);
 }
 
-void TimeLineLayerCellEditorWidget::onLayerVisibilityChanged()
-{
-
-}
-
 void TimeLineLayerCellEditorWidget::setGeometry(const QRect& rect)
 {
     QWidget::setGeometry(rect);
@@ -92,12 +87,6 @@ void TimeLineLayerCellEditorWidget::paintEvent(QPaintEvent*)
     paintBackground(painter, palette, isSelected);
 }
 
-void TimeLineLayerCellEditorWidget::paintLayerGutter(QPainter& painter, const QPalette& palette) const
-{
-    painter.setPen(palette.color(QPalette::Mid));
-    painter.drawRect(0, rect().bottom(), rect().width(), 2);
-}
-
 void TimeLineLayerCellEditorWidget::paintBackground(QPainter& painter, const QPalette& palette, bool isSelected) const
 {
     int x = rect().topLeft().x();
@@ -111,7 +100,7 @@ void TimeLineLayerCellEditorWidget::paintBackground(QPainter& painter, const QPa
         painter.setBrush(palette.color(QPalette::Base));
     }
     painter.setPen(Qt::NoPen);
-    painter.drawRect(x, y, size().width(), size().height()); // empty rectangle by default
+    painter.drawRect(x, y, size().width(), size().height());
 }
 
 void TimeLineLayerCellEditorWidget::mousePressEvent(QMouseEvent *event)

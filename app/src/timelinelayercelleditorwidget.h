@@ -75,7 +75,6 @@ private:
     bool hasDetached(int yOffset) const { return abs(yOffset) > mDetachThreshold; }
 
     void paintBackground(QPainter& painter, const QPalette& palette, bool isSelected) const;
-    void paintLayerGutter(QPainter& painter, const QPalette& palette) const;
 
     void editLayerProperties(LayerCamera* cameraLayer) const;
     void editLayerName(Layer* layer) const;
@@ -99,7 +98,6 @@ private:
     QHBoxLayout* mHBoxLayout = nullptr;
 
     int mDragFromY = 0;
-    int mOldY = 0;
 };
 
 #endif // TIMELINELAYERCELLEDITORWIDGET_H
