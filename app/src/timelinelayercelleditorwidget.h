@@ -59,8 +59,6 @@ public:
     bool didDetach() const { return mDidDetach; }
     const Layer* layer() const { return mLayer; }
 
-    void onLayerVisibilityChanged();
-
 signals:
     void drag(const DragEvent& dragEvent, TimeLineLayerCellEditorWidget* cell, int x, int y);
     void layerVisibilityChanged();
@@ -77,7 +75,6 @@ private:
     void paintBackground(QPainter& painter, const QPalette& palette, bool isSelected) const;
 
     void editLayerProperties(LayerCamera* cameraLayer) const;
-    void editLayerName(Layer* layer) const;
 
     void onFinishedEditingName();
 

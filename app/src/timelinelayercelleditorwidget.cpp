@@ -193,8 +193,6 @@ void TimeLineLayerCellEditorWidget::editLayerProperties() const
 {
     if (mLayer->type() == Layer::CAMERA) {
         editLayerProperties(static_cast<LayerCamera*>(mLayer));
-    } else {
-        editLayerName(mLayer);
     }
 }
 
@@ -220,24 +218,6 @@ void TimeLineLayerCellEditorWidget::editLayerProperties(LayerCamera* cameraLayer
     settings.setValue(SETTING_FIELD_H, dialog.getHeight());
     cameraLayer->setViewRect(QRect(-dialog.getWidth() / 2, -dialog.getHeight() / 2, dialog.getWidth(), dialog.getHeight()));
     mEditor->view()->forceUpdateViewTransform();
-}
-
-void TimeLineLayerCellEditorWidget::editLayerName(Layer* layer) const
-{
-    QRegularExpression regex("([\\x{FFEF}-\\x{FFFF}])+");
-
-    bool ok;
-    QString name = QInputDialog::getText(nullptr, QObject::tr("Layer Properties"),
-                                         QObject::tr("Layer name:"), QLineEdit::Normal,
-                                         layer->name(), &ok);
-    name.replace(regex, "");
-    if (!ok || name.isEmpty())
-    {
-        return;
-    }
-
-    mLayerNameEditWidget->setText(name);
-    mEditor->layers()->renameLayer(layer, name);
 }
 
 void TimeLineLayerCellEditorWidget::onFinishedEditingName()
