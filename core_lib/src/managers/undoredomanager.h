@@ -41,9 +41,7 @@ class UndoRedoCommand;
 /// The undo/redo type which correspond to what is being recorded
 enum class UndoRedoRecordType {
     KEYFRAME_MODIFY, // Any modification that involve a keyframe
-
-    // Possible future actions
-    // KEYFRAME_REMOVE, // Removing a keyframe
+    KEYFRAME_REMOVE, // Removing a keyframe
     // KEYFRAME_ADD, // Adding a keyframe
     // SCRUB_LAYER, // Scrubbing layer
     // SCRUB_KEYFRAME, // Scrubbing keyframe
@@ -156,7 +154,9 @@ private:
     void replaceBitmap(const UndoSaveState& undoState, const QString& description);
     void replaceVector(const UndoSaveState& undoState, const QString& description);
 
-    const UndoSaveState* savedKeyFrameState() const;
+    void removeKeyFrame(const UndoSaveState& undoState, const QString& description);
+
+    const UndoSaveState* savedKeyFrameState(const UndoRedoRecordType& type) const;
 
     void pushCommand(QUndoCommand* command);
 

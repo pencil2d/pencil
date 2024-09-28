@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "layersound.h"
 #include "layerbitmap.h"
 #include "layervector.h"
+#include "layer.h"
 
 #include "editor.h"
 #include "undoredocommand.h"
@@ -36,6 +37,53 @@ UndoRedoCommand::UndoRedoCommand(Editor* editor, QUndoCommand* parent) : QUndoCo
 
 UndoRedoCommand::~UndoRedoCommand()
 {
+}
+
+KeyFrameRemoveCommand::KeyFrameRemoveCommand(const KeyFrame* undoKeyFrame,
+                                         int undoLayerId,
+                                         const QString &description,
+                                         Editor *editor,
+                                         QUndoCommand *parent) : UndoRedoCommand(editor, parent)
+{
+    this->undoKeyFrame = undoKeyFrame->clone();
+    this->undoLayerId = undoLayerId;
+
+    this->redoLayerId = editor->layers()->currentLayer()->id();
+    this->redoPosition = editor->currentFrame();
+
+    setText(description);
+}
+
+KeyFrameRemoveCommand::~KeyFrameRemoveCommand()
+{
+    delete undoKeyFrame;
+}
+
+void KeyFrameRemoveCommand::undo()
+{
+    UndoRedoCommand::undo();
+
+    Layer* layer = editor()->layers()->findLayerById(undoLayerId);
+
+    layer->addKeyFrame(undoKeyFrame->pos(), undoKeyFrame->clone());
+
+    emit editor()->frameModified(undoKeyFrame->pos());
+    editor()->layers()->notifyAnimationLengthChanged();
+    editor()->scrubTo(undoKeyFrame->pos());
+}
+
+void KeyFrameRemoveCommand::redo()
+{
+    UndoRedoCommand::redo();
+
+    if (isFirstRedo()) { setFirstRedo(false); return; }
+
+    Layer* layer = editor()->layers()->findLayerById(redoLayerId);
+    layer->removeKeyFrame(redoPosition);
+
+    emit editor()->frameModified(redoPosition);
+    editor()->layers()->notifyAnimationLengthChanged();
+    editor()->scrubTo(redoPosition);
 }
 
 BitmapReplaceCommand::BitmapReplaceCommand(const BitmapImage* undoBitmap,
@@ -58,7 +106,7 @@ BitmapReplaceCommand::BitmapReplaceCommand(const BitmapImage* undoBitmap,
 
 void BitmapReplaceCommand::undo()
 {
-    QUndoCommand::undo();
+    UndoRedoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
     static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&undoBitmap);
@@ -68,7 +116,7 @@ void BitmapReplaceCommand::undo()
 
 void BitmapReplaceCommand::redo()
 {
-    QUndoCommand::redo();
+    UndoRedoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
@@ -98,7 +146,7 @@ VectorReplaceCommand::VectorReplaceCommand(const VectorImage* undoVector,
 
 void VectorReplaceCommand::undo()
 {
-    QUndoCommand::undo();
+    UndoRedoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
 
@@ -109,7 +157,7 @@ void VectorReplaceCommand::undo()
 
 void VectorReplaceCommand::redo()
 {
-    QUndoCommand::redo();
+    UndoRedoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
@@ -154,6 +202,7 @@ TransformCommand::TransformCommand(const QRectF& undoSelectionRect,
 
 void TransformCommand::undo()
 {
+    UndoRedoCommand::undo();
     apply(undoSelectionRect,
           undoTranslation,
           undoRotationAngle,
@@ -165,6 +214,8 @@ void TransformCommand::undo()
 
 void TransformCommand::redo()
 {
+    UndoRedoCommand::redo();
+
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
 

@@ -108,6 +108,10 @@ void UndoRedoManager::record(const UndoSaveState*& undoState, const QString& des
             replaceKeyFrame(*undoState, description);
             break;
         }
+        case UndoRedoRecordType::KEYFRAME_REMOVE: {
+            removeKeyFrame(*undoState, description);
+            break;
+        }
         default: {
             QString reason("Unhandled case for: ");
             reason.append(description);
@@ -139,6 +143,15 @@ void UndoRedoManager::pushCommand(QUndoCommand* command)
     mUndoStack.push(command);
 
     emit didUpdateUndoStack();
+}
+
+void UndoRedoManager::removeKeyFrame(const UndoSaveState& undoState, const QString& description)
+{
+    KeyFrameRemoveCommand* element = new KeyFrameRemoveCommand(undoState.keyframe.get(),
+                                                           undoState.layerId,
+                                                           description,
+                                                           editor());
+    pushCommand(element);
 }
 
 void UndoRedoManager::replaceKeyFrame(const UndoSaveState& undoState, const QString& description)
@@ -204,18 +217,19 @@ const UndoSaveState* UndoRedoManager::state(UndoRedoRecordType recordType) const
 
     switch (recordType)
     {
-        case UndoRedoRecordType::KEYFRAME_MODIFY: {
-            return savedKeyFrameState();
+        case UndoRedoRecordType::KEYFRAME_MODIFY:
+        case UndoRedoRecordType::KEYFRAME_REMOVE: {
+            return savedKeyFrameState(recordType);
         default:
             return nullptr;
         }
     }
 }
 
-const UndoSaveState* UndoRedoManager::savedKeyFrameState() const
+const UndoSaveState* UndoRedoManager::savedKeyFrameState(const UndoRedoRecordType& type) const
 {
     UndoSaveState* undoSaveState = new UndoSaveState();
-    undoSaveState->recordType = UndoRedoRecordType::KEYFRAME_MODIFY;
+    undoSaveState->recordType = type;
 
     const Layer* layer = editor()->layers()->currentLayer();
     undoSaveState->layerType = layer->type();
