@@ -24,13 +24,15 @@ GNU General Public License for more details.
 
 #include "bitmapimage.h"
 #include "vectorimage.h"
+#include "soundclip.h"
+#include "camera.h"
+#include "layer.h"
 
 class Editor;
 class UndoRedoManager;
 class PreferenceManager;
 class SoundClip;
 class Camera;
-class Layer;
 class KeyFrame;
 class TransformCommand;
 
@@ -49,6 +51,29 @@ protected:
 private:
     Editor* mEditor = nullptr;
     bool mIsFirstRedo = true;
+};
+
+class KeyFrameRemoveCommand : public UndoRedoCommand
+{
+public:
+    KeyFrameRemoveCommand(const KeyFrame* undoKeyFrame,
+                        int undoLayerId,
+                        const QString& description,
+                        Editor* editor,
+                        QUndoCommand* parent = nullptr
+                                               );
+    ~KeyFrameRemoveCommand();
+
+    void undo() override;
+    void redo() override;
+
+private:
+
+    int undoLayerId = 0;
+    int redoLayerId = 0;
+
+    KeyFrame* undoKeyFrame = nullptr;
+    int redoPosition;
 };
 
 class BitmapReplaceCommand : public UndoRedoCommand

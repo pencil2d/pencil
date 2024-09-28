@@ -958,12 +958,15 @@ void Editor::removeKey()
         return;
     }
 
+    const UndoSaveState* state =  undoRedo()->state(UndoRedoRecordType::KEYFRAME_REMOVE);
     backup(tr("Remove frame"));
 
     deselectAll();
     layer->removeKeyFrame(currentFrame());
     layers()->notifyAnimationLengthChanged();
     emit layers()->currentLayerChanged(layers()->currentLayerIndex()); // trigger timeline repaint.
+
+    undoRedo()->record(state, tr("Remove frame"));
 }
 
 void Editor::scrubNextKeyFrame()
