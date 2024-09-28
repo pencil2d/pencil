@@ -43,7 +43,7 @@ public:
     ~UndoRedoCommand() override;
 
 protected:
-    Editor* editor() { return mEditor; }
+    Editor* editor() const { return mEditor; }
 
     bool isFirstRedo() const { return mIsFirstRedo; }
     void setFirstRedo(const bool state) { mIsFirstRedo = state; }
@@ -73,7 +73,30 @@ private:
     int redoLayerId = 0;
 
     KeyFrame* undoKeyFrame = nullptr;
-    int redoPosition;
+    int redoPosition = 0;
+};
+
+class KeyFrameAddCommand : public UndoRedoCommand
+{
+public:
+    KeyFrameAddCommand(int undoPosition,
+                        int undoLayerId,
+                        const QString& description,
+                        Editor* editor,
+                        QUndoCommand* parent = nullptr
+                                               );
+    ~KeyFrameAddCommand();
+
+    void undo() override;
+    void redo() override;
+
+private:
+
+    int undoLayerId = 0;
+    int redoLayerId = 0;
+
+    int undoPosition = 0;
+    int redoPosition = 0;
 };
 
 class BitmapReplaceCommand : public UndoRedoCommand

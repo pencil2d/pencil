@@ -112,6 +112,10 @@ void UndoRedoManager::record(const UndoSaveState*& undoState, const QString& des
             removeKeyFrame(*undoState, description);
             break;
         }
+        case UndoRedoRecordType::KEYFRAME_ADD: {
+            addKeyFrame(*undoState, description);
+            break;
+        }
         default: {
             QString reason("Unhandled case for: ");
             reason.append(description);
@@ -148,6 +152,15 @@ void UndoRedoManager::pushCommand(QUndoCommand* command)
 void UndoRedoManager::removeKeyFrame(const UndoSaveState& undoState, const QString& description)
 {
     KeyFrameRemoveCommand* element = new KeyFrameRemoveCommand(undoState.keyframe.get(),
+                                                           undoState.layerId,
+                                                           description,
+                                                           editor());
+    pushCommand(element);
+}
+
+void UndoRedoManager::addKeyFrame(const UndoSaveState& undoState, const QString& description)
+{
+    KeyFrameAddCommand* element = new KeyFrameAddCommand(undoState.currentFrameIndex,
                                                            undoState.layerId,
                                                            description,
                                                            editor());
@@ -217,10 +230,11 @@ const UndoSaveState* UndoRedoManager::state(UndoRedoRecordType recordType) const
 
     switch (recordType)
     {
+        case UndoRedoRecordType::KEYFRAME_ADD:
         case UndoRedoRecordType::KEYFRAME_MODIFY:
         case UndoRedoRecordType::KEYFRAME_REMOVE: {
             return savedKeyFrameState(recordType);
-        default:
+        case UndoRedoRecordType::INVALID:
             return nullptr;
         }
     }
@@ -234,6 +248,7 @@ const UndoSaveState* UndoRedoManager::savedKeyFrameState(const UndoRedoRecordTyp
     const Layer* layer = editor()->layers()->currentLayer();
     undoSaveState->layerType = layer->type();
     undoSaveState->layerId = layer->id();
+    undoSaveState->currentFrameIndex = editor()->currentFrame();
 
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR) {
         auto selectMan = editor()->select();

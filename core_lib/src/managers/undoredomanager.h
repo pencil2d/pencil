@@ -42,7 +42,7 @@ class UndoRedoCommand;
 enum class UndoRedoRecordType {
     KEYFRAME_MODIFY, // Any modification that involve a keyframe
     KEYFRAME_REMOVE, // Removing a keyframe
-    // KEYFRAME_ADD, // Adding a keyframe
+    KEYFRAME_ADD, // Adding a keyframe
     // SCRUB_LAYER, // Scrubbing layer
     // SCRUB_KEYFRAME, // Scrubbing keyframe
     INVALID
@@ -77,6 +77,7 @@ struct SelectionSaveState {
 /// whatever states that needs to be stored temporarily.
 struct UndoSaveState {
     int layerId = 0;
+    int currentFrameIndex = 0;
     Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
 
     std::unique_ptr<KeyFrame> keyframe = nullptr;
@@ -154,6 +155,7 @@ private:
     void replaceBitmap(const UndoSaveState& undoState, const QString& description);
     void replaceVector(const UndoSaveState& undoState, const QString& description);
 
+    void addKeyFrame(const UndoSaveState& undoState, const QString& description);
     void removeKeyFrame(const UndoSaveState& undoState, const QString& description);
 
     const UndoSaveState* savedKeyFrameState(const UndoRedoRecordType& type) const;
