@@ -98,7 +98,7 @@ Layer* LayerManager::findLayerByName(QString sName, Layer::LAYER_TYPE type)
     return object()->findLayerByName(sName, type);
 }
 
-Layer* LayerManager::findLayerById(int layerId)
+Layer* LayerManager::findLayerById(int layerId) const
 {
     return object()->findLayerById(layerId);
 }
