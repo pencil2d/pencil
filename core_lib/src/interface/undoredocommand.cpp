@@ -64,6 +64,11 @@ void KeyFrameRemoveCommand::undo()
     UndoRedoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
+    if (layer == nullptr) {
+        // Until we support layer deletion recovery, we mark the command as
+        // obsolete as soon as it's been
+        return setObsolete(true);
+    }
 
     layer->addKeyFrame(undoKeyFrame->pos(), undoKeyFrame->clone());
 
@@ -83,6 +88,61 @@ void KeyFrameRemoveCommand::redo()
 
     emit editor()->frameModified(redoPosition);
     editor()->layers()->notifyAnimationLengthChanged();
+    editor()->scrubTo(redoPosition);
+}
+
+KeyFrameAddCommand::KeyFrameAddCommand(int undoPosition,
+                                       int undoLayerId,
+                                       const QString &description,
+                                       Editor *editor,
+                                       QUndoCommand *parent)
+    : UndoRedoCommand(editor, parent)
+{
+    this->undoPosition = undoPosition;
+    this->undoLayerId = undoLayerId;
+
+    this->redoLayerId = editor->layers()->currentLayer()->id();
+    this->redoPosition = editor->currentFrame();
+
+    setText(description);
+}
+
+KeyFrameAddCommand::~KeyFrameAddCommand()
+{
+}
+
+void KeyFrameAddCommand::undo()
+{
+    UndoRedoCommand::undo();
+
+    Layer* layer = editor()->layers()->findLayerById(undoLayerId);
+    if (layer == nullptr) {
+        // Until we support layer deletion recovery, we mark the command as
+        // obsolete as soon as it's been
+        return setObsolete(true);
+    }
+
+    layer->removeKeyFrame(undoPosition);
+
+    emit editor()->frameModified(undoPosition);
+    editor()->layers()->notifyAnimationLengthChanged();
+    editor()->layers()->setCurrentLayer(layer);
+    editor()->scrubTo(undoPosition);
+}
+
+void KeyFrameAddCommand::redo()
+{
+    UndoRedoCommand::redo();
+
+    // Ignore automatic redo when added to undo stack
+    if (isFirstRedo()) { setFirstRedo(false); return; }
+
+    Layer* layer = editor()->layers()->findLayerById(redoLayerId);
+    layer->addNewKeyFrameAt(redoPosition);
+
+    emit editor()->frameModified(redoPosition);
+    editor()->layers()->notifyAnimationLengthChanged();
+    editor()->layers()->setCurrentLayer(layer);
     editor()->scrubTo(redoPosition);
 }
 
@@ -109,6 +169,12 @@ void BitmapReplaceCommand::undo()
     UndoRedoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
+    if (layer == nullptr) {
+        // Until we support layer deletion recovery, we mark the command as
+        // obsolete as soon as it's been
+        return setObsolete(true);
+    }
+
     static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&undoBitmap);
 
     editor()->scrubTo(undoBitmap.pos());
@@ -149,6 +215,11 @@ void VectorReplaceCommand::undo()
     UndoRedoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
+    if (layer == nullptr) {
+        // Until we support layer deletion recovery, we mark the command as
+        // obsolete as soon as it's been
+        return setObsolete(true);
+    }
 
     static_cast<LayerVector*>(layer)->replaceKeyFrame(&undoVector);
 
