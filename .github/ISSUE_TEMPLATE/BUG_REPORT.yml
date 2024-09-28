@@ -49,9 +49,7 @@ body:
     attributes:
       label: "Video or Image Reference"
       description: A screenshot or short video to show your problem.
-      placeholder: <Drag and drop an image or video here>
-      value: |
-        <Drag and drop an image or video here>
+      placeholder: Drag and drop an image or video here
     validations:
       required: false
   - type: textarea
