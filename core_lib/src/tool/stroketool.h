@@ -105,7 +105,7 @@ protected:
 
     StrokeInterpolator mInterpolator;
 
-    const UndoSaveState* mUndoSaveState = nullptr;
+    UndoSaveState* mUndoSaveState = nullptr;
 
 private:
     CanvasCursorPainter mWidthCursorPainter;
