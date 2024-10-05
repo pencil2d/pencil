@@ -43,6 +43,7 @@ enum class UndoRedoRecordType {
     KEYFRAME_MODIFY, // Any modification that involve a keyframe
     KEYFRAME_REMOVE, // Removing a keyframe
     KEYFRAME_ADD, // Adding a keyframe
+    KEYFRAME_MOVE,
     // SCRUB_LAYER, // Scrubbing layer
     // SCRUB_KEYFRAME, // Scrubbing keyframe
     INVALID
@@ -50,6 +51,7 @@ enum class UndoRedoRecordType {
 
 struct SelectionSaveState {
 
+    SelectionSaveState() { }
     SelectionSaveState(const QRectF& rect,
                        const qreal rotationAngle,
                        const qreal scaleX,
@@ -73,17 +75,40 @@ struct SelectionSaveState {
     QPointF anchor;
 };
 
+
+struct MoveFramesSaveState {
+
+    MoveFramesSaveState() { }
+    MoveFramesSaveState(int offset,
+                        const QList<int>& positions)
+    {
+        this->offset = offset;
+        this->positions = positions;
+    }
+
+    int offset = 0;
+    QList<int> positions;
+};
+
 /// This is the main undo/redo state structure which is meant to populate
 /// whatever states that needs to be stored temporarily.
 struct UndoSaveState {
+
+    ~UndoSaveState()
+    {
+        keyframe.reset();
+    }
+
+    // Common data
+    UndoRedoRecordType recordType = UndoRedoRecordType::INVALID;
     int layerId = 0;
     int currentFrameIndex = 0;
     Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
-
     std::unique_ptr<KeyFrame> keyframe = nullptr;
-    std::unique_ptr<SelectionSaveState> selectionState = nullptr;
+    SelectionSaveState selectionState = {};
+    //
 
-    UndoRedoRecordType recordType = UndoRedoRecordType::INVALID;
+    MoveFramesSaveState moveFramesState = {};
 };
 
 class UndoRedoManager : public BaseManager
@@ -103,16 +128,16 @@ public:
     * @param undoState The state to record.
     * @param description The description that will bound to the undo/redo action.
     */
-    void record(const UndoSaveState*& undoState, const QString& description);
+    void record(UndoSaveState*& undoState, const QString& description);
 
 
     /** Checks whether there are unsaved changes.
      *  @return true if there are unsaved changes, otherwise false */
     bool hasUnsavedChanges() const;
 
-    /** Prepares and returns a save state with the given scope.
-     * @return A struct with state of the given record type */
-    const UndoSaveState* state(UndoRedoRecordType recordType) const;
+    /** Prepares and returns an save state with common data
+     * @return A UndoSaveState struct with common keyframe data */
+    UndoSaveState* createState(UndoRedoRecordType recordType) const;
 
     QAction* createUndoAction(QObject* parent, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QIcon& icon);
@@ -157,8 +182,9 @@ private:
 
     void addKeyFrame(const UndoSaveState& undoState, const QString& description);
     void removeKeyFrame(const UndoSaveState& undoState, const QString& description);
+    void moveKeyFrames(const UndoSaveState& undoState, const QString& description);
 
-    const UndoSaveState* savedKeyFrameState(const UndoRedoRecordType& type) const;
+    void initCommonKeyFrameState(UndoSaveState* undoSaveState) const;
 
     void pushCommand(QUndoCommand* command);
 

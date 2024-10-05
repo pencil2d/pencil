@@ -173,7 +173,7 @@ void StrokeTool::startStroke(PointerEvent::InputType inputType)
     mStrokePressures << mInterpolator.getPressure();
 
     mCurrentInputType = inputType;
-    mUndoSaveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
+    mUndoSaveState = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MODIFY);
 
     disableCoalescing();
 }

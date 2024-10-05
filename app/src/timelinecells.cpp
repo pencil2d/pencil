@@ -33,6 +33,7 @@ GNU General Public License for more details.
 #include "object.h"
 #include "playbackmanager.h"
 #include "preferencemanager.h"
+#include "undoredomanager.h"
 #include "timeline.h"
 
 #include "cameracontextmenu.h"
@@ -1065,8 +1066,13 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             int posUnderCursor = getFrameNumber(mMousePressX);
             int offset = frameNumber - posUnderCursor;
 
-            currentLayer->moveSelectedFrames(offset);
+            if (currentLayer->canMoveSelectedFramesToOffset(offset)) {
+                UndoSaveState* state = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MOVE);
+                state->moveFramesState = MoveFramesSaveState(offset, currentLayer->selectedKeyFramesPositions());
 
+                currentLayer->moveSelectedFrames(offset);
+                mEditor->undoRedo()->record(state, tr("Move Frames"));
+            }
             mEditor->layers()->notifyAnimationLengthChanged();
             emit mEditor->framesModified();
             updateContent();

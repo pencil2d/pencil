@@ -937,7 +937,7 @@ KeyFrame* Editor::addKeyFrame(const int layerNumber, int frameIndex)
     Q_ASSERT(ok); // We already ensured that there is no keyframe at frameIndex, so this should always succeed
     scrubTo(frameIndex); // currentFrameChanged() emit inside.
 
-    const UndoSaveState* state = undoRedo()->state(UndoRedoRecordType::KEYFRAME_ADD);
+    UndoSaveState* state = undoRedo()->createState(UndoRedoRecordType::KEYFRAME_ADD);
     emit frameModified(frameIndex);
     layers()->notifyAnimationLengthChanged();
     KeyFrame* newFrame = layer->getKeyFrameAt(frameIndex);
@@ -964,7 +964,7 @@ void Editor::removeKey()
         return;
     }
 
-    const UndoSaveState* state =  undoRedo()->state(UndoRedoRecordType::KEYFRAME_REMOVE);
+    UndoSaveState* state =  undoRedo()->createState(UndoRedoRecordType::KEYFRAME_REMOVE);
     backup(tr("Remove frame"));
 
     deselectAll();

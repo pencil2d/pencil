@@ -146,6 +146,53 @@ void KeyFrameAddCommand::redo()
     editor()->scrubTo(redoPosition);
 }
 
+MoveKeyFramesCommand::MoveKeyFramesCommand(int offset,
+                                         QList<int> listOfPositions,
+                                         int undoLayerId,
+                                         const QString& description,
+                                         Editor* editor,
+                                         QUndoCommand *parent)
+    : UndoRedoCommand(editor, parent)
+{
+    this->frameOffset = offset;
+    this->positions = listOfPositions;
+
+    this->undoLayerId = undoLayerId;
+    this->redoLayerId = editor->layers()->currentLayer()->id();
+
+    setText(description);
+}
+
+void MoveKeyFramesCommand::undo()
+{
+    UndoRedoCommand::undo();
+
+    Layer* undoLayer = editor()->layers()->findLayerById(undoLayerId);
+
+    if (!undoLayer) { return; }
+
+    for (int position : qAsConst(positions)) {
+        undoLayer->moveKeyFrame(position + frameOffset, -frameOffset);
+    }
+
+    emit editor()->framesModified();
+}
+
+void MoveKeyFramesCommand::redo()
+{
+    UndoRedoCommand::redo();
+
+    // Ignore automatic redo when added to undo stack
+    if (isFirstRedo()) { setFirstRedo(false); return; }
+
+    Layer* redoLayer = editor()->layers()->findLayerById(redoLayerId);
+
+    for (int position : qAsConst(positions)) {
+        redoLayer->moveKeyFrame(position, frameOffset);
+    }
+
+    emit editor()->framesModified();
+}
 BitmapReplaceCommand::BitmapReplaceCommand(const BitmapImage* undoBitmap,
                              const int undoLayerId,
                              const QString& description,

@@ -92,13 +92,15 @@ Status UndoRedoManager::save(Object* /*o*/)
     return Status::OK;
 }
 
-void UndoRedoManager::record(const UndoSaveState*& undoState, const QString& description)
+void UndoRedoManager::record(UndoSaveState*& undoState, const QString& description)
 {
-    if (!mNewBackupSystemEnabled) {
+    if (!undoState) {
         return;
     }
 
-    if (!undoState) {
+    if (!mNewBackupSystemEnabled) {
+        delete undoState;
+        undoState = nullptr;
         return;
     }
 
@@ -114,6 +116,10 @@ void UndoRedoManager::record(const UndoSaveState*& undoState, const QString& des
         }
         case UndoRedoRecordType::KEYFRAME_ADD: {
             addKeyFrame(*undoState, description);
+            break;
+        }
+        case UndoRedoRecordType::KEYFRAME_MOVE: {
+            moveKeyFrames(*undoState, description);
             break;
         }
         default: {
@@ -178,6 +184,16 @@ void UndoRedoManager::replaceKeyFrame(const UndoSaveState& undoState, const QStr
     }
 }
 
+void UndoRedoManager::moveKeyFrames(const UndoSaveState& undoState, const QString& description)
+{
+    const MoveFramesSaveState& state = undoState.moveFramesState;
+    MoveKeyFramesCommand* element = new MoveKeyFramesCommand(state.offset,
+                                                             state.positions,
+                                                             undoState.layerId,
+                                                             description,
+                                                             editor());
+    pushCommand(element);
+}
 
 void UndoRedoManager::replaceBitmap(const UndoSaveState& undoState, const QString& description)
 {
@@ -187,13 +203,13 @@ void UndoRedoManager::replaceBitmap(const UndoSaveState& undoState, const QStrin
                                                description,
                                                editor());
 
-    const SelectionSaveState* selectionState = undoState.selectionState.get();
-    new TransformCommand(selectionState->bounds,
-                         selectionState->translation,
-                         selectionState->rotationAngle,
-                         selectionState->scaleX,
-                         selectionState->scaleY,
-                         selectionState->anchor,
+    const SelectionSaveState& selectionState = undoState.selectionState;
+    new TransformCommand(selectionState.bounds,
+                         selectionState.translation,
+                         selectionState.rotationAngle,
+                         selectionState.scaleX,
+                         selectionState.scaleY,
+                         selectionState.anchor,
                          true, // roundPixels
                          description,
                          editor(), element);
@@ -209,42 +225,30 @@ void UndoRedoManager::replaceVector(const UndoSaveState& undoState, const QStrin
                                                  description,
                                                  editor());
 
-    const SelectionSaveState* selectionState = undoState.selectionState.get();
-    new TransformCommand(selectionState->bounds,
-                         selectionState->translation,
-                         selectionState->rotationAngle,
-                         selectionState->scaleX,
-                         selectionState->scaleY,
-                         selectionState->anchor,
+    const SelectionSaveState& selectionState = undoState.selectionState;
+    new TransformCommand(selectionState.bounds,
+                         selectionState.translation,
+                         selectionState.rotationAngle,
+                         selectionState.scaleX,
+                         selectionState.scaleY,
+                         selectionState.anchor,
                          false, // Round pixels
                          description,
                          editor(), element);
     pushCommand(element);
 }
 
-const UndoSaveState* UndoRedoManager::state(UndoRedoRecordType recordType) const
-{
-    if (!mNewBackupSystemEnabled) {
-        return nullptr;
-    }
-
-    switch (recordType)
-    {
-        case UndoRedoRecordType::KEYFRAME_ADD:
-        case UndoRedoRecordType::KEYFRAME_MODIFY:
-        case UndoRedoRecordType::KEYFRAME_REMOVE: {
-            return savedKeyFrameState(recordType);
-        case UndoRedoRecordType::INVALID:
-            return nullptr;
-        }
-    }
-}
-
-const UndoSaveState* UndoRedoManager::savedKeyFrameState(const UndoRedoRecordType& type) const
+UndoSaveState* UndoRedoManager::createState(UndoRedoRecordType recordType) const
 {
     UndoSaveState* undoSaveState = new UndoSaveState();
-    undoSaveState->recordType = type;
+    undoSaveState->recordType = recordType;
+    initCommonKeyFrameState(undoSaveState);
 
+    return undoSaveState;
+}
+
+void UndoRedoManager::initCommonKeyFrameState(UndoSaveState* undoSaveState) const
+{
     const Layer* layer = editor()->layers()->currentLayer();
     undoSaveState->layerType = layer->type();
     undoSaveState->layerId = layer->id();
@@ -252,14 +256,13 @@ const UndoSaveState* UndoRedoManager::savedKeyFrameState(const UndoRedoRecordTyp
 
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR) {
         auto selectMan = editor()->select();
-        undoSaveState->selectionState = std::unique_ptr<SelectionSaveState>( new SelectionSaveState(
+        undoSaveState->selectionState = SelectionSaveState(
             selectMan->mySelectionRect(),
             selectMan->myRotation(),
             selectMan->myScaleX(),
             selectMan->myScaleY(),
             selectMan->myTranslation(),
-            selectMan->currentTransformAnchor())
-        );
+            selectMan->currentTransformAnchor());
     }
 
     const int frameIndex = editor()->currentFrame();
@@ -271,8 +274,6 @@ const UndoSaveState* UndoRedoManager::savedKeyFrameState(const UndoRedoRecordTyp
     {
         undoSaveState->keyframe = std::unique_ptr<KeyFrame>(layer->getKeyFrameWhichCovers(frameIndex)->clone());
     }
-
-    return undoSaveState;
 }
 
 QAction* UndoRedoManager::createUndoAction(QObject* parent, const QIcon& icon)

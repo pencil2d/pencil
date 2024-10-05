@@ -83,8 +83,7 @@ public:
                         int undoLayerId,
                         const QString& description,
                         Editor* editor,
-                        QUndoCommand* parent = nullptr
-                                               );
+                        QUndoCommand* parent = nullptr);
     ~KeyFrameAddCommand();
 
     void undo() override;
@@ -97,6 +96,27 @@ private:
 
     int undoPosition = 0;
     int redoPosition = 0;
+};
+
+class MoveKeyFramesCommand : public UndoRedoCommand
+{
+public:
+    MoveKeyFramesCommand(int offset,
+                         QList<int> listOfPositions,
+                         int undoLayerId,
+                         const QString& description,
+                         Editor* editor,
+                         QUndoCommand* parent = nullptr);
+
+    void undo() override;
+    void redo() override;
+
+private:
+    int undoLayerId = 0;
+    int redoLayerId = 0;
+
+    int frameOffset = 0;
+    QList<int> positions;
 };
 
 class BitmapReplaceCommand : public UndoRedoCommand
