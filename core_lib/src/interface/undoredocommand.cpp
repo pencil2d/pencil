@@ -116,9 +116,7 @@ void KeyFrameAddCommand::undo()
     UndoRedoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
-    if (layer == nullptr) {
-        // Until we support layer deletion recovery, we mark the command as
-        // obsolete as soon as it's been
+    if (!layer) {
         return setObsolete(true);
     }
 
@@ -138,6 +136,10 @@ void KeyFrameAddCommand::redo()
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
     Layer* layer = editor()->layers()->findLayerById(redoLayerId);
+    if (!layer) {
+        return setObsolete(true);
+    }
+
     layer->addNewKeyFrameAt(redoPosition);
 
     emit editor()->frameModified(redoPosition);
@@ -169,7 +171,9 @@ void MoveKeyFramesCommand::undo()
 
     Layer* undoLayer = editor()->layers()->findLayerById(undoLayerId);
 
-    if (!undoLayer) { return; }
+    if (!undoLayer) {
+        return setObsolete(true);
+    }
 
     for (int position : qAsConst(positions)) {
         undoLayer->moveKeyFrame(position + frameOffset, -frameOffset);
@@ -186,6 +190,10 @@ void MoveKeyFramesCommand::redo()
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
     Layer* redoLayer = editor()->layers()->findLayerById(redoLayerId);
+
+    if (!redoLayer) {
+        return setObsolete(true);
+    }
 
     for (int position : qAsConst(positions)) {
         redoLayer->moveKeyFrame(position, frameOffset);
@@ -216,9 +224,7 @@ void BitmapReplaceCommand::undo()
     UndoRedoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
-    if (layer == nullptr) {
-        // Until we support layer deletion recovery, we mark the command as
-        // obsolete as soon as it's been
+    if (!layer) {
         return setObsolete(true);
     }
 
@@ -235,6 +241,10 @@ void BitmapReplaceCommand::redo()
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
     Layer* layer = editor()->layers()->findLayerById(redoLayerId);
+    if (!layer) {
+        return setObsolete(true);
+    }
+
     static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&redoBitmap);
 
     editor()->scrubTo(redoBitmap.pos());
@@ -262,9 +272,7 @@ void VectorReplaceCommand::undo()
     UndoRedoCommand::undo();
 
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
-    if (layer == nullptr) {
-        // Until we support layer deletion recovery, we mark the command as
-        // obsolete as soon as it's been
+    if (!layer) {
         return setObsolete(true);
     }
 
@@ -281,6 +289,9 @@ void VectorReplaceCommand::redo()
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
     Layer* layer = editor()->layers()->findLayerById(redoLayerId);
+    if (!layer) {
+        return setObsolete(true);
+    }
 
     static_cast<LayerVector*>(layer)->replaceKeyFrame(&redoVector);
 
