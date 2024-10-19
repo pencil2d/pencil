@@ -200,10 +200,8 @@ void CanvasPainter::paint(const QRect& blitRect)
     mPostLayersPixmapCacheValid = true;
 }
 
-void CanvasPainter::paintOnionSkin(QPainter& painter, const QRect& blitRect)
+void CanvasPainter::paintOnionSkinOnLayer(QPainter& painter, const QRect& blitRect, Layer* layer)
 {
-    Layer* layer = mObject->getLayer(mCurrentLayerIndex);
-
     mOnionSkinSubPainter.paint(painter, layer, mOnionSkinPainterOptions, mFrameNumber, [&] (OnionSkinPaintState state, int onionFrameNumber) {
         if (state == OnionSkinPaintState::PREV) {
             switch (layer->type())
@@ -222,6 +220,21 @@ void CanvasPainter::paintOnionSkin(QPainter& painter, const QRect& blitRect)
             }
         }
     });
+}
+
+void CanvasPainter::paintOnionSkin(QPainter& painter, const QRect& blitRect)
+{
+    if (!mOptions.bOnionSkinMultiLayer || mOptions.eLayerVisibility == LayerVisibility::CURRENTONLY) {
+        Layer* layer = mObject->getLayer(mCurrentLayerIndex);
+        paintOnionSkinOnLayer(painter, blitRect, layer);
+    } else {
+        for (int i = 0; i < mObject->getLayerCount(); i++) {
+            Layer* layer = mObject->getLayer(i);
+            if (layer == nullptr) { continue; }
+
+            paintOnionSkinOnLayer(painter, blitRect, layer);
+        }
+    }
 }
 
 void CanvasPainter::paintBitmapOnionSkinFrame(QPainter& painter, const QRect& blitRect, Layer* layer, int nFrame, bool colorize)

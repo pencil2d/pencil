@@ -50,6 +50,7 @@ private slots:
     void onionPrevFramesNumChange(int);
     void onionNextFramesNumChange(int);
     void onionSkinModeChange(int);
+    void onionSkinMultipleLayersEnabled(bool value);
 
 private:
     void makeConnections();

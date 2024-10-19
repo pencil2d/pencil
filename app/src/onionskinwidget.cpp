@@ -95,6 +95,7 @@ void OnionSkinWidget::makeConnections()
 
     connect(ui->onionSkinMode, &QCheckBox::stateChanged, this, &OnionSkinWidget::onionSkinModeChange);
     connect(ui->onionWhilePlayback, &QCheckBox::stateChanged, this, &OnionSkinWidget::playbackStateChanged);
+    connect(ui->onionSkinMultiLayer, &QCheckBox::stateChanged, this, &OnionSkinWidget::onionSkinMultipleLayersEnabled);
 
     PreferenceManager* prefs = editor()->preference();
     connect(prefs, &PreferenceManager::optionChanged, this, &OnionSkinWidget::updateUI);
@@ -123,8 +124,10 @@ void OnionSkinWidget::updateUI()
     ui->onionSkinMode->setChecked(prefs->getString(SETTING::ONION_TYPE) == "absolute");
 
     QSignalBlocker b6(ui->onionWhilePlayback);
-    ui->onionWhilePlayback->setChecked(prefs->getInt(SETTING::ONION_WHILE_PLAYBACK));
+    ui->onionWhilePlayback->setChecked(prefs->isOn(SETTING::ONION_WHILE_PLAYBACK));
 
+    QSignalBlocker b7(ui->onionSkinMultiLayer);
+    ui->onionSkinMultiLayer->setChecked(prefs->isOn(SETTING::ONION_MUTLIPLE_LAYERS));
 }
 
 void OnionSkinWidget::prevFramesGroupClicked(bool isOn)
@@ -192,4 +195,10 @@ void OnionSkinWidget::playbackStateChanged(int value)
 {
     PreferenceManager* prefs = editor()->preference();
     prefs->set(SETTING::ONION_WHILE_PLAYBACK, value);
+}
+
+void OnionSkinWidget::onionSkinMultipleLayersEnabled(bool value)
+{
+    PreferenceManager* prefs = editor()->preference();
+    prefs->set(SETTING::ONION_MUTLIPLE_LAYERS, value);
 }
