@@ -34,7 +34,7 @@ jobs:
           env:
             ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
         - name: Qt 5 / macOS x86_64
-          os: macos-12
+          os: macos-13
           container:
           qt: 5
         - name: Qt 5 / macOS arm64
@@ -59,7 +59,7 @@ jobs:
           container: { image: "ubuntu:22.04", options: --privileged }
           qt: 6
         - name: Qt 6 / macOS x86_64
-          os: macos-12
+          os: macos-13
           container:
           qt: 6
         - name: Qt 6 / macOS arm64
