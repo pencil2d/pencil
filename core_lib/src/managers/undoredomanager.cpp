@@ -92,15 +92,14 @@ Status UndoRedoManager::save(Object* /*o*/)
     return Status::OK;
 }
 
-void UndoRedoManager::record(UndoSaveState*& undoState, const QString& description)
+void UndoRedoManager::record(const UndoSaveState* undoState, const QString& description)
 {
     if (!undoState) {
         return;
     }
 
-    if (!mNewBackupSystemEnabled) {
-        delete undoState;
-        undoState = nullptr;
+    if (!mNewBackupSystemEnabled && undoState) {
+        clearCurrentState();
         return;
     }
 
@@ -132,8 +131,15 @@ void UndoRedoManager::record(UndoSaveState*& undoState, const QString& descripti
 
 
     // The save state has now been used and should be invalidated so we can't use it again.
-    delete undoState;
-    undoState = nullptr;
+    clearCurrentState();
+}
+
+void UndoRedoManager::clearCurrentState()
+{
+    if (mCurrentState) {
+        delete mCurrentState;
+        mCurrentState = nullptr;
+    }
 }
 
 bool UndoRedoManager::hasUnsavedChanges() const
@@ -238,13 +244,15 @@ void UndoRedoManager::replaceVector(const UndoSaveState& undoState, const QStrin
     pushCommand(element);
 }
 
-UndoSaveState* UndoRedoManager::createState(UndoRedoRecordType recordType) const
+UndoSaveState* UndoRedoManager::createState(UndoRedoRecordType recordType)
 {
-    UndoSaveState* undoSaveState = new UndoSaveState();
-    undoSaveState->recordType = recordType;
-    initCommonKeyFrameState(undoSaveState);
+    clearCurrentState();
 
-    return undoSaveState;
+    mCurrentState = new UndoSaveState();
+    mCurrentState->recordType = recordType;
+    initCommonKeyFrameState(mCurrentState);
+
+    return mCurrentState;
 }
 
 void UndoRedoManager::initCommonKeyFrameState(UndoSaveState* undoSaveState) const

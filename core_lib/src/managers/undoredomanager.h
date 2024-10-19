@@ -128,7 +128,7 @@ public:
     * @param undoState The state to record.
     * @param description The description that will bound to the undo/redo action.
     */
-    void record(UndoSaveState*& undoState, const QString& description);
+    void record(const UndoSaveState* undoState, const QString& description);
 
 
     /** Checks whether there are unsaved changes.
@@ -137,7 +137,7 @@ public:
 
     /** Prepares and returns an save state with common data
      * @return A UndoSaveState struct with common keyframe data */
-    UndoSaveState* createState(UndoRedoRecordType recordType) const;
+    UndoSaveState* createState(UndoRedoRecordType recordType);
 
     QAction* createUndoAction(QObject* parent, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QIcon& icon);
@@ -188,9 +188,12 @@ private:
 
     void pushCommand(QUndoCommand* command);
 
+    void clearCurrentState();
+
     void legacyUndo();
     void legacyRedo();
 
+    UndoSaveState* mCurrentState = nullptr;
     QUndoStack mUndoStack;
 
     // Legacy system
