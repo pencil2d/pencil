@@ -1,0 +1,66 @@
+name: "🐛 Bug Report"
+description: Create a new ticket for a bug.
+title: "🐛 [BUG] - <title>"
+labels: [
+  "Bug"
+]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: "Description"
+      description: A brief overview of your issue
+      placeholder: When I use the paint bucket in a vector layer everything goes red
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+        label: "Expected result"
+        description: Explain how the function should behave in the context you're using it.
+        placeholder: I expected that the paint bucket filled everything red on the vector layer
+    validations:
+        required: true
+  - type: textarea
+    id: actual
+    attributes:
+        label: "Actual result"
+        description: Explain what you actually got and how different it is from your expectations.
+        placeholder: The paint bucket only changed the color of the stroke
+    validations:
+        required: true
+  - type: textarea
+    id: reprod
+    attributes:
+      label: "Steps to reproduce"
+      description: Describe the exact steps to reproduce the problem as best as you can
+      value: |
+        1. Click on the vector layer
+        2. Move the scrubber to an vector keyframe
+        3. Draw a stroke
+        3. Select the bucket tool
+        4. Click to fill the layer.
+        5. ....
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: attachments
+    attributes:
+      label: "Video or Image Reference"
+      description: A screenshot or short video to show your problem.
+      placeholder: Drag and drop an image or video here
+    validations:
+      required: false
+  - type: textarea
+    id: specs
+    attributes:
+      label: "System Information"
+      description: You can find some of the needed information in "About" dialog in the top menu of Pencil2D.
+      value: |
+        - Pencil2D version: <0.7.0, 0.6.6 etc...>
+        - Operation system: <Windows|MacOS|Linux>
+        - Drawing tablet: <Insert tablet name if applicable>
+      render: bash
+    validations:
+      required: true

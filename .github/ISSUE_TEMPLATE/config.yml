@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Pencil2D forums
+    url: https://discuss.pencil2d.org/
+    about: A place to discuss issues, share knowledge, showcase animations or request features.
+  - name: Discord
+    url: https://discord.com/invite/8FxdV2g
+    about: Our primary communication and support channel. Most of the contributors hang around here.
