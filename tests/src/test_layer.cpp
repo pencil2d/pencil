@@ -355,8 +355,8 @@ TEST_CASE("Layer::moveKeyFrame(int position, int offset)")
         layer->moveKeyFrame(2, 1);
 
         // Confirm that both frames are still selected.
-        REQUIRE(layer->getKeyFrameAt(2)->isSelected());
-        REQUIRE(layer->getKeyFrameAt(3)->isSelected());
+        REQUIRE(layer->isFrameSelected(2));
+        REQUIRE(layer->isFrameSelected(3));
 
         // Verify that poiners has been swapped
         REQUIRE(frame1 == layer->getKeyFrameAt(3));
@@ -376,8 +376,8 @@ TEST_CASE("Layer::moveKeyFrame(int position, int offset)")
         layer->moveKeyFrame(2, 1);
 
         // Confirm that both frames are still selected.
-        REQUIRE(layer->getKeyFrameAt(2)->isSelected());
-        REQUIRE_FALSE(layer->getKeyFrameAt(3)->isSelected());
+        REQUIRE(layer->isFrameSelected(2));
+        REQUIRE_FALSE(layer->isFrameSelected(3));
     }
 
     SECTION("move non selected frame across multiple selected frames")
@@ -402,11 +402,11 @@ TEST_CASE("Layer::moveKeyFrame(int position, int offset)")
         layer->moveKeyFrame(8, 1);
 
         // Confirm that both frames are still selected.
-        REQUIRE(layer->getKeyFrameAt(4)->isSelected());
-        REQUIRE(layer->getKeyFrameAt(5)->isSelected());
-        REQUIRE(layer->getKeyFrameAt(6)->isSelected());
-        REQUIRE(layer->getKeyFrameAt(7)->isSelected());
-        REQUIRE_FALSE(layer->getKeyFrameAt(9)->isSelected());
+        REQUIRE(layer->isFrameSelected(4));
+        REQUIRE(layer->isFrameSelected(5));
+        REQUIRE(layer->isFrameSelected(6));
+        REQUIRE(layer->isFrameSelected(7));
+        REQUIRE_FALSE(layer->isFrameSelected(9));
     }
 
     SECTION("move selected frame across multiple not selected frames")
@@ -433,11 +433,11 @@ TEST_CASE("Layer::moveKeyFrame(int position, int offset)")
         layer->moveKeyFrame(4, -1);
 
         // Confirm that both frames are still selected.
-        REQUIRE(layer->getKeyFrameAt(3)->isSelected());
-        REQUIRE_FALSE(layer->getKeyFrameAt(5)->isSelected());
-        REQUIRE_FALSE(layer->getKeyFrameAt(6)->isSelected());
-        REQUIRE_FALSE(layer->getKeyFrameAt(7)->isSelected());
-        REQUIRE_FALSE(layer->getKeyFrameAt(8)->isSelected());
+        REQUIRE(layer->isFrameSelected(3));
+        REQUIRE_FALSE(layer->isFrameSelected(5));
+        REQUIRE_FALSE(layer->isFrameSelected(6));
+        REQUIRE_FALSE(layer->isFrameSelected(7));
+        REQUIRE_FALSE(layer->isFrameSelected(8));
     }
 
     delete obj;
