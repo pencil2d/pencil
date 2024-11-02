@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-407</y>
-        <width>314</width>
-        <height>932</height>
+        <y>0</y>
+        <width>363</width>
+        <height>1239</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="lay">
@@ -88,6 +88,60 @@
           <string comment="GroupBox title in Preference">Appearance</string>
          </property>
          <layout class="QVBoxLayout" name="appearanceLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="styleLabel">
+              <property name="text">
+               <string>Window style: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="styleCombo"/>
+            </item>
+            <item>
+             <spacer name="styleSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLabel" name="paletteLabel">
+              <property name="text">
+               <string>Color palette: </string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="paletteCombo"/>
+            </item>
+            <item>
+             <spacer name="paletteSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
           <item>
            <widget class="QCheckBox" name="shadowsBox">
             <property name="text">
@@ -434,7 +488,7 @@
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0">
+         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0">
           <property name="leftMargin">
            <number>6</number>
           </property>

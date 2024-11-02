@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QIcon>
 #include <QLibraryInfo>
 #include <QSettings>
+#include <QStyle>
 #include <QTranslator>
 #include <QLockFile>
 #include <QStandardPaths>
@@ -32,9 +33,11 @@ GNU General Public License for more details.
 
 #include "commandlineexporter.h"
 #include "commandlineparser.h"
+#include "editor.h"
 #include "mainwindow2.h"
 #include "pencildef.h"
 #include "platformhandler.h"
+#include "theming.h"
 
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
@@ -42,7 +45,8 @@ GNU General Public License for more details.
 #endif
 
 Pencil2D::Pencil2D(int& argc, char** argv) :
-    QApplication(argc, argv)
+    QApplication(argc, argv),
+    DEFAULT_STYLE(style()->objectName())
 {
     // Set organization and application name
     setOrganizationName("Pencil2D");
@@ -134,6 +138,40 @@ bool Pencil2D::event(QEvent* event)
     return QApplication::event(event);
 }
 
+void Pencil2D::setStyleId(const QString styleId)
+{
+    QPalette oldPalette = palette();
+    QStyle* style = Theming::getStyle(styleId);
+    if (style != nullptr)
+    {
+        setStyle(style);
+    }
+    else
+    {
+        setStyle(DEFAULT_STYLE);
+    }
+
+    // setStyle is supposed to overwrite the palette, so it must be reapplied
+    setPalette(oldPalette);
+
+    mainWindow->update();
+}
+
+void Pencil2D::setPaletteId(const QString paletteId)
+{
+    std::unique_ptr<QPalette> palette(Theming::getPalette(paletteId));
+    if (palette != nullptr)
+    {
+        setPalette(*palette);
+    }
+    else
+    {
+        setPalette(this->style()->standardPalette());
+    }
+
+    mainWindow->update();
+}
+
 void Pencil2D::installTranslators()
 {
     QSettings setting(PENCIL2D, PENCIL2D);
@@ -171,7 +209,24 @@ void Pencil2D::prepareGuiStartup(const QString& inputPath)
     PlatformHandler::configurePlatformSpecificSettings();
 
     mainWindow.reset(new MainWindow2);
+    PreferenceManager* prefs = mainWindow->mEditor->preference();
+    setStyleId(prefs->getString(SETTING::STYLE_ID));
+    setPaletteId(prefs->getString(SETTING::PALETTE_ID));
+
     connect(this, &Pencil2D::openFileRequested, mainWindow.get(), &MainWindow2::openFile);
+    connect(prefs, &PreferenceManager::optionChanged, [=](SETTING setting) {
+        switch (setting)
+        {
+        case SETTING::STYLE_ID:
+            setStyleId(prefs->getString(SETTING::STYLE_ID));
+            break;
+        case SETTING::PALETTE_ID:
+            setPaletteId(prefs->getString(SETTING::PALETTE_ID));
+            break;
+        default:
+            break;
+        }
+    });
     mainWindow->show();
 
     mainWindow->openStartupFile(inputPath);

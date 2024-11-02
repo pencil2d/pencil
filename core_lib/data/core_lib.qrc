@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/kb.ini</file>
+        <file>theme_palettes/Darker.conf</file>
+        <file>theme_palettes/Ia_Ora.conf</file>
+        <file>theme_palettes/Waves.conf</file>
+        <file>theme_palettes/Rose_Pine.conf</file>
     </qresource>
 </RCC>
