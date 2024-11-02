@@ -24,6 +24,7 @@ GNU General Public License for more details.
 
 #include "pencildef.h"
 #include "preferencemanager.h"
+#include "theming.h"
 
 #include "ui_generalpage.h"
 
@@ -32,6 +33,17 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     ui->setupUi(this);
 
     QSettings settings(PENCIL2D, PENCIL2D);
+
+    ui->styleCombo->addItem("System Default", "");
+    ui->styleCombo->addItems(Theming::availableStyles());
+
+    ui->paletteCombo->addItem("Default", "");
+    for (const QString& palette : Theming::availablePalettes())
+    {
+        QString paletteName(palette);
+        paletteName.replace('_', ' ');
+        ui->paletteCombo->addItem(paletteName, palette);
+    }
 
     QString languages [][3]
         {
@@ -109,6 +121,8 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->languageCombo, curIndexChanged, this, &GeneralPage::languageChanged);
     connect(ui->windowOpacityLevel, &QSlider::valueChanged, this, &GeneralPage::windowOpacityChange);
     connect(ui->backgroundButtons, buttonClicked, this, &GeneralPage::backgroundChanged);
+    connect(ui->styleCombo, curIndexChanged, this, &GeneralPage::styleChanged);
+    connect(ui->paletteCombo, curIndexChanged, this, &GeneralPage::paletteChanged);
     connect(ui->shadowsBox, &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged);
     connect(ui->toolCursorsBox, &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged);
     connect(ui->antialiasingBox, &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged);
@@ -150,6 +164,12 @@ void GeneralPage::updateValues()
     ui->curveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
     QSignalBlocker b2(ui->windowOpacityLevel);
     ui->windowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
+    QSignalBlocker b19(ui->styleCombo);
+    int styleIndex = ui->styleCombo->findText(mManager->getString(SETTING::STYLE_ID), Qt::MatchFixedString);
+    ui->styleCombo->setCurrentIndex(qMax(0, styleIndex));
+    QSignalBlocker b20(ui->styleCombo);
+    int paletteIndex = ui->paletteCombo->findText(mManager->getString(SETTING::PALETTE_ID), Qt::MatchFixedString);
+    ui->paletteCombo->setCurrentIndex(qMax(0, paletteIndex));
     QSignalBlocker b3(ui->shadowsBox);
     ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
     QSignalBlocker b4(ui->toolCursorsBox);
@@ -247,6 +267,16 @@ void GeneralPage::curveSmoothingChanged(int value)
 void GeneralPage::highResCheckboxStateChanged(int b)
 {
     mManager->set(SETTING::HIGH_RESOLUTION, b != Qt::Unchecked);
+}
+
+void GeneralPage::styleChanged(int index)
+{
+    mManager->set(SETTING::STYLE_ID, ui->styleCombo->itemText(index));
+}
+
+void GeneralPage::paletteChanged(int index)
+{
+    mManager->set(SETTING::PALETTE_ID, ui->paletteCombo->itemData(index).toString());
 }
 
 void GeneralPage::shadowsCheckboxStateChanged(int b)

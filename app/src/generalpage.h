@@ -48,6 +48,8 @@ signals:
 
 private slots:
     void languageChanged(int i);
+    void styleChanged(int index);
+    void paletteChanged(int index);
     void shadowsCheckboxStateChanged(int b);
     void antiAliasCheckboxStateChanged(int b);
     void toolCursorsCheckboxStateChanged(int b);

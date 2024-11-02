@@ -72,6 +72,8 @@ public:
 
     bool event(QEvent* event) override;
 
+    void setStyleId(const QString styleId);
+    void setPaletteId(const QString paletteId);
 signals:
     /**
      * Emitted when the operating system requests that a file should be opened.
@@ -92,6 +94,8 @@ private:
      * @param inputPath Path of a file to be opened on startup.
      */
     void prepareGuiStartup(const QString &inputPath);
+
+    const QString DEFAULT_STYLE;
 
     std::unique_ptr<MainWindow2> mainWindow;
 
