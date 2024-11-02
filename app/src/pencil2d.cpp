@@ -138,27 +138,19 @@ bool Pencil2D::event(QEvent* event)
     return QApplication::event(event);
 }
 
-void Pencil2D::setStyleId(const QString styleId)
+void Pencil2D::setTheme(const QString styleId, const QString paletteId)
 {
-    QPalette oldPalette = palette();
-    QStyle* style = Theming::getStyle(styleId);
-    if (style != nullptr)
+    QStyle* newStyle = Theming::getStyle(styleId);
+    if (newStyle != nullptr)
     {
-        setStyle(style);
+        setStyle(newStyle);
     }
     else
     {
         setStyle(DEFAULT_STYLE);
     }
 
-    // setStyle is supposed to overwrite the palette, so it must be reapplied
-    setPalette(oldPalette);
-
-    mainWindow->update();
-}
-
-void Pencil2D::setPaletteId(const QString paletteId)
-{
+    // Palette should be set after style is set
     std::unique_ptr<QPalette> palette(Theming::getPalette(paletteId));
     if (palette != nullptr)
     {
@@ -166,7 +158,7 @@ void Pencil2D::setPaletteId(const QString paletteId)
     }
     else
     {
-        setPalette(this->style()->standardPalette());
+        setPalette(style()->standardPalette());
     }
 
     mainWindow->update();
@@ -210,18 +202,15 @@ void Pencil2D::prepareGuiStartup(const QString& inputPath)
 
     mainWindow.reset(new MainWindow2);
     PreferenceManager* prefs = mainWindow->mEditor->preference();
-    setStyleId(prefs->getString(SETTING::STYLE_ID));
-    setPaletteId(prefs->getString(SETTING::PALETTE_ID));
+    setTheme(prefs->getString(SETTING::STYLE_ID), prefs->getString(SETTING::PALETTE_ID));
 
     connect(this, &Pencil2D::openFileRequested, mainWindow.get(), &MainWindow2::openFile);
     connect(prefs, &PreferenceManager::optionChanged, [=](SETTING setting) {
         switch (setting)
         {
         case SETTING::STYLE_ID:
-            setStyleId(prefs->getString(SETTING::STYLE_ID));
-            break;
         case SETTING::PALETTE_ID:
-            setPaletteId(prefs->getString(SETTING::PALETTE_ID));
+            setTheme(prefs->getString(SETTING::STYLE_ID), prefs->getString(SETTING::PALETTE_ID));
             break;
         default:
             break;

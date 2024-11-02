@@ -168,7 +168,7 @@ void GeneralPage::updateValues()
     int styleIndex = ui->styleCombo->findText(mManager->getString(SETTING::STYLE_ID), Qt::MatchFixedString);
     ui->styleCombo->setCurrentIndex(qMax(0, styleIndex));
     QSignalBlocker b20(ui->styleCombo);
-    int paletteIndex = ui->paletteCombo->findText(mManager->getString(SETTING::PALETTE_ID), Qt::MatchFixedString);
+    int paletteIndex = ui->paletteCombo->findData(mManager->getString(SETTING::PALETTE_ID), Qt::UserRole, Qt::MatchFixedString);
     ui->paletteCombo->setCurrentIndex(qMax(0, paletteIndex));
     QSignalBlocker b3(ui->shadowsBox);
     ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
