@@ -32,7 +32,7 @@ QStringList Theming::availableStyles()
 QStringList Theming::availablePalettes()
 {
     QStringList palettes;
-    for (const QString& palette :  QDir(":/theme_palettes").entryList({"*.conf"}, QDir::Files))
+    for (const QString& palette : QDir(":/theme_palettes").entryList({"*.conf"}, QDir::Files))
     {
         palettes.append(palette.chopped(5));
     }
@@ -89,13 +89,10 @@ QPalette* Theming::loadPaletteConf(const QString& filename)
     for (const auto& colorGroup : colorGroups)
     {
         QStringList colors = conf.value(colorGroup.second).toStringList();
-        // 20 is QPalette::NColorRoles prior to Qt 5.12, and is the minimum number of colors required
-        if (colors.count() < 20)
-        {
-            return nullptr;
-        }
+        // 20 is QPalette::NColorRoles prior to Qt 5.12, and is the minimum number of colors required for this format.
+        if (colors.count() < 20) return nullptr;
 
-        for (int i = 0; i < colors.count(); i++)
+        for (int i = 0; i < qMin(colors.count(), static_cast<int>(QPalette::NColorRoles)); i++)
         {
             palette.setColor(colorGroup.first, QPalette::ColorRole(i), colors[i]);
         }

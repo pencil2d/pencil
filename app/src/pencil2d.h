@@ -72,8 +72,7 @@ public:
 
     bool event(QEvent* event) override;
 
-    void setStyleId(const QString styleId);
-    void setPaletteId(const QString paletteId);
+    void setTheme(const QString styleId, const QString paletteId);
 signals:
     /**
      * Emitted when the operating system requests that a file should be opened.
