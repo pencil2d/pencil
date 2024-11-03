@@ -195,22 +195,15 @@ bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
         return false;
     }
 
-    qDebug() << "adding new keyframe";
-
     pKeyFrame->setPos(position);
     mKeyFrames.emplace(position, pKeyFrame);
     markFrameAsDirty(position);
 
     pKeyFrame->setupEventCallback([this](KeyFrameEvent event, KeyFrame* keyframe) {
-
-        // switch (event) {
         if (mLayerEventCallback) {
             mLayerEventCallback(event, keyframe, this);
         }
-        // }
     });
-
-    pKeyFrame->eventCallback(KeyFrameEvent::CREATE, pKeyFrame);
     return true;
 }
 
@@ -239,7 +232,6 @@ bool Layer::removeKeyFrame(int position)
             removeFromSelectionList(frame->pos());
         }
 
-        frame->eventCallback(KeyFrameEvent::DESTROY, frame);
         mKeyFrames.erase(frame->pos());
         markFrameAsDirty(frame->pos());
         delete frame;

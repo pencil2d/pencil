@@ -67,14 +67,16 @@ public:
 
     virtual quint64 memoryUsage() { return 0; }
 
-    KeyFrameEventCallback eventCallback;
-
 private:
     int mFrame = -1;
     int mLength = 1;
     bool mIsModified = true;
     bool mIsSelected = false;
     QString mAttachedFileName;
+
+    // Contrary to KeyFrameEventListener, this callback is meant to be
+    // setup and triggered for all keyframe types
+    KeyFrameEventCallback eventCallback;
 
     std::vector<KeyFrameEventListener*> mEventListeners;
 };

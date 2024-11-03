@@ -38,6 +38,9 @@ KeyFrame::~KeyFrame()
     {
         listener->onKeyFrameDestroy(this);
     }
+    if (eventCallback) {
+        eventCallback(KeyFrameEvent::DESTROY, this);
+    }
 }
 
 KeyFrame& KeyFrame::operator=(const KeyFrame& k2)
@@ -76,6 +79,7 @@ void KeyFrame::setModified(bool b)
 void KeyFrame::setupEventCallback(KeyFrameEventCallback eventCallback)
 {
     this->eventCallback = eventCallback;
+    eventCallback(KeyFrameEvent::CREATE, this);
 }
 
 void KeyFrame::addEventListener(KeyFrameEventListener* listener)

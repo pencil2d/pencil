@@ -73,7 +73,7 @@ public:
     QDomElement createBaseDomElement(QDomDocument& doc) const;
     void loadBaseDomElement(const QDomElement& elem);
 
-    void setLayerEventCallback(LayerEventCallback eventCallback) { mLayerEventCallback = eventCallback; }
+    void setupLayerEventCallback(LayerEventCallback eventCallback) { mLayerEventCallback = eventCallback; }
 
     // KeyFrame interface
     int getMaxKeyFramePosition() const;
@@ -182,10 +182,6 @@ protected:
     bool loadKey(KeyFrame*);
 
 private:
-
-    LayerEventCallback mLayerEventCallback;
-    void keyFrameCreated(KeyFrame*);
-
     void removeFromSelectionList(int position);
 
     LAYER_TYPE meType = UNDEFINED;
@@ -193,6 +189,7 @@ private:
     bool       mVisible = true;
     QString    mName;
 
+    LayerEventCallback mLayerEventCallback;
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 
     // We need to keep track of selected frames ordered by last selected

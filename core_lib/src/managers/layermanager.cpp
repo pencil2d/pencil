@@ -231,7 +231,7 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 {
     LayerBitmap* layer = object()->addNewBitmapLayer();
 
-    layer->setLayerEventCallback([this] (KeyFrameEvent event, KeyFrame* keyframe, Layer* layer) {
+    layer->setupLayerEventCallback([this] (KeyFrameEvent event, KeyFrame* keyframe, Layer* layer) {
         emit layerEventFired(layer, event, keyframe);
     });
     layer->addNewKeyFrameAt(1);
@@ -246,6 +246,10 @@ LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 {
     LayerVector* layer = object()->addNewVectorLayer();
+    layer->setupLayerEventCallback([this] (KeyFrameEvent event, KeyFrame* keyframe, Layer* layer) {
+        emit layerEventFired(layer, event, keyframe);
+    });
+
     layer->setName(strLayerName);
     layer->addNewKeyFrameAt(1);
 
@@ -258,6 +262,9 @@ LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
 {
     LayerCamera* layer = object()->addNewCameraLayer();
+    layer->setupLayerEventCallback([this] (KeyFrameEvent event, KeyFrame* keyframe, Layer* layer) {
+        emit layerEventFired(layer, event, keyframe);
+    });
     layer->setName(strLayerName);
     layer->addNewKeyFrameAt(1);
 
@@ -270,6 +277,9 @@ LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
 LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
 {
     LayerSound* layer = object()->addNewSoundLayer();
+    layer->setupLayerEventCallback([this] (KeyFrameEvent event, KeyFrame* keyframe, Layer* layer) {
+        emit layerEventFired(layer, event, keyframe);
+    });
     layer->setName(strLayerName);
     // No default keyFrame at position 1 for Sound layer.
 
