@@ -123,6 +123,28 @@
              <widget class="QComboBox" name="paletteCombo"/>
             </item>
             <item>
+             <widget class="QPushButton" name="addPaletteButton">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../data/app.qrc">
+                <normaloff>:/icons/themes/playful/misc/add-color.svg</normaloff>:/icons/themes/playful/misc/add-color.svg</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="removePaletteButton">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../data/app.qrc">
+                <normaloff>:/icons/themes/playful/misc/remove-color.svg</normaloff>:/icons/themes/playful/misc/remove-color.svg</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
              <spacer name="paletteSpacer">
               <property name="orientation">
                <enum>Qt::Horizontal</enum>
@@ -629,6 +651,8 @@
   <tabstop>windowOpacityLevel</tabstop>
   <tabstop>styleCombo</tabstop>
   <tabstop>paletteCombo</tabstop>
+  <tabstop>addPaletteButton</tabstop>
+  <tabstop>removePaletteButton</tabstop>
   <tabstop>shadowsBox</tabstop>
   <tabstop>toolCursorsBox</tabstop>
   <tabstop>canvasCursorBox</tabstop>
@@ -655,7 +679,9 @@
   <tabstop>undoRedoGroupApplyButton</tabstop>
   <tabstop>undoRedoGroupCancelButton</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../data/app.qrc"/>
+ </resources>
  <connections/>
  <buttongroups>
   <buttongroup name="backgroundButtons"/>

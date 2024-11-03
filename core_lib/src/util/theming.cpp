@@ -3,8 +3,11 @@
 #include <QDir>
 #include <QPalette>
 #include <QSettings>
+#include <QStandardPaths>
 #include <QStyleFactory>
 #include <QStyle>
+
+#include "pencilerror.h"
 
 /**
  * Get a list of all valid keys that can be passed to Theming::getStyle().
@@ -32,10 +35,19 @@ QStringList Theming::availableStyles()
 QStringList Theming::availablePalettes()
 {
     QStringList palettes;
+
+    // Built-in palettes
     for (const QString& palette : QDir(":/theme_palettes").entryList({"*.conf"}, QDir::Files))
     {
         palettes.append(palette.chopped(5));
     }
+
+    // User palettes
+    for (const QString& palette : userPaletteDir().entryList({"*.conf"}, QDir::Files))
+    {
+        palettes.append(palette.chopped(5));
+    }
+
     return palettes;
 }
 
@@ -63,7 +75,50 @@ QStyle* Theming::getStyle(const QString& key)
  */
 QPalette* Theming::getPalette(const QString& key)
 {
-    return loadPaletteConf(QString(":/theme_palettes/%1.conf").arg(key));
+    QPalette* builtinPalette = loadPaletteConf(QString(":/theme_palettes/%1.conf").arg(key));
+    if (builtinPalette != nullptr) return builtinPalette;
+
+    return loadPaletteConf(userPaletteDir().filePath(QString("%1.conf").arg(key)));
+}
+
+/**
+ * Saves a palette to the user's palette directory.
+ *
+ * @param filepath The path to a .conf palette file to load.
+ * @return A Status indicating if the palette was added successfully.
+ */
+Status Theming::addPalette(const QString &filePath)
+{
+    if (!filePath.endsWith(".conf")) return Status::INVALID_ARGUMENT;
+    QFileInfo fileInfo(filePath);
+    if (fileInfo.baseName().isEmpty()) return Status::INVALID_ARGUMENT;
+    if (!fileInfo.isFile()) return Status::FILE_NOT_FOUND;
+    if (!fileInfo.isReadable()) return Status::ERROR_FILE_CANNOT_OPEN;
+
+    QFile inFile(filePath);
+    if (inFile.copy(userPaletteDir().filePath(fileInfo.fileName())))
+    {
+        return Status::OK;
+    }
+    return Status::FAIL;
+}
+
+/**
+ * Removes a palette from the user's palette directory.
+ *
+ * The .conf palette file will be deleted by this function and cannot be undone.
+ *
+ * @param key The palette id of the palette to remove.
+ * @return A Status indicated if the palette was removed successfully.
+ */
+Status Theming::removePalette(const QString& key)
+{
+    QFile paletteFile(userPaletteDir().filePath(QString("%1.conf").arg(key)));
+    if (paletteFile.remove())
+    {
+        return Status::OK;
+    }
+    return Status::FAIL;
 }
 
 /**
@@ -99,4 +154,12 @@ QPalette* Theming::loadPaletteConf(const QString& filename)
     }
 
     return new QPalette(palette);
+}
+
+const QDir Theming::userPaletteDir()
+{
+    QDir dir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    dir.cd("theme_palettes");
+
+    return dir;
 }

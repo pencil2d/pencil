@@ -74,7 +74,7 @@ void FileDialog::setLastSavePaths(const QString& filePath)
     QFileInfo filePathInfo(filePath);
     QDir projectPath = filePathInfo.absoluteDir();
     QString baseName = filePathInfo.baseName();
-    QList<FileType> fileTypes = { FileType::IMAGE, FileType::IMAGE_SEQUENCE, FileType::GIF, FileType::MOVIE, FileType::SOUND, FileType::PALETTE };
+    QList<FileType> fileTypes = { FileType::IMAGE, FileType::IMAGE_SEQUENCE, FileType::GIF, FileType::MOVIE, FileType::SOUND, FileType::PALETTE, FileType::THEME_PALETTE };
     for (FileType& fileType : fileTypes)
     {
         setLastSavePath(fileType, projectPath.absoluteFilePath(defaultFileName(fileType, baseName)));
@@ -123,6 +123,7 @@ QString FileDialog::getDefaultExtensionByFileType(const FileType fileType)
     case FileType::PALETTE: return PFF_DEFAULT_PALETTE_EXT;
     case FileType::MOVIE: return PFF_DEFAULT_MOVIE_EXT;
     case FileType::SOUND: return PFF_DEFAULT_SOUND_EXT;
+    case FileType::THEME_PALETTE: return PFF_DEFAULT_THEME_PALETTE_EXT;
     default:
         Q_UNREACHABLE();
     }
@@ -172,6 +173,7 @@ QString FileDialog::openDialogCaption(FileType fileType)
     case FileType::MOVIE: return tr("Import movie");
     case FileType::SOUND: return tr("Import sound");
     case FileType::PALETTE: return tr("Open palette");
+    case FileType::THEME_PALETTE: return tr("Import color palette");
     }
     return "";
 }
@@ -188,6 +190,7 @@ QString FileDialog::saveDialogCaption(FileType fileType)
     case FileType::MOVIE: return tr("Export movie");
     case FileType::SOUND: return "";
     case FileType::PALETTE: return tr("Export palette");
+    case FileType::THEME_PALETTE: return "";
     }
     return "";
 }
@@ -204,6 +207,7 @@ QString FileDialog::openFileFilters(FileType fileType)
     case FileType::MOVIE: return PFF_MOVIE_EXT;
     case FileType::SOUND: return PFF_SOUND_EXT_FILTER;
     case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
+    case FileType::THEME_PALETTE: return PFF_THEME_PALETTE_EXT_FILTER;
     }
     return "";
 }
@@ -220,6 +224,7 @@ QString FileDialog::saveFileFilters(FileType fileType)
     case FileType::MOVIE: return "MP4 (*.mp4);; AVI (*.avi);; WebM (*.webm);; APNG (*.apng)";
     case FileType::SOUND: return "";
     case FileType::PALETTE: return PFF_PALETTE_EXT_FILTER;
+    case FileType::THEME_PALETTE: return "";
     }
     return "";
 }
@@ -297,6 +302,7 @@ QString FileDialog::toSettingKey(FileType fileType)
     case FileType::MOVIE: return "Movie";
     case FileType::SOUND: return "Sound";
     case FileType::PALETTE: return "Palette";
+    case FileType::THEME_PALETTE: return "ThemePalette";
     }
     return "";
 }

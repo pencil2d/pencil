@@ -147,7 +147,7 @@ void Pencil2D::setTheme(const QString styleId, const QString paletteId)
     }
     else
     {
-        setStyle(DEFAULT_STYLE);
+        newStyle = setStyle(DEFAULT_STYLE);
     }
 
     // Palette should be set after style is set
@@ -158,7 +158,7 @@ void Pencil2D::setTheme(const QString styleId, const QString paletteId)
     }
     else
     {
-        setPalette(style()->standardPalette());
+        setPalette(newStyle->standardPalette());
     }
 
     mainWindow->update();
