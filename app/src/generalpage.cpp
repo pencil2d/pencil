@@ -18,10 +18,12 @@ GNU General Public License for more details.
 #include "generalpage.h"
 
 #include <memory>
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QSettings>
 #include <QTranslator>
 
+#include "filedialog.h"
 #include "pencildef.h"
 #include "preferencemanager.h"
 #include "theming.h"
@@ -37,13 +39,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     ui->styleCombo->addItem("System Default", "");
     ui->styleCombo->addItems(Theming::availableStyles());
 
-    ui->paletteCombo->addItem("Default", "");
-    for (const QString& palette : Theming::availablePalettes())
-    {
-        QString paletteName(palette);
-        paletteName.replace('_', ' ');
-        ui->paletteCombo->addItem(paletteName, palette);
-    }
+    populatePaletteCombo(false);
 
     QString languages [][3]
         {
@@ -123,6 +119,8 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->backgroundButtons, buttonClicked, this, &GeneralPage::backgroundChanged);
     connect(ui->styleCombo, curIndexChanged, this, &GeneralPage::styleChanged);
     connect(ui->paletteCombo, curIndexChanged, this, &GeneralPage::paletteChanged);
+    connect(ui->addPaletteButton, &QPushButton::pressed, this, &GeneralPage::addPalette);
+    connect(ui->removePaletteButton, &QPushButton::pressed, this, &GeneralPage::removePalette);
     connect(ui->shadowsBox, &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged);
     connect(ui->toolCursorsBox, &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged);
     connect(ui->antialiasingBox, &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged);
@@ -277,6 +275,30 @@ void GeneralPage::styleChanged(int index)
 void GeneralPage::paletteChanged(int index)
 {
     mManager->set(SETTING::PALETTE_ID, ui->paletteCombo->itemData(index).toString());
+}
+
+void GeneralPage::addPalette()
+{
+    QString filePath = FileDialog::getOpenFileName(this, FileType::THEME_PALETTE);
+    if (!filePath.isEmpty())
+    {
+        QFileInfo fileInfo(filePath);
+        if (Theming::addPalette(filePath).ok())
+        {
+            mManager->set(SETTING::PALETTE_ID, fileInfo.baseName());
+            populatePaletteCombo();
+        }
+    }
+}
+
+void GeneralPage::removePalette()
+{
+    QString key = ui->paletteCombo->currentData().toString();
+    if (Theming::removePalette(key).ok())
+    {
+        ui->paletteCombo->removeItem(ui->paletteCombo->currentIndex());
+        ui->paletteCombo->setCurrentIndex(0);
+    }
 }
 
 void GeneralPage::shadowsCheckboxStateChanged(int b)
@@ -437,4 +459,25 @@ void GeneralPage::undoRedoCancelButtonPressed()
     ui->newUndoRedoCheckBox->setCheckState(mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON) ? Qt::Checked : Qt::Unchecked);
     ui->undoRedoGroupCancelButton->setDisabled(true);
     ui->undoRedoGroupApplyButton->setDisabled(true);
+}
+
+void GeneralPage::populatePaletteCombo(bool usePreference)
+{
+    QSignalBlocker b(ui->paletteCombo);
+
+    ui->paletteCombo->clear();
+    ui->paletteCombo->addItem("Default", "");
+    for (const QString& palette : Theming::availablePalettes())
+    {
+        QString paletteName(palette);
+        paletteName.replace('_', ' ');
+        ui->paletteCombo->addItem(paletteName, palette);
+    }
+
+    if (usePreference)
+    {
+        QString paletteKey = mManager->getString(SETTING::PALETTE_ID);
+        int paletteIndex = ui->paletteCombo->findData(paletteKey, Qt::UserRole, Qt::MatchFixedString);
+        ui->paletteCombo->setCurrentIndex(qMax(0, paletteIndex));
+    }
 }
