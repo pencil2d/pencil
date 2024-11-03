@@ -351,12 +351,6 @@ void Editor::pasteToFrames()
         // TODO: undo/redo implementation
         KeyFrame* keyClone = it->second->clone();
         currentLayer->addKeyFrame(newPosition, keyClone);
-        if (currentLayer->type() == Layer::SOUND)
-        {
-            auto soundClip = static_cast<SoundClip*>(keyClone);
-            sound()->loadSound(soundClip, soundClip->fileName());
-        }
-
         currentLayer->setFrameSelected(keyClone->pos(), true);
     }
 }
