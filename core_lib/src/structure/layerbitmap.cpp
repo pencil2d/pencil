@@ -23,8 +23,6 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 #include "util/util.h"
 
-#include "selectionbitmapeditor.h"
-
 LayerBitmap::LayerBitmap(int id) : Layer(id, Layer::BITMAP)
 {
     setName(tr("Bitmap Layer"));

@@ -230,6 +230,7 @@ public: //slots
     void resetAutoSaveCounter();
 
 private:
+    void setupKeyframeDependencies(Layer* layer, KeyFrame* keyframe);
     void onLayerEvent(Layer* layer, KeyFrameEvent event, KeyFrame* keyframe);
 
     Status importBitmapImage(const QString&);

@@ -128,16 +128,19 @@ void Editor::makeConnections()
 
 void Editor::onLayerEvent(Layer* layer, KeyFrameEvent event, KeyFrame* keyframe)
 {
+    if (event == KeyFrameEvent::CREATE) {
+        setupKeyframeDependencies(layer, keyframe);
+    }
+
+    // Currently all frame events will trigger a frame modified event, if this is excessive, we can
+    // always move in into a MODIFY block only.
+    emit frameModified(keyframe->pos());
+}
+
+void Editor::setupKeyframeDependencies(Layer* layer, KeyFrame* keyframe)
+{
     if (layer->type() == Layer::SOUND) {
-        if (event == KeyFrameEvent::CREATE) {
-            sound()->processSound(static_cast<SoundClip*>(keyframe));
-        }
-    } else if (layer->type() == Layer::BITMAP) {
-        qDebug() << "OnKeyFrameevent: Bitmap";
-        if (event == KeyFrameEvent::CREATE) {
-            select()->createEditor(static_cast<BitmapImage*>(keyframe));
-            qDebug() << "onKeyFrameEvent: creating bitmap editor";
-        }
+        sound()->processSound(static_cast<SoundClip*>(keyframe));
     }
 }
 
@@ -416,8 +419,6 @@ void Editor::setModified(int layerNumber, int frameNumber)
 
     layer->setModified(frameNumber, true);
     undoRedo()->rememberLastModifiedFrame(layerNumber, frameNumber);
-
-    emit frameModified(frameNumber);
 }
 
 void Editor::clipboardChanged()
