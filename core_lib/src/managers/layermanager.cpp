@@ -25,6 +25,8 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 
+#include "pencildef.h"
+
 #include <QDebug>
 
 LayerManager::LayerManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
@@ -40,11 +42,16 @@ bool LayerManager::init()
     return true;
 }
 
-Status LayerManager::load(Object*)
+Status LayerManager::load(Object* object)
 {
     mLastCameraLayerIdx = 0;
     // Do not emit layerCountChanged here because the editor has not updated to this object yet
     // Leave that to the caller of this function
+
+    if (object->getLayerCount() == 0) {
+        // default layers
+        createDefaultLayers();
+    }
     return Status::OK;
 }
 
@@ -184,30 +191,38 @@ QString LayerManager::nameSuggestLayer(const QString& name)
     return newName;
 }
 
+void LayerManager::createDefaultLayers()
+{
+    // default layers
+    createCameraLayer(tr("Camera Layer"));
+    createBitmapLayer(tr("Bitmap Layer"));
+
+    // Layers are counted bottom up
+    // 0 - Camera Layer
+    // 1 - Bitmap Layer
+    object()->data()->setCurrentLayer(1);
+}
+
 Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayerName)
 {
     Layer* layer = nullptr;
     switch (type) {
     case Layer::BITMAP:
-        layer = object()->addNewBitmapLayer();
+        layer = createBitmapLayer(strLayerName);
         break;
     case Layer::VECTOR:
-        layer = object()->addNewVectorLayer();
+        layer = createVectorLayer(strLayerName);
         break;
     case Layer::SOUND:
-        layer = object()->addNewSoundLayer();
+        layer = createSoundLayer(strLayerName);
         break;
     case Layer::CAMERA:
-        layer = object()->addNewCameraLayer();
+        layer = createCameraLayer(strLayerName);
         break;
     default:
         Q_ASSERT(true);
         return nullptr;
     }
-
-    layer->setName(strLayerName);
-    emit layerCountChanged(count());
-    setCurrentLayer(getLastLayerIndex());
 
     return layer;
 }
@@ -215,6 +230,11 @@ Layer* LayerManager::createLayer(Layer::LAYER_TYPE type, const QString& strLayer
 LayerBitmap* LayerManager::createBitmapLayer(const QString& strLayerName)
 {
     LayerBitmap* layer = object()->addNewBitmapLayer();
+
+    layer->setLayerEventCallback([this] (KeyFrameEvent event, KeyFrame* keyframe, Layer* layer) {
+        emit layerEventFired(layer, event, keyframe);
+    });
+    layer->addNewKeyFrameAt(1);
     layer->setName(strLayerName);
 
     emit layerCountChanged(count());
@@ -227,6 +247,7 @@ LayerVector* LayerManager::createVectorLayer(const QString& strLayerName)
 {
     LayerVector* layer = object()->addNewVectorLayer();
     layer->setName(strLayerName);
+    layer->addNewKeyFrameAt(1);
 
     emit layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
@@ -238,6 +259,7 @@ LayerCamera* LayerManager::createCameraLayer(const QString& strLayerName)
 {
     LayerCamera* layer = object()->addNewCameraLayer();
     layer->setName(strLayerName);
+    layer->addNewKeyFrameAt(1);
 
     emit layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());
@@ -249,6 +271,7 @@ LayerSound* LayerManager::createSoundLayer(const QString& strLayerName)
 {
     LayerSound* layer = object()->addNewSoundLayer();
     layer->setName(strLayerName);
+    // No default keyFrame at position 1 for Sound layer.
 
     emit layerCountChanged(count());
     setCurrentLayer(getLastLayerIndex());

@@ -56,6 +56,28 @@ KeyFrame& KeyFrame::operator=(const KeyFrame& k2)
     return *this;
 }
 
+void KeyFrame::modification() {
+    mIsModified = true;
+
+    if (eventCallback) {
+        eventCallback(KeyFrameEvent::MODIFY, this);
+    }
+}
+
+void KeyFrame::setModified(bool b)
+{
+    mIsModified = b;
+
+    if (b && eventCallback) {
+        eventCallback(KeyFrameEvent::MODIFY, this);
+    }
+}
+
+void KeyFrame::setupEventCallback(KeyFrameEventCallback eventCallback)
+{
+    this->eventCallback = eventCallback;
+}
+
 void KeyFrame::addEventListener(KeyFrameEventListener* listener)
 {
     auto it = std::find(mEventListeners.begin(), mEventListeners.end(), listener);

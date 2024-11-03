@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include <memory>
 #include <QString>
 #include "pencilerror.h"
+#include "pencildef.h"
+
 class KeyFrameEventListener;
 
 
@@ -30,6 +32,8 @@ class KeyFrame
 {
 public:
     explicit KeyFrame();
+
+    typedef std::function<void(KeyFrameEvent event, KeyFrame*)> KeyFrameEventCallback;
     explicit KeyFrame(const KeyFrame& k2);
     virtual ~KeyFrame();
 
@@ -41,8 +45,8 @@ public:
     int length() const { return mLength; }
     void setLength(int len) { mLength = len; }
 
-    void modification() { mIsModified = true; }
-    void setModified(bool b) { mIsModified = b; }
+    void modification();
+    void setModified(bool b);
     bool isModified() const { return mIsModified; }
 
     void setSelected(bool b) { mIsSelected = b; }
@@ -50,6 +54,8 @@ public:
 
     QString fileName() const { return mAttachedFileName; }
     void    setFileName(QString strFileName) { mAttachedFileName = strFileName; }
+
+    void setupEventCallback(KeyFrameEventCallback eventCallback);
 
     void addEventListener(KeyFrameEventListener*);
     void removeEventListner(KeyFrameEventListener*);
@@ -60,6 +66,8 @@ public:
     virtual bool isLoaded() const { return true; }
 
     virtual quint64 memoryUsage() { return 0; }
+
+    KeyFrameEventCallback eventCallback;
 
 private:
     int mFrame = -1;

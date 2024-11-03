@@ -121,9 +121,6 @@ LayerBitmap* Object::addNewBitmapLayer()
 {
     LayerBitmap* layerBitmap = new LayerBitmap(getUniqueLayerID());
     mLayers.append(layerBitmap);
-
-    layerBitmap->addNewKeyFrameAt(1);
-
     return layerBitmap;
 }
 
@@ -132,8 +129,6 @@ LayerVector* Object::addNewVectorLayer()
     LayerVector* layerVector = new LayerVector(getUniqueLayerID());
     mLayers.append(layerVector);
 
-    layerVector->addNewKeyFrameAt(1);
-
     return layerVector;
 }
 
@@ -141,9 +136,6 @@ LayerSound* Object::addNewSoundLayer()
 {
     LayerSound* layerSound = new LayerSound(getUniqueLayerID());
     mLayers.append(layerSound);
-
-    // No default keyFrame at position 1 for Sound layer.
-
     return layerSound;
 }
 
@@ -151,9 +143,6 @@ LayerCamera* Object::addNewCameraLayer()
 {
     LayerCamera* layerCamera = new LayerCamera(getUniqueLayerID());
     mLayers.append(layerCamera);
-
-    layerCamera->addNewKeyFrameAt(1);
-
     return layerCamera;
 }
 

@@ -73,9 +73,9 @@ bool Editor::init()
 
     mAllManagers =
     {
+        mLayerManager,
         mColorManager,
         mToolManager,
-        mLayerManager,
         mPlaybackManager,
         mViewManager,
         mPreferenceManager,
@@ -123,7 +123,22 @@ void Editor::makeConnections()
 
     // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
     connect(mLayerManager, &LayerManager::layerDeleted, mUndoRedoManager, &UndoRedoManager::sanitizeLegacyBackupElementsAfterLayerDeletion);
-    connect(mLayerManager, &LayerManager::currentLayerWillChange, this, &Editor::onCurrentLayerWillChange);
+    connect(mLayerManager, &LayerManager::layerEventFired, this, &Editor::onLayerEvent);
+}
+
+void Editor::onLayerEvent(Layer* layer, KeyFrameEvent event, KeyFrame* keyframe)
+{
+    if (layer->type() == Layer::SOUND) {
+        if (event == KeyFrameEvent::CREATE) {
+            sound()->processSound(static_cast<SoundClip*>(keyframe));
+        }
+    } else if (layer->type() == Layer::BITMAP) {
+        qDebug() << "OnKeyFrameevent: Bitmap";
+        if (event == KeyFrameEvent::CREATE) {
+            select()->createEditor(static_cast<BitmapImage*>(keyframe));
+            qDebug() << "onKeyFrameEvent: creating bitmap editor";
+        }
+    }
 }
 
 void Editor::settingUpdated(SETTING setting)
@@ -553,13 +568,13 @@ Status Editor::setObject(Object* newObject)
 
     mObject.reset(newObject);
 
-    updateObject();
-
     // Make sure that object is fully loaded before calling managers.
     for (BaseManager* m : mAllManagers)
     {
         m->load(mObject.get());
     }
+
+    updateObject();
     emit objectLoaded();
 
     return Status::OK;
@@ -577,8 +592,6 @@ void Editor::updateObject()
     {
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
     }
-
-    emit updateLayerCount();
 }
 
 Status Editor::importBitmapImage(const QString& filePath)
