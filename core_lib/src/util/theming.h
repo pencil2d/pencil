@@ -20,6 +20,7 @@ public:
 
     static Status addPalette(const QString& filePath);
     static Status removePalette(const QString& key);
+
 private:
     static QPalette* loadPaletteConf(const QString& filename);
 
@@ -40,6 +41,7 @@ public:
     QPalette palette() const { return m_valid ? m_palette : QPalette(); }
     bool isDark() const;
     bool isBuiltIn() const { return m_filePath.startsWith(':'); }
+
 private:
     enum Mode {
         Light,
