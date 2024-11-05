@@ -166,8 +166,10 @@ void GeneralPage::updateValues()
     int styleIndex = ui->styleCombo->findText(mManager->getString(SETTING::STYLE_ID), Qt::MatchFixedString);
     ui->styleCombo->setCurrentIndex(qMax(0, styleIndex));
     QSignalBlocker b20(ui->styleCombo);
-    int paletteIndex = ui->paletteCombo->findData(mManager->getString(SETTING::PALETTE_ID), Qt::UserRole, Qt::MatchFixedString);
+    QString paletteKey = mManager->getString(SETTING::PALETTE_ID);
+    int paletteIndex = ui->paletteCombo->findData(paletteKey, Qt::UserRole, Qt::MatchFixedString);
     ui->paletteCombo->setCurrentIndex(qMax(0, paletteIndex));
+    ui->removePaletteButton->setEnabled(!paletteKey.isEmpty() && !Theming::getPalette(paletteKey).isBuiltIn());
     QSignalBlocker b3(ui->shadowsBox);
     ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
     QSignalBlocker b4(ui->toolCursorsBox);
@@ -274,7 +276,9 @@ void GeneralPage::styleChanged(int index)
 
 void GeneralPage::paletteChanged(int index)
 {
-    mManager->set(SETTING::PALETTE_ID, ui->paletteCombo->itemData(index).toString());
+    QString paletteKey = ui->paletteCombo->itemData(index).toString();
+    mManager->set(SETTING::PALETTE_ID, paletteKey);
+    ui->removePaletteButton->setEnabled(!paletteKey.isEmpty() && !Theming::getPalette(paletteKey).isBuiltIn());
 }
 
 void GeneralPage::addPalette()
@@ -463,15 +467,25 @@ void GeneralPage::undoRedoCancelButtonPressed()
 
 void GeneralPage::populatePaletteCombo(bool usePreference)
 {
-    QSignalBlocker b(ui->paletteCombo);
-
-    ui->paletteCombo->clear();
-    ui->paletteCombo->addItem("Default", "");
-    for (const QString& palette : Theming::availablePalettes())
     {
-        QString paletteName(palette);
-        paletteName.replace('_', ' ');
-        ui->paletteCombo->addItem(paletteName, palette);
+        QSignalBlocker b(ui->paletteCombo);
+
+        ui->paletteCombo->clear();
+        ui->paletteCombo->addItem("Default", "");
+        ui->paletteCombo->insertSeparator(1);
+        QList<ThemeColorPalette> palettes = Theming::availablePalettes();
+        std::sort(palettes.begin(), palettes.end(), [](ThemeColorPalette a, ThemeColorPalette b) { return a.displayName().toLower() < b.displayName().toLower(); });
+        for (const auto& palette : palettes)
+        {
+            if (palette.isDark()) continue;
+            ui->paletteCombo->addItem(palette.displayName(), palette.id());
+        }
+        ui->paletteCombo->insertSeparator(ui->paletteCombo->count());
+        for (const auto& palette : palettes)
+        {
+            if (!palette.isDark()) continue;
+            ui->paletteCombo->addItem(palette.displayName(), palette.id());
+        }
     }
 
     if (usePreference)

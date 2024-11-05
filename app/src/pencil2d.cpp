@@ -151,10 +151,10 @@ void Pencil2D::setTheme(const QString styleId, const QString paletteId)
     }
 
     // Palette should be set after style is set
-    std::unique_ptr<QPalette> palette(Theming::getPalette(paletteId));
-    if (palette != nullptr)
+    ThemeColorPalette palette(Theming::getPalette(paletteId));
+    if (palette.isValid())
     {
-        setPalette(*palette);
+        setPalette(palette.palette());
     }
     else
     {
