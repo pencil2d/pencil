@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QTranslator>
 
+#include "errordialog.h"
 #include "filedialog.h"
 #include "pencildef.h"
 #include "preferencemanager.h"
@@ -287,10 +288,16 @@ void GeneralPage::addPalette()
     if (!filePath.isEmpty())
     {
         QFileInfo fileInfo(filePath);
-        if (Theming::addPalette(filePath).ok())
+        Status st = Theming::addPalette(filePath);
+        if (st.ok())
         {
             mManager->set(SETTING::PALETTE_ID, fileInfo.baseName());
             populatePaletteCombo();
+        }
+        else
+        {
+            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+            errorDialog.exec();
         }
     }
 }
@@ -298,10 +305,16 @@ void GeneralPage::addPalette()
 void GeneralPage::removePalette()
 {
     QString key = ui->paletteCombo->currentData().toString();
-    if (Theming::removePalette(key).ok())
+    Status st = Theming::removePalette(key);
+    if (st.ok())
     {
         ui->paletteCombo->removeItem(ui->paletteCombo->currentIndex());
         ui->paletteCombo->setCurrentIndex(0);
+    }
+    else
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+        errorDialog.exec();
     }
 }
 
