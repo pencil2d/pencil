@@ -177,6 +177,19 @@ QString ThemeColorPalette::id() const
     return fileInfo.baseName().prepend(isBuiltIn() ? "builtin-" : "user-");
 }
 
+bool ThemeColorPalette::isDark() const
+{
+    if (!m_valid) return false;
+
+    if (m_mode == Mode::Unknown)
+    {
+        // Guess the mode based on the lightness of the background color
+        QColor backgroundColor = m_palette.color(QPalette::Normal, QPalette::Window);
+        return backgroundColor.lightnessF() < 0.5;
+    }
+    return m_mode == Mode::Dark;
+}
+
 /**
  * Private implementation of loadFromFile.
  *
@@ -197,7 +210,12 @@ bool ThemeColorPalette::tryLoad(const QString& filePath)
 
     conf.beginGroup("Metadata");
     m_displayName = conf.value("DisplayName", fileInfo.baseName()).toString();
-    m_isDark = conf.value("IsDark", false).toBool();
+
+    QString modeStr = conf.value("LightOrDark").toString().toLower();
+    if (modeStr == "light") m_mode = Mode::Light;
+    else if (modeStr == "dark") m_mode = Mode::Dark;
+    else m_mode = Mode::Unknown;
+
     conf.endGroup();
 
     conf.beginGroup("ColorScheme");

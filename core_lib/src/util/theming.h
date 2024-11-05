@@ -38,16 +38,22 @@ public:
     QString id() const;
     QString displayName() const { return m_displayName; }
     QPalette palette() const { return m_valid ? m_palette : QPalette(); }
-    bool isDark() const { return m_valid ? m_isDark : false; }
+    bool isDark() const;
     bool isBuiltIn() const { return m_filePath.startsWith(':'); }
 private:
+    enum Mode {
+        Light,
+        Dark,
+        Unknown
+    };
+
     bool tryLoad(const QString& filePath);
 
     bool m_valid = false;
     QString m_filePath;
     QString m_displayName;
     QPalette m_palette;
-    bool m_isDark;
+    Mode m_mode;
 };
 
 #endif // THEMING_H
