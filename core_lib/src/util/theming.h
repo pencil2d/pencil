@@ -18,7 +18,7 @@ public:
     static QStyle* getStyle(const QString& key);
     static ThemeColorPalette getPalette(const QString& key);
 
-    static Status addPalette(const QString& filePath);
+    static std::pair<Status, ThemeColorPalette> addPalette(const QString& filePath);
     static Status removePalette(const QString& key);
 
 private:

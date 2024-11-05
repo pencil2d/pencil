@@ -93,34 +93,44 @@ ThemeColorPalette Theming::getPalette(const QString& key)
  * Saves a palette to the user's palette directory.
  *
  * @param filePath The path to a .conf palette file to load.
- * @return A Status indicating if the palette was added successfully.
+ * @return A Status indicating if the palette was added successfully, and the new
+ *         palette if successful.
  */
-Status Theming::addPalette(const QString& filePath)
+std::pair<Status, ThemeColorPalette> Theming::addPalette(const QString& filePath)
 {
+    ThemeColorPalette palette;
     DebugDetails dd;
     dd << QString("Raw file path: %1").arg(filePath);
     QString errorTitle = QCoreApplication::translate("Theming", "Unable to load color palette");
 
     // Perform some basic checks to provide more detailed errors
-    if (!filePath.endsWith(".conf")) return Status(Status::INVALID_ARGUMENT, dd, errorTitle, QCoreApplication::translate("Theming", "Color palette file is the wrong format. Only .ini files are accepted."));
+    if (!filePath.endsWith(".conf")) return { Status(Status::INVALID_ARGUMENT, dd, errorTitle, QCoreApplication::translate("Theming", "Color palette file is the wrong format. Only .ini files are accepted.")), palette };
     QFileInfo fileInfo(filePath);
-    if (fileInfo.baseName().isEmpty()) return Status(Status::INVALID_ARGUMENT, dd, errorTitle, QCoreApplication::translate("Theming", "The filename cannot be empty."));
-    if (!fileInfo.isFile()) return Status(Status::FILE_NOT_FOUND, dd, errorTitle, QCoreApplication::translate("Theming", "File not found or cannot be read."));
-    if (!fileInfo.isReadable()) return Status(Status::ERROR_FILE_CANNOT_OPEN, dd, errorTitle, QCoreApplication::translate("Theming", "File not found or cannot be read."));
+    if (fileInfo.baseName().isEmpty()) return { Status(Status::INVALID_ARGUMENT, dd, errorTitle, QCoreApplication::translate("Theming", "The filename cannot be empty.")), palette };
+    if (!fileInfo.isFile()) return { Status(Status::FILE_NOT_FOUND, dd, errorTitle, QCoreApplication::translate("Theming", "File not found or cannot be read.")), palette };
+    if (!fileInfo.isReadable()) return { Status(Status::ERROR_FILE_CANNOT_OPEN, dd, errorTitle, QCoreApplication::translate("Theming", "File not found or cannot be read.")), palette };
 
     // Attempt to construct the palette and verify that it is valid
-    ThemeColorPalette palette(filePath);
-    if (!palette.isValid()) return Status(Status::FAIL, dd, errorTitle, QCoreApplication::translate("Theming", "Cannot load color palette, the file is not in the correct format or contains errors."));
+    palette.loadFromFile(filePath);
+    if (!palette.isValid()) return { Status(Status::FAIL, dd, errorTitle, QCoreApplication::translate("Theming", "Cannot load color palette, the file is not in the correct format or contains errors.")), palette };
 
     // Copy to the user's palette directory
     QFile inFile(filePath);
-    QString destPath = userPaletteDir().filePath(fileInfo.fileName());
+    QDir destDir = userPaletteDir();
+    QString destPath = destDir.filePath(fileInfo.fileName());
+    QFileInfo destFileInfo(destPath);
+    int offset = 0;
+    while (destFileInfo.exists())
+    {
+        destFileInfo.setFile(destDir.filePath(QString("%1-%2.conf").arg(fileInfo.baseName()).arg(++offset)));
+        destPath = destFileInfo.absoluteFilePath();
+    }
     dd << QString("Palette save path: %1").arg(destPath);
     if (inFile.copy(destPath))
     {
-        return Status::OK;
+        return { Status::OK, ThemeColorPalette(destPath) };
     }
-    return Status(Status::FAIL, dd, errorTitle, QCoreApplication::translate("Theming", "An internal error occurred and the palette could not be saved."));
+    return { Status(Status::FAIL, dd, errorTitle, QCoreApplication::translate("Theming", "An internal error occurred and the palette could not be saved.")), palette };
 }
 
 /**
