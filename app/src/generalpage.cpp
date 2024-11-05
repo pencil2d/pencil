@@ -288,10 +288,12 @@ void GeneralPage::addPalette()
     if (!filePath.isEmpty())
     {
         QFileInfo fileInfo(filePath);
-        Status st = Theming::addPalette(filePath);
+        auto result = Theming::addPalette(filePath);
+        Status st = result.first;
+        ThemeColorPalette newPalette = result.second;
         if (st.ok())
         {
-            mManager->set(SETTING::PALETTE_ID, fileInfo.baseName());
+            mManager->set(SETTING::PALETTE_ID, newPalette.id());
             populatePaletteCombo();
         }
         else
