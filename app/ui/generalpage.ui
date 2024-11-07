@@ -123,6 +123,16 @@
              <widget class="QComboBox" name="paletteCombo"/>
             </item>
             <item>
+             <widget class="QLabel" name="paletteWarningLabel">
+              <property name="toolTip">
+               <string>Palette is missing or could not be loaded</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
              <widget class="QPushButton" name="addPaletteButton">
               <property name="text">
                <string/>

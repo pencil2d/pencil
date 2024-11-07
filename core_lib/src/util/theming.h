@@ -34,6 +34,7 @@ public:
     ThemeColorPalette(const QString& filePath);
 
     bool loadFromFile(const QString& filePath);
+    void setInvalidWithId(const QString& id);
 
     bool isValid() const { return m_valid; }
     QString id() const;
