@@ -86,7 +86,9 @@ ThemeColorPalette Theming::getPalette(const QString& key)
     {
         return ThemeColorPalette(userPaletteDir().filePath(QString("%1.conf").arg(key.mid(5))));
     }
-    return ThemeColorPalette();
+    ThemeColorPalette invalidPalette;
+    invalidPalette.setInvalidWithId(key);
+    return invalidPalette;
 }
 
 /**
@@ -152,7 +154,7 @@ Status Theming::removePalette(const QString& key)
     QString destPath = userPaletteDir().filePath(QString("%1.conf").arg(key.mid(5)));
     dd << QString("Palette path: %1").arg(destPath);
     QFile paletteFile(destPath);
-    if (paletteFile.remove())
+    if (!paletteFile.exists() || paletteFile.remove())
     {
         return Status::OK;
     }
@@ -193,6 +195,30 @@ bool ThemeColorPalette::loadFromFile(const QString& filePath)
     return m_valid;
 }
 
+/**
+ * Sets the id but marks it as invalid.
+ *
+ * This function can be used to create a palette with a desired id
+ * without a valid file path.
+ *
+ * @param id
+ */
+void ThemeColorPalette::setInvalidWithId(const QString& id)
+{
+    m_valid = false;
+    m_mode = Mode::Unknown;
+    if (id.contains('-'))
+    {
+        m_filePath = QString("%1.conf").arg(id);
+        m_displayName = id.mid(id.indexOf('-'));
+    }
+    else
+    {
+        m_filePath = QString("user-%1.conf").arg(id);
+        m_displayName = id;
+    }
+}
+
 QString ThemeColorPalette::id() const
 {
     QFileInfo fileInfo(m_filePath);
@@ -222,8 +248,9 @@ bool ThemeColorPalette::tryLoad(const QString& filePath)
     m_valid = false;
     m_filePath = filePath;
 
-    if (!filePath.endsWith(".conf")) return false;
     QFileInfo fileInfo(filePath);
+    m_displayName = fileInfo.baseName();
+    if (!filePath.endsWith(".conf")) return false;
     if (fileInfo.baseName().isEmpty()) return false;
     //if (!fileInfo.isFile()) return false;
     if (!fileInfo.isReadable()) return false;
@@ -231,7 +258,7 @@ bool ThemeColorPalette::tryLoad(const QString& filePath)
     QSettings conf(filePath, QSettings::IniFormat);
 
     conf.beginGroup("Metadata");
-    m_displayName = conf.value("DisplayName", fileInfo.baseName()).toString();
+    m_displayName = conf.value("DisplayName", m_displayName).toString();
 
     QString modeStr = conf.value("LightOrDark").toString().toLower();
     if (modeStr == "light") m_mode = Mode::Light;
@@ -246,6 +273,7 @@ bool ThemeColorPalette::tryLoad(const QString& filePath)
         { QPalette::Disabled, "disabled_colors" },
         { QPalette::Inactive, "inactive_colors" }
     };
+    m_palette = QPalette();
     for (const auto& colorGroup : colorGroups)
     {
         QStringList colors = conf.value(colorGroup.second).toStringList();

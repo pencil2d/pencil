@@ -70,12 +70,14 @@ private slots:
 
 private:
     void populatePaletteCombo(bool usePreference = true);
+    void setCurrentPalette(const QString& paletteKey);
 
     bool canApplyOrCancelUndoRedoChanges() const;
     void updateSafeHelperTextEnabledState();
 
     Ui::GeneralPage* ui = nullptr;
     PreferenceManager* mManager = nullptr;
+    bool m_showMissingPalette = false;
 };
 
 #endif // GENERALPAGE_H

@@ -86,6 +86,10 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
         ui->languageCombo->addItem(itemText, localeCode);
     }
 
+    QIcon warningIcon = style()->standardIcon(QStyle::SP_MessageBoxWarning);
+    ui->paletteWarningLabel->setPixmap(warningIcon.pixmap(28, 28));
+    ui->paletteWarningLabel->setVisible(false);
+
     int value = settings.value("windowOpacity").toInt();
     ui->windowOpacityLevel->setValue(100 - value);
 
@@ -168,8 +172,7 @@ void GeneralPage::updateValues()
     ui->styleCombo->setCurrentIndex(qMax(0, styleIndex));
     QSignalBlocker b20(ui->styleCombo);
     QString paletteKey = mManager->getString(SETTING::PALETTE_ID);
-    int paletteIndex = ui->paletteCombo->findData(paletteKey, Qt::UserRole, Qt::MatchFixedString);
-    ui->paletteCombo->setCurrentIndex(qMax(0, paletteIndex));
+    setCurrentPalette(paletteKey);
     ui->removePaletteButton->setEnabled(!paletteKey.isEmpty() && !Theming::getPalette(paletteKey).isBuiltIn());
     QSignalBlocker b3(ui->shadowsBox);
     ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
@@ -280,6 +283,10 @@ void GeneralPage::paletteChanged(int index)
     QString paletteKey = ui->paletteCombo->itemData(index).toString();
     mManager->set(SETTING::PALETTE_ID, paletteKey);
     ui->removePaletteButton->setEnabled(!paletteKey.isEmpty() && !Theming::getPalette(paletteKey).isBuiltIn());
+    if (m_showMissingPalette)
+    {
+        ui->paletteWarningLabel->setVisible(index == 1);
+    }
 }
 
 void GeneralPage::addPalette()
@@ -486,6 +493,7 @@ void GeneralPage::populatePaletteCombo(bool usePreference)
         QSignalBlocker b(ui->paletteCombo);
 
         ui->paletteCombo->clear();
+        m_showMissingPalette = false;
         ui->paletteCombo->addItem("Default", "");
         ui->paletteCombo->insertSeparator(1);
         QList<ThemeColorPalette> palettes = Theming::availablePalettes();
@@ -505,8 +513,30 @@ void GeneralPage::populatePaletteCombo(bool usePreference)
 
     if (usePreference)
     {
+        setCurrentPalette(mManager->getString(SETTING::PALETTE_ID));
         QString paletteKey = mManager->getString(SETTING::PALETTE_ID);
-        int paletteIndex = ui->paletteCombo->findData(paletteKey, Qt::UserRole, Qt::MatchFixedString);
-        ui->paletteCombo->setCurrentIndex(qMax(0, paletteIndex));
+    }
+}
+
+void GeneralPage::setCurrentPalette(const QString& paletteKey)
+{
+    int paletteIndex = ui->paletteCombo->findData(paletteKey, Qt::UserRole, Qt::MatchFixedString);
+    ThemeColorPalette palette = Theming::getPalette(paletteKey);
+    if (paletteIndex >= 0)
+    {
+        ui->paletteCombo->setCurrentIndex(paletteIndex);
+    }
+    else if (palette.isValid())
+    {
+        populatePaletteCombo(false);
+        paletteIndex = ui->paletteCombo->findData(paletteKey, Qt::UserRole, Qt::MatchFixedString);
+        ui->paletteCombo->setCurrentIndex(paletteIndex);
+    }
+    else
+    {
+        ui->paletteCombo->insertItem(1, palette.displayName(), paletteKey);
+        ui->paletteCombo->setCurrentIndex(1);
+        m_showMissingPalette = true;
+        ui->paletteWarningLabel->setVisible(true);
     }
 }
