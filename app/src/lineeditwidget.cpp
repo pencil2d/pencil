@@ -73,6 +73,9 @@ void LineEditWidget::mouseDoubleClickEvent(QMouseEvent* event)
     reloadStylesheet();
 
     // There's no ignore event here because in this case we want to catch it.
+    // The event is ignored explicitly
+    // so that we can allow it to propergate up the chain
+    event->accept();
 }
 
 void LineEditWidget::focusOutEvent(QFocusEvent *event)
@@ -100,6 +103,8 @@ void LineEditWidget::keyPressEvent(QKeyEvent* event)
         setReadOnly(true);
     }
     reloadStylesheet();
+
+    event->accept();
 }
 
 void LineEditWidget::deselect()
