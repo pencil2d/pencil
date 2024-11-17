@@ -216,8 +216,6 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
 
 void PolylineTool::removeLastPolylineSegment()
 {
-    if (!isActive()) return;
-
     if (mPoints.size() > 1)
     {
         mPoints.removeLast();
@@ -249,7 +247,12 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
             return true;
         }
         break;
-
+    case Qt::Key_Backspace:
+        if (mPoints.size() > 0)
+        {
+            removeLastPolylineSegment();
+            return true;
+        }
     case Qt::Key_Escape:
         if (mPoints.size() > 0)
         {
