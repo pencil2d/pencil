@@ -386,9 +386,14 @@ bool ScribbleArea::event(QEvent *event)
     {
         editor()->tools()->clearTemporaryTool();
         processed = true;
+    } else if (event->type() == QEvent::Enter)
+    {
+        processed = currentTool()->enterEvent(static_cast<QEnterEvent*>(event)) || processed;
+    } else if (event->type() == QEvent::Leave)
+    {
+        processed = currentTool()->leaveEvent(event) || processed;
     }
 
-    processed = currentTool()->event(event) || processed;
     return QWidget::event(event) || processed;
 }
 

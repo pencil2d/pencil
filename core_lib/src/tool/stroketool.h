@@ -57,7 +57,8 @@ public:
     void pointerPressEvent(PointerEvent* event) override;
     void pointerMoveEvent(PointerEvent* event) override;
     void pointerReleaseEvent(PointerEvent* event) override;
-    bool event(QEvent *event) override;
+    bool enterEvent(QEnterEvent*) override;
+    bool leaveEvent(QEvent*) override;
 
     bool handleQuickSizing(PointerEvent* event);
 

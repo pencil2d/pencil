@@ -28,168 +28,192 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="78"/>
+        <location filename="../app/src/actioncommands.cpp" line="123"/>
         <source>Importing movie...</source>
         <translation>Đang nhập phim...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="78"/>
-        <location filename="../app/src/actioncommands.cpp" line="200"/>
-        <location filename="../app/src/actioncommands.cpp" line="418"/>
+        <location filename="../app/src/actioncommands.cpp" line="89"/>
+        <location filename="../app/src/actioncommands.cpp" line="123"/>
+        <location filename="../app/src/actioncommands.cpp" line="246"/>
+        <location filename="../app/src/actioncommands.cpp" line="473"/>
         <source>Abort</source>
         <translation>Từ chối yêu cầu</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="86"/>
+        <location filename="../app/src/actioncommands.cpp" line="89"/>
+        <source>Importing Animated Image...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="131"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
         <translation>Bạn đang nhập một lượng lớn Frame, việc này sẽ mất kha khá thời gian. Bạn có chắc bạn muốn tiếp tục không?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="133"/>
+        <location filename="../app/src/actioncommands.cpp" line="179"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Không tìm thấy Layer âm thanh khi bạn Đưa vào. Bạn có muốn tạo một Layer âm thanh mới không?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="134"/>
+        <location filename="../app/src/actioncommands.cpp" line="180"/>
         <source>Create sound layer</source>
         <translation>Tạo một Layer âm thanh mới</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="135"/>
+        <location filename="../app/src/actioncommands.cpp" line="181"/>
         <source>Don&apos;t create layer</source>
         <translation>Không tạo Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="145"/>
+        <location filename="../app/src/actioncommands.cpp" line="191"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>Thông tin Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="146"/>
-        <location filename="../app/src/actioncommands.cpp" line="765"/>
-        <location filename="../app/src/actioncommands.cpp" line="778"/>
-        <location filename="../app/src/actioncommands.cpp" line="791"/>
-        <location filename="../app/src/actioncommands.cpp" line="804"/>
+        <location filename="../app/src/actioncommands.cpp" line="192"/>
+        <location filename="../app/src/actioncommands.cpp" line="847"/>
+        <location filename="../app/src/actioncommands.cpp" line="860"/>
+        <location filename="../app/src/actioncommands.cpp" line="873"/>
+        <location filename="../app/src/actioncommands.cpp" line="886"/>
         <source>Layer name:</source>
         <translation>Tên Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="147"/>
+        <location filename="../app/src/actioncommands.cpp" line="193"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>Layer Âm thanh</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="200"/>
+        <location filename="../app/src/actioncommands.cpp" line="246"/>
         <source>Importing sound...</source>
         <translation>Đang nhập âm thanh...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="290"/>
+        <location filename="../app/src/actioncommands.cpp" line="287"/>
+        <source>Something went wrong</source>
+        <translation>Đã xảy ra sự cố</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="287"/>
+        <location filename="../app/src/actioncommands.cpp" line="1024"/>
+        <source>You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.</source>
+        <translation>Bạn đang có tổng là %1 clips có âm thanh. Do sự giới hạn tạm thời, bạn sẽ không thể xuất bất kì hiệu ứng nào vượt quá %2 clips âm thanh. Chúng tôi gợi ý chia nhỏ các dự án lớn thành nhiều dự án nhỏ khác nhau để giữ ở trong sự hạn chế.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="345"/>
         <source>Exporting movie</source>
         <translation>Đang xuất phim...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="334"/>
+        <location filename="../app/src/actioncommands.cpp" line="389"/>
         <source>Finished. Open file location?</source>
         <translation>Hoàn thành. Mở vị trí file?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="344"/>
+        <location filename="../app/src/actioncommands.cpp" line="399"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>Hoàn thành. Mở phim bây giờ?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="352"/>
+        <location filename="../app/src/actioncommands.cpp" line="407"/>
         <source>Unknown export error</source>
         <translation>Xuất dữ liệu gặp lỗi không xác định</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="352"/>
+        <location filename="../app/src/actioncommands.cpp" line="407"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
         <translation>Xuất dữ liệu không gặp lỗi, tuy nhiên chúng tôi không thể tìm thấy file xuất. Quá trình xuất của bạn có thể chưa hoàn tất thành công.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="418"/>
+        <location filename="../app/src/actioncommands.cpp" line="473"/>
         <source>Exporting image sequence...</source>
         <translation>Đang xuất hình ảnh trong clip...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="500"/>
-        <location filename="../app/src/actioncommands.cpp" line="919"/>
+        <location filename="../app/src/actioncommands.cpp" line="555"/>
+        <location filename="../app/src/actioncommands.cpp" line="1005"/>
+        <location filename="../app/src/actioncommands.cpp" line="1024"/>
         <source>Warning</source>
         <translation>Cảnh báo</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="501"/>
+        <location filename="../app/src/actioncommands.cpp" line="556"/>
         <source>Unable to export image.</source>
         <translation>Không thể xuất Được hình ảnh</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="655"/>
+        <location filename="../app/src/actioncommands.cpp" line="712"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Xóa các frame đã chọn</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="656"/>
+        <location filename="../app/src/actioncommands.cpp" line="713"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
-        <translation type="unfinished"/>
+        <translation>Bạn có chắc bạn muốn xóa các frame đã chọn? Bạn sẽ không thể khôi phục các frame bị xóa!</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="764"/>
-        <location filename="../app/src/actioncommands.cpp" line="777"/>
-        <location filename="../app/src/actioncommands.cpp" line="803"/>
+        <location filename="../app/src/actioncommands.cpp" line="753"/>
+        <source>%1 (copy)</source>
+        <comment>Default duplicate layer name</comment>
+        <translation>sao chép %1 </translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="846"/>
+        <location filename="../app/src/actioncommands.cpp" line="859"/>
+        <location filename="../app/src/actioncommands.cpp" line="885"/>
         <source>Layer Properties</source>
         <translation>Thuộc tính của Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="766"/>
+        <location filename="../app/src/actioncommands.cpp" line="848"/>
         <source>Bitmap Layer</source>
         <translation>Bitmap Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="779"/>
+        <location filename="../app/src/actioncommands.cpp" line="861"/>
         <source>Vector Layer</source>
         <translation>Vector Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="790"/>
+        <location filename="../app/src/actioncommands.cpp" line="872"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
         <translation>Đặc tính Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="792"/>
+        <location filename="../app/src/actioncommands.cpp" line="874"/>
         <source>Camera Layer</source>
         <translation>Layer của máy quay</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="805"/>
+        <location filename="../app/src/actioncommands.cpp" line="887"/>
         <source>Sound Layer</source>
         <translation>Layer âm thanh</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="820"/>
+        <location filename="../app/src/actioncommands.cpp" line="906"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Xóa Layer</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="821"/>
+        <location filename="../app/src/actioncommands.cpp" line="907"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
         <translation>Bạn có chắc bạn muốn xóa layer: %1? Bạn sẽ không thể hoàn tác.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="830"/>
+        <location filename="../app/src/actioncommands.cpp" line="916"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Vui lòng giữ ít nhất một layer máy ảnh trong dự án của bạn</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="919"/>
+        <location filename="../app/src/actioncommands.cpp" line="1005"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
         <translation>Thư mục tạm thời này được tạo với mục đích sử dụng cho Pencil2D. Đừng sửa đổi nó trừ khi bạn biết mình đang làm gì.</translation>
     </message>
@@ -197,57 +221,57 @@
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="33"/>
         <source>Pencil</source>
         <translation>Bút chì</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="34"/>
         <source>Eraser</source>
         <translation>Tẩy xóa</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="35"/>
         <source>Select</source>
         <translation>Công cụ chọn</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="36"/>
         <source>Move</source>
         <translation>Di chuyển</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="37"/>
         <source>Hand</source>
         <translation>Bàn tay</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="46"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="38"/>
         <source>Smudge</source>
         <translation>Làm mờ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="47"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="39"/>
         <source>Pen</source>
         <translation>Bút mực</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="48"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
         <source>Polyline</source>
         <translation>Polyline</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="49"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Bucket</source>
-        <translation>Tô màu</translation>
+        <translation>Xô màu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="50"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Eyedropper</source>
         <translation>Chọn màu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="51"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Brush</source>
         <translation>Cọ vẽ</translation>
     </message>
@@ -260,17 +284,12 @@
         <translation>Bảng Mẫu</translation>
     </message>
     <message>
-        <location filename="../app/ui/bucketoptionswidget.ui" line="42"/>
-        <source>Fill to</source>
-        <translation>Lấp vào</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/bucketoptionswidget.ui" line="66"/>
+        <location filename="../app/ui/bucketoptionswidget.ui" line="48"/>
         <source>Reference</source>
         <translation>Tài liệu tham khảo</translation>
     </message>
     <message>
-        <location filename="../app/ui/bucketoptionswidget.ui" line="90"/>
+        <location filename="../app/ui/bucketoptionswidget.ui" line="72"/>
         <source>Blend mode</source>
         <translation>Chế độ hòa trộn</translation>
     </message>
@@ -292,73 +311,474 @@
     <message>
         <location filename="../app/src/bucketoptionswidget.cpp" line="52"/>
         <source>Current layer</source>
-        <translation>Layer hiện hành</translation>
-    </message>
-    <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="53"/>
-        <source>Layer below</source>
-        <translation>Layer dưới</translation>
-    </message>
-    <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="54"/>
-        <source>Fill to the current layer or the layer below</source>
-        <translation>Đổ màu tới layer hiện hành hay layer bên dưới</translation>
-    </message>
-    <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
-        <source>Current layer</source>
         <comment>Reference Layer Options</comment>
         <translation>Layer hiện hành</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="53"/>
         <source>All layers</source>
         <comment>Reference Layer Options</comment>
         <translation>Mọi layer</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="54"/>
         <source>Refers to the layer that used to flood fill from</source>
-        <translation type="unfinished"/>
+        <translation>Dựa vào tầng layer đã được làm tràn đầy từ...</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="60"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
         <source>Overlay</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Lớp phủ</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="61"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
         <source>Replace</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Thay thế</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="62"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
         <source>Behind</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Sau</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="63"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="59"/>
         <source>Defines how the fill will behave when the new color is not opaque</source>
         <translation>Xác định cách chức năng đổ màu sẽ được thi hành khi màu mới thấu quang</translation>
     </message>
 </context>
 <context>
+    <name>CameraContextMenu</name>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="30"/>
+        <source>Easing: frame %1 to %2</source>
+        <translation>Giảm bớt: Chuyển hình ảnh (frame) từ %1 thành %2</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="36"/>
+        <source>Selected: </source>
+        <translation>Lựa chọn: </translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="40"/>
+        <source>Linear</source>
+        <translation>Tuyến tính (thẳng)</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="42"/>
+        <source>In</source>
+        <translation>Nhập</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="43"/>
+        <source>Out</source>
+        <translation>Xuất</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="44"/>
+        <source>In-Out</source>
+        <translation>Nhập-xuất</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="45"/>
+        <source>Out-In</source>
+        <translation>Xuất-nhập</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="47"/>
+        <source>Slow</source>
+        <translation>Chậm</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="48"/>
+        <source>Moderate</source>
+        <translation>Vừa phải</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="49"/>
+        <source>Quick</source>
+        <translation>Mau</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="50"/>
+        <source>Fast</source>
+        <translation>Nhanh</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="51"/>
+        <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
+        <source>Faster</source>
+        <translation>Nhanh hơn</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="53"/>
+        <source>Circle-based</source>
+        <translation>Có dạng tròn</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="54"/>
+        <source>Overshoot</source>
+        <translation>Vượt quá</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="55"/>
+        <source>Elastic</source>
+        <translation>Co giãn</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="56"/>
+        <source>Bounce</source>
+        <translation>Nảy</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="99"/>
+        <source>Transform</source>
+        <translation>Biến đổi</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="100"/>
+        <source>Reset all</source>
+        <translation>Hoàn trả tất cả</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="102"/>
+        <source>Reset position</source>
+        <translation>Hoàn trả vị trí </translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="103"/>
+        <source>Reset scale</source>
+        <translation>Hoàn trả tỉ lệ</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="104"/>
+        <source>Reset rotation</source>
+        <translation>Hoàn trả hướng xoay</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="106"/>
+        <source>Align horizontally to frame %1</source>
+        <translation>Căn chỉnh chiều ngang sang frame hình ảnh %1</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="107"/>
+        <source>Align vertically to frame %1</source>
+        <translation>Căn chỉnh chiều dọc sang frame hình ảnh %1</translation>
+    </message>
+    <message>
+        <location filename="../app/src/cameracontextmenu.cpp" line="109"/>
+        <source>Hold to keyframe %1</source>
+        <translation>Giữ theo khung hình chính ở %1</translation>
+    </message>
+</context>
+<context>
+    <name>CameraEasingType</name>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="24"/>
+        <source>Linear</source>
+        <translation>Tuyến tính (thẳng)</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="25"/>
+        <source>Normal Ease-in</source>
+        <translation>Ease-in bình thường</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="26"/>
+        <source>Normal Ease-out</source>
+        <translation>Ease-out bình thường</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="27"/>
+        <source>Normal Ease-in - Ease-out</source>
+        <translation>Ease-in bình thường - Ease-out</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="28"/>
+        <source>Normal Ease-out - Ease-in</source>
+        <translation>Ease-out bình thường - Ease-in</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="29"/>
+        <source>Quick Ease-in</source>
+        <translation>Ease-in mau</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="30"/>
+        <source>Quick Ease-out</source>
+        <translation>Ease-out mau</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="31"/>
+        <source>Quick Ease-in - Ease-out</source>
+        <translation>Ease-in mau - Ease out</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="32"/>
+        <source>Quick Ease-out - Ease-in</source>
+        <translation>Ease-out mau - Ease-in</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="33"/>
+        <source>Fast Ease-in</source>
+        <translation>Ease-in nhanh</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="34"/>
+        <source>Fast Ease-out</source>
+        <translation>Ease-out nhanh</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="35"/>
+        <source>Fast Ease-in - Ease-out</source>
+        <translation>Ease-in nhanh - Ease-out </translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="36"/>
+        <source>Fast Ease-out - Ease-in</source>
+        <translation>Ease-out nhanh - Ease-in</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="37"/>
+        <source>Faster Ease-in</source>
+        <translation>Ease-in nhanh hơn</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="38"/>
+        <source>Faster Ease-out</source>
+        <translation>Ease-out nhanh hơn</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="39"/>
+        <source>Faster Ease-in - Ease-out</source>
+        <translation>Ease-in nhanh hơn - Ease-out</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="40"/>
+        <source>Faster Ease-out - Ease-in</source>
+        <translation>Ease-out nhanh hơn - Ease-in</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="41"/>
+        <source>Slow Ease-in</source>
+        <translation>Ease-in chậm</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="42"/>
+        <source>Slow Ease-out</source>
+        <translation>Ease-out chậm</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="43"/>
+        <source>Slow Ease-in - Ease-out</source>
+        <translation>Ease-in chậm - Ease-out</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="44"/>
+        <source>Slow Ease-out - Ease-in</source>
+        <translation>Ease-out chậm - Ease in</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="45"/>
+        <source>Fastest Ease-in</source>
+        <translation>Ease-in nhanh nhất</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="46"/>
+        <source>Fastest Ease-out</source>
+        <translation>Ease-out nhanh nhất</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="47"/>
+        <source>Fastest Ease-in - Ease-out</source>
+        <translation>Ease-in nhanh nhất - Ease-out</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="48"/>
+        <source>Fastest Ease-out - Ease-in</source>
+        <translation>Ease-out nhanh nhất - Ease-in</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="49"/>
+        <source>Circle-based Ease-in</source>
+        <translation>Dạng tròn thu vào trong</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="50"/>
+        <source>Circle-based Ease-out</source>
+        <translation>Dạng tròn to ra ngoài</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="51"/>
+        <source>Circle-based Ease-in - Ease-out</source>
+        <translation>Dạng tròn thu vào - ra</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="52"/>
+        <source>Circle-based Ease-out - Ease-in</source>
+        <translation>Dạng tròn thu ra - vào</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="53"/>
+        <source>Elastic Ease-in</source>
+        <translation>Co giãn vào trong</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="54"/>
+        <source>Elastic Ease-out</source>
+        <translation>Co giãn ra ngoài</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="55"/>
+        <source>Elastic Ease-in - Ease-out</source>
+        <translation>Co giãn vào - ra</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="56"/>
+        <source>Elastic Ease-out - Ease-in</source>
+        <translation>Co giãn ra - vào</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="57"/>
+        <source>Overshoot Ease-in</source>
+        <translation>Vượt quá vào trong</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="58"/>
+        <source>Overshoot Ease-out</source>
+        <translation>Vượt quá ra ngoài</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="59"/>
+        <source>Overshoot Ease-in - Ease-out</source>
+        <translation>Vượt quá vào - ra </translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="60"/>
+        <source>Overshoot Ease-out - Ease-in</source>
+        <translation>Vượt quá ra - vào</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="61"/>
+        <source>Bounce Ease-in</source>
+        <translation>Nảy thu vào trong</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="62"/>
+        <source>Bounce Ease-out</source>
+        <translation>Nảy ra ngoài</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="63"/>
+        <source>Bounce Ease-in - Ease-out</source>
+        <translation>Nảy vào - ra</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="64"/>
+        <source>Bounce Ease-out - Ease-in</source>
+        <translation>Nảy ra - vào</translation>
+    </message>
+</context>
+<context>
+    <name>CameraOptionsWidget</name>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="29"/>
+        <source>Transform</source>
+        <translation>Biến đổi</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="50"/>
+        <source>Reset scaling</source>
+        <translation>Đặt lại tỉ lệ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="67"/>
+        <source>Reset rotation</source>
+        <translation>Hoàn trả hướng xoay</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="84"/>
+        <source>Reset</source>
+        <translation>Đặt lại</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="91"/>
+        <source>Reset translation</source>
+        <translation>Hoàn trả bản dịch</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="108"/>
+        <source>Reset all transforms</source>
+        <translation>Hoàn trả mọi biến đổi</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="111"/>
+        <source>Reset all</source>
+        <translation>Đặt lại tất cả</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="121"/>
+        <source>Camera path</source>
+        <translation>Hướng máy quay (camera)</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="144"/>
+        <source>Show interpolation path</source>
+        <translation>Hiển thị đường dẫn nội suy</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="147"/>
+        <source>Show path</source>
+        <translation>Hiển thị đường dẫn</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="155"/>
+        <source>Red</source>
+        <translation>Đỏ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="160"/>
+        <source>Blue</source>
+        <translation>Xanh dương</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="165"/>
+        <source>Green</source>
+        <translation>Xanh lá cây</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="170"/>
+        <source>Black</source>
+        <translation>Trở lại</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="175"/>
+        <source>White</source>
+        <translation>Trắng</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="200"/>
+        <location filename="../app/ui/cameraoptionswidget.ui" line="203"/>
+        <source>Reset path</source>
+        <translation>Đặt lại đường dẫn</translation>
+    </message>
+</context>
+<context>
     <name>CameraPropertiesDialog</name>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="14"/>
+        <location filename="../app/ui/camerapropertiesdialog.ui" line="14"/>
         <source>Camera Properties</source>
         <translation>Thông tin Máy quay</translation>
     </message>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="22"/>
+        <location filename="../app/ui/camerapropertiesdialog.ui" line="22"/>
         <source>Camera name:</source>
         <translation>Tên máy quay</translation>
     </message>
     <message>
-        <location filename="../core_lib/ui/camerapropertiesdialog.ui" line="46"/>
+        <location filename="../app/ui/camerapropertiesdialog.ui" line="36"/>
         <source>Camera size:</source>
         <translation>Kích thước máy quay</translation>
     </message>
@@ -366,74 +786,74 @@
 <context>
     <name>CheckUpdatesDialog</name>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="45"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="46"/>
         <source>Checking for Updates...</source>
         <comment>status description in the check-for-update dialog</comment>
         <translation>Đang kiểm tra bản cập nhật...</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="57"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="58"/>
         <source>Download</source>
         <translation>Tải về</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="58"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="59"/>
         <source>Close</source>
         <translation>Đóng</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="111"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="112"/>
         <source>&lt;b&gt;You are using a Pencil2D nightly build&lt;/b&gt;</source>
         <translation>&lt;b&gt;Bạn đang sử dụng Pencil2D nightly build - phiên bản beta&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="112"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="113"/>
         <source>Please go %1 here %2 to check new nightly builds.</source>
         <translation>Vui lòng đến %1 ở %2 để kiểm tra các bản nightly build mới.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="122"/>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="131"/>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="140"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="123"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
         <source>&lt;b&gt;An error occurred while checking for updates&lt;/b&gt;</source>
         <comment>error msg of check-for-update</comment>
         <translation>&lt;b&gt;Lỗi xảy ra khi kiểm tra bản cập nhật mới&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="123"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="124"/>
         <source>Please check your internet connection and try again later.</source>
         <comment>error msg of check-for-update</comment>
         <translation>Vui lòng kiểm tra kết nối mạng của bạn và thử lại sau.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
         <source>Network response is empty</source>
         <comment>error msg of check-for-update</comment>
         <translation>Không có phản hồi mạng</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
         <source>Couldn&apos;t retrieve the version information</source>
         <comment>error msg of check-for-update</comment>
         <translation>Không thể truy xuất thông tin của phiên bản</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="177"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="178"/>
         <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
         <translation>&lt;b&gt;Phiên bản mới của Pencil2D đã có mặt!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="178"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="179"/>
         <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
         <translation>Pencil2D %1 đã có mặt -- bạn đang sử dụng %2. Bạn có muốn tải về phiên bản mới không?</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="185"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="186"/>
         <source>&lt;b&gt;Pencil2D is up to date&lt;/b&gt;</source>
         <translation>&lt;b&gt;Pencil2D đã được cập nhập bản mới nhất&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="186"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="187"/>
         <source>Version %1</source>
         <translation>Phiên bản %1</translation>
     </message>
@@ -528,77 +948,77 @@
         <translation>Thêm màu</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="76"/>
+        <location filename="../app/ui/colorpalette.ui" line="82"/>
         <source>Remove Color</source>
         <translation>Xóa màu</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="130"/>
+        <location filename="../app/ui/colorpalette.ui" line="142"/>
         <source>Native color dialog window</source>
         <translation>Cửa sổ hộp thoại Màu gốc</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="267"/>
+        <location filename="../app/ui/colorpalette.ui" line="279"/>
         <source>List Mode</source>
         <translation>Chế độ Danh sách</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="270"/>
+        <location filename="../app/ui/colorpalette.ui" line="282"/>
         <source>Show palette as a list</source>
         <translation>Hiển thị bảng màu theo dạng danh sách</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="278"/>
+        <location filename="../app/ui/colorpalette.ui" line="290"/>
         <source>Grid Mode</source>
         <translation>Chế độ Lưới</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="281"/>
+        <location filename="../app/ui/colorpalette.ui" line="293"/>
         <source>Show palette as icons</source>
         <translation>Hiển thị bảng màu theo dạng biểu tượng</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="291"/>
+        <location filename="../app/ui/colorpalette.ui" line="303"/>
         <source>Small swatch</source>
         <translation>Swatch cỡ nhỏ</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="294"/>
+        <location filename="../app/ui/colorpalette.ui" line="306"/>
         <source>Sets swatch size to: 16x16px</source>
         <translation>Chỉnh kích cỡ swatch thành: 16x16px</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="302"/>
+        <location filename="../app/ui/colorpalette.ui" line="314"/>
         <source>Medium Swatch</source>
         <translation>Swatch cỡ trung</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="305"/>
+        <location filename="../app/ui/colorpalette.ui" line="317"/>
         <source>Sets swatch size to: 26x26px</source>
         <translation>Chỉnh kích cỡ swatch thành: 26x26px</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="316"/>
+        <location filename="../app/ui/colorpalette.ui" line="328"/>
         <source>Large Swatch</source>
         <translation>Swatch cỡ lớn</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="319"/>
+        <location filename="../app/ui/colorpalette.ui" line="331"/>
         <source>Sets swatch size to: 36x36px</source>
         <translation>Chỉnh kích cỡ swatch thành: 36x36px</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="327"/>
+        <location filename="../app/ui/colorpalette.ui" line="339"/>
         <source>Fit Swatch</source>
         <translation>Swatch cỡ vừa vặn</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="330"/>
+        <location filename="../app/ui/colorpalette.ui" line="342"/>
         <source>Fit swatch to window (19-36 px)</source>
         <translation>Chỉnh kích cỡ swatch vừa với cửa sổ (19-36px)</translation>
     </message>
     <message>
-        <location filename="../app/ui/colorpalette.ui" line="333"/>
+        <location filename="../app/ui/colorpalette.ui" line="345"/>
         <source>Swatch fits window</source>
         <translation>Swatch phù hợp kích cỡ cửa sổ</translation>
     </message>
@@ -621,33 +1041,33 @@
         <translation>Xóa bỏ</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="272"/>
-        <location filename="../app/src/colorpalettewidget.cpp" line="273"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="266"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="267"/>
         <source>Color name</source>
         <translation>Tên màu</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="640"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="644"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
         <translation>(Các) Màu mà bạn định xóa đang được sử dụng bởi một hoặc nhiều nét.</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="641"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="645"/>
         <source>Cancel</source>
         <translation>Hủy</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="642"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="646"/>
         <source>Delete</source>
         <translation>Xóa</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="658"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="662"/>
         <source>Palette Restriction</source>
         <translation>Hạn chế của Bảng màu</translation>
     </message>
     <message>
-        <location filename="../app/src/colorpalettewidget.cpp" line="659"/>
+        <location filename="../app/src/colorpalettewidget.cpp" line="663"/>
         <source>The palette requires at least one swatch to remain functional</source>
         <translation>Bảng màu cần ít nhất một swatch để hoạt động</translation>
     </message>
@@ -2007,42 +2427,42 @@
 <context>
     <name>CommandLineExporter</name>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="53"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="59"/>
         <source>Error: No input file specified. An input project file argument is required when output path(s) are specified.</source>
         <translation>Lỗi: Không xác định được file đầu vào. File đầu vào của dự án xung đột với yêu cầu (các) đường dẫn đầu ra.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="72"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="78"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
         <translation>Cảnh báo: không tìm thấy layer máy quay %1 được chỉ định, bỏ qua.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="104"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="110"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
         <translation>Cảnh báo: Định dạng dữ liệu xuất không được chỉ định hoặc không được hỗ trợ. Đang sử dụng PNG.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="129"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="135"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
         <translation>Cảnh báo: Độ trong suốt trong các file phim hiện không được hỗ trợ</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="132"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="138"/>
         <source>Exporting movie...</source>
         <comment>Command line task progress</comment>
         <translation>Đang xuất phim...</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="144"/>
-        <location filename="../app/src/commandlineexporter.cpp" line="168"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="150"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="174"/>
         <source>Done.</source>
         <comment>Command line task done</comment>
         <translation>Hoàn thành.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineexporter.cpp" line="155"/>
+        <location filename="../app/src/commandlineexporter.cpp" line="161"/>
         <source>Exporting image sequence...</source>
         <comment>Command line task progress</comment>
         <translation>Đang xuất chuỗi hình ảnh...</translation>
@@ -2051,247 +2471,103 @@
 <context>
     <name>CommandLineParser</name>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="24"/>
+        <location filename="../app/src/commandlineparser.cpp" line="30"/>
         <source>Pencil2D is an animation/drawing software for Mac OS X, Windows, and Linux. It lets you create traditional hand-drawn animation (cartoon) using both bitmap and vector graphics.</source>
         <translation>Pencil2D là một phần mềm hoạt hình / vẽ cho Mac OS X, Windows và Linux. Nó cho phép bạn tạo hoạt ảnh vẽ tay truyền thống (phim hoạt hình) bằng cách sử dụng cả đồ họa bitmap và đồ họa vector.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="28"/>
+        <location filename="../app/src/commandlineparser.cpp" line="34"/>
         <source>Path to the input pencil file.</source>
         <translation>Đường dẫn đến file pencil đầu vào.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="31"/>
         <location filename="../app/src/commandlineparser.cpp" line="37"/>
+        <location filename="../app/src/commandlineparser.cpp" line="43"/>
         <source>Render the file to &lt;output_path&gt;</source>
         <translation>Kết xuất file tới vị trí&lt;output_path&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="32"/>
         <location filename="../app/src/commandlineparser.cpp" line="38"/>
+        <location filename="../app/src/commandlineparser.cpp" line="44"/>
         <source>output_path</source>
         <translation>output_path</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="45"/>
+        <location filename="../app/src/commandlineparser.cpp" line="51"/>
         <source>Name of the camera layer to use</source>
         <translation>Đặt tên layer máy quay</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="46"/>
+        <location filename="../app/src/commandlineparser.cpp" line="52"/>
         <source>layer_name</source>
         <translation>layer_name</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="50"/>
+        <location filename="../app/src/commandlineparser.cpp" line="56"/>
         <source>Width of the output frames</source>
         <translation>Chiều rộng của Frame đầu ra</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="51"/>
-        <location filename="../app/src/commandlineparser.cpp" line="56"/>
+        <location filename="../app/src/commandlineparser.cpp" line="57"/>
+        <location filename="../app/src/commandlineparser.cpp" line="62"/>
         <source>integer</source>
         <translation>Số nguyên</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="55"/>
+        <location filename="../app/src/commandlineparser.cpp" line="61"/>
         <source>Height of the output frames</source>
         <translation>Chiều cao của Frame đầu ra</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="60"/>
+        <location filename="../app/src/commandlineparser.cpp" line="66"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>Frame dầu tiên trong phim xuất ra</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="61"/>
-        <location filename="../app/src/commandlineparser.cpp" line="68"/>
+        <location filename="../app/src/commandlineparser.cpp" line="67"/>
+        <location filename="../app/src/commandlineparser.cpp" line="74"/>
         <source>frame</source>
         <translation>frame</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="65"/>
+        <location filename="../app/src/commandlineparser.cpp" line="71"/>
         <source>The last frame you want to include in the exported movie. Can also be last or last-sound to automatically use the last frame containing animation or sound, respectively</source>
-        <translation type="unfinished"/>
+        <translation>Frame hình ảnh cuối cùng bạn mong muốn thêm vào phim được xuất. Có thể là cuối hoặc âm thanh cuối tự động sử dụng frame hình ảnh cuối cùng chứa hoạt ảnh hoặc âm thanh, lần lượt</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="72"/>
+        <location filename="../app/src/commandlineparser.cpp" line="78"/>
         <source>Render transparency when possible</source>
         <translation>Kết xuất độ trong suốt nếu có thể</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="99"/>
+        <location filename="../app/src/commandlineparser.cpp" line="105"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
         <translation>Cảnh báo: giá trị chiều ngang %1 không phải là số nguyên, bỏ qua.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="110"/>
+        <location filename="../app/src/commandlineparser.cpp" line="116"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
         <translation>Cảnh báo: giá trị chiều cao%1 không phải là số nguyên, bỏ qua.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="121"/>
+        <location filename="../app/src/commandlineparser.cpp" line="127"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
         <translation>Cảnh báo: giá trị khởi điểm %1 không phải là số nguyên, bỏ qua.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="126"/>
+        <location filename="../app/src/commandlineparser.cpp" line="132"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
         <translation>Cảnh báo: giá trị khởi điểm phải lớn hơn 1, bỏ qua.</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="147"/>
+        <location filename="../app/src/commandlineparser.cpp" line="153"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation type="unfinished"/>
+        <translation>Cảnh báo: giả trị cuối %1 không phải là số nguyên, cuối hoặc âm thanh cuối, bỏ qua</translation>
     </message>
     <message>
-        <location filename="../app/src/commandlineparser.cpp" line="153"/>
+        <location filename="../app/src/commandlineparser.cpp" line="159"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
         <translation>Cảnh báo: giá trị kết thúc %1 nhỏ hơn giá trị bắt đầu %2, bỏ qua.</translation>
-    </message>
-</context>
-<context>
-    <name>DisplayOption</name>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="14"/>
-        <source>Display</source>
-        <comment>Window title of display options like .</comment>
-        <translation>Hiển thị</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="72"/>
-        <source>Horizontal flip</source>
-        <translation>Xoay ngang</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="104"/>
-        <source>Vertical flip</source>
-        <translation>Lật theo chiều dọc</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="107"/>
-        <location filename="../app/ui/displayoption.ui" line="139"/>
-        <location filename="../app/ui/displayoption.ui" line="165"/>
-        <location filename="../app/ui/displayoption.ui" line="191"/>
-        <location filename="../app/ui/displayoption.ui" line="217"/>
-        <location filename="../app/ui/displayoption.ui" line="243"/>
-        <location filename="../app/ui/displayoption.ui" line="269"/>
-        <location filename="../app/ui/displayoption.ui" line="292"/>
-        <location filename="../app/ui/displayoption.ui" line="315"/>
-        <location filename="../app/ui/displayoption.ui" line="338"/>
-        <location filename="../app/ui/displayoption.ui" line="361"/>
-        <source>...</source>
-        <translation>Đang xử lý...</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="136"/>
-        <source>Show invisible lines</source>
-        <translation>Hiển thị nét vẽ ẩn</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="162"/>
-        <source>Show outlines only</source>
-        <translation>Chỉ hiển thị Đường kẻ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="188"/>
-        <source>Overlay shows field center</source>
-        <translation>Hiển thị tâm màn ảnh</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="214"/>
-        <source>Overlay shows field in Golden Ratio</source>
-        <translation>Hiện thị màn ảnh theo Tỷ lệ Vàng</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="240"/>
-        <source>Overlay shows field in thirds</source>
-        <translation>Hiển thị màn ảnh theo bố cục phần ba</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="266"/>
-        <source>Overlay shows field safe areas</source>
-        <translation>Hiển thị vùng an toàn của màn ảnh</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="395"/>
-        <source>5 degrees</source>
-        <translation>5 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="398"/>
-        <source>Angles = 5 degrees</source>
-        <translation>Góc = 5 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="406"/>
-        <source>10 degrees</source>
-        <translation>10 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="409"/>
-        <source>Angles = 10 degrees</source>
-        <translation>Góc = 10 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="417"/>
-        <source>15 degrees</source>
-        <translation>15 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="420"/>
-        <source>Angles = 15 degrees</source>
-        <translation>Góc = 15 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="428"/>
-        <source>30 degrees</source>
-        <translation>30 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="431"/>
-        <source>Angles = 30 degrees</source>
-        <translation>Góc = 30 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="439"/>
-        <source>3 degrees</source>
-        <translation>3 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="442"/>
-        <source>Angles = 3 degrees</source>
-        <translation>Góc = 3 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="450"/>
-        <source>7.5 degrees</source>
-        <translation>7.5 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="453"/>
-        <source>Angles = 7.5 degrees</source>
-        <translation>Góc = 7.5 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="461"/>
-        <source>2 degrees</source>
-        <translation>2 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="464"/>
-        <source>Angles = 2 degrees</source>
-        <translation>Góc = 2 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="472"/>
-        <source>20 degrees</source>
-        <translation>20 độ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/displayoption.ui" line="475"/>
-        <source>Angles = 20 degrees</source>
-        <translation>Góc = 20 độ</translation>
     </message>
 </context>
 <context>
@@ -2310,51 +2586,119 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="519"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
         <source>Copy</source>
         <translation>Sao chép</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="645"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="577"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="591"/>
+        <source>Paste from Previous Keyframe</source>
+        <translation>Dán từ khung hình chính keyframe từ trước</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="689"/>
         <source>Paste</source>
         <translation>Dán</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="737"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="746"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="755"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="787"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="711"/>
+        <source>Flip selection vertically</source>
+        <translation>Lật vùng chọn theo chiều dọc</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="713"/>
+        <source>Flip selection horizontally</source>
+        <translation>Lật vùng chọn theo chiều ngang</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="729"/>
+        <source>Reposition frame</source>
+        <translation>Định vị lại khung frame</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="813"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="822"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="831"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="863"/>
         <source>Could not open file</source>
         <translation>Không thể mở file</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="738"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="814"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>File mà bạn vừa chọn là một thư mục, nên chúng tôi không thể mở nó. Nếu bạn đang muốn mở một đồ án sử dụng cấu trúc cũ, vui lòng mở file có định dạng .pcl.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="747"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="823"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>File mà bạn vừa chọn không tồn tại, nên chúng tôi không thể mở nó. Vui lòng đảm bảo rằng bạn đã nhập đúng đường dẫn và file có thể được truy cập rồi thử lại.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="756"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="832"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Chương trình này không có quyền đọc file mà bạn đã chọn. Vui lòng kiểm tra rằng bạn đã ủy quyền hạn đọc file này rồi thử lại.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="788"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="864"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
-        <translation type="unfinished"/>
+        <translation>Đã xảy ra lỗi không xác định trong quá trình tải tệp và chúng tôi không thể tải tệp của bạn.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="876"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="909"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="941"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1070"/>
+        <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
+        <translation>Tập tin file không được tìm thấy tại đường dẫn &quot;%1&quot;. Xin hãy kiểm tra hình đang được hiển thị tại vị trí được chỉ định và thử lại.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="944"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1073"/>
+        <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
+%1</source>
+        <translation>Định dạng hình ảnh không được hỗ trợ. Xin hãy thay đổi tập tin hình ảnh sang một trong những định dạng dưới đây và thử lại:
+%1</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="948"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1077"/>
+        <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
+        <translation>Một lỗi đã xảy ra khi đang xử lý hình ảnh. Xin hãy kiểm tra tập tin là một hình ảnh hợp lệ và thử lại. </translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="951"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1001"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1031"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1046"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1053"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1080"/>
+        <source>Import failed</source>
+        <translation>nhập không thành công</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="968"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="998"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1099"/>
         <source>Import Image</source>
         <translation>Nhập vào hình ảnh</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1116"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1001"/>
+        <source>You cannot import images into a vector layer.</source>
+        <translation>Bạn không thể nhập hình ảnh thành vector layer.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1031"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1046"/>
+        <source>You can only import images to a bitmap layer.</source>
+        <translation>Bạn chỉ có thể nhập hoặc chuyển hình ảnh vào bitmap layer.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1053"/>
+        <source>The selected image has a format that does not support animation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/interface/editor.cpp" line="1267"/>
         <source>Remove frame</source>
         <translation>Xóa frame</translation>
     </message>
@@ -2428,47 +2772,52 @@
         <translation>TIFF</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="106"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="103"/>
+        <source>WEBP</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/exportimageoptions.ui" line="111"/>
         <source>Transparency</source>
         <translation>Trong suốt</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="116"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="121"/>
         <source>Range</source>
         <translation>Khoảng vùng</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="149"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="154"/>
         <source>The last frame you want to include in the exported movie</source>
         <translation>Frame cuối cùng mà bạn muốn có trong phim xuất ra</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="152"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="157"/>
         <source>End Frame</source>
         <translation>Frame Kết thúc</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="177"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="182"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;End frame is set to last paintable keyframe (Useful when you only want to export to the last animated frame)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Frame kết được thiết lập thành frame cuối cùng có chứa hình vẽ (Hữu ích khi bạn chỉ muốn xuất tới frame hoạt hình cuối cùng)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="183"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="188"/>
         <source>To the end of sound clips</source>
         <translation>Đến cuối clip âm thanh</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="215"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="220"/>
         <source>The first frame you want to include in the exported movie</source>
         <translation>Frame đầu tiên mà bạn muốn có trong phim xuất ra</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="218"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="223"/>
         <source>Start Frame</source>
         <translation>Frame Mở đầu</translation>
     </message>
     <message>
-        <location filename="../app/ui/exportimageoptions.ui" line="238"/>
+        <location filename="../app/ui/exportimageoptions.ui" line="243"/>
         <source>Export keyframes only</source>
         <translation>Chỉ xuất keyframe</translation>
     </message>
@@ -2572,163 +2921,158 @@
 <context>
     <name>FileDialog</name>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="141"/>
+        <location filename="../app/src/filedialog.cpp" line="167"/>
         <source>Open animation</source>
         <translation>Mở phần hoạt hình</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="142"/>
+        <location filename="../app/src/filedialog.cpp" line="168"/>
         <source>Import image</source>
         <translation>Nhập vào hình ảnh</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="143"/>
+        <location filename="../app/src/filedialog.cpp" line="169"/>
         <source>Import image sequence</source>
         <translation>Nhập vào nhiều hình ảnh</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="144"/>
+        <location filename="../app/src/filedialog.cpp" line="170"/>
         <source>Import Animated GIF</source>
         <translation>Nhập hình động GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="145"/>
+        <location filename="../app/src/filedialog.cpp" line="171"/>
+        <source>Import animated image</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="172"/>
         <source>Import movie</source>
         <translation>Nhập vào Video</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="146"/>
+        <location filename="../app/src/filedialog.cpp" line="173"/>
         <source>Import sound</source>
         <translation>Nhập vào âm thanh</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="147"/>
+        <location filename="../app/src/filedialog.cpp" line="174"/>
         <source>Open palette</source>
         <translation>Mở bảng màu</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="156"/>
+        <location filename="../app/src/filedialog.cpp" line="183"/>
         <source>Save animation</source>
         <translation>Lưu file hoạt hình</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="157"/>
+        <location filename="../app/src/filedialog.cpp" line="184"/>
         <source>Export image</source>
         <translation>Xuất ra hình ảnh</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="158"/>
+        <location filename="../app/src/filedialog.cpp" line="185"/>
         <source>Export image sequence</source>
         <translation>Xuất ra hàng chờ hình ảnh</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="159"/>
+        <location filename="../app/src/filedialog.cpp" line="186"/>
         <source>Export Animated GIF</source>
         <translation>Xuất hình động GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="160"/>
+        <location filename="../app/src/filedialog.cpp" line="187"/>
+        <source>Export animated image</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/filedialog.cpp" line="188"/>
         <source>Export movie</source>
         <translation>Xuất ra video</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="161"/>
+        <location filename="../app/src/filedialog.cpp" line="189"/>
         <source>Export sound</source>
         <translation>Xuất ra âm thanh</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="162"/>
+        <location filename="../app/src/filedialog.cpp" line="190"/>
         <source>Export palette</source>
         <translation>Xuất ra bảng màu</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="189"/>
+        <location filename="../app/src/filedialog.cpp" line="218"/>
         <source>Animated GIF</source>
         <translation>Hình dộng GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="229"/>
-        <source>MyAnimation.pclx</source>
-        <translation>HoatHinhCuaToi.pclx</translation>
+        <location filename="../app/src/filedialog.cpp" line="273"/>
+        <source>untitled</source>
+        <translation>Không có tiêu đề</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="231"/>
-        <source>untitled.png</source>
-        <translation>untitled.png</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialog.cpp" line="232"/>
-        <source>untitled.gif</source>
-        <translation>untitled.gif</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialog.cpp" line="233"/>
-        <source>untitled.mp4</source>
-        <translation>untitled.mp4</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialog.cpp" line="234"/>
-        <source>untitled.wav</source>
-        <translation>untitled.wav</translation>
-    </message>
-    <message>
-        <location filename="../app/src/filedialog.cpp" line="235"/>
-        <source>untitled.xml</source>
-        <translation>untitled.xml</translation>
+        <location filename="../app/src/filedialog.cpp" line="280"/>
+        <source>MyAnimation</source>
+        <translation>Hoạt ảnh của tôi</translation>
     </message>
 </context>
 <context>
     <name>FileFormat</name>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
         <source>Pencil2D formats</source>
         <translation>Các định dạng của Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="34"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
         <source>Pencil2D Project</source>
         <translation>Dự án Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="31"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="34"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
         <source>Legacy Pencil2D Project</source>
         <translation>Dự án Legacy Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="37"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
         <source>Movie formats</source>
         <translation>Định dạng phim</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="42"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="45"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="43"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="46"/>
         <source>Image formats</source>
         <translation>Định dạng hình ảnh</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>Palette formats</source>
         <translation>Định dạng Bảng màu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>Pencil2D Palette</source>
         <translation>Bảng màu Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="48"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>GIMP Palette</source>
         <translation>Bảng màu GIMP</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="51"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="52"/>
         <source>Animated GIF</source>
         <translation>Hình động GIF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="54"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="55"/>
+        <source>Animated image formats</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/util/fileformat.h" line="58"/>
         <source>Sound formats</source>
         <translation>Định dạng âm thanh</translation>
     </message>
@@ -2736,97 +3080,99 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="220"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="235"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="243"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="250"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="229"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="244"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="252"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="259"/>
         <source>Invalid Save Path</source>
         <translation>Đường dẫn lưu tập tin không hợp lệ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="221"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
         <source>The path is empty.</source>
         <translation>Đường dẫn rỗng.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="236"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Đường dẫn (&quot;%1&quot;) trỏ tới thư mục.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="244"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Thư mục (&quot;%1&quot;) không tồn tại.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="251"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="260"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Đường dẫn (&quot;%1&quot;) không thể ghi đè.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="287"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="296"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="297"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="306"/>
         <source>Cannot Create Data Directory</source>
         <translation>Không thể tạo Được thư mục dữ liệu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="288"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>Tạo thư mục &quot;%1&quot; thất bại. Vui lòng đảm bảo bạn có đủ quyền hạn.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="297"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="307"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; là một file. Vui lòng xóa file và thử lại.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="325"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="340"/>
         <source>Miniz Error</source>
         <translation>Lỗi mã hóa Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="326"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="331"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="341"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="356"/>
         <source>An internal error occurred. Your file may not be saved successfully.</source>
         <translation>Có lỗi phát dinh nội tại. File của bạn có thể không được lưu thành công.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="340"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="330"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="355"/>
         <source>Internal Error</source>
         <translation>Lỗi phát sinh nội tại!</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="511"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="524"/>
         <source>Could not open file</source>
         <translation>Không thể mở file</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="521"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="534"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
-        <translation type="unfinished"/>
+        <translation>File này không tồn tại, không thể mở file. Vui lòng kiểm tra lại để đảm bảo đường dẫn chính xác và thử lại.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="526"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="539"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Không có quyền đọc file. Vui lòng kiểm tra rằng bạn đã ủy quyền hạn đọc file này rồi thử lại.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="532"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="545"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
-        <translation type="unfinished"/>
+        <translation>Đã xảy ra lỗi khi xử lý file của bạn. Điều này thường có nghĩa là dự án của bạn ít hay nhiều đã bị hỏng. Hảy thử lại với phiên bản mới hơn của Pencil2D, hoặc sử dụng file sao lưu nếu bạn có. Nếu bạn liên hệ với chúng tôi thông qua một trong các kênh chính thức, chúng tôi có thể giúp bạn. Để báo cáo lỗi, hãy liên hệ với chúng tôi thông qua:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="940"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="976"/>
         <source>Bitmap Layer %1</source>
         <translation>Layer Bitmap %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="942"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="978"/>
         <source>Vector Layer %1</source>
         <translation>Layer Vector %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="944"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="980"/>
         <source>Sound Layer %1</source>
         <translation>Layer Âm thanh %1</translation>
     </message>
@@ -2942,8 +3288,8 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="120"/>
-        <source>Dotted Cursor</source>
-        <translation>Dấu chấm con trỏ chuột</translation>
+        <source>Canvas Cursor</source>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="130"/>
@@ -3021,17 +3367,27 @@
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="416"/>
+        <source>Scroll Wheel Zoom</source>
+        <translation>Thu-Phóng bằng cuộn chuột</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="434"/>
+        <source>Invert Scroll Direction</source>
+        <translation>Đảo ngược hướng cuộn</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="444"/>
         <source>Advanced</source>
         <comment>groupBox title in Preference</comment>
         <translation>Nâng cao</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="431"/>
+        <location filename="../app/ui/generalpage.ui" line="459"/>
         <source>Memory Cache Budget</source>
         <translation>Dung lượng Bộ nhớ đệm</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="462"/>
+        <location filename="../app/ui/generalpage.ui" line="490"/>
         <source>MB</source>
         <translation>MB</translation>
     </message>
@@ -3166,12 +3522,12 @@
         <translation>Tiếng Trung – Đài Loan</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="192"/>
+        <location filename="../app/src/generalpage.cpp" line="195"/>
         <source>Restart Required</source>
         <translation>Yêu cầu khởi Động lại</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="193"/>
+        <location filename="../app/src/generalpage.cpp" line="196"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Thay Đổi ngôn ngữ sẽ Được thực hiện sau khi khỏi Đông lại phần mềm Pencil 2D</translation>
     </message>
@@ -3207,61 +3563,56 @@
 <context>
     <name>ImportImageSeqDialog</name>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="61"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="64"/>
         <source>Import Animated GIF</source>
         <translation>Nhập hình động GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="63"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="67"/>
         <source>Import image sequence</source>
         <translation>Nhập vào nhiều hình ảnh</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="72"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="70"/>
+        <source>Import animated image</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/importimageseqdialog.cpp" line="79"/>
         <source>Import predefined keyframe set</source>
         <translation>Nhập bộ keyframe định trước</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="73"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="80"/>
         <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
 The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
         <translation>Chọn một ảnh phù hợp với tiêu chuẩn: MyFile000.png, eg. Joe001.png
 Phần nhập liệu sẽ tìm kiếm hình ảnh phù hợp với tiêu chuẩn. Bạn có thể thấy kết quả ở hộp xem trước ở đưới.</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="172"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="179"/>
         <source>Importing image sequence...</source>
         <translation>Đang nhập chuỗi hình ảnh...</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="172"/>
-        <location filename="../app/src/importimageseqdialog.cpp" line="310"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="179"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="296"/>
         <source>Abort</source>
         <translation>Hủy</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="223"/>
-        <source>Warning</source>
-        <translation>Cảnh báo</translation>
-    </message>
-    <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="224"/>
-        <source>Unable to import</source>
-        <translation>Không thể nhập liệu</translation>
-    </message>
-    <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="310"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="296"/>
         <source>Importing images...</source>
         <translation>Đang nhập các hình ảnh...</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="366"/>
-        <location filename="../app/src/importimageseqdialog.cpp" line="391"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="356"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="381"/>
         <source>Invalid path</source>
         <translation>Đường dẫn không hợp lệ</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="367"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="357"/>
         <source>The following file did not meet the criteria: 
 %1 
 
@@ -3272,7 +3623,7 @@ Read the instructions and try again</source>
 Đọc hướng dẫn và thử lại</translation>
     </message>
     <message>
-        <location filename="../app/src/importimageseqdialog.cpp" line="392"/>
+        <location filename="../app/src/importimageseqdialog.cpp" line="382"/>
         <source>The following file(-s) did not meet the criteria: 
 %1</source>
         <translation>(Các) file sau đây không đáp ứng tiêu chí: 
@@ -3328,17 +3679,17 @@ Read the instructions and try again</source>
         <translation>Nhập các layer</translation>
     </message>
     <message>
-        <location filename="../app/src/importlayersdialog.cpp" line="62"/>
+        <location filename="../app/src/importlayersdialog.cpp" line="63"/>
         <source>Choose file</source>
         <translation>Chọn file</translation>
     </message>
     <message>
-        <location filename="../app/src/importlayersdialog.cpp" line="125"/>
+        <location filename="../app/src/importlayersdialog.cpp" line="140"/>
         <source>Opening document...</source>
         <translation>Đang mở tài liệu...</translation>
     </message>
     <message>
-        <location filename="../app/src/importlayersdialog.cpp" line="125"/>
+        <location filename="../app/src/importlayersdialog.cpp" line="140"/>
         <source>Abort</source>
         <translation>Hủy</translation>
     </message>
@@ -3356,24 +3707,48 @@ Read the instructions and try again</source>
         <translation>Nhập ảnh vào vị trí:</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="31"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
         <source>Center of current view</source>
         <translation>Tâm chế độ xem hiện tại</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="32"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="35"/>
         <source>Center of canvas (0,0)</source>
         <translation>Tâm vùng vẽ (0,0)</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="33"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="36"/>
         <source>Center of camera, current frame</source>
         <translation>Tâm máy quay, frame hiện tại</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="37"/>
         <source>Center of camera, follow camera</source>
         <translation>Tâm máy quay, di chuyển theo máy quay</translation>
+    </message>
+</context>
+<context>
+    <name>Layer</name>
+    <message>
+        <location filename="../core_lib/src/structure/layer.cpp" line="37"/>
+        <source>Undefined Layer</source>
+        <translation>Layer chưa xác Định</translation>
+    </message>
+</context>
+<context>
+    <name>LayerBitmap</name>
+    <message>
+        <location filename="../core_lib/src/structure/layerbitmap.cpp" line="28"/>
+        <source>Bitmap Layer</source>
+        <translation>Bitmap Layer</translation>
+    </message>
+</context>
+<context>
+    <name>LayerCamera</name>
+    <message>
+        <location filename="../core_lib/src/structure/layercamera.cpp" line="27"/>
+        <source>Camera Layer</source>
+        <translation>Layer máy quay</translation>
     </message>
 </context>
 <context>
@@ -3461,6 +3836,22 @@ Read the instructions and try again</source>
     </message>
 </context>
 <context>
+    <name>LayerSound</name>
+    <message>
+        <location filename="../core_lib/src/structure/layersound.cpp" line="28"/>
+        <source>Sound Layer</source>
+        <translation>Layer âm thanh</translation>
+    </message>
+</context>
+<context>
+    <name>LayerVector</name>
+    <message>
+        <location filename="../core_lib/src/structure/layervector.cpp" line="27"/>
+        <source>Vector Layer</source>
+        <translation>Vector layer</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow2</name>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="14"/>
@@ -3493,874 +3884,908 @@ Read the instructions and try again</source>
         <translation>Chọn</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="129"/>
+        <location filename="../app/ui/mainwindow2.ui" line="130"/>
         <source>View</source>
         <translation>Hiển thị</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="133"/>
+        <location filename="../app/ui/mainwindow2.ui" line="134"/>
         <source>Onion Skin</source>
         <translation>Onion skin</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="140"/>
+        <location filename="../app/ui/mainwindow2.ui" line="141"/>
         <source>Zoom</source>
         <translation>Thu phóng</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="152"/>
+        <location filename="../app/ui/mainwindow2.ui" line="157"/>
         <source>Layer Visibility</source>
         <translation>Độ hiển thị Layer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="183"/>
+        <location filename="../app/ui/mainwindow2.ui" line="165"/>
+        <source>Overlays</source>
+        <translation>Lớp phủ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="169"/>
+        <source>Perspective Lines Angle</source>
+        <translation>Góc đường phối cảnh</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="219"/>
         <source>Animation</source>
         <translation>Diễn hoạt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="187"/>
+        <location filename="../app/ui/mainwindow2.ui" line="223"/>
         <source>Timeline Selection</source>
-        <translation type="unfinished"/>
+        <translation>Chọn Dòng thời gian</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="218"/>
-        <location filename="../app/ui/mainwindow2.ui" line="873"/>
+        <location filename="../app/ui/mainwindow2.ui" line="255"/>
         <source>Tools</source>
         <translation>Công cụ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="236"/>
+        <location filename="../app/ui/mainwindow2.ui" line="273"/>
         <source>Layer</source>
         <translation>Layer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="240"/>
+        <location filename="../app/ui/mainwindow2.ui" line="277"/>
         <source>Change line color</source>
         <translation>Thay đổi màu của nét</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="258"/>
-        <location filename="../app/ui/mainwindow2.ui" line="804"/>
+        <location filename="../app/ui/mainwindow2.ui" line="295"/>
+        <location filename="../app/ui/mainwindow2.ui" line="824"/>
         <source>Help</source>
         <translation>Trợ giúp</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="275"/>
+        <location filename="../app/ui/mainwindow2.ui" line="312"/>
         <source>Windows</source>
         <translation>Cửa sổ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="296"/>
+        <location filename="../app/ui/mainwindow2.ui" line="316"/>
+        <source>Toolbars</source>
+        <translation>Thanh công cụ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="340"/>
         <source>New</source>
         <translation>Tạo Mới</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="305"/>
+        <location filename="../app/ui/mainwindow2.ui" line="349"/>
         <source>Open</source>
         <translation>Mở ra</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="314"/>
+        <location filename="../app/ui/mainwindow2.ui" line="358"/>
         <source>Save</source>
         <translation>Lưu lại</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="323"/>
+        <location filename="../app/ui/mainwindow2.ui" line="367"/>
         <source>Save As...</source>
         <translation>Lưu tại...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="332"/>
+        <location filename="../app/ui/mainwindow2.ui" line="372"/>
         <source>Exit</source>
         <translation>Thoát</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="337"/>
-        <location filename="../app/ui/mainwindow2.ui" line="365"/>
+        <location filename="../app/ui/mainwindow2.ui" line="377"/>
+        <location filename="../app/ui/mainwindow2.ui" line="405"/>
         <source>Image Sequence...</source>
         <translation>Hàng chờ hình ảnh</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="342"/>
-        <location filename="../app/ui/mainwindow2.ui" line="360"/>
+        <location filename="../app/ui/mainwindow2.ui" line="382"/>
+        <location filename="../app/ui/mainwindow2.ui" line="400"/>
         <source>Image...</source>
         <translation>Hình ảnh...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="347"/>
+        <location filename="../app/ui/mainwindow2.ui" line="387"/>
         <source>Movie...</source>
         <translation>Video...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="355"/>
+        <location filename="../app/ui/mainwindow2.ui" line="395"/>
         <source>Palette</source>
         <translation>Bảng màu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="370"/>
+        <location filename="../app/ui/mainwindow2.ui" line="410"/>
         <source>Movie Video...</source>
         <translation>Video phim...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="375"/>
+        <location filename="../app/ui/mainwindow2.ui" line="415"/>
         <source>Sound...</source>
         <translation>Âm thanh...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="380"/>
+        <location filename="../app/ui/mainwindow2.ui" line="420"/>
         <source>Image Predefined set...</source>
         <translation>Bộ hình ảnh định trước</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="389"/>
+        <location filename="../app/ui/mainwindow2.ui" line="429"/>
         <source>Undo</source>
         <translation>Quay lại bước trước Đó</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="398"/>
+        <location filename="../app/ui/mainwindow2.ui" line="438"/>
         <source>Redo</source>
         <translation>Thực hiện tiếp</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="410"/>
+        <location filename="../app/ui/mainwindow2.ui" line="450"/>
         <source>Cut</source>
         <translation>Cắt</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="422"/>
+        <location filename="../app/ui/mainwindow2.ui" line="462"/>
         <source>Copy</source>
         <translation>Sao chép</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="434"/>
+        <location filename="../app/ui/mainwindow2.ui" line="474"/>
         <source>Paste</source>
         <translation>Dán</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="439"/>
-        <source>Crop</source>
-        <translation>Gọt hình ảnh</translation>
+        <location filename="../app/ui/mainwindow2.ui" line="1110"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1113"/>
+        <source>Paste from Previous Keyframe</source>
+        <translation>Dán từ khung hình chính từ trước</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="444"/>
-        <source>Crop To Selection</source>
-        <translation>Gọt hình ảnh theo vùng chọn</translation>
+        <location filename="../app/ui/mainwindow2.ui" line="1125"/>
+        <source>Show Invisible Lines</source>
+        <translation>Hiển thị những đường nét ẩn</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="449"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1137"/>
+        <source>Show Outlines Only</source>
+        <translation>Chỉ hiển thị đường viền</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1161"/>
+        <source>Thirds</source>
+        <translation>Một phần ba</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1173"/>
+        <source>Golden Ratio</source>
+        <translation>Tỉ lệ vàng</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1185"/>
+        <source>Safe Areas</source>
+        <translation>Khu vực an toàn</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1197"/>
+        <source>One Point Perspective</source>
+        <translation>Góc nhìn tại một điểm</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1209"/>
+        <source>Two Point Perspective</source>
+        <translation>Góc nhìn tại hai điểm</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1221"/>
+        <source>Three Point Perspective</source>
+        <translation>Góc nhìn tại ba điểm</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1229"/>
+        <source>2°</source>
+        <translation>Góc hoặc hướng: 2 độ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1237"/>
+        <source>3°</source>
+        <translation>Góc hoặc hướng: 3 độ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1245"/>
+        <source>5°</source>
+        <translation>Góc hoặc hướng: 5 độ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1253"/>
+        <source>7.5°</source>
+        <translation>Góc hoặc hướng: 7.5 độ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1261"/>
+        <source>10°</source>
+        <translation>Góc hoặc hướng: 10 độ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1269"/>
+        <source>15°</source>
+        <translation>Góc hoặc hướng: 15 độ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1277"/>
+        <source>20°</source>
+        <translation>Góc hoặc hướng: 20 độ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1285"/>
+        <source>30°</source>
+        <translation>Góc hoặc hướng: 30 độ</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="479"/>
         <source>Select All</source>
         <translation>Chọn tất cả</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="454"/>
+        <location filename="../app/ui/mainwindow2.ui" line="484"/>
         <source>Deselect All</source>
         <translation>Bỏ chọn tất cả</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="463"/>
-        <location filename="../app/ui/mainwindow2.ui" line="668"/>
+        <location filename="../app/ui/mainwindow2.ui" line="493"/>
         <source>Clear Frame</source>
         <translation>Làm sạch Frame</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="468"/>
+        <location filename="../app/ui/mainwindow2.ui" line="498"/>
         <source>Preferences</source>
         <translation>Cài Đặt chung</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="476"/>
+        <location filename="../app/ui/mainwindow2.ui" line="506"/>
         <source>Reset Windows</source>
         <translation>Khởi Động lại</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="485"/>
+        <location filename="../app/ui/mainwindow2.ui" line="515"/>
         <source>Zoom In</source>
         <translation>Phóng to</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="494"/>
+        <location filename="../app/ui/mainwindow2.ui" line="524"/>
         <source>Zoom Out</source>
         <translation>Thu nhỏ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="499"/>
+        <location filename="../app/ui/mainwindow2.ui" line="529"/>
         <source>Rotate Clockwise</source>
         <translation>Xoay theo chiều kim Đồng hồ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="504"/>
+        <location filename="../app/ui/mainwindow2.ui" line="534"/>
         <source>Rotate Anticlockwise</source>
         <translation>Xoay ngược chiều kim đồng hồ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="509"/>
+        <location filename="../app/ui/mainwindow2.ui" line="543"/>
         <source>Reset</source>
         <translation>Đặt lại</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="521"/>
+        <location filename="../app/ui/mainwindow2.ui" line="555"/>
         <source>Horizontal Flip</source>
         <translation>Lật theo chiều ngang</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="533"/>
+        <location filename="../app/ui/mainwindow2.ui" line="567"/>
         <source>Vertical Flip</source>
         <translation>Lật theo chiều dọc</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="541"/>
+        <location filename="../app/ui/mainwindow2.ui" line="575"/>
         <source>Preview</source>
         <translation>Xem trước</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="549"/>
+        <location filename="../app/ui/mainwindow2.ui" line="587"/>
         <source>Grid</source>
         <translation>Lưới</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="561"/>
+        <location filename="../app/ui/mainwindow2.ui" line="599"/>
         <source>Previous</source>
         <translation>Trước Đó</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="564"/>
+        <location filename="../app/ui/mainwindow2.ui" line="602"/>
         <source>Show previous onion skin</source>
         <translation>HIển thị Onion Skin trước Đó</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="576"/>
+        <location filename="../app/ui/mainwindow2.ui" line="614"/>
         <source>Next</source>
         <translation>Kế tiếp</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="579"/>
+        <location filename="../app/ui/mainwindow2.ui" line="617"/>
         <source>Show next onion skin</source>
         <translation>Hiển thị Onion skin kế tiếp</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="588"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1490"/>
+        <location filename="../app/ui/mainwindow2.ui" line="626"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1515"/>
         <source>Play</source>
         <translation>Chạy</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="600"/>
+        <location filename="../app/ui/mainwindow2.ui" line="638"/>
         <source>Loop</source>
         <translation>Lập lại</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="609"/>
+        <location filename="../app/ui/mainwindow2.ui" line="643"/>
         <source>Next Frame</source>
         <translation>Frame kế tiếp</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="618"/>
+        <location filename="../app/ui/mainwindow2.ui" line="648"/>
         <source>Previous Frame</source>
         <translation>Frame trước Đó</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="623"/>
-        <source>Extend Frame</source>
-        <translation>Frame mở rộng</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="632"/>
+        <location filename="../app/ui/mainwindow2.ui" line="657"/>
         <source>Add Frame</source>
         <translation>Thêm Frame vào</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="641"/>
+        <location filename="../app/ui/mainwindow2.ui" line="666"/>
         <source>Duplicate Frame</source>
         <translation>Sao chép frame</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="650"/>
+        <location filename="../app/ui/mainwindow2.ui" line="675"/>
         <source>Remove Frame</source>
         <translation>Gỡ bỏ frame</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="659"/>
+        <location filename="../app/ui/mainwindow2.ui" line="684"/>
         <source>Move</source>
         <translation>Di chuyển</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="677"/>
+        <location filename="../app/ui/mainwindow2.ui" line="693"/>
         <source>Select</source>
         <translation>Chọn</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="686"/>
+        <location filename="../app/ui/mainwindow2.ui" line="702"/>
         <source>Brush</source>
         <translation>Cọ vẽ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="695"/>
+        <location filename="../app/ui/mainwindow2.ui" line="711"/>
         <source>Polyline</source>
         <translation>Polyline</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="704"/>
+        <location filename="../app/ui/mainwindow2.ui" line="720"/>
         <source>Smudge</source>
         <translation>Làm mờ</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="713"/>
+        <location filename="../app/ui/mainwindow2.ui" line="729"/>
         <source>Pen</source>
         <translation>Viết mực</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="722"/>
+        <location filename="../app/ui/mainwindow2.ui" line="738"/>
         <source>Hand</source>
         <translation>Bàn tay</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="731"/>
+        <location filename="../app/ui/mainwindow2.ui" line="747"/>
         <source>Pencil</source>
         <translation>Bút chì</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="740"/>
+        <location filename="../app/ui/mainwindow2.ui" line="756"/>
         <source>Bucket</source>
         <translation>Xô màu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="749"/>
+        <location filename="../app/ui/mainwindow2.ui" line="765"/>
         <source>Eyedropper</source>
         <translation>Chọn màu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="758"/>
+        <location filename="../app/ui/mainwindow2.ui" line="774"/>
         <source>Eraser</source>
         <translation>Tẩy xóa</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="767"/>
+        <location filename="../app/ui/mainwindow2.ui" line="783"/>
         <source>New Bitmap Layer</source>
         <translation>Layer Bitmap mới</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="776"/>
+        <location filename="../app/ui/mainwindow2.ui" line="792"/>
         <source>New Vector Layer</source>
         <translation>Layer Vector mới</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="785"/>
+        <location filename="../app/ui/mainwindow2.ui" line="801"/>
         <source>New Sound Layer</source>
         <translation>Layer âm thanh mới</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="794"/>
+        <location filename="../app/ui/mainwindow2.ui" line="810"/>
         <source>New Camera Layer</source>
         <translation>Layer máy quay mới</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="799"/>
+        <location filename="../app/ui/mainwindow2.ui" line="819"/>
         <source>Delete Current Layer</source>
         <translation>Xóa layer hiện hành</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="809"/>
+        <location filename="../app/ui/mainwindow2.ui" line="829"/>
         <source>About</source>
         <translation>Giới thiệu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="814"/>
-        <location filename="../app/ui/mainwindow2.ui" line="817"/>
+        <location filename="../app/ui/mainwindow2.ui" line="834"/>
+        <location filename="../app/ui/mainwindow2.ui" line="837"/>
         <source>Reset to default</source>
         <translation>Đưa về mặc Định</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="827"/>
-        <location filename="../app/ui/mainwindow2.ui" line="830"/>
+        <location filename="../app/ui/mainwindow2.ui" line="847"/>
+        <location filename="../app/ui/mainwindow2.ui" line="850"/>
         <source>Next Keyframe</source>
         <translation>Keyframe Kế tiếp</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="840"/>
-        <location filename="../app/ui/mainwindow2.ui" line="843"/>
+        <location filename="../app/ui/mainwindow2.ui" line="860"/>
+        <location filename="../app/ui/mainwindow2.ui" line="863"/>
         <source>Previous KeyFrame</source>
         <translation>Key frame trước Đó</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="854"/>
-        <source>Multilayer Onion Skin</source>
-        <translation>Onion Skin nhiều layer</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="865"/>
+        <location filename="../app/ui/mainwindow2.ui" line="874"/>
         <source>Range</source>
         <translation>Khoảng vùng</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="881"/>
-        <source>Timeline</source>
-        <translation>Dòng thời gian</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="889"/>
-        <source>Options</source>
-        <translation>Các lựa chọn</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="897"/>
-        <source>Color Wheel</source>
-        <translation>Bánh xe màu</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="905"/>
-        <source>Color Palette</source>
-        <translation>Bảng màu</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="913"/>
-        <source>Display Options</source>
-        <translation>Lựa chọn hiển thị</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="918"/>
+        <location filename="../app/ui/mainwindow2.ui" line="879"/>
         <source>Flip X</source>
         <translation>Lật theo trục X</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="923"/>
+        <location filename="../app/ui/mainwindow2.ui" line="884"/>
         <source>Flip Y</source>
         <translation>Lật theo trục Y</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="928"/>
+        <location filename="../app/ui/mainwindow2.ui" line="889"/>
         <source>Move Frame Forward</source>
         <translation>Di chuyển Frame tới trước</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="933"/>
+        <location filename="../app/ui/mainwindow2.ui" line="894"/>
         <source>Move Frame Backward</source>
         <translation>Di chuyển Frame về sau</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="938"/>
+        <location filename="../app/ui/mainwindow2.ui" line="899"/>
         <source>Pencil2D Website</source>
         <translation>Trang web Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="943"/>
+        <location filename="../app/ui/mainwindow2.ui" line="904"/>
         <source>Report a Bug</source>
         <translation>Báo cáo Lỗi</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="948"/>
+        <location filename="../app/ui/mainwindow2.ui" line="909"/>
         <source>Quick Reference Guide</source>
         <translation>Tài liệu Tham khảo Nhanh</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="951"/>
+        <location filename="../app/ui/mainwindow2.ui" line="912"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="956"/>
-        <location filename="../app/ui/mainwindow2.ui" line="961"/>
+        <location filename="../app/ui/mainwindow2.ui" line="917"/>
+        <source>Animated Image...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="922"/>
         <source>Animated GIF...</source>
         <translation>Hình động GIF...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="966"/>
+        <location filename="../app/ui/mainwindow2.ui" line="927"/>
         <source>Check for Updates</source>
         <translation>Kiểm tra bản Cập nhật</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="971"/>
+        <location filename="../app/ui/mainwindow2.ui" line="932"/>
         <source>Pencil2D Forum</source>
         <translation>Diễn đàn Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="976"/>
+        <location filename="../app/ui/mainwindow2.ui" line="937"/>
         <source>Pencil2D Discord</source>
         <translation>Discord Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="981"/>
+        <location filename="../app/ui/mainwindow2.ui" line="942"/>
         <source>200%</source>
         <translation>200%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="986"/>
+        <location filename="../app/ui/mainwindow2.ui" line="947"/>
         <source>300%</source>
         <translation>300%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="991"/>
+        <location filename="../app/ui/mainwindow2.ui" line="952"/>
         <source>400%</source>
         <translation>400%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="996"/>
+        <location filename="../app/ui/mainwindow2.ui" line="957"/>
         <source>50%</source>
         <translation>50%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1001"/>
+        <location filename="../app/ui/mainwindow2.ui" line="962"/>
         <source>33%</source>
         <translation>33%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1006"/>
+        <location filename="../app/ui/mainwindow2.ui" line="967"/>
         <source>25%</source>
         <translation>25%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1011"/>
+        <location filename="../app/ui/mainwindow2.ui" line="972"/>
         <source>100%</source>
         <translation>100%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1016"/>
+        <location filename="../app/ui/mainwindow2.ui" line="977"/>
         <source>Flip In-Between</source>
         <translation>Lật trang In-Between</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1021"/>
+        <location filename="../app/ui/mainwindow2.ui" line="982"/>
         <source>Flip Rolling</source>
         <translation>Lật trang Xoay vòng</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1026"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1084"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1025"/>
         <source>Current layer only</source>
         <translation>Chỉ layer hiện hành</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1031"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1092"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1033"/>
         <source>Relative</source>
         <translation>Tương đối</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1036"/>
-        <source>All Layers</source>
-        <translation>Mọi layer</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1041"/>
+        <location filename="../app/ui/mainwindow2.ui" line="987"/>
         <source>Peg bar Alignment</source>
         <translation>Căn chỉnh Thanh cọc</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1046"/>
+        <location filename="../app/ui/mainwindow2.ui" line="992"/>
         <source>Movie Audio...</source>
         <translation>Âm thanh Phim...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1051"/>
+        <location filename="../app/ui/mainwindow2.ui" line="997"/>
         <source>Append to Palette...</source>
         <translation>Nối tới Bảng màu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1056"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1002"/>
         <source>Replace Palette...</source>
         <translation>Thay thế Bảng màu</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1061"/>
-        <source>Other Palette format...</source>
-        <translation>Định dạng Bảng màu khác...</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1066"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1007"/>
         <source>Current keyframe</source>
         <translation>Keyframe hiện hành</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1071"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1012"/>
         <source>All keyframes on layer</source>
         <translation>Mọi keyframe trên layer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1076"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1017"/>
         <source>Layers from Project file...</source>
         <translation>Các layer từ file dự án</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1100"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1041"/>
         <source>All layers</source>
         <translation>Mọi layer</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1108"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1111"/>
-        <source>Onion Skins</source>
-        <translation>Onion Skin</translation>
+        <location filename="../app/ui/mainwindow2.ui" line="1046"/>
+        <source>Reposition Selected Frames</source>
+        <translation>Định vị lại khung frame đã chọn</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1116"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1051"/>
         <source>Layer / Keyframe opacity</source>
         <translation>Độ mờ Layer / Keyframe</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1121"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1056"/>
         <source>Open Temporary Directory</source>
         <translation>Mở Thư mục Tạm thời</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1129"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1064"/>
         <source>Lock Windows</source>
         <translation>Khóa cửa sổ hiển thị</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1134"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1069"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1149"/>
         <source>Center</source>
         <translation>Trung tâm</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1139"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1074"/>
         <source>Reset Rotation</source>
         <translation>Đưa về Góc xoay Mặc định</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1144"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1079"/>
         <source>Add Exposure</source>
-        <translation type="unfinished"/>
+        <translation>Tăng độ Phơi sáng</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1149"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1084"/>
         <source>Subtract Exposure</source>
-        <translation type="unfinished"/>
+        <translation>Giảm độ Phơi sáng</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1154"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1089"/>
         <source>Reverse Frames Order</source>
-        <translation type="unfinished"/>
+        <translation>Đảo ngược Thứ tự Frame</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1159"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1094"/>
         <source>Remove Frames</source>
-        <translation type="unfinished"/>
+        <translation>Xóa Frame</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1170"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1105"/>
         <source>Status Bar</source>
         <translation>Thanh Trạng thái</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="149"/>
+        <location filename="../app/src/mainwindow2.cpp" line="154"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>&lt;b&gt;Bảng màu:&lt;br&gt;Sử dụng(C)&lt;/b&gt;&lt;br&gt;bật tắt con trỏ</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="153"/>
+        <location filename="../app/src/mainwindow2.cpp" line="158"/>
         <source>Color inspector</source>
         <translation>Kiểm tra màu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="416"/>
+        <location filename="../app/src/mainwindow2.cpp" line="460"/>
         <source>Open Recent</source>
         <translation>Mở file gần Đây</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="444"/>
-        <location filename="../app/src/mainwindow2.cpp" line="468"/>
+        <location filename="../app/src/mainwindow2.cpp" line="485"/>
+        <location filename="../app/src/mainwindow2.cpp" line="509"/>
         <source>Dialog is already open!</source>
         <translation>Hộp thoại đã được mở!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="580"/>
+        <location filename="../app/src/mainwindow2.cpp" line="531"/>
+        <source>Please select at least 2 frames!</source>
+        <translation>Xin hãy chọn ít nhất 2 khung frames!</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="659"/>
         <source>Opening document...</source>
         <translation>Đang mở file...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="580"/>
-        <location filename="../app/src/mainwindow2.cpp" line="636"/>
-        <location filename="../app/src/mainwindow2.cpp" line="903"/>
+        <location filename="../app/src/mainwindow2.cpp" line="659"/>
+        <location filename="../app/src/mainwindow2.cpp" line="716"/>
         <source>Abort</source>
         <translation>Từ chối</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="624"/>
-        <location filename="../app/src/mainwindow2.cpp" line="726"/>
-        <location filename="../app/src/mainwindow2.cpp" line="799"/>
-        <location filename="../app/src/mainwindow2.cpp" line="924"/>
+        <location filename="../app/src/mainwindow2.cpp" line="704"/>
+        <location filename="../app/src/mainwindow2.cpp" line="806"/>
         <source>Warning</source>
         <translation>Cảnh báo</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="625"/>
+        <location filename="../app/src/mainwindow2.cpp" line="705"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Chương trình này hiện không có quyền viết đè lên file bạn đã chọn. Vui lòng đảm bảo bạn có quyền viết đè đối với file này trước khi lưu. Thay vào đó, bạn có thể sử dụng tùy chọn menu Lưu tại...  để lưu ở vị trí khác.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="636"/>
+        <location filename="../app/src/mainwindow2.cpp" line="716"/>
         <source>Saving document...</source>
         <translation>Đang lưu file...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="679"/>
+        <location filename="../app/src/mainwindow2.cpp" line="759"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Có lỗi phát sinh và file của bạn không thể lưu lại. Nếu bạn cho rằng Đây là lỗi thuộc về Pencil2D, hãy thông báo cho chúng tôi biết tại&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Hãy chắc rằng bạn Đã gửi những chi tiết lỗi sau Đây cho chúng tôi:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="727"/>
+        <location filename="../app/src/mainwindow2.cpp" line="807"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>File hoạt hình Đã Được thay Đổi
 Bạn có chắc rằng muốn lưu lại những thay Đổi này?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="750"/>
+        <location filename="../app/src/mainwindow2.cpp" line="830"/>
         <source>AutoSave Reminder</source>
         <translation>Nhắc nhở Tự động lưu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="751"/>
+        <location filename="../app/src/mainwindow2.cpp" line="831"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>File này chưa Được lưu.
 Bạn có muốn lưu ngay không?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="752"/>
+        <location filename="../app/src/mainwindow2.cpp" line="832"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Đừng hỏi lại</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="800"/>
-        <source>Unable to import image.&lt;br&gt;&lt;b&gt;TIP:&lt;/b&gt; Use Bitmap layer to import bitmaps.</source>
-        <translation>Không thể nhập vào hình ảnh.&lt;br&gt;&lt;b&gt;Cách giải quyết:&lt;/b&gt;Hãy sử dụng Layer Bitmap Để nhập vào ảnh Bitmaps.</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="903"/>
-        <source>Importing Animated GIF...</source>
-        <translation>Nhập hình động GIF</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="925"/>
-        <source>was unable to import %1</source>
-        <translation>không thể nhập %1</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1270"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1275"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1300"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1305"/>
         <source>Undo</source>
         <comment>Menu item text</comment>
         <translation>Hoàn tác</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1283"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1290"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1313"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1320"/>
         <source>Redo</source>
         <comment>Menu item text</comment>
         <translation>Làm lại</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1332"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1356"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>Việc mở bảng màu mới sẽ thay thế bảng màu cũ.
 (Các) Màu được sử dụng bới các nét vẽ sẽ bị thay đổi bởi thao tác này!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1334"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1358"/>
         <source>Open Palette</source>
         <translation>Mở Bảng màu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1485"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1510"/>
         <source>Stop</source>
         <translation>Ngừng ngay</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1535"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1559"/>
         <source>Restore Project?</source>
         <translation>Phục hồi Dự án?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1536"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1560"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D gặp lỗi khi đang đóng. Bạn có muốn phục hồi dự án?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1541"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1565"/>
         <source>Restore project</source>
         <translation>Phục hồi Dự án</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1575"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1599"/>
         <source>Recovery Failed.</source>
         <translation>Khôi phục Thất bại.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1576"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1600"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>Xin lỗi! Pencil2D không thể khôi phục dự án của bạn</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1585"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1610"/>
         <source>Recovery Succeeded!</source>
         <translation>Phục hồi Thành công!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1586"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1611"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>Vui lòng lưu lại hoạt động của bạn để tránh việc mất dữ liệu</translation>
     </message>
-</context>
-<context>
-    <name>MoveTool</name>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="406"/>
-        <source>Layer switch</source>
-        <comment>Windows title of layer switch pop-up.</comment>
-        <translation>Chuyển đổi layer</translation>
+        <location filename="../app/src/mainwindow2.cpp" line="1617"/>
+        <source>Main Toolbar</source>
+        <translation>Thanh công cụ chính</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/movetool.cpp" line="407"/>
-        <source>You are about to switch away, do you want to apply the transformation?</source>
-        <translation>Bạn sắp chuyển sang layer khác, bạn có muốn áp dụng phép biến đổi không?</translation>
+        <location filename="../app/src/mainwindow2.cpp" line="1631"/>
+        <source>View Toolbar</source>
+        <translation>Hiển thị thanh công cụ</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1643"/>
+        <source>Overlay Toolbar</source>
+        <translation>Che lấp thanh công cụ</translation>
     </message>
 </context>
 <context>
     <name>MovieExporter</name>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="79"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="86"/>
         <source>Checking environment...</source>
         <translation>Kiểm tra môi trường...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="113"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
         <source>Generating GIF...</source>
         <translation>Đang tạo GIF...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="127"/>
         <source>Assembling audio...</source>
         <translation>Đang ghép âm thanh</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="125"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="132"/>
         <source>Generating movie...</source>
         <translation>Đang tạo phim...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="130"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="137"/>
         <source>Done</source>
         <translation>Hoàn thành</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="566"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="578"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="703"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="715"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="595"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="607"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="732"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="744"/>
         <source>Something went wrong</source>
         <translation>Đã xảy ra sự cố</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="567"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="704"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="596"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="733"/>
         <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
         <translation>Có vẻ như chương trình phụ trợ video của chúng tôi đã không thoát bình thường. Phim của bạn có thể đã xuất không chính xác. Vui lòng thử lại và báo cáo điều này nếu tình trạng vẫn tiếp diễn.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="579"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="716"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="608"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="745"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
         <translation>Không thể khởi động chương trình phụ trợ video, vui lòng thử lại.</translation>
     </message>
@@ -4368,99 +4793,99 @@ Color(s) in strokes will be altered by this action!</source>
 <context>
     <name>MovieImporter</name>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="53"/>
-        <location filename="../core_lib/src/movieimporter.cpp" line="243"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="54"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="248"/>
         <source>Bitmap only</source>
         <translation>Chỉ bitmap</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="54"/>
-        <location filename="../core_lib/src/movieimporter.cpp" line="244"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="55"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="249"/>
         <source>You need to be on the bitmap layer to import a movie clip</source>
         <translation>Bạn cần nhập clip phim trên layer bitmap</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="150"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="155"/>
         <source>Loading video failed</source>
         <translation>Tải video thất bại</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="151"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="156"/>
         <source>Could not get duration from the specified video. Are you sure you are importing a valid video file?</source>
         <translation>Không thể lấy thời lượng từ video đã chỉ định. Bạn có chắc mình đang nhập file video hợp lệ không?</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="176"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="181"/>
         <source>Error creating folder</source>
         <translation>Lỗi tạo folder</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="177"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="182"/>
         <source>Unable to create a temporary folder, cannot import video.</source>
         <translation>Không thể tạo folder tạm thời, không thể nhập video.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="191"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="196"/>
         <source>Imported movie too big!</source>
         <translation>Dung lượng phim vừa nhập quá lớn!</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="192"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="197"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
         <translation>Clip phim quá dài. Pencil2D chỉ có thẻ chứa giữ %1 frame, trong khi đoạn phim này có chứa tới %2 frame. Vui lòng làm ngắn video của bạn rồi thử lại.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="227"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="232"/>
         <source>Unknown error</source>
         <translation>Lỗi không xác định</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="228"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="233"/>
         <source>This should not happen...</source>
         <translation>Điều này đáng lẽ không nên xảy ra...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="260"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="265"/>
         <source>Video processed, adding frames...</source>
         <translation>Đã xử lý video, đang thêm vào các frame...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="307"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="312"/>
         <source>Failed import</source>
         <translation>Nhập liệu Thất bại</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="308"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="313"/>
         <source>Was unable to find internal files, import unsuccessful.</source>
         <translation>Không tìm thấy các file nội tại, nhập liệu không thành công.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="323"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="328"/>
         <source>Sound only</source>
         <translation>Chỉ âm thanh</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="324"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="329"/>
         <source>You need to be on a sound layer to import the audio</source>
         <translation>Bạn cần nhập âm thanh trên layer âm thanh</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="336"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="341"/>
         <source>Move to an empty frame</source>
         <translation>Chuyển tới một frame trống</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="337"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="342"/>
         <source>A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again</source>
-        <translation type="unfinished"/>
+        <translation>Đã tồn tại một frame tại vị trí frame: %1 Hãy di chuyển scrubber tới vị trí trống trên dòng thời gian và thử lại</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="379"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="384"/>
         <source>FFmpeg Not Found</source>
         <translation>Không tìm thấy FFmpeg</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="380"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="385"/>
         <source>Please place the ffmpeg binary in plugins directory and try again</source>
         <translation>Vui lòng đặt tệp nhị phân ffmpeg vào thư mục plugins rồi thử lại</translation>
     </message>
@@ -4468,127 +4893,127 @@ Color(s) in strokes will be altered by this action!</source>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="339"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="388"/>
         <source>error</source>
         <translation>lỗi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="631"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
         <source>Black</source>
         <translation>Trở lại</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="632"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
         <source>Red</source>
         <translation>Đỏ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="633"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
         <source>Dark Red</source>
         <translation>Đỏ Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="634"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
         <source>Orange</source>
         <translation>Cam</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="635"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
         <source>Dark Orange</source>
         <translation>Cam Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="636"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
         <source>Yellow</source>
         <translation>Vàng</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="637"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
         <source>Dark Yellow</source>
         <translation>Vàng Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="638"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
         <source>Green</source>
         <translation>Xanh lá cây</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="639"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
         <source>Dark Green</source>
         <translation>Xanh lá cây Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="640"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
         <source>Cyan</source>
         <translation>Lục lam</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="641"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
         <source>Dark Cyan</source>
         <translation>Lục lam sậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="642"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
         <source>Blue</source>
         <translation>Xanh dương</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="643"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
         <source>Dark Blue</source>
         <translation>Xanh dương Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="644"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
         <source>White</source>
         <translation>Trắng</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="645"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
         <source>Very Light Grey</source>
         <translation>Xám nhạt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="646"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
         <source>Light Grey</source>
         <translation>Xám nhẹ</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="647"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
         <source>Grey</source>
         <translation>Xám</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="648"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
         <source>Dark Grey</source>
         <translation>Xám Đậm</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="649"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
         <source>Pale Orange Yellow</source>
         <translation>Pale Orange Yellow</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="650"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
         <source>Pale Grayish Orange Yellow</source>
         <translation>Pale Grayish Orange Yellow</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="651"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
         <source>Orange Yellow </source>
         <translation>Orange Yellow </translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="652"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
         <source>Grayish Orange Yellow</source>
         <translation>Grayish Orange Yellow</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="653"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="705"/>
         <source>Light Orange Yellow</source>
         <translation>Light Orange Yellow</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="654"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="706"/>
         <source>Light Grayish Orange Yellow</source>
         <translation>Light Grayish Orange Yellow</translation>
     </message>
@@ -4607,70 +5032,56 @@ Color(s) in strokes will be altered by this action!</source>
         <translation>Các frame Trước</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="126"/>
-        <location filename="../app/ui/onionskin.ui" line="129"/>
-        <source>Onion skin previous frame</source>
-        <translation>Onion skin frame trước</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/onionskin.ui" line="135"/>
-        <location filename="../app/ui/onionskin.ui" line="189"/>
-        <location filename="../app/ui/onionskin.ui" line="242"/>
-        <location filename="../app/ui/onionskin.ui" line="308"/>
+        <location filename="../app/ui/onionskin.ui" line="160"/>
+        <location filename="../app/ui/onionskin.ui" line="253"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="183"/>
-        <location filename="../app/ui/onionskin.ui" line="186"/>
+        <location filename="../app/ui/onionskin.ui" line="154"/>
+        <location filename="../app/ui/onionskin.ui" line="157"/>
         <source>Onion skin color: red</source>
         <translation>Màu onion skin: đỏ</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="215"/>
+        <location filename="../app/ui/onionskin.ui" line="186"/>
         <source>Next Frames</source>
         <translation>Các frame Tiếp theo</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="236"/>
-        <location filename="../app/ui/onionskin.ui" line="239"/>
-        <source>Onion skin next frame</source>
-        <translation>Chuyển onion skin frame tiếp theo</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/onionskin.ui" line="299"/>
-        <location filename="../app/ui/onionskin.ui" line="302"/>
+        <location filename="../app/ui/onionskin.ui" line="244"/>
+        <location filename="../app/ui/onionskin.ui" line="247"/>
         <source>Onion skin color: blue</source>
         <translation>Màu onion skin: xanh biển</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="334"/>
+        <location filename="../app/ui/onionskin.ui" line="279"/>
         <source>Distributed Opacity</source>
         <translation>Độ mờ Phân tán</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="376"/>
+        <location filename="../app/ui/onionskin.ui" line="321"/>
         <source>Min</source>
         <translation>Min</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="398"/>
-        <location filename="../app/ui/onionskin.ui" line="457"/>
+        <location filename="../app/ui/onionskin.ui" line="343"/>
+        <location filename="../app/ui/onionskin.ui" line="402"/>
         <source> %</source>
         <translation>%</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="435"/>
+        <location filename="../app/ui/onionskin.ui" line="380"/>
         <source>Max</source>
         <translation>Max</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="476"/>
+        <location filename="../app/ui/onionskin.ui" line="421"/>
         <source>Show Keyframes Only</source>
         <translation>Chỉ hiện thị các Keyframe</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="483"/>
+        <location filename="../app/ui/onionskin.ui" line="428"/>
         <source>Show During Playback</source>
         <translation>Hiển thị khi Chơi lại</translation>
     </message>
@@ -4678,12 +5089,12 @@ Color(s) in strokes will be altered by this action!</source>
 <context>
     <name>OverlayPainter</name>
     <message>
-        <location filename="../core_lib/src/overlaypainter.cpp" line="192"/>
+        <location filename="../core_lib/src/overlaypainter.cpp" line="215"/>
         <source>Safe Action area %1 %</source>
         <translation>Vùng An toàn Thao tác %1 %</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/overlaypainter.cpp" line="206"/>
+        <location filename="../core_lib/src/overlaypainter.cpp" line="242"/>
         <source>Safe Title area %1 %</source>
         <translation>Vùng An toàn cho Tiêu đề %1 %</translation>
     </message>
@@ -4764,6 +5175,19 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
     </message>
 </context>
 <context>
+    <name>Pencil2D</name>
+    <message>
+        <location filename="../app/src/pencil2d.cpp" line="116"/>
+        <source>Warning</source>
+        <translation>Cảnh báo</translation>
+    </message>
+    <message>
+        <location filename="../app/src/pencil2d.cpp" line="116"/>
+        <source>An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior.</source>
+        <translation>Một chương trình của Pencil2D đã được mở. Chạy nhiều chương trình của Pencil2D cùng một lúc là không khuyến khích và có thể dẫn đến việc mất dữ liệu data hoặc nhiều trường hợp và kết quả không mong muốn.</translation>
+    </message>
+</context>
+<context>
     <name>PredefinedKeySet</name>
     <message>
         <location filename="../app/src/predefinedsetmodel.h" line="65"/>
@@ -4784,27 +5208,27 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
         <translation>Cài Đặt chung</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="65"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="68"/>
         <source>General</source>
         <translation>Tổng quát</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="80"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="83"/>
         <source>Files</source>
         <translation>Tệp tin</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="95"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="98"/>
         <source>Timeline</source>
         <translation>Dòng thời gian</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="110"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="113"/>
         <source>Tools</source>
         <translation>Công cụ</translation>
     </message>
     <message>
-        <location filename="../app/ui/preferencesdialog.ui" line="125"/>
+        <location filename="../app/ui/preferencesdialog.ui" line="128"/>
         <source>Shortcuts</source>
         <translation>Tạo lối tắt</translation>
     </message>
@@ -4833,34 +5257,6 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
     </message>
 </context>
 <context>
-    <name>QObject</name>
-    <message>
-        <location filename="../core_lib/src/structure/layer.cpp" line="40"/>
-        <source>Undefined Layer</source>
-        <translation>Layer không xác định</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/layerbitmap.cpp" line="30"/>
-        <source>Bitmap Layer</source>
-        <translation>Layer Bitmap</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/layercamera.cpp" line="29"/>
-        <source>Camera Layer</source>
-        <translation>Layer Máy quay</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/layersound.cpp" line="29"/>
-        <source>Sound Layer</source>
-        <translation>Layer Âm thanh</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/layervector.cpp" line="27"/>
-        <source>Vector Layer</source>
-        <translation>Layer Vector</translation>
-    </message>
-</context>
-<context>
     <name>RecentFileMenu</name>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="31"/>
@@ -4881,80 +5277,88 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
     </message>
 </context>
 <context>
+    <name>RepositionFramesDialog</name>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="14"/>
+        <source>Reposition Frames</source>
+        <translation>Định vị lại khung frame</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="30"/>
+        <source>(Please move selection to desired destination.)</source>
+        <translation>(Xin hãy di chuyển sự lựa chọn đến nơi mong muốn.)</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="43"/>
+        <source>Reposition (x,y): </source>
+        <translation>Định vị lại trục (x, y):</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="50"/>
+        <source>Reposition on other layers?</source>
+        <translation>Định vị lại trên những layers khác?</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="57"/>
+        <source>Same keyframes as selected</source>
+        <translation>Cùng khung hình chính keyframe đã được lựa chọn</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="64"/>
+        <source>All keyframes on layer</source>
+        <translation>Mọi keyframe trên layer</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="93"/>
+        <source>Cancel</source>
+        <translation>Hủy</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/repositionframesdialog.ui" line="100"/>
+        <source>Reposition</source>
+        <translation>Định vị lại vị trí</translation>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="72"/>
+        <source>Repositioned: ( %1, %2 )</source>
+        <translation>Định vị lại vị trí: ( %1, %2 )</translation>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="78"/>
+        <source>Selected on Layer: %1</source>
+        <translation>Layer được chọn: %1</translation>
+    </message>
+    <message>
+        <location filename="../app/src/repositionframesdialog.cpp" line="91"/>
+        <source>Please move selection to desired destination
+or cancel</source>
+        <translation>Xin hãy di chuyển sự lựa chọn đến nơi mong muốn hoặc hủy bỏ</translation>
+    </message>
+</context>
+<context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="772"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="776"/>
         <source>Warning</source>
         <translation>Cảnh báo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="773"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="777"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Bạn đang cố gắng thay đổi một layer ẩn! Vui lòng chọn một layer khác (hoặc hiển thị layer hiện tại).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1650"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1467"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Xóa Vùng chọn</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1676"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1688"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1493"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1505"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Làm sạch hình ảnh</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1724"/>
-        <source>There is a gap in your drawing (or maybe you have zoomed too much).</source>
-        <translation>Xuất hiện hiện tượng rổ trên ảnh của bạn (hoặc bạn Đã phóng to quá nhiều).</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1727"/>
-        <source>Sorry! This doesn&apos;t always work.Please try again (zoom a bit, click at another location... )&lt;br&gt;if it doesn&apos;t work, zoom a bit and check that your paths are connected by pressing F1.).</source>
-        <translation>Thật xin lỗi! Chức năng này vẫn chưa Được hoàn thiện. Hãy thử lại một lần nữa (Phóng to một chút thôi, và chọn chỗ khác...) &lt;br&gt;Nếu chức năng vẫn không hoạt Động, Phóng to vào một chút và kiểm tra Đường dẫn chính xác bằng cách nhấn F1.).</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1732"/>
-        <source>Out of bound.</source>
-        <comment>Bucket tool fill error message</comment>
-        <translation>Tràn khỏi phạm vi</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1733"/>
-        <source>Could not find a closed path.</source>
-        <comment>Bucket tool fill error message</comment>
-        <translation>Không thể tìm Được Đường dẫn Đúng</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1734"/>
-        <source>Could not find the root index.</source>
-        <comment>Bucket tool fill error message</comment>
-        <translation>Không tìm thấy mục lục gốc.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1735"/>
-        <source>Flood fill error</source>
-        <translation>Lỗi tô màu</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1735"/>
-        <source>%1&lt;br&gt;&lt;br&gt;Error: %2</source>
-        <translation>%1&lt;br&gt;&lt;br&gt;Lỗi: %2</translation>
-    </message>
-</context>
-<context>
-    <name>SelectionManager</name>
-    <message>
-        <location filename="../core_lib/src/managers/selectionmanager.cpp" line="361"/>
-        <source>Flip selection vertically</source>
-        <translation>Lật vùng chọn theo chiều dọc</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/managers/selectionmanager.cpp" line="365"/>
-        <source>Flip selection horizontally</source>
-        <translation>Lật vùng chọn theo chiều ngang</translation>
     </message>
 </context>
 <context>
@@ -5000,65 +5404,71 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
         <translation>Phục hồi cài Đặt mặc Định các lối tắt</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="44"/>
+        <location filename="../app/src/shortcutspage.cpp" line="43"/>
         <source>Action</source>
         <comment>Shortcut table header</comment>
         <translation>Thao tác</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="44"/>
+        <location filename="../app/src/shortcutspage.cpp" line="43"/>
         <source>Shortcut</source>
         <comment>Shortcut table header</comment>
         <translation>Lối tắt</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="105"/>
+        <location filename="../app/src/shortcutspage.cpp" line="104"/>
         <source>Shortcut Conflict!</source>
         <translation>Xung Đột các lỗi tắt!</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="106"/>
+        <location filename="../app/src/shortcutspage.cpp" line="105"/>
         <source>%1 is already used, overwrite?</source>
         <translation>%1 Đã Được sử dụng, Viết Đè lên?</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="140"/>
+        <location filename="../app/src/shortcutspage.cpp" line="139"/>
         <source>Save Pencil2D Shortcut file</source>
         <translation>Lưu file Shortcut Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="141"/>
+        <location filename="../app/src/shortcutspage.cpp" line="140"/>
         <source>untitled.pcls</source>
         <translation>untitled.pcls</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="142"/>
-        <location filename="../app/src/shortcutspage.cpp" line="168"/>
+        <location filename="../app/src/shortcutspage.cpp" line="141"/>
+        <location filename="../app/src/shortcutspage.cpp" line="167"/>
         <source>Pencil2D Shortcut File(*.pcls)</source>
         <translation>File Shortcut Pencil2D(*.pcls)</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="166"/>
+        <location filename="../app/src/shortcutspage.cpp" line="165"/>
         <source>Open Pencil2D Shortcut file</source>
         <translation>Mở file Shortcut Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="302"/>
+        <location filename="../app/src/shortcutspage.cpp" line="301"/>
         <source>Add Frame</source>
         <comment>Shortcut</comment>
         <translation>Thêm frame</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="303"/>
+        <location filename="../app/src/shortcutspage.cpp" line="302"/>
         <source>Clear Frame</source>
         <comment>Shortcut</comment>
         <translation>Xóa frame</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="304"/>
+        <location filename="../app/src/shortcutspage.cpp" line="303"/>
         <source>Copy</source>
         <comment>Shortcut</comment>
         <translation>Sao chép</translation>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="304"/>
+        <source>Paste from Previous Keyframe</source>
+        <comment>Shortcut</comment>
+        <translation>Dán từ khung hình chính từ trước</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="305"/>
@@ -5172,25 +5582,25 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
         <location filename="../app/src/shortcutspage.cpp" line="323"/>
         <source>Selection: Add Frame Exposure</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Chọn: Tăng Phơi sáng Frame</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="324"/>
         <source>Selection: Subtract Frame Exposure</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Chọn: Giảm Phơi sáng Frame</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="325"/>
         <source>Selection: Reverse Keyframes</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Chọn: Đảo ngược các Keyframe</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="326"/>
         <source>Selection: Remove Keyframes</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Chọn: Xóa các Keyframe</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="327"/>
@@ -5416,156 +5826,150 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="364"/>
-        <source>Toggle Display Window Visibility</source>
-        <comment>Shortcut</comment>
-        <translation>Bật tắt Cửa sổ Hiển thị</translation>
-    </message>
-    <message>
-        <location filename="../app/src/shortcutspage.cpp" line="365"/>
         <source>Toggle Onion Skins Window Visibility</source>
         <comment>Shortcut</comment>
         <translation>Bật tắt Cửa sổ Onion Skin</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="366"/>
+        <location filename="../app/src/shortcutspage.cpp" line="365"/>
         <source>Toggle Timeline Window Visibility</source>
         <comment>Shortcut</comment>
         <translation>Bật tắt Cửa sổ Dòng thời gian</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="367"/>
+        <location filename="../app/src/shortcutspage.cpp" line="366"/>
         <source>Toggle Tools Window Visibility</source>
         <comment>Shortcut</comment>
         <translation>Bật tắt Cửa sổ Công cụ</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="368"/>
+        <location filename="../app/src/shortcutspage.cpp" line="367"/>
         <source>Toggle Options Window Visibility</source>
         <comment>Shortcut</comment>
         <translation>Bật tắt Cửa sổ Tùy chọn</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="369"/>
+        <location filename="../app/src/shortcutspage.cpp" line="368"/>
         <source>Brush Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Cọ vẽ</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="370"/>
+        <location filename="../app/src/shortcutspage.cpp" line="369"/>
         <source>Bucket Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Xô màu</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="371"/>
+        <location filename="../app/src/shortcutspage.cpp" line="370"/>
         <source>Eraser Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Tẩy</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="372"/>
+        <location filename="../app/src/shortcutspage.cpp" line="371"/>
         <source>Eyedropper Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Chọn màu</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="373"/>
+        <location filename="../app/src/shortcutspage.cpp" line="372"/>
         <source>Hand Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Bàn tay</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="374"/>
+        <location filename="../app/src/shortcutspage.cpp" line="373"/>
         <source>Move Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Duy chuyển</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="375"/>
+        <location filename="../app/src/shortcutspage.cpp" line="374"/>
         <source>Pen Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Bút mực</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="376"/>
+        <location filename="../app/src/shortcutspage.cpp" line="375"/>
         <source>Pencil Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Bút chì</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="377"/>
+        <location filename="../app/src/shortcutspage.cpp" line="376"/>
         <source>Polyline Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Polyline</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="378"/>
+        <location filename="../app/src/shortcutspage.cpp" line="377"/>
         <source>Select Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ Chọn </translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="379"/>
+        <location filename="../app/src/shortcutspage.cpp" line="378"/>
         <source>Smudge Tool</source>
         <comment>Shortcut</comment>
         <translation>Công cụ</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="380"/>
+        <location filename="../app/src/shortcutspage.cpp" line="379"/>
         <source>Undo</source>
         <comment>Shortcut</comment>
         <translation>Hoàn tác</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="381"/>
+        <location filename="../app/src/shortcutspage.cpp" line="380"/>
         <source>Set Zoom to 100%</source>
         <comment>Shortcut</comment>
         <translation>Đặt Thu phóng thành 100%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="382"/>
+        <location filename="../app/src/shortcutspage.cpp" line="381"/>
         <source>Set Zoom to 200%</source>
         <comment>Shortcut</comment>
         <translation>Đặt Thu phóng thành 200%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="383"/>
+        <location filename="../app/src/shortcutspage.cpp" line="382"/>
         <source>Set Zoom to 25%</source>
         <comment>Shortcut</comment>
         <translation>Đặt Thu phóng thành 25%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="384"/>
+        <location filename="../app/src/shortcutspage.cpp" line="383"/>
         <source>Set Zoom to 300%</source>
         <comment>Shortcut</comment>
         <translation>Đặt Thu phóng thành 300%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="385"/>
+        <location filename="../app/src/shortcutspage.cpp" line="384"/>
         <source>Set Zoom to 33%</source>
         <comment>Shortcut</comment>
         <translation>Đặt Thu phóng thành 33%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="386"/>
+        <location filename="../app/src/shortcutspage.cpp" line="385"/>
         <source>Set Zoom to 400%</source>
         <comment>Shortcut</comment>
         <translation>Đặt Thu phóng thành 400%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="387"/>
+        <location filename="../app/src/shortcutspage.cpp" line="386"/>
         <source>Set Zoom to 50%</source>
         <comment>Shortcut</comment>
         <translation>Đặt Thu phóng thành 50%</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="388"/>
+        <location filename="../app/src/shortcutspage.cpp" line="387"/>
         <source>Zoom In</source>
         <comment>Shortcut</comment>
         <translation>Zoom</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="389"/>
+        <location filename="../app/src/shortcutspage.cpp" line="388"/>
         <source>Zoom Out</source>
         <comment>Shortcut</comment>
         <translation>Thu nhỏ</translation>
@@ -5607,68 +6011,73 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
 <context>
     <name>StatusBar</name>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="94"/>
-        <location filename="../app/src/statusbar.cpp" line="112"/>
+        <location filename="../app/src/statusbar.cpp" line="98"/>
+        <location filename="../app/src/statusbar.cpp" line="119"/>
         <source>Click to draw. Hold Ctrl and Shift to erase or Alt to select a color from the canvas.</source>
         <translation>Nhấp để vẽ. Nhấn giữ Ctrl và Shift để xóa hoặc Alt để chọn lấy một màu từ vùng vẽ.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="97"/>
+        <location filename="../app/src/statusbar.cpp" line="101"/>
         <source>Click to erase.</source>
         <translation>Nhấp để xóa.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="100"/>
+        <location filename="../app/src/statusbar.cpp" line="104"/>
         <source>Click and drag to create or modify a selection. Hold Alt to modify its contents or press Backspace to clear them.</source>
         <translation>Nhấp và kéo chuột để tạo hoặc điều chỉnh một vùng chọn. Nhấn giữ Alt để chỉnh sửa nội dung trong vùng chọn hoặc nhấn Dấu cách để xóa chúng.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="103"/>
+        <location filename="../app/src/statusbar.cpp" line="107"/>
         <source>Click and drag to move an object. Hold Ctrl to rotate.</source>
         <translation>Nhấp và kéo chuột để di chuyển đối tượng. Nhấn giữ Ctrl để xoay.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="106"/>
+        <location filename="../app/src/statusbar.cpp" line="110"/>
+        <source>Click and drag to move the camera. While on in-between frames, drag handle to change interpolation.</source>
+        <translation>Chọn và kéo để di chuyển máy quay camera. Trong khi đang ở giữa các khung frames, kéo tay cầm để thay đổi nội suy.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/statusbar.cpp" line="113"/>
         <source>Click and drag to pan. Hold Ctrl to zoom or Alt to rotate.</source>
         <translation>Nhấp và kéo chuột để di chuyển màn ảnh. Nhấn giữ Ctrl để thu phóng hoặc Alt để xoay.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="109"/>
+        <location filename="../app/src/statusbar.cpp" line="116"/>
         <source>Click to liquefy pixels or modify a vector line. Hold Alt to smooth.</source>
         <translation>Nhấp để liquify các pixel hoác hiệu chỉnh các đường vector. Nhấn giữ Alt để làm mượt.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="117"/>
+        <location filename="../app/src/statusbar.cpp" line="124"/>
         <source>Click to continue the polyline. Double-click or press enter to complete the line or press Escape to discard it.</source>
         <translation>Nhấp để tiếp diễn polyline. Nhấp đúp chuột hoặc nhấn Enter để kết đường hoặc nhấn Esc để loại bỏ.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="121"/>
+        <location filename="../app/src/statusbar.cpp" line="128"/>
         <source>Click to create a new polyline. Hold Ctrl and Shift to erase.</source>
         <translation>Nhấp để tạo đường polyline mới. Nhấn giữ Ctrl và Shift để xóa.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="125"/>
+        <location filename="../app/src/statusbar.cpp" line="132"/>
         <source>Click to fill an area with the current color. Hold Alt to select a color from the canvas.</source>
         <translation>Nhấp để đổ màu một khu vực bằng màu hiện hành. Nhấn giữ Alt để chọn lấy một màu từ vùng vẽ.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="128"/>
+        <location filename="../app/src/statusbar.cpp" line="135"/>
         <source>Click to select a color from the canvas.</source>
         <translation>Nhấp để chọn lấy một màu từ vùng vẽ.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="131"/>
+        <location filename="../app/src/statusbar.cpp" line="138"/>
         <source>Click to paint. Hold Ctrl and Shift to erase or Alt to select a color from the canvas.</source>
         <translation>Nhấp để vẽ màu. Nhấn giữ Ctrl và Shift để xóa hoặc Alt để chọn lấy một màu từ vùng vẽ.</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="159"/>
+        <location filename="../app/src/statusbar.cpp" line="167"/>
         <source>This file has unsaved changes</source>
         <translation>File này có các thay đổi chưa được lưu</translation>
     </message>
     <message>
-        <location filename="../app/src/statusbar.cpp" line="163"/>
+        <location filename="../app/src/statusbar.cpp" line="171"/>
         <source>This file has no unsaved changes</source>
         <translation>File này không có thay đổi nào chưa được lưu</translation>
     </message>
@@ -5676,108 +6085,114 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
 <context>
     <name>TimeControls</name>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="47"/>
+        <location filename="../app/src/timecontrols.cpp" line="47"/>
         <source> fps</source>
         <translation>fps</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="48"/>
+        <location filename="../app/src/timecontrols.cpp" line="48"/>
         <source>Frames per second</source>
         <translation>Frame mỗi giây</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="55"/>
+        <location filename="../app/src/timecontrols.cpp" line="54"/>
+        <source>Display timecode</source>
+        <comment>Timeline menu for choose a timecode</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/timecontrols.cpp" line="57"/>
         <source>No text</source>
         <translation>Không text</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="56"/>
+        <location filename="../app/src/timecontrols.cpp" line="58"/>
         <source>Frames</source>
         <translation>Hiển thị số frame</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="57"/>
+        <location filename="../app/src/timecontrols.cpp" line="59"/>
         <source>SMPTE Timecode</source>
         <translation>Hiển thị Mã thời gian SMPTE</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="58"/>
+        <location filename="../app/src/timecontrols.cpp" line="60"/>
         <source>SFF Timecode</source>
         <translation>Hiển thị Mã thời gian SFF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="70"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="337"/>
+        <location filename="../app/src/timecontrols.cpp" line="75"/>
+        <location filename="../app/src/timecontrols.cpp" line="336"/>
         <source>Actual frame number</source>
         <translation>Số frame thực</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="73"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="355"/>
+        <location filename="../app/src/timecontrols.cpp" line="78"/>
+        <location filename="../app/src/timecontrols.cpp" line="354"/>
         <source>Timecode format MM:SS:FF</source>
         <translation>Định dạng Mã thời gian MM:SS:FF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="76"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="346"/>
+        <location filename="../app/src/timecontrols.cpp" line="81"/>
+        <location filename="../app/src/timecontrols.cpp" line="345"/>
         <source>Timecode format S:FF</source>
         <translation>Định dạng Mã thời gian S:FF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="87"/>
+        <location filename="../app/src/timecontrols.cpp" line="92"/>
         <source>Start of playback loop</source>
         <translation>Bắt Đầu của một vòng lập</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="95"/>
+        <location filename="../app/src/timecontrols.cpp" line="100"/>
         <source>End of playback loop</source>
         <translation>Kết thúc của một vòng lập</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="98"/>
+        <location filename="../app/src/timecontrols.cpp" line="103"/>
         <source>Range</source>
         <translation>Khoảng vùng</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="100"/>
+        <location filename="../app/src/timecontrols.cpp" line="105"/>
         <source>Playback range</source>
         <translation>Khoảng phát lại</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="127"/>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="251"/>
+        <location filename="../app/src/timecontrols.cpp" line="134"/>
+        <location filename="../app/src/timecontrols.cpp" line="258"/>
         <source>Play</source>
         <translation>Chạy</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="128"/>
+        <location filename="../app/src/timecontrols.cpp" line="135"/>
         <source>Loop</source>
         <translation>Vòng lặp</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="129"/>
+        <location filename="../app/src/timecontrols.cpp" line="136"/>
         <source>Sound on/off</source>
         <translation>Âm thanh mở/tắt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="130"/>
+        <location filename="../app/src/timecontrols.cpp" line="137"/>
         <source>Sound scrub on/off</source>
         <translation>Scrub âm thanh mở/tắt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="131"/>
+        <location filename="../app/src/timecontrols.cpp" line="138"/>
         <source>Jump to the End</source>
         <comment>Tooltip of the jump to end button</comment>
         <translation>Nhảy tới cuối</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="132"/>
+        <location filename="../app/src/timecontrols.cpp" line="139"/>
         <source>Jump to the Start</source>
         <comment>Tooltip of the jump to start button</comment>
         <translation>Nhảy tới đầu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timecontrols.cpp" line="246"/>
+        <location filename="../app/src/timecontrols.cpp" line="253"/>
         <source>Stop</source>
         <translation>Ngưng lại</translation>
     </message>
@@ -5785,334 +6200,99 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
 <context>
     <name>TimeLine</name>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="46"/>
+        <location filename="../app/src/timeline.cpp" line="45"/>
         <source>Timeline</source>
         <comment>Subpanel title</comment>
         <translation>Dòng thời gian</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="71"/>
+        <location filename="../app/src/timeline.cpp" line="71"/>
         <source>Layers:</source>
         <translation>Layers: </translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="76"/>
+        <location filename="../app/src/timeline.cpp" line="76"/>
         <source>Add Layer</source>
         <translation>Thêm Layer</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="81"/>
-        <source>Remove Layer</source>
-        <translation>Tháo bỏ Layer</translation>
+        <location filename="../app/src/timeline.cpp" line="80"/>
+        <source>Delete Layer</source>
+        <translation>Xóa Layer</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="94"/>
+        <location filename="../app/src/timeline.cpp" line="84"/>
+        <source>Duplicate Layer</source>
+        <translation>Nhân đôi lớp layer</translation>
+    </message>
+    <message>
+        <location filename="../app/src/timeline.cpp" line="97"/>
         <source>New Bitmap Layer</source>
         <translation>Layer Bitmap mới</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="95"/>
+        <location filename="../app/src/timeline.cpp" line="98"/>
         <source>New Vector Layer</source>
         <translation>Layer Vector mới</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="96"/>
+        <location filename="../app/src/timeline.cpp" line="99"/>
         <source>New Sound Layer</source>
         <translation>Layer âm thanh mới</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="97"/>
+        <location filename="../app/src/timeline.cpp" line="100"/>
         <source>New Camera Layer</source>
         <translation>Layer máy quay mới</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="99"/>
-        <source>&amp;Layer</source>
+        <location filename="../app/src/timeline.cpp" line="102"/>
+        <source>Layer</source>
         <comment>Timeline add-layer menu</comment>
-        <translation>&amp;Layer</translation>
+        <translation>Layer</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="117"/>
+        <location filename="../app/src/timeline.cpp" line="121"/>
         <source>Keys:</source>
         <translation>Keys:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="122"/>
+        <location filename="../app/src/timeline.cpp" line="126"/>
         <source>Add Frame</source>
         <translation>Thêm vào Frame mới</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="127"/>
+        <location filename="../app/src/timeline.cpp" line="130"/>
         <source>Remove Frame</source>
         <translation>Tháo bỏ Frame</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="132"/>
+        <location filename="../app/src/timeline.cpp" line="134"/>
         <source>Duplicate Frame</source>
         <translation>Sao chép Frame</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="135"/>
+        <location filename="../app/src/timeline.cpp" line="136"/>
         <source>Zoom:</source>
         <translation>Thu phóng:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="142"/>
+        <location filename="../app/src/timeline.cpp" line="143"/>
         <source>Adjust frame width</source>
         <translation>Điều chỉnh chiều rộng frame</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="294"/>
-        <source>Delete Layer</source>
-        <comment>Windows title of Delete current layer pop-up.</comment>
-        <translation>Xóa Layer</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="295"/>
-        <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
-        <translation>Bạn có chắc bạn muốn xóa layer: %1? Bạn không thể hoàn tác.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timeline.cpp" line="304"/>
-        <source>Please keep at least one camera layer in project</source>
-        <translation>Vui lòng giữ ít nhất một layer máy quay trong dự án của bạn</translation>
     </message>
 </context>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="236"/>
-        <source>Interpolate frames from: %1 to %2</source>
-        <translation>Các frame nội suy từ: %1 đến %2</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="237"/>
-        <source>Clear interpolation on: %1</source>
-        <translation>Xóa frame nội suy: %1</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="245"/>
-        <source>Slow</source>
-        <translation>Chậm</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="246"/>
-        <source>Normal</source>
-        <translation>Vừa</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="247"/>
-        <source>Quick</source>
-        <translation>Mau</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="248"/>
-        <source>Fast</source>
-        <translation>Nhanh</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="249"/>
-        <source>Faster</source>
-        <translation>Nhanh hơn</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="250"/>
-        <source>Fastest</source>
-        <translation>Nhanh nhất</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="253"/>
-        <source>Circle-based</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="254"/>
-        <source>Other</source>
-        <translation>Khác</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="256"/>
-        <source>Slow Ease-in</source>
-        <translation>Ease-in chậm</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="257"/>
-        <source>Slow Ease-out</source>
-        <translation>Ease-out chậm</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="258"/>
-        <source>Slow Ease-in - Ease-out</source>
-        <translation>Ease-in chậm - Ease-out</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="259"/>
-        <source>Slow Ease-out - Ease-in</source>
-        <translation>Ease-out chậm - Ease in</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="260"/>
-        <source>Normal Ease-in</source>
-        <translation>Ease-in bình thường</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="261"/>
-        <source>Normal Ease-out</source>
-        <translation>Ease-out bình thường</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="262"/>
-        <source>Normal Ease-in - Ease-out</source>
-        <translation>Ease-in bình thường - Ease-out</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="263"/>
-        <source>Normal Ease-out - Ease-in</source>
-        <translation>Ease-out bình thường - Ease-in</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="264"/>
-        <source>Quick Ease-in</source>
-        <translation>Ease-in mau</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="265"/>
-        <source>Quick Ease-out</source>
-        <translation>Ease-out mau</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="266"/>
-        <source>Quick Ease-in - Ease-out</source>
-        <translation>Ease-in mau - Ease out</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="267"/>
-        <source>Quick Ease-out - Ease-in</source>
-        <translation>Ease-out mau - Ease-in</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="268"/>
-        <source>Fast Ease-in</source>
-        <translation>Ease-in nhanh</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="269"/>
-        <source>Fast Ease-out</source>
-        <translation>Ease-out nhanh</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="270"/>
-        <source>Fast Ease-in - Ease-out</source>
-        <translation>Ease-in nhanh - Ease-out </translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="271"/>
-        <source>Fast Ease-out - Ease-in</source>
-        <translation>Ease-out nhanh - Ease-in</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="272"/>
-        <source>Faster Ease-in</source>
-        <translation>Ease-in nhanh hơn</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="273"/>
-        <source>Faster Ease-out</source>
-        <translation>Ease-out nhanh hơn</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="274"/>
-        <source>Faster Ease-in - Ease-out</source>
-        <translation>Ease-in nhanh hơn - Ease-out</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="275"/>
-        <source>Faster Ease-out - Ease-in</source>
-        <translation>Ease-out nhanh hơn - Ease-in</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="276"/>
-        <source>Fastest Ease-in</source>
-        <translation>Ease-in nhanh nhất</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="277"/>
-        <source>Fastest Ease-out</source>
-        <translation>Ease-out nhanh nhất</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="278"/>
-        <source>Fastest Ease-in - Ease-out</source>
-        <translation>Ease-in nhanh nhất - Ease-out</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="279"/>
-        <source>Fastest Ease-out - Ease-in</source>
-        <translation>Ease-out nhanh nhất - Ease-in</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="280"/>
-        <source>Circle-based Ease-in</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="281"/>
-        <source>Circle-based Ease-out</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="282"/>
-        <source>Circle-based Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="283"/>
-        <source>Circle-based Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="284"/>
-        <source>Hold to frame %1</source>
-        <translation>Giữ lấy frame %1</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="285"/>
-        <source>Linear interpolation</source>
-        <translation>Phép nội suy tuyến tính</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="302"/>
-        <source>Interpolate frames at: %1</source>
-        <translation>Các frame nội suy tại: %1</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="1259"/>
+        <location filename="../app/src/timelinecells.cpp" line="1185"/>
         <source>Layer Properties</source>
         <translation>Thông tin Layer</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/timelinecells.cpp" line="1260"/>
+        <location filename="../app/src/timelinecells.cpp" line="1186"/>
         <source>Layer name:</source>
         <translation>Tên layer:</translation>
-    </message>
-</context>
-<context>
-    <name>Timeline2</name>
-    <message>
-        <location filename="../app/ui/timeline2.ui" line="14"/>
-        <source>Timeline</source>
-        <translation>Dòng thời gian</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/timeline2.ui" line="54"/>
-        <source>Layers</source>
-        <translation>Layers</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/timeline2.ui" line="68"/>
-        <location filename="../app/ui/timeline2.ui" line="82"/>
-        <source>...</source>
-        <translation>...</translation>
     </message>
 </context>
 <context>
@@ -6131,7 +6311,7 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="77"/>
         <source>Short scrub</source>
-        <translation>Làm sạch một ít</translation>
+        <translation>Scrub đoạn ngắn</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="87"/>
@@ -6166,12 +6346,12 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="123"/>
         <source>Keep drawing on the previous key-frame</source>
-        <translation type="unfinished"/>
+        <translation>Tiếp tục vẽ trên keyframe trước</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="135"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Applies to Pencil, Eraser, Pen, Polyline, Bucket and Brush tools)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;(Áp dụng cho các công cụ Bút chì, Tẩy xóa, Bút mực, Polyline, Xô màu và Cọ vẽ)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="148"/>
@@ -6243,6 +6423,11 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
         <translation>Các công cụ</translation>
     </message>
     <message>
+        <location filename="../app/ui/toolboxwidget.ui" line="416"/>
+        <source>Smudge</source>
+        <translation>Làm mờ</translation>
+    </message>
+    <message>
         <location filename="../app/src/toolbox.cpp" line="78"/>
         <source>Pencil Tool (%1): Sketch with pencil</source>
         <translation>Công cụ bút chì (%1): Vẽ như một bút chì</translation>
@@ -6280,7 +6465,7 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
     <message>
         <location filename="../app/src/toolbox.cpp" line="92"/>
         <source>Paint Bucket Tool (%1): Fill selected area with a color</source>
-        <translation>Công cụ xô tô màu (%1): Tô màu một vùng vẽ với màu sắc chỉ Định</translation>
+        <translation>Công cụ Xô màu (%1): Tô màu một vùng vẽ với màu sắc chỉ định</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="94"/>
@@ -6294,71 +6479,61 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
     </message>
     <message>
         <location filename="../app/src/toolbox.cpp" line="99"/>
-        <source>Clear Frame (%1): Erases content of selected frame</source>
-        <translation>Làm sạch Frame (%1): Làm sạch nội dung của một Frame Được chọn</translation>
-    </message>
-    <message>
-        <location filename="../app/src/toolbox.cpp" line="101"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
         <translation>Công cụ làm mờ (%1):&lt;br&gt;Chỉnh sửa Polyline/Đường cong&lt;br&gt;Pixels ảnh có Pixel hiệu ứng chất lỏng&lt;br&gt;(%1)+[Alt]: Mềm mại</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="105"/>
+        <location filename="../app/src/toolbox.cpp" line="103"/>
         <source>Pencil Tool (%1)</source>
         <translation>Công cụ bút chì (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="107"/>
+        <location filename="../app/src/toolbox.cpp" line="105"/>
         <source>Select Tool (%1)</source>
         <translation>Công cụ chọn (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="109"/>
+        <location filename="../app/src/toolbox.cpp" line="107"/>
         <source>Move Tool (%1)</source>
         <translation>Công cụ di chuyển (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="111"/>
+        <location filename="../app/src/toolbox.cpp" line="109"/>
         <source>Hand Tool (%1)</source>
         <translation>Công cụ bàn tay (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="113"/>
+        <location filename="../app/src/toolbox.cpp" line="111"/>
         <source>Pen Tool (%1)</source>
         <translation>Công cụ bút mực (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="115"/>
+        <location filename="../app/src/toolbox.cpp" line="113"/>
         <source>Eraser Tool (%1)</source>
         <translation>Công cụ gôm tẩy (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="117"/>
+        <location filename="../app/src/toolbox.cpp" line="115"/>
         <source>Polyline Tool (%1)</source>
         <translation>Công cụ Polyline (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="119"/>
+        <location filename="../app/src/toolbox.cpp" line="117"/>
         <source>Paint Bucket Tool (%1)</source>
         <translation>Công cụ xô màu (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="121"/>
+        <location filename="../app/src/toolbox.cpp" line="119"/>
         <source>Brush Tool (%1)</source>
         <translation>Công cụ cọ vẽ (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="123"/>
+        <location filename="../app/src/toolbox.cpp" line="121"/>
         <source>Eyedropper Tool (%1)</source>
         <translation>Công cụ chọn màu (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="125"/>
-        <source>Clear Tool (%1)</source>
-        <translation>Công cụ làm sạch (%1)</translation>
-    </message>
-    <message>
-        <location filename="../app/src/toolbox.cpp" line="127"/>
+        <location filename="../app/src/toolbox.cpp" line="123"/>
         <source>Smudge Tool (%1)</source>
         <translation>Công cụ làm mờ (%1)</translation>
     </message>
@@ -6366,19 +6541,19 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="33"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="35"/>
         <source>Options</source>
         <comment>Window title of tool option panel like pen width, feather etc..</comment>
         <translation>Tùy chọn</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="53"/>
-        <location filename="../app/src/tooloptionwidget.cpp" line="200"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="57"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="213"/>
         <source>Width</source>
         <translation>Chiều rộng</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="57"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="61"/>
         <source>Feather</source>
         <translation>Làm mềm vùng rìa ảnh</translation>
     </message>
@@ -6411,131 +6586,116 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
         <translation>Sử dựng feather</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="135"/>
+        <location filename="../app/ui/tooloptions.ui" line="136"/>
+        <source>Show Size and Diff.</source>
+        <translation>Hiển thị kích thước và sự khác nhau</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/tooloptions.ui" line="159"/>
         <source>Contour will be filled</source>
         <translation>Đường viền sẽ được lấp màu</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="138"/>
+        <location filename="../app/ui/tooloptions.ui" line="162"/>
         <source>Fill Contour</source>
         <translation>Lấp màu đường viền</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="145"/>
+        <location filename="../app/ui/tooloptions.ui" line="169"/>
         <source>Use Bézier curves to create curved lines</source>
         <translation>Sử dụng dạng đường cong Bézier để vẽ</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="148"/>
+        <location filename="../app/ui/tooloptions.ui" line="172"/>
         <source>Bézier</source>
         <comment>Tool options</comment>
         <translation>Bézier</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="155"/>
+        <location filename="../app/ui/tooloptions.ui" line="179"/>
         <source>Vary strokes based on pressure when drawing on a tablet</source>
         <translation>Các nét thay đổi dựa trên lực nhấn khi vẽ trên máy tính bảng</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="158"/>
+        <location filename="../app/ui/tooloptions.ui" line="182"/>
         <source>Pressure</source>
         <comment>Tool options</comment>
         <translation>Lực nhấn</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="165"/>
+        <location filename="../app/ui/tooloptions.ui" line="189"/>
         <source>Use anti-aliasing to create smooth edges</source>
         <translation>Sử dụng khử răng cưa để tạo các cạnh mịn</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="168"/>
+        <location filename="../app/ui/tooloptions.ui" line="192"/>
         <source>Anti-Aliasing</source>
         <comment>Brush AA</comment>
         <translation>Khử răng cưa</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="175"/>
+        <location filename="../app/ui/tooloptions.ui" line="199"/>
         <source>Make invisible</source>
         <translation>Làm tàng hình</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="178"/>
+        <location filename="../app/ui/tooloptions.ui" line="202"/>
         <source>Invisible</source>
         <comment>Tool options</comment>
         <translation>Tàng hình</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="185"/>
+        <location filename="../app/ui/tooloptions.ui" line="209"/>
         <source>Preserve Alpha</source>
         <translation>Bảo tồn kênh Alpha</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="188"/>
+        <location filename="../app/ui/tooloptions.ui" line="212"/>
         <source>Alpha</source>
         <comment>Tool options</comment>
         <translation>Alpha</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="195"/>
+        <location filename="../app/ui/tooloptions.ui" line="219"/>
         <source>Merge vector lines when they are close together</source>
         <translation>Hợp nhất các đường vectơ khi chúng gần nhau</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="198"/>
+        <location filename="../app/ui/tooloptions.ui" line="222"/>
         <source>Merge</source>
         <comment>Vector line merge (Tool options)</comment>
         <translation>Hợp nhất</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="220"/>
-        <source>Transparency</source>
-        <translation>Độ trong suốt</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="233"/>
-        <source>Defines how the fill will behave when the new color is not opaque</source>
-        <translation>Xác định cách chức năng đổ màu sẽ được thi hành khi màu mới thấu quang</translation>
-    </message>
-    <message>
         <location filename="../app/ui/tooloptions.ui" line="237"/>
-        <source>Overlay</source>
-        <translation>Lớp phủ</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="242"/>
-        <source>Replace</source>
-        <translation>Thay thế</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="261"/>
         <source>Stabilizer</source>
         <translation>Bộ ổn định</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="268"/>
+        <location filename="../app/ui/tooloptions.ui" line="244"/>
         <source>Use stabilizer to interpolate strokes</source>
         <translation>Sử dụng bộ ổn định để nội suy các nét</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="271"/>
+        <location filename="../app/ui/tooloptions.ui" line="247"/>
         <source>None</source>
         <comment>Stablizer level</comment>
         <translation>Không</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="275"/>
+        <location filename="../app/ui/tooloptions.ui" line="251"/>
         <source>None</source>
         <comment>Stabilizer option</comment>
         <translation>Không</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="280"/>
+        <location filename="../app/ui/tooloptions.ui" line="256"/>
         <source>Simple</source>
         <comment>Stabilizer option</comment>
         <translation>Đơn giản</translation>
     </message>
     <message>
-        <location filename="../app/ui/tooloptions.ui" line="285"/>
+        <location filename="../app/ui/tooloptions.ui" line="261"/>
         <source>Strong</source>
         <comment>Stabilizer option</comment>
         <translation>Mạnh</translation>
@@ -6569,7 +6729,22 @@ Kiểm tra vùng chọn và vui lòng thử lại.</translation>
         <translation>15 độ</translation>
     </message>
     <message>
-        <location filename="../app/src/toolspage.cpp" line="64"/>
+        <location filename="../app/ui/toolspage.ui" line="99"/>
+        <source>Hand Tool</source>
+        <translation>Công cụ Bàn tay</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/toolspage.ui" line="117"/>
+        <source>Zoom in by dragging the cursor up instead of down</source>
+        <translation>Phóng to bằng cách cuộn chuột lên thay vì cuộn xuống</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/toolspage.ui" line="120"/>
+        <source>Invert Zoom Direction</source>
+        <translation>Đảo ngược hướng thu phóng</translation>
+    </message>
+    <message>
+        <location filename="../app/src/toolspage.cpp" line="71"/>
         <source>%1 degrees</source>
         <translation>%1 độ</translation>
     </message>

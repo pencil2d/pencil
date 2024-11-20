@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include <QString>
 #include <QCursor>
 #include <QPainter>
-#include <QPointF>
 #include <QHash>
 #include <QEvent>
 #include "pencildef.h"
@@ -30,6 +29,7 @@ GNU General Public License for more details.
 class QPixmap;
 class Editor;
 class ScribbleArea;
+class QEnterEvent;
 class QKeyEvent;
 class QMouseEvent;
 class QTabletEvent;
@@ -89,6 +89,9 @@ public:
     // return true if handled
     virtual bool keyPressEvent(QKeyEvent*) { return false; }
     virtual bool keyReleaseEvent(QKeyEvent*) { return false; }
+
+    virtual bool enterEvent(QEnterEvent*) { return false; }
+    virtual bool leaveEvent(QEvent*) { return false; }
 
     virtual void clearToolData() {}
     virtual void resetToDefault() {}

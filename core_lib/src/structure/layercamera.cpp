@@ -53,7 +53,7 @@ bool LayerCamera::addKeyFrame(int position, KeyFrame *pKeyFrame)
 bool LayerCamera::removeKeyFrame(int position)
 {
     mergeControlPointIfNeeded(position);
-    return Layer::removeKeyFrame(position);;
+    return Layer::removeKeyFrame(position);
 }
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber) const

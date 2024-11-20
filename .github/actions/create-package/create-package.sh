@@ -94,15 +94,7 @@ create_package_macos() {
   echo "::group::Deploy Qt libraries"
   macdeployqt Pencil2D.app
   echo "::endgroup::"
-  echo "::group::Apply macdeployqt fix"
-  curl -fsSLO https://github.com/aurelien-rainone/macdeployqtfix/archive/master.zip
-  bsdtar xf master.zip
-  /Library/Frameworks/Python.framework/Versions/2.7/bin/python macdeployqtfix-master/macdeployqtfix.py \
-    Pencil2D.app/Contents/MacOS/Pencil2D \
-    /usr/local/Cellar/qt/5.9.1/
-  echo "::endgroup::"
-  echo "Remove files"
-  rm -rf macdeployqtfix-master master.zip
+  
   popd >/dev/null
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
