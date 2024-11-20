@@ -15,7 +15,7 @@ GNU General Public License for more details.
 
 */
 
-#include "backupelement.h"
+#include "legacybackupelement.h"
 
 #include "editor.h"
 #include "layer.h"
@@ -24,8 +24,9 @@ GNU General Public License for more details.
 #include "object.h"
 #include "selectionmanager.h"
 #include "layermanager.h"
+#include "undoredomanager.h"
 
-void BackupBitmapElement::restore(Editor* editor)
+void BackupLegacyBitmapElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->findLayerById(this->layerId);
 
@@ -37,7 +38,7 @@ void BackupBitmapElement::restore(Editor* editor)
 
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
-        editor->restoreKey();
+        editor->undoRedo()->restoreLegacyKey();
     }
     else
     {
@@ -60,10 +61,10 @@ void BackupBitmapElement::restore(Editor* editor)
 
     selectMan->calculateSelectionTransformation();
 
-    editor->frameModified(this->frame);
+    emit editor->frameModified(this->frame);
 }
 
-void BackupVectorElement::restore(Editor* editor)
+void BackupLegacyVectorElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->findLayerById(this->layerId);
     for (int i = 0; i < editor->object()->getLayerCount(); i++)
@@ -87,7 +88,7 @@ void BackupVectorElement::restore(Editor* editor)
 
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
-        editor->restoreKey();
+        editor->undoRedo()->restoreLegacyKey();
     }
     else
     {
@@ -109,11 +110,11 @@ void BackupVectorElement::restore(Editor* editor)
     selectMan->setTranslation(translation);
     selectMan->calculateSelectionTransformation();
 
-    editor->frameModified(this->frame);
+    emit editor->frameModified(this->frame);
 
 }
 
-void BackupSoundElement::restore(Editor* editor)
+void BackupLegacySoundElement::restore(Editor* editor)
 {
     Layer* layer = editor->object()->findLayerById(this->layerId);
 
@@ -122,11 +123,11 @@ void BackupSoundElement::restore(Editor* editor)
     if (editor->currentFrame() != this->frame) {
         editor->scrubTo(this->frame);
     }
-    editor->frameModified(this->frame);
+    emit editor->frameModified(this->frame);
 
     // TODO: soundclip won't restore if overlapping on first frame
     if (this->frame > 0 && layer->getKeyFrameAt(this->frame) == nullptr)
     {
-        editor->restoreKey();
+        editor->undoRedo()->restoreLegacyKey();
     }
 }

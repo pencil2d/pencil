@@ -1035,6 +1035,7 @@ void TimeLineCells::mouseMoveEvent(QMouseEvent* event)
                             currentLayer->deselectAll();
                             currentLayer->setFrameSelected(mStartFrameNumber, true);
                             currentLayer->extendSelectionTo(mFramePosMoveX);
+                            emit mEditor->selectedFramesChanged();
                         }
                         mLastFrameNumber = mFramePosMoveX;
                         updateContent();
@@ -1082,7 +1083,7 @@ void TimeLineCells::mouseReleaseEvent(QMouseEvent* event)
             updateContent();
         }
     }
-    if (mType == TIMELINE_CELL_TYPE::Layers && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
+    if (mType == TIMELINE_CELL_TYPE::Layers && !mScrollingVertically && layerNumber != mStartLayerNumber && mStartLayerNumber != -1 && layerNumber != -1)
     {
         mToLayer = getInbetweenLayerNumber(event->pos().y());
         if (mToLayer != mFromLayer && mToLayer > -1 && mToLayer < mEditor->layers()->count())
@@ -1129,8 +1130,11 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
     {
         if (mType == TIMELINE_CELL_TYPE::Tracks && (layerNumber != -1) && (frameNumber > 0) && layerNumber < mEditor->object()->getLayerCount())
         {
-            mEditor->scrubTo(frameNumber);
-            emit insertNewKeyFrame();
+            if (!layer->keyExistsWhichCovers(frameNumber))
+            {
+                mEditor->scrubTo(frameNumber);
+                emit insertNewKeyFrame();
+            }
 
             // The release event will toggle the frame on again, so we make sure it gets
             // deselected now instead.
@@ -1206,7 +1210,13 @@ void TimeLineCells::hScrollChange(int x)
 void TimeLineCells::vScrollChange(int x)
 {
     mLayerOffset = x;
+    mScrollingVertically = true;
     updateContent();
+}
+
+void TimeLineCells::onScrollingVerticallyStopped()
+{
+    mScrollingVertically = false;
 }
 
 void TimeLineCells::setMouseMoveY(int x)

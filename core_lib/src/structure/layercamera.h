@@ -28,7 +28,7 @@ class Camera;
 
 class LayerCamera : public Layer
 {
-    Q_OBJECT
+    Q_DECLARE_TR_FUNCTIONS(LayerCamera)
 public:
     explicit LayerCamera(int id);
     ~LayerCamera() override;
@@ -40,6 +40,7 @@ public:
 
     bool addKeyFrame(int position, KeyFrame* pKeyFrame) override;
     bool removeKeyFrame(int position) override;
+    void replaceKeyFrame(const KeyFrame* camera) override;
 
     Camera* getCameraAtFrame(int frameNumber) const;
     Camera* getLastCameraAtFrame(int frameNumber, int increment) const;

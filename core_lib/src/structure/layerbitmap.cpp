@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QFile>
 #include "keyframe.h"
 #include "bitmapimage.h"
-
+#include "util/util.h"
 
 LayerBitmap::LayerBitmap(int id) : Layer(id, Layer::BITMAP)
 {
@@ -42,6 +42,11 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 {
     Q_ASSERT(frameNumber >= 1);
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+}
+
+void LayerBitmap::replaceKeyFrame(const KeyFrame* bitmapImage)
+{
+    *getBitmapImageAtFrame(bitmapImage->pos()) = *static_cast<const BitmapImage*>(bitmapImage);
 }
 
 void LayerBitmap::repositionFrame(QPoint point, int frame)
@@ -202,24 +207,19 @@ void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath
     while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
-        if (!imageElement.isNull())
+        if (!imageElement.isNull() && imageElement.tagName() == "image")
         {
-            if (imageElement.tagName() == "image")
+            QString path = validateDataPath(imageElement.attribute("src"), dataDirPath);
+            if (!path.isEmpty())
             {
-                QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
-                QFileInfo fi(path);
-                if (!fi.exists()) path = imageElement.attribute("src");
                 int position = imageElement.attribute("frame").toInt();
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();
-                qreal opacity = 1.0;
-                if (imageElement.hasAttribute("opacity")) {
-                    opacity = imageElement.attribute("opacity").toDouble();
-                }
+                qreal opacity = imageElement.attribute("opacity", "1.0").toDouble();
                 loadImageAtFrame(path, QPoint(x, y), position, opacity);
-
-                progressStep();
             }
+
+            progressStep();
         }
         imageTag = imageTag.nextSibling();
     }

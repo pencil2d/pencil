@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+#include "undoredomanager.h"
 
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -182,7 +183,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
                 selectMan->vectorSelection.add(selectMan->closestCurves());
                 selectMan->vectorSelection.add(selectMan->closestVertices());
 
-                mEditor->frameModified(mEditor->currentFrame());
+                emit mEditor->frameModified(mEditor->currentFrame());
             }
             else
             {
@@ -300,10 +301,8 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 
 void SmudgeTool::drawStroke()
 {
-    if (!mScribbleArea->isLayerPaintable()) return;
-
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer == nullptr) { return; }
+    if (layer == nullptr || !layer->isPaintable()) { return; }
 
     BitmapImage *sourceImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
     if (sourceImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing

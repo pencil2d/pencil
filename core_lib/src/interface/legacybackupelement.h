@@ -15,8 +15,8 @@ GNU General Public License for more details.
 
 */
 
-#ifndef BACKUPELEMENT_H
-#define BACKUPELEMENT_H
+#ifndef LEGACYBACKUPELEMENT_H
+#define LEGACYBACKUPELEMENT_H
 
 #include <QObject>
 #include "vectorimage.h"
@@ -25,7 +25,7 @@ GNU General Public License for more details.
 
 class Editor;
 
-class BackupElement : public QObject
+class LegacyBackupElement : public QObject
 {
     Q_OBJECT
 public:
@@ -44,41 +44,41 @@ public:
     virtual void restore(Editor*) { Q_ASSERT(false); }
 };
 
-class BackupBitmapElement : public BackupElement
+class BackupLegacyBitmapElement : public LegacyBackupElement
 {
     Q_OBJECT
 public:
-    explicit BackupBitmapElement(BitmapImage* bi) { bitmapImage = *bi; }
+    explicit BackupLegacyBitmapElement(BitmapImage* bi) { bitmapImage = *bi; }
 
     int layerId = 0;
 
     int layer = 0;
     int frame = 0;
     BitmapImage bitmapImage;
-    int type() override { return BackupElement::BITMAP_MODIF; }
+    int type() override { return LegacyBackupElement::BITMAP_MODIF; }
     void restore(Editor*) override;
 };
 
-class BackupVectorElement : public BackupElement
+class BackupLegacyVectorElement : public LegacyBackupElement
 {
     Q_OBJECT
 public:
-    explicit BackupVectorElement(VectorImage* vi) { vectorImage = *vi; }
+    explicit BackupLegacyVectorElement(VectorImage* vi) { vectorImage = *vi; }
     int layerId = 0;
 
     int layer = 0;
     int frame = 0;
     VectorImage vectorImage;
 
-    int type() override { return BackupElement::VECTOR_MODIF; }
+    int type() override { return LegacyBackupElement::VECTOR_MODIF; }
     void restore(Editor*) override;
 };
 
-class BackupSoundElement : public BackupElement
+class BackupLegacySoundElement : public LegacyBackupElement
 {
     Q_OBJECT
 public:
-    explicit BackupSoundElement(SoundClip* sound) { clip = *sound; }
+    explicit BackupLegacySoundElement(SoundClip* sound) { clip = *sound; }
     int layerId = 0;
 
     int layer = 0;
@@ -86,8 +86,8 @@ public:
     SoundClip clip;
     QString fileName, originalName;
 
-    int type() override { return BackupElement::SOUND_MODIF; }
+    int type() override { return LegacyBackupElement::SOUND_MODIF; }
     void restore( Editor* ) override;
 };
 
-#endif // BACKUPELEMENT_H
+#endif // LEGACYBACKUPELEMENT_H

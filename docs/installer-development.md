@@ -31,16 +31,16 @@ please first make sure MSVC is available on your system. Additionally, you will 
   make sure there are no warnings concerning po2rc. If qmake cannot find po2rc, you can also manually set the PO2RC
   qmake variable to the path of the po2rc executable.
 - Tikal from the [Okapi Framework](https://okapiframework.org/).
-- The WiX Toolset as well as its Bal and Util extensions. Use the following commands to install these from the command
-  line:
+- The WiX Toolset as well as its BootstrapperApplications and Util extensions. Use the following commands to install
+  these from the command line:
 
       dotnet tool install -g wix
-      wix extension add -g WixToolset.Util.wixext WixToolset.Bal.wixext
+      wix extension add -g WixToolset.Util.wixext WixToolset.BootstrapperApplications.wixext
 
 - WiX utility libraries. The build system expects these in the util/installer directory. Use the following command to
   install them from the command line:
 
-      nuget install -x -OutputDirectory path\to\util\installer WixToolset.BalUtil
+      nuget install -x -OutputDirectory path\to\util\installer WixToolset.WixStandardBootstrapperApplicationFunctionApi
 
 - The WiX theme viewer (optional), which can be useful when making changes to the installer's UI layout. It is available
   from the [WiX Toolset GitHub releases](https://github.com/wixtoolset/wix/releases) through the WixAdditionalTools
@@ -135,7 +135,7 @@ Available LCIDs are listed in the
 Finally, building the bootstrapper requires the same version information as the Windows Installer database. Use the
 following command to build it:
 
-    wix build -arch x64 -sw1133 -b path\to\util\installer -b DISTDIR -ext WixToolset.Util.wixext -ext WixToolset.Bal.wixext -d Edition=Release -d Version=X.X.X -out pencil2d-win64-X.X.X.exe path\to\util\installer\pencil2d.bundle.wxs
+    wix build -arch x64 -sw1133 -b path\to\util\installer -b DISTDIR -ext WixToolset.Util.wixext -ext WixToolset.BootstrapperApplications.wixext -d Edition=Release -d Version=X.X.X -out pencil2d-win64-X.X.X.exe path\to\util\installer\pencil2d.bundle.wxs
 
 Again, in order to build for something other than 64-bit x86, replace x64 and win64 accordingly. It may be necessary to
 add the directories containing the Windows Installer database or pencil2d.dll to WiX’s search path using the `-b` option

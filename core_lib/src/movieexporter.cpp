@@ -344,7 +344,7 @@ Status MovieExporter::generateMovie(
         args << "-plays" << (loop ? "0" : "1");
     }
 
-    if (strOutputFile.endsWith("mp4", Qt::CaseInsensitive))
+    if (strOutputFile.endsWith(".mp4", Qt::CaseInsensitive))
     {
         args << "-pix_fmt" << "yuv420p";
     }

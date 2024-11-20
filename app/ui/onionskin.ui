@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>213</width>
-    <height>382</height>
+    <width>140</width>
+    <height>291</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>187</width>
+    <width>140</width>
     <height>122</height>
    </size>
   </property>
@@ -30,6 +30,9 @@
     </sizepolicy>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -76,8 +79,8 @@
         <rect>
          <x>0</x>
          <y>0</y>
-         <width>213</width>
-         <height>360</height>
+         <width>160</width>
+         <height>254</height>
         </rect>
        </property>
        <property name="sizePolicy">
@@ -87,17 +90,20 @@
         </sizepolicy>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>3</number>
+        </property>
         <property name="leftMargin">
-         <number>6</number>
+         <number>3</number>
         </property>
         <property name="topMargin">
-         <number>6</number>
+         <number>3</number>
         </property>
         <property name="rightMargin">
-         <number>6</number>
+         <number>3</number>
         </property>
         <property name="bottomMargin">
-         <number>6</number>
+         <number>3</number>
         </property>
         <item>
          <widget class="QGroupBox" name="prevFramesGroup">
@@ -108,6 +114,9 @@
            <bool>true</bool>
           </property>
           <layout class="QHBoxLayout" name="onionPrevLayout">
+           <property name="spacing">
+            <number>3</number>
+           </property>
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
            </property>
@@ -115,13 +124,13 @@
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
            </property>
            <property name="bottomMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <item>
             <widget class="QSpinBox" name="onionPrevFramesNumBox">
@@ -189,6 +198,9 @@
            <bool>true</bool>
           </property>
           <layout class="QHBoxLayout" name="onionNextlLayout">
+           <property name="spacing">
+            <number>3</number>
+           </property>
            <property name="sizeConstraint">
             <enum>QLayout::SetDefaultConstraint</enum>
            </property>
@@ -196,13 +208,13 @@
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
            </property>
            <property name="bottomMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
            <item>
             <widget class="QSpinBox" name="onionNextFramesNumBox">
@@ -278,84 +290,28 @@
           <property name="title">
            <string>Distributed Opacity</string>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
+          <layout class="QHBoxLayout" name="horizontalLayout">
            <property name="spacing">
-            <number>6</number>
+            <number>0</number>
            </property>
            <property name="leftMargin">
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>6</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
            </property>
            <property name="bottomMargin">
-            <number>6</number>
+            <number>3</number>
            </property>
-           <item>
-            <widget class="QWidget" name="minOpacityGroup" native="true">
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
-              <property name="leftMargin">
-               <number>0</number>
-              </property>
-              <property name="topMargin">
-               <number>0</number>
-              </property>
-              <property name="rightMargin">
-               <number>0</number>
-              </property>
-              <property name="bottomMargin">
-               <number>0</number>
-              </property>
-              <item>
-               <widget class="QLabel" name="minOpacityLabel">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="text">
-                 <string>Min</string>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QSpinBox" name="onionMinOpacityBox">
-                <property name="sizePolicy">
-                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-                  <horstretch>0</horstretch>
-                  <verstretch>0</verstretch>
-                 </sizepolicy>
-                </property>
-                <property name="minimumSize">
-                 <size>
-                  <width>60</width>
-                  <height>0</height>
-                 </size>
-                </property>
-                <property name="alignment">
-                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-                </property>
-                <property name="suffix">
-                 <string> %</string>
-                </property>
-                <property name="prefix">
-                 <string/>
-                </property>
-                <property name="maximum">
-                 <number>100</number>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-           </item>
            <item>
             <widget class="QWidget" name="maxOpacityGroup" native="true">
              <layout class="QHBoxLayout" name="horizontalLayout_3">
+              <property name="spacing">
+               <number>3</number>
+              </property>
               <property name="leftMargin">
                <number>0</number>
               </property>
@@ -379,6 +335,9 @@
                 <property name="text">
                  <string>Max</string>
                 </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
                </widget>
               </item>
               <item>
@@ -391,7 +350,72 @@
                 </property>
                 <property name="minimumSize">
                  <size>
-                  <width>60</width>
+                  <width>50</width>
+                  <height>0</height>
+                 </size>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+                <property name="suffix">
+                 <string> %</string>
+                </property>
+                <property name="prefix">
+                 <string/>
+                </property>
+                <property name="maximum">
+                 <number>100</number>
+                </property>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+           </item>
+           <item>
+            <widget class="QWidget" name="minOpacityGroup" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_2">
+              <property name="spacing">
+               <number>3</number>
+              </property>
+              <property name="leftMargin">
+               <number>0</number>
+              </property>
+              <property name="topMargin">
+               <number>0</number>
+              </property>
+              <property name="rightMargin">
+               <number>0</number>
+              </property>
+              <property name="bottomMargin">
+               <number>0</number>
+              </property>
+              <item>
+               <widget class="QLabel" name="minOpacityLabel">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="text">
+                 <string>Min</string>
+                </property>
+                <property name="alignment">
+                 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QSpinBox" name="onionMinOpacityBox">
+                <property name="sizePolicy">
+                 <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+                  <horstretch>0</horstretch>
+                  <verstretch>0</verstretch>
+                 </sizepolicy>
+                </property>
+                <property name="minimumSize">
+                 <size>
+                  <width>50</width>
                   <height>0</height>
                  </size>
                 </property>
@@ -416,18 +440,25 @@
          </widget>
         </item>
         <item>
-         <widget class="QCheckBox" name="onionSkinMode">
-          <property name="text">
-           <string>Show Keyframes Only</string>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <property name="topMargin">
+           <number>0</number>
           </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="QCheckBox" name="onionWhilePlayback">
-          <property name="text">
-           <string>Show During Playback</string>
-          </property>
-         </widget>
+          <item>
+           <widget class="QCheckBox" name="onionSkinMode">
+            <property name="text">
+             <string>Show Keyframes Only</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QCheckBox" name="onionWhilePlayback">
+            <property name="text">
+             <string>Show During Playback</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </item>
         <item>
          <spacer name="verticalSpacer">

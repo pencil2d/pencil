@@ -1,6 +1,17 @@
-VERSION = 0.6.6
-DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-RC_DEFINES += APP_VERSION=\\\"$$VERSION\\\" APP_VERSION_RC=$$replace(VERSION, "\.", ",")
+
+# Development branch build number is always 0.0.0.0
+# Nightly build version number is 99.0.0.BuildNumber
+# Release build version number is the git branch name plus the build number.
+
+isEmpty(VERSION) {
+    VERSION = 0.0.0.0
+}
+
+message("App Version: $$VERSION")
+
+DEFINES    += APP_VERSION=\\\"$$VERSION\\\"
+RC_DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+RC_DEFINES += APP_VERSION_RC=$$replace(VERSION, "\.", ",")
 
 PENCIL2D_NIGHTLY {
     DEFINES += PENCIL2D_NIGHTLY_BUILD

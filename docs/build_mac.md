@@ -59,8 +59,8 @@ If you would like to use %Qt 6 instead, simply replace the version number in the
 
 And also run the following commands to install %Qt Creator:
 
-    brew tap caskroom/cask
-    brew cask install qt-creator
+    brew tap homebrew/cask
+    brew install --cask qt-creator
 
 ## 3. Get Source Code
 

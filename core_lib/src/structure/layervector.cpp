@@ -20,7 +20,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
-
+#include "util/util.h"
 
 LayerVector::LayerVector(int id) : Layer(id, Layer::VECTOR)
 {
@@ -155,31 +155,31 @@ void LayerVector::loadDomElement(const QDomElement& element, QString dataDirPath
     while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
-        if (!imageElement.isNull())
+        if (!imageElement.isNull() && imageElement.tagName() == "image")
         {
-            if (imageElement.tagName() == "image")
+            int position;
+            QString rawPath = imageElement.attribute("src");
+            if (!rawPath.isNull())
             {
-                int position;
-                if (!imageElement.attribute("src").isNull())
+                QString path = validateDataPath(rawPath, dataDirPath);
+                if (!path.isEmpty())
                 {
-                    QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
-                    QFileInfo fi(path);
-                    if (!fi.exists()) path = imageElement.attribute("src");
                     position = imageElement.attribute("frame").toInt();
                     loadImageAtFrame(path, position);
+                    getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity", "1.0").toDouble());
                 }
-                else
-                {
-                    position = imageElement.attribute("frame").toInt();
-                    addNewKeyFrameAt(position);
-                    getVectorImageAtFrame(position)->loadDomElement(imageElement);
-                }
-                if (imageElement.hasAttribute("opacity"))
-                    getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity").toDouble());
-                else
-                    getVectorImageAtFrame(position)->setOpacity(1.0);
-                progressStep();
             }
+            else
+            {
+                position = imageElement.attribute("frame").toInt();
+                addNewKeyFrameAt(position);
+                getVectorImageAtFrame(position)->loadDomElement(imageElement);
+                getVectorImageAtFrame(position)->setOpacity(imageElement.attribute("opacity", "1.0").toDouble());
+            }
+
+
+
+            progressStep();
         }
         imageTag = imageTag.nextSibling();
     }
@@ -193,4 +193,9 @@ VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber) const
 VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increment) const
 {
     return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+}
+
+void LayerVector::replaceKeyFrame(const KeyFrame* vectorImage)
+{
+    *getVectorImageAtFrame(vectorImage->pos()) = *static_cast<const VectorImage*>(vectorImage);
 }

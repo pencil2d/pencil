@@ -24,19 +24,14 @@ GNU General Public License for more details.
 #include <QDomElement>
 #include "pencilerror.h"
 
-class QMouseEvent;
-class QPainter;
-
 class KeyFrame;
-class TimeLineCells;
 class Status;
 
 typedef std::function<void()> ProgressCallback;
 
-class Layer : public QObject
+class Layer
 {
-    Q_OBJECT
-
+    Q_DECLARE_TR_FUNCTIONS(Layer)
 public:
     enum LAYER_TYPE
     {
@@ -49,7 +44,7 @@ public:
     };
 
     explicit Layer(int id, LAYER_TYPE eType);
-    ~Layer() override;
+    virtual ~Layer();
 
     int id() const { return mId; }
     void setId(int layerId) { mId = layerId; }
@@ -109,6 +104,8 @@ public:
      */
     virtual bool addKeyFrame(int position, KeyFrame* pKeyFrame);
     virtual bool removeKeyFrame(int position);
+    virtual void replaceKeyFrame(const KeyFrame* pKeyFrame) = 0;
+
     bool swapKeyFrames(int position1, int position2);
     bool moveKeyFrame(int position, int offset);
     KeyFrame* getKeyFrameAt(int position) const;

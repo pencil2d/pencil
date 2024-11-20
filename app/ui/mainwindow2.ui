@@ -209,7 +209,6 @@
     <addaction name="actionShowInvisibleLines"/>
     <addaction name="actionShowOutlinesOnly"/>
     <addaction name="separator"/>
-    <addaction name="actionPreview"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -563,14 +562,6 @@
    </property>
    <property name="text">
     <string>Vertical Flip</string>
-   </property>
-  </action>
-  <action name="actionPreview">
-   <property name="enabled">
-    <bool>false</bool>
-   </property>
-   <property name="text">
-    <string>Preview</string>
    </property>
   </action>
   <action name="actionGrid">
@@ -1064,7 +1055,7 @@
   </action>
   <action name="actionCenter_View">
    <property name="text">
-    <string>Center</string>
+    <string comment="To move sth. to the center">Center</string>
    </property>
   </action>
   <action name="actionReset_Rotation">
@@ -1144,7 +1135,7 @@
      <normaloff>:/icons/themes/playful/display/overlay-center.svg</normaloff>:/icons/themes/playful/display/overlay-center.svg</iconset>
    </property>
    <property name="text">
-    <string>Center</string>
+    <string comment="The middle point of an area">Center</string>
    </property>
   </action>
   <action name="actionThirds">
@@ -1286,6 +1277,12 @@
   <action name="actionInterpolate_KeyFrames">
    <property name="text">
     <string>Interpolate KeyFrames</string>
+  <action name="actionRemoveLastPolylineSegment">
+   <property name="text">
+    <string>Remove Last Polyline Segment</string>
+   </property>
+   <property name="toolTip">
+    <string>Removes the lastest Polyline segment</string>
    </property>
   </action>
  </widget>

@@ -1,3 +1,10 @@
+body {
+    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #606c71
+}
+
 .wrapper {
     max-width: -webkit-calc(54em - (30px * 2));
     max-width: calc(54em - (30px * 2));
@@ -123,83 +130,6 @@
     .site-nav .page-link:last-child {
         margin-bottom: 10px
     }
-}
-
-.page-header {
-    color: #fff;
-    text-align: center;
-    background-color: #159957;
-    background-image: linear-gradient(120deg, #155799, #159957)
-}
-
-@media screen and (min-width: 64em) {
-    .page-header {
-        padding:5rem 6rem
-    }
-}
-
-@media screen and (min-width: 42em) and (max-width: 64em) {
-    .page-header {
-        padding:3rem 4rem
-    }
-}
-
-@media screen and (max-width: 42em) {
-    .page-header {
-        padding:2rem 1rem
-    }
-}
-
-.project-name {
-    margin-top: 0;
-    margin-bottom: 0.1rem
-}
-
-@media screen and (min-width: 64em) {
-    .project-name {
-        font-size:3.25rem
-    }
-}
-
-@media screen and (min-width: 42em) and (max-width: 64em) {
-    .project-name {
-        font-size:2.25rem
-    }
-}
-
-@media screen and (max-width: 42em) {
-    .project-name {
-        font-size:1.75rem
-    }
-}
-
-.project-tagline {
-    margin-bottom: 2rem;
-    font-weight: normal;
-    opacity: 0.7
-}
-
-@media screen and (min-width: 64em) {
-    .project-tagline {
-        font-size:1.25rem
-    }
-}
-
-@media screen and (min-width: 42em) and (max-width: 64em) {
-    .project-tagline {
-        font-size:1.15rem
-    }
-}
-
-@media screen and (max-width: 42em) {
-    .project-tagline {
-        font-size:1rem
-    }
-}
-
-.page-header {
-    background-color: #005cc0;
-    background-image: linear-gradient(120deg, #005cc0, #004699)
 }
 
 .main-content {
@@ -337,12 +267,39 @@ a:hover path {
     fill: #ef8003
 }
 
-/* Doxygen-specific */
+/********************
+ * Doxygen-specific *
+ ********************/
 
-.site-header, .page-header, .main-content {
-    font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-    font-size: 16px;
-    line-height: 1.5;
+/***** Generic styling etc. *****/
+
+table, div, p, dl {
+    font-family: revert;
+    font-size: revert;
+    line-height: revert
+}
+
+a.el {
+    font-weight: revert
+}
+
+.contents a:visited {
+    color: #005dc0
+}
+
+h1 {
+  font-size: 2em;
+  margin: 0.67em 0
+}
+
+.contents h1,
+.contents h2,
+.contents h3,
+.contents h4,
+.contents h5,
+.contents h6 {
+    color: #005dc0;
+    font-weight: normal
 }
 
 .site-header, .site-header *, .main-content, .main-content * {
@@ -353,32 +310,486 @@ a:hover path {
     font: inherit
 }
 
-@media screen and (min-width: 64em) {
-    .page-header {
-        padding: .5rem 6rem
-    }
+.main-content {
+    padding-top: 0
 }
 
-@media screen and (min-width: 42em) and (max-width: 64em) {
-    .page-header {
-        padding: .5rem 4rem
-    }
-}
-
-@media screen and (max-width: 42em) {
-    .page-header {
-        padding: .5rem 1rem
-    }
-}
-
-.project-name {
-    margin: 0 0 .1rem
-}
-
-.project-tagline {
-    margin: 0 0 1rem
+.site-footer:first-child {
+    margin-top: 2rem
 }
 
 .site-footer-owner, .site-footer-credits {
     float: right
+}
+
+/***** Doxygen navigation *****/
+
+#titlearea {
+    border: none
+}
+
+.tabs, .tabs2, .tabs3, .navpath ul {
+    height: auto;
+    border: none;
+    border-bottom: 1px solid #e8e8e8;
+    background: none;
+    font-family: inherit;
+    font-size: inherit
+}
+
+.tabs {
+    font-size: .9rem
+}
+
+.tabs2, .tabs3, .navpath {
+    font-size: .8rem
+}
+
+.tablist,
+.navpath ul {
+    box-sizing: border-box
+}
+
+@media screen and (min-width: 64em) {
+    .tablist,
+    .navpath ul {
+        max-width: 64rem;
+        margin: 0 auto;
+        padding: 0 6rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    .tablist,
+    .navpath ul {
+        padding: 0 4rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    .tablist,
+    .navpath ul {
+        padding: 0 1rem
+    }
+}
+
+.tablist li {
+    line-height: 2
+}
+
+.tabs2 .tablist li,
+.navpath ul {
+    line-height: 2.5
+}
+
+.tabs .tablist li {
+    line-height: 3
+}
+
+.tablist a,
+.tabs3 .tablist a,
+.navpath li {
+    padding: 0 .5em
+}
+
+.navpath li {
+    padding-left: 1.125em /* regular padding + .navpath separator */
+}
+
+.tablist li:first-child a,
+.navpath li:first-child {
+    padding-left: 0
+}
+
+/* This is what doxygen uses to select the search box container */
+#navrow1 .tablist > li:last-child {
+    box-sizing: border-box;
+    width: 300px; /* Default size of results window */
+    height: auto;
+    margin: -1px 0; /* Collapse top/bottom borders */
+    border: 1px solid #e8e8e8
+}
+
+.tablist li,
+.tablist a,
+.tablist a:hover,
+.tablist li.current a,
+.navpath li,
+.navpath li.navelem a,
+.navpath li.navelem a:hover {
+    height: auto;
+    background: none;
+    font-family: inherit;
+    font-weight: normal;
+    text-shadow: none;
+    color: #005cc0
+}
+
+.tablist a:hover,
+.navpath li.navelem a:hover {
+    text-decoration: underline
+}
+
+.navpath li {
+    position: relative;
+}
+
+.navpath li::before {
+    content: '';
+    position: absolute;
+    top: -.1lh;
+    bottom: -.1lh;
+    left: 100%;
+    border: solid transparent;
+    border-width: .6lh calc(.25lh - 1px);
+    border-left-color: #e8e8e8;
+}
+
+.navpath li::after {
+    content: '';
+    position: absolute;
+    top: -.1lh;
+    bottom: -.1lh;
+    left: 100%;
+    margin-left: -1px;
+    border: solid transparent;
+    border-width: .6lh calc(.25lh - 1px);
+    border-left-color: white;
+}
+
+/***** Search box *****/
+
+#MSearchBox {
+    width: 100%;
+    display: flex;
+    box-shadow: none
+}
+
+#MSearchBox .left,
+#MSearchBox .right,
+#MSearchSelect,
+#MSearchField {
+    height: auto
+}
+
+#MSearchBox .left {
+    display: flex;
+    flex-grow: 1
+}
+
+#MSearchBox .right {
+    width: auto;
+    align-self: center
+}
+
+#MSearchSelect {
+    margin: 0 .5rem;
+    background-position: center;
+    background-repeat: no-repeat
+}
+
+#MSearchField {
+    flex-grow: 1;
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit
+}
+
+#MSearchCloseImg {
+    padding: .5rem
+}
+
+/***** Search filter options *****/
+
+#MSearchSelectWindow {
+    box-sizing: border-box;
+    margin-left: calc(-.5rem - 1px); /* #MSearchSelect margin + search box border */
+    padding: 0;
+    border-color: #e8e8e8;
+    border-radius: 0;
+    background-color: white
+}
+
+a.SelectItem {
+    font-family: inherit;
+    font-size: .9rem; /* matches .tabs */
+    line-height: 2;
+    padding: 0 1rem
+}
+
+span.SelectionMark {
+    margin-right: .5rem
+}
+
+/***** Search results *****/
+
+#MSearchResultsWindow {
+    box-sizing: border-box;
+    /* default search box size - added #MSearchSelect margin */
+    margin-left: calc(150px - .2rem);
+    /* our search box height - default search box height */
+    margin-top: calc(3em - 20px);
+    border-color: #e8e8e8;
+    background-color: white;
+    font-size: 0.9rem /* matches .tabs */
+}
+
+div.SRPage {
+    width: max-content;
+    min-width: 100%;
+    margin: 0;
+    background: none
+}
+
+.SRPage * {
+    line-height: 2
+}
+
+.SRPage .SREntry,
+.SRPage .SRStatus {
+    position: relative;
+    font-family: inherit;
+    font-size: inherit;
+    /* #MSearchSelect icon size + margin */
+    padding: 0 0 0 calc(20px + 1rem)
+}
+
+/* Marker for expandable search entries */
+.SRPage .SREntry:has(.SRChildren)::before {
+    content: '';
+    display: block;
+    position: absolute;
+    top: .3lh; /* center - border width */
+    left: 1.5em;
+    width: 0;
+    height: 0;
+    border: .2lh solid transparent;
+    border-left-color: #005cc0
+}
+
+.SRPage .SREntry:has(.SRChildren[style*="display: block"])::before {
+    transform: rotate(90deg) translate(.1lh, .1lh);
+}
+
+.SRPage .SREntry:has(a.SRSymbol:hover)::before {
+    border-left-color: white;
+}
+
+/* Hover background */
+.SRPage .SREntry a.SRSymbol:hover::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1lh;
+    background: #005cc0;
+}
+
+.SREntry a {
+    color: #005cc0
+}
+
+.SREntry a:hover {
+    text-decoration: none;
+    color: white
+}
+
+.SREntry a.SRSymbol:focus {
+    text-decoration: none
+}
+
+/* Extended hitbox */
+.SREntry a.SRSymbol::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1lh
+}
+
+.SRSymbol,
+span.SRScope {
+    font-family: inherit
+}
+
+a.SRSymbol:hover ~ span.SRScope {
+    color: white
+}
+
+a.SRScope {
+    position: relative;
+    font-family: inherit;
+    font-size: inherit;
+}
+
+/* Hover background */
+a.SRScope:hover::before {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    left: calc(-20px - 1rem - 3ex);
+    right: 0;
+    height: 1lh;
+    background: #005cc0;
+}
+
+a.SRScope:focus {
+    text-decoration: none
+}
+
+/* Extended hitbox */
+a.SRScope::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: calc(-20px - 1rem - 3ex);
+    right: 0;
+    height: 1lh
+}
+
+.SRChildren {
+    padding-bottom: 0
+}
+
+/***** Page header *****/
+
+div.header {
+    position: relative;
+    color: #fff;
+    text-align: center;
+    background-color: #005cc0;
+    background-image: linear-gradient(120deg, #005cc0, #004699);
+    border: none;
+}
+
+div.summary {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    box-sizing: border-box;
+    margin: 0 auto;
+    width: auto;
+    max-width: 64rem;
+    color: #606c71
+}
+
+@media screen and (min-width: 64em) {
+    div.header {
+        padding: 5rem 6rem
+    }
+
+    div.summary {
+        padding: 0 6rem;
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    div.header {
+        padding: 3rem 4rem
+    }
+
+    div.summary {
+        padding: 0 4rem;
+    }
+}
+
+@media screen and (max-width: 42em) {
+    div.header {
+        padding: 2rem 1rem
+    }
+
+    div.summary {
+        padding: 0 1rem;
+    }
+}
+
+div.headertitle {
+    padding: 0
+}
+
+div.title {
+    font-family: inherit;
+    line-height: inherit;
+    margin: 0 0 0.1rem
+}
+
+@media screen and (min-width: 64em) {
+    div.title {
+        font-size: 3.25rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    div.title {
+        font-size: 2.25rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    div.title {
+        font-size: 1.75rem
+    }
+}
+
+div.subtitle {
+    margin-bottom: 2rem;
+    font-weight: normal;
+    opacity: 0.7
+}
+
+@media screen and (min-width: 64em) {
+    div.subtitle {
+        font-size: 1.25rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    div.subtitle {
+        font-size: 1.15rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    div.subtitle {
+        font-size: 1rem
+    }
+}
+
+/***** Main content *****/
+
+div.contents {
+    box-sizing: border-box
+}
+
+@media screen and (min-width: 64em) {
+    div.contents {
+        max-width: 64rem;
+        padding: 3rem 6rem 0;
+        margin: 0 auto;
+        font-size: 1.1rem
+    }
+}
+
+@media screen and (min-width: 42em) and (max-width: 64em) {
+    div.contents {
+        padding: 3rem 4rem 0;
+        font-size: 1.1rem
+    }
+}
+
+@media screen and (max-width: 42em) {
+    div.contents {
+        padding: 2rem 1rem 0;
+        font-size: 1rem
+    }
+}
+
+.dyncontent > .center {
+    overflow-x: auto /* for large diagrams */
 }

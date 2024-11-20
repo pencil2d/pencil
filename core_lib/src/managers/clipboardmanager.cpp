@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "clipboardmanager.h"
 
 #include <QClipboard>
+#include <QGuiApplication>
 
 #include <editor.h>
 
@@ -32,15 +33,17 @@ ClipboardManager::~ClipboardManager()
 
 void ClipboardManager::setFromSystemClipboard(const QPointF& pos, const Layer* layer)
 {
+    const QClipboard *clipboard = QGuiApplication::clipboard();
+
     // We intentially do not call resetStates here because we can only store image changes to the clipboard
     // otherwise we break pasting for vector.
     // Only bitmap is supported currently...
     // Only update clipboard data if it was stored by other applications
-    if (layer->type() != Layer::BITMAP || mClipboard->ownsClipboard()) {
+    if (layer->type() != Layer::BITMAP || clipboard->ownsClipboard()) {
         return;
     }
 
-    QImage image = mClipboard->image(QClipboard::Clipboard);
+    QImage image = clipboard->image(QClipboard::Clipboard);
     if (!image.isNull()) {
         mBitmapImage = BitmapImage(pos.toPoint()-QPoint(image.size().width()/2, image.size().height()/2), image);
     }
@@ -60,7 +63,7 @@ void ClipboardManager::copyBitmapImage(BitmapImage* bitmapImage, QRectF selectio
         mBitmapImage = bitmapImage->copy();
     }
 
-    mClipboard->setImage(*mBitmapImage.image());
+    QGuiApplication::clipboard()->setImage(*mBitmapImage.image());
 }
 
 void ClipboardManager::copyVectorImage(const VectorImage* vectorImage)

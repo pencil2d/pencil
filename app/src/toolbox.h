@@ -59,11 +59,11 @@ public slots:
     void smudgeOn();
 
 protected:
-    int getMinHeightForWidth(int width) override;
+    void resizeEvent(QResizeEvent* event) override;
 
 private:
     void deselectAllTools();
-    bool toolOn(ToolType toolType, QToolButton* toolButton);
+    void toolOn(ToolType toolType, QToolButton* toolButton);
 
     Ui::ToolBoxWidget* ui = nullptr;
 };

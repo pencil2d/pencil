@@ -98,8 +98,12 @@ create_package_macos() {
   popd >/dev/null
   echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
-  bsdtar caf "pencil2d${qtsuffix/-qt5/}-mac-$3.zip" Pencil2D
-  echo "output-basename=pencil2d${qtsuffix/-qt5/}-mac-$3" > "${GITHUB_OUTPUT}"
+  local arch=`uname -m`
+  local fileinfo="${qtsuffix/-qt5/}-mac-${arch}-$3"
+  mv Pencil2D "pencil2d${fileinfo}"
+  ditto -c -k --sequesterRsrc --keepParent "pencil2d${fileinfo}" "pencil2d${fileinfo}.zip"
+  rm -r "pencil2d${fileinfo}"
+  echo "output-basename=pencil2d${fileinfo}" > "${GITHUB_OUTPUT}"
 }
 
 create_package_windows() {
@@ -150,7 +154,7 @@ create_package_windows() {
     -out "pencil2d-${platform}-$3.msi" \
     ../util/installer/pencil2d.wxs windeployqt.wxs resources.wxs
   wix build -pdbtype none -arch "x${wordsize/32/86}" -dcl high -sw1133 -b ../util/installer -b Pencil2D \
-    -ext WixToolset.Util.wixext -ext WixToolset.Bal.wixext \
+    -ext WixToolset.Util.wixext -ext WixToolset.BootstrapperApplications.wixext \
     $versiondefines \
     -out "pencil2d-${platform}-$3.exe" \
     ../util/installer/pencil2d.bundle.wxs
@@ -164,10 +168,11 @@ create_package_windows() {
   echo "output-basename=pencil2d${qtsuffix/-qt5/}-${platform}-$3" > "${GITHUB_OUTPUT}"
 }
 
-eval "$(grep '^VERSION =' ../util/common.pri | tr -d '[:blank:]')"
-buildversion="${GITHUB_RUN_NUMBER}-$(date +%F)"
+echo "Version: ${VERSION_NUMBER}"
+
+filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%F)"
 if [ "$IS_RELEASE" = "true" ]; then
-  buildversion="${VERSION}"
+  filename_suffix="${VERSION_NUMBER}"
 fi
 
-"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}" "${VERSION}" "${buildversion}"
+"create_package_$(echo $RUNNER_OS | tr '[A-Z]' '[a-z]')" "${GITHUB_RUN_NUMBER}" "${VERSION_NUMBER}" "${filename_suffix}"

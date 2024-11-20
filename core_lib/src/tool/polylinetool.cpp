@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
+#include "undoredomanager.h"
 #include "pointerevent.h"
 #include "layervector.h"
 #include "layerbitmap.h"
@@ -45,6 +46,7 @@ void PolylineTool::loadSettings()
 
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[BEZIER] = true;
+    mPropertyEnabled[CLOSEDPATH] = true;
     mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -54,6 +56,7 @@ void PolylineTool::loadSettings()
     properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
+    properties.closedPolylinePath = settings.value("closedPolylinePath").toBool();
     properties.useAA = settings.value("brushAA").toBool();
     properties.stabilizerLevel = -1;
 
@@ -64,6 +67,7 @@ void PolylineTool::resetToDefault()
 {
     setWidth(8.0);
     setBezier(false);
+    setClosedPath(false);
 }
 
 void PolylineTool::setWidth(const qreal width)
@@ -91,6 +95,16 @@ void PolylineTool::setAA(const int AA)
     // Update settings
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue("brushAA", AA);
+    settings.sync();
+}
+
+void PolylineTool::setClosedPath(const bool closed)
+{
+    BaseTool::setClosedPath(closed);
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("closedPolylinePath", closed);
     settings.sync();
 }
 
@@ -193,20 +207,45 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
 
+    const UndoSaveState* saveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
     mEditor->backup(typeName());
 
     endPolyline(mPoints);
+    mEditor->undoRedo()->record(saveState, typeName());
 }
 
+void PolylineTool::removeLastPolylineSegment()
+{
+    if (!isActive()) return;
+
+    if (mPoints.size() > 1)
+    {
+        mPoints.removeLast();
+        drawPolyline(mPoints, getCurrentPoint());
+    }
+    else if (mPoints.size() == 1)
+    {
+        cancelPolyline();
+        clearToolData();
+    }
+}
 
 bool PolylineTool::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {
+    case Qt::Key_Control:
+        mClosedPathOverrideEnabled = true;
+        drawPolyline(mPoints, getCurrentPoint());
+        return true;
+        break;
+
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
+            const UndoSaveState* saveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
             endPolyline(mPoints);
+            mEditor->undoRedo()->record(saveState, typeName());
             return true;
         }
         break;
@@ -224,6 +263,23 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     }
 
     return BaseTool::keyPressEvent(event);
+}
+
+bool PolylineTool::keyReleaseEvent(QKeyEvent* event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_Control:
+        mClosedPathOverrideEnabled = false;
+        drawPolyline(mPoints, getCurrentPoint());
+        return true;
+        break;
+
+    default:
+        break;
+    }
+
+    return BaseTool::keyReleaseEvent(event);
 }
 
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
@@ -248,6 +304,12 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
             tempPath = BezierCurve(points).getStraightPath();
         }
         tempPath.lineTo(endPoint);
+
+        // Ctrl key inverts closed behavior while held (XOR)
+        if ((properties.closedPolylinePath == !mClosedPathOverrideEnabled) && points.size() > 1)
+        {
+            tempPath.closeSubpath();
+        }
 
         // Vector otherwise
         if (layer->type() == Layer::VECTOR)
@@ -303,6 +365,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     {
         drawPolyline(points, points.last());
     }
+
     mScribbleArea->endStroke();
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 

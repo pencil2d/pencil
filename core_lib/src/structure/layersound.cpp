@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QFileInfo>
 #include <QDir>
 #include "soundclip.h"
+#include "util/util.h"
 
 
 LayerSound::LayerSound(int id) : Layer(id, Layer::SOUND)
@@ -93,30 +94,32 @@ void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath,
     while (!soundTag.isNull())
     {
         QDomElement soundElement = soundTag.toElement();
-        if (soundElement.isNull())
-        {
-            continue;
-        }
 
-        if (soundElement.tagName() == "sound")
+        if (!soundElement.isNull() && soundElement.tagName() == "sound")
         {
             const QString soundFile = soundElement.attribute("src");
             const QString sSoundClipName = soundElement.attribute("name", "My Sound Clip");
 
             if (!soundFile.isEmpty())
             {
-                // the file is supposed to be in the data directory
-                const QString sFullPath = QDir(dataDirPath).filePath(soundFile);
-
-                int position = soundElement.attribute("frame").toInt();
-                Status st = loadSoundClipAtFrame(sSoundClipName, sFullPath, position);
-                Q_ASSERT(st.ok());
+                QString path = validateDataPath(soundFile, dataDirPath);
+                if (!path.isEmpty())
+                {
+                    int position = soundElement.attribute("frame").toInt();
+                    Status st = loadSoundClipAtFrame(sSoundClipName, path, position);
+                    Q_ASSERT(st.ok());
+                }
             }
             progressStep();
         }
 
         soundTag = soundTag.nextSibling();
     }
+}
+
+void LayerSound::replaceKeyFrame(const KeyFrame* soundClip)
+{
+    *getSoundClipWhichCovers(soundClip->pos()) = *static_cast<const SoundClip*>(soundClip);
 }
 
 Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)

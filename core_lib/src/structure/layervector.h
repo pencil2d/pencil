@@ -24,7 +24,7 @@ class VectorImage;
 
 class LayerVector : public Layer
 {
-    Q_OBJECT
+    Q_DECLARE_TR_FUNCTIONS(LayerVector)
 
 public:
     explicit LayerVector(int id);
@@ -38,6 +38,7 @@ public:
 
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
     VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
+    void replaceKeyFrame(const KeyFrame* vectorImage) override;
 
     bool usesColor(int index);
     void removeColor(int index);

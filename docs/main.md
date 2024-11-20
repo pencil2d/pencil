@@ -1,5 +1,5 @@
-Pencil2D Developer Documentation {#mainpage}
-================================
+Contribute {#mainpage}
+==========
 
 Welcome! This documentation is aimed at developers working *on* Pencil2D, if you’re just looking for help working *with* Pencil2D, please have a look at [our user documentation](https://www.pencil2d.org/doc/) and [our community](https://www.pencil2d.org/community/) instead. Also please note that this documentation is still very much work in progress and far from complete. It is generated from comments in the source code and pages in the docs/ directory, so if you’d like to help out don’t hesitate to contribute!
 

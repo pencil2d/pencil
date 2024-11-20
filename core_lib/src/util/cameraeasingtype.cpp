@@ -22,10 +22,10 @@ GNU General Public License for more details.
 // Array structure must match CameraEasingType
 static const char* interpolationNames[] {
     QT_TRANSLATE_NOOP("CameraEasingType", "Linear"),
-    QT_TRANSLATE_NOOP("CameraEasingType", "Normal Ease-in"),
-    QT_TRANSLATE_NOOP("CameraEasingType", "Normal Ease-out"),
-    QT_TRANSLATE_NOOP("CameraEasingType", "Normal Ease-in - Ease-out"),
-    QT_TRANSLATE_NOOP("CameraEasingType", "Normal Ease-out - Ease-in"),
+    QT_TRANSLATE_NOOP("CameraEasingType", "Moderate Ease-in"),
+    QT_TRANSLATE_NOOP("CameraEasingType", "Moderate Ease-out"),
+    QT_TRANSLATE_NOOP("CameraEasingType", "Moderate Ease-in - Ease-out"),
+    QT_TRANSLATE_NOOP("CameraEasingType", "Moderate Ease-out - Ease-in"),
     QT_TRANSLATE_NOOP("CameraEasingType", "Quick Ease-in"),
     QT_TRANSLATE_NOOP("CameraEasingType", "Quick Ease-out"),
     QT_TRANSLATE_NOOP("CameraEasingType", "Quick Ease-in - Ease-out"),

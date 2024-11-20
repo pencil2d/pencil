@@ -55,11 +55,11 @@ setup_windows() {
   curl -fsSLO https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
   mkdir okapi
   "${WINDIR}\\System32\\tar" xfC okapi-apps_win32-x86_64_1.45.0.zip okapi
-  dotnet tool install -g wix --version 4.0.4
-  wix extension add -g WixToolset.Util.wixext/4.0.4 WixToolset.Bal.wixext/4.0.4
-  nuget install -x -OutputDirectory util/installer WixToolset.BootstrapperCore.Native -Version 4.0.4
-  nuget install -x -OutputDirectory util/installer WixToolset.DUtil -Version 4.0.4
-  nuget install -x -OutputDirectory util/installer WixToolset.BalUtil -Version 4.0.4
+  dotnet tool install -g wix --version 5.0.0
+  wix extension add -g WixToolset.Util.wixext/5.0.0 WixToolset.BootstrapperApplications.wixext/5.0.0
+  nuget install -x -OutputDirectory util/installer WixToolset.DUtil -Version 5.0.0
+  nuget install -x -OutputDirectory util/installer WixToolset.BootstrapperApplicationApi -Version 5.0.0
+  nuget install -x -OutputDirectory util/installer WixToolset.WixStandardBootstrapperApplicationFunctionApi -Version 5.0.0
 }
 
 "setup_$(echo "${RUNNER_OS}" | tr '[A-Z]' '[a-z]')"
