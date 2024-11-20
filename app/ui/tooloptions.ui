@@ -6,14 +6,26 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>293</width>
-    <height>686</height>
+    <width>174</width>
+    <height>355</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_3">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
    <item>
     <widget class="QScrollArea" name="scrollArea">
      <property name="frameShape">
@@ -30,22 +42,25 @@
        <rect>
         <x>0</x>
         <y>0</y>
-        <width>275</width>
-        <height>668</height>
+        <width>174</width>
+        <height>355</height>
        </rect>
+      </property>
+      <property name="autoFillBackground">
+       <bool>false</bool>
       </property>
       <layout class="QVBoxLayout" name="verticalLayout">
        <property name="leftMargin">
-        <number>2</number>
+        <number>6</number>
        </property>
        <property name="topMargin">
-        <number>2</number>
+        <number>6</number>
        </property>
        <property name="rightMargin">
-        <number>2</number>
+        <number>6</number>
        </property>
        <property name="bottomMargin">
-        <number>2</number>
+        <number>6</number>
        </property>
        <item>
         <layout class="QHBoxLayout" name="horizontalLayout_2">
@@ -129,7 +144,6 @@
          </property>
         </widget>
        </item>
-
        <item>
         <widget class="QCheckBox" name="showInfoBox">
          <property name="text">
@@ -266,7 +280,7 @@
         </layout>
        </item>
        <item>
-        <spacer name="verticalSpacer">
+        <spacer name="verticalSpacer1">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
          </property>

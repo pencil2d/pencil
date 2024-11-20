@@ -51,13 +51,13 @@ public:
     QCursor cursor() override;
     ToolType type() override { return ToolType::CAMERA; }
 
-    void paint(QPainter& painter) override;
+    void paint(QPainter& painter, const QRect& blitRect) override;
 
     void loadSettings() override;
 
-    void pointerPressEvent(PointerEvent*) override;
-    void pointerReleaseEvent(PointerEvent*) override;
-    void pointerMoveEvent(PointerEvent*) override;
+    void pointerPressEvent(PointerEvent* event) override;
+    void pointerReleaseEvent(PointerEvent* event) override;
+    void pointerMoveEvent(PointerEvent* event) override;
 
     void setShowCameraPath(const bool showCameraPath) override;
     void resetCameraPath() override;
@@ -75,9 +75,9 @@ private:
     void paintInterpolations(QPainter& painter, const QTransform& worldTransform, int currentFrame, const LayerCamera* cameraLayer, const Camera* keyframe, bool isPlaying) const;
     void paintControlPoint(QPainter& painter, const QTransform& worldTransform, const LayerCamera* cameraLayer, const int frameIndex, const QPointF& pathPoint, bool hollowHandle) const;
 
-    CameraMoveType moveMode();
-    void transformCamera(Qt::KeyboardModifiers keyMod);
-    void transformCameraPath();
+    void updateMoveMode(const QPointF& pos);
+    void transformCamera(const QPointF& pos, Qt::KeyboardModifiers keyMod);
+    void transformCameraPath(const QPointF& pos);
     void updateSettings(const SETTING setting);
     int constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const;
 
@@ -91,7 +91,6 @@ private:
 
     QPointF mTransformOffset;
     CameraMoveType mCamMoveMode = CameraMoveType::NONE;
-    CameraMoveType mCamPathMoveMode = CameraMoveType::NONE;
     int mDragPathFrame = 1;
     int mRotationIncrement = 0;
 

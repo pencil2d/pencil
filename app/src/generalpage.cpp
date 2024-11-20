@@ -103,7 +103,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->antialiasingBox, &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged);
     connect(ui->curveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChanged);
     connect(ui->highResBox, &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged);
-    connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
+    connect(ui->canvasCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::canvasCursorCheckboxStateChanged);
     connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridWidthChanged);
     connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridHeightChanged);
     connect(ui->actionSafeCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::actionSafeCheckBoxStateChanged);
@@ -141,8 +141,8 @@ void GeneralPage::updateValues()
     ui->toolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
     QSignalBlocker b5(ui->antialiasingBox);
     ui->antialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
-    QSignalBlocker b6(ui->dottedCursorBox);
-    ui->dottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
+    QSignalBlocker b6(ui->canvasCursorBox);
+    ui->canvasCursorBox->setChecked(mManager->isOn(SETTING::CANVAS_CURSOR));
     QSignalBlocker b7(ui->gridSizeInputW);
     ui->gridSizeInputW->setValue(mManager->getInt(SETTING::GRID_SIZE_W));
     QSignalBlocker b11(ui->gridSizeInputH);
@@ -233,9 +233,9 @@ void GeneralPage::toolCursorsCheckboxStateChanged(int b)
     mManager->set(SETTING::TOOL_CURSOR, b != Qt::Unchecked);
 }
 
-void GeneralPage::dottedCursorCheckboxStateChanged(int b)
+void GeneralPage::canvasCursorCheckboxStateChanged(int b)
 {
-    mManager->set(SETTING::DOTTED_CURSOR, b != Qt::Unchecked);
+    mManager->set(SETTING::CANVAS_CURSOR, b != Qt::Unchecked);
 }
 
 void GeneralPage::gridWidthChanged(int value)

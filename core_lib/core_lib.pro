@@ -26,6 +26,7 @@ INCLUDEPATH += src \
 PRECOMPILED_HEADER = src/corelib-pch.h
 
 HEADERS +=  \
+    src/canvascursorpainter.h \
     src/corelib-pch.h \
     src/graphics/bitmap/bitmapbucket.h \
     src/graphics/bitmap/bitmapimage.h \
@@ -83,7 +84,7 @@ HEADERS +=  \
     src/tool/polylinetool.h \
     src/tool/selecttool.h \
     src/tool/smudgetool.h \
-    src/tool/strokemanager.h \
+    src/tool/strokeinterpolator.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
     src/util/cameraeasingtype.h \
@@ -115,6 +116,7 @@ HEADERS +=  \
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
+    src/canvascursorpainter.cpp \
     src/graphics/bitmap/bitmapbucket.cpp \
     src/graphics/bitmap/tile.cpp \
     src/graphics/bitmap/tiledbuffer.cpp \
@@ -167,7 +169,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tool/polylinetool.cpp \
     src/tool/selecttool.cpp \
     src/tool/smudgetool.cpp \
-    src/tool/strokemanager.cpp \
+    src/tool/strokeinterpolator.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp \
     src/util/cameraeasingtype.cpp \

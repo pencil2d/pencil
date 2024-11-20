@@ -36,11 +36,9 @@ public:
     void pointerMoveEvent(PointerEvent *) override;
     void pointerDoubleClickEvent(PointerEvent *) override;
 
-    virtual bool isActive() override { return false; }
-
 private:
     void updateSettings(const SETTING setting);
-    void transformView(Qt::KeyboardModifiers keyMod, Qt::MouseButtons buttons);
+    void transformView(Qt::KeyboardModifiers keyMod, const QPointF& pos, Qt::MouseButtons buttons);
 
     QPointF mLastPixel;
     QPointF mStartPoint;

@@ -48,16 +48,15 @@ Tile* TiledBuffer::getTileFromIndex(const TileIndex& tileIndex)
     return selectedTile;
 }
 
-void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, int brushCursorWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
+void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
     const QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
     const float tileSize = UNIFORM_TILE_SIZE;
-    const int width = qMax(brushCursorWidth,brushWidth);
 
     // Gather the number of tiles that fits the size of the brush width
-    const int xLeft = qFloor((qFloor(point.x() - width)) / tileSize);
-    const int xRight = qFloor((qFloor(point.x() + width)) / tileSize);
-    const int yTop = qFloor(qFloor(point.y() - width) / tileSize);
-    const int yBottom = qFloor(qFloor(point.y() + width) / tileSize);
+    const int xLeft = qFloor((qFloor(point.x() - brushWidth)) / tileSize);
+    const int xRight = qFloor((qFloor(point.x() + brushWidth)) / tileSize);
+    const int yTop = qFloor(qFloor(point.y() - brushWidth) / tileSize);
+    const int yBottom = qFloor(qFloor(point.y() + brushWidth) / tileSize);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
@@ -108,11 +107,10 @@ void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPain
 }
 
 
-void TiledBuffer::drawPath(QPainterPath path, int cursorWidth, QPen pen, QBrush brush,
+void TiledBuffer::drawPath(QPainterPath path, QPen pen, QBrush brush,
                            QPainter::CompositionMode cm, bool antialiasing)
 {
-    const int pathWidth = pen.width();
-    const int width = (qMax(pathWidth,cursorWidth) + 1);
+    const int width = pen.width();;
     const float tileSize = UNIFORM_TILE_SIZE;
     const QRectF pathRect = path.boundingRect();
 

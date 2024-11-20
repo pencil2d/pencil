@@ -13,9 +13,6 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <property name="styleSheet">
-   <string notr="true">this-&gt;setStyleSheet(&quot;background-color:yellow;&quot;);</string>
-  </property>
   <widget class="BackgroundWidget" name="background">
    <layout class="QVBoxLayout" name="layout">
     <property name="spacing">

@@ -20,6 +20,10 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 #include "pointerevent.h"
+#include "preferencesdef.h"
+#include "strokeinterpolator.h"
+
+#include "canvascursorpainter.h"
 
 #include <QList>
 #include <QPointF>
@@ -36,9 +40,50 @@ public:
     void drawStroke();
     void endStroke();
 
+    bool leavingThisTool() override;
+    bool enteringThisTool() override;
+
+    void updateCanvasCursor();
+
+    static const qreal FEATHER_MIN;
+    static const qreal FEATHER_MAX;
+    static const qreal WIDTH_MIN;
+    static const qreal WIDTH_MAX;
+
+    void loadSettings() override;
+    bool isActive() const override { return mInterpolator.isActive(); };
+
     bool keyPressEvent(QKeyEvent* event) override;
+    void pointerPressEvent(PointerEvent* event) override;
+    void pointerMoveEvent(PointerEvent* event) override;
+    void pointerReleaseEvent(PointerEvent* event) override;
+    bool event(QEvent *event) override;
+
+    bool handleQuickSizing(PointerEvent* event);
+
+    void paint(QPainter& painter, const QRect& blitRect) override;
+
+public slots:
+    void onPreferenceChanged(SETTING setting);
+    void onViewUpdated();
 
 protected:
+    QPointF getCurrentPressPixel() const;
+    QPointF getCurrentPressPoint() const;
+    QPointF getCurrentPixel() const;
+    QPointF getCurrentPoint() const;
+    QPointF getLastPixel() const;
+    QPointF getLastPoint() const;
+
+    // dynamic cursor adjustment
+    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers);
+    virtual void stopAdjusting();
+    virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
+
+    static bool mQuickSizingEnabled;
+    static bool msIsAdjusting;
+
+    QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
     bool mFirstDraw = false;
 
     QList<QPointF> mStrokePoints;
@@ -56,8 +101,14 @@ protected:
     /// Returns true by default.
     virtual bool emptyFrameActionEnabled();
 
-private:
+    bool mCanvasCursorEnabled = false;
     QPointF mLastPixel { 0, 0 };
+
+    QPointF mAdjustPosition;
+
+    CanvasCursorPainter mCanvasCursorPainter;
+
+    StrokeInterpolator mInterpolator;
 };
 
 #endif // STROKETOOL_H

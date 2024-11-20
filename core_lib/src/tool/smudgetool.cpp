@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 #include "layermanager.h"
-#include "strokemanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
 
@@ -44,6 +43,8 @@ ToolType SmudgeTool::type()
 
 void SmudgeTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
 
@@ -121,7 +122,7 @@ bool SmudgeTool::keyPressEvent(QKeyEvent *event)
         mScribbleArea->setCursor(cursor()); // update cursor
         return true;
     }
-    return BaseTool::keyPressEvent(event);
+    return StrokeTool::keyPressEvent(event);
 }
 
 bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
@@ -132,12 +133,15 @@ bool SmudgeTool::keyReleaseEvent(QKeyEvent *event)
         mScribbleArea->setCursor(cursor()); // update cursor
         return true;
     }
-    return BaseTool::keyReleaseEvent(event);
+    return StrokeTool::keyReleaseEvent(event);
 }
 
 void SmudgeTool::pointerPressEvent(PointerEvent* event)
 {
-    //qDebug() << "smudgetool: mousePressEvent";
+    mInterpolator.pointerPressEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
 
     Layer* layer = mEditor->layers()->currentLayer();
     auto selectMan = mEditor->select();
@@ -186,10 +190,17 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
             }
         }
     }
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void SmudgeTool::pointerMoveEvent(PointerEvent* event)
 {
+    mInterpolator.pointerMoveEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
@@ -240,10 +251,17 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
             mScribbleArea->update();
         }
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
 {
+    mInterpolator.pointerReleaseEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
@@ -276,6 +294,8 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
             mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
         }
     }
+
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 void SmudgeTool::drawStroke()
@@ -289,7 +309,7 @@ void SmudgeTool::drawStroke()
     if (sourceImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     BitmapImage targetImage = sourceImage->copy();
     StrokeTool::drawStroke();
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mInterpolator.interpolateStroke();
 
     for (int i = 0; i < p.size(); i++)
     {
@@ -303,7 +323,6 @@ void SmudgeTool::drawStroke()
     //opacity = currentPressure; // todo: Probably not interesting?!
     //brushWidth = brushWidth * opacity;
 
-    BlitRect rect;
     QPointF a = mLastBrushPoint;
     QPointF b = getCurrentPoint();
 

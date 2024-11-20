@@ -1,34 +1,27 @@
 #include "pointerevent.h"
 
-PointerEvent::PointerEvent(QMouseEvent* event)
+PointerEvent::PointerEvent(QMouseEvent* event, const QPointF& canvasPos)
 {
     mMouseEvent = event;
+    mCanvasPos = canvasPos;
 }
 
-PointerEvent::PointerEvent(QTabletEvent* event)
+PointerEvent::PointerEvent(QTabletEvent* event, const QPointF& canvasPos)
 {
     mTabletEvent = event;
+    mCanvasPos = canvasPos;
 }
 
 PointerEvent::~PointerEvent()
 {
 }
 
-QPoint PointerEvent::pos() const
+QPointF PointerEvent::canvasPos() const
 {
-    if (mMouseEvent)
-    {
-        return mMouseEvent->pos();
-    }
-    else if (mTabletEvent)
-    {
-        return mTabletEvent->pos();
-    }
-    Q_ASSERT(false);
-    return QPoint();
+    return mCanvasPos;
 }
 
-QPointF PointerEvent::posF() const
+QPointF PointerEvent::viewportPos() const
 {
     if (mMouseEvent)
     {
@@ -209,17 +202,37 @@ bool PointerEvent::isAccepted()
     return false;
 }
 
-QEvent::Type PointerEvent::eventType() const
+PointerEvent::Type PointerEvent::eventType() const
 {
     if (mMouseEvent)
     {
-        return mMouseEvent->type();
+        switch (mMouseEvent->type())
+        {
+        case QEvent::MouseButtonPress:
+            return Type::Press;
+        case QEvent::MouseMove:
+            return Type::Move;
+        case QEvent::MouseButtonRelease:
+            return Type::Release;
+        default:
+            return Type::Unmapped;
+        }
     }
     else if (mTabletEvent)
     {
-        return mTabletEvent->type();
+        switch (mTabletEvent->type())
+        {
+        case QEvent::TabletPress:
+            return Type::Press;
+        case QEvent::TabletMove:
+            return Type::Move;
+        case QEvent::TabletRelease:
+            return Type::Release;
+        default:
+            return Type::Unmapped;
+        }
     }
-    return QEvent::None;
+    return Type::Unmapped;
 }
 
 PointerEvent::InputType PointerEvent::inputType() const

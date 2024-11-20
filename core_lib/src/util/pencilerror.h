@@ -45,7 +45,7 @@ public:
         OK = 0,
         SAFE,
         FAIL,
-		CANCELED,
+        CANCELED,
         FILE_NOT_FOUND,
         NOT_SUPPORTED,
         INVALID_ARGUMENT,
@@ -65,8 +65,8 @@ public:
         // Sound
         ERROR_LOAD_SOUND_FILE,
 
-		// Export
-		ERROR_FFMPEG_NOT_FOUND,
+        // Export
+        ERROR_FFMPEG_NOT_FOUND,
 
         // Layer
         ERROR_NEED_AT_LEAST_ONE_CAMERA_LAYER
@@ -100,7 +100,7 @@ private:
 
 #ifndef STATUS_CHECK
 #define STATUS_CHECK( x )\
-	{ Status st = (x); if (!st.ok()) { return st; } }
+    { Status st = (x); if (!st.ok()) { return st; } }
 #endif
 
 #ifndef STATUS_FAILED

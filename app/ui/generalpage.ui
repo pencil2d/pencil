@@ -115,9 +115,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QCheckBox" name="dottedCursorBox">
+           <widget class="QCheckBox" name="canvasCursorBox">
             <property name="text">
-             <string>Dotted Cursor</string>
+             <string>Canvas Cursor</string>
             </property>
            </widget>
           </item>
@@ -515,7 +515,7 @@
   <tabstop>windowOpacityLevel</tabstop>
   <tabstop>shadowsBox</tabstop>
   <tabstop>toolCursorsBox</tabstop>
-  <tabstop>dottedCursorBox</tabstop>
+  <tabstop>canvasCursorBox</tabstop>
   <tabstop>checkerBackgroundButton</tabstop>
   <tabstop>whiteBackgroundButton</tabstop>
   <tabstop>greyBackgroundButton</tabstop>

@@ -172,7 +172,12 @@ bool Layer::addNewKeyFrameAt(int position)
     if (position <= 0) return false;
 
     KeyFrame* key = createKeyFrame(position);
-    return addKeyFrame(position, key);
+    if (!addKeyFrame(position, key))
+    {
+        delete key;
+        return false;
+    }
+    return true;
 }
 
 void Layer::addOrReplaceKeyFrame(int position, KeyFrame* pKeyFrame)

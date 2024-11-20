@@ -22,7 +22,6 @@ GNU General Public License for more details.
 
 #include "layermanager.h"
 #include "colormanager.h"
-#include "strokemanager.h"
 #include "viewmanager.h"
 #include "preferencemanager.h"
 #include "selectionmanager.h"
@@ -39,6 +38,8 @@ PencilTool::PencilTool(QObject* parent) : StrokeTool(parent)
 
 void PencilTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[VECTORMERGE] = false;
@@ -51,10 +52,7 @@ void PencilTool::loadSettings()
     properties.pressure = settings.value("pencilPressure", true).toBool();
     properties.stabilizerLevel = settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt();
     properties.useAA = DISABLED;
-    properties.useFeather = true;
     properties.useFillContour = false;
-    //    properties.invisibility = 1;
-    //    properties.preserveAlpha = 0;
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
@@ -63,7 +61,7 @@ void PencilTool::resetToDefault()
 {
     setWidth(4.0);
     setFeather(50);
-    setUseFeather(true);
+    setUseFeather(false);
     setStabilizerLevel(StabilizationLevel::STRONG);
 }
 
@@ -147,6 +145,11 @@ QCursor PencilTool::cursor()
 
 void PencilTool::pointerPressEvent(PointerEvent *event)
 {
+    mInterpolator.pointerPressEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
@@ -157,21 +160,36 @@ void PencilTool::pointerPressEvent(PointerEvent *event)
     {
         mScribbleArea->toggleThinLines();
     }
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void PencilTool::pointerMoveEvent(PointerEvent* event)
 {
+    mInterpolator.pointerMoveEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
-        mCurrentPressure = strokeManager()->getPressure();
+        mCurrentPressure = mInterpolator.getPressure();
         drawStroke();
-        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
-            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
+        if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
+        {
+            mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
+        }
     }
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void PencilTool::pointerReleaseEvent(PointerEvent *event)
 {
+    mInterpolator.pointerReleaseEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     mEditor->backup(typeName());
@@ -190,6 +208,8 @@ void PencilTool::pointerReleaseEvent(PointerEvent *event)
         paintVectorStroke(layer);
     }
     endStroke();
+
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 // draw a single paint dab at the given location
@@ -217,7 +237,7 @@ void PencilTool::paintAt(QPointF point)
 void PencilTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mInterpolator.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 
@@ -254,7 +274,6 @@ void PencilTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        properties.useFeather = false;
         mCurrentWidth = 0; // FIXME: WTF?
         QPen pen(mEditor->color()->frontColor(),
                  1,

@@ -51,7 +51,7 @@ private slots:
     void shadowsCheckboxStateChanged(int b);
     void antiAliasCheckboxStateChanged(int b);
     void toolCursorsCheckboxStateChanged(int b);
-    void dottedCursorCheckboxStateChanged(int b);
+    void canvasCursorCheckboxStateChanged(int b);
     void highResCheckboxStateChanged(int b);
     void gridCheckBoxStateChanged(int b);
     void curveSmoothingChanged(int value);

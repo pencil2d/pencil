@@ -20,9 +20,9 @@ GNU General Public License for more details.
 
 #include <QPointF>
 
-#include "basetool.h"
+#include "stroketool.h"
 
-class PolylineTool : public BaseTool
+class PolylineTool : public StrokeTool
 {
     Q_OBJECT
 public:
@@ -47,7 +47,7 @@ public:
 
     bool leavingThisTool() override;
 
-    virtual bool isActive() override;
+    bool isActive() const override;
 
 private:
     QList<QPointF> mPoints;

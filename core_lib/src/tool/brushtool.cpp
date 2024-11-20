@@ -27,7 +27,6 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "editor.h"
 #include "colormanager.h"
-#include "strokemanager.h"
 #include "layermanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
@@ -46,6 +45,8 @@ ToolType BrushTool::type()
 
 void BrushTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
     mPropertyEnabled[PRESSURE] = true;
@@ -139,25 +140,46 @@ QCursor BrushTool::cursor()
 
 void BrushTool::pointerPressEvent(PointerEvent *event)
 {
+    mInterpolator.pointerPressEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     mMouseDownPoint = getCurrentPoint();
     mLastBrushPoint = getCurrentPoint();
 
     startStroke(event->inputType());
+
+    StrokeTool::pointerPressEvent(event);
 }
 
 void BrushTool::pointerMoveEvent(PointerEvent* event)
 {
+    mInterpolator.pointerMoveEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
-        mCurrentPressure = strokeManager()->getPressure();
+        mCurrentPressure = mInterpolator.getPressure();
         drawStroke();
-        if (properties.stabilizerLevel != strokeManager()->getStabilizerLevel())
-            strokeManager()->setStabilizerLevel(properties.stabilizerLevel);
+        if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
+        {
+            mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
+        }
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
 void BrushTool::pointerReleaseEvent(PointerEvent *event)
 {
+    mInterpolator.pointerReleaseEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
@@ -178,6 +200,7 @@ void BrushTool::pointerReleaseEvent(PointerEvent *event)
     }
 
     endStroke();
+    StrokeTool::pointerReleaseEvent(event);
 }
 
 // draw a single paint dab at the given location
@@ -204,7 +227,7 @@ void BrushTool::paintAt(QPointF point)
 void BrushTool::drawStroke()
 {
     StrokeTool::drawStroke();
-    QList<QPointF> p = strokeManager()->interpolateStroke();
+    QList<QPointF> p = mInterpolator.interpolateStroke();
 
     Layer* layer = mEditor->layers()->currentLayer();
 

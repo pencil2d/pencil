@@ -112,6 +112,7 @@ void ToolManager::setCurrentTool(ToolType eToolType)
     }
 
     mCurrentTool = getTool(eToolType);
+    mCurrentTool->enteringThisTool();
     if (mTemporaryTool == nullptr && mTabletEraserTool == nullptr)
     {
         emit toolChanged(eToolType);

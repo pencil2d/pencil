@@ -15,24 +15,21 @@ GNU General Public License for more details.
 
 */
 
-#ifndef STROKEMANAGER_H
-#define STROKEMANAGER_H
+#ifndef STROKEINTERPOLATOR_H
+#define STROKEINTERPOLATOR_H
 
-#include <ctime>
 #include <QQueue>
 #include <QPointF>
 #include <QList>
 #include <QTimer>
-#include <QElapsedTimer>
-#include "object.h"
 
 
 class PointerEvent;
 
-class StrokeManager : public QObject
+class StrokeInterpolator : public QObject
 {
 public:
-    StrokeManager();
+    StrokeInterpolator();
 
     void pointerPressEvent(PointerEvent* event);
     void pointerMoveEvent(PointerEvent* event);
@@ -42,9 +39,7 @@ public:
 
     float getPressure() { return mTabletPressure; }
     int getStabilizerLevel() { return mStabilizerLevel; }
-    bool isTabletInUse() { return mTabletInUse; }
-    void setTabletInUse(bool inUse) { mTabletInUse = inUse; }
-    bool isActive() { return mStrokeStarted; }
+    bool isActive() const { return mStrokeStarted; }
 
     QList<QPointF> interpolateStroke();
     void interpolatePoll();
@@ -56,11 +51,9 @@ public:
     QList<QPointF> noInpolOp(QList<QPointF> points);
     QList<QPointF> tangentInpolOp(QList<QPointF> points);
 
-    QPointF getLastPressPixel() const { return mLastPressPixel; }
     QPointF getCurrentPixel() const { return mCurrentPixel; }
     QPointF getLastPixel() const { return mLastPixel; }
     QPointF getLastMeanPixel() const { return mLastInterpolated; }
-    QPointF getMousePos() const { return mousePos; }
     QPointF getCurrentPressPixel() const { return mCurrentPressPixel; }
 
 private:
@@ -74,24 +67,17 @@ private:
 
     QTimer timer;
 
-    QElapsedTimer mSingleshotTime;
     QPointF mCurrentPressPixel = { 0, 0 };
-    QPointF mLastPressPixel2 = { 0, 0 };
-    QPointF mLastPressPixel = { 0, 0 };
     QPointF mCurrentPixel = { 0, 0 };
     QPointF mLastPixel = { 0, 0 };
     QPointF mLastInterpolated = { 0, 0 };
-    QPointF mousePos = { 0, 0 };
 
     QPointF m_previousTangent;
     bool    mHasTangent = false;
-    int     previousTime = 0;
     bool    mStrokeStarted = false;
     bool    mTabletInUse = false;
     float   mTabletPressure = 1.f;
     int     mStabilizerLevel = 0;
-
-    clock_t m_timeshot;
 };
 
-#endif // STROKEMANAGER_H
+#endif // STROKEINTERPOLATOR_H

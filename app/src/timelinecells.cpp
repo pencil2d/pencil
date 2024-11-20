@@ -747,7 +747,10 @@ void TimeLineCells::paintEvent(QPaintEvent*)
             {
                 paintHighlightedFrame(painter, mHighlightedFrame, recTop, standardWidth, recHeight);
             }
-            paintFrameCursorOnCurrentLayer(painter, recTop, standardWidth, recHeight);
+            if (currentLayer->visible())
+            {
+                paintFrameCursorOnCurrentLayer(painter, recTop, standardWidth, recHeight);
+            }
         }
 
         // --- draw the position of the current frame
