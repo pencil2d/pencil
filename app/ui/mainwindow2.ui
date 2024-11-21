@@ -244,6 +244,7 @@
     <addaction name="actionFlip_rolling"/>
     <addaction name="separator"/>
     <addaction name="actionReposition_Selected_Frames"/>
+    <addaction name="actionInterpolate_KeyFrames"/>
     <addaction name="menuTimeline_Selection"/>
    </widget>
    <widget class="QMenu" name="menuTools">
@@ -1273,6 +1274,11 @@
     <string>30°</string>
    </property>
   </action>
+  <action name="actionInterpolate_KeyFrames">
+   <property name="text">
+    <string>Interpolate KeyFrames</string>
+    </property>
+   </action>
   <action name="actionRemoveLastPolylineSegment">
    <property name="text">
     <string>Remove Last Polyline Segment</string>
