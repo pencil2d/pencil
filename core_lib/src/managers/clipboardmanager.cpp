@@ -27,7 +27,11 @@ ClipboardManager::ClipboardManager(Editor* editor) : BaseManager(editor, "Clipbo
 
 ClipboardManager::~ClipboardManager()
 {
-
+    for (auto it : mFrames)
+    {
+        KeyFrame* frame = it.second;
+        delete frame;
+    }
 }
 
 void ClipboardManager::setFromSystemClipboard(const QPointF& pos, const Layer* layer)
@@ -87,9 +91,25 @@ void ClipboardManager::copySelectedFrames(const Layer* currentLayer) {
     mFramesType = currentLayer->type();
 }
 
+std::map<int, KeyFrame*> ClipboardManager::getClipboardFrames()
+{
+    std::map<int, KeyFrame*> resultMap;
+    for (auto it : mFrames)
+    {
+        resultMap.insert(std::make_pair(it.first, it.second->clone()));
+    }
+    return resultMap;
+}
+
 void ClipboardManager::resetStates()
 {
+    for (auto it : mFrames)
+    {
+        KeyFrame* frame = it.second;
+        delete frame;
+    }
     mFrames.clear();
+
     mBitmapImage = BitmapImage();
     mVectorImage = VectorImage();
     mFramesType = Layer::LAYER_TYPE::UNDEFINED;
