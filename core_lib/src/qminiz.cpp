@@ -74,14 +74,13 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     }
 
     mz_zip_archive* mz = new mz_zip_archive;
+    ScopeGuard mzScopeGuard([&] {
+        delete mz;
+    });
+
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_writer_init_file(mz, zipFilePath.toUtf8().data(), 0);
-
-    ScopeGuard mzScopeGuard([&] {
-        mz_zip_writer_end(mz);
-        delete mz;
-    });
 
     if (!ok)
     {
@@ -131,9 +130,6 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     }
 
     ok &= mz_zip_writer_end(mz);
-
-    mzScopeGuard.dismiss();
-    ScopeGuard mzScopeGuard2([&] { delete mz; });
 
     if (!ok)
     {
