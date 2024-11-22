@@ -118,7 +118,8 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("Cannot add %3: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err), sRelativePath);
+            dd << QString("Cannot add %3: error %1, %2 - Aborting!").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err), sRelativePath);
+            return Status(Status::FAIL, dd);
         }
     }
     ok &= mz_zip_writer_finalize_archive(mz);
