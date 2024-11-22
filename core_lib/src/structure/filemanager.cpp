@@ -34,6 +34,7 @@ FileManager::FileManager(QObject* parent) : QObject(parent)
 Object* FileManager::load(const QString& sFileName)
 {
     DebugDetails dd;
+    dd << "\n[Project diagnostics]\n";
     dd << QString("File name: ").append(sFileName);
     if (!QFile::exists(sFileName))
     {
@@ -50,19 +51,23 @@ Object* FileManager::load(const QString& sFileName)
     QString strMainXMLFile;
     QString strDataFolder;
 
+    QString workingDirPath = obj->workingDir();
+
     // Test file format: new zipped .pclx or old .pcl?
     bool isArchive = isArchiveFormat(sFileName);
 
+    QString fileFormat = "File format: %1";
     if (!isArchive)
     {
-        dd << "Recognized Old Pencil2D File Format (*.pcl) !";
+        dd << fileFormat.arg(".pcl");
 
         strMainXMLFile = sFileName;
         strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dd << "Recognized New zipped Pencil2D File Format (*.pclx) !";
+        dd << fileFormat.arg(".pclx");
+        dd << QString("Project extracted to: %1 ").arg(workingDirPath);
 
         Status sanityCheck = MiniZ::sanityCheck(sFileName);
 
@@ -70,17 +75,13 @@ Object* FileManager::load(const QString& sFileName)
         if (!sanityCheck.ok()) {
             dd.collect(sanityCheck.details());
         } else {
-            Status unzipStatus = unzip(sFileName, obj->workingDir());
+            Status unzipStatus = unzip(sFileName, workingDirPath);
             dd.collect(unzipStatus.details());
         }
 
-        strMainXMLFile = QDir(obj->workingDir()).filePath(PFF_XML_FILE_NAME);
-        strDataFolder = QDir(obj->workingDir()).filePath(PFF_DATA_DIR);
+        strMainXMLFile = QDir(workingDirPath).filePath(PFF_XML_FILE_NAME);
+        strDataFolder = QDir(workingDirPath).filePath(PFF_DATA_DIR);
     }
-
-    dd << QString("XML file: ").append(strMainXMLFile)
-       << QString("Data folder: ").append(strDataFolder)
-       << QString("Working folder: ").append(obj->workingDir());
 
     obj->setDataDir(strDataFolder);
     obj->setMainXMLFile(strMainXMLFile);
@@ -92,15 +93,17 @@ Object* FileManager::load(const QString& sFileName)
     QFile file(strMainXMLFile);
     if (!file.exists())
     {
-        dd << "Main XML file does not exist";
+        dd << "Error: Main XML exists: No";
         handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
         return nullptr;
     }
     if (!file.open(QFile::ReadOnly))
     {
+        dd << "Error: Main XML file is read only!";
         handleOpenProjectError(Status::ERROR_FILE_CANNOT_OPEN, dd);
         return nullptr;
     }
+    dd << "Main XML exists: Yes";
 
     QDomDocument xmlDoc;
     if (!xmlDoc.setContent(&file))
