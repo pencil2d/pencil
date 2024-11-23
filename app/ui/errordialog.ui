@@ -83,6 +83,16 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>The following report contains vital information to figure out the cause of the error. Make sure to copy all of it, if you intend to report the bug.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTextEdit" name="details">
      <property name="readOnly">
       <bool>true</bool>
