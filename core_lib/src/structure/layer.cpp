@@ -340,7 +340,7 @@ bool Layer::loadKey(KeyFrame* pKey)
 Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep)
 {
     DebugDetails dd;
-    dd << __FUNCTION__;
+    dd << "\n[Layer SAVE diagnostics]\n";
 
     bool ok = true;
 

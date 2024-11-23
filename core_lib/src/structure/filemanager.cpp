@@ -639,9 +639,10 @@ bool FileManager::loadPalette(Object* obj)
 Status FileManager::writeKeyFrameFiles(const Object* object, const QString& dataFolder, QStringList& filesFlushed)
 {
     DebugDetails dd;
+    dd << "\n[Keyframes WRITE diagnostics]\n";
 
     const int numLayers = object->getLayerCount();
-    dd << QString("Total %1 layers").arg(numLayers);
+    dd << QString("Total layer count: %1").arg(numLayers);
 
     for (int i = 0; i < numLayers; ++i)
     {
@@ -661,25 +662,32 @@ Status FileManager::writeKeyFrameFiles(const Object* object, const QString& data
         {
             saveLayersOK = false;
             dd.collect(st.details());
-            dd << QString("  !! Failed to save Layer[%1] %2").arg(i).arg(layer->name());
+            dd << QString("\n  Error: Failed to save Layer[%1] %2").arg(i).arg(layer->name());
         }
     }
-    dd << "All Layers saved";
 
     progressForward();
 
     auto errorCode = (saveLayersOK) ? Status::OK : Status::FAIL;
+
+    if (saveLayersOK) {
+        dd << "\n  All Layers saved";
+    } else {
+        dd << "\n  Error: Unable to save all layers";
+    }
+
     return Status(errorCode, dd);
 }
 
 Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPath, QStringList& filesWritten)
 {
     DebugDetails dd;
+    dd << "\n[XML WRITE diagnostics]\n";
 
     QFile file(mainXmlPath);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        dd << "Failed to open Main XML" << mainXmlPath;
+        dd << QString("Error: Failed to open Main XML at: %1, \n  Reason: %2").arg(mainXmlPath).arg(file.errorString());
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
 
