@@ -34,7 +34,7 @@ FileManager::FileManager(QObject* parent) : QObject(parent)
 Object* FileManager::load(const QString& sFileName)
 {
     DebugDetails dd;
-    dd << "\n[Project diagnostics]\n";
+    dd << "\n[Project LOAD diagnostics]\n";
     dd << QString("File name: ").append(sFileName);
     if (!QFile::exists(sFileName))
     {
@@ -51,12 +51,10 @@ Object* FileManager::load(const QString& sFileName)
     QString strMainXMLFile;
     QString strDataFolder;
 
-    QString workingDirPath = obj->workingDir();
-
     // Test file format: new zipped .pclx or old .pcl?
     bool isArchive = isArchiveFormat(sFileName);
 
-    QString fileFormat = "File format: %1";
+    QString fileFormat = "Project format: %1";
     if (!isArchive)
     {
         dd << fileFormat.arg(".pcl");
@@ -66,21 +64,24 @@ Object* FileManager::load(const QString& sFileName)
     }
     else
     {
+        QString workingDirPath = obj->workingDir();
+
         dd << fileFormat.arg(".pclx");
-        dd << QString("Project extracted to: %1 ").arg(workingDirPath);
 
         Status sanityCheck = MiniZ::sanityCheck(sFileName);
 
         // Let's check if we can read the file before we try to unzip.
         if (!sanityCheck.ok()) {
             dd.collect(sanityCheck.details());
-            dd << "\n  Error: Miniz sanity check failed!";
+            dd << "\n  Error: Unable to extract project, miniz sanity check failed.";
             handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
             return nullptr;
         } else {
             Status unzipStatus = unzip(sFileName, workingDirPath);
             dd.collect(unzipStatus.details());
         }
+
+        dd << QString("Project extracted to: %1 ").arg(workingDirPath);
 
         strMainXMLFile = QDir(workingDirPath).filePath(PFF_XML_FILE_NAME);
         strDataFolder = QDir(workingDirPath).filePath(PFF_DATA_DIR);
@@ -222,16 +223,16 @@ bool FileManager::isArchiveFormat(const QString& fileName) const
 Status FileManager::save(const Object* object, const QString& sFileName)
 {
     DebugDetails dd;
-    dd << __FUNCTION__;
-    dd << ("sFileName = " + sFileName);
+    dd << "\n[Project SAVE diagnostics]\n";
+    dd << ("file name:" + sFileName);
 
     if (object == nullptr)
     {
-        dd << "Object parameter is null";
+        dd << "Error: Object parameter is null";
         return Status(Status::INVALID_ARGUMENT, dd);
     }
     if (sFileName.isEmpty()) {
-        dd << "File name is empty";
+        dd << "Error: File name is empty, unable to save.";
         return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The path is empty."));
@@ -246,7 +247,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     QFileInfo fileInfo(sFileName);
     if (fileInfo.isDir())
     {
-        dd << "FileName points to a directory";
+        dd << "Error: File name must point to a file, not a directory.";
         return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") points to a directory.").arg(fileInfo.absoluteFilePath()));
@@ -254,14 +255,14 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     QFileInfo parentDirInfo(fileInfo.dir().absolutePath());
     if (!parentDirInfo.exists())
     {
-        dd << "The parent directory of sFileName does not exist";
+        dd << QString("Error: The parent directory of %1 does not exist").arg(sFileName);
         return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The directory (\"%1\") does not exist.").arg(parentDirInfo.absoluteFilePath()));
     }
     if ((fileInfo.exists() && !fileInfo.isWritable()) || !parentDirInfo.isWritable())
     {
-        dd << "Filename points to a location that is not writable";
+        dd << "Error: File name points to a location that is not writable";
         return Status(Status::INVALID_ARGUMENT, dd,
                       tr("Invalid Save Path"),
                       tr("The path (\"%1\") is not writable.").arg(fileInfo.absoluteFilePath()));
@@ -271,22 +272,23 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     QString sMainXMLFile;
     QString sDataFolder;
 
+    QString fileFormat = QString("Project format: %1");
     bool isArchive = isArchiveFormat(sFileName);
     if (!isArchive)
     {
-        dd << "Old Pencil2D File Format (*.pcl) !";
+        dd << fileFormat.arg(".pcl");
 
         sMainXMLFile = sFileName;
         sDataFolder = sMainXMLFile + "." + PFF_OLD_DATA_DIR;
     }
     else
     {
-        dd << "New zipped Pencil2D File Format (*.pclx) !";
-        dd.collect(MiniZ::sanityCheck(sFileName).details());
-
         sTempWorkingFolder = object->workingDir();
+
+        dd << fileFormat.arg(".pclx");
+        dd << QString("Project TEMP location: %1").arg(sTempWorkingFolder);
+
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
-        dd << QString("TempWorkingFolder = ").append(sTempWorkingFolder);
 
         sMainXMLFile = QDir(sTempWorkingFolder).filePath(PFF_XML_FILE_NAME);
         sDataFolder = QDir(sTempWorkingFolder).filePath(PFF_OLD_DATA_DIR);
@@ -299,7 +301,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
         if (!dir.mkpath(sDataFolder))
         {
-            dd << QString("dir.absolutePath() = %1").arg(dir.absolutePath());
+            dd << QString("Error: Unable to create data directory, tried to save to: %1").arg(dir.absolutePath());
             return Status(Status::FAIL, dd,
                           tr("Cannot Create Data Directory"),
                           tr("Failed to create directory \"%1\". Please make sure you have sufficient permissions.").arg(sDataFolder));
@@ -307,7 +309,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     }
     if (!dataInfo.isDir())
     {
-        dd << QString("dataInfo.absoluteFilePath() = ").append(dataInfo.absoluteFilePath());
+        dd << QString("Error: Expected data to be a directory but found %1 instead").arg(dataInfo.absoluteFilePath());
         return Status(Status::FAIL,
                       dd,
                       tr("Cannot Create Data Directory"),
