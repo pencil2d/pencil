@@ -334,6 +334,10 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     {
         QString sBackupFile = backupPreviousFile(sFileName);
 
+        if (!sBackupFile.isEmpty()) {
+            dd << QString("\nNote: A backup has been made here: %1").arg(sBackupFile);
+        }
+
         if (!saveOk) {
             return Status(Status::FAIL, dd,
                           tr("Internal Error"),
