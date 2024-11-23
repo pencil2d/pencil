@@ -83,6 +83,9 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_writer_init_file(mz, zipFilePath.toUtf8().data(), 0);
+    ScopeGuard mzScopeGuard2([&] {
+        mz_zip_reader_end(mz);
+    });
 
     if (!ok)
     {
@@ -132,15 +135,6 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         return Status(Status::FAIL, dd);
     }
 
-    ok &= mz_zip_writer_end(mz);
-
-    if (!ok)
-    {
-        mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Miniz writer end failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
-        return Status(Status::FAIL, dd);
-    }
-
     return Status::OK;
 }
 
@@ -173,6 +167,9 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_reader_init_file(mz, zipFilePath.toUtf8().data(), 0);
+    ScopeGuard mzScopeGuard2([&] {
+        mz_zip_reader_end(mz);
+    });
 
     if (!ok) {
         mz_zip_error err = mz_zip_get_last_error(mz);
@@ -223,12 +220,8 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
         }
     }
 
-    ok &= mz_zip_reader_end(mz);
-
     if (!ok)
     {
-        mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Error: Failed to end zip reader, Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));;
         return Status(Status::FAIL, dd);
     }
     return Status::OK;
