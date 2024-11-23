@@ -74,6 +74,9 @@ Object* FileManager::load(const QString& sFileName)
         // Let's check if we can read the file before we try to unzip.
         if (!sanityCheck.ok()) {
             dd.collect(sanityCheck.details());
+            dd << "\n  Error: Miniz sanity check failed!";
+            handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
+            return nullptr;
         } else {
             Status unzipStatus = unzip(sFileName, workingDirPath);
             dd.collect(unzipStatus.details());
@@ -93,7 +96,7 @@ Object* FileManager::load(const QString& sFileName)
     QFile file(strMainXMLFile);
     if (!file.exists())
     {
-        dd << "Error: Main XML exists: No";
+        dd << "Error: No main XML exists!";
         handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
         return nullptr;
     }
@@ -109,7 +112,7 @@ Object* FileManager::load(const QString& sFileName)
     if (!xmlDoc.setContent(&file))
     {
         FILEMANAGER_LOG("Couldn't open the main XML file");
-        dd << "Error parsing or opening the main XML file";
+        dd << "Error: Unable to parse or open the main XML file";
         handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
         return nullptr;
     }
@@ -118,7 +121,7 @@ Object* FileManager::load(const QString& sFileName)
     if (!(type.name() == "PencilDocument" || type.name() == "MyObject"))
     {
         FILEMANAGER_LOG("Invalid main XML doctype");
-        dd << QString("Invalid main XML doctype: ").append(type.name());
+        dd << QString("Error: Invalid main XML doctype: ").append(type.name());
         handleOpenProjectError(Status::ERROR_INVALID_PENCIL_FILE, dd);
         return nullptr;
     }
@@ -126,7 +129,7 @@ Object* FileManager::load(const QString& sFileName)
     QDomElement root = xmlDoc.documentElement();
     if (root.isNull())
     {
-        dd << "Main XML root node is null";
+        dd << "Error: Main XML root node is null";
         handleOpenProjectError(Status::ERROR_INVALID_PENCIL_FILE, dd);
         return nullptr;
     }
@@ -147,7 +150,7 @@ Object* FileManager::load(const QString& sFileName)
     if (!ok)
     {
         obj.reset();
-        dd << "Issue occurred during object loading";
+        dd << "Error: Issue occurred during object loading";
         handleOpenProjectError(Status::ERROR_INVALID_PENCIL_FILE, dd);
         return nullptr;
     }

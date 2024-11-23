@@ -39,11 +39,13 @@ Status MiniZ::sanityCheck(const QString& sZipFilePath)
 
     if (!readOk || !closeOk) {
         DebugDetails dd;
+
+        dd << "\n  [Miniz sanity check]\n";
         if (read_err != MZ_ZIP_NO_ERROR) {
-            dd << QString("Miniz found an error while reading the file. - %1, %2").arg(static_cast<int>(read_err)).arg(mz_zip_get_error_string(read_err));
+            dd << QString("Found an error while reading the file. Error code: %2, reason: %3").arg(static_cast<int>(read_err)).arg(mz_zip_get_error_string(read_err));
         }
         if (close_err != MZ_ZIP_NO_ERROR) {
-            dd << QString("Miniz found an error while closing file file. - %1, %2").arg(static_cast<int>(close_err)).arg(mz_zip_get_error_string(close_err));
+            dd << QString("Found an error while closing the file. Error code: %2, reason: %3").arg(static_cast<int>(close_err)).arg(mz_zip_get_error_string(close_err));
         }
         return Status(Status::ERROR_MINIZ_FAIL, dd);
     }
