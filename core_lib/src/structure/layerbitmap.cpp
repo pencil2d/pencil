@@ -193,7 +193,9 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc) const
         imageTag.setAttribute("opacity", pImg->getOpacity());
         layerElem.appendChild(imageTag);
 
-        Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        if (!pKeyFrame->fileName().isEmpty()) {
+            Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        }
     });
 
     return layerElem;
