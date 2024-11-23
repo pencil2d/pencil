@@ -694,6 +694,9 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPat
         dd << QString("Error: Failed to open Main XML at: %1, \n  Reason: %2").arg(mainXmlPath).arg(file.errorString());
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
+    ScopeGuard fileScopeGuard([&] {
+        file.close();
+    });
 
     QDomDocument xmlDoc("PencilDocument");
     QDomElement root = xmlDoc.createElement("document");
@@ -723,7 +726,6 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPat
     QTextStream out(&file);
     xmlDoc.save(out, indentSize);
     out.flush();
-    file.close();
 
     dd << "Done writing main xml file: " << mainXmlPath;
 
