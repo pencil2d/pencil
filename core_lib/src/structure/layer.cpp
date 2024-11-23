@@ -364,6 +364,7 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
     }
     if (!ok)
     {
+        dd << "\nError: Failed to save one or more files";
         return Status(Status::FAIL, dd);
     }
     return Status::OK;
