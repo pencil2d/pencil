@@ -332,6 +332,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
 
     if (isArchive)
     {
+        dd << "\n[Archiving diagnostics]\n";
         QString sBackupFile = backupPreviousFile(sFileName);
 
         if (!sBackupFile.isEmpty()) {
@@ -341,23 +342,26 @@ Status FileManager::save(const Object* object, const QString& sFileName)
         if (!saveOk) {
             return Status(Status::FAIL, dd,
                           tr("Internal Error"),
-                          tr("An internal error occurred. Your file may not be saved successfully."));
+                          tr("An internal error occurred. The project could not be saved."));
         }
 
-        dd << "Miniz";
+        dd << "Miniz: Zipping...";
         Status stMiniz = MiniZ::compressFolder(sFileName, sTempWorkingFolder, filesToZip, "application/x-pencil2d-pclx");
         if (!stMiniz.ok())
         {
             dd.collect(stMiniz.details());
+            dd << "\nError: Miniz failed to zip project";
             return Status(Status::ERROR_MINIZ_FAIL, dd,
                           tr("Miniz Error"),
-                          tr("An internal error occurred. Your file may not be saved successfully."));
+                          tr("An internal error occurred. The project may not have been saved successfully."));
         }
-        dd << "Zip file saved successfully";
+        dd << "Miniz: Zip file saved successfully";
         Q_ASSERT(stMiniz.ok());
 
-        if (saveOk)
+        if (saveOk) {
+            dd << "Project saved successfully, deleting backup";
             deleteBackupFile(sBackupFile);
+        }
     }
 
     progressForward();
@@ -366,7 +370,7 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     {
         return Status(Status::FAIL, dd,
                       tr("Internal Error"),
-                      tr("An internal error occurred. Your file may not be saved successfully."));
+                      tr("An internal error occurred. The project may not have been saved successfully."));
     }
 
     return Status::OK;

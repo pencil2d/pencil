@@ -87,7 +87,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Miniz writer init failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        dd << QString("Miniz writer init failed. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
     }
 
     // Add special uncompressed mimetype file to help with the identification of projects
@@ -100,7 +100,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("Cannot add mimetype: error %1").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+            dd << QString("Cannot add mimetype. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         }
     }
 
@@ -120,7 +120,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("Cannot add %3: error %1, %2 - Aborting!").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err), sRelativePath);
+            dd << QString("Cannot add %3. Error code: %1, reason: %2 - Aborting!").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err), sRelativePath);
             return Status(Status::FAIL, dd);
         }
     }
@@ -128,7 +128,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Miniz finalize archive failed: error %1, %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        dd << QString("Miniz finalize archive failed. Error code %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         return Status(Status::FAIL, dd);
     }
 
@@ -151,6 +151,7 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
 
     if (!QFile::exists(zipFilePath))
     {
+        dd << QString("Error: Zip file does not exist.");
         return Status::FILE_NOT_FOUND;
     }
 
@@ -165,17 +166,19 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
     baseDir.makeAbsolute();
 
     mz_zip_archive* mz = new mz_zip_archive;
+    ScopeGuard mzScopeGuard([&] {
+        delete mz;
+    });
+
     mz_zip_zero_struct(mz);
 
     mz_bool ok = mz_zip_reader_init_file(mz, zipFilePath.toUtf8().data(), 0);
 
-    ScopeGuard mzScopeGuard([&] {
-        mz_zip_reader_end(mz);
-        delete mz;
-    });
-
-    if (!ok)
+    if (!ok) {
+        mz_zip_error err = mz_zip_get_last_error(mz);
+        dd << QString("Error: Failed to init the zip reader. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         return Status(Status::FAIL, dd);
+    }
 
     int num = mz_zip_reader_get_num_files(mz);
 
@@ -214,21 +217,19 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
             if (!extractOK)
             {
                 ok = false;
-                dd << "File extraction failed.";
+                mz_zip_error err = mz_zip_get_last_error(mz);
+                dd << QString("File extraction failed. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
             }
         }
     }
 
     ok &= mz_zip_reader_end(mz);
 
-    mzScopeGuard.dismiss();
-    ScopeGuard mzScopeGuard2([&] {
-        delete mz;
-    });
-
     if (!ok)
     {
-        dd << "Unzip error!";
+        mz_zip_error err = mz_zip_get_last_error(mz);
+        dd << QString("Error: Failed to end zip reader, Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));;
+        return Status(Status::FAIL, dd);
     }
     return Status::OK;
 }
