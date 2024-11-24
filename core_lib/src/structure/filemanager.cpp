@@ -888,6 +888,7 @@ Status FileManager::recoverObject(Object* object)
         xmlDoc.setContent(&file);
         root = xmlDoc.documentElement();
         objectTag = root.firstChildElement("object");
+        file.close();
     }
     loadPalette(object);
 
