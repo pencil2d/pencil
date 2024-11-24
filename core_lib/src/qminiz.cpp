@@ -40,7 +40,7 @@ Status MiniZ::sanityCheck(const QString& sZipFilePath)
     if (!readOk || !closeOk) {
         DebugDetails dd;
 
-        dd << "\n  [Miniz sanity check]\n";
+        dd << "\n[Miniz sanity check]\n";
         if (read_err != MZ_ZIP_NO_ERROR) {
             dd << QString("Found an error while reading the file. Error code: %2, reason: %3").arg(static_cast<int>(read_err)).arg(mz_zip_get_error_string(read_err));
         }

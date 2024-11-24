@@ -73,7 +73,7 @@ Object* FileManager::load(const QString& sFileName)
         // Let's check if we can read the file before we try to unzip.
         if (!sanityCheck.ok()) {
             dd.collect(sanityCheck.details());
-            dd << "\n  Error: Unable to extract project, miniz sanity check failed.";
+            dd << "\nError: Unable to extract project, miniz sanity check failed.";
             handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
             return nullptr;
         } else {
@@ -666,7 +666,7 @@ Status FileManager::writeKeyFrameFiles(const Object* object, const QString& data
         {
             saveLayersOK = false;
             dd.collect(st.details());
-            dd << QString("\n  Error: Failed to save Layer[%1] %2").arg(i).arg(layer->name());
+            dd << QString("\nError: Failed to save Layer[%1] %2").arg(i).arg(layer->name());
         }
     }
 
@@ -675,9 +675,9 @@ Status FileManager::writeKeyFrameFiles(const Object* object, const QString& data
     auto errorCode = (saveLayersOK) ? Status::OK : Status::FAIL;
 
     if (saveLayersOK) {
-        dd << "\n  All Layers saved";
+        dd << "\nAll Layers saved";
     } else {
-        dd << "\n  Error: Unable to save all layers";
+        dd << "\nError: Unable to save all layers";
     }
 
     return Status(errorCode, dd);
@@ -691,7 +691,7 @@ Status FileManager::writeMainXml(const Object* object, const QString& mainXmlPat
     QFile file(mainXmlPath);
     if (!file.open(QFile::WriteOnly | QFile::Text))
     {
-        dd << QString("Error: Failed to open Main XML at: %1, \n  Reason: %2").arg(mainXmlPath).arg(file.errorString());
+        dd << QString("Error: Failed to open Main XML at: %1, \nReason: %2").arg(mainXmlPath).arg(file.errorString());
         return Status(Status::ERROR_FILE_CANNOT_OPEN, dd);
     }
     ScopeGuard fileScopeGuard([&] {
