@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QXmlStreamWriter>
 #include "object.h"
+#include "util.h"
 
 
 VectorImage::VectorImage()
@@ -82,6 +83,9 @@ bool VectorImage::read(QString filePath)
     {
         return false;
     }
+    ScopeGuard fileScope([&] {
+        file.close();
+    });
 
     QDomDocument doc;
     if (!doc.setContent(&file)) return false; // this is not a XML file
@@ -123,6 +127,9 @@ Status VectorImage::write(QString filePath, QString format)
         debugInfo << ("file.error() = " + file.errorString());
         return Status(Status::FAIL, debugInfo);
     }
+    ScopeGuard fileScope([&] {
+        file.close();
+    });
 
     if (format != "VEC")
     {

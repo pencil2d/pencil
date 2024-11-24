@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QMediaPlayer>
 #include <QFile>
 #include "soundclip.h"
+#include "util.h"
 
 SoundPlayer::SoundPlayer()
 {
@@ -41,6 +42,10 @@ void SoundPlayer::init(SoundClip* clip)
 
     QFile file(clip->fileName());
     file.open(QIODevice::ReadOnly);
+    ScopeGuard fileScope([&] {
+        file.close();
+    });
+
 
     mBuffer.setData(file.readAll());
     mBuffer.open(QBuffer::ReadOnly);

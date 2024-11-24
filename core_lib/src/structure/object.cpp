@@ -519,13 +519,15 @@ bool Object::exportPalette(const QString& filePath) const
         qDebug("Error: cannot export palette");
         return false;
     }
+    ScopeGuard fileScope([&] {
+        file.close();
+    });
 
     if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
         exportPaletteGPL(file);
     else
         exportPalettePencil(file);
 
-    file.close();
     return true;
 }
 
@@ -665,6 +667,9 @@ bool Object::importPalette(const QString& filePath)
     {
         return false;
     }
+    ScopeGuard fileScope([&] {
+        file.close();
+    });
 
     if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
     {
@@ -672,7 +677,6 @@ bool Object::importPalette(const QString& filePath)
     } else {
         importPalettePencil(file);
     }
-    file.close();
     return true;
 }
 
