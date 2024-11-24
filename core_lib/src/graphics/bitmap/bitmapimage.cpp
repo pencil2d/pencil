@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QPainterPath>
@@ -108,14 +109,24 @@ BitmapImage* BitmapImage::clone() const
         Q_ASSERT(finfo.isAbsolute());
         Q_ASSERT(QFile::exists(fileName()));
 
-        QString newFileName = QString("%1/%2-%3.%4")
-            .arg(finfo.canonicalPath())
-            .arg(finfo.completeBaseName())
-            .arg(uniqueString(12))
-            .arg(finfo.suffix());
-        b->setFileName(newFileName);
+        QDir tempDir = finfo.canonicalPath();
+        tempDir.cd("temp");
+        tempDir.mkpath(".");
 
-        bool ok = QFile::copy(fileName(), newFileName);
+        QString newFilePath;
+        QFileInfo newFileInfo;
+        do
+        {
+            newFilePath = QString("%1/%2.%3")
+                .arg(tempDir.canonicalPath())
+                .arg(uniqueString(12))
+                .arg(finfo.suffix());
+            newFileInfo.setFile(newFilePath);
+        }
+        while (newFileInfo.exists());
+
+        b->setFileName(newFilePath);
+        bool ok = QFile::copy(fileName(), newFilePath);
         Q_ASSERT(ok);
         qDebug() << "COPY>" << fileName();
     }
