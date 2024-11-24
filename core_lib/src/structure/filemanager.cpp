@@ -66,6 +66,7 @@ Object* FileManager::load(const QString& sFileName)
     {
         QString workingDirPath = obj->workingDir();
 
+        dd << QString("Working dir: %1").arg(workingDirPath);
         dd << fileFormat.arg(".pclx");
 
         Status sanityCheck = MiniZ::sanityCheck(sFileName);
@@ -79,9 +80,15 @@ Object* FileManager::load(const QString& sFileName)
         } else {
             Status unzipStatus = unzip(sFileName, workingDirPath);
             dd.collect(unzipStatus.details());
-        }
 
-        dd << QString("Project extracted to: %1 ").arg(workingDirPath);
+            if(unzipStatus.ok()) {
+                dd << QString("Unzipped at: %1 ").arg(workingDirPath);
+            } else {
+                dd << QString("Error: Unzipping failed: %1 ").arg(workingDirPath);
+                handleOpenProjectError(Status::ERROR_INVALID_XML_FILE, dd);
+                return nullptr;
+            }
+        }
 
         strMainXMLFile = QDir(workingDirPath).filePath(PFF_XML_FILE_NAME);
         strDataFolder = QDir(workingDirPath).filePath(PFF_DATA_DIR);
@@ -285,8 +292,8 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     {
         sTempWorkingFolder = object->workingDir();
 
+        dd << QString("Working dir: %1").arg(sTempWorkingFolder);
         dd << fileFormat.arg(".pclx");
-        dd << QString("Project TEMP location: %1").arg(sTempWorkingFolder);
 
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
 
