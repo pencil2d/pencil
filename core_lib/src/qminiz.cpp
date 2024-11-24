@@ -68,10 +68,12 @@ size_t MiniZ::istreamReadCallback(void *pOpaque, mz_uint64 file_ofs, void * pBuf
 Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const QStringList& fileList, QString mimetype)
 {
     DebugDetails dd;
+    dd << "\n[Miniz COMPRESSION diagnostics]\n";
     dd << QString("Creating Zip %1 from folder %2").arg(zipFilePath, srcFolderPath);
 
     if (!srcFolderPath.endsWith("/"))
     {
+        dd << "Adding / to path";
         srcFolderPath.append("/");
     }
 
@@ -90,7 +92,8 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Miniz writer init failed. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        dd << QString("Error: Failed to init writer. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        return Status(Status::FAIL, dd);
     }
 
     // Add special uncompressed mimetype file to help with the identification of projects
@@ -103,7 +106,8 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("Cannot add mimetype. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+            dd << QString("ERROR: Unable to add mimetype. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+            return Status(Status::FAIL, dd);
         }
     }
 
@@ -123,7 +127,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         if (!ok)
         {
             mz_zip_error err = mz_zip_get_last_error(mz);
-            dd << QString("Cannot add %3. Error code: %1, reason: %2 - Aborting!").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err), sRelativePath);
+            dd << QString("Error: Unable to add file: %3. Error code: %1, reason: %2 - Aborting!").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err), sRelativePath);
             return Status(Status::FAIL, dd);
         }
     }
@@ -131,7 +135,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     if (!ok)
     {
         mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Miniz finalize archive failed. Error code %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        dd << QString("Error: Failed to finalize archive. Error code %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         return Status(Status::FAIL, dd);
     }
 
@@ -141,6 +145,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
 Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
 {
     DebugDetails dd;
+    dd << "\n[Miniz EXTRACTION diagnostics]\n";
     dd << QString("Unzip file %1 to folder %2").arg(zipFilePath, destPath);
 
     if (!QFile::exists(zipFilePath))
@@ -173,7 +178,7 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
 
     if (!ok) {
         mz_zip_error err = mz_zip_get_last_error(mz);
-        dd << QString("Error: Failed to init the zip reader. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+        dd << QString("Error: Failed to init reader. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
         return Status(Status::FAIL, dd);
     }
 
@@ -215,7 +220,7 @@ Status MiniZ::uncompressFolder(QString zipFilePath, QString destPath)
             {
                 ok = false;
                 mz_zip_error err = mz_zip_get_last_error(mz);
-                dd << QString("File extraction failed. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
+                dd << QString("WARNING: Unable to extract file. Error code: %1, reason: %2").arg(static_cast<int>(err)).arg(mz_zip_get_error_string(err));
             }
         }
     }
