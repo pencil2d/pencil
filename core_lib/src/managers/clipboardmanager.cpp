@@ -79,17 +79,20 @@ void ClipboardManager::copyVectorImage(const VectorImage* vectorImage)
     mVectorImage = *vectorImage->clone();
 }
 
-void ClipboardManager::copySelectedFrames(const Layer* currentLayer) {
+void ClipboardManager::copySelectedFrames(const Layer* currentLayer)
+{
     resetStates();
 
     for (int pos : currentLayer->selectedKeyFramesPositions()) {
         KeyFrame* keyframe = currentLayer->getKeyFrameAt(pos);
-
         Q_ASSERT(keyframe != nullptr);
 
-        keyframe->loadFile();
+        KeyFrame* newKeyframe = keyframe->clone();
+        // Unload unmodified keyframes now as they won't ever get unloaded
+        // by activeframepool while in clipboard manager.
+        newKeyframe->unloadFile();
 
-        mFrames.insert(std::make_pair(keyframe->pos(), keyframe->clone()));
+        mFrames.insert(std::make_pair(keyframe->pos(), newKeyframe));
     }
     mFramesType = currentLayer->type();
 }
