@@ -739,7 +739,7 @@ Status FileManager::writePalette(const Object* object, const QString& dataFolder
     if (paletteFile.isEmpty())
     {
         DebugDetails dd;
-        dd << "Failed to save palette";
+        dd << "\nError: Failed to save palette";
         return Status(Status::FAIL, dd);
     }
     filesWritten.append(paletteFile);
