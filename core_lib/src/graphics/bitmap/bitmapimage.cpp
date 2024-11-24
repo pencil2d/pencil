@@ -101,7 +101,7 @@ BitmapImage* BitmapImage::clone() const
     b->setFileName(""); // don't link to the file of the source bitmap image
 
     const bool validKeyFrame = !fileName().isEmpty();
-    if (validKeyFrame && !isLoaded())
+    if (validKeyFrame && !isModified())
     {
         // This bitmapImage is temporarily unloaded.
         // since it's not in the memory, we need to copy the linked png file to prevent data loss.
@@ -109,21 +109,15 @@ BitmapImage* BitmapImage::clone() const
         Q_ASSERT(finfo.isAbsolute());
         Q_ASSERT(QFile::exists(fileName()));
 
-        QDir tempDir = finfo.canonicalPath();
-        tempDir.cd("temp");
-        tempDir.mkpath(".");
-
         QString newFilePath;
-        QFileInfo newFileInfo;
         do
         {
-            newFilePath = QString("%1/%2.%3")
-                .arg(tempDir.canonicalPath())
+            newFilePath = QString("%1/temp-%2.%3")
+                .arg(finfo.canonicalPath())
                 .arg(uniqueString(12))
                 .arg(finfo.suffix());
-            newFileInfo.setFile(newFilePath);
         }
-        while (newFileInfo.exists());
+        while (QFile::exists(newFilePath));
 
         b->setFileName(newFilePath);
         bool ok = QFile::copy(fileName(), newFilePath);
