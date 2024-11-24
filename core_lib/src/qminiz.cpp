@@ -86,7 +86,7 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
 
     mz_bool ok = mz_zip_writer_init_file(mz, zipFilePath.toUtf8().data(), 0);
     ScopeGuard mzScopeGuard2([&] {
-        mz_zip_reader_end(mz);
+        mz_zip_writer_end(mz);
     });
 
     if (!ok)
