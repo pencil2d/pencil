@@ -85,7 +85,7 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>The following report contains vital information to figure out the cause of the error. Make sure to copy all of it, if you intend to report the bug.</string>
+      <string>This report contains vital information. Copy all of it when submitting a bug.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
