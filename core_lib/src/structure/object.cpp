@@ -519,9 +519,6 @@ bool Object::exportPalette(const QString& filePath) const
         qDebug("Error: cannot export palette");
         return false;
     }
-    ScopeGuard fileScope([&] {
-        file.close();
-    });
 
     if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
         exportPaletteGPL(file);
@@ -667,9 +664,6 @@ bool Object::importPalette(const QString& filePath)
     {
         return false;
     }
-    ScopeGuard fileScope([&] {
-        file.close();
-    });
 
     if (file.fileName().endsWith(".gpl", Qt::CaseInsensitive))
     {

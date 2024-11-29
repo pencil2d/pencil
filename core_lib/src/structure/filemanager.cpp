@@ -114,9 +114,6 @@ Object* FileManager::load(const QString& sFileName)
         handleOpenProjectError(Status::ERROR_FILE_CANNOT_OPEN, dd);
         return nullptr;
     }
-    ScopeGuard fileScope([&] {
-        file.close();
-    });
 
     dd << "Main XML exists: Yes";
 
@@ -899,7 +896,6 @@ Status FileManager::recoverObject(Object* object)
         xmlDoc.setContent(&file);
         root = xmlDoc.documentElement();
         objectTag = root.firstChildElement("object");
-        file.close();
     }
     loadPalette(object);
 
@@ -937,9 +933,6 @@ Status FileManager::rebuildMainXML(Object* object)
     {
         return Status::ERROR_FILE_CANNOT_OPEN;
     }
-    ScopeGuard fileScope([&] {
-        file.close();
-    });
 
     QDomDocument xmlDoc("PencilDocument");
     QDomElement root = xmlDoc.createElement("document");

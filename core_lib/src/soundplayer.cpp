@@ -42,10 +42,6 @@ void SoundPlayer::init(SoundClip* clip)
 
     QFile file(clip->fileName());
     file.open(QIODevice::ReadOnly);
-    ScopeGuard fileScope([&] {
-        file.close();
-    });
-
 
     mBuffer.setData(file.readAll());
     mBuffer.open(QBuffer::ReadOnly);
