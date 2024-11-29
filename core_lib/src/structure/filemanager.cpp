@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "fileformat.h"
 #include "object.h"
 #include "layercamera.h"
-#include "util/util.h"
+#include "util.h"
 
 FileManager::FileManager(QObject* parent) : QObject(parent)
 {
