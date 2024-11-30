@@ -32,6 +32,9 @@ public:
     explicit ErrorDialog(QString title, QString description, QString details = QString(), QWidget *parent = nullptr);
     ~ErrorDialog();
 
+public slots:
+    void onCopyToClipboard();
+
 private:
     Ui::ErrorDialog *ui;
 };

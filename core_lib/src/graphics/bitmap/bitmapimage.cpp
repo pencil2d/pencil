@@ -742,9 +742,14 @@ Status BitmapImage::writeFile(const QString& filename)
         if(f.exists())
         {
             bool b = f.remove();
-            return (b) ? Status::OK : Status::FAIL;
+            if (!b) {
+                return Status::FAIL;
+            }
         }
-        return Status::SAFE;
+
+        // The frame is likely empty, act like there's no file name
+        // so we don't end up writing to it later.
+        setFileName("");
     }
     return Status::SAFE;
 }
