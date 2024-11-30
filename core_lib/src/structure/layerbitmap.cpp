@@ -94,6 +94,8 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
         DebugDetails dd;
         dd << "LayerBitmap::saveKeyFrame";
         dd << QString("&nbsp;&nbsp;KeyFrame.pos() = %1").arg(keyframe->pos());
+        dd << QString("&nbsp;&nbsp;strFilePath = %1").arg(strFilePath);
+        dd << QString("Error: Failed to save BitmapImage");
         dd.collect(st.details());
         return Status(Status::FAIL, dd);
     }
