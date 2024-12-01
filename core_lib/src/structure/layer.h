@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QString>
 #include <QDomElement>
 #include "pencilerror.h"
+#include "pencildef.h"
 
 class KeyFrame;
 class Status;
@@ -33,6 +34,8 @@ class Layer
 {
     Q_DECLARE_TR_FUNCTIONS(Layer)
 public:
+    typedef std::function<void(KeyFrameEvent, KeyFrame*, Layer*)> LayerEventCallback;
+
     enum LAYER_TYPE
     {
         UNDEFINED = 0,
@@ -69,6 +72,8 @@ public:
     virtual QDomElement createDomElement(QDomDocument& doc) const = 0;
     QDomElement createBaseDomElement(QDomDocument& doc) const;
     void loadBaseDomElement(const QDomElement& elem);
+
+    void setupLayerEventCallback(LayerEventCallback eventCallback) { mLayerEventCallback = eventCallback; }
 
     // KeyFrame interface
     int getMaxKeyFramePosition() const;
@@ -184,6 +189,7 @@ private:
     bool       mVisible = true;
     QString    mName;
 
+    LayerEventCallback mLayerEventCallback;
     std::map<int, KeyFrame*, std::greater<int>> mKeyFrames;
 
     // We need to keep track of selected frames ordered by last selected

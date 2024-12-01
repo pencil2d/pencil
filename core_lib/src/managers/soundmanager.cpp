@@ -39,27 +39,8 @@ bool SoundManager::init()
     return true;
 }
 
-Status SoundManager::load(Object* obj)
+Status SoundManager::load(Object*)
 {
-    int count = obj->getLayerCount();
-    for (int i = 0; i < count; ++i)
-    {
-        Layer* layer = obj->getLayer(i);
-        if (layer->type() != Layer::SOUND)
-        {
-            continue;
-        }
-
-        LayerSound* soundLayer = static_cast<LayerSound*>(layer);
-
-        soundLayer->foreachKeyFrame([this](KeyFrame* key)
-        {
-            SoundClip* clip = dynamic_cast<SoundClip*>(key);
-            Q_ASSERT(clip);
-
-            createMediaPlayer(clip);
-        });
-    }
     return Status::OK;
 }
 

@@ -239,7 +239,6 @@ void CameraTool::resetTransform(CameraFieldOption option)
     }
 
     layer->resetCameraAtFrame(option, mEditor->currentFrame());
-    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 void CameraTool::transformCamera(const QPointF& pos, Qt::KeyboardModifiers keyMod)
@@ -320,7 +319,6 @@ void CameraTool::pointerReleaseEvent(PointerEvent* event)
         transformCameraPath(event->canvasPos());
         mEditor->view()->forceUpdateViewTransform();
     }
-    emit mEditor->frameModified(frame);
 }
 
 qreal CameraTool::getAngleBetween(const QPointF& pos1, const QPointF& pos2) const

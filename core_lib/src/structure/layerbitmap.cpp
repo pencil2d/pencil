@@ -109,6 +109,7 @@ KeyFrame* LayerBitmap::createKeyFrame(int position)
     BitmapImage* b = new BitmapImage;
     b->setPos(position);
     b->enableAutoCrop(true);
+    // b->attachSelectionEditor(new SelectionBitmapEditor);
     return b;
 }
 

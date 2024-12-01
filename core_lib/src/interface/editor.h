@@ -148,7 +148,6 @@ signals:
 
     void updateTimeLine() const;
     void updateTimeLineCached();
-    void updateLayerCount();
 
     void objectLoaded();
 
@@ -231,6 +230,9 @@ public: //slots
     void resetAutoSaveCounter();
 
 private:
+    void setupKeyframeDependencies(Layer* layer, KeyFrame* keyframe);
+    void onLayerEvent(Layer* layer, KeyFrameEvent event, KeyFrame* keyframe);
+
     Status importBitmapImage(const QString&);
     Status importVectorImage(const QString&);
 

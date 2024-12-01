@@ -198,6 +198,12 @@ bool Layer::addKeyFrame(int position, KeyFrame* pKeyFrame)
     pKeyFrame->setPos(position);
     mKeyFrames.emplace(position, pKeyFrame);
     markFrameAsDirty(position);
+
+    pKeyFrame->setupEventCallback([this](KeyFrameEvent event, KeyFrame* keyframe) {
+        if (mLayerEventCallback) {
+            mLayerEventCallback(event, keyframe, this);
+        }
+    });
     return true;
 }
 
@@ -225,6 +231,7 @@ bool Layer::removeKeyFrame(int position)
         if (frame->isSelected()) {
             removeFromSelectionList(frame->pos());
         }
+
         mKeyFrames.erase(frame->pos());
         markFrameAsDirty(frame->pos());
         delete frame;

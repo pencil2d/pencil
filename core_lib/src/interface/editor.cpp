@@ -73,9 +73,9 @@ bool Editor::init()
 
     mAllManagers =
     {
+        mLayerManager,
         mColorManager,
         mToolManager,
-        mLayerManager,
         mPlaybackManager,
         mViewManager,
         mPreferenceManager,
@@ -123,7 +123,25 @@ void Editor::makeConnections()
 
     // XXX: This is a hack to prevent crashes until #864 is done (see #1412)
     connect(mLayerManager, &LayerManager::layerDeleted, mUndoRedoManager, &UndoRedoManager::sanitizeLegacyBackupElementsAfterLayerDeletion);
-    connect(mLayerManager, &LayerManager::currentLayerWillChange, this, &Editor::onCurrentLayerWillChange);
+    connect(mLayerManager, &LayerManager::layerEventFired, this, &Editor::onLayerEvent);
+}
+
+void Editor::onLayerEvent(Layer* layer, KeyFrameEvent event, KeyFrame* keyframe)
+{
+    if (event == KeyFrameEvent::CREATE) {
+        setupKeyframeDependencies(layer, keyframe);
+    }
+
+    // Currently all frame events will trigger a frame modified event, if this is excessive, we can
+    // always move in into a MODIFY block only.
+    emit frameModified(keyframe->pos());
+}
+
+void Editor::setupKeyframeDependencies(Layer* layer, KeyFrame* keyframe)
+{
+    if (layer->type() == Layer::SOUND) {
+        sound()->processSound(static_cast<SoundClip*>(keyframe));
+    }
 }
 
 void Editor::settingUpdated(SETTING setting)
@@ -336,12 +354,6 @@ void Editor::pasteToFrames()
         // TODO: undo/redo implementation
         KeyFrame* keyClone = it->second->clone();
         currentLayer->addKeyFrame(newPosition, keyClone);
-        if (currentLayer->type() == Layer::SOUND)
-        {
-            auto soundClip = static_cast<SoundClip*>(keyClone);
-            sound()->loadSound(soundClip, soundClip->fileName());
-        }
-
         currentLayer->setFrameSelected(keyClone->pos(), true);
     }
 }
@@ -407,8 +419,6 @@ void Editor::setModified(int layerNumber, int frameNumber)
 
     layer->setModified(frameNumber, true);
     undoRedo()->rememberLastModifiedFrame(layerNumber, frameNumber);
-
-    emit frameModified(frameNumber);
 }
 
 void Editor::clipboardChanged()
@@ -553,13 +563,13 @@ Status Editor::setObject(Object* newObject)
 
     mObject.reset(newObject);
 
-    updateObject();
-
     // Make sure that object is fully loaded before calling managers.
     for (BaseManager* m : mAllManagers)
     {
         m->load(mObject.get());
     }
+
+    updateObject();
     emit objectLoaded();
 
     return Status::OK;
@@ -577,8 +587,6 @@ void Editor::updateObject()
     {
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
     }
-
-    emit updateLayerCount();
 }
 
 Status Editor::importBitmapImage(const QString& filePath)

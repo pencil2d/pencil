@@ -754,14 +754,7 @@ void ActionCommands::duplicateLayer()
     fromLayer->foreachKeyFrame([&] (KeyFrame* key) {
         key = key->clone();
         toLayer->addOrReplaceKeyFrame(key->pos(), key);
-        if (toLayer->type() == Layer::SOUND)
-        {
-            mEditor->sound()->processSound(static_cast<SoundClip*>(key));
-        }
-        else
-        {
-            key->modification();
-        }
+        key->modification();
     });
     if (!fromLayer->keyExists(1)) {
         toLayer->removeKeyFrame(1);
@@ -800,7 +793,6 @@ void ActionCommands::duplicateKey()
 
     if (layer->type() == Layer::SOUND)
     {
-        mEditor->sound()->processSound(dynamic_cast<SoundClip*>(dupKey));
         showSoundClipWarningIfNeeded();
     }
     else
