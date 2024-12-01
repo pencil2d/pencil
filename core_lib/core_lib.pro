@@ -102,6 +102,7 @@ HEADERS +=  \
     src/util/pencilerror.h \
     src/util/pencilsettings.h \
     src/util/preferencesdef.h \
+    src/util/theming.h \
     src/util/transform.h \
     src/util/util.h \
     src/util/log.h \
@@ -181,6 +182,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \
     src/util/log.cpp \
+    src/util/theming.cpp \
     src/util/transform.cpp \
     src/util/util.cpp \
     src/util/pointerevent.cpp \
