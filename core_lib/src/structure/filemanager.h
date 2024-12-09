@@ -30,6 +30,7 @@ GNU General Public License for more details.
 
 class Object;
 class ObjectData;
+class QDir;
 
 
 class FileManager : public QObject
@@ -55,6 +56,7 @@ signals:
     void progressRangeChanged(int maxValue);
 
 private:
+    Status copyDir(const QDir src, const QDir dst);
     Status unzip(const QString& strZipFile, const QString& strUnzipTarget);
 
     bool loadObject(Object*, const QDomElement& root);
