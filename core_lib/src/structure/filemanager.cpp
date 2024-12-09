@@ -48,8 +48,8 @@ Object* FileManager::load(const QString& sFileName)
     obj->setFilePath(sFileName);
     obj->createWorkingDir();
 
-    QString strMainXMLFile;
-    QString strDataFolder;
+    QString strMainXMLFile = QDir(obj->workingDir()).filePath(PFF_XML_FILE_NAME);
+    QString strDataFolder = QDir(obj->workingDir()).filePath(PFF_DATA_DIR);
 
     // Test file format: new zipped .pclx or old .pcl?
     bool isArchive = isArchiveFormat(sFileName);
@@ -59,8 +59,15 @@ Object* FileManager::load(const QString& sFileName)
     {
         dd << fileFormat.arg(".pcl");
 
-        strMainXMLFile = sFileName;
-        strDataFolder = strMainXMLFile + "." + PFF_OLD_DATA_DIR;
+        if (!QFile::copy(sFileName, strMainXMLFile))
+        {
+            dd << "Failed to copy main xml file";
+        }
+        Status st = copyDir(sFileName + "." + PFF_OLD_DATA_DIR, strDataFolder);
+        if (!st.ok())
+        {
+            dd.collect(st.details());
+        }
     }
     else
     {
@@ -89,9 +96,6 @@ Object* FileManager::load(const QString& sFileName)
                 return nullptr;
             }
         }
-
-        strMainXMLFile = QDir(workingDirPath).filePath(PFF_XML_FILE_NAME);
-        strDataFolder = QDir(workingDirPath).filePath(PFF_DATA_DIR);
     }
 
     obj->setDataDir(strDataFolder);
@@ -752,6 +756,63 @@ Status FileManager::writePalette(const Object* object, const QString& dataFolder
     }
     filesWritten.append(paletteFile);
     return Status::OK;
+}
+
+/** Copy a directory to another directory recursively (depth-first).
+ *
+ *  If any of the files being copied already exist at the destination, they will
+ *  not be overwritten and a non-ok status will be returned.
+ *
+ *  If any part of the copy fails, this function will still attempt to copy
+ *  as many files as possible before returning a non-ok status.
+ *
+ * @param src The source directory to copy.
+ * @param dst The target directory to copy to.
+ *
+ * @return Status indicating the success or failure of the copy.
+ */
+Status FileManager::copyDir(const QDir src, const QDir dst)
+{
+    if (!src.exists()) return Status::FILE_NOT_FOUND;
+
+    DebugDetails dd;
+    bool isOkay = true;
+
+    if (!dst.mkpath(dst.absolutePath()))
+    {
+        dd << ("Failed to create target directory: " + dst.absolutePath());
+        return Status(Status::FAIL, dd);
+    }
+
+    foreach (QString dirName, src.entryList(QDir::Dirs | QDir::NoDotAndDotDot))
+    {
+        Status st = copyDir(src.filePath(dirName), dst.filePath(dirName));
+        if (!st.ok())
+        {
+            isOkay = false;
+            dd.collect(st.details());
+        }
+    }
+
+    foreach (QString fileName, src.entryList(QDir::Files))
+    {
+        if (!QFile::copy(src.filePath(fileName), dst.filePath(fileName)))
+        {
+            isOkay = false;
+            dd << "Failed to copy file"
+               << ("Source path: " + src.filePath(fileName))
+               << ("Destination path: " + dst.filePath(fileName));
+        }
+    }
+
+    if (isOkay)
+    {
+        return Status::OK;
+    }
+    else
+    {
+        return Status(Status::FAIL, dd);
+    }
 }
 
 Status FileManager::unzip(const QString& strZipFile, const QString& strUnzipTarget)
