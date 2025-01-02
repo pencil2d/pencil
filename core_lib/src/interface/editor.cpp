@@ -1015,13 +1015,6 @@ Status Editor::importImage(const QString& filePath)
     DebugDetails dd;
     dd << QString("Raw file path: %1").arg(filePath);
 
-    if (view()->getImportFollowsCamera())
-    {
-        LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
-        Q_ASSERT(camera);
-        QTransform transform = camera->getViewAtFrame(currentFrame());
-        view()->setImportView(transform);
-    }
     switch (layer->type())
     {
     case Layer::BITMAP:
