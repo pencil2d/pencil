@@ -18,6 +18,7 @@
 + Avoid updating width/feather sliders for tools that don’t use them [cce3107](https://github.com/pencil2d/pencil/commit/cce31079c871fcc04e957c44d5c6e65990f635f1)
 + Fix fill misbehaving when drawing was partly outside border [#1865](https://github.com/pencil2d/pencil/pull/1865)
 + Fix clearing selection with the delete shortcut [#1892](https://github.com/pencil2d/pencil/pull/1892)
++ Fix camera handles not being draggable at 90 deg [#1897](https://github.com/pencil2d/pencil/issues/1897)
 
 ## Pencil2D v0.7.0 - 12 July 2024
 
