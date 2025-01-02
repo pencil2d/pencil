@@ -110,7 +110,7 @@ QTransform ViewManager::getViewInverse() const
 
 qreal ViewManager::getScaleInversed() const
 {
-    return QTransform::fromScale(mScaling, mScaling).inverted().m11();
+    return 1. / mScaling;
 }
 
 void ViewManager::updateViewTransforms()
