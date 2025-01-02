@@ -81,7 +81,7 @@ void CameraTool::updateUIAssists(const Layer* layer)
 
     Camera* cam = camLayer->getLastCameraAtFrame(mEditor->currentFrame(), 0);
     if (cam) {
-        mRotationHandlePoint = localRotationHandlePoint(cameraRect.topLeft(), localCamT, cam->scaling(), mEditor->view()->getViewScaleInverse());
+        mRotationHandlePoint = localRotationHandlePoint(cameraRect.topLeft(), localCamT, cam->scaling(), mEditor->view()->getScaleInversed());
     }
 }
 
