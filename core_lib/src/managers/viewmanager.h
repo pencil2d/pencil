@@ -37,10 +37,7 @@ public:
     QTransform getView() const;
     QTransform getViewInverse() const;
 
-    /**
-     * Creates a scaling matrix based on the current view scale and returns the inverted value
-     * @return The inverted scale value
-     */
+    /** @return The inverted scale value */
     qreal getScaleInversed() const;
 
     void resetView();
