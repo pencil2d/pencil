@@ -765,7 +765,7 @@ LayerVisibility Editor::layerVisibility()
 
 qreal Editor::viewScaleInversed()
 {
-    return view()->getViewScaleInverse();
+    return view()->getScaleInversed();
 }
 
 void Editor::increaseLayerVisibilityIndex()
