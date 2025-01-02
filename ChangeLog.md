@@ -22,6 +22,7 @@
 + Fixed memory leak when copying bitmap keyframes - [#1896](https://github.com/pencil2d/pencil/pull/1896)
 + Fixed potential issue on some systems when repeatedly copying bitmap frames - [#1896](https://github.com/pencil2d/pencil/pull/1896)
 + Fixed bitmap frame wipe that can occur under specific situations when using keyframe copy & paste - [#1896](https://github.com/pencil2d/pencil/pull/1896)
++ Fix camera handles not being draggable at 90 deg [#1897](https://github.com/pencil2d/pencil/issues/1897)
 
 ## Pencil2D v0.7.0 - 12 July 2024
 
