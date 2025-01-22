@@ -91,6 +91,8 @@ enum class SETTING
     LOAD_MOST_RECENT,
     LOAD_DEFAULT_PRESET,
     DEFAULT_PRESET,
+    STYLE_ID,
+    PALETTE_ID,
     COUNT, // COUNT must always be the last one.
 };
 
