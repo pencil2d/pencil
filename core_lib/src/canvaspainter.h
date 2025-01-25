@@ -44,6 +44,7 @@ struct CanvasPainterOptions
 
     LayerVisibility eLayerVisibility = LayerVisibility::RELATED;
     float fLayerVisibilityThreshold = 0.f;
+    bool bOnionSkinMultiLayer = false;
     float scaling = 1.0f;
     QPainter::CompositionMode cmBufferBlendMode = QPainter::CompositionMode_SourceOver;
     OnionSkinPainterOptions mOnionSkinOptions;
@@ -80,6 +81,7 @@ private:
      */
     void initializePainter(QPainter& painter, QPaintDevice& device, const QRect& blitRect);
 
+    void paintOnionSkinOnLayer(QPainter& painter, const QRect& blitRect, Layer* layer);
     void paintOnionSkin(QPainter& painter, const QRect& blitRect);
 
     void renderPostLayers(QPainter& painter, const QRect& blitRect);
