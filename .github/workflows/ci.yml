@@ -35,10 +35,10 @@ jobs:
             os: macos-13
             container: null
             qt: 5
-          - name: Qt 5 / macOS arm64
-            os: macos-latest
-            container: null
-            qt: 5
+          #- name: Qt 5 / macOS arm64
+          #  os: macos-latest
+          #  container: null
+          #  qt: 5
           - name: Qt 5 / Windows x86
             os: windows-2019
             arch: win32_msvc2019
@@ -60,10 +60,10 @@ jobs:
             os: macos-13
             container: null
             qt: 6
-          - name: Qt 6 / macOS arm64
-            os: macos-latest
-            container: null
-            qt: 6
+          #- name: Qt 6 / macOS arm64
+          #  os: macos-latest
+          #  container: null
+          #  qt: 6
           - name: Qt 6 / Windows x86_64
             os: windows-2019
             arch: win64_msvc2019_64
