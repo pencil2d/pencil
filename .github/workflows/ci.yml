@@ -124,7 +124,7 @@ jobs:
 
     - name: Upload package
       if: runner.os != 'Linux' || matrix.qt == 5
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: ${{steps.package.outputs.output-basename}}
         path: build/${{steps.package.outputs.output-basename}}*
