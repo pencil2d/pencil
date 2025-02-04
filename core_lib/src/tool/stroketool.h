@@ -112,7 +112,7 @@ protected:
 
     StrokeInterpolator mInterpolator;
 
-    const UndoSaveState* mUndoSaveState = nullptr;
+    UndoSaveState* mUndoSaveState = nullptr;
 
 private:
     /// Sets the width value without calling settings to store the state
