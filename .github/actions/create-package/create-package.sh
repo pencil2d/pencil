@@ -49,7 +49,7 @@ create_package_linux() {
   ${BUILD_CMD} chmod 755 linuxdeployqt-continuous-x86_64.AppImage
   local update_info="" # Currently no appimageupdate support for nightly builds
   if [ $IS_RELEASE = "true" ]; then
-    update_info="-updateinformation=gh-releases-zsync|${GITHUB_REPOSITORY/\//|}|latest|pencil2d-linux-amd64-*.AppImage.zsync"
+    update_info="-updateinformation=\"gh-releases-zsync|${GITHUB_REPOSITORY/\//|}|latest|pencil2d-linux-amd64-*.AppImage.zsync\""
   fi
   ${BUILD_CMD} bash -c "LD_LIBRARY_PATH=\"\${LD_LIBRARY_PATH}:/usr/lib/x86_64-linux-gnu/pulseaudio\" \
     ./linuxdeployqt-continuous-x86_64.AppImage \
