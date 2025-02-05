@@ -758,10 +758,6 @@ void ActionCommands::duplicateLayer()
         {
             mEditor->sound()->processSound(static_cast<SoundClip*>(key));
         }
-        else
-        {
-            key->modification();
-        }
     });
     if (!fromLayer->keyExists(1)) {
         toLayer->removeKeyFrame(1);
@@ -802,11 +798,6 @@ void ActionCommands::duplicateKey()
     {
         mEditor->sound()->processSound(dynamic_cast<SoundClip*>(dupKey));
         showSoundClipWarningIfNeeded();
-    }
-    else
-    {
-        dupKey->setFileName(""); // don't share filename
-        dupKey->modification();
     }
 
     mEditor->layers()->notifyAnimationLengthChanged();
