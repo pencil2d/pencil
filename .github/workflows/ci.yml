@@ -16,6 +16,7 @@ on:
       - '**.sh'
       - '**.py'
       - '**.ps1'
+  workflow_dispatch:
 jobs:
   build:
     strategy:
