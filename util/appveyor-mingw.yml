@@ -13,6 +13,7 @@ skip_commits:
     - '*.md'
     - docs/*
     - util/appveyor-msvc.yml
+    - /.github/*
 
 init:
   - ver
