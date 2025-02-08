@@ -5,62 +5,54 @@ labels: [
   "Bug"
 ]
 body:
-  - type: textarea
-    id: description
+  - type: input
     attributes:
-      label: "Description"
-      description: A brief overview of your issue
-      placeholder: When I use the paint bucket in a vector layer everything goes red
+      label: Pencil2D version
+      placeholder: 0.7.0
+      description: Look at Title bar or "About" dialog
+    validations:
+        required: true
+  - type: dropdown
+    attributes:
+      label: Operating System
+      description: The operating system you are using
+      options:
+        - Windows
+        - MacOS
+        - Linux
+        - Other (please specify in the description)
     validations:
       required: true
   - type: textarea
-    id: expected
-    attributes:
-        label: "Expected result"
-        description: Explain how the function should behave in the context you're using it.
-        placeholder: I expected that the paint bucket filled everything red on the vector layer
-    validations:
-        required: true
-  - type: textarea
-    id: actual
-    attributes:
-        label: "Actual result"
-        description: Explain what you actually got and how different it is from your expectations.
-        placeholder: The paint bucket only changed the color of the stroke
-    validations:
-        required: true
-  - type: textarea
-    id: reprod
+    id: reproduce-steps
     attributes:
       label: "Steps to reproduce"
-      description: Describe the exact steps to reproduce the problem as best as you can
-      value: |
-        1. Click on the vector layer
-        2. Move the scrubber to an vector keyframe
-        3. Draw a stroke
-        3. Select the bucket tool
-        4. Click to fill the layer.
-        5. ....
-      render: bash
+      description: We highly suggest including screenshots or a detailed error log.
+      placeholder: "Having detailed steps helps us reproduce the bug."
     validations:
       required: true
   - type: textarea
-    id: attachments
+    id: expected-behaviour
     attributes:
-      label: "Video or Image Reference"
-      description: A screenshot or short video to show your problem.
-      placeholder: Drag and drop an image or video here
+      label: "Expected Behaviour"
+      description: What were you expecting?
+      placeholder: e.g., I expected that the paint bucket filled everything red on the vector layer
     validations:
-      required: false
+        required: true
   - type: textarea
-    id: specs
+    id: actual-behaviour
     attributes:
-      label: "System Information"
-      description: You can find some of the needed information in "About" dialog in the top menu of Pencil2D.
-      value: |
-        - Pencil2D version: <0.7.0, 0.6.6 etc...>
-        - Operation system: <Windows|MacOS|Linux>
-        - Drawing tablet: <Insert tablet name if applicable>
-      render: bash
+      label: "Actual Behaviour"
+      description: What happened instead?
+      placeholder: e.g., the paint bucket only changed the color of the stroke
+    validations:
+        required: true
+  - type: textarea
+    id: other-info
+    attributes:
+      label: "Other Information"
+      placeholder: |
+        - Do you use a drawing tablet? <Insert tablet name if applicable>
+        - A screenshot or short video to show your problem.
     validations:
       required: true
