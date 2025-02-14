@@ -728,7 +728,7 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
-BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, bool greenEnabled, bool blueEnabled)
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, const int threshold, const bool redEnabled, const bool greenEnabled, const bool blueEnabled)
 {
     Q_ASSERT(img != nullptr);
 
@@ -742,18 +742,20 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, b
         {
             rgba = img->constScanLine(x, y);
 
-            int grayValue = qGray(rgba);
-            int redValue = qRed(rgba);
-            int greenValue = qGreen(rgba);
-            int blueValue = qBlue(rgba);
-            int alphaValue = qAlpha(rgba);
-            if (alphaValue == 0)
+            if (qAlpha(rgba) == 0)
                 break;
-            if (grayValue >= mThreshold)
+
+            const int grayValue = qGray(rgba);
+            const int redValue = qRed(rgba);
+            const int greenValue = qGreen(rgba);
+            const int blueValue = qBlue(rgba);
+            if (grayValue >= threshold)
             {   // IF Threshold or above
                 img->scanLine(x, y, transp);
             }
-            else if(redValue > greenValue + COLORDIFF && redValue > blueValue + COLORDIFF && redValue > grayValue + GRAYSCALEDIFF)
+            else if (redValue > greenValue + COLORDIFF &&
+                     redValue > blueValue + COLORDIFF &&
+                     redValue > grayValue + GRAYSCALEDIFF)
             {   // IF Red line
                 if (redEnabled)
                 {
@@ -764,7 +766,9 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, b
                     img->scanLine(x, y, transp);
                 }
             }
-            else if(greenValue > redValue + COLORDIFF && greenValue > blueValue + COLORDIFF && greenValue > grayValue + GRAYSCALEDIFF)
+            else if (greenValue > redValue + COLORDIFF &&
+                     greenValue > blueValue + COLORDIFF &&
+                     greenValue > grayValue + GRAYSCALEDIFF)
             {   // IF Green line
                 if (greenEnabled)
                 {
@@ -775,7 +779,9 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, b
                     img->scanLine(x, y, transp);
                 }
             }
-            else if(blueValue > redValue + COLORDIFF && blueValue > greenValue + COLORDIFF && blueValue > grayValue + GRAYSCALEDIFF)
+            else if (blueValue > redValue + COLORDIFF &&
+                     blueValue > greenValue + COLORDIFF &&
+                     blueValue > grayValue + GRAYSCALEDIFF)
             {   // IF Blue line
                 if (blueEnabled)
                 {
@@ -788,10 +794,10 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, bool redEnabled, b
             }
             else
             {   // okay, so it is in grayscale graduation area
-                if( grayValue >= mLowThreshold && grayValue < mThreshold)
+                if (LOW_THRESHOLD <= grayValue && grayValue < threshold)
                 {
-                    qreal factor = qreal(mThreshold - grayValue) / qreal(mThreshold - mLowThreshold);
-                    img->scanLine(x , y, qRgba(0, 0, 0, static_cast<int>(mThreshold * factor)));
+                    const qreal factor = static_cast<qreal>(threshold - grayValue) / static_cast<qreal>(threshold - LOW_THRESHOLD);
+                    img->scanLine(x , y, qRgba(0, 0, 0, static_cast<int>(threshold * factor)));
                 }
                 else
                 {

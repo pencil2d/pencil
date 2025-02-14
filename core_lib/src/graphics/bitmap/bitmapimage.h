@@ -108,7 +108,7 @@ public:
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
 
-    BitmapImage* scanToTransparent(BitmapImage* img, bool redEnabled, bool greenEnabled, bool blueEnabled);
+    BitmapImage* scanToTransparent(BitmapImage* img, int threshold, bool redEnabled, bool greenEnabled, bool blueEnabled);
 
     QRect& bounds() { autoCrop(); return mBounds; }
 
@@ -129,8 +129,6 @@ public:
 
     Status writeFile(const QString& filename);
 
-public slots:
-    void setThreshold(int threshold) { mThreshold = threshold; }
     /** Compare colors for the purposes of flood filling
      *
      *  Calculates the Eulcidian difference of the RGB channels
@@ -189,9 +187,8 @@ private:
     bool mMinBound = true;
     bool mEnableAutoCrop = false;
 
-    int mThreshold = 200;
-    const int mLowThreshold = 30;   // threshold for images to be given transparency
-    const int COLORDIFF = 5; // difference in color values to decide color
+    const int LOW_THRESHOLD = 30; // threshold for images to be given transparency
+    const int COLORDIFF = 5;      // difference in color values to decide color
     const int GRAYSCALEDIFF = 15; // difference in grasycale values to decide color
 
     qreal mOpacity = 1.0;

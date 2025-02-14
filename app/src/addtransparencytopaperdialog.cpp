@@ -157,9 +157,9 @@ void AddTransparencyToPaperDialog::loadDrawing(int frame)
     if (!currentImage) { return; }
 
     mBitmap = currentImage->copy();
-    mBitmap.setThreshold(mThreshold);
 
     mBitmap = *mBitmap.scanToTransparent(&mBitmap,
+                                         mThreshold,
                                          ui->cb_Red->isChecked(),
                                          ui->cb_Green->isChecked(),
                                          ui->cb_Blue->isChecked());
@@ -199,7 +199,7 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
 
     LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     BitmapImage* img = new BitmapImage();
-    bool somethingSelected = mEditor->select()->somethingSelected();
+    const bool somethingSelected = mEditor->select()->somethingSelected();
 
     if (ui->rbCurrentKeyframe->isChecked())
     {
@@ -221,8 +221,8 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
             mEditor->paste();
         }
         img = layer->getBitmapImageAtFrame(frame);
-        img->setThreshold(mThreshold);
         img = img->scanToTransparent(img,
+                                     mThreshold,
                                      ui->cb_Red->isChecked(),
                                      ui->cb_Green->isChecked(),
                                      ui->cb_Blue->isChecked());
@@ -255,8 +255,8 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
                     mEditor->paste();
                 }
                 img = layer->getBitmapImageAtFrame(i);
-                img->setThreshold(mThreshold);
                 img = img->scanToTransparent(img,
+                                             mThreshold,
                                              ui->cb_Red->isChecked(),
                                              ui->cb_Green->isChecked(),
                                              ui->cb_Blue->isChecked());
