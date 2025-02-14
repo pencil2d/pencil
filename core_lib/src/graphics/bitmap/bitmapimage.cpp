@@ -794,12 +794,12 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, const int threshol
             }
             else
             {   // okay, so it is in grayscale graduation area
-                if (LOW_THRESHOLD <= grayValue && grayValue < threshold)
+                if (grayValue >= LOW_THRESHOLD)
                 {
                     const qreal factor = static_cast<qreal>(threshold - grayValue) / static_cast<qreal>(threshold - LOW_THRESHOLD);
                     img->scanLine(x , y, qRgba(0, 0, 0, static_cast<int>(threshold * factor)));
                 }
-                else
+                else // grayValue < LOW_THRESHOLD
                 {
                     img->scanLine(x , y, blackline);
                 }

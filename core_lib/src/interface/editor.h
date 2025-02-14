@@ -161,7 +161,6 @@ signals:
     void canCopyChanged(bool enabled);
     void canPasteChanged(bool enabled);
 
-
 public: //slots
 
     /** Will call update() and update the canvas
@@ -230,7 +229,6 @@ public: //slots
     void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
     bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
-
 
 private:
     Status importBitmapImage(const QString&);
