@@ -48,8 +48,8 @@ protected:
     void resizeEvent(QResizeEvent*) override;
 
 private slots:
-    void SpinboxChanged(int value);
-    void SliderChanged(int value);
+    void thresholdSpinboxChanged(int value);
+    void thresholdSliderChanged(int value);
     void updateDrawing();
     void layerChanged(int index);
     void checkerStateChanged(bool state);

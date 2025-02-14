@@ -34,8 +34,8 @@ AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(ui->sb_treshold, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AddTransparencyToPaperDialog::SpinboxChanged);
-    connect(ui->sliderThreshold, &QSlider::valueChanged, this, &AddTransparencyToPaperDialog::SliderChanged);
+    connect(ui->sb_threshold, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &AddTransparencyToPaperDialog::thresholdSpinboxChanged);
+    connect(ui->sliderThreshold, &QSlider::valueChanged, this, &AddTransparencyToPaperDialog::thresholdSliderChanged);
     connect(ui->cb_Red, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Green, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
     connect(ui->cb_Blue, &QCheckBox::stateChanged, this, &AddTransparencyToPaperDialog::updateDrawing);
@@ -71,17 +71,17 @@ void AddTransparencyToPaperDialog::initUI()
     }
 }
 
-void AddTransparencyToPaperDialog::SpinboxChanged(int value)
+void AddTransparencyToPaperDialog::thresholdSpinboxChanged(int value)
 {
     mThreshold = value;
     ui->sliderThreshold->setValue(value);
     updateDrawing();
 }
 
-void AddTransparencyToPaperDialog::SliderChanged(int value)
+void AddTransparencyToPaperDialog::thresholdSliderChanged(int value)
 {
     mThreshold = value;
-    ui->sb_treshold->setValue(value);
+    ui->sb_threshold->setValue(value);
     updateDrawing();
 }
 
@@ -150,7 +150,7 @@ void AddTransparencyToPaperDialog::loadDrawing(int frame)
             frame = layer->getNextKeyFramePosition(frame);
     }
 
-    ui->labShowingFrame->setText(tr("Previewing frame %1").arg(QString::number(frame)));
+    ui->labShowingFrame->setText(tr("Previewing Frame %1").arg(QString::number(frame)));
 
     BitmapImage* currentImage = layer->getBitmapImageAtFrame(frame);
 
