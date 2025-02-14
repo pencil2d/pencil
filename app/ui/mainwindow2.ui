@@ -108,7 +108,7 @@
      <property name="title">
       <string>Prepare Scanned Drawings</string>
      </property>
-     <addaction name="actionPeg_bar_Alignment"/>
+     <addaction name="actionPegbarAlignment"/>
      <addaction name="actionAdd_Transparency_to_paper"/>
     </widget>
     <addaction name="actionUndo"/>
@@ -1067,11 +1067,6 @@
   <action name="actionReset_Rotation">
    <property name="text">
     <string>Reset Rotation</string>
-   </property>
-  </action>
-  <action name="actionPeg_bar_Alignment">
-   <property name="text">
-    <string>Peg Bar Alignment</string>
    </property>
   </action>
   <action name="actionAdd_Transparency_to_paper">
