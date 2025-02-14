@@ -195,27 +195,29 @@
       </spacer>
      </item>
      <item>
-      <widget class="QLabel" name="labApplyTo">
-       <property name="text">
+      <widget class="QGroupBox" name="groupBox">
+       <property name="title">
         <string>Apply to:</string>
        </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="rbCurrentKeyframe">
-       <property name="text">
-        <string>Current Keyframe</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QRadioButton" name="rbAllKeyframes">
-       <property name="text">
-        <string>All Keyframes on Layer</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <item>
+         <widget class="QRadioButton" name="rbCurrentKeyframe">
+          <property name="text">
+           <string>Current Keyframe</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="rbAllKeyframes">
+          <property name="text">
+           <string>All Keyframes on Layer</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </widget>
      </item>
      <item>
