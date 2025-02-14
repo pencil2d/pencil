@@ -541,21 +541,30 @@ void MainWindow2::openLayerOpacityDialog()
 
 void MainWindow2::openAddTranspToPaperDialog()
 {
-    if (mAddTranspToPaper == nullptr)
+    if (mAddTranspToPaper)
     {
-        mAddTranspToPaper = new AddTransparencyToPaperDialog();
-        mAddTranspToPaper->setAttribute(Qt::WA_DeleteOnClose);
-        mAddTranspToPaper->setCore(mEditor);
-        mAddTranspToPaper->initUI();
-        mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
-        mAddTranspToPaper->show();
-
-        connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::finished, [=] {
-            mAddTranspToPaper = nullptr;
-        });
-    } else {
+        mAddTranspToPaper->activateWindow();
         mAddTranspToPaper->raise();
+        return;
     }
+
+    mAddTranspToPaper = new AddTransparencyToPaperDialog();
+    mAddTranspToPaper->setCore(mEditor);
+    mAddTranspToPaper->initUI();
+    mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mAddTranspToPaper->show();
+
+    connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::finished, [=](int result)
+    {
+        if (result == QDialog::Accepted)
+        {
+            mSuppressAutoSaveDialog = true;
+            mAddTranspToPaper->traceScannedDrawings();
+            mSuppressAutoSaveDialog = false;
+        }
+        mAddTranspToPaper->deleteLater();
+        mAddTranspToPaper = nullptr;
+    });
 }
 
 void MainWindow2::openRepositionDialog()

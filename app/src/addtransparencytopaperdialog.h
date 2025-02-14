@@ -42,13 +42,14 @@ public:
 
     void initUI();
 
+    void traceScannedDrawings();
+
 protected:
     void resizeEvent(QResizeEvent*) override;
 
 private slots:
     void SpinboxChanged(int value);
     void SliderChanged(int value);
-    void traceScannedDrawings();
     void updateDrawing();
     void layerChanged(int index);
     void checkerStateChanged(bool state);

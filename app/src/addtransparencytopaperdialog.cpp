@@ -104,7 +104,7 @@ void AddTransparencyToPaperDialog::buttonClicked(QAbstractButton* button)
 {
     switch (ui->buttonBox->buttonRole(button)) {
         case QDialogButtonBox::ApplyRole:
-            traceScannedDrawings();
+            accept();
             return;
         case QDialogButtonBox::RejectRole:
             reject();
@@ -230,8 +230,6 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
     }
     else
     {
-        mEditor->setIsDoingRepeatColoring(true);
-        int count = mEditor->getAutoSaveCounter();
         QProgressDialog* mProgress = new QProgressDialog(tr("Tracing scanned drawings..."), tr("Abort"), 0, 100, this);
         mProgress->setWindowModality(Qt::WindowModal);
         mProgress->show();
@@ -245,7 +243,6 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
             {
                 mProgress->setValue(keysThinned++);
                 mEditor->scrubTo(i);
-                count++;
                 if (mProgress->wasCanceled())
                 {
                     break;
@@ -267,8 +264,5 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
             }
         }
         mProgress->close();
-        mEditor->setIsDoingRepeatColoring(false);
-        mEditor->setAutoSaveCounter(count);
-        accept();
     }
 }
