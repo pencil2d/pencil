@@ -28,7 +28,7 @@ GNU General Public License for more details.
 #include "bitmapimage.h"
 
 
-AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QDialog *parent) :
+AddTransparencyToPaperDialog::AddTransparencyToPaperDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddTransparencyToPaperDialog)
 {

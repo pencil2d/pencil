@@ -548,7 +548,7 @@ void MainWindow2::openAddTranspToPaperDialog()
         return;
     }
 
-    mAddTranspToPaper = new AddTransparencyToPaperDialog();
+    mAddTranspToPaper = new AddTransparencyToPaperDialog(this);
     mAddTranspToPaper->setCore(mEditor);
     mAddTranspToPaper->initUI();
     mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);

@@ -35,7 +35,7 @@ class AddTransparencyToPaperDialog : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddTransparencyToPaperDialog(QDialog *parent = nullptr);
+    explicit AddTransparencyToPaperDialog(QWidget *parent = nullptr);
     ~AddTransparencyToPaperDialog() override;
 
     void setCore(Editor* editor);
@@ -62,7 +62,7 @@ private:
 
     int mZoomLevel = 1;
 
-    Ui::AddTransparencyToPaperDialog *ui;
+    Ui::AddTransparencyToPaperDialog *ui = nullptr;
 
     QGraphicsScene scene;
     QGraphicsPixmapItem* mPreviewImageItem = nullptr;
