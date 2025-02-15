@@ -200,6 +200,7 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
     LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
     BitmapImage* img = new BitmapImage();
     const bool somethingSelected = mEditor->select()->somethingSelected();
+    const QRect selectionRect = mEditor->select()->mySelectionRect().toRect();
 
     if (ui->rbCurrentKeyframe->isChecked())
     {
@@ -215,10 +216,10 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
 
         if (somethingSelected)
         {
-            mEditor->copy();
+            BitmapImage selection = layer->getBitmapImageAtFrame(frame)->copy(selectionRect);
             layer->removeKeyFrame(frame);
             layer->addNewKeyFrameAt(frame);
-            mEditor->paste();
+            layer->getBitmapImageAtFrame(frame)->paste(&selection);
         }
         img = layer->getBitmapImageAtFrame(frame);
         img = img->scanToTransparent(img,
@@ -249,10 +250,10 @@ void AddTransparencyToPaperDialog::traceScannedDrawings()
                 }
                 if (somethingSelected)
                 {
-                    mEditor->copy();
+                    BitmapImage selection = layer->getBitmapImageAtFrame(i)->copy(selectionRect);
                     layer->removeKeyFrame(i);
                     layer->addNewKeyFrameAt(i);
-                    mEditor->paste();
+                    layer->getBitmapImageAtFrame(i)->paste(&selection);
                 }
                 img = layer->getBitmapImageAtFrame(i);
                 img = img->scanToTransparent(img,
