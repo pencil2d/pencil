@@ -43,6 +43,7 @@ CameraTool::CameraTool(QObject* object) : BaseTool(object)
 
 CameraTool::~CameraTool()
 {
+    saveSettings();
 }
 
 void CameraTool::loadSettings()
@@ -62,6 +63,10 @@ void CameraTool::loadSettings()
     mHandlePen = QPen();
     mHandlePen.setColor(QColor(0, 0, 0, 255));
     mHandlePen.setWidth(2);
+}
+
+void CameraTool::saveSettings()
+{
 }
 
 void CameraTool::updateUIAssists(const Layer* layer)

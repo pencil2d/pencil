@@ -59,6 +59,15 @@ void MoveTool::loadSettings()
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
 }
 
+void MoveTool::saveSettings()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    settings.setValue("ShowSelectionInfo", properties.showSelectionInfo);
+
+    settings.sync();
+}
+
 QCursor MoveTool::cursor()
 {
     MoveMode mode = MoveMode::NONE;

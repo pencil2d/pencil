@@ -54,6 +54,7 @@ public:
     void paint(QPainter& painter, const QRect&) override;
 
     void loadSettings() override;
+    void saveSettings() override;
 
     void pointerPressEvent(PointerEvent* event) override;
     void pointerReleaseEvent(PointerEvent* event) override;
