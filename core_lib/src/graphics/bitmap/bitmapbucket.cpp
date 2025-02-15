@@ -113,11 +113,17 @@ bool BitmapBucket::allowContinuousFill(const QPoint& checkPoint, const QRgb& che
 
 void BitmapBucket::paint(const QPointF& updatedPoint, std::function<void(BucketState, int, int)> state)
 {
-    const QPoint& point = QPoint(qFloor(updatedPoint.x()), qFloor(updatedPoint.y()));
     const int currentFrameIndex = mEditor->currentFrame();
 
-    BitmapImage* targetImage = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+    BitmapImage* targetImage = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
     if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
+
+    QPoint point = QPoint(qFloor(updatedPoint.x()), qFloor(updatedPoint.y()));
+    if (!mReferenceImage.contains(point))
+    {
+        // If point is outside the our max known fill area, move the fill point anywhere within the bounds
+        point = mReferenceImage.topLeft();
+    }
 
     const QRgb& targetPixelColor = targetImage->constScanLine(point.x(), point.y());
 

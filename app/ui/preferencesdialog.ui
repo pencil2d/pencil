@@ -6,15 +6,9 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>563</width>
-    <height>445</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
-  </property>
-  <property name="maximumSize">
-   <size>
-    <width>600</width>
-    <height>680</height>
-   </size>
   </property>
   <property name="windowTitle">
    <string>Preferences</string>
@@ -32,30 +26,45 @@
        </property>
        <property name="minimumSize">
         <size>
-         <width>120</width>
+         <width>175</width>
          <height>0</height>
         </size>
        </property>
        <property name="maximumSize">
         <size>
-         <width>128</width>
+         <width>175</width>
          <height>16777215</height>
         </size>
        </property>
+       <property name="layoutDirection">
+        <enum>Qt::LeftToRight</enum>
+       </property>
+       <property name="horizontalScrollBarPolicy">
+        <enum>Qt::ScrollBarAlwaysOff</enum>
+       </property>
        <property name="iconSize">
         <size>
-         <width>96</width>
-         <height>84</height>
+         <width>64</width>
+         <height>64</height>
         </size>
        </property>
        <property name="movement">
         <enum>QListView::Static</enum>
        </property>
-       <property name="spacing">
-        <number>5</number>
+       <property name="flow">
+        <enum>QListView::TopToBottom</enum>
+       </property>
+       <property name="isWrapping" stdset="0">
+        <bool>false</bool>
        </property>
        <property name="viewMode">
         <enum>QListView::IconMode</enum>
+       </property>
+       <property name="uniformItemSizes">
+        <bool>false</bool>
+       </property>
+       <property name="wordWrap">
+        <bool>true</bool>
        </property>
        <property name="currentRow">
         <number>0</number>
@@ -69,7 +78,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefspencil.png</normaloff>:/icons/prefspencil.png</iconset>
+          <normaloff>:/icons/themes/playful/preferences/preferences-general.svg</normaloff>:/icons/themes/playful/preferences/preferences-general.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -84,7 +93,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefs-files.png</normaloff>:/icons/prefs-files.png</iconset>
+          <normaloff>:/icons/themes/playful/preferences/preferences-files.svg</normaloff>:/icons/themes/playful/preferences/preferences-files.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -99,7 +108,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefstimeline.png</normaloff>:/icons/prefstimeline.png</iconset>
+          <normaloff>:/icons/themes/playful/preferences/preferences-timeline.svg</normaloff>:/icons/themes/playful/preferences/preferences-timeline.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -114,7 +123,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefs-files.png</normaloff>:/icons/prefs-files.png</iconset>
+          <normaloff>:/icons/themes/playful/preferences/preferences-tools.svg</normaloff>:/icons/themes/playful/preferences/preferences-tools.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>
@@ -129,7 +138,7 @@
         </property>
         <property name="icon">
          <iconset resource="../data/app.qrc">
-          <normaloff>:/icons/prefs-shortcuts.png</normaloff>:/icons/prefs-shortcuts.png</iconset>
+          <normaloff>:/icons/themes/playful/preferences/preferences-shortcuts.svg</normaloff>:/icons/themes/playful/preferences/preferences-shortcuts.svg</iconset>
         </property>
         <property name="flags">
          <set>ItemIsSelectable|ItemIsEnabled</set>

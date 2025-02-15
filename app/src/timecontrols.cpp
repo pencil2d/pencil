@@ -50,12 +50,17 @@ void TimeControls::initUI()
 
     mFps = mFpsBox->value();
     mTimecodeSelect = new QToolButton(this);
-    mTimecodeSelect->setIcon(QIcon(":app/icons/new/svg/more_options.svg"));
+
+    QMenu* timeSelectMenu = new QMenu(tr("Display timecode", "Timeline menu for choose a timecode"), this);
+    mTimecodeSelect->setIcon(QIcon(":/icons/themes/playful/misc/more-options.svg"));
+
+    timeSelectMenu->addAction(mNoTimecodeAction = new QAction(tr("No text"), this));
+    timeSelectMenu->addAction(mOnlyFramesAction = new QAction(tr("Frames"), this));
+    timeSelectMenu->addAction(mSmpteAction = new QAction(tr("SMPTE Timecode"), this));
+    timeSelectMenu->addAction(mSffAction = new QAction(tr("SFF Timecode"), this));
+    mTimecodeSelect->setMenu(timeSelectMenu);
     mTimecodeSelect->setPopupMode(QToolButton::InstantPopup);
-    mTimecodeSelect->addAction(mNoTimecodeAction = new QAction(tr("No text"), this));
-    mTimecodeSelect->addAction(mOnlyFramesAction = new QAction(tr("Frames"), this));
-    mTimecodeSelect->addAction(mSmpteAction = new QAction(tr("SMPTE Timecode"), this));
-    mTimecodeSelect->addAction(mSffAction = new QAction(tr("SFF Timecode"), this));
+    mTimecodeSelect->setStyleSheet("::menu-indicator{ image: none; }");
     mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
     mTimecodeLabel = new QLabel(this);
     mTimecodeLabel->setContentsMargins(2, 0, 0, 0);
@@ -100,23 +105,25 @@ void TimeControls::initUI()
     mPlaybackRangeCheckBox->setToolTip(tr("Playback range"));
 
     mPlayButton = new QPushButton(this);
+    mPlayButton->setIconSize(QSize(22,22));
     mLoopButton = new QPushButton(this);
+    mLoopButton->setIconSize(QSize(22,22));
     mSoundButton = new QPushButton(this);
+    mSoundButton->setIconSize(QSize(22,22));
     mSoundScrubButton = new QPushButton(this);
+    mSoundScrubButton->setIconSize(QSize(22,22));
     mJumpToEndButton = new QPushButton(this);
+    mJumpToEndButton->setIconSize(QSize(22,22));
     mJumpToStartButton = new QPushButton(this);
+    mJumpToStartButton->setIconSize(QSize(22,22));
 
-    mLoopIcon = QIcon(":icons/controls/loop.png");
-    mSoundIcon = QIcon();
-    mSoundIcon.addFile(":icons/controls/sound.png", QSize(), QIcon::Normal, QIcon::On);
-    mSoundIcon.addFile(":icons/controls/sound-disabled.png", QSize(), QIcon::Normal, QIcon::Off);
-    mSoundScrubIcon = QIcon();
-    mSoundScrubIcon.addFile(":icons/controls/soundscrub.png", QSize(), QIcon::Normal, QIcon::On);
-    mSoundScrubIcon.addFile(":icons/controls/soundscrub-disabled.png", QSize(), QIcon::Normal, QIcon::Off);
-    mJumpToEndIcon = QIcon(":icons/controls/endplay.png");
-    mJumpToStartIcon = QIcon(":icons/controls/startplay.png");
-    mStartIcon = QIcon(":icons/controls/play.png");
-    mStopIcon = QIcon(":icons/controls/stop.png");
+    mLoopIcon = QIcon(":icons/themes/playful/controls/control-loop.svg");
+    mSoundIcon = QIcon(":icons/themes/playful/controls/control-sound-enable.svg");
+    mSoundScrubIcon = QIcon(":icons/themes/playful/controls/control-sound-scrub.svg");
+    mJumpToEndIcon = QIcon(":icons/themes/playful/controls/control-play-end.svg");
+    mJumpToStartIcon = QIcon(":icons/themes/playful/controls/control-play-start.svg");
+    mStartIcon = QIcon(":icons/themes/playful/controls/control-play.svg");
+    mStopIcon = QIcon(":icons/themes/playful/controls/control-stop.svg");
     mPlayButton->setIcon(mStartIcon);
     mLoopButton->setIcon(mLoopIcon);
     mSoundButton->setIcon(mSoundIcon);

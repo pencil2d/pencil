@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:util="http://wixtoolset.org/schemas/v4/wxs/util" xmlns:bal="http://wixtoolset.org/schemas/v4/wxs/bal">
+  <?if $(sys.BUILDARCH)="x86" ?>
+    <?define WordSize = 32 ?>
+  <?elseif $(sys.BUILDARCH)="x64" ?>
+    <?define WordSize = 64 ?>
+  <?else?>
+    <?error Unrecognized architecture ?>
+  <?endif?>
+  <?if $(Edition)="Release" ?>
+    <?define Name = "Pencil2D" ?>
+    <?define ExeName = "pencil2d" ?>
+    <?define MsiName = "pencil2d-win$(WordSize)-$(Version)" ?>
+    <?define UpgradeCode = "952DD85C-D065-45A7-BD8F-0A1DF29616B8" ?>
+  <?elseif $(Edition)="Nightly" ?>
+    <?define Name = "Pencil2D Nightly" ?>
+    <?define ExeName = "pencil2d-nightly" ?>
+    <?define MsiName = "pencil2d-win$(WordSize)-b$(NightlyBuildNumber)-$(NightlyBuildTimestamp)" ?>
+    <?define Version = "0.0.$(NightlyBuildNumber)" ?>
+    <?define UpgradeCode = "DB09026E-2975-43BA-BB2E-AACD1715B9C8" ?>
+  <?else?>
+    <?error Unrecognized Edition $(Edition) ?>
+  <?endif?>
+  <Bundle
+    AboutUrl="https://www.pencil2d.org/"
+    HelpUrl="https://www.pencil2d.org/doc/"
+    UpdateUrl="https://www.pencil2d.org/download/"
+    DisableModify="button"
+    IconSourceFile="pencil2d.ico"
+    Name="$(Name)"
+    Manufacturer="The Pencil2D Team"
+    UpgradeCode="$(UpgradeCode)"
+    Version="$(Version)"
+    Condition="VersionNT &gt;= v6.1">
+    <BootstrapperApplication>
+      <bal:WixStandardBootstrapperApplication
+        LicenseUrl="https://www.gnu.org/licenses/gpl-2.0.html"
+        ShowVersion="yes"
+        LaunchTarget="[InstallFolder]\$(ExeName).exe"
+        Theme="hyperlinkLicense"
+        ThemeFile="pencil2d.thm"
+        LocalizationFile="pencil2d.wxl" />
+      <Payload SourceFile="pencil2d.dll" bal:BAFunctions="yes" />
+      <!-- Translations -->
+      <Payload SourceFile="pencil2d_de.wxl" Name="7\thm.wxl" />
+      <Payload SourceFile="pencil2d_it.wxl" Name="16\thm.wxl" />
+      <!-- Assets -->
+      <Payload SourceFile="pencil2d.ico" />
+      <Payload SourceFile="pencil2d.png" />
+      <Payload SourceFile="pencil2d@2x.png" />
+      <Payload SourceFile="cog.png" />
+      <Payload SourceFile="cog@2x.png" />
+      <Payload SourceFile="cog-hover.png" />
+      <Payload SourceFile="cog-hover@2x.png" />
+    </BootstrapperApplication>
+    <Variable Name="InstallFolder" Type="formatted" Value="[LocalAppDataFolder]Programs\[WixBundleName]" bal:Overridable="yes" Persisted="yes" />
+    <Variable Name="DesktopShortcut" Type="numeric" Value="0" bal:Overridable="yes" Persisted="yes" />
+    <?if $(Edition)="Nightly" ?>
+      <Variable Name="NightlyBuildNumber" Type="numeric" Value="$(NightlyBuildNumber)" />
+      <Variable Name="NightlyBuildTimestamp" Type="string" Value="$(NightlyBuildTimestamp)" />
+    <?endif?>
+    <Chain>
+      <!-- Set Cache to remove to work around WiX issue #8063 -->
+      <!-- Set InstallSize to 0 to ensure the size in the ARP entry is correct (since the redist entry is separate) -->
+      <BundlePackage SourceFile="vc_redist.$(sys.BUILDARCH).exe" Cache="remove" Permanent="yes" InstallSize="0" />
+      <MsiPackage SourceFile="$(MsiName).msi">
+        <MsiProperty Name="INSTALLDIR" Value="[InstallFolder]" />
+        <!-- Need an explicit condition here - Windows Installer and the options page cancel button
+             treat the property/variable as a string, but the checkbox treats it as numeric -->
+        <MsiProperty Name="DESKTOPSHORTCUT" Value="1" Condition="DesktopShortcut &lt;&gt; 0" />
+      </MsiPackage>
+    </Chain>
+  </Bundle>
+</Wix>

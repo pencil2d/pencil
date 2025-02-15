@@ -48,16 +48,29 @@ Tile* TiledBuffer::getTileFromIndex(const TileIndex& tileIndex)
     return selectedTile;
 }
 
-void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, int brushCursorWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
-    const QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
+void TiledBuffer::drawBrush(QPointF point, qreal brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing) {
     const float tileSize = UNIFORM_TILE_SIZE;
-    const int width = qMax(brushCursorWidth,brushWidth);
 
     // Gather the number of tiles that fits the size of the brush width
-    const int xLeft = qFloor((qFloor(point.x() - width)) / tileSize);
-    const int xRight = qFloor((qFloor(point.x() + width)) / tileSize);
-    const int yTop = qFloor(qFloor(point.y() - width) / tileSize);
-    const int yBottom = qFloor(qFloor(point.y() + width) / tileSize);
+    const int xLeft = qFloor((qFloor(point.x() - brushWidth)) / tileSize);
+    const int xRight = qFloor((qFloor(point.x() + brushWidth)) / tileSize);
+    const int yTop = qFloor(qFloor(point.y() - brushWidth) / tileSize);
+    const int yBottom = qFloor(qFloor(point.y() + brushWidth) / tileSize);
+
+    // If we are not using antialiasing, make sure at least one pixel is within the brush's circle
+    bool drawPoint = false;
+    if (!antialiasing && brushWidth < 1.42) { // Overestimated approximation of 2*sqrt(2), which is the maximum distance a point can be from the center of a pixel
+        // Measure the actual distance to the center of the nearest pixel
+        const QPointF nearestPixelCenter(qRound(point.x()+0.5)-0.5, qRound(point.y()+0.5)-0.5);
+        const qreal distanceToNearest = QLineF(point, nearestPixelCenter).length();
+        if (distanceToNearest >= brushWidth/2) {
+            // Nothing will be drawn with drawEllipse, so prepare to draw the nearest pixel with drawPoint
+            drawPoint = true;
+            point = QPointF(nearestPixelCenter.x() - 0.5, nearestPixelCenter.y() - 0.5);
+            pen = QPen(brush, 1);
+        }
+    }
+    const QRectF brushRect(point.x() - 0.5 * brushWidth, point.y() - 0.5 * brushWidth, brushWidth, brushWidth);
 
     for (int tileY = yTop; tileY <= yBottom; tileY++) {
         for (int tileX = xLeft; tileX <= xRight; tileX++) {
@@ -71,7 +84,11 @@ void TiledBuffer::drawBrush(const QPointF& point, int brushWidth, int brushCurso
             painter.setPen(pen);
             painter.setBrush(brush);
             painter.setCompositionMode(cm);
-            painter.drawEllipse(brushRect);
+            if (drawPoint) {
+                painter.drawPoint(point);
+            } else {
+                painter.drawEllipse(brushRect);
+            }
             painter.end();
 
             mTileBounds.extend(tile->bounds());
@@ -108,11 +125,10 @@ void TiledBuffer::drawImage(const QImage& image, const QRect& imageBounds, QPain
 }
 
 
-void TiledBuffer::drawPath(QPainterPath path, int cursorWidth, QPen pen, QBrush brush,
+void TiledBuffer::drawPath(QPainterPath path, QPen pen, QBrush brush,
                            QPainter::CompositionMode cm, bool antialiasing)
 {
-    const int pathWidth = pen.width();
-    const int width = (qMax(pathWidth,cursorWidth) + 1);
+    const qreal width = pen.widthF();
     const float tileSize = UNIFORM_TILE_SIZE;
     const QRectF pathRect = path.boundingRect();
 

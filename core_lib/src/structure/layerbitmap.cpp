@@ -21,9 +21,9 @@ GNU General Public License for more details.
 #include <QFile>
 #include "keyframe.h"
 #include "bitmapimage.h"
+#include "util/util.h"
 
-
-LayerBitmap::LayerBitmap(Object* object) : Layer(object, Layer::BITMAP)
+LayerBitmap::LayerBitmap(int id) : Layer(id, Layer::BITMAP)
 {
     setName(tr("Bitmap Layer"));
 }
@@ -42,6 +42,11 @@ BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increme
 {
     Q_ASSERT(frameNumber >= 1);
     return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+}
+
+void LayerBitmap::replaceKeyFrame(const KeyFrame* bitmapImage)
+{
+    *getBitmapImageAtFrame(bitmapImage->pos()) = *static_cast<const BitmapImage*>(bitmapImage);
 }
 
 void LayerBitmap::repositionFrame(QPoint point, int frame)
@@ -90,7 +95,7 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
         dd << "LayerBitmap::saveKeyFrame";
         dd << QString("  KeyFrame.pos() = %1").arg(keyframe->pos());
         dd << QString("  strFilePath = %1").arg(strFilePath);
-        dd << QString("BitmapImage could not be saved");
+        dd << QString("Error: Failed to save BitmapImage");
         dd.collect(st.details());
         return Status(Status::FAIL, dd);
     }
@@ -99,7 +104,7 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
     return Status::OK;
 }
 
-KeyFrame* LayerBitmap::createKeyFrame(int position, Object*)
+KeyFrame* LayerBitmap::createKeyFrame(int position)
 {
     BitmapImage* b = new BitmapImage;
     b->setPos(position);
@@ -188,7 +193,9 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc) const
         imageTag.setAttribute("opacity", pImg->getOpacity());
         layerElem.appendChild(imageTag);
 
-        Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        if (!pKeyFrame->fileName().isEmpty()) {
+            Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        }
     });
 
     return layerElem;
@@ -202,24 +209,19 @@ void LayerBitmap::loadDomElement(const QDomElement& element, QString dataDirPath
     while (!imageTag.isNull())
     {
         QDomElement imageElement = imageTag.toElement();
-        if (!imageElement.isNull())
+        if (!imageElement.isNull() && imageElement.tagName() == "image")
         {
-            if (imageElement.tagName() == "image")
+            QString path = validateDataPath(imageElement.attribute("src"), dataDirPath);
+            if (!path.isEmpty())
             {
-                QString path = dataDirPath + "/" + imageElement.attribute("src"); // the file is supposed to be in the data directory
-                QFileInfo fi(path);
-                if (!fi.exists()) path = imageElement.attribute("src");
                 int position = imageElement.attribute("frame").toInt();
                 int x = imageElement.attribute("topLeftX").toInt();
                 int y = imageElement.attribute("topLeftY").toInt();
-                qreal opacity = 1.0;
-                if (imageElement.hasAttribute("opacity")) {
-                    opacity = imageElement.attribute("opacity").toDouble();
-                }
+                qreal opacity = imageElement.attribute("opacity", "1.0").toDouble();
                 loadImageAtFrame(path, QPoint(x, y), position, opacity);
-
-                progressStep();
             }
+
+            progressStep();
         }
         imageTag = imageTag.nextSibling();
     }

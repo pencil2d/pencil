@@ -24,13 +24,14 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "colormanager.h"
 #include "viewmanager.h"
+#include "undoredomanager.h"
 #include "pointerevent.h"
 #include "layervector.h"
 #include "layerbitmap.h"
 #include "vectorimage.h"
 
 
-PolylineTool::PolylineTool(QObject* parent) : BaseTool(parent)
+PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
@@ -41,8 +42,11 @@ ToolType PolylineTool::type()
 
 void PolylineTool::loadSettings()
 {
+    StrokeTool::loadSettings();
+
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[BEZIER] = true;
+    mPropertyEnabled[CLOSEDPATH] = true;
     mPropertyEnabled[ANTI_ALIASING] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -52,14 +56,18 @@ void PolylineTool::loadSettings()
     properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
+    properties.closedPolylinePath = settings.value("closedPolylinePath").toBool();
     properties.useAA = settings.value("brushAA").toBool();
     properties.stabilizerLevel = -1;
+
+    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
 
 void PolylineTool::resetToDefault()
 {
     setWidth(8.0);
     setBezier(false);
+    setClosedPath(false);
 }
 
 void PolylineTool::setWidth(const qreal width)
@@ -90,34 +98,57 @@ void PolylineTool::setAA(const int AA)
     settings.sync();
 }
 
+void PolylineTool::setClosedPath(const bool closed)
+{
+    BaseTool::setClosedPath(closed);
+
+    // Update settings
+    QSettings settings(PENCIL2D, PENCIL2D);
+    settings.setValue("closedPolylinePath", closed);
+    settings.sync();
+}
+
 bool PolylineTool::leavingThisTool()
 {
+    StrokeTool::leavingThisTool();
     if (mPoints.size() > 0)
     {
         cancelPolyline();
-        clearToolData();
     }
     return true;
 }
 
-bool PolylineTool::isActive()
+bool PolylineTool::isActive() const
 {
     return !mPoints.isEmpty();
 }
 
 QCursor PolylineTool::cursor()
 {
-    return QCursor(QPixmap(":icons/cross.png"), 10, 10);
+    return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
 }
 
 void PolylineTool::clearToolData()
 {
+    if (mPoints.empty()) {
+        return;
+    }
+
     mPoints.clear();
     emit isActiveChanged(POLYLINE, false);
+
+    // Clear the in-progress polyline from the bitmap buffer.
+    mScribbleArea->clearDrawingBuffer();
+    mScribbleArea->updateFrame();
 }
 
 void PolylineTool::pointerPressEvent(PointerEvent* event)
 {
+    mInterpolator.pointerPressEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     Layer* layer = mEditor->layers()->currentLayer();
 
     if (event->button() == Qt::LeftButton)
@@ -140,50 +171,92 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
             emit isActiveChanged(POLYLINE, true);
         }
     }
+
+    StrokeTool::pointerPressEvent(event);
 }
 
-void PolylineTool::pointerMoveEvent(PointerEvent*)
+void PolylineTool::pointerMoveEvent(PointerEvent* event)
 {
+    mInterpolator.pointerMoveEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
         drawPolyline(mPoints, getCurrentPoint());
     }
+
+    StrokeTool::pointerMoveEvent(event);
 }
 
-void PolylineTool::pointerReleaseEvent(PointerEvent *)
-{}
-
-void PolylineTool::pointerDoubleClickEvent(PointerEvent*)
+void PolylineTool::pointerReleaseEvent(PointerEvent* event)
 {
+    mInterpolator.pointerReleaseEvent(event);
+    if (handleQuickSizing(event)) {
+        return;
+    }
+
+    StrokeTool::pointerReleaseEvent(event);
+}
+
+void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
+{
+    mInterpolator.pointerPressEvent(event);
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
 
+    const UndoSaveState* saveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
     mEditor->backup(typeName());
 
     endPolyline(mPoints);
-    clearToolData();
+    mEditor->undoRedo()->record(saveState, typeName());
 }
 
+void PolylineTool::removeLastPolylineSegment()
+{
+    if (mPoints.size() > 1)
+    {
+        mPoints.removeLast();
+        drawPolyline(mPoints, getCurrentPoint());
+    }
+    else if (mPoints.size() == 1)
+    {
+        cancelPolyline();
+        clearToolData();
+    }
+}
 
 bool PolylineTool::keyPressEvent(QKeyEvent* event)
 {
     switch (event->key())
     {
+    case Qt::Key_Control:
+        mClosedPathOverrideEnabled = true;
+        drawPolyline(mPoints, getCurrentPoint());
+        return true;
+        break;
+
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
+            const UndoSaveState* saveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
             endPolyline(mPoints);
-            clearToolData();
+            mEditor->undoRedo()->record(saveState, typeName());
             return true;
         }
         break;
-
+    case Qt::Key_Backspace:
+        if (mPoints.size() > 0)
+        {
+            removeLastPolylineSegment();
+            return true;
+        }
     case Qt::Key_Escape:
         if (mPoints.size() > 0)
         {
             cancelPolyline();
-            clearToolData();
             return true;
         }
         break;
@@ -193,6 +266,23 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     }
 
     return BaseTool::keyPressEvent(event);
+}
+
+bool PolylineTool::keyReleaseEvent(QKeyEvent* event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_Control:
+        mClosedPathOverrideEnabled = false;
+        drawPolyline(mPoints, getCurrentPoint());
+        return true;
+        break;
+
+    default:
+        break;
+    }
+
+    return BaseTool::keyReleaseEvent(event);
 }
 
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
@@ -218,6 +308,12 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         }
         tempPath.lineTo(endPoint);
 
+        // Ctrl key inverts closed behavior while held (XOR)
+        if ((properties.closedPolylinePath == !mClosedPathOverrideEnabled) && points.size() > 1)
+        {
+            tempPath.closeSubpath();
+        }
+
         // Vector otherwise
         if (layer->type() == Layer::VECTOR)
         {
@@ -242,9 +338,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 
 void PolylineTool::cancelPolyline()
 {
-    // Clear the in-progress polyline from the bitmap buffer.
-    mScribbleArea->clearDrawingBuffer();
-    mScribbleArea->updateFrame();
+    clearToolData();
 }
 
 void PolylineTool::endPolyline(QList<QPointF> points)
@@ -274,6 +368,9 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     {
         drawPolyline(points, points.last());
     }
+
     mScribbleArea->endStroke();
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
+
+    clearToolData();
 }

@@ -35,7 +35,6 @@ GNU General Public License for more details.
 #include "canvaspainter.h"
 #include "overlaypainter.h"
 #include "preferencemanager.h"
-#include "strokemanager.h"
 #include "selectionpainter.h"
 #include "camerapainter.h"
 #include "tiledbuffer.h"
@@ -62,15 +61,12 @@ public:
 
     bool init();
     void setEditor(Editor* e) { mEditor = e; }
-    StrokeManager* getStrokeManager() const { return mStrokeManager.get(); }
     Editor* editor() const { return mEditor; }
 
     void deleteSelection();
 
     void applyTransformedSelection();
     void cancelTransformedSelection();
-
-    bool isLayerPaintable() const;
 
     void setEffect(SETTING e, bool isOn);
 
@@ -173,7 +169,6 @@ public:
     void liquifyBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
 
     void paintBitmapBuffer();
-    void paintCanvasCursor(QPainter& painter);
     void clearDrawingBuffer();
     void setGaussianGradient(QGradient &gradient, QColor color, qreal opacity, qreal offset);
 
@@ -181,16 +176,11 @@ public:
     void pointerMoveEvent(PointerEvent*);
     void pointerReleaseEvent(PointerEvent*);
 
-    void updateCanvasCursor();
-
     /// Call this when starting to use a paint tool. Checks whether we are drawing
     /// on an empty frame, and if so, takes action according to use preference.
     void handleDrawingOnEmptyFrame();
 
     TiledBuffer mTiledBuffer;
-
-    QPixmap mCursorImg;
-
 private:
 
     /** Invalidate the layer pixmap and camera painter caches.
@@ -222,11 +212,8 @@ private:
     BitmapImage* currentBitmapImage(Layer* layer) const;
     VectorImage* currentVectorImage(Layer* layer) const;
 
-    std::unique_ptr<StrokeManager> mStrokeManager;
-
     Editor* mEditor = nullptr;
 
-    bool mQuickSizing = true;
     LayerVisibility mLayerVisibility = LayerVisibility::ALL;
     bool mMakeInvisible = false;
     qreal mCurveSmoothingLevel = 0.0;
@@ -252,13 +239,11 @@ private:
     // Microsoft suggests that a double click action should be no more than 500 ms
     const int DOUBLE_CLICK_THRESHOLD = 500;
     QTimer* mDoubleClickTimer = nullptr;
+    QPointF mTabletPressPos;
     int mTabletReleaseMillisAgo;
     const int MOUSE_FILTER_THRESHOLD = 200;
 
     QTimer* mMouseFilterTimer = nullptr;
-
-    QPoint mCursorCenterPos;
-    QPointF mTransformedCursorPos;
 
     PreferenceManager* mPrefs = nullptr;
 

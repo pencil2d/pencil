@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include "camera.h"
 #include "pencildef.h"
 
-LayerCamera::LayerCamera(Object* object) : Layer(object, Layer::CAMERA)
+LayerCamera::LayerCamera(int id) : Layer(id, Layer::CAMERA)
 {
     setName(tr("Camera Layer"));
 
@@ -53,7 +53,12 @@ bool LayerCamera::addKeyFrame(int position, KeyFrame *pKeyFrame)
 bool LayerCamera::removeKeyFrame(int position)
 {
     mergeControlPointIfNeeded(position);
-    return Layer::removeKeyFrame(position);;
+    return Layer::removeKeyFrame(position);
+}
+
+void LayerCamera::replaceKeyFrame(const KeyFrame* camera)
+{
+    *getCameraAtFrame(camera->pos()) = *static_cast<const Camera*>(camera);
 }
 
 Camera* LayerCamera::getCameraAtFrame(int frameNumber) const
@@ -539,7 +544,7 @@ Status LayerCamera::saveKeyFrameFile(KeyFrame*, QString)
     return Status::OK;
 }
 
-KeyFrame* LayerCamera::createKeyFrame(int position, Object*)
+KeyFrame* LayerCamera::createKeyFrame(int position)
 {
     Camera* c = new Camera;
     c->setPos(position);

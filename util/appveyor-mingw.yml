@@ -1,10 +1,8 @@
 
-clone_depth: 3
+clone_depth: 1
 
 image:
   - Visual Studio 2019
-  - Visual Studio 2017
-  - Visual Studio 2015
 
 platform:
   - x86
@@ -15,12 +13,11 @@ skip_commits:
     - '*.md'
     - docs/*
     - util/appveyor-msvc.yml
+    - /.github/*
 
 init:
   - ver
   - echo %PLATFORM%
-#  - dir C:\Qt
-#  - dir C:\Qt\Tools\
 
 before_build:
   - set QTDIR=C:\Qt\%qt%
@@ -51,23 +48,3 @@ for:
     - if %PLATFORM%==x64   set qt=5.15\mingw81_64
     - if %PLATFORM%==x86   set mingw=mingw810_32
     - if %PLATFORM%==x64   set mingw=mingw810_64
-- matrix:
-    only:
-      - image: Visual Studio 2017
-  install:
-    - if %PLATFORM%==x86   set qt=5.12\mingw73_32
-    - if %PLATFORM%==x64   set qt=5.12\mingw73_64
-    - if %PLATFORM%==x86   set mingw=mingw730_32
-    - if %PLATFORM%==x64   set mingw=mingw730_64
-
-- matrix:
-    only:
-      - image: Visual Studio 2015
-  install:
-    - if %PLATFORM%==x86   set qt=5.9\mingw53_32
-    - if %PLATFORM%==x86   set mingw=mingw530_32
-
-matrix:
-  exclude:
-    - image: Visual Studio 2015
-      platform: x64

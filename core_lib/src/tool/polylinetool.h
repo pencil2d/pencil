@@ -20,9 +20,9 @@ GNU General Public License for more details.
 
 #include <QPointF>
 
-#include "basetool.h"
+#include "stroketool.h"
 
-class PolylineTool : public BaseTool
+class PolylineTool : public StrokeTool
 {
     Q_OBJECT
 public:
@@ -38,21 +38,25 @@ public:
     void pointerDoubleClickEvent(PointerEvent*) override;
 
     bool keyPressEvent(QKeyEvent* event) override;
+    bool keyReleaseEvent(QKeyEvent* event) override;
 
     void clearToolData() override;
 
     void setWidth(const qreal width) override;
     void setFeather(const qreal feather) override;
     void setAA(const int AA) override;
+    void setClosedPath(const bool closed) override;
 
     bool leavingThisTool() override;
 
-    virtual bool isActive() override;
+    bool isActive() const override;
 
 private:
     QList<QPointF> mPoints;
+    bool mClosedPathOverrideEnabled = false;
 
     void drawPolyline(QList<QPointF> points, QPointF endPoint);
+    void removeLastPolylineSegment();
     void cancelPolyline();
     void endPolyline(QList<QPointF> points);
 };

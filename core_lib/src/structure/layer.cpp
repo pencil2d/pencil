@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QDomElement>
 #include "keyframe.h"
-#include "object.h"
 
 // Used to sort the selected frames list
 bool sortAsc(int left, int right)
@@ -30,15 +29,14 @@ bool sortAsc(int left, int right)
     return left < right;
 }
 
-Layer::Layer(Object* object, LAYER_TYPE eType)
+Layer::Layer(int id, LAYER_TYPE eType)
 {
     Q_ASSERT(eType != UNDEFINED);
 
-    mObject = object;
     meType = eType;
     mName = QString(tr("Undefined Layer"));
 
-    mId = object->getUniqueLayerID();
+    mId = id;
 }
 
 Layer::~Layer()
@@ -49,13 +47,6 @@ Layer::~Layer()
         delete pKeyFrame;
     }
     mKeyFrames.clear();
-}
-
-void Layer::setObject(Object* obj)
-{
-    Q_ASSERT(obj);
-    mObject = obj;
-    mId = mObject->getUniqueLayerID();
 }
 
 void Layer::foreachKeyFrame(std::function<void(KeyFrame*)> action) const
@@ -180,8 +171,13 @@ bool Layer::addNewKeyFrameAt(int position)
 {
     if (position <= 0) return false;
 
-    KeyFrame* key = createKeyFrame(position, mObject);
-    return addKeyFrame(position, key);
+    KeyFrame* key = createKeyFrame(position);
+    if (!addKeyFrame(position, key))
+    {
+        delete key;
+        return false;
+    }
+    return true;
 }
 
 void Layer::addOrReplaceKeyFrame(int position, KeyFrame* pKeyFrame)
@@ -344,7 +340,7 @@ bool Layer::loadKey(KeyFrame* pKey)
 Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep)
 {
     DebugDetails dd;
-    dd << __FUNCTION__;
+    dd << "\n[Layer SAVE diagnostics]\n";
 
     bool ok = true;
 
@@ -368,6 +364,7 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
     }
     if (!ok)
     {
+        dd << "\nError: Failed to save one or more files";
         return Status(Status::FAIL, dd);
     }
     return Status::OK;

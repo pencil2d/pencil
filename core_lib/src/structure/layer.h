@@ -24,20 +24,14 @@ GNU General Public License for more details.
 #include <QDomElement>
 #include "pencilerror.h"
 
-class QMouseEvent;
-class QPainter;
-
 class KeyFrame;
-class Object;
-class TimeLineCells;
 class Status;
 
-#define ProgressCallback std::function<void()>
+typedef std::function<void()> ProgressCallback;
 
-class Layer : public QObject
+class Layer
 {
-    Q_OBJECT
-
+    Q_DECLARE_TR_FUNCTIONS(Layer)
 public:
     enum LAYER_TYPE
     {
@@ -49,14 +43,12 @@ public:
         CAMERA = 5,
     };
 
-    explicit Layer(Object*, LAYER_TYPE);
-    ~Layer() override;
+    explicit Layer(int id, LAYER_TYPE eType);
+    virtual ~Layer();
 
     int id() const { return mId; }
+    void setId(int layerId) { mId = layerId; }
     LAYER_TYPE type() const { return meType; }
-
-    Object* object() const { return mObject; }
-    void setObject(Object* obj);
 
     void setName(QString name) { mName = name; }
     QString name() const { return mName; }
@@ -102,10 +94,23 @@ public:
     */
     bool insertExposureAt(int position);
 
+    /**
+     * Creates a new keyframe at the given position, unless one already exists.
+     * @param position The position of the new keyframe
+     * @return false if a keyframe already exists at the position, true if the new keyframe was successfully added
+     */
     bool addNewKeyFrameAt(int position);
     void addOrReplaceKeyFrame(int position, KeyFrame* pKeyFrame);
+    /**
+     * Adds a keyframe at the given position, unless one already exists.
+     * @param position The new position of the keyframe
+     * @param pKeyFrame The keyframe to add. Its previous position will be overwritten
+     * @return false if a keyframe already exists at the position, true if the keyframe was successfully added
+     */
     virtual bool addKeyFrame(int position, KeyFrame* pKeyFrame);
     virtual bool removeKeyFrame(int position);
+    virtual void replaceKeyFrame(const KeyFrame* pKeyFrame) = 0;
+
     bool swapKeyFrames(int position1, int position2);
     bool moveKeyFrame(int position, int offset);
     KeyFrame* getKeyFrameAt(int position) const;
@@ -173,15 +178,13 @@ public:
     void clearDirtyFrames() { mDirtyFrames.clear(); }
 
 protected:
-    void setId(int LayerId) { mId = LayerId; }
-    virtual KeyFrame* createKeyFrame(int position, Object*) = 0;
+    virtual KeyFrame* createKeyFrame(int position) = 0;
     bool loadKey(KeyFrame*);
 
 private:
     void removeFromSelectionList(int position);
 
     LAYER_TYPE meType = UNDEFINED;
-    Object*    mObject = nullptr;
     int        mId = 0;
     bool       mVisible = true;
     QString    mName;

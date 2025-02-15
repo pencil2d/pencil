@@ -1,5 +1,17 @@
-VERSION = 0.6.6
-DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
+# Development branch build number is always 0.0.0.0
+# Nightly build version number is 99.0.0.BuildNumber
+# Release build version number is the git branch name plus the build number.
+
+isEmpty(VERSION) {
+    VERSION = 0.0.0.0
+}
+
+message("App Version: $$VERSION")
+
+DEFINES    += APP_VERSION=\\\"$$VERSION\\\"
+RC_DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+RC_DEFINES += APP_VERSION_RC=$$replace(VERSION, "\.", ",")
 
 PENCIL2D_NIGHTLY {
     DEFINES += PENCIL2D_NIGHTLY_BUILD
@@ -10,37 +22,25 @@ PENCIL2D_RELEASE {
     DEFINES += PENCIL2D_RELEASE_BUILD
 }
 
-CONFIG += c++11
-
-win32-g++ {
-    QMAKE_CXXFLAGS += -std=c++11
+CONFIG += strict_c strict_c++
+greaterThan(QT_MAJOR_VERSION, 5) {
+    CONFIG += c++17
+} else {
+    CONFIG += c++11
 }
 
-win32-msvc* {
-    QMAKE_CXXFLAGS += /MP /utf-8 
-    CONFIG(release,debug|release) {
-        QMAKE_CXXFLAGS += /Gy /GL 
-        CONFIG += ltcg
-        CONFIG += force_debug_info
-    }
-}
+# utf8_source is only for Qt 5, it is the default since Qt 6
+CONFIG += msvc_mp utf8_source
 
+win32-msvc*:CONFIG(release,debug|release): CONFIG += force_debug_info
+win32:!WIN_LEGACY: DEFINES += _WIN32_WINNT=0x0601
 WIN_LEGACY {
-    QMAKE_CXXFLAGS -= /utf-8
     QMAKE_LFLAGS += /SUBSYSTEM:CONSOLE,5.01
     QMAKE_CXX += /D_USING_V110_SDK71_
+    DEFINES += _WIN32_WINNT=0x0501
 }
 
-macx {
-    QMAKE_CXXFLAGS += -std=c++11 -stdlib=libc++
-    LIBS += -lobjc -framework Carbon -framework AppKit
-}
-
-unix:!macx {
-    QMAKE_CXXFLAGS += -std=c++11
-    QMAKE_LINK = $$QMAKE_CXX
-    QMAKE_LINK_SHLIB = $$QMAKE_CXX
-}
+macx: LIBS += -lobjc -framework Carbon -framework AppKit
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings

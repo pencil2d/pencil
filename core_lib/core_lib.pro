@@ -26,6 +26,7 @@ INCLUDEPATH += src \
 PRECOMPILED_HEADER = src/corelib-pch.h
 
 HEADERS +=  \
+    src/canvascursorpainter.h \
     src/corelib-pch.h \
     src/graphics/bitmap/bitmapbucket.h \
     src/graphics/bitmap/bitmapimage.h \
@@ -37,12 +38,13 @@ HEADERS +=  \
     src/graphics/vector/vectorimage.h \
     src/graphics/vector/vectorselection.h \
     src/graphics/vector/vertexref.h \
-    src/interface/backupelement.h \
     src/interface/editor.h \
     src/interface/flowlayout.h \
+    src/interface/legacybackupelement.h \
     src/interface/recentfilemenu.h \
     src/interface/scribblearea.h \
     src/interface/backgroundwidget.h \
+    src/interface/undoredocommand.h \
     src/managers/basemanager.h \
     src/managers/overlaymanager.h \
     src/managers/clipboardmanager.h \
@@ -51,6 +53,7 @@ HEADERS +=  \
     src/managers/layermanager.h \
     src/managers/toolmanager.h \
     src/managers/playbackmanager.h \
+    src/managers/undoredomanager.h \
     src/managers/viewmanager.h \
     src/managers/preferencemanager.h \
     src/managers/soundmanager.h \
@@ -83,7 +86,7 @@ HEADERS +=  \
     src/tool/polylinetool.h \
     src/tool/selecttool.h \
     src/tool/smudgetool.h \
-    src/tool/strokemanager.h \
+    src/tool/strokeinterpolator.h \
     src/tool/stroketool.h \
     src/util/blitrect.h \
     src/util/cameraeasingtype.h \
@@ -115,6 +118,7 @@ HEADERS +=  \
 
 
 SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
+    src/canvascursorpainter.cpp \
     src/graphics/bitmap/bitmapbucket.cpp \
     src/graphics/bitmap/tile.cpp \
     src/graphics/bitmap/tiledbuffer.cpp \
@@ -124,12 +128,13 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/graphics/vector/vectorimage.cpp \
     src/graphics/vector/vectorselection.cpp \
     src/graphics/vector/vertexref.cpp \
-    src/interface/backupelement.cpp \
     src/interface/editor.cpp \
     src/interface/flowlayout.cpp \
+    src/interface/legacybackupelement.cpp \
     src/interface/recentfilemenu.cpp \
     src/interface/scribblearea.cpp \
     src/interface/backgroundwidget.cpp \
+    src/interface/undoredocommand.cpp \
     src/managers/basemanager.cpp \
     src/managers/overlaymanager.cpp \
     src/managers/clipboardmanager.cpp \
@@ -139,6 +144,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/managers/toolmanager.cpp \
     src/managers/preferencemanager.cpp \
     src/managers/playbackmanager.cpp \
+    src/managers/undoredomanager.cpp \
     src/managers/viewmanager.cpp \
     src/managers/soundmanager.cpp \
     src/movieimporter.cpp \
@@ -167,7 +173,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tool/polylinetool.cpp \
     src/tool/selecttool.cpp \
     src/tool/smudgetool.cpp \
-    src/tool/strokemanager.cpp \
+    src/tool/strokeinterpolator.cpp \
     src/tool/stroketool.cpp \
     src/util/blitrect.cpp \
     src/util/cameraeasingtype.cpp \

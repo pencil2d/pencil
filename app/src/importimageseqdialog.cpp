@@ -58,10 +58,16 @@ void ImportImageSeqDialog::setupLayout()
 
     hideInstructionsLabel(true);
 
-    if (mFileType == FileType::GIF) {
+    switch (mFileType)
+    {
+    case FileType::GIF:
         setWindowTitle(tr("Import Animated GIF"));
-    } else {
+        break;
+    case FileType::IMAGE_SEQUENCE:
         setWindowTitle(tr("Import image sequence"));
+        break;
+    default:
+        setWindowTitle(tr("Import animated image"));
     }
 
     connect(uiOptionsBox->spaceSpinBox, static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged), this, &ImportImageSeqDialog::setSpace);
@@ -181,8 +187,6 @@ void ImportImageSeqDialog::importArbitrarySequence()
 
     for (const QString& strImgFile : files)
     {
-        QString strImgFileLower = strImgFile.toLower();
-
         Status st = mEditor->importImage(strImgFile);
         if (!st.ok())
         {
@@ -219,7 +223,6 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
     // local vars for testing file validity
     int dot = strFilePath.lastIndexOf(".");
     int slash = strFilePath.lastIndexOf("/");
-    QString fName = strFilePath.mid(slash + 1);
     QString path = strFilePath.left(slash + 1);
     QString digit = strFilePath.mid(slash + 1, dot - slash - 1);
 
@@ -269,7 +272,7 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
     dot = finalList[0].lastIndexOf(".");
 
     QStringList absolutePaths;
-    for (QString fileName : finalList) {
+    for (const QString& fileName : finalList) {
         absolutePaths << path + fileName;
     }
 
@@ -332,7 +335,6 @@ QStringList ImportImageSeqDialog::getFilePaths()
 
 Status ImportImageSeqDialog::validateKeySet(const PredefinedKeySet& keySet, const QStringList& filepaths)
 {
-    QString msg = "";
     QString failedPathsString;
 
     Status status = Status::OK;

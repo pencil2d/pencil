@@ -28,8 +28,9 @@ class Camera;
 
 class LayerCamera : public Layer
 {
+    Q_DECLARE_TR_FUNCTIONS(LayerCamera)
 public:
-    explicit LayerCamera(Object* object);
+    explicit LayerCamera(int id);
     ~LayerCamera() override;
 
     void loadImageAtFrame(int frame, qreal dx, qreal dy, qreal rotate, qreal scale, CameraEasingType easing, const QPointF& pathPoint, bool pathMoved);
@@ -39,6 +40,7 @@ public:
 
     bool addKeyFrame(int position, KeyFrame* pKeyFrame) override;
     bool removeKeyFrame(int position) override;
+    void replaceKeyFrame(const KeyFrame* camera) override;
 
     Camera* getCameraAtFrame(int frameNumber) const;
     Camera* getLastCameraAtFrame(int frameNumber, int increment) const;
@@ -70,7 +72,7 @@ public:
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
-    KeyFrame* createKeyFrame(int position, Object*) override;
+    KeyFrame* createKeyFrame(int position) override;
 
 private:
     void linearInterpolateTransform(Camera*);

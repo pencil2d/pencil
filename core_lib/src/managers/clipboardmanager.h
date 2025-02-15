@@ -75,8 +75,6 @@ private:
     VectorImage mVectorImage;
     std::map<int, KeyFrame*> mFrames;
     Layer::LAYER_TYPE mFramesType = Layer::LAYER_TYPE::UNDEFINED;
-
-    QClipboard* mClipboard = nullptr;
 };
 
 #endif // CLIPBOARDMANAGER_H

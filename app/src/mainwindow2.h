@@ -40,7 +40,7 @@ class ColorInspector;
 class RecentFileMenu;
 class ActionCommands;
 class ImportImageSeqDialog;
-class BackupElement;
+class UndoRedoCommand;
 class LayerOpacityDialog;
 class PegBarAlignmentDialog;
 class AddTransparencyToPaperDialog;
@@ -65,7 +65,7 @@ public:
     Editor* mEditor = nullptr;
 
 public slots:
-    void undoActSetText();
+    void updateBackupActionState();
     void updateSaveState();
     void openPegAlignDialog();
     void openRepositionDialog();
@@ -91,7 +91,7 @@ public:
     void importPredefinedImageSet();
     void importLayers();
     void importMovieVideo();
-    void importGIF();
+    void importAnimatedImage();
 
     void lockWidgets(bool shouldLock);
 
@@ -125,6 +125,7 @@ private:
 
     void createDockWidgets();
     void createMenus();
+    void replaceUndoRedoActions();
     void setupKeyboardShortcuts();
     void clearKeyboardShortcuts();
     bool loadMostRecent();
@@ -168,9 +169,6 @@ private:
     QToolBar*             mMainToolbar = nullptr;
     QToolBar*             mViewToolbar = nullptr;
     QToolBar*             mOverlayToolbar = nullptr;
-
-    // backup
-    BackupElement* mBackupAtSave = nullptr;
 
     PegBarAlignmentDialog* mPegAlign = nullptr;
     RepositionFramesDialog* mReposDialog = nullptr;

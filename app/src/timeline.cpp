@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include <QLabel>
 #include <QWheelEvent>
 #include <QSlider>
+#include <QTimer>
 
 #include "editor.h"
 #include "layermanager.h"
@@ -67,23 +68,21 @@ void TimeLine::initUI()
     // --- left widget ---
     // --------- layer buttons ---------
     QToolBar* layerButtons = new QToolBar(this);
+    layerButtons->setIconSize(QSize(22,22));
     QLabel* layerLabel = new QLabel(tr("Layers:"));
     layerLabel->setIndent(5);
 
     QToolButton* addLayerButton = new QToolButton(this);
-    addLayerButton->setIcon(QIcon(":icons/add.png"));
+    addLayerButton->setIcon(QIcon(":icons/themes/playful/timeline/layer-add.svg"));
     addLayerButton->setToolTip(tr("Add Layer"));
-    addLayerButton->setFixedSize(24, 24);
 
     mLayerDeleteButton = new QToolButton(this);
-    mLayerDeleteButton->setIcon(QIcon(":icons/remove.png"));
+    mLayerDeleteButton->setIcon(QIcon(":icons/themes/playful/timeline/layer-remove.svg"));
     mLayerDeleteButton->setToolTip(tr("Delete Layer"));
-    mLayerDeleteButton->setFixedSize(24, 24);
 
     QToolButton* duplicateLayerButton = new QToolButton(this);
-    duplicateLayerButton->setIcon(QIcon(":icons/controls/duplicate.png"));
+    duplicateLayerButton->setIcon(QIcon(":icons/themes/playful/timeline/layer-duplicate.svg"));
     duplicateLayerButton->setToolTip(tr("Duplicate Layer"));
-    duplicateLayerButton->setFixedSize(24, 24);
 
     layerButtons->addWidget(layerLabel);
     layerButtons->addWidget(addLayerButton);
@@ -96,12 +95,12 @@ void TimeLine::initUI()
     leftToolBarLayout->addWidget(layerButtons);
     leftToolBar->setLayout(leftToolBarLayout);
 
-    QAction* newBitmapLayerAct = new QAction(QIcon(":icons/layer-bitmap.png"), tr("New Bitmap Layer"), this);
-    QAction* newVectorLayerAct = new QAction(QIcon(":icons/layer-vector.png"), tr("New Vector Layer"), this);
-    QAction* newSoundLayerAct = new QAction(QIcon(":icons/layer-sound.png"), tr("New Sound Layer"), this);
-    QAction* newCameraLayerAct = new QAction(QIcon(":icons/layer-camera.png"), tr("New Camera Layer"), this);
+    QAction* newBitmapLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/cell-bitmap.svg"), tr("New Bitmap Layer"), this);
+    QAction* newVectorLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/cell-vector.svg"), tr("New Vector Layer"), this);
+    QAction* newSoundLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/cell-sound.svg"), tr("New Sound Layer"), this);
+    QAction* newCameraLayerAct = new QAction(QIcon(":icons/themes/playful/timeline/cell-camera.svg"), tr("New Camera Layer"), this);
 
-    QMenu* layerMenu = new QMenu(tr("&Layer", "Timeline add-layer menu"), this);
+    QMenu* layerMenu = new QMenu(tr("Layer", "Timeline add-layer menu"), this);
     layerMenu->addAction(newBitmapLayerAct);
     layerMenu->addAction(newVectorLayerAct);
     layerMenu->addAction(newSoundLayerAct);
@@ -119,23 +118,21 @@ void TimeLine::initUI()
     // --- right widget ---
     // --------- key buttons ---------
     QToolBar* timelineButtons = new QToolBar(this);
+    timelineButtons->setIconSize(QSize(22,22));
     QLabel* keyLabel = new QLabel(tr("Keys:"));
     keyLabel->setIndent(5);
 
     QToolButton* addKeyButton = new QToolButton(this);
-    addKeyButton->setIcon(QIcon(":icons/add.png"));
+    addKeyButton->setIcon(QIcon(":icons/themes/playful/timeline/frame-add.svg"));
     addKeyButton->setToolTip(tr("Add Frame"));
-    addKeyButton->setFixedSize(24, 24);
 
     QToolButton* removeKeyButton = new QToolButton(this);
-    removeKeyButton->setIcon(QIcon(":icons/remove.png"));
+    removeKeyButton->setIcon(QIcon(":icons/themes/playful/timeline/frame-remove.svg"));
     removeKeyButton->setToolTip(tr("Remove Frame"));
-    removeKeyButton->setFixedSize(24, 24);
 
     QToolButton* duplicateKeyButton = new QToolButton(this);
-    duplicateKeyButton->setIcon(QIcon(":icons/controls/duplicate.png"));
+    duplicateKeyButton->setIcon(QIcon(":icons/themes/playful/timeline/frame-duplicate.svg"));
     duplicateKeyButton->setToolTip(tr("Duplicate Frame"));
-    duplicateKeyButton->setFixedSize(24, 24);
 
     QLabel* zoomLabel = new QLabel(tr("Zoom:"));
     zoomLabel->setIndent(5);
@@ -159,6 +156,7 @@ void TimeLine::initUI()
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls(this);
+    mTimeControls->setIconSize(QSize(22,22));
     mTimeControls->setEditor(editor());
     mTimeControls->initUI();
     updateLength();
@@ -195,12 +193,17 @@ void TimeLine::initUI()
     timeLineContent->setLayout(lay);
     setWidget(timeLineContent);
 
+    mScrollingStoppedTimer = new QTimer();
+    mScrollingStoppedTimer->setSingleShot(true);
+
     setWindowFlags(Qt::WindowStaysOnTopHint);
 
     connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::hScrollChange);
     connect(mTracks, &TimeLineCells::offsetChanged, mHScrollbar, &QScrollBar::setValue);
     connect(mVScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineCells::vScrollChange);
     connect(mVScrollbar, &QScrollBar::valueChanged, mLayerList, &TimeLineCells::vScrollChange);
+    connect(mVScrollbar, &QScrollBar::valueChanged, this, &TimeLine::onScrollbarValueChanged);
+    connect(mScrollingStoppedTimer, &QTimer::timeout, mLayerList, &TimeLineCells::onScrollingVerticallyStopped);
 
     connect(splitter, &QSplitter::splitterMoved, this, &TimeLine::updateLength);
 
@@ -236,7 +239,7 @@ void TimeLine::initUI()
 
     LayerManager* layer = editor()->layers();
     connect(layer, &LayerManager::layerCountChanged, this, &TimeLine::updateLayerNumber);
-    connect(layer, &LayerManager::currentLayerChanged, this, &TimeLine::onLayerChanged);
+    connect(layer, &LayerManager::currentLayerChanged, this, &TimeLine::onCurrentLayerChanged);
     mNumLayers = layer->count();
 
     scrubbing = false;
@@ -287,6 +290,12 @@ void TimeLine::wheelEvent(QWheelEvent* event)
     {
         mVScrollbar->event(event);
     }
+}
+
+void TimeLine::onScrollbarValueChanged()
+{
+    // After the scrollbar has been updated, prepare to trigger stopped event
+    mScrollingStoppedTimer->start(150);
 }
 
 void TimeLine::updateFrame(int frameNumber)
@@ -362,7 +371,27 @@ void TimeLine::onObjectLoaded()
     updateLayerNumber(editor()->layers()->count());
 }
 
-void TimeLine::onLayerChanged()
+void TimeLine::onCurrentLayerChanged()
 {
+    updateVerticalScrollbarPosition();
     mLayerDeleteButton->setEnabled(editor()->layers()->canDeleteLayer(editor()->currentLayerIndex()));
+}
+
+void TimeLine::updateVerticalScrollbarPosition()
+{
+    // invert index so 0 is at the top
+    int idx = mNumLayers - editor()->currentLayerIndex() - 1;
+    // number of visible layers
+    int height = mNumLayers - mVScrollbar->maximum();
+    // scroll bar position/offset
+    int pos = mVScrollbar->value();
+
+    if (idx < pos) // above visible area
+    {
+        mVScrollbar->setValue(idx);
+    }
+    else if (idx >= pos + height) // below visible area
+    {
+        mVScrollbar->setValue(idx - height + 1);
+    }
 }

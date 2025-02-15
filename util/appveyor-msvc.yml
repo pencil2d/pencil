@@ -1,11 +1,8 @@
 
-clone_depth: 3
+clone_depth: 1
 
 image:
   - Visual Studio 2019
-  - Visual Studio 2017
-  - Visual Studio 2015
-  - Visual Studio 2013
 
 platform:
   - x86
@@ -16,6 +13,7 @@ skip_commits:
     - '*.md'
     - docs/*
     - util/appveyor-mingw.yml
+    - /.github/*
 
 init:
   - ver
@@ -49,42 +47,3 @@ for:
     - if %PLATFORM%==x64   call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
     - if %PLATFORM%==x86   set qt=5.15\msvc2019
     - if %PLATFORM%==x64   set qt=5.15\msvc2019_64
-
-- matrix:
-    only:
-      - image: Visual Studio 2017
-  install:
-    - if %PLATFORM%==x86   call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars32.bat"
-    - if %PLATFORM%==x64   call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-    - if %PLATFORM%==x86   set qt=5.12\msvc2017
-    - if %PLATFORM%==x64   set qt=5.12\msvc2017_64
-
-- matrix:
-    only:
-      - image: Visual Studio 2015
-  install:
-    - if %PLATFORM%==x86   call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
-    - if %PLATFORM%==x64   call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-    - if %PLATFORM%==x64   call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86_amd64
-    - if %PLATFORM%==x86   set qt=5.9\msvc2015
-    - if %PLATFORM%==x64   set qt=5.9\msvc2015_64
-
-- matrix:
-    only:
-      - image: Visual Studio 2013
-  install:
-    - if %PLATFORM%==x86   call "C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\vcvars32.bat"
-    - if %PLATFORM%==x86   set qt=5.6\msvc2013
-  build_script:
-    - md build
-    - cd build
-    # with an additional flag NO_TESTS
-    - qmake "..\pencil2d.pro" CONFIG+=GIT CONFIG+=Release CONFIG+=PENCIL2D_NIGHTLY CONFIG+=NO_TESTS
-    - nmake
-  test_script:
-    - echo "No tests for VS2013"
-
-matrix:
-  exclude:
-    - image: Visual Studio 2013
-      platform: x64

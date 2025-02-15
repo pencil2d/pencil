@@ -3,10 +3,16 @@
   <id>org.pencil2d.Pencil2D</id>
   <launchable type="desktop-id">org.pencil2d.Pencil2D.desktop</launchable>
   <name>Pencil2D</name>
-  <developer_name>The Pencil2D Team</developer_name>
+  <branding>
+    <color type="primary" scheme_preference="light">#81bdff</color>
+    <color type="primary" scheme_preference="dark">#003d80</color>
+  </branding>
+  <developer id="org.pencil2d">
+    <name>The Pencil2D Team</name>
+  </developer>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0</project_license>
-  <summary>2D animation software supporting bitmap and vector graphics</summary>
+  <summary>Create 2D animations with ease</summary>
   <description>
     <p>
       Pencil2D is a 2D animation program that lets you easily create
@@ -20,13 +26,25 @@
   <url type="translate">https://www.transifex.com/pencil2d/pencil2d/</url>
   <url type="contact">https://www.pencil2d.org/community/</url>
   <screenshots>
-    <screenshot type="default">
+    <screenshot environment="plasma" type="default">
       <image>https://www.pencil2d.org/images/pencil2d-linux.png</image>
+      <caption>The Pencil2D main window.</caption>
     </screenshot>
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
-    <release version="0.6.6" date="2021-02-17"/>
+    <release version="0.7.0" date="2024-07-12">
+      <description>
+        <p>This release of Pencil2D brings more than three years worth of exciting new features, enhancements and bug fixes. We have made it easier to manage keyframes, allowing you to copy, paste or delete several of them at once, or to reposition their contents or adjust their exposure in bulk. Entire layers can now be easily duplicated. On top of that, dragging keyframes across the timeline will no longer cause any changes until the moment you drop them at their new position, and the opacity of keyframes and whole layers is now adjustable as well.</p>
+        <p>We also haven’t forgotten about the canvas: Its performance should now be noticeably better than before. New overlays have been added to help with perspective drawing. The bucket tool has become more flexible with the addition of several new options and features. The move tool has also seen some love and handles rotated selections much better than it used to, and it will now apply changes automatically when switching to a different layer. Cursor quick sizing is now much more intuitive and more reliable than before. And last but not least, the camera system has been completely overhauled and is now considerably easier to work with.</p>
+        <p>Besides keyframe management and canvas tools, we’ve also given the user interface a facelift. The icon set was completely redesigned from scratch and is now finally consistent across the entire program. We’ve also added toolbars for a number of commonly used actions, and updated the status bar to include help text for the current tool. Moreover, the software is now available in seven additional languages!</p>
+        <p>Of course, these are only the most notable changes. For a more detailed look at all the improvements in this release, as well as the many bug fixes, check out the full release announcements on our website!</p>
+      </description>
+      <url type="details">https://www.pencil2d.org/2024/07/pencil2d-0.7.0-release.html</url>
+    </release>
+    <release version="0.6.6" date="2021-02-17">
+      <url type="details">https://www.pencil2d.org/2021/02/pencil2d-0.6.6-release.html</url>
+    </release>
     <release version="0.6.5" date="2020-07-31">
       <url type="details">https://www.pencil2d.org/2020/07/pencil2d-0.6.5-release.html</url>
     </release>

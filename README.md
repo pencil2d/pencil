@@ -16,24 +16,22 @@ _User Showcase Reel 2022_
 
 ## Download
 
-### Pencil2D 0.6.6 (17 Feb 2021)
+### Pencil2D 0.7.0 (12 Jul 2024)
 
-You can download Pencil2D from the [Official Website][p2d-download] or [Github releases][gh-release].
+Download Pencil2D from the [Official Website][p2d-download] or [Github releases][gh-release].
 
 [p2d-download]: https://www.pencil2d.org/download/
 [gh-release]: https://github.com/pencil2d/pencil/releases
 
 ### Nightly Builds
 
-Nightly builds are the bleeding edge versions of Pencil2D, which contains the most recent fixes and features. We currently do not offer legacy mac or 32-bit linux nightly builds. If you have one of these systems, you will have to wait for official releases or build the program from source.
+Nightly builds are the bleeding edge versions of Pencil2D, which contains the most recent fixes and features. They are not as stable as the official releases, but they are a great way to test the latest features and help us find bugs.
 
 [Download Nightly Buildls](https://www.pencil2d.org/download/nightly/)
 
 ## Using Pencil2D
 
-Note that the following guides and documentation are outdated.
-
-Pencil2D comes with a Quick Reference that you can use to familiarize yourself with the tools and functions at your disposal. After opening Pencil2D, you can access it through the main menu: Help > Quick Reference Guide.
+Pencil2D comes with a Quick Reference that you can use to familiarize yourself with the tools and functions at your disposal. You can access it through the main menu: Help > Quick Reference Guide.
 
 We encourage you to visit our [User Manual][user-man] for a quick guide for novice users, then play around with the program – it's fun!
 
@@ -50,12 +48,12 @@ If you encounter difficulty or have additional questions, we have a large commun
 
 ## Contributing
 
-Interested in contributing to Pencil? There are many ways to help. Take a look at our issues and see what you can help out with, check out the developer guide, or help out with making Pencil2D available to more people by contributing to translation.
+Interested in contributing to Pencil2D? There are many ways to help. Take a look at our issues and see what you can help out with, check out the developer guide, or help out with making Pencil2D available to more people by contributing to translation.
 
 * [Issue Tracker](https://github.com/pencil2d/pencil/issues) - Report bugs or request features.
 * [Developer Guide](https://dev.pencil2d.org/) - Learn how to compile Pencil2D yourself.
 * [Transifex](https://www.transifex.com/pencil2d/) - You can help translate Pencil2D, too.
-* [Documentation contributions](https://www.pencil2d.org/doc/CONTRIBUTING) - Guidelines for contributing to documentation.
+* [Documentation contributions](https://www.pencil2d.org/doc/CONTRIBUTING) - Contributing to documentation.
 
 ## Source Code
 

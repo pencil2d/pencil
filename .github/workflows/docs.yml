@@ -22,7 +22,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update -yq
-        sudo apt-get install -yq --no-install-suggests --no-install-recommends graphviz xsltproc
+        sudo apt-get install -yq --no-install-suggests --no-install-recommends graphviz fonts-open-sans xsltproc
         curl -fsSLO https://www.doxygen.nl/files/doxygen-1.9.6.linux.bin.tar.gz
         tar xf doxygen-1.9.6.linux.bin.tar.gz
         realpath doxygen-1.9.6/bin >> "${GITHUB_PATH}"
@@ -37,15 +37,21 @@ jobs:
     - name: Generate documentation
       run: |
         echo PROJECT_NUMBER=${{github.sha}} >> Doxyfile
+        echo LAYOUT_FILE=util/docs/layout.xml >> Doxyfile
         echo HTML_HEADER=util/docs/header.html >> Doxyfile
         echo HTML_FOOTER=util/docs/footer.html >> Doxyfile
         echo HTML_EXTRA_STYLESHEET=util/docs/extra.css >> Doxyfile
+        echo HAVE_DOT=YES >> Doxyfile
+        echo DOT_COMMON_ATTR=\"fontname=\\\"Open Sans\\\",fontsize=13.2\" >> Doxyfile
+        echo DOT_EDGE_ATTR=\"labelfontname=\\\"Open Sans\\\",labelfontsize=13.2\" >> Doxyfile
         doxygen 2>&1 | tee doxygen.log
         if [ ! -f "docs/html/index.html" ]; then
           echo "::error::Documentation output was not found"
           exit 1
         fi
         xsltproc --novalid -o docs/html/404.html util/docs/404.xsl docs/html/index.html
+        # Doxygen's search results positioning code is buggy and doesn't consider scrollbars
+        sed -i 's/left -= domPopupSearchResults.offsetWidth;/left -= domPopupSearchResults.offsetWidth - domPopupSearchResultsWindow.clientWidth - parseFloat(getComputedStyle(domPopupSearchResultsWindow).borderLeftWidth) - parseFloat(getComputedStyle(domPopupSearchResultsWindow).borderRightWidth) + domPopupSearchResultsWindow.offsetWidth;/' docs/html/search/search.js
 
     - name: Remove old documentation
       run: |

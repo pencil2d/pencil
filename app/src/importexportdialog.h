@@ -58,6 +58,7 @@ protected:
     void hideInstructionsLabel(bool hide);
 
     void setInstructionsLabel(const QString& text);
+    void setOkButtonEnabled(bool enabled);
 
 private slots:
     void browse();

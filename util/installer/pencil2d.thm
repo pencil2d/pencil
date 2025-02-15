@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Theme xmlns="http://wixtoolset.org/schemas/v4/thmutil">
+    <Font Id="Normal" Height="-12" Weight="500" Foreground="windowtext" Background="ffffff">Segoe UI</Font>
+    <Image Id="pencil2d" ImageFile="pencil2d.png">
+      <AlternateResolution ImageFile="pencil2d@2x.png" />
+    </Image>
+    <Image Id="cog" ImageFile="cog.png">
+      <AlternateResolution ImageFile="cog@2x.png" />
+    </Image>
+    <Image Id="cog-hover" ImageFile="cog-hover.png">
+      <AlternateResolution ImageFile="cog-hover@2x.png" />
+    </Image>
+
+    <Window Width="640" Height="413" HexStyle="100a0000" FontId="Normal" IconFile="pencil2d.ico" Caption="#(loc.Caption)">
+        <ImageControl X="20" Y="20" Width="600" Height="175" ImageId="pencil2d" Visible="yes"/>
+        <Label Name="Version" X="20" Y="-22" Width="246" Height="17" FontId="Normal" DisablePrefix="yes" VisibleCondition="WixStdBAShowVersion">
+          <Text>#(loc.Version)</Text>
+          <Text Condition="NightlyBuildNumber AND NightlyBuildTimestamp">#(loc.VersionNightly)</Text>
+        </Label>
+
+        <Page Name="Loading">
+            <Label X="95" Y="235" Width="-95" Height="17" FontId="Normal" DisablePrefix="yes" Visible="no" Name="CheckingForUpdatesLabel" />
+            <Progressbar Name="LoadingProgressbar" X="95" Y="257" Width="-95" Height="18" HexStyle="00000008" />
+        </Page>
+        <Page Name="Help">
+            <Label X="95" Y="215" Width="-95" Height="-58" FontId="Normal" DisablePrefix="yes">#(loc.HelpText)</Label>
+        </Page>
+        <Page Name="Install">
+            <Checkbox Name="EulaAcceptCheckbox" X="95" Y="215" Width="450" Height="17" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">#(loc.InstallAcceptCheckbox)</Checkbox>
+            <Hypertext Name="EulaHyperlink" X="111" Y="238" Width="200" Height="17" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">&lt;a href=&quot;#&quot;&gt;#(loc.InstallLicenseLinkText)&lt;/a&gt;</Hypertext>
+            <Button Name="InstallButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal">
+                <Text>#(loc.InstallInstallButton)</Text>
+                <Text Condition="UpgradeDetected">#(loc.InstallUpgradeButton)</Text>
+            </Button>
+            <Button Name="OptionsButton" X="-20" Y="-24" Width="16" Height="16" TabStop="yes" FontId="Normal" VisibleCondition="NOT WixStdBASuppressOptionsUI">
+                <ButtonImage ImageId="cog" />
+                <ButtonHoverImage ImageId="cog-hover" />
+                <ButtonSelectedImage ImageId="cog-hover" />
+                <Tooltip>#(loc.InstallOptionsButton)</Tooltip>
+                <ChangePageAction Page="Options" />
+            </Button>
+            <Button Name="InstallUpdateButton" X="-44" Y="-20" Width="200" Height="23" TabStop="yes" FontId="Normal" EnableCondition="WixStdBAUpdateAvailable" HideWhenDisabled="yes">#(loc.UpdateButton)</Button>
+        </Page>
+        <Page Name="Options">
+            <Label X="95" Y="215" Width="-95" Height="17" FontId="Normal" DisablePrefix="yes">#(loc.OptionsLocationLabel)</Label>
+            <Editbox Name="InstallFolder" X="95" Y="238" Width="-175" Height="21" TabStop="yes" FontId="Normal" FileSystemAutoComplete="yes" />
+            <Button Name="BrowseButton" X="-95" Y="237" Width="75" Height="23" TabStop="yes" FontId="Normal">
+                <Text>#(loc.OptionsBrowseButton)</Text>
+                <BrowseDirectoryAction VariableName="InstallFolder" />
+            </Button>
+            <Checkbox Name="DesktopShortcut" X="95" Y="265" Width="-95" Height="17" TabStop="yes" FontId="Normal">#(loc.OptionsDesktopShortcutCheckbox)</Checkbox>
+            <Button Name="OptionsOkButton" X="-100" Y="-20" Width="75" Height="23" TabStop="yes" FontId="Normal">
+                <Text>#(loc.OptionsOkButton)</Text>
+                <ChangePageAction Page="Install" />
+            </Button>
+            <Button Name="OptionsCancelButton" X="-20" Y="-20" Width="75" Height="23" TabStop="yes" FontId="Normal">
+                <Text>#(loc.OptionsCancelButton)</Text>
+                <ChangePageAction Page="Install" Cancel="yes" />
+            </Button>
+        </Page>
+        <Page Name="Progress">
+            <Label X="95" Y="255" Width="70" Height="17" FontId="Normal" DisablePrefix="yes">#(loc.ProgressLabel)</Label>
+            <Label Name="ProgressActionText" X="-95" Y="255" Width="375" Height="17" HexStyle="0000C002" FontId="Normal" DisablePrefix="yes">#(loc.ProgressActionText)</Label>
+            <Progressbar Name="OverallCalculatedProgressbar" X="95" Y="277" Width="-95" Height="18" />
+            <Button Name="ProgressCancelButton" X="-20" Y="-20" Width="75" Height="23" TabStop="yes" FontId="Normal">#(loc.ProgressCancelButton)</Button>
+        </Page>
+        <Page Name="Modify">
+            <Button Name="RepairButton" X="195" Y="235" Width="250" Height="40" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">#(loc.ModifyRepairButton)</Button>
+            <Button Name="UninstallButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal">#(loc.ModifyUninstallButton)</Button>
+            <Button Name="ModifyUpdateButton" X="-20" Y="-20" Width="200" Height="23" TabStop="yes" FontId="Normal" EnableCondition="WixStdBAUpdateAvailable" HideWhenDisabled="yes">#(loc.UpdateButton)</Button>
+        </Page>
+        <Page Name="Success">
+            <Label X="95" Y="215" Width="-95" Height="17" FontId="Normal" DisablePrefix="yes">
+                <Text>#(loc.SuccessText)</Text>
+                <Text Condition="WixBundleAction = 2">#(loc.SuccessLayoutText)</Text>
+                <Text Condition="WixBundleAction = 3 OR WixBundleAction = 4">#(loc.SuccessUninstallText)</Text>
+                <Text Condition="WixBundleAction = 5">#(loc.SuccessCacheText)</Text>
+                <Text Condition="WixBundleAction = 6 AND NOT UpgradeDetected">#(loc.SuccessInstallText)</Text>
+                <Text Condition="WixBundleAction = 6 AND UpgradeDetected">#(loc.SuccessUpgradeText)</Text>
+                <Text Condition="WixBundleAction = 7">#(loc.SuccessModifyText)</Text>
+                <Text Condition="WixBundleAction = 8">#(loc.SuccessRepairText)</Text>
+            </Label>
+            <Label X="95" Y="237" Width="-95" Height="17" FontId="Normal" DisablePrefix="yes" VisibleCondition="WixStdBARestartRequired">
+                <Text>#(loc.SuccessRestartText)</Text>
+                <Text Condition="WixBundleAction = 3 OR WixBundleAction = 4">#(loc.SuccessUninstallRestartText)</Text>
+            </Label>
+            <Button Name="LaunchButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">#(loc.SuccessLaunchButton)</Button>
+            <Button Name="SuccessRestartButton" X="195" Y="295" Width="250" Height="40" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">#(loc.SuccessRestartButton)</Button>
+        </Page>
+        <Page Name="Failure">
+            <Label X="95" Y="215" Width="-95" Height="17" FontId="Normal" DisablePrefix="yes">
+                <Text>#(loc.FailureText)</Text>
+                <Text Condition="WixBundleAction = 2">#(loc.FailureLayoutText)</Text>
+                <Text Condition="WixBundleAction = 3 OR WixBundleAction = 4">#(loc.FailureUninstallText)</Text>
+                <Text Condition="WixBundleAction = 5">#(loc.FailureCacheText)</Text>
+                <Text Condition="WixBundleAction = 6 AND NOT UpgradeDetected">#(loc.FailureInstallText)</Text>
+                <Text Condition="WixBundleAction = 6 AND UpgradeDetected">#(loc.FailureUpgradeText)</Text>
+                <Text Condition="WixBundleAction = 7">#(loc.FailureModifyText)</Text>
+                <Text Condition="WixBundleAction = 8">#(loc.FailureRepairText)</Text>
+            </Label>
+            <Hypertext Name="FailureLogFileLink" X="95" Y="237" Width="-95" Height="31" FontId="Normal" TabStop="yes" HideWhenDisabled="yes">#(loc.FailureHyperlinkLogText)</Hypertext>
+            <Hypertext Name="FailureMessageText" X="95" Y="273" Width="-95" Height="51" FontId="Normal" TabStop="yes" HideWhenDisabled="yes" />
+            <Label X="95" Y="335" Width="-95" Height="17" HexStyle="00000002" FontId="Normal" DisablePrefix="yes" VisibleCondition="WixStdBARestartRequired">#(loc.FailureRestartText)</Label>
+            <Button Name="FailureRestartButton" X="-100" Y="-20" Width="75" Height="23" TabStop="yes" FontId="Normal" HideWhenDisabled="yes">#(loc.FailureRestartButton)</Button>
+            <Button Name="FailureCloseButton" X="-20" Y="-20" Width="75" Height="23" TabStop="yes" FontId="Normal">
+                <Text>#(loc.FailureCloseButton)</Text>
+                <CloseWindowAction />
+            </Button>
+        </Page>
+    </Window>
+</Theme>

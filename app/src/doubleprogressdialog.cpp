@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QtMath>
 
 DoubleProgressDialog::DoubleProgressDialog(QWidget *parent) :
-    QDialog(parent),
+    QProgressDialog(parent),
     ui(new Ui::DoubleProgressDialog)
 {
     ui->setupUi(this);
@@ -29,7 +29,7 @@ DoubleProgressDialog::DoubleProgressDialog(QWidget *parent) :
     major = new ProgressBarControl(ui->majorProgressBar);
     minor = new ProgressBarControl(ui->minorProgressBar);
 
-    connect(ui->cancelButton, &QPushButton::pressed, this, &DoubleProgressDialog::canceled);
+    setCancelButton(ui->cancelButton);
 }
 
 DoubleProgressDialog::~DoubleProgressDialog()

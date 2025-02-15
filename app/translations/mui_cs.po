@@ -1,0 +1,32 @@
+# 
+# Translators:
+# fri, 2024
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-22 15:26+0200\n"
+"PO-Revision-Date: 2024-05-19 14:29+0000\n"
+"Last-Translator: fri, 2024\n"
+"Language-Team: Czech (https://app.transifex.com/pencil2d/teams/76612/cs/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
+"Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+"X-Accelerator-Marker: &\n"
+"X-Generator: Translate Toolkit 3.9.0\n"
+"X-Merge-On: location\n"
+
+#: STRINGTABLE.0
+msgid "Pencil2D"
+msgstr "Pencil2D"
+
+#: STRINGTABLE.1
+msgid "Pencil2D Animation"
+msgstr "Animace Pencil2D"
+
+#: STRINGTABLE.2
+msgid "Pencil2D Animation (Old Format)"
+msgstr "Animace Pencil2D (starý formát)"

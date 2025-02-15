@@ -50,11 +50,12 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "viewmanager.h"
 #include "selectionmanager.h"
+#include "undoredomanager.h"
 
 #include "actioncommands.h"
 #include "fileformat.h"     //contains constants used by Pencil File Format
 #include "util.h"
-#include "backupelement.h"
+#include "undoredocommand.h"
 
 // app headers
 #include "colorbox.h"
@@ -70,7 +71,6 @@ GNU General Public License for more details.
 #include "addtransparencytopaperdialog.h"
 #include "repositionframesdialog.h"
 
-//#include "preview.h"
 #include "errordialog.h"
 #include "filedialog.h"
 #include "importimageseqdialog.h"
@@ -264,7 +264,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_ImageSeqNum, &QAction::triggered, this, &MainWindow2::importPredefinedImageSet);
     connect(ui->actionImportLayers_from_pclx, &QAction::triggered, this, &MainWindow2::importLayers);
     connect(ui->actionImport_MovieVideo, &QAction::triggered, this, &MainWindow2::importMovieVideo);
-    connect(ui->actionImport_Gif, &QAction::triggered, this, &MainWindow2::importGIF);
+    connect(ui->actionImport_AnimatedImage, &QAction::triggered, this, &MainWindow2::importAnimatedImage);
 
     connect(ui->actionImport_Sound, &QAction::triggered, [=] { mCommands->importSound(FileType::SOUND); });
     connect(ui->actionImport_MovieAudio, &QAction::triggered, [=] { mCommands->importSound(FileType::MOVIE); });
@@ -273,9 +273,7 @@ void MainWindow2::createMenus()
     connect(ui->actionImport_Replace_Palette, &QAction::triggered, this, &MainWindow2::openPalette);
 
     //--- Edit Menu ---
-    connect(mEditor, &Editor::updateBackup, this, &MainWindow2::undoActSetText);
-    connect(ui->actionUndo, &QAction::triggered, mEditor, &Editor::undo);
-    connect(ui->actionRedo, &QAction::triggered, mEditor, &Editor::redo);
+    replaceUndoRedoActions();
     connect(ui->actionCut, &QAction::triggered, mEditor, &Editor::copyAndCut);
     connect(ui->actionCopy, &QAction::triggered, mEditor, &Editor::copy);
     connect(ui->actionPaste_Previous, &QAction::triggered, mEditor, &Editor::pasteFromPreviousFrame);
@@ -476,6 +474,16 @@ void MainWindow2::createMenus()
     connect(mRecentFileMenu, &RecentFileMenu::loadRecentFile, this, &MainWindow2::openFile);
 }
 
+void MainWindow2::replaceUndoRedoActions()
+{
+    ui->menuEdit->removeAction(ui->actionUndo);
+    ui->menuEdit->removeAction(ui->actionRedo);
+    ui->actionUndo = mEditor->undoRedo()->createUndoAction(this, ui->actionUndo->icon());
+    ui->actionRedo = mEditor->undoRedo()->createRedoAction(this, ui->actionRedo->icon());
+    ui->menuEdit->insertAction(ui->actionCut, ui->actionUndo);
+    ui->menuEdit->insertAction(ui->actionCut, ui->actionRedo);
+}
+
 void MainWindow2::setOpacity(int opacity)
 {
     mEditor->preference()->set(SETTING::WINDOW_OPACITY, 100 - opacity);
@@ -484,9 +492,15 @@ void MainWindow2::setOpacity(int opacity)
 
 void MainWindow2::updateSaveState()
 {
-    const bool hasUnsavedChanges = mEditor->currentBackup() != mBackupAtSave;
+    const bool hasUnsavedChanges = mEditor->undoRedo()->hasUnsavedChanges();
     setWindowModified(hasUnsavedChanges);
     ui->statusBar->updateModifiedStatus(hasUnsavedChanges);
+}
+
+void MainWindow2::updateBackupActionState()
+{
+    mEditor->undoRedo()->updateUndoAction(ui->actionUndo);
+    mEditor->undoRedo()->updateRedoAction(ui->actionRedo);
 }
 
 void MainWindow2::openPegAlignDialog()
@@ -537,22 +551,30 @@ void MainWindow2::openLayerOpacityDialog()
 
 void MainWindow2::openAddTranspToPaperDialog()
 {
-    if (mAddTranspToPaper == nullptr)
+    if (mAddTranspToPaper)
     {
-        mAddTranspToPaper = new AddTransparencyToPaperDialog();
-        mAddTranspToPaper->setCore(mEditor);
-        mAddTranspToPaper->initUI();
-        mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
-        mAddTranspToPaper->show();
-
-        connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::closeDialog, [=] {
-            mAddTranspToPaper->deleteLater();
-            mAddTranspToPaper = nullptr;
-        });
-
-    } else {
+        mAddTranspToPaper->activateWindow();
         mAddTranspToPaper->raise();
+        return;
     }
+
+    mAddTranspToPaper = new AddTransparencyToPaperDialog(this);
+    mAddTranspToPaper->setCore(mEditor);
+    mAddTranspToPaper->initUI();
+    mAddTranspToPaper->setWindowFlag(Qt::WindowStaysOnTopHint);
+    mAddTranspToPaper->show();
+
+    connect(mAddTranspToPaper, &AddTransparencyToPaperDialog::finished, [=](int result)
+    {
+        if (result == QDialog::Accepted)
+        {
+            mSuppressAutoSaveDialog = true;
+            mAddTranspToPaper->traceScannedDrawings();
+            mSuppressAutoSaveDialog = false;
+        }
+        mAddTranspToPaper->deleteLater();
+        mAddTranspToPaper = nullptr;
+    });
 }
 
 void MainWindow2::openRepositionDialog()
@@ -746,7 +768,7 @@ bool MainWindow2::openObject(const QString& strFilePath)
     progress.setValue(progress.maximum());
 
     updateSaveState();
-    undoActSetText();
+    updateBackupActionState();
 
     if (!QFileInfo(strFilePath).isWritable())
     {
@@ -806,7 +828,7 @@ bool MainWindow2::saveObject(QString strSavedFileName)
 
         ErrorDialog errorDialog(st.title(),
                                 st.description().append(tr("<br><br>An error has occurred and your file may not have saved successfully."
-                                                           "If you believe that this error is an issue with Pencil2D, please create a new issue at:"
+                                                           "\nIf you believe that this error is an issue with Pencil2D, please create a new issue at:"
                                                            "<br><a href='https://github.com/pencil2d/pencil/issues'>https://github.com/pencil2d/pencil/issues</a><br>"
                                                            "Please be sure to include the following details in your issue:")), st.details().html());
         errorDialog.exec();
@@ -827,7 +849,6 @@ bool MainWindow2::saveObject(QString strSavedFileName)
     mTimeLine->updateContent();
 
     setWindowTitle(strSavedFileName.prepend("[*]"));
-    mBackupAtSave = mEditor->currentBackup();
     updateSaveState();
 
     progress.setValue(progress.maximum());
@@ -847,7 +868,7 @@ bool MainWindow2::saveDocument()
 
 bool MainWindow2::maybeSave()
 {
-    if (mEditor->currentBackup() == mBackupAtSave)
+    if (!mEditor->undoRedo()->hasUnsavedChanges())
     {
         return true;
     }
@@ -998,57 +1019,12 @@ void MainWindow2::importLayers()
     importLayers->open();
 }
 
-void MainWindow2::importGIF()
+void MainWindow2::importAnimatedImage()
 {
-    auto gifDialog = new ImportImageSeqDialog(this, ImportExportDialog::Import, FileType::GIF);
-    gifDialog->exec();
-    if (gifDialog->result() == QDialog::Rejected)
-    {
-        return;
-    }
-
     // Flag this so we don't prompt the user about auto-save in the middle of the import.
     mSuppressAutoSaveDialog = true;
 
-    ImportPositionDialog* positionDialog = new  ImportPositionDialog(mEditor, this);
-    OnScopeExit(delete positionDialog)
-
-    positionDialog->exec();
-    if (positionDialog->result() != QDialog::Accepted)
-    {
-        return;
-    }
-
-    int space = gifDialog->getSpace();
-
-    // Show a progress dialog, as this could take a while if the gif is huge
-    QProgressDialog progress(tr("Importing Animated GIF..."), tr("Abort"), 0, 100, this);
-    hideQuestionMark(progress);
-    progress.setWindowModality(Qt::WindowModal);
-    progress.show();
-
-    QString strImgFileLower = gifDialog->getFilePath();
-    if (!strImgFileLower.toLower().endsWith(".gif"))
-    {
-        ErrorDialog errorDialog(tr("Import failed"), tr("You can only import files ending with .gif."));
-        errorDialog.exec();
-    }
-    else
-    {
-        Status st = mEditor->importGIF(strImgFileLower, space);
-
-        progress.setValue(50);
-        QApplication::processEvents(QEventLoop::ExcludeUserInputEvents);  // Required to make progress bar update
-
-        progress.setValue(100);
-        progress.close();
-
-        if (!st.ok())
-        {
-            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
-            errorDialog.exec();
-        }
-    }
+    mCommands->importAnimatedImage();
 
     mSuppressAutoSaveDialog = false;
 }
@@ -1093,7 +1069,6 @@ void MainWindow2::preferences()
     {
         clearKeyboardShortcuts();
         setupKeyboardShortcuts();
-        ui->scribbleArea->updateCanvasCursor();
         mPrefDialog = nullptr;
     });
 
@@ -1140,7 +1115,8 @@ void MainWindow2::newObject()
     closeDialogs();
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
-    undoActSetText();
+
+    updateBackupActionState();
 }
 
 bool MainWindow2::newObjectFromPresets(int presetIndex)
@@ -1165,7 +1141,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
     updateSaveState();
-    undoActSetText();
+    updateBackupActionState();
 
     return true;
 }
@@ -1260,6 +1236,7 @@ void MainWindow2::setupKeyboardShortcuts()
         return keySequence;
     };
 
+    // File menu
     ui->actionNew->setShortcut(cmdKeySeq(CMD_NEW_FILE));
     ui->actionOpen->setShortcut(cmdKeySeq(CMD_OPEN_FILE));
     ui->actionSave->setShortcut(cmdKeySeq(CMD_SAVE_FILE));
@@ -1267,14 +1244,19 @@ void MainWindow2::setupKeyboardShortcuts()
 
     ui->actionImport_Image->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE));
     ui->actionImport_ImageSeq->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_SEQ));
+    ui->actionImport_ImageSeqNum->setShortcut(cmdKeySeq(CMD_IMPORT_IMAGE_PREDEFINED_SET));
     ui->actionImport_MovieVideo->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_VIDEO));
+    ui->actionImport_AnimatedImage->setShortcut(cmdKeySeq(CMD_IMPORT_ANIMATED_IMAGE));
+    ui->actionImportLayers_from_pclx->setShortcut(cmdKeySeq(CMD_IMPORT_LAYERS));
+    ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
     ui->actionImport_MovieAudio->setShortcut(cmdKeySeq(CMD_IMPORT_MOVIE_AUDIO));
     ui->actionImport_Append_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE));
-    ui->actionImport_Sound->setShortcut(cmdKeySeq(CMD_IMPORT_SOUND));
+    ui->actionImport_Replace_Palette->setShortcut(cmdKeySeq(CMD_IMPORT_PALETTE_REPLACE));
 
     ui->actionExport_Image->setShortcut(cmdKeySeq(CMD_EXPORT_IMAGE));
     ui->actionExport_ImageSeq->setShortcut(cmdKeySeq(CMD_EXPORT_IMAGE_SEQ));
     ui->actionExport_Movie->setShortcut(cmdKeySeq(CMD_EXPORT_MOVIE));
+    ui->actionExport_Animated_GIF->setShortcut(cmdKeySeq(CMD_EXPORT_GIF));
     ui->actionExport_Palette->setShortcut(cmdKeySeq(CMD_EXPORT_PALETTE));
 
     // edit menu
@@ -1285,12 +1267,16 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionPaste_Previous->setShortcut(cmdKeySeq(CMD_PASTE_FROM_PREVIOUS));
     ui->actionPaste->setShortcut(cmdKeySeq(CMD_PASTE));
     ui->actionClearFrame->setShortcut(cmdKeySeq(CMD_CLEAR_FRAME));
+    ui->actionFlip_X->setShortcut(cmdKeySeq(CMD_SELECTION_FLIP_HORIZONTAL));
+    ui->actionFlip_Y->setShortcut(cmdKeySeq(CMD_SELECTION_FLIP_VERTICAL));
     ui->actionSelect_All->setShortcut(cmdKeySeq(CMD_SELECT_ALL));
     ui->actionDeselect_All->setShortcut(cmdKeySeq(CMD_DESELECT_ALL));
+    ui->actionPegbarAlignment->setShortcut(cmdKeySeq(CMD_PEGBAR_ALIGNMENT));
     ui->actionPreference->setShortcut(cmdKeySeq(CMD_PREFERENCE));
 
     // View menu
     ui->actionResetWindows->setShortcut(cmdKeySeq(CMD_RESET_WINDOWS));
+    ui->actionLockWindows->setShortcut(cmdKeySeq(CMD_LOCK_WINDOWS));
     ui->actionReset_View->setShortcut(cmdKeySeq(CMD_RESET_ZOOM_ROTATE));
     ui->actionCenter_View->setShortcut(cmdKeySeq(CMD_CENTER_VIEW));
     ui->actionZoom_In->setShortcut(cmdKeySeq(CMD_ZOOM_IN));
@@ -1307,14 +1293,22 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionReset_Rotation->setShortcut(cmdKeySeq(CMD_RESET_ROTATION));
     ui->actionHorizontal_Flip->setShortcut(cmdKeySeq(CMD_FLIP_HORIZONTAL));
     ui->actionVertical_Flip->setShortcut(cmdKeySeq(CMD_FLIP_VERTICAL));
-    ui->actionPreview->setShortcut(cmdKeySeq(CMD_PREVIEW));
     ui->actionGrid->setShortcut(cmdKeySeq(CMD_GRID));
+    ui->actionCenter->setShortcut(cmdKeySeq(CMD_OVERLAY_CENTER));
+    ui->actionThirds->setShortcut(cmdKeySeq(CMD_OVERLAY_THIRDS));
+    ui->actionGoldenRatio->setShortcut(cmdKeySeq(CMD_OVERLAY_GOLDEN_RATIO));
+    ui->actionSafeAreas->setShortcut(cmdKeySeq(CMD_OVERLAY_SAFE_AREAS));
+    ui->actionOnePointPerspective->setShortcut(cmdKeySeq(CMD_OVERLAY_ONE_POINT_PERSPECTIVE));
+    ui->actionTwoPointPerspective->setShortcut(cmdKeySeq(CMD_OVERLAY_TWO_POINT_PERSPECTIVE));
+    ui->actionThreePointPerspective->setShortcut(cmdKeySeq(CMD_OVERLAY_THREE_POINT_PERSPECTIVE));
     ui->actionOnionPrev->setShortcut(cmdKeySeq(CMD_ONIONSKIN_PREV));
     ui->actionOnionNext->setShortcut(cmdKeySeq(CMD_ONIONSKIN_NEXT));
     ui->actionStatusBar->setShortcut(cmdKeySeq(CMD_TOGGLE_STATUS_BAR));
 
+    // Animation menu
     ui->actionPlay->setShortcut(cmdKeySeq(CMD_PLAY));
     ui->actionLoop->setShortcut(cmdKeySeq(CMD_LOOP));
+    ui->actionLoopControl->setShortcut(cmdKeySeq(CMD_LOOP_CONTROL));
     ui->actionPrevious_Frame->setShortcut(cmdKeySeq(CMD_GOTO_PREV_FRAME));
     ui->actionNext_Frame->setShortcut(cmdKeySeq(CMD_GOTO_NEXT_FRAME));
     ui->actionPrev_KeyFrame->setShortcut(cmdKeySeq(CMD_GOTO_PREV_KEY_FRAME));
@@ -1330,6 +1324,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionMove_Frame_Forward->setShortcut(cmdKeySeq(CMD_MOVE_FRAME_FORWARD));
     ui->actionFlip_inbetween->setShortcut(cmdKeySeq(CMD_FLIP_INBETWEEN));
     ui->actionFlip_rolling->setShortcut(cmdKeySeq(CMD_FLIP_ROLLING));
+    ui->actionReposition_Selected_Frames->setShortcut(cmdKeySeq(CMD_SELECTION_REPOSITION_FRAMES));
 
     ShortcutFilter* shortcutFilter = new ShortcutFilter(ui->scribbleArea, this);
     ui->actionMove->setShortcut(cmdKeySeq(CMD_TOOL_MOVE));
@@ -1343,6 +1338,7 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionBucket->setShortcut(cmdKeySeq(CMD_TOOL_BUCKET));
     ui->actionEyedropper->setShortcut(cmdKeySeq(CMD_TOOL_EYEDROPPER));
     ui->actionEraser->setShortcut(cmdKeySeq(CMD_TOOL_ERASER));
+    ui->actionResetToolsDefault->setShortcut(cmdKeySeq(CMD_RESET_ALL_TOOLS));
 
     ui->actionMove->installEventFilter(shortcutFilter);
     ui->actionMove->installEventFilter(shortcutFilter);
@@ -1357,11 +1353,15 @@ void MainWindow2::setupKeyboardShortcuts()
     ui->actionEyedropper->installEventFilter(shortcutFilter);
     ui->actionEraser->installEventFilter(shortcutFilter);
 
+    // Layer menu
     ui->actionNew_Bitmap_Layer->setShortcut(cmdKeySeq(CMD_NEW_BITMAP_LAYER));
     ui->actionNew_Vector_Layer->setShortcut(cmdKeySeq(CMD_NEW_VECTOR_LAYER));
     ui->actionNew_Camera_Layer->setShortcut(cmdKeySeq(CMD_NEW_CAMERA_LAYER));
     ui->actionNew_Sound_Layer->setShortcut(cmdKeySeq(CMD_NEW_SOUND_LAYER));
     ui->actionDelete_Current_Layer->setShortcut(cmdKeySeq(CMD_DELETE_CUR_LAYER));
+    ui->actionChangeLineColorCurrent_keyframe->setShortcut(cmdKeySeq(CMD_CHANGE_LINE_COLOR_KEYFRAME));
+    ui->actionChangeLineColorAll_keyframes_on_layer->setShortcut(cmdKeySeq(CMD_CHANGE_LINE_COLOR_LAYER));
+    ui->actionChangeLayerOpacity->setShortcut(cmdKeySeq(CMD_CHANGE_LAYER_OPACITY));
 
     ui->actionVisibilityCurrentLayerOnly->setShortcut(cmdKeySeq(CMD_CURRENT_LAYER_VISIBILITY));
     ui->actionVisibilityRelative->setShortcut(cmdKeySeq(CMD_RELATIVE_LAYER_VISIBILITY));
@@ -1385,35 +1385,6 @@ void MainWindow2::clearKeyboardShortcuts()
     for (QAction* action : actionList)
     {
         action->setShortcut(QKeySequence(0));
-    }
-}
-
-void MainWindow2::undoActSetText()
-{
-    if (mEditor->mBackupIndex < 0)
-    {
-        ui->actionUndo->setText(tr("Undo", "Menu item text"));
-        ui->actionUndo->setEnabled(false);
-    }
-    else
-    {
-        ui->actionUndo->setText(QString("%1   %2 %3").arg(tr("Undo", "Menu item text"))
-                                .arg(mEditor->mBackupIndex + 1)
-                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex)->undoText));
-        ui->actionUndo->setEnabled(true);
-    }
-
-    if (mEditor->mBackupIndex + 2 < mEditor->mBackupList.size())
-    {
-        ui->actionRedo->setText(QString("%1   %2 %3").arg(tr("Redo", "Menu item text"))
-                                .arg(mEditor->mBackupIndex + 2)
-                                .arg(mEditor->mBackupList.at(mEditor->mBackupIndex + 1)->undoText));
-        ui->actionRedo->setEnabled(true);
-    }
-    else
-    {
-        ui->actionRedo->setText(tr("Redo", "Menu item text"));
-        ui->actionRedo->setEnabled(false);
     }
 }
 
@@ -1472,7 +1443,8 @@ void MainWindow2::openPalette()
 
 void MainWindow2::makeConnections(Editor* editor)
 {
-    connect(editor, &Editor::updateBackup, this, &MainWindow2::updateSaveState);
+    connect(editor->undoRedo(), &UndoRedoManager::didUpdateUndoStack, this, &MainWindow2::updateSaveState);
+    connect(editor->undoRedo(), &UndoRedoManager::didUpdateUndoStack, this, &MainWindow2::updateBackupActionState);
     connect(editor, &Editor::needDisplayInfo, this, &MainWindow2::displayMessageBox);
     connect(editor, &Editor::needDisplayInfoNoTitle, this, &MainWindow2::displayMessageBoxNoTitle);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::currentLayerChanged);
@@ -1702,7 +1674,7 @@ void MainWindow2::startProjectRecovery(int result)
     Q_ASSERT(o);
     mEditor->setObject(o);
     updateSaveState();
-    undoActSetText();
+    updateBackupActionState();
 
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
@@ -1748,6 +1720,9 @@ void MainWindow2::createToolbars()
     mOverlayToolbar->addAction(ui->actionTwoPointPerspective);
     mOverlayToolbar->addAction(ui->actionThreePointPerspective);
     mOverlayToolbar->setIconSize(QSize(22,22));
+    mViewToolbar->setIconSize(QSize(22,22));
+    mMainToolbar->setIconSize(QSize(22,22));
+
     QToolButton* perspectiveLinesAngleButton = new QToolButton(this);
     perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
     perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);

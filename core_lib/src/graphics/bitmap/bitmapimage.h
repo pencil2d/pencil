@@ -86,11 +86,10 @@ public:
 
     static bool floodFill(BitmapImage** replaceImage, const BitmapImage* targetImage, const QRect& cameraRect, const QPoint& point, const QRgb& fillColor, int tolerance, const int expandValue);
     static bool* floodFillPoints(const BitmapImage* targetImage,
-                                QRect searchBounds, const QRect& maxBounds,
+                                const QRect& searchBounds,
                                 QPoint point,
                                 const int tolerance,
-                                QRect& newBounds,
-                                 bool &fillBorder);
+                                QRect& newBounds);
     static void expandFill(bool* fillPixels, const QRect& searchBounds, const QRect& maxBounds, int expand);
 
     void drawLine(QPointF P1, QPointF P2, QPen pen, QPainter::CompositionMode cm, bool antialiasing);
@@ -110,6 +109,7 @@ public:
     int height() { autoCrop(); return mBounds.height(); }
     QSize size() { autoCrop(); return mBounds.size(); }
 
+    BitmapImage* scanToTransparent(BitmapImage* img, int threshold, bool redEnabled, bool greenEnabled, bool blueEnabled);
 
     QRect& bounds() { autoCrop(); return mBounds; }
 
@@ -141,7 +141,6 @@ public:
     Status writeFile(const QString& filename);
 
 public slots:
-    void setThreshold(int threshold) { mThreshold = threshold; }
     void setSpotArea(int spotArea) { mSpotArea = spotArea; }
     /** Compare colors for the purposes of flood filling
      *
@@ -202,9 +201,8 @@ private:
     bool mEnableAutoCrop = false;
 
     int mSpotArea = 6;
-    int mThreshold = 200;
-    const int mLowThreshold = 30;   // threshold for images to be given transparency
-    const int COLORDIFF = 5; // difference in color values to decide color
+    const int LOW_THRESHOLD = 30; // threshold for images to be given transparency
+    const int COLORDIFF = 5;      // difference in color values to decide color
     const int GRAYSCALEDIFF = 15; // difference in grasycale values to decide color
     const int TRANSP_THRESHOLD = 60;// threshold when tracing black for two layer coloring
 

@@ -26,43 +26,37 @@ GNU General Public License for more details.
 
 TEST_CASE("LayerType")
 {
-    Object* object = new Object;
-
     SECTION("Bitmap Layer")
     {
-        Layer* bitmapLayer = new LayerBitmap(object);
+        Layer* bitmapLayer = new LayerBitmap(1);
         REQUIRE(bitmapLayer->type() == Layer::BITMAP);
         delete bitmapLayer;
     }
     SECTION("Vector Layer")
     {
-        Layer* vecLayer = new LayerVector(object);
+        Layer* vecLayer = new LayerVector(2);
         REQUIRE(vecLayer->type() == Layer::VECTOR);
         delete vecLayer;
     }
     SECTION("Camera Layer")
     {
-        Layer* cameraLayer = new LayerCamera(object);
+        Layer* cameraLayer = new LayerCamera(3);
         REQUIRE(cameraLayer->type() == Layer::CAMERA);
         delete cameraLayer;
     }
     SECTION("Sound Layer")
     {
-        Layer* soundLayer = new LayerSound(object);
+        Layer* soundLayer = new LayerSound(4);
         REQUIRE(soundLayer->type() == Layer::SOUND);
         delete soundLayer;
     }
-
-    delete object;
 }
 
 SCENARIO("Add key frames into a Layer", "[Layer]")
 {
-    Object* object = new Object;
-
     GIVEN("A Bitmap Layer")
     {
-        Layer* layer = new LayerBitmap(object);
+        Layer* layer = new LayerBitmap(1);
 
         REQUIRE(layer->addNewKeyFrameAt(0) == false); // first key position is 1.
         REQUIRE(layer->keyFrameCount() == 0);
@@ -96,7 +90,7 @@ SCENARIO("Add key frames into a Layer", "[Layer]")
 
     GIVEN("A Vector Layer")
     {
-        Layer* layer = new LayerVector(object);
+        Layer* layer = new LayerVector(2);
 
         REQUIRE(layer->addNewKeyFrameAt(0) == false); // first key position is 1.
         REQUIRE(layer->keyFrameCount() == 0);
@@ -117,7 +111,7 @@ SCENARIO("Add key frames into a Layer", "[Layer]")
 
     GIVEN("A Camera Layer")
     {
-        Layer* layer = new LayerCamera(object);
+        Layer* layer = new LayerCamera(3);
 
         REQUIRE(layer->addNewKeyFrameAt(0) == false); // first key position is 1.
         REQUIRE(layer->keyFrameCount() == 0);
@@ -135,7 +129,6 @@ SCENARIO("Add key frames into a Layer", "[Layer]")
         }
         delete layer;
     }
-    delete object;
 }
 
 TEST_CASE("Test Layer::keyExists()", "[Layer]")

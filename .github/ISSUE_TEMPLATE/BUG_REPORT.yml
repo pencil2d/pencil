@@ -1,0 +1,58 @@
+name: "🐛 Bug Report"
+description: Create a new ticket for a bug.
+title: "🐛 [BUG] - <title>"
+labels: [
+  "Bug"
+]
+body:
+  - type: input
+    attributes:
+      label: Pencil2D version
+      placeholder: 0.7.0
+      description: Look at Title bar or "About" dialog
+    validations:
+        required: true
+  - type: dropdown
+    attributes:
+      label: Operating System
+      description: The operating system you are using
+      options:
+        - Windows
+        - MacOS
+        - Linux
+        - Other (please specify in the description)
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce-steps
+    attributes:
+      label: "Steps to reproduce"
+      description: We highly suggest including screenshots or a detailed error log.
+      placeholder: "Having detailed steps helps us reproduce the bug."
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behaviour
+    attributes:
+      label: "Expected Behaviour"
+      description: What were you expecting?
+      placeholder: e.g., I expected that the paint bucket filled everything red on the vector layer
+    validations:
+        required: true
+  - type: textarea
+    id: actual-behaviour
+    attributes:
+      label: "Actual Behaviour"
+      description: What happened instead?
+      placeholder: e.g., the paint bucket only changed the color of the stroke
+    validations:
+        required: true
+  - type: textarea
+    id: other-info
+    attributes:
+      label: "Other Information"
+      placeholder: |
+        - Do you use a drawing tablet? <Insert tablet name if applicable>
+        - A screenshot or short video to show your problem.
+    validations:
+      required: true

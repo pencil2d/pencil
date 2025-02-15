@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include "basetool.h"
 #include "movemode.h"
+#include "undoredomanager.h"
 
 #include <QRectF>
 
@@ -50,23 +51,25 @@ private:
     void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
     void controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint);
 
-    void beginSelection();
-    void keepSelection();
+    void beginSelection(Layer* currentLayer, const QPointF& pos);
+    void keepSelection(Layer* currentLayer);
 
-    QPointF offsetFromPressPos();
+    QPointF offsetFromPressPos(const QPointF& pos);
 
-    inline bool isSelectionPointValid() { return mAnchorOriginPoint != getLastPoint(); }
-    bool maybeDeselect();
+    inline bool isSelectionPointValid(const QPointF& pos) { return mAnchorOriginPoint != pos; }
+    bool maybeDeselect(const QPointF& pos);
 
-    // Store selection origin so we can calculate
+    // Store selection origin, so we can calculate
     // the selection rectangle in mousePressEvent.
     QPointF mAnchorOriginPoint;
+    QPointF mPressPoint;
     MoveMode mMoveMode;
     MoveMode mStartMoveMode = MoveMode::NONE;
     QRectF mSelectionRect;
-    Layer* mCurrentLayer = nullptr;
 
     QPixmap mCursorPixmap = QPixmap(24, 24);
+
+    const UndoSaveState* mUndoState = nullptr;
 };
 
 #endif

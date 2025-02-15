@@ -20,11 +20,11 @@ GNU General Public License for more details.
 #include <QMediaPlayer>
 #include <QFileInfo>
 #include <QDir>
-#include "object.h"
 #include "soundclip.h"
+#include "util/util.h"
 
 
-LayerSound::LayerSound(Object* object) : Layer(object, Layer::SOUND)
+LayerSound::LayerSound(int id) : Layer(id, Layer::SOUND)
 {
     setName(tr("Sound Layer"));
 }
@@ -94,30 +94,32 @@ void LayerSound::loadDomElement(const QDomElement& element, QString dataDirPath,
     while (!soundTag.isNull())
     {
         QDomElement soundElement = soundTag.toElement();
-        if (soundElement.isNull())
-        {
-            continue;
-        }
 
-        if (soundElement.tagName() == "sound")
+        if (!soundElement.isNull() && soundElement.tagName() == "sound")
         {
             const QString soundFile = soundElement.attribute("src");
             const QString sSoundClipName = soundElement.attribute("name", "My Sound Clip");
 
             if (!soundFile.isEmpty())
             {
-                // the file is supposed to be in the data directory
-                const QString sFullPath = QDir(dataDirPath).filePath(soundFile);
-
-                int position = soundElement.attribute("frame").toInt();
-                Status st = loadSoundClipAtFrame(sSoundClipName, sFullPath, position);
-                Q_ASSERT(st.ok());
+                QString path = validateDataPath(soundFile, dataDirPath);
+                if (!path.isEmpty())
+                {
+                    int position = soundElement.attribute("frame").toInt();
+                    Status st = loadSoundClipAtFrame(sSoundClipName, path, position);
+                    Q_ASSERT(st.ok());
+                }
             }
             progressStep();
         }
 
         soundTag = soundTag.nextSibling();
     }
+}
+
+void LayerSound::replaceKeyFrame(const KeyFrame* soundClip)
+{
+    *getSoundClipWhichCovers(soundClip->pos()) = *static_cast<const SoundClip*>(soundClip);
 }
 
 Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
@@ -143,11 +145,11 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
             key->setFileName("");
 
             DebugDetails dd;
-            dd << __FUNCTION__;
+            dd << "LayerSound::saveKeyFrameFile";
             dd << QString("  KeyFrame.pos() = %1").arg(key->pos());
             dd << QString("  Key->fileName() = %1").arg(key->fileName());
             dd << QString("  FilePath = %1").arg(sDestFileLocation);
-            dd << QString("Couldn't save the sound clip");
+            dd << QString("Error: Failed to save SoundClip");
             return Status(Status::FAIL, dd);
         }
         key->setFileName(sDestFileLocation);
@@ -155,7 +157,7 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
     return Status::OK;
 }
 
-KeyFrame* LayerSound::createKeyFrame(int position, Object*)
+KeyFrame* LayerSound::createKeyFrame(int position)
 {
     SoundClip* s = new SoundClip;
     s->setPos(position);

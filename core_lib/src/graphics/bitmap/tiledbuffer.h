@@ -30,7 +30,11 @@ struct TileIndex {
     int y;
 };
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 inline uint qHash(const TileIndex &key, uint seed)
+#else
+inline size_t qHash(const TileIndex &key, size_t seed)
+#endif
 {
     return qHash(key.x, seed) ^ key.y;
 }
@@ -55,9 +59,9 @@ public:
     bool isValid() const { return !mTiles.isEmpty(); }
 
     /** Draws a brush with the specified parameters to the tiled buffer */
-    void drawBrush(const QPointF& point, int brushWidth, int brushCursorWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
+    void drawBrush(QPointF point, qreal brushWidth, QPen pen, QBrush brush, QPainter::CompositionMode cm, bool antialiasing);
     /** Draws a path with the specified parameters to the tiled buffer */
-    void drawPath(QPainterPath path, int cursorWidth, QPen pen, QBrush brush,
+    void drawPath(QPainterPath path, QPen pen, QBrush brush,
                   QPainter::CompositionMode cm, bool antialiasing);
     /** Draws a image with the specified parameters to the tiled buffer */
     void drawImage(const QImage& image, const QRect& imageBounds, QPainter::CompositionMode cm, bool antialiasing);

@@ -49,7 +49,7 @@ CameraContextMenu::CameraContextMenu(int frameNumber, const LayerCamera* layer) 
     QString quick = tr("Quick");
     QString fast = tr("Fast");
     QString faster = tr("Faster");
-    QString fastest = tr("Faster");
+    QString fastest = tr("Fastest");
     QString circleBased = tr("Circle-based");
     QString overshoot = tr("Overshoot");
     QString elastic = tr("Elastic");

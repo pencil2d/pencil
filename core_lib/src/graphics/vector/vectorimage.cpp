@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QXmlStreamWriter>
 #include "object.h"
+#include "util.h"
 
 
 VectorImage::VectorImage()
@@ -33,7 +34,6 @@ VectorImage::VectorImage()
 VectorImage::VectorImage(const VectorImage& v2) : KeyFrame(v2)
 {
     deselectAll();
-    mObject = v2.mObject;
     mCurves = v2.mCurves;
     mArea = v2.mArea;
     mOpacity = v2.mOpacity;
@@ -52,7 +52,6 @@ VectorImage& VectorImage::operator=(const VectorImage& a) {
 
     deselectAll();
     KeyFrame::operator=(a);
-    mObject = a.mObject;
     mCurves = a.mCurves;
     mArea = a.mArea;
     mOpacity = a.mOpacity;
@@ -414,7 +413,7 @@ void VectorImage::checkCurveExtremity(BezierCurve& newCurve, qreal tolerance)
                     if (dist1 + dist2 <= 3 * tol3)   // pre-selection, to speed up
                     {
                         QPointF nearestPoint = Q;
-                        qreal t = -1.0;;
+                        qreal t = -1.0;
                         qreal distance = BezierCurve::findDistance(mCurves[i], j, Q, nearestPoint, t);
                         if (distance < tolerance)
                         {
@@ -523,7 +522,7 @@ void VectorImage::checkCurveIntersections(BezierCurve& newCurve, qreal tolerance
                     {
                         // TO DO: find a better intersection point
                         QPointF nearestPoint = Q;
-                        qreal t = -1.0;;
+                        qreal t = -1.0;
                         qreal distance = BezierCurve::findDistance(newCurve, k, Q, nearestPoint, t);
                         //qDebug() << "OK2" << t;
                         if (distance < tolerance)
@@ -1091,16 +1090,6 @@ void VectorImage::paste(VectorImage& vectorImage)
 }
 
 /**
- * @brief VectorImage::getColor
- * @param colorNumber: the color number which is referred to in the palette
- * @return QColor
- */
-QColor VectorImage::getColor(int colorNumber)
-{
-    return mObject->getColor(colorNumber).color;
-}
-
-/**
  * @brief VectorImage::getColorNumber
  * @param point: The QPoint of the BezierArea
  * @return The color number in the palette based on the BezierArea
@@ -1194,11 +1183,13 @@ void VectorImage::moveColor(int start, int end)
 /**
  * @brief VectorImage::paintImage
  * @param painter: QPainter&
+ * @param object: const Object&
  * @param simplified: bool
  * @param showThinCurves: bool
  * @param antialiasing: bool
  */
 void VectorImage::paintImage(QPainter& painter,
+    const Object& object,
     bool simplified,
     bool showThinCurves,
     bool antialiasing)
@@ -1220,7 +1211,7 @@ void VectorImage::paintImage(QPainter& painter,
             updateArea(mArea[i]); // to do: if selected
 
             // --- fill areas ---- //
-            QColor color = getColor(mArea[i].mColorNumber);
+            QColor color = object.getColor(mArea[i].mColorNumber).color;
 
             painter.save();
             painter.setWorldMatrixEnabled(false);
@@ -1246,7 +1237,7 @@ void VectorImage::paintImage(QPainter& painter,
     // ---- draw curves ----
     for (BezierCurve curve : mCurves)
     {
-        curve.drawPath(painter, mObject, mSelectionTransformation, simplified, showThinCurves);
+        curve.drawPath(painter, object, mSelectionTransformation, simplified, showThinCurves);
         painter.setClipping(false);
     }
     painter.restore();

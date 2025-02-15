@@ -17,8 +17,10 @@ GNU General Public License for more details.
 
 #include "generalpage.h"
 
+#include <memory>
 #include <QMessageBox>
 #include <QSettings>
+#include <QTranslator>
 
 #include "pencildef.h"
 #include "preferencemanager.h"
@@ -35,6 +37,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
         {
             // translatable string, endonym, locale code
             { tr("Arabic"), QStringLiteral("العربية"), "ar" },
+            { tr("Bulgarian"), QStringLiteral("Български"), "bg" },
             { tr("Catalan"), QStringLiteral("Català"), "ca" },
             { tr("Czech"), QStringLiteral("Čeština"), "cs" },
             { tr("Danish"), QStringLiteral("Dansk"), "da" },
@@ -43,6 +46,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
             { tr("English"), QStringLiteral("English"), "en" },
             { tr("Spanish"), QStringLiteral("Español"), "es" },
             { tr("Estonian"), QStringLiteral("Eesti"), "et" },
+            { tr("Persian"), QStringLiteral("فارسی"), "fa" },
             { tr("French"), QStringLiteral("Français"), "fr" },
             { tr("Hebrew"), QStringLiteral("עברית"), "he" },
             { tr("Hungarian"), QStringLiteral("Magyar"), "hu_HU" },
@@ -50,6 +54,9 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
             { tr("Italian"), QStringLiteral("Italiano"), "it" },
             { tr("Japanese"), QStringLiteral("日本語"), "ja" },
             { tr("Kabyle"), QStringLiteral("Taqbaylit"), "kab" },
+            { tr("Korean"), QStringLiteral("한국어"), "ko" },
+            { tr("Norwegian Bokmål"), QStringLiteral("Norsk bokmål"), "nb" },
+            { tr("Dutch \u2013 Netherlands"), QStringLiteral("Nederlands \u2013 Nederland"), "nl_NL" },
             { tr("Polish"), QStringLiteral("Polski"), "pl" },
             { tr("Portuguese \u2013 Portugal"), QStringLiteral("Português \u2013 Portugal"), "pt_PT" },
             { tr("Portuguese \u2013 Brazil"), QStringLiteral("Português \u2013 Brasil"), "pt_BR" },
@@ -58,6 +65,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
             { tr("Swedish"), QStringLiteral("Svenska"), "sv" },
             { tr("Turkish"), QStringLiteral("Türkçe"), "tr" },
             { tr("Vietnamese"), QStringLiteral("Tiếng Việt"), "vi" },
+            { tr("Cantonese"), QStringLiteral("粵语"), "yue" },
             { tr("Chinese \u2013 China"), QStringLiteral("简体中文"), "zh_CN" },
             { tr("Chinese \u2013 Taiwan"), QStringLiteral("繁體中文"), "zh_TW" },
         };
@@ -92,6 +100,9 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     ui->backgroundButtons->setId(ui->dotsBackgroundButton, 4);
     ui->backgroundButtons->setId(ui->weaveBackgroundButton, 5);
 
+    ui->undoRedoGroupApplyButton->setDisabled(true);
+    ui->undoRedoGroupCancelButton->setDisabled(true);
+
     auto buttonClicked = static_cast<void (QButtonGroup::*)(QAbstractButton*)>(&QButtonGroup::buttonClicked);
     auto curIndexChanged = static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
     auto spinValueChanged = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
@@ -103,7 +114,7 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->antialiasingBox, &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged);
     connect(ui->curveSmoothingLevel, &QSlider::valueChanged, this, &GeneralPage::curveSmoothingChanged);
     connect(ui->highResBox, &QCheckBox::stateChanged, this, &GeneralPage::highResCheckboxStateChanged);
-    connect(ui->dottedCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::dottedCursorCheckboxStateChanged);
+    connect(ui->canvasCursorBox, &QCheckBox::stateChanged, this, &GeneralPage::canvasCursorCheckboxStateChanged);
     connect(ui->gridSizeInputW, spinValueChanged, this, &GeneralPage::gridWidthChanged);
     connect(ui->gridSizeInputH, spinValueChanged, this, &GeneralPage::gridHeightChanged);
     connect(ui->actionSafeCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::actionSafeCheckBoxStateChanged);
@@ -114,6 +125,10 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->gridCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::gridCheckBoxStateChanged);
     connect(ui->framePoolSizeSpin, spinValueChanged, this, &GeneralPage::frameCacheNumberChanged);
     connect(ui->invertScrollDirectionBox, &QCheckBox::stateChanged, this, &GeneralPage::invertScrollDirectionBoxStateChanged);
+    connect(ui->newUndoRedoCheckBox, &QCheckBox::stateChanged, this, &GeneralPage::newUndoRedoCheckBoxStateChanged);
+    connect(ui->undoStepsBox, spinValueChanged, this, &GeneralPage::undoRedoMaxStepsChanged);
+    connect(ui->undoRedoGroupApplyButton, &QPushButton::clicked, this, &GeneralPage::undoRedoApplyButtonPressed);
+    connect(ui->undoRedoGroupCancelButton, &QPushButton::clicked, this, &GeneralPage::undoRedoCancelButtonPressed);
 }
 
 GeneralPage::~GeneralPage()
@@ -141,8 +156,8 @@ void GeneralPage::updateValues()
     ui->toolCursorsBox->setChecked(mManager->isOn(SETTING::TOOL_CURSOR));
     QSignalBlocker b5(ui->antialiasingBox);
     ui->antialiasingBox->setChecked(mManager->isOn(SETTING::ANTIALIAS));
-    QSignalBlocker b6(ui->dottedCursorBox);
-    ui->dottedCursorBox->setChecked(mManager->isOn(SETTING::DOTTED_CURSOR));
+    QSignalBlocker b6(ui->canvasCursorBox);
+    ui->canvasCursorBox->setChecked(mManager->isOn(SETTING::CANVAS_CURSOR));
     QSignalBlocker b7(ui->gridSizeInputW);
     ui->gridSizeInputW->setValue(mManager->getInt(SETTING::GRID_SIZE_W));
     QSignalBlocker b11(ui->gridSizeInputH);
@@ -173,6 +188,12 @@ void GeneralPage::updateValues()
     QSignalBlocker b12(ui->framePoolSizeSpin);
     ui->framePoolSizeSpin->setValue(mManager->getInt(SETTING::FRAME_POOL_SIZE));
 
+    QSignalBlocker bNewUndoRedoCheckBox(ui->newUndoRedoCheckBox);
+    ui->newUndoRedoCheckBox->setChecked(mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON));
+
+    QSignalBlocker bUndoRedoLimitSpinBox(ui->undoStepsBox);
+    ui->undoStepsBox->setValue(mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+
     int buttonIdx = 1;
     if (bgName == "checkerboard") buttonIdx = 1;
     else if (bgName == "white")   buttonIdx = 2;
@@ -191,9 +212,19 @@ void GeneralPage::languageChanged(int i)
     QString strLocale = ui->languageCombo->itemData(i).toString();
     mManager->set(SETTING::LANGUAGE, strLocale);
 
-    QMessageBox::warning(this,
-                         tr("Restart Required"),
-                         tr("The language change will take effect after a restart of Pencil2D"));
+    QLocale locale = strLocale.isEmpty() ? QLocale::system() : QLocale(strLocale);
+    std::unique_ptr<QTranslator> newlangTr(new QTranslator(this));
+    if (newlangTr->load(locale, "pencil", "_", ":/i18n/"))
+    {
+        QMessageBox::warning(this,
+                             newlangTr->translate(staticMetaObject.className(), "Restart Required"),
+                             newlangTr->translate(staticMetaObject.className(), "The language change will take effect after a restart of Pencil2D"));
+    } else {
+        Q_ASSERT(false);
+        QMessageBox::warning(this,
+                             tr("Restart Required"),
+                             tr("The language change will take effect after a restart of Pencil2D"));
+    }
 }
 
 void GeneralPage::backgroundChanged(QAbstractButton* button)
@@ -233,9 +264,9 @@ void GeneralPage::toolCursorsCheckboxStateChanged(int b)
     mManager->set(SETTING::TOOL_CURSOR, b != Qt::Unchecked);
 }
 
-void GeneralPage::dottedCursorCheckboxStateChanged(int b)
+void GeneralPage::canvasCursorCheckboxStateChanged(int b)
 {
-    mManager->set(SETTING::DOTTED_CURSOR, b != Qt::Unchecked);
+    mManager->set(SETTING::CANVAS_CURSOR, b != Qt::Unchecked);
 }
 
 void GeneralPage::gridWidthChanged(int value)
@@ -299,4 +330,81 @@ void GeneralPage::frameCacheNumberChanged(int value)
 void GeneralPage::invertScrollDirectionBoxStateChanged(int b)
 {
     mManager->set(SETTING::INVERT_SCROLL_ZOOM_DIRECTION, b != Qt::Unchecked);
+}
+
+void GeneralPage::newUndoRedoCheckBoxStateChanged()
+{
+    ui->undoRedoGroupApplyButton->setEnabled(canApplyOrCancelUndoRedoChanges());
+    ui->undoRedoGroupCancelButton->setEnabled(canApplyOrCancelUndoRedoChanges());
+}
+
+void GeneralPage::undoRedoMaxStepsChanged()
+{
+    ui->undoRedoGroupApplyButton->setEnabled(canApplyOrCancelUndoRedoChanges());
+    ui->undoRedoGroupCancelButton->setEnabled(canApplyOrCancelUndoRedoChanges());
+}
+
+bool GeneralPage::canApplyOrCancelUndoRedoChanges() const
+{
+    const bool newSystemIsOnCurrent = mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
+    const int maxUndoRedoStepNumCurrent = mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS);
+
+    if (newSystemIsOnCurrent != ui->newUndoRedoCheckBox->isChecked()
+            || maxUndoRedoStepNumCurrent != ui->undoStepsBox->value()) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void GeneralPage::undoRedoApplyButtonPressed()
+{
+    if (ui->undoStepsBox->value() != mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS)) {
+        QMessageBox messageBox(this);
+        messageBox.setIcon(QMessageBox::Warning);
+        messageBox.setText(tr("Resets your current undo history"));
+        messageBox.setInformativeText(tr("Changing the maximum number of undo/redo steps resets your current undo/redo history. \n\nAre you sure you want to proceed?"));
+        messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+
+        if (messageBox.exec() == QMessageBox::Yes) {
+            mManager->set(SETTING::UNDO_REDO_MAX_STEPS, ui->undoStepsBox->value());
+        } else {
+            ui->undoStepsBox->setValue(mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+        }
+    }
+
+    const bool systemIsOn = mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON);
+    if (ui->newUndoRedoCheckBox->isChecked() != systemIsOn) {
+        if (ui->newUndoRedoCheckBox->isChecked()) {
+            QMessageBox messageBox(this);
+            messageBox.setIcon(QMessageBox::Warning);
+            messageBox.setText(tr("Experimental feature!"));
+            messageBox.setInformativeText(tr("This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. \n\nDo you still want to try?"));
+            messageBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+
+            if (messageBox.exec() == QMessageBox::Yes) {
+                mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, true);
+            } else {
+                ui->newUndoRedoCheckBox->setCheckState(Qt::Unchecked);
+                mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
+            }
+        } else {
+            QMessageBox messageBox(this);
+            messageBox.setIcon(QMessageBox::Information);
+            messageBox.setText(tr("The undo/redo system will be changed on the next launch of the application"));
+            messageBox.exec();
+            mManager->set(SETTING::NEW_UNDO_REDO_SYSTEM_ON, false);
+        }
+    }
+
+    ui->undoRedoGroupCancelButton->setDisabled(true);
+    ui->undoRedoGroupApplyButton->setDisabled(true);
+}
+
+void GeneralPage::undoRedoCancelButtonPressed()
+{
+    ui->undoStepsBox->setValue(mManager->getInt(SETTING::UNDO_REDO_MAX_STEPS));
+    ui->newUndoRedoCheckBox->setCheckState(mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON) ? Qt::Checked : Qt::Unchecked);
+    ui->undoRedoGroupCancelButton->setDisabled(true);
+    ui->undoRedoGroupApplyButton->setDisabled(true);
 }

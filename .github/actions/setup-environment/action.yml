@@ -11,3 +11,5 @@ runs:
     env:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
+  - run: ${GITHUB_ACTION_PATH}/setup-versions.sh
+    shell: bash

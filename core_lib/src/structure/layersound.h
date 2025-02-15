@@ -24,13 +24,15 @@ GNU General Public License for more details.
 class SoundClip;
 class LayerSound : public Layer
 {
-    Q_OBJECT
+    Q_DECLARE_TR_FUNCTIONS(LayerSound)
 
 public:
-    LayerSound( Object* object );
+    explicit LayerSound(int id);
     ~LayerSound();
     QDomElement createDomElement(QDomDocument& doc) const override;
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
+
+    void replaceKeyFrame(const KeyFrame* soundClip) override;
 
     Status loadSoundClipAtFrame( const QString& sSoundClipName, const QString& filePathString, int frame );
     void updateFrameLengths(int fps);
@@ -39,7 +41,7 @@ public:
 
 protected:
     Status saveKeyFrameFile(KeyFrame*, QString path) override;
-    KeyFrame* createKeyFrame(int position, Object*) override;
+    KeyFrame* createKeyFrame(int position) override;
 };
 
 #endif
