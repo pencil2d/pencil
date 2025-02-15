@@ -36,6 +36,14 @@ ToolManager::ToolManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }
 
+ToolManager::~ToolManager()
+{
+    foreach(BaseTool* tool, mToolSetHash)
+    {
+        tool->saveSettings();
+    }
+}
+
 bool ToolManager::init()
 {
     mToolSetHash.insert(PEN, new PenTool(this));

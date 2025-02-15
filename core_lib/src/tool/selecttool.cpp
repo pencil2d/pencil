@@ -41,6 +41,15 @@ void SelectTool::loadSettings()
     mPropertyEnabled[SHOWSELECTIONINFO] = true;
 }
 
+void SelectTool::saveSettings()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    settings.setValue("ShowSelectionInfo", properties.showSelectionInfo);
+
+    settings.sync();
+}
+
 QCursor SelectTool::cursor()
 {
     // Don't update cursor while we're moving the selection
@@ -89,9 +98,6 @@ void SelectTool::resetToDefault()
 void SelectTool::setShowSelectionInfo(const bool b)
 {
     properties.showSelectionInfo = b;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("ShowSelectionInfo", b);
 }
 
 void SelectTool::beginSelection(Layer* currentLayer, const QPointF& pos)

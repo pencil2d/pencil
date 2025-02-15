@@ -58,6 +58,18 @@ void PenTool::loadSettings()
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
 
+void PenTool::saveSettings()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    settings.setValue("penWidth", properties.width);
+    settings.setValue("penPressure", properties.pressure);
+    settings.setValue("penAA", properties.useAA);
+    settings.setValue("penLineStabilization", properties.stabilizerLevel);
+
+    settings.sync();
+}
+
 void PenTool::resetToDefault()
 {
     setWidth(12.0);
@@ -71,22 +83,12 @@ void PenTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("penWidth", width);
-    settings.sync();
 }
 
 void PenTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("penPressure", pressure);
-    settings.sync();
 }
 
 void PenTool::setAA(const int AA)
@@ -94,19 +96,11 @@ void PenTool::setAA(const int AA)
     // Set current property
     properties.useAA = AA;
 
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("penAA", AA);
-    settings.sync();
 }
 
 void PenTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("penLineStabilization", level);
-    settings.sync();
 }
 
 QCursor PenTool::cursor()
