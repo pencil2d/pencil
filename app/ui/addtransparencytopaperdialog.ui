@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Add Transparency to Paper</string>
+   <string>Replace Paper with Transparency</string>
   </property>
   <layout class="QHBoxLayout" name="mainLayout" stretch="0,1">
    <item>

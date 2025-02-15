@@ -1071,7 +1071,7 @@
   </action>
   <action name="actionAdd_Transparency_to_paper">
    <property name="text">
-    <string>Add Transparency to Paper</string>
+    <string>Replace Paper with Transparency</string>
    </property>
   </action>
   <action name="actionAdd_Frame_Exposure">
