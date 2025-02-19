@@ -274,33 +274,20 @@ Status MovieImporter::importMovieVideo(const QString &filePath, int fps, int fra
 
 Status MovieImporter::generateFrames(std::function<bool(int)> progress)
 {
-    Layer* layer = mEditor->layers()->currentLayer();
     Status status = Status::OK;
     int i = 1;
     QDir tempDir(mTempDir->path());
     auto amountOfFrames = tempDir.count();
     QString currentFile(tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0'))));
-    QPoint imgTopLeft;
-
-    ViewManager* viewMan = mEditor->view();
 
     while (QFileInfo::exists(currentFile))
     {
-        int currentFrame = mEditor->currentFrame();
-        if(layer->keyExists(mEditor->currentFrame())) {
-            mEditor->importImage(currentFile, ImportPositionType::CenterOfView);
+        status = mEditor->importImage(currentFile, ImportPositionType::CenterOfCameraFollowed);
+
+        if (!status.ok()) {
+            break;
         }
-        else {
-            BitmapImage* bitmapImage = new BitmapImage(imgTopLeft, currentFile);
-            if(imgTopLeft.isNull()) {
-                imgTopLeft.setX(static_cast<int>(viewMan->getView().dx()) - bitmapImage->image()->width() / 2);
-                imgTopLeft.setY(static_cast<int>(viewMan->getView().dy()) - bitmapImage->image()->height() / 2);
-                bitmapImage->moveTopLeft(imgTopLeft);
-            }
-            layer->addKeyFrame(currentFrame, bitmapImage);
-            mEditor->layers()->notifyAnimationLengthChanged();
-            mEditor->scrubTo(currentFrame + 1);
-        }
+
         if (mCanceled) return Status::CANCELED;
         progress(qFloor(50 + i / static_cast<qreal>(amountOfFrames) * 50));
         i++;
