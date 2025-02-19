@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QPainterPath>
@@ -100,7 +101,7 @@ BitmapImage* BitmapImage::clone() const
     b->setFileName(""); // don't link to the file of the source bitmap image
 
     const bool validKeyFrame = !fileName().isEmpty();
-    if (validKeyFrame && !isLoaded())
+    if (validKeyFrame && !isModified())
     {
         // This bitmapImage is temporarily unloaded.
         // since it's not in the memory, we need to copy the linked png file to prevent data loss.
@@ -108,14 +109,18 @@ BitmapImage* BitmapImage::clone() const
         Q_ASSERT(finfo.isAbsolute());
         Q_ASSERT(QFile::exists(fileName()));
 
-        QString newFileName = QString("%1/%2-%3.%4")
-            .arg(finfo.canonicalPath())
-            .arg(finfo.completeBaseName())
-            .arg(uniqueString(12))
-            .arg(finfo.suffix());
-        b->setFileName(newFileName);
+        QString newFilePath;
+        do
+        {
+            newFilePath = QString("%1/temp-%2.%3")
+                .arg(finfo.canonicalPath())
+                .arg(uniqueString(12))
+                .arg(finfo.suffix());
+        }
+        while (QFile::exists(newFilePath));
 
-        bool ok = QFile::copy(fileName(), newFileName);
+        b->setFileName(newFilePath);
+        bool ok = QFile::copy(fileName(), newFilePath);
         Q_ASSERT(ok);
         qDebug() << "COPY>" << fileName();
     }
@@ -742,9 +747,14 @@ Status BitmapImage::writeFile(const QString& filename)
         if(f.exists())
         {
             bool b = f.remove();
-            return (b) ? Status::OK : Status::FAIL;
+            if (!b) {
+                return Status::FAIL;
+            }
         }
-        return Status::SAFE;
+
+        // The frame is likely empty, act like there's no file name
+        // so we don't end up writing to it later.
+        setFileName("");
     }
     return Status::SAFE;
 }

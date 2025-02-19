@@ -83,6 +83,16 @@
     </layout>
    </item>
    <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>This report contains vital information. Copy all of it when submitting a bug.</string>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QTextEdit" name="details">
      <property name="readOnly">
       <bool>true</bool>

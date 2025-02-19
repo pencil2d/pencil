@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "pencilerror.h"
 #include <map>
 #include <QSysInfo>
+#include <QLocale>
 
 DebugDetails::DebugDetails()
 {
@@ -55,22 +56,22 @@ void DebugDetails::appendSystemInfo()
         return;
 
 #if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
-    mDetails << "System Info";
+    mDetails << "\n[System Info]\n";
 #if defined(PENCIL2D_RELEASE_BUILD)
-    mDetails << "Pencil2D version: " APP_VERSION " (stable)";
+    mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (stable)";
 #elif defined(PENCIL2D_NIGHTLY_BUILD)
-    mDetails << "Pencil2D version: " APP_VERSION " (nightly)";
+    mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (nightly)";
 #else
-    mDetails << "Pencil2D version: " APP_VERSION " (dev)";
+    mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (dev)";
 #endif
 
 #if defined(GIT_EXISTS)
-    mDetails << "Commit: " S__GIT_COMMIT_HASH;
+    mDetails << "&nbsp;&nbsp;Commit: " S__GIT_COMMIT_HASH;
 #endif
-    mDetails << "Build ABI: " + QSysInfo::buildAbi();
-    mDetails << "Kernel: " + QSysInfo::kernelType() + ", " + QSysInfo::kernelVersion();
-    mDetails << "Operating System: " + QSysInfo::prettyProductName();
-    mDetails << "end";
+    mDetails << "&nbsp;&nbsp;Build ABI: " + QSysInfo::buildAbi();
+    mDetails << "&nbsp;&nbsp;Kernel: " + QSysInfo::kernelType() + ", " + QSysInfo::kernelVersion();
+    mDetails << "&nbsp;&nbsp;Operating System: " + QSysInfo::prettyProductName();
+    mDetails << "&nbsp;&nbsp;Language: " + QLocale::system().name();
 #endif
 }
 

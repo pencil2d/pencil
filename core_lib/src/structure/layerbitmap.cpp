@@ -90,7 +90,7 @@ Status LayerBitmap::saveKeyFrameFile(KeyFrame* keyframe, QString path)
         dd << "LayerBitmap::saveKeyFrame";
         dd << QString("  KeyFrame.pos() = %1").arg(keyframe->pos());
         dd << QString("  strFilePath = %1").arg(strFilePath);
-        dd << QString("BitmapImage could not be saved");
+        dd << QString("Error: Failed to save BitmapImage");
         dd.collect(st.details());
         return Status(Status::FAIL, dd);
     }
@@ -188,7 +188,9 @@ QDomElement LayerBitmap::createDomElement(QDomDocument& doc) const
         imageTag.setAttribute("opacity", pImg->getOpacity());
         layerElem.appendChild(imageTag);
 
-        Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        if (!pKeyFrame->fileName().isEmpty()) {
+            Q_ASSERT(QFileInfo(pKeyFrame->fileName()).fileName() == fileName(pKeyFrame));
+        }
     });
 
     return layerElem;

@@ -1,133 +1,132 @@
 name: Build & Tests
-
 on:
   push:
     paths-ignore:
-    - 'docs/**'
-    - '**.md'
-    - '**.sh'
-    - '**.py'
-    - '**.ps1'
+      - 'docs/**'
+      - '**.md'
+      - '**.sh'
+      - '**.py'
+      - '**.ps1'
   pull_request:
     # Need to repeat these paths - YAML anchors aren’t supported on GHA atm
     # (or any other CI service that I know of, for that matter)
     paths-ignore:
-    - 'docs/**'
-    - '**.md'
-    - '**.sh'
-    - '**.py'
-    - '**.ps1'
-
+      - 'docs/**'
+      - '**.md'
+      - '**.sh'
+      - '**.py'
+      - '**.ps1'
+  workflow_dispatch:
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
         include:
-        - name: Qt 5 / Linux x86_64
-          os: ubuntu-latest
-          # XXX: --privileged is sort of a brute-force solution to get FUSE
-          #      working inside Docker, however so far I haven’t been able to
-          #      figure out precisely *which* privileges are needed.
-          container: { image: "ubuntu:16.04", options: --privileged }
-          qt: 5
-          env:
-            ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
-        - name: Qt 5 / macOS x86_64
-          os: macos-13
-          container:
-          qt: 5
-        - name: Qt 5 / macOS arm64
-          os: macos-latest
-          container:
-          qt: 5
-        - name: Qt 5 / Windows x86
-          os: windows-2019
-          arch: win32_msvc2019
-          container:
-          qt: 5
-        - name: Qt 5 / Windows x86_64
-          os: windows-2019
-          arch: win64_msvc2019_64
-          container:
-          qt: 5
-        - name: Qt 6 / Linux x86_64
-          os: ubuntu-latest
-          # XXX: --privileged is sort of a brute-force solution to get FUSE
-          #      working inside Docker, however so far I haven’t been able to
-          #      figure out precisely *which* privileges are needed.
-          container: { image: "ubuntu:22.04", options: --privileged }
-          qt: 6
-        - name: Qt 6 / macOS x86_64
-          os: macos-13
-          container:
-          qt: 6
-        - name: Qt 6 / macOS arm64
-          os: macos-latest
-          container:
-          qt: 6
-        - name: Qt 6 / Windows x86_64
-          os: windows-2019
-          arch: win64_msvc2019_64
-          container:
-          qt: 6
+          - name: Qt 5 / Linux x86_64
+            os: ubuntu-latest
+            container: "ubuntu:16.04"
+            qt: 5
+          - name: Qt 5 / macOS x86_64
+            os: macos-13
+            container:
+            qt: 5
+          #- name: Qt 5 / macOS arm64
+          #  os: macos-latest
+          #  container:
+          #  qt: 5
+          - name: Qt 5 / Windows x86
+            os: windows-2019
+            arch: win32_msvc2019
+            container:
+            qt: 5
+          - name: Qt 5 / Windows x86_64
+            os: windows-2019
+            arch: win64_msvc2019_64
+            container:
+            qt: 5
+          - name: Qt 6 / Linux x86_64
+            os: ubuntu-latest
+            container: "ubuntu:22.04"
+            qt: 6
+          - name: Qt 6 / macOS x86_64
+            os: macos-13
+            container:
+            qt: 6
+          #- name: Qt 6 / macOS arm64
+          #  os: macos-latest
+          #  container:
+          #  qt: 6
+          - name: Qt 6 / Windows x86_64
+            os: windows-2019
+            arch: win64_msvc2019_64
+            container:
+            qt: 6
 
     name: ${{matrix.name}}
     runs-on: ${{matrix.os}}
-    container: ${{matrix.container}}
-    env: {ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true}
+    env: { CONTAINER: "${{matrix.container}}", BUILD_CMD: "" }
     steps:
-    - name: Install git (Linux)
-      # GitHub runners come with git pre-installed, but our "custom" Linux
-      # container image does not
-      if: runner.os == 'Linux'
-      run: |
-        apt-get update -yq
-        apt-get -yq install software-properties-common
-        apt-add-repository -y ppa:git-core/ppa
-        apt-get update -yq
-        apt-get install -yq --no-install-suggests --no-install-recommends git
-    - name: Check out repository
-      uses: actions/checkout@v3
-    - name: Install dependencies
-      uses: ./.github/actions/install-dependencies
-      with:
-        arch: ${{matrix.arch}}
-        qt: ${{matrix.qt}}
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Set up container (Linux)
+        if: runner.os == 'Linux'
+        # XXX: --privileged is sort of a brute-force solution to get FUSE
+        #      working inside Docker, however so far I haven’t been able to
+        #      figure out precisely *which* privileges are needed.
+        run: |
+          touch "${{github.workspace}}/env"
+          docker run --detach --privileged --workdir /workspace --volume "${{github.workspace}}:/workspace" --name "ci_${{github.sha}}" --entrypoint "tail" "${{matrix.container}}" -f /dev/null
+          echo '#!/usr/bin/env bash' > "${{github.workspace}}/build-cmd"
+          echo 'exec docker exec --env-file <(cat "${{github.workspace}}/env") "ci_${{github.sha}}" "$@"' >> "${{github.workspace}}/build-cmd"
+          chmod +x "${{github.workspace}}/build-cmd"
+          echo 'BUILD_CMD=${{github.workspace}}/build-cmd' >> "${GITHUB_ENV}"
+      - name: Install dependencies
+        uses: ./.github/actions/install-dependencies
+        with:
+          arch: ${{matrix.arch}}
+          qt: ${{matrix.qt}}
 
-    - name: Set up environment
-      uses: ./.github/actions/setup-environment
-      with:
-        arch: ${{matrix.arch}}
+      - name: Set up environment
+        uses: ./.github/actions/setup-environment
+        with:
+          arch: ${{matrix.arch}}
 
-    - name: Configure build
-      run: mkdir build; ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
-        -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
-        CONFIG+=PENCIL2D_${{ startsWith(github.ref, 'refs/heads/release/') && 'RELEASE' || 'NIGHTLY' }}
-        VERSION=${{ env.VERSION_NUMBER }}
+      - name: Configure build
+        run: >
+          mkdir build; ${{runner.os == 'Linux' && '${BUILD_CMD}' || ''}}
+          ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
+          -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
+          CONFIG+=PENCIL2D_${{ startsWith(github.ref, 'refs/heads/release/') && 'RELEASE' || 'NIGHTLY' }}
+          VERSION=${{ env.VERSION_NUMBER }}
 
-    - name: Build Pencil2D
-      working-directory: build
-      run: ${{runner.os != 'Windows' && 'make' || 'nmake'}}
+      - name: Build Pencil2D
+        run: ${{runner.os != 'Windows' && '${BUILD_CMD} make -C build' || 'cd build; nmake'}}
 
-    - name: Run tests
-      env: { QT_QPA_PLATFORM: minimal }
-      run: build/tests/tests
+      - name: Run tests
+        run: ${{runner.os == 'Linux' && '${BUILD_CMD}' || ''}} env QT_QPA_PLATFORM=minimal build/tests/tests
 
-    - name: Create package
-      id: package
-      if: runner.os != 'Linux' || matrix.qt == 5
-      uses: ./.github/actions/create-package
-      with:
-        arch: ${{matrix.arch}}
-        qt: ${{matrix.qt}}
+      - name: Create package
+        id: package
+        if: runner.os != 'Linux' || matrix.qt == 5
+        uses: ./.github/actions/create-package
+        with:
+          arch: ${{matrix.arch}}
+          qt: ${{matrix.qt}}
 
-    - name: Upload package
-      if: runner.os != 'Linux' || matrix.qt == 5
-      uses: actions/upload-artifact@v3
-      with:
-        name: ${{steps.package.outputs.output-basename}}
-        path: build/${{steps.package.outputs.output-basename}}*
-    - name: Generate summary
-      shell: bash
-      run: echo "Build will be available for download [here](https://get.pencil2d.org/@${{github.repository_owner}}/${{github.run_id}}/${{steps.package.outputs.output-basename}}) once the run is finished." > "${GITHUB_STEP_SUMMARY}"
+      - name: Upload package
+        if: runner.os != 'Linux' || matrix.qt == 5
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{steps.package.outputs.output-basename}}
+          path: build/${{steps.package.outputs.output-basename}}*
+      - name: Generate summary
+        shell: bash
+        run: >
+          echo "Build will be available for download
+          [here](https://get.pencil2d.org/@${{github.repository_owner}}/${{github.run_id}}/${{steps.package.outputs.output-basename}})
+          once the run is finished." > "${GITHUB_STEP_SUMMARY}"
+
+      - name: Stop container (Linux)
+        if: runner.os == 'Linux'
+        run: docker stop "ci_${{github.sha}}"
