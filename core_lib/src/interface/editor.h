@@ -229,6 +229,9 @@ public: //slots
     void dontAskAutoSave(bool b) { mAutosaveNeverAskAgain = b; }
     bool autoSaveNeverAskAgain() const { return mAutosaveNeverAskAgain; }
     void resetAutoSaveCounter();
+    int getAutoSaveCounter() { return mAutosaveCounter; }
+    void setAutoSaveCounter(int count) { mAutosaveCounter = count; }
+    void setIsDoingRepeatColoring(bool b) { mIsDoingRepeatInColoring = b; }
 
 private:
     Status importBitmapImage(const QString&);
@@ -268,6 +271,7 @@ private:
     int mAutosaveNumber = 12;
     int mAutosaveCounter = 0;
     bool mAutosaveNeverAskAgain = false;
+    bool mIsDoingRepeatInColoring = false;
 
     void makeConnections();
 

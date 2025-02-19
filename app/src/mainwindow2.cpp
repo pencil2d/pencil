@@ -65,6 +65,7 @@ GNU General Public License for more details.
 #include "preferencesdialog.h"
 #include "timeline.h"
 #include "toolbox.h"
+#include "bitmapcoloring.h"
 #include "onionskinwidget.h"
 #include "pegbaralignmentdialog.h"
 #include "addtransparencytopaperdialog.h"
@@ -172,6 +173,9 @@ void MainWindow2::createDockWidgets()
     mToolBox = new ToolBoxWidget(this);
     mToolBox->setObjectName("ToolBox");
 
+    mBitmapColoring = new BitmapColoring(mEditor, this);
+    mBitmapColoring->setObjectName("BitmapColoring");
+
     mDockWidgets
         << mTimeLine
         << mColorBox
@@ -179,7 +183,8 @@ void MainWindow2::createDockWidgets()
         << mColorPalette
         << mOnionSkinWidget
         << mToolOptions
-        << mToolBox;
+        << mToolBox
+        << mBitmapColoring;
 
     mStartIcon = QIcon(":icons/controls/play.png");
     mStopIcon = QIcon(":icons/controls/stop.png");
@@ -200,6 +205,7 @@ void MainWindow2::createDockWidgets()
     addDockWidget(Qt::RightDockWidgetArea, mColorBox);
     addDockWidget(Qt::RightDockWidgetArea, mColorInspector);
     addDockWidget(Qt::RightDockWidgetArea, mColorPalette);
+    addDockWidget(Qt::RightDockWidgetArea, mBitmapColoring);
     addDockWidget(Qt::LeftDockWidgetArea, mToolBox);
     addDockWidget(Qt::LeftDockWidgetArea, mToolOptions);
     addDockWidget(Qt::LeftDockWidgetArea, mOnionSkinWidget);
@@ -226,7 +232,10 @@ void MainWindow2::createDockWidgets()
     for (BaseDockWidget* w : mDockWidgets)
     {
         w->setFloating(false);
-        w->show();
+        if (w != mBitmapColoring)
+        {
+            w->show();
+        }
         w->updateUI();
     }
 }
@@ -432,6 +441,7 @@ void MainWindow2::createMenus()
         mColorPalette->toggleViewAction(),
         mTimeLine->toggleViewAction(),
         mColorInspector->toggleViewAction(),
+        mBitmapColoring->toggleViewAction(),
         mOnionSkinWidget->toggleViewAction()
     };
 
@@ -737,6 +747,23 @@ bool MainWindow2::openObject(const QString& strFilePath)
     setWindowTitle(mEditor->object()->filePath().prepend("[*]"));
     setWindowModified(false);
     ui->statusBar->updateModifiedStatus(false);
+
+    // identify color layers
+    for (int i = 1; i < mEditor->layers()->count(); i++)
+    {
+        Layer* color = mEditor->layers()->getLayer(i);
+        if (color->type() == Layer::BITMAP && color->name().endsWith("_C"))
+        {
+            QString tmp = color->name();
+            tmp.chop(2);
+            Layer* org = mEditor->layers()->findLayerByName(tmp);
+            if (org != nullptr)
+            {
+                color->setIsColorLayer(true);
+                org->setHasColorLayer(true);
+            }
+        }
+    }
 
     progress.setValue(progress.maximum());
 
@@ -1496,6 +1523,8 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
+    connect(pEditor->layers(), &LayerManager::currentLayerChanged, mBitmapColoring, &BitmapColoring::updateUI);
+    connect(mBitmapColoring, &QDockWidget::visibilityChanged, mBitmapColoring, &BitmapColoring::onVisibilityChanged);
 }
 
 void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
