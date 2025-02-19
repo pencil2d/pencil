@@ -340,7 +340,7 @@ bool Layer::loadKey(KeyFrame* pKey)
 Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep)
 {
     DebugDetails dd;
-    dd << __FUNCTION__;
+    dd << "\n[Layer SAVE diagnostics]\n";
 
     bool ok = true;
 
@@ -364,6 +364,7 @@ Status Layer::save(const QString& sDataFolder, QStringList& attachedFiles, Progr
     }
     if (!ok)
     {
+        dd << "\nError: Failed to save one or more files";
         return Status(Status::FAIL, dd);
     }
     return Status::OK;

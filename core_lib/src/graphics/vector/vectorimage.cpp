@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QDebug>
 #include <QXmlStreamWriter>
 #include "object.h"
+#include "util.h"
 
 
 VectorImage::VectorImage()

@@ -330,19 +330,19 @@ void Editor::pasteToFrames()
             currentLayer->moveSelectedFrames(1);
         }
 
+        KeyFrame* key = it->second;
         // It's a bug if the keyframe is nullptr at this point...
-        Q_ASSERT(it->second != nullptr);
+        Q_ASSERT(key != nullptr);
 
         // TODO: undo/redo implementation
-        KeyFrame* keyClone = it->second->clone();
-        currentLayer->addKeyFrame(newPosition, keyClone);
+        currentLayer->addKeyFrame(newPosition, key);
         if (currentLayer->type() == Layer::SOUND)
         {
-            auto soundClip = static_cast<SoundClip*>(keyClone);
+            auto soundClip = static_cast<SoundClip*>(key);
             sound()->loadSound(soundClip, soundClip->fileName());
         }
 
-        currentLayer->setFrameSelected(keyClone->pos(), true);
+        currentLayer->setFrameSelected(key->pos(), true);
     }
 }
 
@@ -354,7 +354,7 @@ void Editor::paste()
 
     if (!canPaste()) { return; }
 
-    if (clipboards()->getClipboardFrames().empty()) {
+    if (clipboards()->framesIsEmpty()) {
 
         backup(tr("Paste"));
 
@@ -436,7 +436,7 @@ LayerVisibility Editor::layerVisibility()
 
 qreal Editor::viewScaleInversed()
 {
-    return view()->getViewScaleInverse();
+    return view()->getScaleInversed();
 }
 
 void Editor::increaseLayerVisibilityIndex()
@@ -847,8 +847,6 @@ void Editor::scrubTo(int frame)
     if (frame < 1) { frame = 1; }
     mFrame = frame;
 
-    emit scrubbed(frame);
-
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
     // Will remove all Timeline related code in Editor class.
@@ -857,6 +855,7 @@ void Editor::scrubTo(int frame)
         emit updateTimeLineCached(); // needs to update the timeline to update onion skin positions
     }
     mObject->updateActiveFrames(frame);
+    emit scrubbed(frame);
 }
 
 void Editor::scrubForward()

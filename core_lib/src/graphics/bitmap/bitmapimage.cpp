@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QDebug>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QPainterPath>
@@ -100,7 +101,7 @@ BitmapImage* BitmapImage::clone() const
     b->setFileName(""); // don't link to the file of the source bitmap image
 
     const bool validKeyFrame = !fileName().isEmpty();
-    if (validKeyFrame && !isLoaded())
+    if (validKeyFrame && !isModified())
     {
         // This bitmapImage is temporarily unloaded.
         // since it's not in the memory, we need to copy the linked png file to prevent data loss.
@@ -108,14 +109,18 @@ BitmapImage* BitmapImage::clone() const
         Q_ASSERT(finfo.isAbsolute());
         Q_ASSERT(QFile::exists(fileName()));
 
-        QString newFileName = QString("%1/%2-%3.%4")
-            .arg(finfo.canonicalPath())
-            .arg(finfo.completeBaseName())
-            .arg(uniqueString(12))
-            .arg(finfo.suffix());
-        b->setFileName(newFileName);
+        QString newFilePath;
+        do
+        {
+            newFilePath = QString("%1/temp-%2.%3")
+                .arg(finfo.canonicalPath())
+                .arg(uniqueString(12))
+                .arg(finfo.suffix());
+        }
+        while (QFile::exists(newFilePath));
 
-        bool ok = QFile::copy(fileName(), newFileName);
+        b->setFileName(newFilePath);
+        bool ok = QFile::copy(fileName(), newFilePath);
         Q_ASSERT(ok);
         qDebug() << "COPY>" << fileName();
     }
@@ -728,6 +733,88 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
     modification();
 }
 
+BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, const int threshold, const bool redEnabled, const bool greenEnabled, const bool blueEnabled)
+{
+    Q_ASSERT(img != nullptr);
+
+    QRgb rgba = img->constScanLine(img->left(), img->top());
+    if (qAlpha(rgba) == 0)
+        return img;
+
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            rgba = img->constScanLine(x, y);
+
+            if (qAlpha(rgba) == 0)
+                break;
+
+            const int grayValue = qGray(rgba);
+            const int redValue = qRed(rgba);
+            const int greenValue = qGreen(rgba);
+            const int blueValue = qBlue(rgba);
+            if (grayValue >= threshold)
+            {   // IF Threshold or above
+                img->scanLine(x, y, transp);
+            }
+            else if (redValue > greenValue + COLORDIFF &&
+                     redValue > blueValue + COLORDIFF &&
+                     redValue > grayValue + GRAYSCALEDIFF)
+            {   // IF Red line
+                if (redEnabled)
+                {
+                    img->scanLine(x, y, redline);
+                }
+                else
+                {
+                    img->scanLine(x, y, transp);
+                }
+            }
+            else if (greenValue > redValue + COLORDIFF &&
+                     greenValue > blueValue + COLORDIFF &&
+                     greenValue > grayValue + GRAYSCALEDIFF)
+            {   // IF Green line
+                if (greenEnabled)
+                {
+                    img->scanLine(x, y, greenline);
+                }
+                else
+                {
+                    img->scanLine(x, y, transp);
+                }
+            }
+            else if (blueValue > redValue + COLORDIFF &&
+                     blueValue > greenValue + COLORDIFF &&
+                     blueValue > grayValue + GRAYSCALEDIFF)
+            {   // IF Blue line
+                if (blueEnabled)
+                {
+                    img->scanLine(x, y, blueline);
+                }
+                else
+                {
+                    img->scanLine(x, y, transp);
+                }
+            }
+            else
+            {   // okay, so it is in grayscale graduation area
+                if (grayValue >= LOW_THRESHOLD)
+                {
+                    const qreal factor = static_cast<qreal>(threshold - grayValue) / static_cast<qreal>(threshold - LOW_THRESHOLD);
+                    img->scanLine(x , y, qRgba(0, 0, 0, static_cast<int>(threshold * factor)));
+                }
+                else // grayValue < LOW_THRESHOLD
+                {
+                    img->scanLine(x , y, blackline);
+                }
+            }
+        }
+    }
+    img->modification();
+    return img;
+}
+
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (!mImage.isNull())
@@ -742,9 +829,14 @@ Status BitmapImage::writeFile(const QString& filename)
         if(f.exists())
         {
             bool b = f.remove();
-            return (b) ? Status::OK : Status::FAIL;
+            if (!b) {
+                return Status::FAIL;
+            }
         }
-        return Status::SAFE;
+
+        // The frame is likely empty, act like there's no file name
+        // so we don't end up writing to it later.
+        setFileName("");
     }
     return Status::SAFE;
 }
