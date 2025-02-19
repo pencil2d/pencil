@@ -20,11 +20,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QStandardItemModel>
 #include "editor.h"
-#include "layercamera.h"
-#include "viewmanager.h"
 #include "layermanager.h"
-#include "scribblearea.h"
-#include "camera.h"
 
 ImportPositionDialog::ImportPositionDialog(Editor* editor, QWidget *parent) :
     QDialog(parent),
@@ -60,30 +56,11 @@ ImportPositionDialog::~ImportPositionDialog()
 
 void ImportPositionDialog::didChangeComboBoxIndex(const int index)
 {
-    mImportOption = ImportPosition::getTypeFromIndex(index);
+    mImportOption = getTypeFromIndex(index);
 }
 
 void ImportPositionDialog::changeImportView()
 {
-    QTransform transform;
-    if (mImportOption == ImportPosition::Type::CenterOfView)
-    {
-        QPointF centralPoint = mEditor->getScribbleArea()->getCentralPoint();
-        transform = transform.fromTranslate(centralPoint.x(), centralPoint.y());
-    }
-    else if (mImportOption == ImportPosition::Type::CenterOfCamera || mImportOption == ImportPosition::Type::CenterOfCameraFollowed)
-    {
-        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()));
-        Q_ASSERT(layerCam);
-
-        if (mImportOption == ImportPosition::Type::CenterOfCamera) {
-            KeyFrame* camKey = layerCam->getLastCameraAtFrame(mEditor->currentFrame(), 0);
-            transform = layerCam->getViewAtFrame(camKey->pos()).inverted();
-        } else {
-            transform = layerCam->getViewAtFrame(mEditor->currentFrame()).inverted();
-        }
-    }
-    mEditor->view()->setImportView(transform);
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
 }

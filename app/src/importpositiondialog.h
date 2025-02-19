@@ -19,6 +19,8 @@ GNU General Public License for more details.
 
 #include <QDialog>
 
+#include "importpositiontype.h"
+
 namespace Ui {
 class ImportPositionDialog;
 }
@@ -29,44 +31,35 @@ class ImportPositionDialog : public QDialog
 {
     Q_OBJECT
 
-    struct ImportPosition {
-
-        enum Type {
-            CenterOfView,
-            CenterOfCanvas,
-            CenterOfCamera,
-            CenterOfCameraFollowed,
-            None
-        };
-
-        static Type getTypeFromIndex(int index) {
-            switch (index) {
-            case 0:
-                return CenterOfView;
-            case 1:
-                return CenterOfCanvas;
-            case 2:
-                return CenterOfCamera;
-            case 3:
-                return CenterOfCameraFollowed;
-            default:
-                return None;
-            }
-        }
-    };
-
 public:
     explicit ImportPositionDialog(Editor* editor, QWidget *parent = nullptr);
     ~ImportPositionDialog();
+
+    ImportPositionType importOption() const { return mImportOption; }
 
 private slots:
     void didChangeComboBoxIndex(const int index);
     void changeImportView();
 
 private:
+    static ImportPositionType getTypeFromIndex(int index) {
+        switch (index) {
+        case 0:
+            return ImportPositionType::CenterOfView;
+        case 1:
+            return ImportPositionType::CenterOfCanvas;
+        case 2:
+            return ImportPositionType::CenterOfCamera;
+        case 3:
+            return ImportPositionType::CenterOfCameraFollowed;
+        default:
+            return ImportPositionType::None;
+        }
+    }
+
     Ui::ImportPositionDialog *ui;
 
-    ImportPosition::Type mImportOption = ImportPosition::None;
+    ImportPositionType mImportOption = ImportPositionType::None;
     Editor* mEditor = nullptr;
 };
 

@@ -288,13 +288,13 @@ Status MovieImporter::generateFrames(std::function<bool(int)> progress)
     {
         int currentFrame = mEditor->currentFrame();
         if(layer->keyExists(mEditor->currentFrame())) {
-            mEditor->importImage(currentFile);
+            mEditor->importImage(currentFile, ImportPositionType::CenterOfView);
         }
         else {
             BitmapImage* bitmapImage = new BitmapImage(imgTopLeft, currentFile);
             if(imgTopLeft.isNull()) {
-                imgTopLeft.setX(static_cast<int>(viewMan->getImportView().dx()) - bitmapImage->image()->width() / 2);
-                imgTopLeft.setY(static_cast<int>(viewMan->getImportView().dy()) - bitmapImage->image()->height() / 2);
+                imgTopLeft.setX(static_cast<int>(viewMan->getView().dx()) - bitmapImage->image()->width() / 2);
+                imgTopLeft.setY(static_cast<int>(viewMan->getView().dy()) - bitmapImage->image()->height() / 2);
                 bitmapImage->moveTopLeft(imgTopLeft);
             }
             layer->addKeyFrame(currentFrame, bitmapImage);

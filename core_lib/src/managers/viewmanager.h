@@ -84,9 +84,6 @@ public:
     bool isFlipVertical() const { return mIsFlipVertical; }
     void setCanvasSize(QSize size);
 
-    QTransform getImportView() { return mImportView; }
-    void setImportView(const QTransform& newView) { mImportView = newView; }
-
     void forceUpdateViewTransform();
 
 signals:
@@ -102,7 +99,6 @@ private:
     QTransform mViewCanvas;
     QTransform mViewCanvasInverse;
     QTransform mCentre;
-    QTransform mImportView;
 
     QPointF mTranslation = QPointF();
     qreal mScaling = 1.0;

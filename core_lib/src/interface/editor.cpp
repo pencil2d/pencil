@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "soundclip.h"
+#include "camera.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layercamera.h"
@@ -911,7 +912,7 @@ void Editor::updateObject()
     emit updateLayerCount();
 }
 
-Status Editor::importBitmapImage(const QString& filePath)
+Status Editor::importBitmapImage(const QString& filePath, const QTransform& importTransform)
 {
     QImageReader reader(filePath);
 
@@ -954,8 +955,8 @@ Status Editor::importBitmapImage(const QString& filePath)
         status = Status(Status::FAIL, dd, tr("Import failed"), errorDesc);
     }
 
-    const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
-                     view()->getImportView().dy() - (img.height() / 2));
+    const QPoint pos = importTransform.map(QPoint(-img.width() / 2,
+                                        -img.height() / 2));
 
     if (!layer->keyExists(mFrame))
     {
@@ -1008,17 +1009,45 @@ Status Editor::importVectorImage(const QString& filePath)
     return status;
 }
 
-Status Editor::importImage(const QString& filePath)
+Status Editor::importImage(const QString& filePath, const ImportPositionType& importOption)
 {
     Layer* layer = layers()->currentLayer();
 
     DebugDetails dd;
     dd << QString("Raw file path: %1").arg(filePath);
 
+    QTransform transform;
+    switch (importOption)
+    {
+        case ImportPositionType::CenterOfCamera: {
+            LayerCamera* layerCam = static_cast<LayerCamera*>(layers()->getCameraLayerBelow(currentLayerIndex()));
+            Q_ASSERT(layerCam);
+            Camera* camKey = layerCam->getLastCameraAtFrame(currentFrame(), 0);
+            transform = layerCam->getViewAtFrame(camKey->pos()).inverted();
+            break;
+        }
+        case ImportPositionType::CenterOfCameraFollowed: {
+            LayerCamera* camera = static_cast<LayerCamera*>(layers()->getCameraLayerBelow(currentLayerIndex()));
+            Q_ASSERT(camera);
+            transform = camera->getViewAtFrame(currentFrame()).inverted();
+            break;
+        }
+        case ImportPositionType::CenterOfView: {
+            QPointF centralPoint = mScribbleArea->getCentralPoint();
+            transform = QTransform::fromTranslate(centralPoint.x(), centralPoint.y());
+            break;
+        }
+        case ImportPositionType::CenterOfCanvas:
+        case ImportPositionType::None: {
+            transform = QTransform();
+            break;
+        }
+    }
+
     switch (layer->type())
     {
     case Layer::BITMAP:
-        return importBitmapImage(filePath);
+        return importBitmapImage(filePath, transform);
 
     case Layer::VECTOR:
         return importVectorImage(filePath);
@@ -1051,8 +1080,8 @@ Status Editor::importAnimatedImage(const QString& filePath, int frameSpacing, co
     }
 
     QImage img(reader.size(), QImage::Format_ARGB32_Premultiplied);
-    const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
-                     view()->getImportView().dy() - (img.height() / 2));
+    const QPoint pos(view()->getView().dx() - (img.width() / 2),
+                     view()->getView().dy() - (img.height() / 2));
     int totalFrames = reader.imageCount();
     while (reader.read(&img))
     {

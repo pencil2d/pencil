@@ -871,7 +871,8 @@ void MainWindow2::importImage()
         return;
     }
 
-    Status st = mEditor->importImage(strFilePath);
+    ImportPositionType importPositionType = positionDialog->importOption();
+    Status st = mEditor->importImage(strFilePath, importPositionType);
     if (!st.ok())
     {
         ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
@@ -908,7 +909,7 @@ void MainWindow2::importImageSequence()
         return;
     }
 
-    imageSeqDialog->importArbitrarySequence();
+    imageSeqDialog->importArbitrarySequence(positionDialog->importOption());
 
     mSuppressAutoSaveDialog = false;
 }
@@ -937,7 +938,7 @@ void MainWindow2::importPredefinedImageSet()
         return;
     }
 
-    imageSeqDialog->importPredefinedSet();
+    imageSeqDialog->importPredefinedSet(positionDialog->importOption());
     mSuppressAutoSaveDialog = false;
 }
 
