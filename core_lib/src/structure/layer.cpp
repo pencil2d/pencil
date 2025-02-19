@@ -503,25 +503,14 @@ void Layer::deselectAll()
     }
 }
 
-bool Layer::canMoveSelectedFramesToOffset(int fromIndex, int offset) const
+bool Layer::canMoveSelectedFramesToOffset(int offset) const
 {
     QList<int> newByPositions = mSelectedFrames_byPosition;
 
-    int step = -1;
-
-    if (fromIndex < 0 || fromIndex > newByPositions.count() - 1) {
-        return false;
-    }
-
-    if (offset < 0) {
-        step = 1;
-    }
-
-    for (; fromIndex> -1 && fromIndex < newByPositions.count(); fromIndex += step)
+    for (int pos : newByPositions)
     {
-        int newPos = newByPositions[fromIndex] + offset;
-
-        if (keyExists(newPos) && !newByPositions.contains(newPos)) {
+        pos += offset;
+        if (keyExists(pos) && !newByPositions.contains(pos)) {
             return false;
         }
     }
@@ -640,6 +629,7 @@ bool Layer::moveSelectedFrames(int offset)
         return false;
     }
 
+    // If we are moving to the right we start moving selected frames from the highest (right) to the lowest (left)
     int indexInSelection = mSelectedFrames_byPosition.count() - 1;
     int step = -1;
 
@@ -648,8 +638,15 @@ bool Layer::moveSelectedFrames(int offset)
         // If we are moving to the left we start moving selected frames from the lowest (left) to the highest (right)
         indexInSelection = 0;
         step = 1;
+
+        // Check if we are not moving out of the timeline
+        if (mSelectedFrames_byPosition[0] + offset < 1) {
+            offset = 1 - mSelectedFrames_byPosition[0];
+        }
     }
 
+    while (!canMoveSelectedFramesToOffset(offset)) { offset += 1; }
+    if (offset == 0) { return false; }
 
     for (; indexInSelection > -1 && indexInSelection < mSelectedFrames_byPosition.count(); indexInSelection += step)
     {
@@ -659,19 +656,7 @@ bool Layer::moveSelectedFrames(int offset)
         // Get the frame to move
         KeyFrame* selectedFrame = getKeyFrameAt(fromPos);
 
-        if (toPos < 1) {
-            toPos = 1;
-            offset = toPos - fromPos;
-        }
-
-        while (!canMoveSelectedFramesToOffset(indexInSelection, offset)) {
-            toPos += 1;
-            offset += 1;
-        }
-
-        if (fromPos == toPos) {
-            continue;
-        }
+        Q_ASSERT(!keyExists(toPos));
 
         mKeyFrames.erase(fromPos);
         markFrameAsDirty(fromPos);

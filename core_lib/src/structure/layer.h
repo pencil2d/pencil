@@ -156,7 +156,7 @@ public:
      * @param offset Should be start press position - current position
      * @return true if selected frames can be moved otherwise false
      */
-    bool canMoveSelectedFramesToOffset(int fromIndex, int offset) const;
+    bool canMoveSelectedFramesToOffset(int offset) const;
 
     Status save(const QString& sDataFolder, QStringList& attachedFiles, ProgressCallback progressStep);
     virtual Status presave(const QString& sDataFolder) { Q_UNUSED(sDataFolder); return Status::SAFE; }
