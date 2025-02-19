@@ -30,7 +30,6 @@ GNU General Public License for more details.
 #include <QPixmapCache>
 
 #include "movemode.h"
-#include "log.h"
 #include "pencildef.h"
 #include "bitmapimage.h"
 #include "canvaspainter.h"
@@ -218,7 +217,6 @@ private:
     LayerVisibility mLayerVisibility = LayerVisibility::ALL;
     bool mMakeInvisible = false;
     qreal mCurveSmoothingLevel = 0.0;
-    bool mMultiLayerOnionSkin = false; // Future use. If required, just add a checkbox to update it.
     int mDeltaFactor = 1;
 
     /* Under certain circumstances a mouse press event will fire after a tablet release event.

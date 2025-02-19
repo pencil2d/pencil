@@ -3,12 +3,13 @@
 ### Features
 + Introduce new Undo/Redo system [#1817](https://github.com/pencil2d/pencil/pull/1817)
 
-### Enhancements
+### Enhancements/Changes
 + Add checkbox to allow polyline to close automatically [#1863](https://github.com/pencil2d/pencil/pull/1863)
 + Maintain active layer track in view - [#1867](https://github.com/pencil2d/pencil/pull/1867)
 + Update shortcuts [#1866](https://github.com/pencil2d/pencil/pull/1866)
 + Improve dock layout for lower resolutions [#1840](https://github.com/pencil2d/pencil/pull/1840)
 + Add ability to remove Last Polyline Segment using backspace [#1861](https://github.com/pencil2d/pencil/pull/1861)
++ Changed handling of pcl projects - [#1896](https://github.com/pencil2d/pencil/pull/1896)
 
 ### Bugfixes:
 + Do not make a new keyframe if double clicking on an existing keyframe - [#1851](https://github.com/pencil2d/pencil/pull/1851)
@@ -19,6 +20,9 @@
 + Fix fill misbehaving when drawing was partly outside border [#1865](https://github.com/pencil2d/pencil/pull/1865)
 + Fix clearing selection with the delete shortcut [#1892](https://github.com/pencil2d/pencil/pull/1892)
 + Fix camera handles not being draggable at 90 deg [#1897](https://github.com/pencil2d/pencil/issues/1897)
++ Fixed memory leak when copying bitmap keyframes - [#1896](https://github.com/pencil2d/pencil/pull/1896)
++ Fixed potential issue on some systems when repeatedly copying bitmap frames - [#1896](https://github.com/pencil2d/pencil/pull/1896)
++ Fixed bitmap frame wipe that can occur under specific situations when using keyframe copy & paste - [#1896](https://github.com/pencil2d/pencil/pull/1896)
 
 ## Pencil2D v0.7.0 - 12 July 2024
 

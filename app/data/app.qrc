@@ -91,6 +91,9 @@
         <file>icons/themes/playful/tools/tool-camera-scale.svg</file>
         <file>icons/themes/playful/tools/tool-camera-move.svg</file>
         <file>icons/themes/playful/timeline/layer-duplicate.svg</file>
+        <file>icons/blue.png</file>
+        <file>icons/green.png</file>
+        <file>icons/red.png</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>
