@@ -56,11 +56,15 @@ ImportPositionDialog::~ImportPositionDialog()
 
 void ImportPositionDialog::didChangeComboBoxIndex(const int index)
 {
-    mImportOption = getTypeFromIndex(index);
+    mImportConfig.positionType = getTypeFromIndex(index);
 }
 
 void ImportPositionDialog::changeImportView()
 {
+    if (mImportConfig.positionType == ImportImageConfig::CenterOfCamera) {
+        mImportConfig.importFrame = mEditor->currentFrame();
+    }
+
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
 }

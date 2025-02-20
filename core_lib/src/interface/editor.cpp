@@ -1009,7 +1009,7 @@ Status Editor::importVectorImage(const QString& filePath)
     return status;
 }
 
-Status Editor::importImage(const QString& filePath, const ImportPositionType importOption)
+Status Editor::importImage(const QString& filePath, const ImportImageConfig importConfig)
 {
     Layer* layer = layers()->currentLayer();
 
@@ -1017,28 +1017,28 @@ Status Editor::importImage(const QString& filePath, const ImportPositionType imp
     dd << QString("Raw file path: %1").arg(filePath);
 
     QTransform transform;
-    switch (importOption)
+    switch (importConfig.positionType)
     {
-        case ImportPositionType::CenterOfCamera: {
+        case ImportImageConfig::CenterOfCamera: {
             LayerCamera* layerCam = static_cast<LayerCamera*>(layers()->getCameraLayerBelow(currentLayerIndex()));
             Q_ASSERT(layerCam);
-            Camera* camKey = layerCam->getLastCameraAtFrame(currentFrame(), 0);
+            Camera* camKey = layerCam->getLastCameraAtFrame(importConfig.importFrame, 0);
             transform = layerCam->getViewAtFrame(camKey->pos()).inverted();
             break;
         }
-        case ImportPositionType::CenterOfCameraFollowed: {
+        case ImportImageConfig::CenterOfCameraFollowed: {
             LayerCamera* camera = static_cast<LayerCamera*>(layers()->getCameraLayerBelow(currentLayerIndex()));
             Q_ASSERT(camera);
             transform = camera->getViewAtFrame(currentFrame()).inverted();
             break;
         }
-        case ImportPositionType::CenterOfView: {
+        case ImportImageConfig::CenterOfView: {
             QPointF centralPoint = mScribbleArea->getCentralPoint();
             transform = QTransform::fromTranslate(centralPoint.x(), centralPoint.y());
             break;
         }
-        case ImportPositionType::CenterOfCanvas:
-        case ImportPositionType::None: {
+        case ImportImageConfig::CenterOfCanvas:
+        case ImportImageConfig::None: {
             transform = QTransform();
             break;
         }

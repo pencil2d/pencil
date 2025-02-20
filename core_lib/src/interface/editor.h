@@ -23,7 +23,7 @@ GNU General Public License for more details.
 #include <QObject>
 #include "pencilerror.h"
 #include "pencildef.h"
-#include "importpositiontype.h"
+#include "importimageconfig.h"
 
 #if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 Q_MOC_INCLUDE("colormanager.h")
@@ -174,7 +174,7 @@ public: //slots
 
     void clearCurrentFrame();
 
-    Status importImage(const QString& filePath, ImportPositionType importOption);
+    Status importImage(const QString& filePath, ImportImageConfig importConfig);
     Status importAnimatedImage(const QString& filePath, int frameSpacing, const std::function<void (int)>& progressChanged, const std::function<bool ()>& wasCanceled);
     void restoreKey();
 

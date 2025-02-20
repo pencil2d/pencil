@@ -280,9 +280,11 @@ Status MovieImporter::generateFrames(std::function<bool(int)> progress)
     auto amountOfFrames = tempDir.count();
     QString currentFile(tempDir.filePath(QString("%1.png").arg(i, 5, 10, QChar('0'))));
 
+    ImportImageConfig importImageConfig;
+    importImageConfig.positionType = ImportImageConfig::CenterOfCameraFollowed;
     while (QFileInfo::exists(currentFile))
     {
-        status = mEditor->importImage(currentFile, ImportPositionType::CenterOfCameraFollowed);
+        status = mEditor->importImage(currentFile, importImageConfig);
 
         if (!status.ok()) {
             break;
