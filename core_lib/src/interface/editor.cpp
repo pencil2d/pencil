@@ -1022,8 +1022,7 @@ Status Editor::importImage(const QString& filePath, const ImportImageConfig impo
         case ImportImageConfig::CenterOfCamera: {
             LayerCamera* layerCam = static_cast<LayerCamera*>(layers()->getCameraLayerBelow(currentLayerIndex()));
             Q_ASSERT(layerCam);
-            Camera* camKey = layerCam->getLastCameraAtFrame(importConfig.importFrame, 0);
-            transform = layerCam->getViewAtFrame(camKey->pos()).inverted();
+            transform = layerCam->getViewAtFrame(importConfig.importFrame).inverted();
             break;
         }
         case ImportImageConfig::CenterOfCameraFollowed: {
