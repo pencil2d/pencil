@@ -170,7 +170,7 @@ void ImportImageSeqDialog::setSpace(int number)
     uiOptionsBox->spaceSpinBox->setValue(number);
 }
 
-void ImportImageSeqDialog::importArbitrarySequence(const ImportPositionType& importPositionType)
+void ImportImageSeqDialog::importArbitrarySequence(const ImportPositionType importPositionType)
 {
     QStringList files = getFilePaths();
     int number = getSpace();
@@ -288,7 +288,7 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
     return setParams;
 }
 
-void ImportImageSeqDialog::importPredefinedSet(const ImportPositionType& importPositionType)
+void ImportImageSeqDialog::importPredefinedSet(const ImportPositionType importPositionType)
 {
     PredefinedKeySet keySet = generatePredefinedKeySet();
 

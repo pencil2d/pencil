@@ -174,7 +174,7 @@ public: //slots
 
     void clearCurrentFrame();
 
-    Status importImage(const QString& filePath, const ImportPositionType& importOption);
+    Status importImage(const QString& filePath, ImportPositionType importOption);
     Status importAnimatedImage(const QString& filePath, int frameSpacing, const std::function<void (int)>& progressChanged, const std::function<bool ()>& wasCanceled);
     void restoreKey();
 

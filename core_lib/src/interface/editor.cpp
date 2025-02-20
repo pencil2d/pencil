@@ -1009,7 +1009,7 @@ Status Editor::importVectorImage(const QString& filePath)
     return status;
 }
 
-Status Editor::importImage(const QString& filePath, const ImportPositionType& importOption)
+Status Editor::importImage(const QString& filePath, const ImportPositionType importOption)
 {
     Layer* layer = layers()->currentLayer();
 
