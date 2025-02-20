@@ -641,10 +641,13 @@ bool Layer::moveSelectedFrames(int offset)
         step = 1;
 
         // Check if we are not moving out of the timeline
-        if (mSelectedFrames_byPosition[0] + offset < 1) return false;
+        if (mSelectedFrames_byPosition[0] + offset < 1) {
+            offset = 1 - mSelectedFrames_byPosition[0];
+        }
     }
 
-    if (!canMoveSelectedFramesToOffset(offset)) { return false; }
+    while (!canMoveSelectedFramesToOffset(offset)) { offset += 1; }
+    if (offset == 0) { return false; }
 
     for (; indexInSelection > -1 && indexInSelection < mSelectedFrames_byPosition.count(); indexInSelection += step)
     {
