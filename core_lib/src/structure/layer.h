@@ -152,7 +152,6 @@ public:
 
     /** Predetermines whether the frames can be moved to a new position depending on the offset
      *
-     * @param fromIndex changes the start index to this, otherwise it's zero
      * @param offset Should be start press position - current position
      * @return true if selected frames can be moved otherwise false
      */
