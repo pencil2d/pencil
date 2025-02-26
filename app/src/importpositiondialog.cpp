@@ -20,10 +20,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QStandardItemModel>
 #include "editor.h"
-#include "layercamera.h"
-#include "viewmanager.h"
 #include "layermanager.h"
-#include "scribblearea.h"
 
 ImportPositionDialog::ImportPositionDialog(Editor* editor, QWidget *parent) :
     QDialog(parent),
@@ -59,44 +56,15 @@ ImportPositionDialog::~ImportPositionDialog()
 
 void ImportPositionDialog::didChangeComboBoxIndex(const int index)
 {
-    mImportOption = ImportPosition::getTypeFromIndex(index);
+    mImportConfig.positionType = getTypeFromIndex(index);
 }
 
 void ImportPositionDialog::changeImportView()
 {
-    mEditor->view()->setImportFollowsCamera(false);
-    QTransform transform;
-    if (mImportOption == ImportPosition::Type::CenterOfView)
-    {
-        QPointF centralPoint = mEditor->getScribbleArea()->getCentralPoint();
-        transform = transform.fromTranslate(centralPoint.x(), centralPoint.y());
-        mEditor->view()->setImportView(transform);
-        QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
-        return;
-    }
-    else if (mImportOption == ImportPosition::Type::CenterOfCanvas)
-    {
-        transform = transform.fromTranslate(0, 0);
-        mEditor->view()->setImportView(transform);
-        QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
-        return;
-    }
-    else if (mImportOption == ImportPosition::Type::CenterOfCamera)
-    {
-        LayerCamera* layerCam = static_cast<LayerCamera*>(mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()));
-        Q_ASSERT(layerCam);
-        QRectF cameraRect = layerCam->getViewRect();
-        transform = transform.fromTranslate(cameraRect.center().x(), cameraRect.center().y());
-        mEditor->view()->setImportView(transform);
-        QSettings settings(PENCIL2D, PENCIL2D);
-        settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
-        return;
+    if (mImportConfig.positionType == ImportImageConfig::CenterOfCamera) {
+        mImportConfig.importFrame = mEditor->currentFrame();
     }
 
-    Q_ASSERT(mImportOption == ImportPosition::Type::CenterOfCameraFollowed);
-    mEditor->view()->setImportFollowsCamera(true);
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(IMPORT_REPOSITION_TYPE, ui->cbImagePosition->currentIndex());
 }

@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include "importexportdialog.h"
 #include "pencilerror.h"
 #include "predefinedsetmodel.h"
+#include "importimageconfig.h"
 
 class Editor;
 
@@ -52,8 +53,8 @@ public:
                                   ImportCriteria importCriteria = ImportCriteria::Arbitrary);
     ~ImportImageSeqDialog() override;
 
-    void importArbitrarySequence();
-    void importPredefinedSet();
+    void importArbitrarySequence(const ImportImageConfig importImageConfig);
+    void importPredefinedSet(const ImportImageConfig importImageConfig);
     int getSpace();
 
     void setCore(Editor* editor) { mEditor = editor; }
