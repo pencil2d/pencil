@@ -87,8 +87,6 @@ bool ScribbleArea::init()
 
     mMakeInvisible = false;
 
-    mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
-
     mLayerVisibility = static_cast<LayerVisibility>(mPrefs->getInt(SETTING::LAYER_VISIBILITY));
 
     mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_SCROLL_ZOOM_DIRECTION) ? -1 : 1;
@@ -148,8 +146,7 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::ONION_WHILE_PLAYBACK:
         invalidateAllCache();
         break;
-    case SETTING::MULTILAYER_ONION:
-        mMultiLayerOnionSkin = mPrefs->isOn(SETTING::MULTILAYER_ONION);
+    case SETTING::ONION_MUTLIPLE_LAYERS:
         invalidateAllCache();
         break;
     case SETTING::LAYER_VISIBILITY_THRESHOLD:
@@ -1080,7 +1077,7 @@ void ScribbleArea::prepCameraPainter(int frame)
                                   mEditor->playback()->isPlaying(),
                                   mLayerVisibility,
                                   mPrefs->getFloat(SETTING::LAYER_VISIBILITY_THRESHOLD),
-                                  mEditor->view()->getViewScaleInverse());
+                                  mEditor->view()->getScaleInversed());
 
     OnionSkinPainterOptions onionSkinOptions;
     onionSkinOptions.enabledWhilePlaying = mPrefs->getInt(SETTING::ONION_WHILE_PLAYBACK);
@@ -1103,6 +1100,7 @@ void ScribbleArea::prepCanvas(int frame)
     Object* object = mEditor->object();
 
     CanvasPainterOptions o;
+    o.bOnionSkinMultiLayer = mPrefs->isOn(SETTING::ONION_MUTLIPLE_LAYERS);
     o.bAntiAlias = mPrefs->isOn(SETTING::ANTIALIAS);
     o.bThinLines = mPrefs->isOn(SETTING::INVISIBLE_LINES);
     o.bOutlines = mPrefs->isOn(SETTING::OUTLINES);

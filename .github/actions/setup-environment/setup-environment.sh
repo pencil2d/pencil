@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 
 setup_linux() {
-  echo "MAKEFLAGS=-j2" >> "${GITHUB_ENV}"
+  echo "MAKEFLAGS=-j2" >> "${GITHUB_WORKSPACE}/env"
   # Our container image uses the non-Unicode C locale by default
-  echo "LANG=C.UTF-8" >> "${GITHUB_ENV}"
+  echo "LANG=C.UTF-8" >> "${GITHUB_WORKSPACE}/env"
   # Set up Qt environment variables and export them to the GitHub Actions workflow
-  if [ -f /opt/qt515/bin/qt515-env.sh ]; then
-    (printenv; (. /opt/qt515/bin/qt515-env.sh; printenv)) | sort -st= -k1,1 | uniq -u >> "${GITHUB_ENV}"
-  fi
+  ${BUILD_CMD} bash -c 'if [ -f /opt/qt515/bin/qt515-env.sh ]; then (printenv; (. /opt/qt515/bin/qt515-env.sh; printenv)); fi' | sort -st= -k1,1 | uniq -u >> "${GITHUB_WORKSPACE}/env"
 }
 
 setup_macos() {

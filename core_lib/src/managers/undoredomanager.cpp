@@ -86,7 +86,7 @@ Status UndoRedoManager::save(Object* /*o*/)
 {
     if (mNewBackupSystemEnabled) {
         mUndoStack.setClean();
-    } else {
+    } else if (!mLegacyBackupList.isEmpty() && mLegacyBackupIndex < mLegacyBackupList.count()) {
         mLegacyBackupAtSave = mLegacyBackupList[mLegacyBackupIndex];
     }
     return Status::OK;

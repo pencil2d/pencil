@@ -19,8 +19,6 @@ GNU General Public License for more details.
 #define MAINWINDOW2_H
 
 #include <QMainWindow>
-#include "preferencemanager.h"
-
 
 template<typename T> class QList;
 class QActionGroup;
@@ -44,6 +42,7 @@ class ImportImageSeqDialog;
 class UndoRedoCommand;
 class LayerOpacityDialog;
 class PegBarAlignmentDialog;
+class AddTransparencyToPaperDialog;
 class RepositionFramesDialog;
 class StatusBar;
 enum class SETTING;
@@ -71,6 +70,7 @@ public slots:
     void openRepositionDialog();
     void closeRepositionDialog();
     void openLayerOpacityDialog();
+    void openAddTranspToPaperDialog();
     void currentLayerChanged();
     void selectionChanged();
     void viewFlipped();
@@ -171,6 +171,7 @@ private:
     PegBarAlignmentDialog* mPegAlign = nullptr;
     RepositionFramesDialog* mReposDialog = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;
+    AddTransparencyToPaperDialog* mAddTranspToPaper = nullptr;
 
     void createToolbars();
 private:

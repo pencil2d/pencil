@@ -525,7 +525,6 @@ bool Object::exportPalette(const QString& filePath) const
     else
         exportPalettePencil(file);
 
-    file.close();
     return true;
 }
 
@@ -672,7 +671,6 @@ bool Object::importPalette(const QString& filePath)
     } else {
         importPalettePencil(file);
     }
-    file.close();
     return true;
 }
 

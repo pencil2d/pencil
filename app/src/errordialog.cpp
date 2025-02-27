@@ -17,6 +17,9 @@ GNU General Public License for more details.
 #include "errordialog.h"
 #include "ui_errordialog.h"
 
+#include <QPushButton>
+#include <QClipboard>
+
 ErrorDialog::ErrorDialog( QString title, QString description, QString details, QWidget *parent ) :
     QDialog( parent ),
     ui(new Ui::ErrorDialog)
@@ -34,9 +37,18 @@ ErrorDialog::ErrorDialog( QString title, QString description, QString details, Q
     {
         ui->details->setText( QString( "<pre>%1</pre>" ).arg( details ) );
     }
+
+    QPushButton* copyToClipboard = new QPushButton(tr("Copy to Clipboard"));
+    ui->buttonBox->addButton(copyToClipboard, QDialogButtonBox::ActionRole);
+
+    connect(copyToClipboard, &QPushButton::clicked, this, &ErrorDialog::onCopyToClipboard);
 }
 
 ErrorDialog::~ErrorDialog()
 {
     delete ui;
+}
+
+void ErrorDialog::onCopyToClipboard() {
+    QGuiApplication::clipboard()->setText(ui->details->toPlainText());
 }

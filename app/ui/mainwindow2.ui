@@ -104,6 +104,13 @@
      <addaction name="actionFlip_X"/>
      <addaction name="actionFlip_Y"/>
     </widget>
+    <widget class="QMenu" name="menuPrepare_scanned_drawings">
+     <property name="title">
+      <string>Prepare Scanned Drawings</string>
+     </property>
+     <addaction name="actionPegbarAlignment"/>
+     <addaction name="actionAdd_Transparency_to_paper"/>
+    </widget>
     <addaction name="actionUndo"/>
     <addaction name="actionRedo"/>
     <addaction name="separator"/>
@@ -118,7 +125,7 @@
     <addaction name="actionSelect_All"/>
     <addaction name="actionDeselect_All"/>
     <addaction name="separator"/>
-    <addaction name="actionPegbarAlignment"/>
+    <addaction name="menuPrepare_scanned_drawings"/>
     <addaction name="separator"/>
     <addaction name="actionPreference"/>
    </widget>
@@ -972,7 +979,7 @@
   </action>
   <action name="actionPegbarAlignment">
    <property name="text">
-    <string>Peg bar Alignment</string>
+    <string>Peg Bar Alignment</string>
    </property>
   </action>
   <action name="actionImport_MovieAudio">
@@ -1060,6 +1067,11 @@
   <action name="actionReset_Rotation">
    <property name="text">
     <string>Reset Rotation</string>
+   </property>
+  </action>
+  <action name="actionAdd_Transparency_to_paper">
+   <property name="text">
+    <string>Replace Paper with Transparency</string>
    </property>
   </action>
   <action name="actionAdd_Frame_Exposure">
@@ -1271,14 +1283,6 @@
    </property>
    <property name="text">
     <string>30°</string>
-   </property>
-  </action>
-  <action name="actionRemoveLastPolylineSegment">
-   <property name="text">
-    <string>Remove Last Polyline Segment</string>
-   </property>
-   <property name="toolTip">
-    <string>Removes the lastest Polyline segment</string>
    </property>
   </action>
  </widget>
