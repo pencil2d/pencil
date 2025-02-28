@@ -92,14 +92,14 @@ Status UndoRedoManager::save(Object* /*o*/)
     return Status::OK;
 }
 
-void UndoRedoManager::record(const UndoSaveState* undoState, const QString& description)
+void UndoRedoManager::record(UndoSaveState*& undoState, const QString& description)
 {
     if (!undoState) {
         return;
     }
 
     if (!mNewBackupSystemEnabled && undoState) {
-        clearCurrentState();
+        clearState(undoState);
         return;
     }
 
@@ -131,14 +131,15 @@ void UndoRedoManager::record(const UndoSaveState* undoState, const QString& desc
 
 
     // The save state has now been used and should be invalidated so we can't use it again.
-    clearCurrentState();
+    clearState(undoState);
 }
 
-void UndoRedoManager::clearCurrentState()
+void UndoRedoManager::clearState(UndoSaveState*& state)
 {
     if (mCurrentState) {
         delete mCurrentState;
         mCurrentState = nullptr;
+        state = nullptr;
     }
 }
 
@@ -246,7 +247,7 @@ void UndoRedoManager::replaceVector(const UndoSaveState& undoState, const QStrin
 
 UndoSaveState* UndoRedoManager::createState(UndoRedoRecordType recordType)
 {
-    clearCurrentState();
+    clearState(mCurrentState);
 
     mCurrentState = new UndoSaveState();
     mCurrentState->recordType = recordType;

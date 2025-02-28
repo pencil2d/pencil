@@ -96,7 +96,9 @@ struct UndoSaveState {
 
     ~UndoSaveState()
     {
-        keyframe.reset();
+        if (recordType != UndoRedoRecordType::INVALID) {
+            keyframe.reset();
+        }
     }
 
     // Common data
@@ -104,10 +106,9 @@ struct UndoSaveState {
     int layerId = 0;
     int currentFrameIndex = 0;
     Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
-    std::unique_ptr<KeyFrame> keyframe = nullptr;
-    SelectionSaveState selectionState = {};
-    //
 
+    std::unique_ptr<KeyFrame> keyframe;
+    SelectionSaveState selectionState = {};
     MoveFramesSaveState moveFramesState = {};
 };
 
@@ -128,7 +129,7 @@ public:
     * @param undoState The state to record.
     * @param description The description that will bound to the undo/redo action.
     */
-    void record(const UndoSaveState* undoState, const QString& description);
+    void record(UndoSaveState*& undoState, const QString& description);
 
 
     /** Checks whether there are unsaved changes.
@@ -188,7 +189,7 @@ private:
 
     void pushCommand(QUndoCommand* command);
 
-    void clearCurrentState();
+    void clearState(UndoSaveState*& state);
 
     void legacyUndo();
     void legacyRedo();
