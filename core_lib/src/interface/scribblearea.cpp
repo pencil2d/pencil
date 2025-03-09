@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QPixmapCache>
 #include <QTimer>
 
+#include "basetool.h"
 #include "pointerevent.h"
 #include "beziercurve.h"
 #include "object.h"
@@ -291,7 +292,7 @@ void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
 {
     switch (type)
     {
-    case ToolPropertyType::CAMERAPATH:
+    case ToolPropertyType::CAMERA_SHOWPATH_CHECKED:
         onFrameModified(mEditor->currentFrame());
         break;
     default:
@@ -800,10 +801,6 @@ void ScribbleArea::paintBitmapBuffer()
         case BRUSH:
         case PEN:
         case PENCIL:
-            if (currentTool()->properties.preserveAlpha)
-            {
-                cm = QPainter::CompositionMode_SourceOver;
-            }
             break;
         default: //nothing
             break;
@@ -1048,7 +1045,14 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
     if (currentSelectionRect.isEmpty()) { return; }
 
     TransformParameters params = { currentSelectionRect, editor()->view()->getView(), selectMan->selectionTransform() };
-    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
+
+    // TODO: this should not use SELECT tool specifically.. we need to fetch this from SELECT or move tool respectively
+    // consider creating a TRANSFORM tool category.
+    mSelectionPainter.paint(painter,
+                            object,
+                            mEditor->currentLayerIndex(),
+                            static_cast<const SelectionSettings*>(editor()->tools()->getTool(SELECT)->getProperties()),
+                            params);
     emit selectionUpdated();
 }
 

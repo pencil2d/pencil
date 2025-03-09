@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 class Editor;
 class Layer;
+class BucketTool;
 
 namespace Ui {
 class BucketOptionsWidget;
@@ -49,6 +50,7 @@ public:
 private:
     void updatePropertyVisibility();
 
+    BucketTool* mBucketTool;
     Ui::BucketOptionsWidget *ui;
     Editor* mEditor = nullptr;
 

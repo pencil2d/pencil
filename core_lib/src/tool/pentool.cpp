@@ -48,59 +48,14 @@ void PenTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("penWidth", 12.0).toDouble();
-    properties.pressure = settings.value("penPressure", true).toBool();
-    properties.invisibility = OFF;
-    properties.preserveAlpha = OFF;
-    properties.useAA = settings.value("penAA", true).toBool();
-    properties.stabilizerLevel = settings.value("penLineStabilization", StabilizationLevel::STRONG).toInt();
+    QHash<int, PropertyInfo> info;
+
+    info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 12.0 };
+    info[StrokeSettings::PRESSURE_ON] = true;
+    info[StrokeSettings::ANTI_ALIASING_ON] = true;
+    info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-}
-
-void PenTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    settings.setValue("penWidth", properties.width);
-    settings.setValue("penPressure", properties.pressure);
-    settings.setValue("penAA", properties.useAA);
-    settings.setValue("penLineStabilization", properties.stabilizerLevel);
-
-    settings.sync();
-}
-
-void PenTool::resetToDefault()
-{
-    setWidth(12.0);
-    setUseFeather(false);
-    setPressure(true);
-    setStabilizerLevel(StabilizationLevel::STRONG);
-    setAA(1);
-}
-
-void PenTool::setWidth(const qreal width)
-{
-    // Set current property
-    properties.width = width;
-}
-
-void PenTool::setPressure(const bool pressure)
-{
-    // Set current property
-    properties.pressure = pressure;
-}
-
-void PenTool::setAA(const int AA)
-{
-    // Set current property
-    properties.useAA = AA;
-
-}
-
-void PenTool::setStabilizerLevel(const int level)
-{
-    properties.stabilizerLevel = level;
 }
 
 QCursor PenTool::cursor()
@@ -138,9 +93,9 @@ void PenTool::pointerMoveEvent(PointerEvent* event)
     {
         mCurrentPressure = mInterpolator.getPressure();
         drawStroke();
-        if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
+        if (properties.stabilizerLevel() != mInterpolator.getStabilizerLevel())
         {
-            mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
+            mInterpolator.setStabilizerLevel(properties.stabilizerLevel());
         }
     }
 
@@ -184,14 +139,14 @@ void PenTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-        qreal brushWidth = properties.width * pressure;
+        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width() * pressure;
         mCurrentWidth = brushWidth;
 
         mScribbleArea->drawPen(point,
                                brushWidth,
                                mEditor->color()->frontColor(),
-                               properties.useAA);
+                               properties.useAntiAliasing());
     }
 }
 
@@ -204,8 +159,8 @@ void PenTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-        qreal brushWidth = properties.width * pressure;
+        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width() * pressure;
         mCurrentWidth = brushWidth;
 
         // TODO: Make popup widget for less important properties,
@@ -225,7 +180,7 @@ void PenTool::drawStroke()
             mScribbleArea->drawPen(point,
                                    brushWidth,
                                    mEditor->color()->frontColor(),
-                                   properties.useAA);
+                                   properties.useAntiAliasing());
 
             if (i == (steps - 1))
             {
@@ -235,8 +190,8 @@ void PenTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-        qreal brushWidth = properties.width * pressure;
+        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
+        qreal brushWidth = properties.width() * pressure;
 
         QPen pen(mEditor->color()->frontColor(),
                  brushWidth,
@@ -263,11 +218,11 @@ void PenTool::paintVectorStroke(Layer* layer)
     qreal tol = mScribbleArea->getCurveSmoothing() / mEditor->view()->scaling();
 
     BezierCurve curve(mStrokePoints, mStrokePressures, tol);
-    curve.setWidth(properties.width);
-    curve.setFeather(properties.feather);
+    curve.setWidth(properties.width());
+    curve.setFeather(properties.feather());
     curve.setFilled(false);
-    curve.setInvisibility(properties.invisibility);
-    curve.setVariableWidth(properties.pressure);
+    curve.setInvisibility(properties.invisibility());
+    curve.setVariableWidth(properties.usePressure());
     curve.setColorNumber(mEditor->color()->frontColorNumber());
 
     auto pLayerVector = static_cast<LayerVector*>(layer);

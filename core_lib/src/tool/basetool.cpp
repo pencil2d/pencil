@@ -41,6 +41,7 @@ QString BaseTool::TypeName(ToolType type)
         map[BUCKET] = tr("Bucket");
         map[EYEDROPPER] = tr("Eyedropper");
         map[BRUSH] = tr("Brush");
+        map[CAMERA] = tr("Camera");
     }
     return map.at(type);
 }
@@ -58,7 +59,23 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(ANTI_ALIASING, false);
     mPropertyEnabled.insert(FILL_MODE, false);
     mPropertyEnabled.insert(STABILIZATION, false);
-    mPropertyEnabled.insert(CAMERAPATH, false);
+    mPropertyEnabled.insert(CAMERA_SHOWPATH_CHECKED, false);
+}
+
+void BaseTool::saveSettings()
+{
+    if (getProperties()) {
+        QSettings settings(PENCIL2D, PENCIL2D);
+        getProperties()->save(settings);
+    }
+}
+
+void BaseTool::resetSettings()
+{
+    if (getProperties()) {
+        QSettings settings(PENCIL2D, PENCIL2D);
+        getProperties()->setDefaults();
+    }
 }
 
 QCursor BaseTool::cursor()
@@ -125,113 +142,4 @@ bool BaseTool::isDrawingTool()
 bool BaseTool::isActive() const
 {
     return false;
-}
-
-void BaseTool::setWidth(const qreal width)
-{
-    properties.width = width;
-}
-
-void BaseTool::setFeather(const qreal feather)
-{
-    properties.feather = feather;
-}
-
-void BaseTool::setUseFeather(const bool usingFeather)
-{
-    properties.useFeather = usingFeather;
-}
-
-void BaseTool::setInvisibility(const bool invisibility)
-{
-    properties.invisibility = invisibility;
-}
-
-void BaseTool::setBezier(const bool _bezier_state)
-{
-    properties.bezier_state = _bezier_state;
-}
-
-void BaseTool::setClosedPath(const bool closed)
-{
-    properties.closedPolylinePath = closed;
-}
-
-void BaseTool::setPressure(const bool pressure)
-{
-    properties.pressure = pressure;
-}
-
-void BaseTool::setPreserveAlpha(const bool preserveAlpha)
-{
-    properties.preserveAlpha = preserveAlpha;
-}
-
-void BaseTool::setVectorMergeEnabled(const bool vectorMergeEnabled)
-{
-    properties.vectorMergeEnabled = vectorMergeEnabled;
-}
-
-void BaseTool::setAA(const int useAA)
-{
-    properties.useAA = useAA;
-}
-
-void BaseTool::setFillMode(const int mode)
-{
-    properties.fillMode = mode;
-}
-
-void BaseTool::setStabilizerLevel(const int level)
-{
-    properties.stabilizerLevel = level;
-}
-
-void BaseTool::setTolerance(const int tolerance)
-{
-    properties.tolerance = tolerance;
-}
-
-void BaseTool::setToleranceEnabled(const bool enabled)
-{
-    properties.toleranceEnabled = enabled;
-}
-
-void BaseTool::setFillExpand(const int fillExpandValue)
-{
-    properties.bucketFillExpand = fillExpandValue;
-}
-
-void BaseTool::setFillReferenceMode(int referenceMode)
-{
-    properties.bucketFillReferenceMode = referenceMode;
-}
-
-void BaseTool::setFillExpandEnabled(const bool enabled)
-{
-    properties.bucketFillExpandEnabled = enabled;
-}
-
-void BaseTool::setUseFillContour(const bool useFillContour)
-{
-    properties.useFillContour = useFillContour;
-}
-
-void BaseTool::setShowSelectionInfo(const bool b)
-{
-    properties.showSelectionInfo = b;
-}
-
-void BaseTool::setShowCameraPath(const bool showCameraPath)
-{
-    properties.cameraShowPath = showCameraPath;
-}
-
-void BaseTool::setPathDotColorType(const DotColorType dotColorType)
-{
-    properties.cameraPathDotColorType = dotColorType;
-}
-
-void BaseTool::resetCameraPath()
-{
 }

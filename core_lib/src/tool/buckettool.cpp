@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layermanager.h"
 #include "colormanager.h"
+#include "toolmanager.h"
 #include "viewmanager.h"
 #include "vectorimage.h"
 #include "editor.h"
@@ -50,43 +51,17 @@ void BucketTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("fillThickness", 4.0).toDouble();
-    properties.feather = 10;
-    properties.stabilizerLevel = StabilizationLevel::NONE;
-    properties.useAA = DISABLED;
-    properties.tolerance = settings.value(SETTING_BUCKET_TOLERANCE, 32.0).toDouble();
-    properties.toleranceEnabled = settings.value(SETTING_BUCKET_TOLERANCE_ON, false).toBool();
+    QHash<int, PropertyInfo> info;
 
-    properties.bucketFillExpand = settings.value(SETTING_BUCKET_FILL_EXPAND, 2.0).toInt();
-    properties.bucketFillExpandEnabled = settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool();
-    properties.bucketFillReferenceMode = settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt();
-    properties.fillMode = settings.value(SETTING_FILL_MODE, 0).toInt();
-}
+    info[BucketSettings::WIDTH_VALUE] = { 0.0, 100.0, 4.0 };
+    info[BucketSettings::TOLERANCE_VALUE] = { 0, 100, 32 };
+    info[BucketSettings::TOLERANCE_ON] = false;
+    info[BucketSettings::FILLEXPAND_VALUE] = { 0, 25, 2 };
+    info[BucketSettings::FILLEXPAND_ON] = true;
+    info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { 0, 1, 0 };
+    info[BucketSettings::FILLMODE_VALUE] = { 0, 2, 0 };
 
-void BucketTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    settings.setValue("fillThickness", properties.width);
-    settings.setValue(SETTING_BUCKET_TOLERANCE, properties.tolerance);
-    settings.setValue(SETTING_BUCKET_TOLERANCE_ON, properties.toleranceEnabled);
-    settings.setValue(SETTING_BUCKET_FILL_EXPAND, properties.bucketFillExpand);
-    settings.setValue(SETTING_BUCKET_FILL_EXPAND_ON, properties.bucketFillExpandEnabled);
-    settings.setValue(SETTING_BUCKET_FILL_REFERENCE_MODE, properties.bucketFillReferenceMode);
-    settings.setValue(SETTING_FILL_MODE, properties.fillMode);
-
-    settings.sync();
-}
-
-void BucketTool::resetToDefault()
-{
-    setWidth(4.0);
-    setTolerance(32.0);
-    setFillMode(0);
-    setFillExpand(2);
-    setFillExpandEnabled(true);
-    setToleranceEnabled(false);
-    setFillReferenceMode(0);
+    properties.load(typeName(), settings, info);
 }
 
 QCursor BucketTool::cursor()
@@ -99,51 +74,6 @@ QCursor BucketTool::cursor()
     {
         return QCursor(QPixmap(":icons/general/cross.png"), 10, 10);
     }
-}
-
-void BucketTool::setTolerance(const int tolerance)
-{
-    // Set current property
-    properties.tolerance = tolerance;
-}
-
-/**
- * @brief BrushTool::setWidth
- * @param width
- * set fill thickness
- */
-void BucketTool::setWidth(const qreal width)
-{
-    // Set current property
-    properties.width = width;
-}
-
-void BucketTool::setFillMode(int mode)
-{
-    // Set current property
-    properties.fillMode = mode;
-}
-
-void BucketTool::setToleranceEnabled(const bool enabled)
-{
-    properties.toleranceEnabled = enabled;
-
-}
-
-void BucketTool::setFillExpandEnabled(const bool enabled)
-{
-    properties.bucketFillExpandEnabled = enabled;
-
-}
-
-void BucketTool::setFillExpand(const int fillExpandValue)
-{
-    properties.bucketFillExpand = fillExpandValue;
-}
-
-void BucketTool::setFillReferenceMode(int referenceMode)
-{
-    properties.bucketFillReferenceMode = referenceMode;
 }
 
 void BucketTool::pointerPressEvent(PointerEvent* event)
@@ -239,7 +169,7 @@ void BucketTool::paintVector(Layer* layer)
         vectorImage->fillSelectedPath(mEditor->color()->frontColorNumber());
     }
 
-    vectorImage->applyWidthToSelection(properties.width);
+    vectorImage->applyWidthToSelection(properties.thickness());
     vectorImage->applyColorToSelectedCurve(mEditor->color()->frontColorNumber());
     vectorImage->applyColorToSelectedArea(mEditor->color()->frontColorNumber());
 
@@ -257,9 +187,9 @@ void BucketTool::drawStroke()
 {
     StrokeTool::drawStroke();
 
-    if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
+    if (properties.stabilizerLevel() != mInterpolator.getStabilizerLevel())
     {
-        mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
+        mInterpolator.setStabilizerLevel(properties.stabilizerLevel());
     }
 
     QList<QPointF> p = mInterpolator.interpolateStroke();
@@ -285,3 +215,47 @@ void BucketTool::drawStroke()
         }
     }
 }
+
+void BucketTool::setWidth(qreal width)
+{
+    properties.setBaseValue(BucketSettings::WIDTH_VALUE, width);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::WIDTH);
+}
+
+void BucketTool::setTolerance(int tolerance)
+{
+    properties.setBaseValue(BucketSettings::TOLERANCE_VALUE, tolerance);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::TOLERANCE);
+}
+
+void BucketTool::setToleranceON(bool isON)
+{
+    properties.setBaseValue(BucketSettings::TOLERANCE_ON, isON);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::USETOLERANCE);
+}
+
+void BucketTool::setFillExpand(int fillExpandValue)
+{
+    properties.setBaseValue(BucketSettings::FILLEXPAND_VALUE, fillExpandValue);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::BUCKETFILLEXPAND);
+}
+
+void BucketTool::setFillExpandON(bool isON)
+{
+    properties.setBaseValue(BucketSettings::FILLEXPAND_ON, isON);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::USEBUCKETFILLEXPAND);
+}
+
+void BucketTool::setFillReferenceMode(int referenceMode)
+{
+    properties.setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, referenceMode);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::BUCKETFILLLAYERREFERENCEMODE);
+}
+
+void BucketTool::setFillMode(int mode)
+{
+    properties.setBaseValue(BucketSettings::FILLMODE_VALUE, mode);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::FILL_MODE);
+}
+
+

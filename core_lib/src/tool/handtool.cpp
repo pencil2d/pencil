@@ -35,18 +35,8 @@ HandTool::HandTool(QObject* parent) : BaseTool(parent)
 
 void HandTool::loadSettings()
 {
-    properties.width = -1;
-    properties.feather = -1;
-    properties.useFeather = false;
-    properties.stabilizerLevel = -1;
-    properties.useAA = -1;
-
     mDeltaFactor = mEditor->preference()->isOn(SETTING::INVERT_DRAG_ZOOM_DIRECTION) ? -1 : 1;
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &HandTool::updateSettings);
-}
-
-void HandTool::saveSettings()
-{
 }
 
 void HandTool::updateSettings(const SETTING setting)

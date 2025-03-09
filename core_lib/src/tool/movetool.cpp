@@ -46,26 +46,16 @@ ToolType MoveTool::type()
 
 void MoveTool::loadSettings()
 {
-    properties.width = -1;
-    properties.feather = -1;
-    properties.useFeather = false;
-    properties.stabilizerLevel = -1;
-    properties.useAA = -1;
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
     mPropertyEnabled[SHOWSELECTIONINFO] = true;
 
+    QHash<int, PropertyInfo> info;
+
+    info[SHOWSELECTIONINFO] = false;
+    properties.load(typeName(), settings, info);
+
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
-}
-
-void MoveTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    settings.setValue("ShowSelectionInfo", properties.showSelectionInfo);
-
-    settings.sync();
 }
 
 QCursor MoveTool::cursor()
@@ -346,18 +336,9 @@ bool MoveTool::isActive() const {
            (mEditor->select()->somethingSelected() || mEditor->overlays()->getMoveMode() != MoveMode::NONE);
 }
 
-void MoveTool::resetToDefault()
+void MoveTool::setShowSelectionInfo(bool b)
 {
-    setShowSelectionInfo(false);
-}
-
-void MoveTool::setShowSelectionInfo(const bool b)
-{
-    properties.showSelectionInfo = b;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("ShowSelectionInfo", b);
-
+    properties.setBaseValue(SelectionSettings::SHOWSELECTIONINFO_ON, b);
 }
 
 Layer* MoveTool::currentPaintableLayer()

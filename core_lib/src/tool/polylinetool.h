@@ -28,10 +28,10 @@ class PolylineTool : public StrokeTool
 public:
     explicit PolylineTool(QObject* parent = 0);
     ToolType type() override;
+    ToolCategory category() override { return STROKETOOL; }
+
     void loadSettings() override;
-    void saveSettings() override;
     QCursor cursor() override;
-    void resetToDefault() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
@@ -43,14 +43,11 @@ public:
 
     void clearToolData() override;
 
-    void setWidth(const qreal width) override;
-    void setFeather(const qreal feather) override;
-    void setAA(const int AA) override;
-    void setClosedPath(const bool closed) override;
-
     bool leavingThisTool() override;
 
     bool isActive() const override;
+
+    ToolSettings* getProperties() override { return &properties; }
 
 private:
     QList<QPointF> mPoints;
@@ -60,6 +57,8 @@ private:
     void removeLastPolylineSegment();
     void cancelPolyline();
     void endPolyline(QList<QPointF> points);
+
+    PolyLineSettings properties;
 };
 
 #endif // POLYLINETOOL_H

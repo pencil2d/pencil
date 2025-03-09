@@ -32,22 +32,13 @@ SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
 
 void SelectTool::loadSettings()
 {
-    properties.width = -1;
-    properties.feather = -1;
-    properties.stabilizerLevel = -1;
-    properties.useAA = -1;
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
     mPropertyEnabled[SHOWSELECTIONINFO] = true;
-}
 
-void SelectTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
+    QHash<int, PropertyInfo> info;
 
-    settings.setValue("ShowSelectionInfo", properties.showSelectionInfo);
-
-    settings.sync();
+    info[SelectionSettings::SHOWSELECTIONINFO_ON] = false;
+    properties.load(typeName(), settings, info);
 }
 
 QCursor SelectTool::cursor()
@@ -88,16 +79,6 @@ QCursor SelectTool::cursor()
         break;
     }
     return QCursor(mCursorPixmap);
-}
-
-void SelectTool::resetToDefault()
-{
-    setShowSelectionInfo(false);
-}
-
-void SelectTool::setShowSelectionInfo(const bool b)
-{
-    properties.showSelectionInfo = b;
 }
 
 void SelectTool::beginSelection(Layer* currentLayer, const QPointF& pos)

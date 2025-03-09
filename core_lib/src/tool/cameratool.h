@@ -54,18 +54,21 @@ public:
     void paint(QPainter& painter, const QRect&) override;
 
     void loadSettings() override;
-    void saveSettings() override;
 
     void pointerPressEvent(PointerEvent* event) override;
     void pointerReleaseEvent(PointerEvent* event) override;
     void pointerMoveEvent(PointerEvent* event) override;
 
-    void setShowCameraPath(const bool showCameraPath) override;
-    void resetCameraPath() override;
-    void setPathDotColorType(const DotColorType pathDotColor) override;
+    void setCameraPathON(bool isON);
+    void resetCameraPath();
+    void setPathDotColorType(DotColorType pathDotColor);
     void resetTransform(CameraFieldOption option);
 
     void transformView(LayerCamera* layerCamera, CameraMoveType mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const;
+
+    ToolSettings* getProperties() override { return &properties; }
+
+    void performAction(ToolActionType actionType);
 
 private:
 
@@ -110,6 +113,8 @@ private:
     QColor mHandleColor;
     QColor mHandleDisabledColor;
     QColor mHandleTextColor;
+
+    CameraSettings properties;
 };
 
 #endif // CAMERATOOL_H

@@ -255,8 +255,8 @@ bool StrokeTool::leaveEvent(QEvent*)
 
 void StrokeTool::updateCanvasCursor()
 {
-    const qreal brushWidth = properties.width;
-    const qreal brushFeather = properties.feather;
+    const qreal brushWidth = properties.width();
+    const qreal brushFeather = properties.feather();
 
     const QPointF& cursorPos = msIsAdjusting ? mAdjustPosition : getCurrentPoint();
     const qreal cursorRad = brushWidth * 0.5;
@@ -305,15 +305,15 @@ bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers)
     switch (propertyType) {
     case WIDTH: {
         const qreal factor = 0.5;
-        const qreal rad = properties.width * factor;
+        const qreal rad = properties.width() * factor;
         const qreal distance = QLineF(currentPressPoint - QPointF(rad, rad), currentPoint).length();
         mAdjustPosition = currentPressPoint - QPointF(distance * factor, distance * factor);
         break;
     }
     case FEATHER: {
         const qreal factor = 0.5;
-        const qreal cursorRad = properties.width * factor;
-        const qreal featherWidthFactor = MathUtils::normalize(properties.feather, 0.0, FEATHER_MAX);
+        const qreal cursorRad = properties.width() * factor;
+        const qreal featherWidthFactor = MathUtils::normalize(properties.feather(), 0.0, FEATHER_MAX);
         const qreal offset = (cursorRad * featherWidthFactor) * factor;
         const qreal distance = QLineF(currentPressPoint - QPointF(offset, offset), currentPoint).length();
         mAdjustPosition = currentPressPoint - QPointF(distance, distance);
@@ -346,14 +346,13 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         // The adjusted position is based on the radius of the circle, so in order to
         // map it back to its original value, we can multiply by the factor we divided with
         const qreal newValue = QLineF(mAdjustPosition, getCurrentPoint()).length() * 2.0;
-
-        mEditor->tools()->setWidth(qBound(WIDTH_MIN, newValue, WIDTH_MAX));
+        setWidth(newValue);
         break;
     }
     case FEATHER: {
         // The radius of the width is the max value we can get
         const qreal inputMin = 0.0;
-        const qreal inputMax = properties.width * 0.5;
+        const qreal inputMax = properties.width() * 0.5;
         const qreal distance = QLineF(mAdjustPosition, getCurrentPoint()).length();
         const qreal outputMax = FEATHER_MAX;
         const qreal outputMin = 0.0;
@@ -361,7 +360,7 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         // We flip min and max here in order to get the inverted value for the UI
         const qreal mappedValue = MathUtils::map(distance, inputMin, inputMax, outputMax, outputMin);
 
-        mEditor->tools()->setFeather(qBound(FEATHER_MIN, mappedValue, FEATHER_MAX));
+        setFeather(mappedValue);
         break;
     }
     default:
@@ -375,3 +374,81 @@ void StrokeTool::paint(QPainter& painter, const QRect& blitRect)
 {
     mCanvasCursorPainter.paint(painter, blitRect);
 }
+
+void StrokeTool::setStablizationLevel(int level)
+{
+    properties.setBaseValue(StrokeSettings::STABILIZATION_VALUE, level);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::STABILIZATION);
+}
+
+void StrokeTool::setFeatherON(bool isON)
+{
+    properties.setBaseValue(StrokeSettings::FEATHER_ON, isON);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::USEFEATHER);
+}
+
+void StrokeTool::setFeather(qreal feather)
+{
+    properties.setBaseValue(StrokeSettings::FEATHER_VALUE, feather);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::FEATHER);
+}
+
+void StrokeTool::setWidth(qreal width)
+{
+    properties.setBaseValue(StrokeSettings::WIDTH_VALUE, width);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::WIDTH);
+}
+
+void StrokeTool::setPressureON(bool isON)
+{
+    properties.setBaseValue(StrokeSettings::PRESSURE_ON, isON);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::PRESSURE);
+}
+
+void StrokeTool::setFillContourON(bool isON)
+{
+    properties.setBaseValue(StrokeSettings::FILLCONTOUR_ON, isON);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::FILLCONTOUR);
+}
+
+void StrokeTool::setAntiAliasingON(bool isON)
+{
+    properties.setBaseValue(StrokeSettings::ANTI_ALIASING_ON, isON);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::ANTI_ALIASING);
+}
+
+void StrokeTool::setInvisibilityON(bool isON)
+{
+    properties.setBaseValue(StrokeSettings::INVISIBILITY_ON, isON);
+    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::INVISIBILITY);
+}
+
+// void StrokeTool::setProperty(Properties::Type type, int value)
+// {
+//     StrokeProperties::Type strokeType = static_cast<StrokeProperties::Type>(type);
+//     properties.set(strokeType, value);
+// }
+
+// void StrokeTool::setProperty(Properties::Type type, qreal value)
+// {
+//     StrokeProperties::Type strokeType = static_cast<StrokeProperties::Type>(type);
+//     switch (strokeType)
+//     {
+//         case StrokeProperties::WIDTH_VALUE: {
+//             if (std::isnan(value) || value < 0)
+//             {
+//                 value = 1.f;
+//             }
+//         }
+//     default:
+//         break;
+//     }
+
+//     properties.set(type, value);
+// }
+
+// void StrokeTool::setProperty(Properties::Type type, bool value)
+// {
+//     StrokeProperties::Type strokeType = static_cast<StrokeProperties::Type>(type);
+//     properties.set(type, value);
+// }

@@ -30,29 +30,38 @@ CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
     ui->setupUi(this);
 
     auto toolMan = mEditor->tools();
-    connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, toolMan, &ToolManager::setShowCameraPath);
-    connect(ui->pathColorComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), toolMan, &ToolManager::setCameraPathDotColor);
-    connect(ui->btnResetPath, &QPushButton::clicked, toolMan, &ToolManager::resetCameraPath);
+    mCameraTool = static_cast<CameraTool*>(toolMan->getTool(CAMERA));
+
+    connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, toolMan, [=](bool enabled) {
+        mCameraTool->setCameraPathON(enabled);
+    });
+
+    // TODO: should this be a tool property or an action with data?
+    connect(ui->pathColorComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), toolMan, [=](int value) {
+        mCameraTool->setPathDotColorType(static_cast<DotColorType>(value));
+    });
+
+    connect(ui->btnResetPath, &QPushButton::clicked, toolMan, [=]() {
+        mCameraTool->performAction(CAMERA_PATH_RESET);
+    });
 
     connect(ui->resetAllButton, &QPushButton::clicked, toolMan, [=] {
-        toolMan->resetCameraTransform(CameraFieldOption::RESET_FIELD);
+        mCameraTool->performAction(CAMERA_RESET_FIELD);
     });
     connect(ui->resetTranslationButton, &QPushButton::clicked, toolMan, [=] {
-        toolMan->resetCameraTransform(CameraFieldOption::RESET_TRANSLATION);
+        mCameraTool->performAction(CAMERA_RESET_TRANSLATION);
     });
     connect(ui->resetRotationButton, &QPushButton::clicked, toolMan, [=] {
-        toolMan->resetCameraTransform(CameraFieldOption::RESET_ROTATION);
+        mCameraTool->performAction(CAMERA_RESET_ROTATION);
     });
     connect(ui->resetScaleButton, &QPushButton::clicked, toolMan, [=] {
-        toolMan->resetCameraTransform(CameraFieldOption::RESET_SCALING);
+        mCameraTool->performAction(CAMERA_RESET_SCALING);
     });
 
     connect(toolMan, &ToolManager::toolPropertyChanged, this, &CameraOptionsWidget::onToolPropertyChanged);
 
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraOptionsWidget::updateUI);
     connect(mEditor->tools(), &ToolManager::toolChanged, this, &CameraOptionsWidget::updateUI);
-
-    mCameraTool = static_cast<CameraTool*>(mEditor->tools()->getTool(CAMERA));
 }
 
 CameraOptionsWidget::~CameraOptionsWidget()
@@ -65,19 +74,19 @@ void CameraOptionsWidget::updateUI()
 
     Q_ASSERT(mCameraTool->type() == CAMERA);
 
-    Properties p = mCameraTool->properties;
+    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->getProperties());
 
-    setShowCameraPath(p.cameraShowPath);
-    setPathDotColorType(p.cameraPathDotColorType);
+    setShowCameraPath(p->showPath());
+    setPathDotColorType(p->dotColorType());
 }
 
 void CameraOptionsWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType)
 {
-    const Properties& p = mCameraTool->properties;
+    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->getProperties());
 
     switch (ePropertyType)
     {
-    case CAMERAPATH: { setShowCameraPath(p.cameraShowPath); break; }
+    case CAMERA_SHOWPATH_CHECKED: { setShowCameraPath(p->showPath()); break; }
     default:
         break;
     }

@@ -30,9 +30,9 @@ class BrushTool : public StrokeTool
 public:
     explicit BrushTool(QObject* parent = 0);
     ToolType type() override;
+    ToolCategory category() override { return STROKETOOL; }
+
     void loadSettings() override;
-    void saveSettings() override;
-    void resetToDefault() override;
     QCursor cursor() override;
 
     void pointerMoveEvent(PointerEvent*) override;
@@ -42,12 +42,6 @@ public:
     void drawStroke();
     void paintVectorStroke(Layer* layer);
     void paintAt(QPointF point);
-
-    void setWidth(const qreal width) override;
-    void setFeather(const qreal feather) override;
-    void setPressure(const bool pressure) override;
-    void setInvisibility(const bool invisibility) override;
-    void setStabilizerLevel(const int level) override;
 
 protected:
     QPointF mLastBrushPoint;

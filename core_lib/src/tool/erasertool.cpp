@@ -54,80 +54,18 @@ void EraserTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("eraserWidth", 24.0).toDouble();
-    properties.feather = settings.value("eraserFeather", 48.0).toDouble();
-    properties.useFeather = settings.value("eraserUseFeather", true).toBool();
-    properties.pressure = settings.value("eraserPressure", true).toBool();
-    properties.invisibility = DISABLED;
-    properties.preserveAlpha = OFF;
-    properties.stabilizerLevel = settings.value("stabilizerLevel", StabilizationLevel::NONE).toInt();
-    properties.useAA = settings.value("eraserAA", 1).toInt();
+    QHash<int, PropertyInfo> info;
 
-    if (properties.useFeather) { properties.useAA = -1; }
+    info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
+    info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
+    info[StrokeSettings::FEATHER_ON] = true;
+    info[StrokeSettings::PRESSURE_ON] = true;
+    info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::NONE };
+    info[StrokeSettings::ANTI_ALIASING_ON] = true;
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
-
-void EraserTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    settings.setValue("eraserWidth", properties.width);
-    settings.setValue("eraserFeather", properties.feather);
-    settings.setValue("eraserUseFeather", properties.useFeather);
-    settings.setValue("eraserPressure", properties.pressure);
-    settings.setValue("eraserAA", properties.useAA);
-    settings.setValue("stabilizerLevel", properties.stabilizerLevel);
-
-    settings.sync();
-}
-
-void EraserTool::resetToDefault()
-{
-    setWidth(24.0);
-    setFeather(48.0);
-    setUseFeather(true);
-    setPressure(true);
-    setAA(true);
-    setStabilizerLevel(StabilizationLevel::NONE);
-}
-
-void EraserTool::setWidth(const qreal width)
-{
-    // Set current property
-    properties.width = width;
-}
-
-void EraserTool::setUseFeather(const bool usingFeather)
-{
-    // Set current property
-    properties.useFeather = usingFeather;
-}
-
-void EraserTool::setFeather(const qreal feather)
-{
-    // Set current property
-    properties.feather = feather;
-}
-
-void EraserTool::setPressure(const bool pressure)
-{
-    // Set current property
-    properties.pressure = pressure;
-}
-
-void EraserTool::setAA(const int AA)
-{
-    // Set current property
-    properties.useAA = AA;
-}
-
-void EraserTool::setStabilizerLevel(const int level)
-{
-    properties.stabilizerLevel = level;
-}
-
 
 QCursor EraserTool::cursor()
 {
@@ -159,9 +97,9 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
     {
         mCurrentPressure = mInterpolator.getPressure();
         updateStrokes();
-        if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
+        if (properties.stabilizerLevel() != mInterpolator.getStabilizerLevel())
         {
-            mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
+            mInterpolator.setStabilizerLevel(properties.stabilizerLevel());
         }
     }
 
@@ -201,19 +139,19 @@ void EraserTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal brushWidth = properties.width * pressure;
+        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width() * pressure;
         mCurrentWidth = brushWidth;
 
         mScribbleArea->drawBrush(point,
                                  brushWidth,
-                                 properties.feather,
+                                 properties.feather(),
                                  QColor(255, 255, 255, 255),
                                  QPainter::CompositionMode_SourceOver,
                                  opacity,
-                                 properties.useFeather,
-                                 properties.useAA == ON);
+                                 properties.useFeather(),
+                                 properties.useAntiAliasing() == ON);
     }
 }
 
@@ -226,9 +164,9 @@ void EraserTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (properties.pressure) ? mCurrentPressure : 1.0;
-        qreal opacity = (properties.pressure) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal brushWidth = properties.width * pressure;
+        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
+        qreal opacity = (properties.usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = properties.width() * pressure;
         mCurrentWidth = brushWidth;
 
         qreal brushStep = (0.5 * brushWidth);
@@ -248,12 +186,12 @@ void EraserTool::drawStroke()
 
             mScribbleArea->drawBrush(point,
                                      brushWidth,
-                                     properties.feather,
+                                     properties.feather(),
                                      Qt::white,
                                      QPainter::CompositionMode_SourceOver,
                                      opacity,
-                                     properties.useFeather,
-                                     properties.useAA == ON);
+                                     properties.useFeather(),
+                                     properties.useAntiAliasing() == ON);
             if (i == (steps - 1))
             {
                 mLastBrushPoint = getCurrentPoint();
@@ -262,8 +200,8 @@ void EraserTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        mCurrentWidth = properties.width;
-        if (properties.pressure)
+        mCurrentWidth = properties.width();
+        if (properties.usePressure())
         {
             mCurrentWidth = (mCurrentWidth + (mInterpolator.getPressure() * mCurrentWidth)) * 0.5;
         }
@@ -309,7 +247,7 @@ void EraserTool::updateStrokes()
 
     if (layer->type() == Layer::VECTOR)
     {
-        qreal radius = properties.width / 2;
+        qreal radius = properties.width() / 2;
 
         VectorImage* currKey = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         QList<VertexRef> nearbyVertices = currKey->getVerticesCloseTo(getCurrentPoint(), radius);

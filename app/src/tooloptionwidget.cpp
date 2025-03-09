@@ -22,6 +22,7 @@ GNU General Public License for more details.
 
 #include "cameraoptionswidget.h"
 #include "bucketoptionswidget.h"
+#include "strokeoptionswidget.h"
 #include "spinslider.h"
 #include "editor.h"
 #include "util.h"
@@ -49,18 +50,20 @@ void ToolOptionWidget::initUI()
 {
     mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
     mCameraOptionsWidget = new CameraOptionsWidget(editor(), this);
-    ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
-    ui->horizontalLayout_2->addWidget(mCameraOptionsWidget);
+    mStrokeOptionsWidget = new StrokeOptionsWidget(editor(), this);
+    ui->scrollAreaWidgetContents->layout()->addWidget(mBucketOptionsWidget);
+    ui->scrollAreaWidgetContents->layout()->addWidget(mCameraOptionsWidget);
+    ui->scrollAreaWidgetContents->layout()->addWidget(mStrokeOptionsWidget);
 
-    QSettings settings(PENCIL2D, PENCIL2D);
+    // QSettings settings(PENCIL2D, PENCIL2D);
 
-    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, SpinSlider::INTEGER, StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX);
-    ui->sizeSlider->setValue(settings.value("brushWidth", "3").toDouble());
-    ui->brushSpinBox->setValue(settings.value("brushWidth", "3").toDouble());
+    // ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, SpinSlider::INTEGER, StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX);
+    // ui->sizeSlider->setValue(settings.value("brushWidth", "3").toDouble());
+    // ui->brushSpinBox->setValue(settings.value("brushWidth", "3").toDouble());
 
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, StrokeTool::FEATHER_MIN, StrokeTool::FEATHER_MAX);
-    ui->featherSlider->setValue(settings.value("brushFeather", "5").toDouble());
-    ui->featherSpinBox->setValue(settings.value("brushFeather", "5").toDouble());
+    // ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, StrokeTool::FEATHER_MIN, StrokeTool::FEATHER_MAX);
+    // ui->featherSlider->setValue(settings.value("brushFeather", "5").toDouble());
+    // ui->featherSpinBox->setValue(settings.value("brushFeather", "5").toDouble());
 }
 
 void ToolOptionWidget::updateUI()
@@ -70,26 +73,26 @@ void ToolOptionWidget::updateUI()
 
     setVisibility(currentTool);
 
-    const Properties& p = currentTool->properties;
+    // TODO: should we cast to tool type here and get the specific properties object?
+    // or is there a smarter way?
+    // const Properties* p = currentTool->getProperties();
 
-    if (currentTool->isPropertyEnabled(WIDTH))
-    {
-        setPenWidth(p.width);
-    }
-    if (currentTool->isPropertyEnabled(FEATHER))
-    {
-        setPenFeather(p.feather);
-    }
-    setUseFeather(p.useFeather);
-    setPressure(p.pressure);
-    setPenInvisibility(p.invisibility);
-    setPreserveAlpha(p.preserveAlpha);
-    setVectorMergeEnabled(p.vectorMergeEnabled);
-    setAA(p.useAA);
-    setStabilizerLevel(p.stabilizerLevel);
-    setFillContour(p.useFillContour);
-    setShowSelectionInfo(p.showSelectionInfo);
-    setClosedPath(p.closedPolylinePath);
+    // if (currentTool->isPropertyEnabled(WIDTH))
+    // {
+    //     setPenWidth(p.width());
+    // }
+    // if (currentTool->isPropertyEnabled(FEATHER))
+    // {
+    //     setPenFeather(p.feather());
+    // }
+    // setUseFeather(p.useFeather());
+    // setPressure(p.usePressure());
+    // setPenInvisibility(p.invisibility());
+    // setAA(p.useAntiAliasing());
+    // setStabilizerLevel(p.stabilizerLevel());
+    // setFillContour(p.useFillContour());
+    // setShowSelectionInfo(p.showSelectionInfo());
+    // setClosedPath(p.closedPath());
 }
 
 void ToolOptionWidget::createUI()
@@ -99,66 +102,68 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 {
     auto toolManager = editor->tools();
 
-    connect(ui->useBezierBox, &QCheckBox::clicked, toolManager, &ToolManager::setBezier);
-    connect(ui->useClosedPathBox, &QCheckBox::clicked, toolManager, &ToolManager::setClosedPath);
-    connect(ui->usePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure);
-    connect(ui->makeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility);
-    connect(ui->preserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha);
+    // connect(ui->useBezierBox, &QCheckBox::clicked, toolManager, &ToolManager::setBezier);
+    // connect(ui->useClosedPathBox, &QCheckBox::clicked, toolManager, &ToolManager::setClosedPath);
+    // connect(ui->usePressureBox, &QCheckBox::clicked, toolManager, &ToolManager::setPressure);
+    // connect(ui->makeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility);
+    // connect(ui->preserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha);
 
-    connect(ui->sizeSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setWidth);
-    connect(ui->featherSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setFeather);
+    // connect(ui->sizeSlider, &SpinSlider::valueChanged, toolManager, [=](qreal value) {
+    //     toolManager->setToolProperty(toolManager->currentTool()->type(), ToolPropertyType::WIDTH, value);
+    // });
+    // connect(ui->featherSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setFeather);
 
-    auto spinboxValueChanged = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
-    connect(ui->brushSpinBox, spinboxValueChanged, toolManager, &ToolManager::setWidth);
-    clearFocusOnFinished(ui->brushSpinBox);
-    connect(ui->featherSpinBox, spinboxValueChanged, toolManager, &ToolManager::setFeather);
-    clearFocusOnFinished(ui->featherSpinBox);
+    // auto spinboxValueChanged = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
+    // connect(ui->brushSpinBox, spinboxValueChanged, toolManager, &ToolManager::setWidth);
+    // clearFocusOnFinished(ui->brushSpinBox);
+    // connect(ui->featherSpinBox, spinboxValueChanged, toolManager, &ToolManager::setFeather);
+    // clearFocusOnFinished(ui->featherSpinBox);
 
-    connect(ui->useFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather);
+    // connect(ui->useFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather);
 
-    connect(ui->vectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled);
-    connect(ui->useAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA);
+    // connect(ui->vectorMergeBox, &QCheckBox::clicked, toolManager, &ToolManager::setVectorMergeEnabled);
+    // connect(ui->useAABox, &QCheckBox::clicked, toolManager, &ToolManager::setAA);
 
-    connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
+    // connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), toolManager, &ToolManager::setStabilizerLevel);
 
-    connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
+    // connect(ui->fillContourBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFillContour);
 
-    connect(ui->showInfoBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowSelectionInfo);
+    // connect(ui->showInfoBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowSelectionInfo);
 
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
-    connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
+    // connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
 }
 
 void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType)
 {
-    const Properties& p = editor()->tools()->currentTool()->properties;
+    // const Properties& p = editor()->tools()->currentTool()->properties;
 
-    switch (ePropertyType)
-    {
-    case WIDTH: setPenWidth(p.width); break;
-    case FEATHER: setPenFeather(p.feather); break;
-    case USEFEATHER: setUseFeather(p.useFeather); break;
-    case PRESSURE: setPressure(p.pressure); break;
-    case INVISIBILITY: setPenInvisibility(p.invisibility); break;
-    case PRESERVEALPHA: setPreserveAlpha(p.preserveAlpha); break;
-    case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
-    case ANTI_ALIASING: setAA(p.useAA); break;
-    case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
-    case FILLCONTOUR: setFillContour(p.useFillContour); break;
-    case SHOWSELECTIONINFO: setShowSelectionInfo(p.showSelectionInfo); break;
-    case BEZIER: setBezier(p.bezier_state); break;
-    case CLOSEDPATH: setClosedPath(p.closedPolylinePath); break;
-    case CAMERAPATH: { break; }
-    case TOLERANCE: break;
-    case USETOLERANCE: break;
-    case BUCKETFILLEXPAND: break;
-    case USEBUCKETFILLEXPAND: break;
-    case BUCKETFILLLAYERREFERENCEMODE: break;
-    case FILL_MODE: break;
-    default:
-        Q_ASSERT(false);
-        break;
-    }
+    // switch (ePropertyType)
+    // {
+    // case WIDTH: setPenWidth(p.width()); break;
+    // case FEATHER: setPenFeather(p.feather); break;
+    // case USEFEATHER: setUseFeather(p.useFeather); break;
+    // case PRESSURE: setPressure(p.pressure); break;
+    // case INVISIBILITY: setPenInvisibility(p.invisibility); break;
+    // case PRESERVEALPHA: setPreserveAlpha(p.preserveAlpha); break;
+    // case VECTORMERGE: setVectorMergeEnabled(p.vectorMergeEnabled); break;
+    // case ANTI_ALIASING: setAA(p.useAA); break;
+    // case STABILIZATION: setStabilizerLevel(p.stabilizerLevel); break;
+    // case FILLCONTOUR: setFillContour(p.useFillContour); break;
+    // case SHOWSELECTIONINFO: setShowSelectionInfo(p.showSelectionInfo); break;
+    // case BEZIER: setBezier(p.bezier_state); break;
+    // case CLOSEDPATH: setClosedPath(p.closedPolylinePath); break;
+    // case CAMERAPATH: { break; }
+    // case TOLERANCE: break;
+    // case USETOLERANCE: break;
+    // case BUCKETFILLEXPAND: break;
+    // case USEBUCKETFILLEXPAND: break;
+    // case BUCKETFILLLAYERREFERENCEMODE: break;
+    // case FILL_MODE: break;
+    // default:
+    //     Q_ASSERT(false);
+    //     break;
+    // }
 }
 
 void ToolOptionWidget::setVisibility(BaseTool* tool)
@@ -168,88 +173,80 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
 
     disableAllOptions();
 
-    if (tool->type() == BUCKET)
-    {
-        mBucketOptionsWidget->setHidden(false);
-        return;
-    }
-    else if (tool->type() == CAMERA)
-    {
-        mCameraOptionsWidget->setHidden(false);
-    }
-    else
-    {
-        mCameraOptionsWidget->setHidden(true);
-        mBucketOptionsWidget->setHidden(true);
-    }
+    mBucketOptionsWidget->setVisible(tool->type() == BUCKET);
+    mCameraOptionsWidget->setVisible(tool->type() == CAMERA);
 
-    ui->sizeSlider->setVisible(tool->isPropertyEnabled(WIDTH));
-    ui->brushSpinBox->setVisible(tool->isPropertyEnabled(WIDTH));
-    ui->featherSlider->setVisible(tool->isPropertyEnabled(FEATHER));
-    ui->featherSpinBox->setVisible(tool->isPropertyEnabled(FEATHER));
-    ui->useFeatherBox->setVisible(tool->isPropertyEnabled(USEFEATHER));
-    ui->useBezierBox->setVisible(tool->isPropertyEnabled(BEZIER));
-    ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(CLOSEDPATH));
-    ui->usePressureBox->setVisible(tool->isPropertyEnabled(PRESSURE));
-    ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
-    ui->preserveAlphaBox->setVisible(tool->isPropertyEnabled(PRESERVEALPHA));
-    ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
-    ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
-    ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
-    ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
-    ui->showInfoBox->setVisible(tool->isPropertyEnabled(SHOWSELECTIONINFO));
+    // if (tool->type() == BUCKET) {
+        mStrokeOptionsWidget->setVisible(tool->category() == STROKETOOL && tool->type() != BUCKET);
+    // }
 
-    auto currentLayerType = editor()->layers()->currentLayer()->type();
-    auto propertyType = editor()->tools()->currentTool()->type();
+    // ui->sizeSlider->setVisible(tool->isPropertyEnabled(WIDTH));
+    // ui->brushSpinBox->setVisible(tool->isPropertyEnabled(WIDTH));
+    // ui->featherSlider->setVisible(tool->isPropertyEnabled(FEATHER));
+    // ui->featherSpinBox->setVisible(tool->isPropertyEnabled(FEATHER));
+    // ui->useFeatherBox->setVisible(tool->isPropertyEnabled(USEFEATHER));
+    // ui->useBezierBox->setVisible(tool->isPropertyEnabled(BEZIER));
+    // ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(CLOSEDPATH));
+    // ui->usePressureBox->setVisible(tool->isPropertyEnabled(PRESSURE));
+    // ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(INVISIBILITY));
+    // ui->preserveAlphaBox->setVisible(tool->isPropertyEnabled(PRESERVEALPHA));
+    // ui->useAABox->setVisible(tool->isPropertyEnabled(ANTI_ALIASING));
+    // ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(STABILIZATION));
+    // ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
+    // ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
+    // ui->showInfoBox->setVisible(tool->isPropertyEnabled(SHOWSELECTIONINFO));
 
-    if (currentLayerType == Layer::VECTOR)
-    {
-        switch (propertyType)
-        {
-        case SMUDGE:
-            ui->sizeSlider->setVisible(false);
-            ui->brushSpinBox->setVisible(false);
-            ui->usePressureBox->setVisible(false);
-            ui->featherSlider->setVisible(false);
-            ui->featherSpinBox->setVisible(false);
-            ui->useFeatherBox->setVisible(false);
-            break;
-        case PENCIL:
-            ui->sizeSlider->setVisible(false);
-            ui->brushSpinBox->setVisible(false);
-            ui->usePressureBox->setVisible(false);
-            break;
-        default:
-            ui->sizeSlider->setLabel(tr("Width"));
-            ui->useAABox->setVisible(false);
-            break;
-        }
-    }
-    else
-    {
-        switch (propertyType)
-        {
-        case PENCIL:
-            ui->fillContourBox->setVisible(false);
-            break;
-        case BUCKET:
-            ui->brushSpinBox->setVisible(false);
-            ui->sizeSlider->setVisible(false);
-            break;
-        case SELECT:
-        case MOVE:
-            ui->sizeSlider->setVisible(false);
-            ui->brushSpinBox->setVisible(false);
-            ui->usePressureBox->setVisible(false);
-            ui->featherSlider->setVisible(false);
-            ui->featherSpinBox->setVisible(false);
-            ui->useFeatherBox->setVisible(false);
-            break;
-        default:
-            ui->makeInvisibleBox->setVisible(false);
-            break;
-        }
-    }
+    // auto currentLayerType = editor()->layers()->currentLayer()->type();
+    // auto propertyType = editor()->tools()->currentTool()->type();
+
+    // if (currentLayerType == Layer::VECTOR)
+    // {
+    //     switch (propertyType)
+    //     {
+    //     case SMUDGE:
+    //         ui->sizeSlider->setVisible(false);
+    //         ui->brushSpinBox->setVisible(false);
+    //         ui->usePressureBox->setVisible(false);
+    //         ui->featherSlider->setVisible(false);
+    //         ui->featherSpinBox->setVisible(false);
+    //         ui->useFeatherBox->setVisible(false);
+    //         break;
+    //     case PENCIL:
+    //         ui->sizeSlider->setVisible(false);
+    //         ui->brushSpinBox->setVisible(false);
+    //         ui->usePressureBox->setVisible(false);
+    //         break;
+    //     default:
+    //         ui->sizeSlider->setLabel(tr("Width"));
+    //         ui->useAABox->setVisible(false);
+    //         break;
+    //     }
+    // }
+    // else
+    // {
+    //     switch (propertyType)
+    //     {
+    //     case PENCIL:
+    //         ui->fillContourBox->setVisible(false);
+    //         break;
+    //     case BUCKET:
+    //         ui->brushSpinBox->setVisible(false);
+    //         ui->sizeSlider->setVisible(false);
+    //         break;
+    //     case SELECT:
+    //     case MOVE:
+    //         ui->sizeSlider->setVisible(false);
+    //         ui->brushSpinBox->setVisible(false);
+    //         ui->usePressureBox->setVisible(false);
+    //         ui->featherSlider->setVisible(false);
+    //         ui->featherSpinBox->setVisible(false);
+    //         ui->useFeatherBox->setVisible(false);
+    //         break;
+    //     default:
+    //         ui->makeInvisibleBox->setVisible(false);
+    //         break;
+    //     }
+    // }
 }
 
 void ToolOptionWidget::onToolChanged(ToolType)
@@ -257,132 +254,132 @@ void ToolOptionWidget::onToolChanged(ToolType)
     updateUI();
 }
 
-void ToolOptionWidget::setPenWidth(qreal width)
-{
-    QSignalBlocker b(ui->sizeSlider);
-    ui->sizeSlider->setEnabled(true);
-    ui->sizeSlider->setValue(width);
+// void ToolOptionWidget::setPenWidth(qreal width)
+// {
+//     QSignalBlocker b(ui->sizeSlider);
+//     ui->sizeSlider->setEnabled(true);
+//     ui->sizeSlider->setValue(width);
 
-    QSignalBlocker b2(ui->brushSpinBox);
-    ui->brushSpinBox->setEnabled(true);
-    ui->brushSpinBox->setValue(width);
-}
+//     QSignalBlocker b2(ui->brushSpinBox);
+//     ui->brushSpinBox->setEnabled(true);
+//     ui->brushSpinBox->setValue(width);
+// }
 
-void ToolOptionWidget::setPenFeather(qreal featherValue)
-{
-    QSignalBlocker b(ui->featherSlider);
-    ui->featherSlider->setEnabled(true);
-    ui->featherSlider->setValue(featherValue);
+// void ToolOptionWidget::setPenFeather(qreal featherValue)
+// {
+//     QSignalBlocker b(ui->featherSlider);
+//     ui->featherSlider->setEnabled(true);
+//     ui->featherSlider->setValue(featherValue);
 
-    QSignalBlocker b2(ui->featherSpinBox);
-    ui->featherSpinBox->setEnabled(true);
-    ui->featherSpinBox->setValue(featherValue);
-}
+//     QSignalBlocker b2(ui->featherSpinBox);
+//     ui->featherSpinBox->setEnabled(true);
+//     ui->featherSpinBox->setValue(featherValue);
+// }
 
-void ToolOptionWidget::setUseFeather(bool useFeather)
-{
-    QSignalBlocker b(ui->useFeatherBox);
-    ui->useFeatherBox->setEnabled(true);
-    ui->useFeatherBox->setChecked(useFeather);
-}
+// void ToolOptionWidget::setUseFeather(bool useFeather)
+// {
+//     QSignalBlocker b(ui->useFeatherBox);
+//     ui->useFeatherBox->setEnabled(true);
+//     ui->useFeatherBox->setChecked(useFeather);
+// }
 
-void ToolOptionWidget::setPenInvisibility(int x)
-{
-    QSignalBlocker b(ui->makeInvisibleBox);
-    ui->makeInvisibleBox->setEnabled(true);
-    ui->makeInvisibleBox->setChecked(x > 0);
-}
+// void ToolOptionWidget::setPenInvisibility(int x)
+// {
+//     QSignalBlocker b(ui->makeInvisibleBox);
+//     ui->makeInvisibleBox->setEnabled(true);
+//     ui->makeInvisibleBox->setChecked(x > 0);
+// }
 
-void ToolOptionWidget::setPressure(int x)
-{
-    QSignalBlocker b(ui->usePressureBox);
-    ui->usePressureBox->setEnabled(true);
-    ui->usePressureBox->setChecked(x > 0);
-}
+// void ToolOptionWidget::setPressure(int x)
+// {
+//     QSignalBlocker b(ui->usePressureBox);
+//     ui->usePressureBox->setEnabled(true);
+//     ui->usePressureBox->setChecked(x > 0);
+// }
 
-void ToolOptionWidget::setPreserveAlpha(int x)
-{
-    QSignalBlocker b(ui->preserveAlphaBox);
-    ui->preserveAlphaBox->setEnabled(true);
-    ui->preserveAlphaBox->setChecked(x > 0);
-}
+// void ToolOptionWidget::setPreserveAlpha(int x)
+// {
+//     QSignalBlocker b(ui->preserveAlphaBox);
+//     ui->preserveAlphaBox->setEnabled(true);
+//     ui->preserveAlphaBox->setChecked(x > 0);
+// }
 
-void ToolOptionWidget::setVectorMergeEnabled(int x)
-{
-    QSignalBlocker b(ui->vectorMergeBox);
-    ui->vectorMergeBox->setEnabled(true);
-    ui->vectorMergeBox->setChecked(x > 0);
-}
+// void ToolOptionWidget::setVectorMergeEnabled(int x)
+// {
+//     QSignalBlocker b(ui->vectorMergeBox);
+//     ui->vectorMergeBox->setEnabled(true);
+//     ui->vectorMergeBox->setChecked(x > 0);
+// }
 
-void ToolOptionWidget::setAA(int x)
-{
-    QSignalBlocker b(ui->useAABox);
-    ui->useAABox->setEnabled(true);
-    ui->useAABox->setVisible(false);
+// void ToolOptionWidget::setAA(int x)
+// {
+//     QSignalBlocker b(ui->useAABox);
+//     ui->useAABox->setEnabled(true);
+//     ui->useAABox->setVisible(false);
 
-    auto layerType = editor()->layers()->currentLayer()->type();
+//     auto layerType = editor()->layers()->currentLayer()->type();
 
-    if (layerType == Layer::BITMAP)
-    {
-        if (x == -1)
-        {
-            ui->useAABox->setEnabled(false);
-            ui->useAABox->setVisible(false);
-        }
-        else
-        {
-            ui->useAABox->setVisible(true);
-        }
-        ui->useAABox->setChecked(x > 0);
-    }
-}
+//     if (layerType == Layer::BITMAP)
+//     {
+//         if (x == -1)
+//         {
+//             ui->useAABox->setEnabled(false);
+//             ui->useAABox->setVisible(false);
+//         }
+//         else
+//         {
+//             ui->useAABox->setVisible(true);
+//         }
+//         ui->useAABox->setChecked(x > 0);
+//     }
+// }
 
-void ToolOptionWidget::setStabilizerLevel(int x)
-{
-    ui->inpolLevelsCombo->setCurrentIndex(qBound(0, x, ui->inpolLevelsCombo->count() - 1));
-}
+// void ToolOptionWidget::setStabilizerLevel(int x)
+// {
+//     ui->inpolLevelsCombo->setCurrentIndex(qBound(0, x, ui->inpolLevelsCombo->count() - 1));
+// }
 
-void ToolOptionWidget::setFillContour(int useFill)
-{
-    QSignalBlocker b(ui->fillContourBox);
-    ui->fillContourBox->setEnabled(true);
-    ui->fillContourBox->setChecked(useFill > 0);
-}
+// void ToolOptionWidget::setFillContour(int useFill)
+// {
+//     QSignalBlocker b(ui->fillContourBox);
+//     ui->fillContourBox->setEnabled(true);
+//     ui->fillContourBox->setChecked(useFill > 0);
+// }
 
-void ToolOptionWidget::setBezier(bool useBezier)
-{
-    QSignalBlocker b(ui->useBezierBox);
-    ui->useBezierBox->setChecked(useBezier);
-}
+// void ToolOptionWidget::setBezier(bool useBezier)
+// {
+//     QSignalBlocker b(ui->useBezierBox);
+//     ui->useBezierBox->setChecked(useBezier);
+// }
 
-void ToolOptionWidget::setClosedPath(bool useClosedPath)
-{
-    QSignalBlocker b(ui->useClosedPathBox);
-    ui->useClosedPathBox->setChecked(useClosedPath);
-}
+// void ToolOptionWidget::setClosedPath(bool useClosedPath)
+// {
+//     QSignalBlocker b(ui->useClosedPathBox);
+//     ui->useClosedPathBox->setChecked(useClosedPath);
+// }
 
-void ToolOptionWidget::setShowSelectionInfo(bool showSelectionInfo)
-{
-    QSignalBlocker b(ui->showInfoBox);
-    ui->showInfoBox->setChecked(showSelectionInfo);
-}
+// void ToolOptionWidget::setShowSelectionInfo(bool showSelectionInfo)
+// {
+//     QSignalBlocker b(ui->showInfoBox);
+//     ui->showInfoBox->setChecked(showSelectionInfo);
+// }
 
 void ToolOptionWidget::disableAllOptions()
 {
-    ui->sizeSlider->hide();
-    ui->brushSpinBox->hide();
-    ui->featherSlider->hide();
-    ui->featherSpinBox->hide();
-    ui->useFeatherBox->hide();
-    ui->useBezierBox->hide();
-    ui->useClosedPathBox->hide();
-    ui->usePressureBox->hide();
-    ui->makeInvisibleBox->hide();
-    ui->preserveAlphaBox->hide();
-    ui->vectorMergeBox->hide();
-    ui->useAABox->hide();
-    ui->inpolLevelsCombo->hide();
-    ui->fillContourBox->hide();
-    ui->showInfoBox->hide();
-    ui->stabilizerLabel->hide();
+    // ui->sizeSlider->hide();
+    // ui->brushSpinBox->hide();
+    // ui->featherSlider->hide();
+    // ui->featherSpinBox->hide();
+    // ui->useFeatherBox->hide();
+    // ui->useBezierBox->hide();
+    // ui->useClosedPathBox->hide();
+    // ui->usePressureBox->hide();
+    // ui->makeInvisibleBox->hide();
+    // ui->preserveAlphaBox->hide();
+    // ui->vectorMergeBox->hide();
+    // ui->useAABox->hide();
+    // ui->inpolLevelsCombo->hide();
+    // ui->fillContourBox->hide();
+    // ui->showInfoBox->hide();
+    // ui->stabilizerLabel->hide();
 }

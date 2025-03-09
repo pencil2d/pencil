@@ -49,49 +49,15 @@ void SmudgeTool::loadSettings()
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FEATHER] = true;
 
+    QHash<int, PropertyInfo> info;
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.width = settings.value("smudgeWidth", 24.0).toDouble();
-    properties.feather = settings.value("smudgeFeather", 48.0).toDouble();
-    properties.pressure = false;
-    properties.stabilizerLevel = -1;
+    info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
+    info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
+
+    properties.load(typeName(), settings, info);
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
-}
-
-void SmudgeTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    settings.setValue("smudgeWidth", properties.width);
-    settings.setValue("smudgeFeather", properties.feather);
-    settings.setValue("smudgePressure", properties.pressure);
-
-    settings.sync();
-}
-
-void SmudgeTool::resetToDefault()
-{
-    setWidth(24.0);
-    setFeather(48.0);
-}
-
-void SmudgeTool::setWidth(const qreal width)
-{
-    // Set current property
-    properties.width = width;
-}
-
-void SmudgeTool::setFeather(const qreal feather)
-{
-    // Set current property
-    properties.feather = feather;
-}
-
-void SmudgeTool::setPressure(const bool pressure)
-{
-    // Set current property
-    properties.pressure = pressure;
 }
 
 bool SmudgeTool::emptyFrameActionEnabled()
@@ -312,9 +278,9 @@ void SmudgeTool::drawStroke()
     }
 
     qreal opacity = 1.0;
-    mCurrentWidth = properties.width;
-    qreal brushWidth = mCurrentWidth + 0.0 * properties.feather;
-    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * properties.feather) / brushWidth;
+    mCurrentWidth = properties.width();
+    qreal brushWidth = mCurrentWidth + 0.0 * properties.feather();
+    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * properties.feather()) / brushWidth;
     //opacity = currentPressure; // todo: Probably not interesting?!
     //brushWidth = brushWidth * opacity;
 

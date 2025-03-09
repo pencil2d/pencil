@@ -52,7 +52,7 @@ public:
     static const qreal WIDTH_MAX;
 
     void loadSettings() override;
-    bool isActive() const override { return mInterpolator.isActive(); };
+    bool isActive() const override { return mInterpolator.isActive(); }
 
     bool keyPressEvent(QKeyEvent* event) override;
     void pointerPressEvent(PointerEvent* event) override;
@@ -64,6 +64,15 @@ public:
     bool handleQuickSizing(PointerEvent* event);
 
     void paint(QPainter& painter, const QRect& blitRect) override;
+
+    virtual void setStablizationLevel(int level);
+    virtual void setWidth(qreal width);
+    virtual void setFeather(qreal feather);
+    virtual void setPressureON(bool isON);
+    virtual void setFeatherON(bool isON);
+    virtual void setAntiAliasingON(bool isON);
+    virtual void setFillContourON(bool isON);
+    virtual void setInvisibilityON(bool isON);
 
 public slots:
     void onPreferenceChanged(SETTING setting);
@@ -81,6 +90,8 @@ protected:
     virtual bool startAdjusting(Qt::KeyboardModifiers modifiers);
     virtual void stopAdjusting();
     virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
+
+    ToolSettings* getProperties() override { return &properties; }
 
     static bool mQuickSizingEnabled;
     static bool msIsAdjusting;
@@ -113,6 +124,8 @@ protected:
     StrokeInterpolator mInterpolator;
 
     const UndoSaveState* mUndoSaveState = nullptr;
+
+    StrokeSettings properties;
 };
 
 #endif // STROKETOOL_H

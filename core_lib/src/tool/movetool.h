@@ -34,7 +34,6 @@ public:
     explicit MoveTool(QObject* parent);
     ToolType type() override;
     void loadSettings() override;
-    void saveSettings() override;
     QCursor cursor() override;
     QCursor cursor(MoveMode mode) const;
 
@@ -45,8 +44,9 @@ public:
     bool leavingThisTool() override;
     bool isActive() const override;
 
-    void resetToDefault() override;
-    void setShowSelectionInfo(const bool b) override;
+    void setShowSelectionInfo(bool b);
+
+    ToolSettings* getProperties() override { return &properties; }
 
 private:
     void applyTransformation();
@@ -69,6 +69,8 @@ private:
     QPointF mOffset;
 
     const UndoSaveState* mUndoSaveState = nullptr;
+
+    SelectionSettings properties;
 };
 
 #endif

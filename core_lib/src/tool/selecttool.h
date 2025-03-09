@@ -35,11 +35,7 @@ public:
     explicit SelectTool(QObject* parent = nullptr);
     ToolType type() override { return SELECT; }
     void loadSettings() override;
-    void saveSettings() override;
     QCursor cursor() override;
-
-    void resetToDefault() override;
-    void setShowSelectionInfo(const bool b) override;
 
 private:
 
@@ -71,6 +67,8 @@ private:
     QPixmap mCursorPixmap = QPixmap(24, 24);
 
     const UndoSaveState* mUndoState = nullptr;
+
+    SelectionSettings properties;
 };
 
 #endif

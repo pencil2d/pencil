@@ -32,22 +32,14 @@ class BucketTool : public StrokeTool
 public:
     explicit BucketTool(QObject* parent = nullptr);
     ToolType type() override;
+    ToolCategory category() override { return STROKETOOL; }
+
     void loadSettings() override;
-    void saveSettings() override;
-    void resetToDefault() override;
     QCursor cursor() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
-
-    void setTolerance(const int tolerance) override;
-    void setToleranceEnabled(const bool enabled) override;
-    void setWidth(const qreal width) override;
-    void setFillExpand(const int fillExpandValue) override;
-    void setFillExpandEnabled(const bool enabled) override;
-    void setFillReferenceMode(int referenceMode) override;
-    void setFillMode(int mode) override;
 
     void paintBitmap();
     void paintVector(Layer* layer);
@@ -55,12 +47,24 @@ public:
 
     void applyChanges();
 
+    void setWidth(qreal width) override;
+    void setTolerance(int tolerance);
+    void setFillExpand(int fillExpandValue);
+    void setFillReferenceMode(int referenceMode);
+    void setFillMode(int mode);
+    void setToleranceON(bool isON);
+    void setFillExpandON(bool isON);
+
+    ToolSettings* getProperties() override { return &properties; }
+
 private:
 
     BitmapBucket mBitmapBucket;
     VectorImage* vectorImage = nullptr;
 
     bool mFilledOnMove = false;
+
+    BucketSettings properties;
 };
 
 #endif // BUCKETTOOL_H

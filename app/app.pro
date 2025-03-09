@@ -89,6 +89,7 @@ HEADERS += \
     src/filespage.h \
     src/generalpage.h \
     src/shortcutspage.h \
+    src/strokeoptionswidget.h \
     src/timelinepage.h \
     src/toolspage.h \
     src/basedockwidget.h \
@@ -141,6 +142,7 @@ SOURCES += \
     src/filespage.cpp \
     src/generalpage.cpp \
     src/shortcutspage.cpp \
+    src/strokeoptionswidget.cpp \
     src/timelinepage.cpp \
     src/toolspage.cpp \
     src/basedockwidget.cpp \
@@ -178,6 +180,7 @@ SOURCES += \
     src/cameraoptionswidget.cpp
 
 FORMS += \
+    ui/strokeoptionswidget.ui \
     ui/addtransparencytopaperdialog.ui \
     ui/cameraoptionswidget.ui \
     ui/camerapropertiesdialog.ui \

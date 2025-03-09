@@ -21,10 +21,11 @@ GNU General Public License for more details.
 #include <QObject>
 #include <QHash>
 #include "basetool.h"
+#include "pencildef.h"
 #include "basemanager.h"
 #include "camerafieldoption.h"
 
-class ScribbleArea;
+class StrokeTool;
 
 class ToolManager : public BaseManager
 {
@@ -39,6 +40,7 @@ public:
 
     BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolType);
+    BaseTool* getTool(ToolCategory eToolCategory);
     void setDefaultTool();
     void setCurrentTool(ToolType eToolType);
     void tabletSwitchToEraser();
@@ -51,8 +53,6 @@ public:
     void cleanupAllToolsData();
     bool leavingThisTool();
 
-    int propertySwitch(bool condition, int property);
-
 signals:
     void toolChanged(ToolType);
     void toolPropertyChanged(ToolType, ToolPropertyType);
@@ -60,49 +60,18 @@ signals:
 public slots:
     void resetAllTools();
 
-    void setWidth(float);
-    void setFeather(float);
-
-    void setUseFeather(bool);
-    void setInvisibility(bool);
-    void setPreserveAlpha(bool);
-    void setVectorMergeEnabled(bool);
-    void setBezier(bool);
-    void setClosedPath(bool);
-    void setPressure(bool);
-    void setAA(int);
-    void setFillMode(int);
-    void setStabilizerLevel(int);
-    void setTolerance(int);
-    void setBucketColorToleranceEnabled(bool enabled);
-    void setBucketFillExpandEnabled(bool enabled);
-    void setBucketFillReferenceMode(int referenceMode);
-    void setBucketFillExpand(int);
-    void setUseFillContour(bool);
-    void setShowSelectionInfo(bool b);
-    void setShowCameraPath(bool);
-    void resetCameraPath();
-    void setCameraPathDotColor(int);
-    void resetCameraTransform(CameraFieldOption option);
-
-    /// Layer mode will be enforced by the the choice the reference mode selected.
-    /// @return Returns true if reference mode is ``current layer`, otherwise false.
-    bool bucketReferenceModeIsCurrentLayer(int referenceMode) const;
-
 private:
     void setTemporaryTool(ToolType eToolType);
 
     BaseTool* mCurrentTool = nullptr;
     BaseTool* mTabletEraserTool = nullptr;
     BaseTool* mTemporaryTool = nullptr;
+
     Qt::KeyboardModifiers mTemporaryTriggerModifiers = Qt::NoModifier;
     QFlags<Qt::Key> mTemporaryTriggerKeys;
     Qt::MouseButtons mTemporaryTriggerMouseButtons = Qt::NoButton;
 
     QHash<ToolType, BaseTool*> mToolSetHash;
-
-    int mOldValue = 0;
-
 };
 
 #endif // TOOLMANAGER_H

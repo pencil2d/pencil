@@ -29,7 +29,6 @@ public:
     explicit HandTool( QObject* parent = 0 );
     ToolType type() override { return HAND; }
     void loadSettings() override;
-    void saveSettings() override;
     QCursor cursor() override;
 
     void pointerPressEvent(PointerEvent *) override;

@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QKeySequence>
 #include <QResizeEvent>
 
+#include "basetool.h"
 #include "flowlayout.h"
 #include "spinslider.h"
 #include "editor.h"

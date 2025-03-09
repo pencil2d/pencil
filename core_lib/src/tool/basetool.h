@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QHash>
 #include <QEvent>
 #include "pencildef.h"
+#include "toolsettings.h"
 
 class QPixmap;
 class Editor;
@@ -34,32 +35,6 @@ class QKeyEvent;
 class QMouseEvent;
 class QTabletEvent;
 class PointerEvent;
-
-class Properties
-{
-public:
-    qreal width = 1.0;
-    qreal feather = 1.0;
-    bool  pressure = true;
-    int   invisibility = 0;
-    int   preserveAlpha = 0;
-    bool  vectorMergeEnabled = false;
-    bool  bezier_state = false;
-    bool  closedPolylinePath = false;
-    bool  useFeather = true;
-    int   useAA = 0;
-    int   fillMode = 0;
-    int   stabilizerLevel = 0;
-    qreal tolerance = 0;
-    bool toleranceEnabled = false;
-    int bucketFillExpand = 0;
-    bool bucketFillExpandEnabled = 0;
-    int bucketFillReferenceMode = 0;
-    bool  useFillContour = false;
-    bool  showSelectionInfo = true;
-    bool  cameraShowPath = true;
-    DotColorType cameraPathDotColorType = DotColorType::RED;
-};
 
 const int ON = 1;
 const int OFF = 0;
@@ -78,8 +53,12 @@ public:
     void initialize(Editor* editor);
 
     virtual ToolType type() = 0;
+    virtual ToolCategory category() { return ToolCategory::BASETOOL; }
+
     virtual void loadSettings() = 0;
-    virtual void saveSettings() = 0;
+    void saveSettings();
+    void resetSettings();
+
     virtual QCursor cursor();
 
     virtual void pointerPressEvent(PointerEvent*) = 0;
@@ -95,7 +74,6 @@ public:
     virtual bool leaveEvent(QEvent*) { return false; }
 
     virtual void clearToolData() {}
-    virtual void resetToDefault() {}
 
     /** Check if the tool is active.
      *
@@ -106,29 +84,7 @@ public:
      */
     virtual bool isActive() const;
 
-    virtual void setWidth(const qreal width);
-    virtual void setFeather(const qreal feather);
-
-    virtual void setInvisibility(const bool invisibility);
-    virtual void setBezier(const bool bezier_state);
-    virtual void setClosedPath(const bool closed);
-    virtual void setPressure(const bool pressure);
-    virtual void setUseFeather(const bool usingFeather);
-    virtual void setPreserveAlpha(const bool preserveAlpha);
-    virtual void setVectorMergeEnabled(const bool vectorMergeEnabled);
-    virtual void setAA(const int useAA);
-    virtual void setFillMode(const int mode);
-    virtual void setStabilizerLevel(const int level);
-    virtual void setTolerance(const int tolerance);
-    virtual void setToleranceEnabled(const bool enabled);
-    virtual void setFillExpand(const int fillExpandValue);
-    virtual void setFillExpandEnabled(const bool enabled);
-    virtual void setFillReferenceMode(int referenceMode);
-    virtual void setUseFillContour(const bool useFillContour);
-    virtual void setShowSelectionInfo(const bool b);
-    virtual void setShowCameraPath(const bool showCameraPath);
-    virtual void setPathDotColorType(const DotColorType dotColorType);
-    virtual void resetCameraPath();
+    virtual ToolSettings* getProperties() { return nullptr; }
 
     virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 
@@ -139,8 +95,6 @@ public:
     /// `leavingThisTool` will handle the cleanup of `active` connections
     virtual bool enteringThisTool() { return true; }
 
-    Properties properties;
-
     bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isDrawingTool();
 
@@ -148,8 +102,8 @@ signals:
     bool isActiveChanged(ToolType, bool);
 
 protected:
-    Editor* editor() { return mEditor; }
 
+    Editor* editor() { return mEditor; }
     QHash<ToolPropertyType, bool> mPropertyEnabled;
 
     Editor* mEditor = nullptr;

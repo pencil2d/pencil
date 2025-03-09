@@ -27,6 +27,12 @@ GNU General Public License for more details.
 #define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
 #define S__GIT_COMMIT_HASH TOSTRING(GIT_CURRENT_SHA1)
 
+enum ToolCategory: int
+{
+    BASETOOL    = 0,
+    STROKETOOL  = 1
+};
+
 enum ToolType : int
 {
     INVALID_TOOL = -1,
@@ -45,6 +51,19 @@ enum ToolType : int
     TOOL_TYPE_COUNT
 };
 
+/// This list should consist of all tool properties
+/// Each tool or Tool category, depending on the granularity of the Property should
+/// follow this naming convention: <TOOL>_<DESCRIPTION>_<VALUE|TYPE|CHECKED>
+///
+/// eg. CAMERA_PATH_DOTCOLOR_TYPE because we're dealing with an enum
+///
+/// - Use Value for int, real and similar
+/// - Use TYPE for enum values
+/// - Use CHECKED for bool states
+///
+/// Adding a property here means you intend to store the value in pencil settings
+/// So it can be retrieved again upon the next launch
+///
 enum ToolPropertyType
 {
     WIDTH,
@@ -66,8 +85,28 @@ enum ToolPropertyType
     BUCKETFILLEXPAND,
     USEBUCKETFILLEXPAND,
     BUCKETFILLLAYERREFERENCEMODE,
-    CAMERAPATH,
+    CAMERA_SHOWPATH_CHECKED,
+    CAMERA_PATH_DOTCOLOR_TYPE,
 };
+
+
+/// This list should consist of all tool actions
+/// Each tool or Tool category, depending on the granularity of the Action should
+/// follow this naming convention: <TOOL>_<KEY>_<DESCRIPTION>
+///
+/// eg. CAMERA_RESET_FIELD, where RESET is the KEY and FIELD is the description.
+///
+enum ToolActionType {
+    CAMERA_PATH_RESET,
+    CAMERA_RESET_FIELD,
+    CAMERA_RESET_ROTATION,
+    CAMERA_RESET_TRANSLATION,
+    CAMERA_RESET_SCALING
+};
+
+// enum CameraActionType {
+
+// };
 
 enum class DotColorType {
     RED,
@@ -321,6 +360,7 @@ const static int MaxFramesBound = 9999;
 #define SETTING_NEW_UNDO_REDO_ON        "NewUndoRedoOn"
 #define SETTING_UNDO_REDO_MAX_STEPS     "UndoRedoMaxSteps"
 
+#define SETTING_BUCKET_FILLTHICKNESS "fillThickness"
 #define SETTING_BUCKET_TOLERANCE "Tolerance"
 #define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
 #define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"

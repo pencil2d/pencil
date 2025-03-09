@@ -51,57 +51,15 @@ void PolylineTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("polyLineWidth", 8.0).toDouble();
-    properties.feather = -1;
-    properties.pressure = false;
-    properties.invisibility = OFF;
-    properties.preserveAlpha = OFF;
-    properties.closedPolylinePath = settings.value("closedPolylinePath").toBool();
-    properties.useAA = settings.value("brushAA").toBool();
-    properties.stabilizerLevel = -1;
+    QHash<int, PropertyInfo> info;
+
+    info[PolyLineSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 8.0 };
+    info[PolyLineSettings::CLOSEDPATH_ON] = false;
+    info[PolyLineSettings::ANTI_ALIASING_ON] = true;
+
+    properties.load(typeName(), settings, info);
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-}
-
-void PolylineTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    settings.setValue("polyLineWidth", properties.width);
-    settings.setValue("brushAA", properties.useAA);
-    settings.setValue("closedPolylinePath", properties.closedPolylinePath);
-
-    settings.sync();
-}
-
-void PolylineTool::resetToDefault()
-{
-    setWidth(8.0);
-    setBezier(false);
-    setClosedPath(false);
-}
-
-void PolylineTool::setWidth(const qreal width)
-{
-    // Set current property
-    properties.width = width;
-}
-
-void PolylineTool::setFeather(const qreal feather)
-{
-    Q_UNUSED(feather);
-    properties.feather = -1;
-}
-
-void PolylineTool::setAA(const int AA)
-{
-    // Set current property
-    properties.useAA = AA;
-}
-
-void PolylineTool::setClosedPath(const bool closed)
-{
-    BaseTool::setClosedPath(closed);
 }
 
 bool PolylineTool::leavingThisTool()
@@ -286,7 +244,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
     if (points.size() > 0)
     {
         QPen pen(mEditor->color()->frontColor(),
-                 properties.width,
+                 properties.width(),
                  Qt::SolidLine,
                  Qt::RoundCap,
                  Qt::RoundJoin);
@@ -294,7 +252,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 
         // Bitmap by default
         QPainterPath tempPath;
-        if (properties.bezier_state)
+        if (properties.useBezier())
         {
             tempPath = BezierCurve(points).getSimplePath();
         }
@@ -305,7 +263,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         tempPath.lineTo(endPoint);
 
         // Ctrl key inverts closed behavior while held (XOR)
-        if ((properties.closedPolylinePath == !mClosedPathOverrideEnabled) && points.size() > 1)
+        if ((properties.closedPath() == !mClosedPathOverrideEnabled) && points.size() > 1)
         {
             tempPath.closeSubpath();
         }
@@ -322,12 +280,12 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
                 }
                 else
                 {
-                    pen.setWidth(properties.width);
+                    pen.setWidth(properties.width());
                 }
             }
         }
 
-        mScribbleArea->drawPolyline(tempPath, pen, properties.useAA);
+        mScribbleArea->drawPolyline(tempPath, pen, properties.useAntiAliasing());
     }
 }
 
@@ -343,14 +301,14 @@ void PolylineTool::endPolyline(QList<QPointF> points)
 
     if (layer->type() == Layer::VECTOR)
     {
-        BezierCurve curve = BezierCurve(points, properties.bezier_state);
+        BezierCurve curve = BezierCurve(points, properties.useBezier());
         if (mScribbleArea->makeInvisible() == true)
         {
             curve.setWidth(0);
         }
         else
         {
-            curve.setWidth(properties.width);
+            curve.setWidth(properties.width());
         }
         curve.setColorNumber(mEditor->color()->frontColorNumber());
         curve.setVariableWidth(false);

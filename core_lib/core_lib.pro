@@ -88,6 +88,7 @@ HEADERS +=  \
     src/tool/smudgetool.h \
     src/tool/strokeinterpolator.h \
     src/tool/stroketool.h \
+    src/tool/toolsettings.h \
     src/util/blitrect.h \
     src/util/cameraeasingtype.h \
     src/util/camerafieldoption.h \
