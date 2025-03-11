@@ -53,7 +53,7 @@ void BucketTool::loadSettings()
 
     QHash<int, PropertyInfo> info;
 
-    info[BucketSettings::WIDTH_VALUE] = { 0.0, 100.0, 4.0 };
+    info[BucketSettings::FILLTHICKNESS_VALUE] = { 0.0, 100.0, 4.0 };
     info[BucketSettings::TOLERANCE_VALUE] = { 0, 100, 32 };
     info[BucketSettings::TOLERANCE_ON] = false;
     info[BucketSettings::FILLEXPAND_VALUE] = { 0, 25, 2 };
@@ -169,7 +169,7 @@ void BucketTool::paintVector(Layer* layer)
         vectorImage->fillSelectedPath(mEditor->color()->frontColorNumber());
     }
 
-    vectorImage->applyWidthToSelection(properties.thickness());
+    vectorImage->applyWidthToSelection(properties.fillThickness());
     vectorImage->applyColorToSelectedCurve(mEditor->color()->frontColorNumber());
     vectorImage->applyColorToSelectedArea(mEditor->color()->frontColorNumber());
 
@@ -218,7 +218,7 @@ void BucketTool::drawStroke()
 
 void BucketTool::setWidth(qreal width)
 {
-    properties.setBaseValue(BucketSettings::WIDTH_VALUE, width);
+    properties.setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, width);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::WIDTH);
 }
 

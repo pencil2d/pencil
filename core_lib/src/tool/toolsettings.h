@@ -297,8 +297,7 @@ struct PolyLineSettings: public ToolSettings
 
     QString identifier(int typeRaw) const override {
         auto type = static_cast<PolyLineSettings::Type>(typeRaw);
-
-        QString propertyID;
+        QString propertyID = "invalid";
         switch (type)
         {
         case WIDTH_VALUE:
@@ -340,7 +339,7 @@ struct StrokeSettings: public ToolSettings
 
     QString identifier(int typeRaw) const override {
         auto type = static_cast<StrokeSettings::Type>(typeRaw);
-        QString propertyID;
+        QString propertyID = "invalid";
         switch (type)
         {
         case WIDTH_VALUE:
@@ -385,7 +384,7 @@ struct StrokeSettings: public ToolSettings
 struct BucketSettings: public ToolSettings
 {
     enum Type {
-        WIDTH_VALUE,
+        FILLTHICKNESS_VALUE,
         TOLERANCE_VALUE,
         FILLEXPAND_VALUE,
         FILLLAYERREFERENCEMODE_VALUE,
@@ -397,10 +396,10 @@ struct BucketSettings: public ToolSettings
 
     QString identifier(int typeRaw) const override {
         auto type = static_cast<BucketSettings::Type>(typeRaw);
-        QString propertyID;
+        QString propertyID = "invalid";
         switch (type)
         {
-        case WIDTH_VALUE:
+        case FILLTHICKNESS_VALUE:
             propertyID = "FillThickness";
             break;
         case TOLERANCE_VALUE:
@@ -429,7 +428,7 @@ struct BucketSettings: public ToolSettings
         return mIdentifier + propertyID;
     }
 
-    qreal thickness() const { return mProps[WIDTH_VALUE].getReal(); }
+    qreal fillThickness() const { return mProps[FILLTHICKNESS_VALUE].getReal(); }
     int tolerance() const { return mProps[TOLERANCE_VALUE].getInt(); }
     int fillExpandAmount() const { return mProps[FILLEXPAND_VALUE].getInt(); }
     int fillReferenceMode() const { return mProps[FILLLAYERREFERENCEMODE_VALUE].getInt(); }
@@ -448,7 +447,7 @@ struct CameraSettings: public ToolSettings
 
     QString identifier(int typeRaw) const override {
         auto type = static_cast<CameraSettings::Type>(typeRaw);
-        QString propertyID;
+        QString propertyID = "invalid";
 
         switch (type)
         {
@@ -475,7 +474,7 @@ struct SelectionSettings: public ToolSettings
 
     QString identifier(int typeRaw) const override {
         auto type = static_cast<SelectionSettings::Type>(typeRaw);
-        QString propertyID;
+        QString propertyID = "invalid";
         switch (type)
         {
             case SHOWSELECTIONINFO_ON:

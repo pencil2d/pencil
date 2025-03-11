@@ -189,7 +189,7 @@ void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyT
     case ToolPropertyType::USETOLERANCE:
          setColorToleranceEnabled(p->useTolerance()); break;
     case ToolPropertyType::WIDTH:
-         setStrokeWidth(p->thickness()); break;
+         setStrokeWidth(p->fillThickness()); break;
     case ToolPropertyType::BUCKETFILLEXPAND:
          setFillExpand(p->fillExpandAmount()); break;
     case ToolPropertyType::USEBUCKETFILLEXPAND:
