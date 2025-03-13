@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "strokeinterpolator.h"
 #include "pointerevent.h"
+#include "layermanager.h"
 
 QString BaseTool::TypeName(ToolType type)
 {
@@ -76,6 +77,16 @@ void BaseTool::resetSettings()
         QSettings settings(PENCIL2D, PENCIL2D);
         getProperties()->setDefaults();
     }
+}
+
+bool BaseTool::isPropertyEnabled(int rawType)
+{
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (!currentLayer) {
+        return false;
+    }
+
+    return mPropertyUsed[rawType].contains(currentLayer->type());
 }
 
 QCursor BaseTool::cursor()

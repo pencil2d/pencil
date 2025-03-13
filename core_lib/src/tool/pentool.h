@@ -27,8 +27,9 @@ class PenTool : public StrokeTool
     Q_OBJECT
 public:
     PenTool(QObject* parent = 0);
-    ToolType type() override { return PEN; }
-    ToolCategory category() override { return STROKETOOL; }
+
+    ToolType type() const override { return PEN; }
+    ToolCategory category() const override { return STROKETOOL; }
 
     void loadSettings() override;
     QCursor cursor() override;

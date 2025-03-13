@@ -36,6 +36,8 @@ public:
     explicit BucketOptionsWidget(Editor* editor, QWidget* parent);
     ~BucketOptionsWidget();
 
+    void updateUI();
+
     void setStrokeWidth(qreal value);
     void setColorToleranceEnabled(bool enabled);
     void setFillExpandEnabled(bool enabled);

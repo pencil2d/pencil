@@ -28,8 +28,9 @@ class PencilTool : public StrokeTool
     Q_OBJECT
 public:
     explicit PencilTool(QObject* parent);
-    ToolType type() override { return PENCIL; }
-    ToolCategory category() override { return STROKETOOL; }
+
+    ToolType type() const override { return PENCIL; }
+    ToolCategory category() const override { return STROKETOOL; }
 
     void loadSettings() override;
     QCursor cursor() override;

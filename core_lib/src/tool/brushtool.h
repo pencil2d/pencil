@@ -29,8 +29,9 @@ class BrushTool : public StrokeTool
 
 public:
     explicit BrushTool(QObject* parent = 0);
-    ToolType type() override;
-    ToolCategory category() override { return STROKETOOL; }
+
+    ToolType type() const override;
+    ToolCategory category() const override { return STROKETOOL; }
 
     void loadSettings() override;
     QCursor cursor() override;

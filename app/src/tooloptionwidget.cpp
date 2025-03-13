@@ -174,11 +174,9 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     disableAllOptions();
 
     mBucketOptionsWidget->setVisible(tool->type() == BUCKET);
+    mBucketOptionsWidget->updateUI();
     mCameraOptionsWidget->setVisible(tool->type() == CAMERA);
-
-    // if (tool->type() == BUCKET) {
-        mStrokeOptionsWidget->setVisible(tool->category() == STROKETOOL && tool->type() != BUCKET);
-    // }
+    mStrokeOptionsWidget->setVisible(tool->category() == STROKETOOL && tool->type() != BUCKET);
 
     // ui->sizeSlider->setVisible(tool->isPropertyEnabled(WIDTH));
     // ui->brushSpinBox->setVisible(tool->isPropertyEnabled(WIDTH));

@@ -26,8 +26,8 @@ class EraserTool : public StrokeTool
 
 public:
     explicit EraserTool(QObject* parent = nullptr);
-    ToolType type() override;
-    ToolCategory category() override { return STROKETOOL; }
+    ToolType type() const override;
+    ToolCategory category() const override { return STROKETOOL; }
 
     void loadSettings() override;
     QCursor cursor() override;

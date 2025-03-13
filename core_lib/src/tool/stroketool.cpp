@@ -422,33 +422,3 @@ void StrokeTool::setInvisibilityON(bool isON)
     properties.setBaseValue(StrokeSettings::INVISIBILITY_ON, isON);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::INVISIBILITY);
 }
-
-// void StrokeTool::setProperty(Properties::Type type, int value)
-// {
-//     StrokeProperties::Type strokeType = static_cast<StrokeProperties::Type>(type);
-//     properties.set(strokeType, value);
-// }
-
-// void StrokeTool::setProperty(Properties::Type type, qreal value)
-// {
-//     StrokeProperties::Type strokeType = static_cast<StrokeProperties::Type>(type);
-//     switch (strokeType)
-//     {
-//         case StrokeProperties::WIDTH_VALUE: {
-//             if (std::isnan(value) || value < 0)
-//             {
-//                 value = 1.f;
-//             }
-//         }
-//     default:
-//         break;
-//     }
-
-//     properties.set(type, value);
-// }
-
-// void StrokeTool::setProperty(Properties::Type type, bool value)
-// {
-//     StrokeProperties::Type strokeType = static_cast<StrokeProperties::Type>(type);
-//     properties.set(type, value);
-// }

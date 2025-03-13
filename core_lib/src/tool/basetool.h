@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include <QEvent>
 #include "pencildef.h"
 #include "toolsettings.h"
+#include "layer.h"
 
 class QPixmap;
 class Editor;
@@ -52,8 +53,8 @@ public:
 
     void initialize(Editor* editor);
 
-    virtual ToolType type() = 0;
-    virtual ToolCategory category() { return ToolCategory::BASETOOL; }
+    virtual ToolType type() const = 0;
+    virtual ToolCategory category() const { return ToolCategory::BASETOOL; }
 
     virtual void loadSettings() = 0;
     void saveSettings();
@@ -96,6 +97,7 @@ public:
     virtual bool enteringThisTool() { return true; }
 
     bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
+    bool isPropertyEnabled(int rawType);
     bool isDrawingTool();
 
 signals:
@@ -105,6 +107,7 @@ protected:
 
     Editor* editor() { return mEditor; }
     QHash<ToolPropertyType, bool> mPropertyEnabled;
+    QHash<int, QSet<Layer::LAYER_TYPE>> mPropertyUsed;
 
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;

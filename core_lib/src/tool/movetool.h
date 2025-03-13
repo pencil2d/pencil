@@ -32,10 +32,12 @@ class MoveTool : public BaseTool
     Q_OBJECT
 public:
     explicit MoveTool(QObject* parent);
-    ToolType type() override;
-    void loadSettings() override;
     QCursor cursor() override;
+
     QCursor cursor(MoveMode mode) const;
+    ToolType type() const override;
+
+    void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;

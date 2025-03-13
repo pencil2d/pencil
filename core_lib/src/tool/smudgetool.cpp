@@ -37,7 +37,7 @@ SmudgeTool::SmudgeTool(QObject* parent) : StrokeTool(parent)
     toolMode = 0; // tool mode
 }
 
-ToolType SmudgeTool::type()
+ToolType SmudgeTool::type() const
 {
     return SMUDGE;
 }

@@ -49,7 +49,7 @@ public:
     ~CameraTool() override;
 
     QCursor cursor() override;
-    ToolType type() override { return ToolType::CAMERA; }
+    ToolType type() const override { return ToolType::CAMERA; }
 
     void paint(QPainter& painter, const QRect&) override;
 

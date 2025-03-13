@@ -26,16 +26,17 @@ GNU General Public License for more details.
 class Layer;
 class VectorImage;
 
-class BucketTool : public StrokeTool
+class BucketTool : public BaseTool
 {
     Q_OBJECT
 public:
     explicit BucketTool(QObject* parent = nullptr);
-    ToolType type() override;
-    ToolCategory category() override { return STROKETOOL; }
+
+    QCursor cursor() override;
+    ToolType type() const override { return BUCKET; }
+    ToolCategory category() const override { return STROKETOOL; }
 
     void loadSettings() override;
-    QCursor cursor() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
@@ -43,11 +44,10 @@ public:
 
     void paintBitmap();
     void paintVector(Layer* layer);
-    void drawStroke();
 
     void applyChanges();
 
-    void setWidth(qreal width) override;
+    void setStrokeThickness(qreal width);
     void setTolerance(int tolerance);
     void setFillExpand(int fillExpandValue);
     void setFillReferenceMode(int referenceMode);
@@ -55,7 +55,14 @@ public:
     void setToleranceON(bool isON);
     void setFillExpandON(bool isON);
 
+    QPointF getCurrentPoint() const;
+    QPointF getCurrentPixel() const;
+    // {
+    //     return mInterpolator.getLastPixel();
+    // }
+
     ToolSettings* getProperties() override { return &properties; }
+
 
 private:
 
@@ -65,6 +72,8 @@ private:
     bool mFilledOnMove = false;
 
     BucketSettings properties;
+    StrokeInterpolator mInterpolator;
+    const UndoSaveState* mUndoSaveState = nullptr;
 };
 
 #endif // BUCKETTOOL_H

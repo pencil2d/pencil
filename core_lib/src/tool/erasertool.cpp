@@ -35,7 +35,7 @@ EraserTool::EraserTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-ToolType EraserTool::type()
+ToolType EraserTool::type() const
 {
     return ERASER;
 }

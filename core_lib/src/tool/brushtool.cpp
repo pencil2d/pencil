@@ -39,7 +39,7 @@ BrushTool::BrushTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-ToolType BrushTool::type()
+ToolType BrushTool::type() const
 {
     return BRUSH;
 }

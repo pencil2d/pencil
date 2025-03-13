@@ -28,7 +28,9 @@ class EyedropperTool : public BaseTool
     Q_OBJECT
 public:
     explicit EyedropperTool( QObject* parent = 0 );
-    ToolType type() override { return EYEDROPPER; }
+
+    ToolType type() const override { return EYEDROPPER; }
+
     void loadSettings() override;
     QCursor cursor() override;
     QCursor cursor( const QColor color );

@@ -95,11 +95,11 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     });
 
     connect(ui->strokeThicknessSlider, &SpinSlider::valueChanged, mEditor->tools(), [=](qreal value) {
-        mBucketTool->setWidth(value);
+        mBucketTool->setStrokeThickness(value);
     });
 
     connect(ui->strokeThicknessSpinBox, static_cast<void (QDoubleSpinBox::*)(qreal)>(&QDoubleSpinBox::valueChanged), mEditor->tools(), [=](qreal value) {
-        mBucketTool->setWidth(value);
+        mBucketTool->setStrokeThickness(value);
     });
 
     connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &BucketOptionsWidget::onPropertyChanged);

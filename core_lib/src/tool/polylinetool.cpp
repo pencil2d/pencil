@@ -35,7 +35,7 @@ PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-ToolType PolylineTool::type()
+ToolType PolylineTool::type() const
 {
     return POLYLINE;
 }

@@ -39,7 +39,7 @@ MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-ToolType MoveTool::type()
+ToolType MoveTool::type() const
 {
     return MOVE;
 }

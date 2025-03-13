@@ -34,13 +34,8 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 
 
-BucketTool::BucketTool(QObject* parent) : StrokeTool(parent)
+BucketTool::BucketTool(QObject* parent) : BaseTool(parent)
 {
-}
-
-ToolType BucketTool::type()
-{
-    return BUCKET;
 }
 
 void BucketTool::loadSettings()
@@ -79,7 +74,6 @@ QCursor BucketTool::cursor()
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
     mInterpolator.pointerPressEvent(event);
-    startStroke(event->inputType());
 
     Layer* targetLayer = mEditor->layers()->currentLayer();
 
@@ -87,6 +81,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
     LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
 
+    mUndoSaveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
     mBitmapBucket = BitmapBucket(mEditor,
                                  mEditor->color()->frontColor(),
                                  layerCam ? layerCam->getViewAtFrame(mEditor->currentFrame()).inverted().mapRect(layerCam->getViewRect()) : QRect(),
@@ -102,14 +97,10 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
     mInterpolator.pointerMoveEvent(event);
-    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
+    if (event->buttons() & Qt::LeftButton)
     {
         Layer* layer = mEditor->layers()->currentLayer();
-        if (layer->type() == Layer::VECTOR)
-        {
-            drawStroke();
-        }
-        else if (layer->type() == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             paintBitmap();
             mFilledOnMove = true;
@@ -120,7 +111,6 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
 void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
     mInterpolator.pointerReleaseEvent(event);
-    if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = editor()->layers()->currentLayer();
     if (layer == nullptr) { return; }
@@ -138,8 +128,6 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
         }
     }
     mFilledOnMove = false;
-
-    endStroke();
 }
 
 void BucketTool::paintBitmap()
@@ -152,6 +140,7 @@ void BucketTool::paintBitmap()
         }
         else if (progress == BucketState::DidFillTarget)
         {
+            mEditor->undoRedo()->record(mUndoSaveState, typeName());
             mEditor->setModified(layerIndex, frameIndex);
         }
     });
@@ -183,40 +172,7 @@ void BucketTool::applyChanges()
     mScribbleArea->applyTransformedSelection();
 }
 
-void BucketTool::drawStroke()
-{
-    StrokeTool::drawStroke();
-
-    if (properties.stabilizerLevel() != mInterpolator.getStabilizerLevel())
-    {
-        mInterpolator.setStabilizerLevel(properties.stabilizerLevel());
-    }
-
-    QList<QPointF> p = mInterpolator.interpolateStroke();
-
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    if (layer->type() == Layer::VECTOR)
-    {
-        mCurrentWidth = 30;
-        QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
-
-        QPen pen(pathColor,
-                 mCurrentWidth * mEditor->view()->scaling(),
-                 Qt::NoPen,
-                 Qt::RoundCap,
-                 Qt::RoundJoin);
-
-        if (p.size() == 4)
-        {
-            QPainterPath path(p[0]);
-            path.cubicTo(p[1], p[2], p[3]);
-            mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-        }
-    }
-}
-
-void BucketTool::setWidth(qreal width)
+void BucketTool::setStrokeThickness(qreal width)
 {
     properties.setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, width);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::WIDTH);
@@ -258,4 +214,13 @@ void BucketTool::setFillMode(int mode)
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::FILL_MODE);
 }
 
+QPointF BucketTool::getCurrentPoint() const
+{
+    return mEditor->view()->mapScreenToCanvas(getCurrentPixel());
+}
+
+QPointF BucketTool::getCurrentPixel() const
+{
+    return mInterpolator.getCurrentPixel();
+}
 

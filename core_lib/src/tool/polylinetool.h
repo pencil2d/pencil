@@ -27,8 +27,9 @@ class PolylineTool : public StrokeTool
     Q_OBJECT
 public:
     explicit PolylineTool(QObject* parent = 0);
-    ToolType type() override;
-    ToolCategory category() override { return STROKETOOL; }
+
+    ToolType type() const override;
+    ToolCategory category() const override { return STROKETOOL; }
 
     void loadSettings() override;
     QCursor cursor() override;
