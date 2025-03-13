@@ -120,6 +120,14 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     updatePropertyVisibility();
 }
 
+void BucketOptionsWidget::updateUI()
+{
+    if (isVisible()) {
+        qDebug() << "update property visibilities";
+        updatePropertyVisibility();
+    }
+}
+
 BucketOptionsWidget::~BucketOptionsWidget()
 {
     delete ui;
@@ -127,56 +135,18 @@ BucketOptionsWidget::~BucketOptionsWidget()
 
 void BucketOptionsWidget::updatePropertyVisibility()
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    Q_ASSERT(layer != nullptr);
-
-    switch (layer->type()) {
-    case Layer::VECTOR:
-        ui->strokeThicknessSlider->show();
-        ui->strokeThicknessSpinBox->show();
-
-        ui->colorToleranceCheckbox->hide();
-        ui->colorToleranceSlider->hide();
-        ui->colorToleranceSpinbox->hide();
-        ui->expandCheckbox->hide();
-        ui->expandSlider->hide();
-        ui->expandSpinBox->hide();
-        ui->referenceLayerComboBox->hide();
-        ui->referenceLayerDescLabel->hide();
-        ui->blendModeComboBox->hide();
-        ui->blendModeLabel->hide();
-        break;
-    case Layer::BITMAP: {
-        ui->strokeThicknessSlider->hide();
-        ui->strokeThicknessSpinBox->hide();
-
-        ui->referenceLayerComboBox->show();
-        ui->referenceLayerDescLabel->show();
-        ui->colorToleranceCheckbox->show();
-        ui->colorToleranceSlider->show();
-        ui->colorToleranceSpinbox->show();
-        ui->expandCheckbox->show();
-        ui->expandSlider->show();
-        ui->expandSpinBox->show();
-        ui->blendModeComboBox->show();
-        ui->blendModeLabel->show();
-        break;
-    }
-    default:
-        ui->strokeThicknessSlider->hide();
-        ui->strokeThicknessSpinBox->hide();
-        ui->colorToleranceCheckbox->hide();
-        ui->colorToleranceSlider->hide();
-        ui->colorToleranceSpinbox->hide();
-        ui->expandCheckbox->hide();
-        ui->expandSlider->hide();
-        ui->expandSpinBox->hide();
-        ui->referenceLayerComboBox->hide();
-        ui->referenceLayerDescLabel->hide();
-        ui->blendModeComboBox->hide();
-        ui->blendModeLabel->hide();
-    }
+    ui->strokeThicknessSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE));
+    ui->strokeThicknessSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE));
+    ui->colorToleranceCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_ON));
+    ui->colorToleranceSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_VALUE));
+    ui->colorToleranceSpinbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_VALUE));
+    ui->expandCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ON));
+    ui->expandSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE));
+    ui->expandSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE));
+    ui->referenceLayerComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLLAYERREFERENCEMODE_VALUE));
+    ui->referenceLayerDescLabel->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLLAYERREFERENCEMODE_VALUE));
+    ui->blendModeComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLMODE_VALUE));
+    ui->blendModeLabel->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLMODE_VALUE));
 }
 
 void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyType)

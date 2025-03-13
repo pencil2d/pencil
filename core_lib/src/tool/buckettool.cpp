@@ -43,6 +43,13 @@ void BucketTool::loadSettings()
     mPropertyEnabled[TOLERANCE] = true;
     mPropertyEnabled[WIDTH] = true;
     mPropertyEnabled[FILL_MODE] = true;
+    mPropertyUsed[BucketSettings::FILLTHICKNESS_VALUE] = { Layer::VECTOR };
+    mPropertyUsed[BucketSettings::TOLERANCE_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::TOLERANCE_ON] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLEXPAND_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLEXPAND_ON] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLMODE_VALUE] = { Layer::BITMAP };
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
