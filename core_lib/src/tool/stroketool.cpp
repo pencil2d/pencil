@@ -60,6 +60,19 @@ void StrokeTool::loadSettings()
     mQuickSizingEnabled = mEditor->preference()->isOn(SETTING::QUICK_SIZING);
     mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::CANVAS_CURSOR);
 
+    QSettings settings(PENCIL2D, PENCIL2D);
+    QHash<int, PropertyInfo> info;
+    info[StrokeSettings::WIDTH_VALUE] = { 1.0, 100.0, 24.0 };
+    info[StrokeSettings::FEATHER_VALUE] = { 1.0, 99.0, 48.0 };
+    info[StrokeSettings::FEATHER_ON] = false;
+    info[StrokeSettings::PRESSURE_ON] = false;
+    info[StrokeSettings::INVISIBILITY_ON] = false;
+    info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
+    info[StrokeSettings::ANTI_ALIASING_ON] = false;
+    info[StrokeSettings::FILLCONTOUR_ON] = false;
+
+    properties.load(typeName(), settings, info);
+
     /// Given the way that we update preferences currently, this connection should not be removed
     /// when the tool is not active.
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &StrokeTool::onPreferenceChanged);

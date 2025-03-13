@@ -200,7 +200,7 @@ struct ToolSettings
     void load(const QString& toolIdentifier, const QSettings& settings, QHash<int, PropertyInfo> props) {
         mIdentifier = toolIdentifier.toLower();
 
-        mProps = props;
+        mProps.insert(props);
 
         for (auto it = props.begin(); it != props.end(); ++it) {
             PropertyInfo& info = it.value();
