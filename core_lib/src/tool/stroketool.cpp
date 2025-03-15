@@ -391,47 +391,47 @@ void StrokeTool::paint(QPainter& painter, const QRect& blitRect)
 void StrokeTool::setStablizationLevel(int level)
 {
     properties.setBaseValue(StrokeSettings::STABILIZATION_VALUE, level);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::STABILIZATION);
+    emit stabilizationLevelChanged(level);
 }
 
 void StrokeTool::setFeatherON(bool isON)
 {
     properties.setBaseValue(StrokeSettings::FEATHER_ON, isON);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::USEFEATHER);
+    emit featherONChanged(isON);
 }
 
 void StrokeTool::setFeather(qreal feather)
 {
     properties.setBaseValue(StrokeSettings::FEATHER_VALUE, feather);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::FEATHER);
+    emit featherChanged(feather);
 }
 
 void StrokeTool::setWidth(qreal width)
 {
     properties.setBaseValue(StrokeSettings::WIDTH_VALUE, width);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::WIDTH);
+    emit widthChanged(width);
 }
 
 void StrokeTool::setPressureON(bool isON)
 {
     properties.setBaseValue(StrokeSettings::PRESSURE_ON, isON);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::PRESSURE);
+    emit pressureONChanged(isON);
 }
 
 void StrokeTool::setFillContourON(bool isON)
 {
     properties.setBaseValue(StrokeSettings::FILLCONTOUR_ON, isON);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::FILLCONTOUR);
+    emit fillContourONChanged(isON);
 }
 
 void StrokeTool::setAntiAliasingON(bool isON)
 {
     properties.setBaseValue(StrokeSettings::ANTI_ALIASING_ON, isON);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::ANTI_ALIASING);
+    emit antiAliasingONChanged(isON);
 }
 
 void StrokeTool::setInvisibilityON(bool isON)
 {
     properties.setBaseValue(StrokeSettings::INVISIBILITY_ON, isON);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::INVISIBILITY);
+    emit invisibilityONChanged(isON);
 }

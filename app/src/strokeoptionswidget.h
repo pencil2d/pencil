@@ -29,13 +29,11 @@ public:
     void updateUI();
     void initUI();
 
-    void makeConnectionToEditor(Editor* editor);
-
-public slots:
-    void onToolPropertyChanged(ToolType, ToolPropertyType);
-    void onToolChanged(ToolType);
-
 private:
+    void makeConnectionFromModelToUI(StrokeTool* strokeTool);
+    void makeConnectionFromUIToModel();
+    void updateToolConnections(BaseTool* tool);
+
     void setPenWidth(qreal);
     void setPenFeather(qreal);
     void setUseFeather(bool);
@@ -54,6 +52,8 @@ private:
 
 private:
     Ui::StrokeOptionsWidget *ui;
+
+    StrokeTool* mCurrentTool = nullptr;
 
     Editor* mEditor = nullptr;
 

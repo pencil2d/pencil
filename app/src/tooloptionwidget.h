@@ -51,8 +51,8 @@ public:
     void makeConnectionToEditor(Editor* editor);
 
 public slots:
-    void onToolPropertyChanged(ToolType, ToolPropertyType);
     void onToolChanged(ToolType);
+    void onLayerChanged(int index);
 
 private:
     // void setPenWidth(qreal);
@@ -69,9 +69,7 @@ private:
     // void setClosedPath(bool);
     // void setShowSelectionInfo(bool);
 
-    void disableAllOptions();
     void setVisibility(BaseTool*);
-    void createUI();
 
 private:
     Ui::ToolOptions* ui = nullptr;

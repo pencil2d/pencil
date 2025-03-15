@@ -35,6 +35,7 @@ public:
     QCursor cursor() override;
 
     void setUseBezier(bool useBezier);
+    void setClosePath(bool closePath);
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
@@ -51,6 +52,10 @@ public:
     bool isActive() const override;
 
     ToolSettings* getSettings() override { return &mSettings; }
+
+signals:
+    void useBezierChanged(bool useBezier);
+    void closePathChanged(bool closePath);
 
 private:
     QList<QPointF> mPoints;

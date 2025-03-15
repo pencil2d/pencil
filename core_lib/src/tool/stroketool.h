@@ -74,6 +74,16 @@ public:
     virtual void setFillContourON(bool isON);
     virtual void setInvisibilityON(bool isON);
 
+signals:
+    void widthChanged(qreal value);
+    void featherChanged(qreal value);
+    void pressureONChanged(bool isON);
+    void featherONChanged(bool isON);
+    void antiAliasingONChanged(bool isON);
+    void fillContourONChanged(bool isON);
+    void invisibilityONChanged(bool isON);
+    void stabilizationLevelChanged(int level);
+
 public slots:
     void onPreferenceChanged(SETTING setting);
     void onViewUpdated();
