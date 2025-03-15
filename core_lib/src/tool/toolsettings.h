@@ -54,8 +54,8 @@ struct PropertyInfo
     PropertyInfo(bool base, bool defaultValue)
         : mValueType(BOOL) {
         setBaseValue(base);
-        mMinValue.boolValue = base;
-        mMaxValue.boolValue = base;
+        mMinValue.boolValue = false;
+        mMaxValue.boolValue = true;
         mDefaultValue.boolValue = defaultValue;
     }
 
@@ -197,21 +197,23 @@ private:
 
 struct ToolSettings
 {
-    void load(const QString& toolIdentifier, const QSettings& settings, QHash<int, PropertyInfo> props) {
+    void load(const QString& toolIdentifier, QSettings& settings, QHash<int, PropertyInfo> props) {
         mIdentifier = toolIdentifier.toLower();
 
-
+        settings.beginGroup(mIdentifier);
         for (auto it = props.begin(); it != props.end(); ++it) {
 
             PropertyInfo info = it.value();
             const QString& settingName = identifier(it.key());
             loadProperty(settingName, info, settings);
 
-            insertInRange(props, it.key());
+            mProps.insert(it.key(), info);
         }
+        settings.endGroup();
     }
 
-    virtual void save(QSettings& settings) {
+    void save(QSettings& settings) {
+        settings.beginGroup(mIdentifier);
         for (auto it = mProps.begin(); it != mProps.end(); ++it) {
 
             QString propertyId = identifier(it.key());
@@ -232,57 +234,43 @@ struct ToolSettings
                 break;
             }
         }
+        settings.endGroup();
         settings.sync();
     }
 
-    virtual void setBaseValue(int typeRaw, const PropertyInfo& value) = 0;
-
-    virtual void setDefaults() {
-        for (auto it = mProps.begin(); it != mProps.end(); ++it) {
-            it.value().resetBaseValue();
-        }
-    }
-
-    virtual void insertInRange(const QHash<int, PropertyInfo>& props, int rawType)
-    {
-        if (!isInRange(rawType)) {
-            Q_ASSERT_X(false, __func__,
-                       QString("Tried to insert %1 into properties. "
-                               "This is likely not what you intended.").arg(rawType).toUtf8().constData());
-        }
-        mProps.insert(props);
-    }
-
-    virtual QString identifier(int typeRaw) const = 0;
-
-    virtual bool isInRange(int rawType, int min, int max) const {
-        return rawType >= min && rawType < max;
-    }
-
-protected:
-    QString mIdentifier = "unidentified";
-    QHash<int, PropertyInfo> mProps;
-
-    virtual bool isInRange(int rawType) const = 0;
-
-    void setBaseValue(QHash<int, PropertyInfo>& props, int rawType, const PropertyInfo& value)
+    void setBaseValue(int rawType, const PropertyInfo& value)
     {
         switch (value.type())
         {
         case PropertyInfo::INTEGER:
-            props[rawType].setBaseValue(value.getInt());
+            mProps[rawType].setBaseValue(value.getInt());
             break;
         case PropertyInfo::REAL:
-            props[rawType].setBaseValue(value.getReal());
+            mProps[rawType].setBaseValue(value.getReal());
             break;
         case PropertyInfo::BOOL:
-            props[rawType].setBaseValue(value.getBool());
+            mProps[rawType].setBaseValue(value.getBool());
             break;
         case PropertyInfo::INVALID:
             Q_ASSERT_X(false, __func__, "Expected value but got INVALID. Make sure the property has been setup properly before trying to set its base value.");
             break;
         }
     }
+
+    void setDefaults() {
+        for (auto it = mProps.begin(); it != mProps.end(); ++it) {
+            it.value().resetBaseValue();
+        }
+    }
+
+protected:
+
+    virtual QString identifier(int) const {
+        return "Invalid";
+    }
+
+    QString mIdentifier = "unidentified";
+    QHash<int, PropertyInfo> mProps;
 
 private:
 
@@ -330,22 +318,9 @@ struct StrokeSettings: public ToolSettings
         END                 = 199,
     };
 
-    void setBaseValue(int rawType, const PropertyInfo& info) override
-    {
-        ToolSettings::setBaseValue(mProps, rawType, info);
-    }
-
-    bool contains(int rawType) const {
-        return mProps.contains(rawType);
-    }
-
-    bool isInRange(int rawType) const override {
-        return ToolSettings::isInRange(rawType, START, END);
-    }
-
     QString identifier(int typeRaw) const override {
         auto type = static_cast<StrokeSettings::Type>(typeRaw);
-        QString propertyID = "invalid";
+        QString propertyID = ToolSettings::identifier(typeRaw);
         switch (type)
         {
         case WIDTH_VALUE:
@@ -376,7 +351,7 @@ struct StrokeSettings: public ToolSettings
             break;
         }
 
-        return mIdentifier + propertyID;
+        return propertyID;
     }
 
     qreal width() const { return mProps[WIDTH_VALUE].getReal(); }
@@ -389,13 +364,11 @@ struct StrokeSettings: public ToolSettings
     bool useFillContour() const { return mProps[FILLCONTOUR_ON].getBool(); }
 };
 
-
-struct PolyLineSettings: public ToolSettings
+/// This struct is an example of how we can
+/// share settings among tools rather than duplicating logic, eg. polyline uses settings from StrokeSettings.
+/// The same could be done for PencilTool, BrushTool, Eraser etc...
+struct PolyLineSettings: public StrokeSettings
 {
-
-    PolyLineSettings(const StrokeSettings& strokeSettings) : mStrokeProps(strokeSettings)
-    {};
-
     enum Type {
         START           = 200,
 
@@ -405,36 +378,9 @@ struct PolyLineSettings: public ToolSettings
         END             = 299,
     };
 
-    void save(QSettings& settings) override {
-        ToolSettings::save(settings);
-        mStrokeProps.save(settings);
-    }
-
-    void setBaseValue(int typeRaw, const PropertyInfo& info) override {
-        if (mProps.contains(typeRaw)) {
-            ToolSettings::setBaseValue(mProps, typeRaw, info);
-        } else if (mStrokeProps.contains(typeRaw)) {
-            mStrokeProps.setBaseValue(typeRaw, info);
-        } else {
-            Q_ASSERT_X(false, __func__,"This is unexpected... the raw type value should match either of the above settings");
-        }
-    }
-
-    void insertInRange(const QHash<int, PropertyInfo>& props, int rawType) override {
-        if (ToolSettings::isInRange(rawType, START, END)) {
-            mProps.insert(props);
-        } else {
-            mStrokeProps.insertInRange(props, rawType);
-        }
-    }
-
-    bool isInRange(int rawType) const override {
-        return ToolSettings::isInRange(rawType, START, END);
-    }
-
     QString identifier(int typeRaw) const override {
         auto type = static_cast<PolyLineSettings::Type>(typeRaw);
-        QString propertyID = "invalid";
+        QString propertyID = ToolSettings::identifier(typeRaw);
         switch (type)
         {
         case CLOSEDPATH_ON:
@@ -444,26 +390,16 @@ struct PolyLineSettings: public ToolSettings
             propertyID = "BezierEnabled";
             break;
         default:
-            if (mStrokeProps.contains(typeRaw)) {
-                propertyID = mStrokeProps.identifier(typeRaw);
-            }
+            propertyID = StrokeSettings::identifier(typeRaw);
         }
 
-        return mIdentifier + propertyID;
+        return propertyID;
     }
 
-    void setDefaults() override {
-        ToolSettings::setDefaults();
-        mStrokeProps.setDefaults();
-    }
-
-    qreal width() const { return mStrokeProps.width(); }
+    qreal width() const { return mProps[StrokeSettings::WIDTH_VALUE].getReal(); }
     bool closedPath() const { return mProps[CLOSEDPATH_ON].getBool(); }
     bool useBezier() const { return mProps[BEZIER_ON].getBool(); }
-    bool useAntiAliasing() const { return mStrokeProps.useAntiAliasing(); }
-
-private:
-    StrokeSettings mStrokeProps;
+    bool useAntiAliasing() const { return mProps[StrokeSettings::ANTI_ALIASING_ON].getBool(); }
 };
 
 struct BucketSettings: public ToolSettings
@@ -482,17 +418,9 @@ struct BucketSettings: public ToolSettings
         END                             = 399,
     };
 
-    void setBaseValue(int rawType, const PropertyInfo& info) override {
-        ToolSettings::setBaseValue(mProps, rawType, info);
-    }
-
-    bool isInRange(int rawType) const override {
-        return ToolSettings::isInRange(rawType, START, END);
-    }
-
     QString identifier(int typeRaw) const override {
         auto type = static_cast<BucketSettings::Type>(typeRaw);
-        QString propertyID = "Invalid";
+        QString propertyID = ToolSettings::identifier(typeRaw);
         switch (type)
         {
         case FILLTHICKNESS_VALUE:
@@ -520,7 +448,7 @@ struct BucketSettings: public ToolSettings
             break;
         }
 
-        return mIdentifier + propertyID;
+        return  propertyID;
     }
 
     qreal fillThickness() const { return mProps[FILLTHICKNESS_VALUE].getReal(); }
@@ -543,17 +471,9 @@ struct CameraSettings: public ToolSettings
         END                 = 499,
     };
 
-    void setBaseValue(int rawType, const PropertyInfo& info) override {
-        ToolSettings::setBaseValue(mProps, rawType, info);
-    }
-
-    bool isInRange(int rawType) const override {
-        return ToolSettings::isInRange(rawType, START, END);
-    }
-
     QString identifier(int typeRaw) const override {
         auto type = static_cast<CameraSettings::Type>(typeRaw);
-        QString propertyID = "invalid";
+        QString propertyID = ToolSettings::identifier(typeRaw);
 
         switch (type)
         {
@@ -566,7 +486,7 @@ struct CameraSettings: public ToolSettings
             break;
         }
 
-        return mIdentifier + propertyID;
+        return propertyID;
     }
 
     bool showPath() const { return mProps[SHOWPATH_ON].getBool(); }
@@ -583,27 +503,10 @@ struct SelectionSettings: public ToolSettings
         END                     = 599,
     };
 
-    void setBaseValue(int rawType, const PropertyInfo& info) override {
-        ToolSettings::setBaseValue(mProps, rawType, info);
-    }
-
-    bool isInRange(int rawType) const override {
-        return ToolSettings::isInRange(rawType, START, END);
-    }
-
-    void insertInRange(const QHash<int, PropertyInfo>& props, int rawType) override
-    {
-        if (!ToolSettings::isInRange(rawType, START, END)) {
-            Q_ASSERT_X(false, __func__,
-                       QString("Tried to insert %1 into properties. "
-                               "This is likely not what you intended.").arg(rawType).toUtf8().constData());
-        }
-        mProps.insert(props);
-    }
-
     QString identifier(int typeRaw) const override {
         auto type = static_cast<SelectionSettings::Type>(typeRaw);
-        QString propertyID = "invalid";
+        QString propertyID = ToolSettings::identifier(typeRaw);
+
         switch (type)
         {
             case SHOWSELECTIONINFO_ON:
@@ -613,7 +516,7 @@ struct SelectionSettings: public ToolSettings
                 break;
         }
 
-        return mIdentifier + propertyID;
+        return propertyID;
     }
 
     bool showSelectionInfo() const { return mProps[SHOWSELECTIONINFO_ON].getBool(); }

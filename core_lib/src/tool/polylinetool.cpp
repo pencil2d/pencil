@@ -31,8 +31,7 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 
-PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent),
-    mSettings(PolyLineSettings(properties))
+PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
