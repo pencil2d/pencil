@@ -105,7 +105,7 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &BucketOptionsWidget::onPropertyChanged);
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &BucketOptionsWidget::onLayerChanged);
 
-    const BucketSettings* properties = static_cast<const BucketSettings*>(mEditor->tools()->getTool(BUCKET)->getProperties());
+    const BucketSettings* properties = static_cast<const BucketSettings*>(mEditor->tools()->getTool(BUCKET)->getSettings());
 
     ui->expandSlider->setValue(properties->fillExpandAmount());
     ui->expandSpinBox->setValue(properties->fillExpandAmount());
@@ -151,7 +151,7 @@ void BucketOptionsWidget::updatePropertyVisibility()
 
 void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyType)
 {
-    const BucketSettings* p = static_cast<const BucketSettings*>(mEditor->tools()->getTool(BUCKET)->getProperties());
+    const BucketSettings* p = static_cast<const BucketSettings*>(mEditor->tools()->getTool(BUCKET)->getSettings());
     switch (propertyType)
     {
     case ToolPropertyType::TOLERANCE:

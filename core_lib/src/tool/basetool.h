@@ -85,7 +85,7 @@ public:
      */
     virtual bool isActive() const;
 
-    virtual ToolSettings* getProperties() { return nullptr; }
+    virtual ToolSettings* getSettings() { return nullptr; }
 
     virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 

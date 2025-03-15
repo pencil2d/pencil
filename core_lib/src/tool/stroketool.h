@@ -91,7 +91,7 @@ protected:
     virtual void stopAdjusting();
     virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
 
-    ToolSettings* getProperties() override { return &properties; }
+    ToolSettings* getSettings() override { return &properties; }
 
     static bool mQuickSizingEnabled;
     static bool msIsAdjusting;

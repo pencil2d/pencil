@@ -66,7 +66,7 @@ public:
 
     void transformView(LayerCamera* layerCamera, CameraMoveType mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const;
 
-    ToolSettings* getProperties() override { return &properties; }
+    ToolSettings* getSettings() override { return &properties; }
 
     void performAction(ToolActionType actionType);
 

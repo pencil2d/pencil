@@ -48,7 +48,7 @@ public:
 
     void setShowSelectionInfo(bool b);
 
-    ToolSettings* getProperties() override { return &properties; }
+    ToolSettings* getSettings() override { return &properties; }
 
 private:
     void applyTransformation();

@@ -34,7 +34,7 @@ public:
 
     QCursor cursor() override;
     ToolType type() const override { return BUCKET; }
-    ToolCategory category() const override { return STROKETOOL; }
+    ToolCategory category() const override { return BASETOOL; }
 
     void loadSettings() override;
 
@@ -61,7 +61,7 @@ public:
     //     return mInterpolator.getLastPixel();
     // }
 
-    ToolSettings* getProperties() override { return &properties; }
+    ToolSettings* getSettings() override { return &properties; }
 
 
 private:

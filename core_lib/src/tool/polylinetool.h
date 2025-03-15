@@ -34,6 +34,8 @@ public:
     void loadSettings() override;
     QCursor cursor() override;
 
+    void setUseBezier(bool useBezier);
+
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent* event) override;
@@ -48,7 +50,7 @@ public:
 
     bool isActive() const override;
 
-    ToolSettings* getProperties() override { return &properties; }
+    ToolSettings* getSettings() override { return &mSettings; }
 
 private:
     QList<QPointF> mPoints;
@@ -59,7 +61,7 @@ private:
     void cancelPolyline();
     void endPolyline(QList<QPointF> points);
 
-    PolyLineSettings properties;
+    PolyLineSettings mSettings;
 };
 
 #endif // POLYLINETOOL_H

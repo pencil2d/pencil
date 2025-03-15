@@ -53,14 +53,19 @@ void BrushTool::loadSettings()
     mPropertyEnabled[PRESSURE] = true;
     mPropertyEnabled[INVISIBILITY] = true;
     mPropertyEnabled[STABILIZATION] = true;
+    mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::PRESSURE_ON] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::INVISIBILITY_ON] = { Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::STABILIZATION_VALUE] = { Layer::BITMAP, Layer::VECTOR };
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
     QHash<int, PropertyInfo> info;
     info[StrokeSettings::WIDTH_VALUE] = { 1.0, 100.0, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { 1.0, 99.0, 48.0 };
-    info[StrokeSettings::PRESSURE_ON] = { true };
-    info[StrokeSettings::INVISIBILITY_ON] = { false };
+    info[StrokeSettings::PRESSURE_ON] = true;
+    info[StrokeSettings::INVISIBILITY_ON] = false;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG } ;
 
     properties.load(typeName(), settings, info);

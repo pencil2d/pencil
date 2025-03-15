@@ -47,6 +47,11 @@ void PencilTool::loadSettings()
     mPropertyEnabled[STABILIZATION] = true;
     mPropertyEnabled[FILLCONTOUR] = true;
 
+    mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::PRESSURE_ON] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::FILLCONTOUR_ON] = { Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::STABILIZATION_VALUE] = { Layer::BITMAP, Layer::VECTOR };
+
     QSettings settings(PENCIL2D, PENCIL2D);
 
     QHash<int, PropertyInfo> info;

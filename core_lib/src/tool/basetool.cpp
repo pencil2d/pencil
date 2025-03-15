@@ -65,17 +65,17 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
 
 void BaseTool::saveSettings()
 {
-    if (getProperties()) {
+    if (getSettings()) {
         QSettings settings(PENCIL2D, PENCIL2D);
-        getProperties()->save(settings);
+        getSettings()->save(settings);
     }
 }
 
 void BaseTool::resetSettings()
 {
-    if (getProperties()) {
+    if (getSettings()) {
         QSettings settings(PENCIL2D, PENCIL2D);
-        getProperties()->setDefaults();
+        getSettings()->setDefaults();
     }
 }
 

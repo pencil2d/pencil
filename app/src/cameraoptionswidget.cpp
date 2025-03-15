@@ -74,7 +74,7 @@ void CameraOptionsWidget::updateUI()
 
     Q_ASSERT(mCameraTool->type() == CAMERA);
 
-    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->getProperties());
+    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->getSettings());
 
     setShowCameraPath(p->showPath());
     setPathDotColorType(p->dotColorType());
@@ -82,7 +82,7 @@ void CameraOptionsWidget::updateUI()
 
 void CameraOptionsWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType)
 {
-    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->getProperties());
+    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->getSettings());
 
     switch (ePropertyType)
     {

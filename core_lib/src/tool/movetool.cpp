@@ -52,7 +52,7 @@ void MoveTool::loadSettings()
 
     QHash<int, PropertyInfo> info;
 
-    info[SHOWSELECTIONINFO] = false;
+    info[SelectionSettings::SHOWSELECTIONINFO_ON] = false;
     properties.load(typeName(), settings, info);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
