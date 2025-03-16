@@ -40,7 +40,9 @@ public:
 
     void setShowCameraPath(bool showCameraPath);
     void setPathDotColorType(DotColorType index);
-    void onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType);
+
+    void makeConnectionsFromModelToUI();
+    void makeConnectionsFromUIToModel();
 
 private:
     Ui::CameraOptionsWidget *ui;

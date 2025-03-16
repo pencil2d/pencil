@@ -44,12 +44,22 @@ class Camera;
 class CameraTool : public BaseTool
 {
     Q_OBJECT
+
 public:
     explicit CameraTool(QObject* object);
     ~CameraTool() override;
 
+    enum ActionType {
+        RESET_PATH,
+        RESET_FIELD,
+        RESET_ROTATION,
+        RESET_TRANSLATION,
+        RESET_SCALING
+    };
+
     QCursor cursor() override;
     ToolType type() const override { return ToolType::CAMERA; }
+    bool isActive() const override { return true; }
 
     void paint(QPainter& painter, const QRect&) override;
 
@@ -69,7 +79,11 @@ public:
 
     ToolSettings* settings() override { return mSettings; }
 
-    void performAction(ToolActionType actionType);
+    void performAction(ActionType actionType);
+
+signals:
+    void pathColorChanged(DotColorType colorType);
+    void cameraPathONChanged(bool isON);
 
 private:
 

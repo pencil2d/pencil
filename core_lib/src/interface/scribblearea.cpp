@@ -68,7 +68,6 @@ bool ScribbleArea::init()
     mMouseFilterTimer = new QTimer(this);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
-    connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &ScribbleArea::onToolPropertyUpdated);
     connect(mEditor->tools(), &ToolManager::toolChanged, this, &ScribbleArea::onToolChanged);
 
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
@@ -286,18 +285,6 @@ void ScribbleArea::invalidatePainterCaches()
     mCameraPainter.resetCache();
     mCanvasPainter.resetLayerCache();
     updateFrame();
-}
-
-void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
-{
-    switch (type)
-    {
-    case ToolPropertyType::CAMERA_SHOWPATH_CHECKED:
-        onFrameModified(mEditor->currentFrame());
-        break;
-    default:
-        break;
-    }
 }
 
 void ScribbleArea::onToolChanged(ToolType)

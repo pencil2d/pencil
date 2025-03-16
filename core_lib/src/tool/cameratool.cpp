@@ -218,27 +218,27 @@ void CameraTool::updateMoveMode(const QPointF& pos)
     }
 }
 
-void CameraTool::performAction(ToolActionType actionType)
+void CameraTool::performAction(ActionType actionType)
 {
     switch (actionType)
     {
-        case CAMERA_PATH_RESET: {
+        case RESET_PATH: {
             resetCameraPath();
             break;
         }
-        case CAMERA_RESET_FIELD: {
+        case RESET_FIELD: {
             resetTransform(CameraFieldOption::RESET_FIELD);
             break;
         }
-        case CAMERA_RESET_ROTATION: {
+        case RESET_ROTATION: {
             resetTransform(CameraFieldOption::RESET_ROTATION);
             break;
         }
-        case CAMERA_RESET_SCALING: {
+        case RESET_SCALING: {
             resetTransform(CameraFieldOption::RESET_ROTATION);
             break;
         }
-        case CAMERA_RESET_TRANSLATION: {
+        case RESET_TRANSLATION: {
             resetTransform(CameraFieldOption::RESET_TRANSLATION);
             break;
         }
@@ -252,6 +252,9 @@ void CameraTool::setCameraPathON(bool isON)
     Q_ASSERT(layer->type() == Layer::CAMERA);
     layer->setShowCameraPath(isON);
     mSettings->setBaseValue(CameraSettings::SHOWPATH_ON, isON);
+    emit cameraPathONChanged(isON);
+
+    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 void CameraTool::setPathDotColorType(DotColorType pathDotColor)
@@ -261,6 +264,9 @@ void CameraTool::setPathDotColorType(DotColorType pathDotColor)
 
     layer->updateDotColor(pathDotColor);
     mSettings->setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(pathDotColor));
+    emit pathColorChanged(pathDotColor);
+
+    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 void CameraTool::resetCameraPath()
@@ -269,7 +275,8 @@ void CameraTool::resetCameraPath()
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     layer->setPathMovedAtFrame(mEditor->currentFrame(), false);
-    mEditor->updateFrame();
+
+    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 void CameraTool::resetTransform(CameraFieldOption option)
@@ -301,7 +308,7 @@ void CameraTool::transformCamera(const QPointF& pos, Qt::KeyboardModifiers keyMo
 
     transformView(layer, mCamMoveMode, pos, mTransformOffset, -angleDeg, mEditor->currentFrame());
 
-    mEditor->updateFrame();
+    emit mEditor->frameModified(mEditor->currentFrame());
     mTransformOffset = pos;
 }
 
@@ -311,7 +318,7 @@ void CameraTool::transformCameraPath(const QPointF& pos)
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
     layer->updatePathControlPointAtFrame(pos, mDragPathFrame);
-    mEditor->updateFrame();
+    emit mEditor->frameModified(mEditor->currentFrame());
 }
 
 int CameraTool::constrainedRotation(const qreal rotatedAngle, const int rotationIncrement) const

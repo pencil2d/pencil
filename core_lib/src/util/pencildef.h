@@ -88,26 +88,6 @@ enum ToolPropertyType
     CAMERA_SHOWPATH_CHECKED,
     CAMERA_PATH_DOTCOLOR_TYPE,
 };
-
-
-/// This list should consist of all tool actions
-/// Each tool or Tool category, depending on the granularity of the Action should
-/// follow this naming convention: <TOOL>_<KEY>_<DESCRIPTION>
-///
-/// eg. CAMERA_RESET_FIELD, where RESET is the KEY and FIELD is the description.
-///
-enum ToolActionType {
-    CAMERA_PATH_RESET,
-    CAMERA_RESET_FIELD,
-    CAMERA_RESET_ROTATION,
-    CAMERA_RESET_TRANSLATION,
-    CAMERA_RESET_SCALING
-};
-
-// enum CameraActionType {
-
-// };
-
 enum class DotColorType {
     RED,
     BLUE,
