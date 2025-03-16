@@ -38,6 +38,12 @@ BucketTool::BucketTool(QObject* parent) : BaseTool(parent)
 {
 }
 
+void BucketTool::createSettings(ToolSettings*)
+{
+    mSettings = new BucketSettings();
+    BaseTool::createSettings(mSettings);
+}
+
 void BucketTool::loadSettings()
 {
     mPropertyEnabled[TOLERANCE] = true;
@@ -63,7 +69,7 @@ void BucketTool::loadSettings()
     info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { 0, 1, 0 };
     info[BucketSettings::FILLMODE_VALUE] = { 0, 2, 0 };
 
-    properties.load(typeName(), settings, info);
+    mSettings->load(typeName(), settings, info);
 }
 
 QCursor BucketTool::cursor()
@@ -93,7 +99,7 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
                                  mEditor->color()->frontColor(),
                                  layerCam ? layerCam->getViewAtFrame(mEditor->currentFrame()).inverted().mapRect(layerCam->getViewRect()) : QRect(),
                                  getCurrentPoint(),
-                                 properties);
+                                 *mSettings);
 
     // Because we can change layer to on the fly, but we do not act reactively
     // on it, it's necessary to invalidate layer cache on press event.
@@ -165,7 +171,7 @@ void BucketTool::paintVector(Layer* layer)
         vectorImage->fillSelectedPath(mEditor->color()->frontColorNumber());
     }
 
-    vectorImage->applyWidthToSelection(properties.fillThickness());
+    vectorImage->applyWidthToSelection(mSettings->fillThickness());
     vectorImage->applyColorToSelectedCurve(mEditor->color()->frontColorNumber());
     vectorImage->applyColorToSelectedArea(mEditor->color()->frontColorNumber());
 
@@ -181,43 +187,43 @@ void BucketTool::applyChanges()
 
 void BucketTool::setStrokeThickness(qreal width)
 {
-    properties.setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, width);
+    mSettings->setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, width);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::WIDTH);
 }
 
 void BucketTool::setTolerance(int tolerance)
 {
-    properties.setBaseValue(BucketSettings::TOLERANCE_VALUE, tolerance);
+    mSettings->setBaseValue(BucketSettings::TOLERANCE_VALUE, tolerance);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::TOLERANCE);
 }
 
 void BucketTool::setToleranceON(bool isON)
 {
-    properties.setBaseValue(BucketSettings::TOLERANCE_ON, isON);
+    mSettings->setBaseValue(BucketSettings::TOLERANCE_ON, isON);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::USETOLERANCE);
 }
 
 void BucketTool::setFillExpand(int fillExpandValue)
 {
-    properties.setBaseValue(BucketSettings::FILLEXPAND_VALUE, fillExpandValue);
+    mSettings->setBaseValue(BucketSettings::FILLEXPAND_VALUE, fillExpandValue);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::BUCKETFILLEXPAND);
 }
 
 void BucketTool::setFillExpandON(bool isON)
 {
-    properties.setBaseValue(BucketSettings::FILLEXPAND_ON, isON);
+    mSettings->setBaseValue(BucketSettings::FILLEXPAND_ON, isON);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::USEBUCKETFILLEXPAND);
 }
 
 void BucketTool::setFillReferenceMode(int referenceMode)
 {
-    properties.setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, referenceMode);
+    mSettings->setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, referenceMode);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::BUCKETFILLLAYERREFERENCEMODE);
 }
 
 void BucketTool::setFillMode(int mode)
 {
-    properties.setBaseValue(BucketSettings::FILLMODE_VALUE, mode);
+    mSettings->setBaseValue(BucketSettings::FILLMODE_VALUE, mode);
     editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::FILL_MODE);
 }
 

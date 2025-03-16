@@ -37,6 +37,7 @@ public:
     QCursor cursor(MoveMode mode) const;
     ToolType type() const override;
 
+    void createSettings(ToolSettings*) override;
     void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;
@@ -48,7 +49,7 @@ public:
 
     void setShowSelectionInfo(bool b);
 
-    ToolSettings* settings() override { return &properties; }
+    ToolSettings* settings() override { return mSettings; }
 
 private:
     void applyTransformation();
@@ -72,7 +73,7 @@ private:
 
     const UndoSaveState* mUndoSaveState = nullptr;
 
-    SelectionSettings properties;
+    SelectionSettings* mSettings;
 };
 
 #endif

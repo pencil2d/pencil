@@ -36,6 +36,7 @@ public:
     ToolType type() const override { return BUCKET; }
     ToolCategory category() const override { return BASETOOL; }
 
+    void createSettings(ToolSettings*) override;
     void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;
@@ -57,12 +58,8 @@ public:
 
     QPointF getCurrentPoint() const;
     QPointF getCurrentPixel() const;
-    // {
-    //     return mInterpolator.getLastPixel();
-    // }
 
-    ToolSettings* settings() override { return &properties; }
-
+    ToolSettings* settings() override { return mSettings; }
 
 private:
 
@@ -71,7 +68,7 @@ private:
 
     bool mFilledOnMove = false;
 
-    BucketSettings properties;
+    BucketSettings* mSettings = nullptr;
     StrokeInterpolator mInterpolator;
     const UndoSaveState* mUndoSaveState = nullptr;
 };

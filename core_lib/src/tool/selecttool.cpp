@@ -30,6 +30,12 @@ SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
 {
 }
 
+void SelectTool::createSettings(ToolSettings*)
+{
+    mSettings = new SelectionSettings();
+    BaseTool::createSettings(mSettings);
+}
+
 void SelectTool::loadSettings()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -38,7 +44,7 @@ void SelectTool::loadSettings()
     QHash<int, PropertyInfo> info;
 
     info[SelectionSettings::SHOWSELECTIONINFO_ON] = false;
-    properties.load(typeName(), settings, info);
+    mSettings->load(typeName(), settings, info);
 }
 
 QCursor SelectTool::cursor()

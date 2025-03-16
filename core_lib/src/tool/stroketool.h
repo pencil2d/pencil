@@ -35,7 +35,7 @@ class StrokeTool : public BaseTool
     Q_OBJECT
 
 public:
-    explicit StrokeTool(QObject* parent, ToolSettings* settings = nullptr);
+    explicit StrokeTool(QObject* parent);
     ~StrokeTool();
 
     void startStroke(PointerEvent::InputType inputType);
@@ -52,6 +52,7 @@ public:
     static const qreal WIDTH_MIN;
     static const qreal WIDTH_MAX;
 
+    void createSettings(ToolSettings* settings) override;
     void loadSettings() override;
     bool isActive() const override { return mInterpolator.isActive(); }
 

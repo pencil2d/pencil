@@ -36,6 +36,7 @@ public:
 
     ToolType type() const override { return SELECT; }
 
+    void createSettings(ToolSettings*) override;
     void loadSettings() override;
     QCursor cursor() override;
 
@@ -70,7 +71,7 @@ private:
 
     const UndoSaveState* mUndoState = nullptr;
 
-    SelectionSettings properties;
+    SelectionSettings* mSettings = nullptr;
 };
 
 #endif

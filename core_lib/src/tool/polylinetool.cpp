@@ -31,14 +31,19 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 
 
-PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent, new PolylineSettings())
+PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent)
 {
-    mSettings = static_cast<PolylineSettings*>(mStrokeSettings);
 }
 
 ToolType PolylineTool::type() const
 {
     return POLYLINE;
+}
+
+void PolylineTool::createSettings(ToolSettings *)
+{
+    mSettings = new PolylineSettings();
+    StrokeTool::createSettings(mSettings);
 }
 
 void PolylineTool::loadSettings()

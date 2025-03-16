@@ -47,7 +47,6 @@ class BaseTool : public QObject
     Q_OBJECT
 protected:
     explicit BaseTool(QObject* parent);
-    explicit BaseTool(QObject* parent, ToolSettings* settings);
 public:
     static QString TypeName(ToolType);
     QString typeName() { return TypeName(type()); }
@@ -57,6 +56,7 @@ public:
     virtual ToolType type() const = 0;
     virtual ToolCategory category() const { return ToolCategory::BASETOOL; }
 
+    virtual void createSettings(ToolSettings* settings = nullptr);
     virtual void loadSettings() = 0;
     void saveSettings();
     void resetSettings();
@@ -86,7 +86,7 @@ public:
      */
     virtual bool isActive() const;
 
-    virtual ToolSettings* settings() { return mSettings; }
+    virtual ToolSettings* settings() { Q_ASSERT(mSettings); return mSettings; }
 
     virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 

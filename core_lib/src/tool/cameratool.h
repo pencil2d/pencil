@@ -53,6 +53,7 @@ public:
 
     void paint(QPainter& painter, const QRect&) override;
 
+    void createSettings(ToolSettings*) override;
     void loadSettings() override;
 
     void pointerPressEvent(PointerEvent* event) override;
@@ -66,7 +67,7 @@ public:
 
     void transformView(LayerCamera* layerCamera, CameraMoveType mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const;
 
-    ToolSettings* settings() override { return &properties; }
+    ToolSettings* settings() override { return mSettings; }
 
     void performAction(ToolActionType actionType);
 
@@ -114,7 +115,7 @@ private:
     QColor mHandleDisabledColor;
     QColor mHandleTextColor;
 
-    CameraSettings properties;
+    CameraSettings* mSettings = nullptr;
 };
 
 #endif // CAMERATOOL_H

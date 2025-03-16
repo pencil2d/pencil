@@ -50,15 +50,8 @@ const qreal StrokeTool::WIDTH_MAX = 200.;
 bool StrokeTool::msIsAdjusting = false;
 bool StrokeTool::mQuickSizingEnabled = false;
 
-StrokeTool::StrokeTool(QObject* parent, ToolSettings* settings) : BaseTool(parent, settings)
+StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
 {
-    if (settings == nullptr) {
-        mStrokeSettings = new StrokeSettings();
-        mSettings = mStrokeSettings;
-    } else {
-        mStrokeSettings = static_cast<StrokeSettings*>(settings);
-    }
-
     detectWhichOSX();
 }
 
@@ -69,6 +62,17 @@ StrokeTool::~StrokeTool()
         // lifetime of the program.
         delete(mStrokeSettings);
         mStrokeSettings = nullptr;
+    }
+}
+
+void StrokeTool::createSettings(ToolSettings* settings)
+{
+    if (settings == nullptr) {
+        mStrokeSettings = new StrokeSettings();
+        BaseTool::createSettings(mStrokeSettings);
+    } else {
+        mStrokeSettings = static_cast<StrokeSettings*>(settings);
+        BaseTool::createSettings(settings);
     }
 }
 

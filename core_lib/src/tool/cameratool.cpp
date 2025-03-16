@@ -38,12 +38,17 @@ GNU General Public License for more details.
 
 CameraTool::CameraTool(QObject* object) : BaseTool(object)
 {
-
 }
 
 CameraTool::~CameraTool()
 {
     saveSettings();
+}
+
+void CameraTool::createSettings(ToolSettings*)
+{
+    mSettings = new CameraSettings();
+    BaseTool::createSettings(mSettings);
 }
 
 void CameraTool::loadSettings()
@@ -62,7 +67,7 @@ void CameraTool::loadSettings()
                                                  static_cast<int>(DotColorType::BLACK) };
     info[CameraSettings::SHOWPATH_ON] = false;
 
-    properties.load(typeName(), settings, info);
+    mSettings->load(typeName(), settings, info);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &CameraTool::updateSettings);
 
@@ -102,8 +107,8 @@ void CameraTool::updateProperties()
     if (!layer || layer->type() != Layer::CAMERA) { return; }
 
     LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
-    properties.setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(layerCam->getDotColorType()));
-    properties.setBaseValue(CameraSettings::SHOWPATH_ON, layerCam->getShowCameraPath());
+    mSettings->setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(layerCam->getDotColorType()));
+    mSettings->setBaseValue(CameraSettings::SHOWPATH_ON, layerCam->getShowCameraPath());
 }
 
 void CameraTool::updateSettings(const SETTING setting)
@@ -190,7 +195,7 @@ void CameraTool::updateMoveMode(const QPointF& pos)
     {
         mCamMoveMode = getCameraMoveMode(pos,
                                          selectionTolerance);
-    } else if (properties.showPath()) {
+    } else if (mSettings->showPath()) {
         int keyPos = cam->firstKeyFramePosition();
         while (keyPos <= cam->getMaxKeyFramePosition())
         {
@@ -246,7 +251,7 @@ void CameraTool::setCameraPathON(bool isON)
 
     Q_ASSERT(layer->type() == Layer::CAMERA);
     layer->setShowCameraPath(isON);
-    properties.setBaseValue(CameraSettings::SHOWPATH_ON, isON);
+    mSettings->setBaseValue(CameraSettings::SHOWPATH_ON, isON);
 }
 
 void CameraTool::setPathDotColorType(DotColorType pathDotColor)
@@ -255,7 +260,7 @@ void CameraTool::setPathDotColorType(DotColorType pathDotColor)
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     layer->updateDotColor(pathDotColor);
-    properties.setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(pathDotColor));
+    mSettings->setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(pathDotColor));
 }
 
 void CameraTool::resetCameraPath()

@@ -63,9 +63,24 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(CAMERA_SHOWPATH_CHECKED, false);
 }
 
-BaseTool::BaseTool(QObject* parent, ToolSettings* settings) : QObject(parent),
-    mSettings(settings)
+void BaseTool::initialize(Editor* editor)
 {
+    Q_ASSERT(editor);
+    mEditor = editor;
+    mScribbleArea = editor->getScribbleArea();
+    Q_ASSERT(mScribbleArea);
+    createSettings(nullptr);
+
+    loadSettings();
+}
+
+void BaseTool::createSettings(ToolSettings* settings)
+{
+    if (settings == nullptr) {
+        mSettings = new ToolSettings();
+    } else {
+        mSettings = settings;
+    }
 }
 
 void BaseTool::saveSettings()
@@ -108,16 +123,6 @@ bool BaseTool::leavingThisTool()
    saveSettings();
 
    return true;
-}
-
-void BaseTool::initialize(Editor* editor)
-{
-    Q_ASSERT(editor);
-    mEditor = editor;
-    mScribbleArea = editor->getScribbleArea();
-    Q_ASSERT(mScribbleArea);
-
-    loadSettings();
 }
 
 void BaseTool::pointerPressEvent(PointerEvent* event)

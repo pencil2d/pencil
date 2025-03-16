@@ -44,6 +44,12 @@ ToolType MoveTool::type() const
     return MOVE;
 }
 
+void MoveTool::createSettings(ToolSettings*)
+{
+    mSettings = new SelectionSettings();
+    BaseTool::createSettings(mSettings);
+}
+
 void MoveTool::loadSettings()
 {
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
@@ -53,7 +59,7 @@ void MoveTool::loadSettings()
     QHash<int, PropertyInfo> info;
 
     info[SelectionSettings::SHOWSELECTIONINFO_ON] = false;
-    properties.load(typeName(), settings, info);
+    mSettings->load(typeName(), settings, info);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
 }
@@ -338,7 +344,7 @@ bool MoveTool::isActive() const {
 
 void MoveTool::setShowSelectionInfo(bool b)
 {
-    properties.setBaseValue(SelectionSettings::SHOWSELECTIONINFO_ON, b);
+    mSettings->setBaseValue(SelectionSettings::SHOWSELECTIONINFO_ON, b);
 }
 
 Layer* MoveTool::currentPaintableLayer()
