@@ -46,9 +46,6 @@ void BucketTool::createSettings(ToolSettings*)
 
 void BucketTool::loadSettings()
 {
-    mPropertyEnabled[TOLERANCE] = true;
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[FILL_MODE] = true;
     mPropertyUsed[BucketSettings::FILLTHICKNESS_VALUE] = { Layer::VECTOR };
     mPropertyUsed[BucketSettings::TOLERANCE_VALUE] = { Layer::BITMAP };
     mPropertyUsed[BucketSettings::TOLERANCE_ON] = { Layer::BITMAP };
@@ -188,43 +185,43 @@ void BucketTool::applyChanges()
 void BucketTool::setStrokeThickness(qreal width)
 {
     mSettings->setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, width);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::WIDTH);
+    emit strokeThicknessChanged(width);
 }
 
 void BucketTool::setTolerance(int tolerance)
 {
     mSettings->setBaseValue(BucketSettings::TOLERANCE_VALUE, tolerance);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::TOLERANCE);
+    emit toleranceChanged(tolerance);
 }
 
 void BucketTool::setToleranceON(bool isON)
 {
     mSettings->setBaseValue(BucketSettings::TOLERANCE_ON, isON);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::USETOLERANCE);
+    emit toleranceONChanged(isON);
 }
 
 void BucketTool::setFillExpand(int fillExpandValue)
 {
     mSettings->setBaseValue(BucketSettings::FILLEXPAND_VALUE, fillExpandValue);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::BUCKETFILLEXPAND);
+    emit fillExpandChanged(fillExpandValue);
 }
 
 void BucketTool::setFillExpandON(bool isON)
 {
     mSettings->setBaseValue(BucketSettings::FILLEXPAND_ON, isON);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::USEBUCKETFILLEXPAND);
+    emit fillExpandONChanged(isON);
 }
 
 void BucketTool::setFillReferenceMode(int referenceMode)
 {
     mSettings->setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, referenceMode);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::BUCKETFILLLAYERREFERENCEMODE);
+    emit fillReferenceModeChanged(referenceMode);
 }
 
 void BucketTool::setFillMode(int mode)
 {
     mSettings->setBaseValue(BucketSettings::FILLMODE_VALUE, mode);
-    editor()->tools()->toolPropertyChanged(type(), ToolPropertyType::FILL_MODE);
+    emit fillModeChanged(mode);
 }
 
 QPointF BucketTool::getCurrentPoint() const

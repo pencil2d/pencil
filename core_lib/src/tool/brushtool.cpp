@@ -48,11 +48,6 @@ void BrushTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[FEATHER] = true;
-    mPropertyEnabled[PRESSURE] = true;
-    mPropertyEnabled[INVISIBILITY] = true;
-    mPropertyEnabled[STABILIZATION] = true;
     mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
     mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
     mPropertyUsed[StrokeSettings::PRESSURE_ON] = { Layer::BITMAP, Layer::VECTOR };
@@ -70,8 +65,8 @@ void BrushTool::loadSettings()
 
     mStrokeSettings->load(typeName(), settings, info);
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
+    mQuickSizingProperties.insert(Qt::ControlModifier, StrokeSettings::FEATHER_VALUE);
 }
 
 QCursor BrushTool::cursor()

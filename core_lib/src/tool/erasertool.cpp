@@ -44,17 +44,16 @@ void EraserTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[USEFEATHER] = true;
-    mPropertyEnabled[FEATHER] = true;
-    mPropertyEnabled[USEFEATHER] = true;
-    mPropertyEnabled[PRESSURE] = true;
-    mPropertyEnabled[STABILIZATION] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
-
     QSettings settings(PENCIL2D, PENCIL2D);
 
     QHash<int, PropertyInfo> info;
+
+    mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::FEATHER_ON] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::PRESSURE_ON] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::STABILIZATION_VALUE] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::ANTI_ALIASING_ON] = { Layer::BITMAP };
 
     info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
@@ -63,8 +62,8 @@ void EraserTool::loadSettings()
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::NONE };
     info[StrokeSettings::ANTI_ALIASING_ON] = true;
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
+    mQuickSizingProperties.insert(Qt::ControlModifier, StrokeSettings::FEATHER_VALUE);
 }
 
 QCursor EraserTool::cursor()

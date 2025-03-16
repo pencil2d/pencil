@@ -53,13 +53,15 @@ void CameraTool::createSettings(ToolSettings*)
 
 void CameraTool::loadSettings()
 {
-    mPropertyEnabled[CAMERA_SHOWPATH_CHECKED] = true;
     connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraTool::updateProperties);
     connect(mEditor, &Editor::objectLoaded, this, &CameraTool::updateProperties);
 
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
     QSettings settings(PENCIL2D, PENCIL2D);
+
+    mPropertyUsed[CameraSettings::SHOWPATH_ON] = { Layer::CAMERA };
+    mPropertyUsed[CameraSettings::PATH_DOTCOLOR_TYPE] = { Layer::CAMERA };
 
     QHash<int, PropertyInfo> info;
     info[CameraSettings::PATH_DOTCOLOR_TYPE] = { static_cast<int>(DotColorType::BLACK),

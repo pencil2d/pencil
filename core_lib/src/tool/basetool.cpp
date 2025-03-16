@@ -49,18 +49,6 @@ QString BaseTool::TypeName(ToolType type)
 
 BaseTool::BaseTool(QObject* parent) : QObject(parent)
 {
-    mPropertyEnabled.insert(WIDTH, false);
-    mPropertyEnabled.insert(FEATHER, false);
-    mPropertyEnabled.insert(USEFEATHER, false);
-    mPropertyEnabled.insert(PRESSURE, false);
-    mPropertyEnabled.insert(INVISIBILITY, false);
-    mPropertyEnabled.insert(PRESERVEALPHA, false);
-    mPropertyEnabled.insert(BEZIER, false);
-    mPropertyEnabled.insert(CLOSEDPATH, false);
-    mPropertyEnabled.insert(ANTI_ALIASING, false);
-    mPropertyEnabled.insert(FILL_MODE, false);
-    mPropertyEnabled.insert(STABILIZATION, false);
-    mPropertyEnabled.insert(CAMERA_SHOWPATH_CHECKED, false);
 }
 
 void BaseTool::initialize(Editor* editor)

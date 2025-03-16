@@ -50,11 +50,6 @@ void PolylineTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[BEZIER] = true;
-    mPropertyEnabled[CLOSEDPATH] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
-
     mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
     mPropertyUsed[PolylineSettings::CLOSEDPATH_ON] = { Layer::BITMAP, Layer::VECTOR };
     mPropertyUsed[PolylineSettings::BEZIER_ON] = { Layer::BITMAP };
@@ -71,7 +66,7 @@ void PolylineTool::loadSettings()
 
     mSettings->load(typeName(), settings, info);
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
 }
 
 bool PolylineTool::leavingThisTool()

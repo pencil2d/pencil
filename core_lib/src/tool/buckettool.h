@@ -61,6 +61,15 @@ public:
 
     ToolSettings* settings() override { return mSettings; }
 
+signals:
+    void fillModeChanged(int mode);
+    void fillReferenceModeChanged(int referenceMode);
+    void fillExpandONChanged(bool isON);
+    void fillExpandChanged(int fillExpandValue);
+    void toleranceONChanged(bool isON);
+    void toleranceChanged(int width);
+    void strokeThicknessChanged(qreal width);
+
 private:
 
     BitmapBucket mBitmapBucket;

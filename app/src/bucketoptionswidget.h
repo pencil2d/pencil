@@ -45,8 +45,6 @@ public:
     void setColorTolerance(int tolerance);
     void setFillReferenceMode(int referenceMode);
     void setFillMode(int mode);
-
-    void onPropertyChanged(ToolType, const ToolPropertyType propertyType);
     void onLayerChanged(int);
 
 private:

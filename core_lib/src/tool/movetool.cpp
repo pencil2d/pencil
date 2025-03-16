@@ -54,8 +54,8 @@ void MoveTool::loadSettings()
 {
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
     QSettings settings(PENCIL2D, PENCIL2D);
-    mPropertyEnabled[SHOWSELECTIONINFO] = true;
 
+    mPropertyUsed[SelectionSettings::SHOWSELECTIONINFO_ON] = { Layer::BITMAP, Layer::VECTOR };
     QHash<int, PropertyInfo> info;
 
     info[SelectionSettings::SHOWSELECTIONINFO_ON] = false;

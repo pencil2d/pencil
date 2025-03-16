@@ -97,7 +97,6 @@ public:
     /// `leavingThisTool` will handle the cleanup of `active` connections
     virtual bool enteringThisTool() { return true; }
 
-    bool isPropertyEnabled(ToolPropertyType t) { return mPropertyEnabled[t]; }
     bool isPropertyEnabled(int rawType);
     bool isDrawingTool();
 
@@ -107,7 +106,6 @@ signals:
 protected:
 
     Editor* editor() { return mEditor; }
-    QHash<ToolPropertyType, bool> mPropertyEnabled;
     QHash<int, QSet<Layer::LAYER_TYPE>> mPropertyUsed;
     ToolSettings* mSettings = nullptr;
 

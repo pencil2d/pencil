@@ -306,7 +306,7 @@ void StrokeTool::updateCanvasCursor()
                                  brushWidth * featherWidthFactor);
     options.showCursor = mCanvasCursorEnabled;
     options.isAdjusting = msIsAdjusting && mQuickSizingEnabled;
-    options.useFeather = mPropertyEnabled[FEATHER];
+    options.useFeather = mStrokeSettings->useFeather();
 
     mCanvasCursorPainter.preparePainter(options, mEditor->view()->getView());
 
@@ -337,14 +337,14 @@ bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers)
     const QPointF& currentPoint = getCurrentPoint();
     auto propertyType = mQuickSizingProperties.value(modifiers);
     switch (propertyType) {
-    case WIDTH: {
+    case StrokeSettings::WIDTH_VALUE: {
         const qreal factor = 0.5;
         const qreal rad = mStrokeSettings->width() * factor;
         const qreal distance = QLineF(currentPressPoint - QPointF(rad, rad), currentPoint).length();
         mAdjustPosition = currentPressPoint - QPointF(distance * factor, distance * factor);
         break;
     }
-    case FEATHER: {
+    case StrokeSettings::FEATHER_VALUE: {
         const qreal factor = 0.5;
         const qreal cursorRad = mStrokeSettings->width() * factor;
         const qreal featherWidthFactor = MathUtils::normalize(mStrokeSettings->feather(), 0.0, FEATHER_MAX);
@@ -376,14 +376,14 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
 {
     switch (mQuickSizingProperties.value(modifiers))
     {
-    case WIDTH: {
+    case StrokeSettings::WIDTH_VALUE: {
         // The adjusted position is based on the radius of the circle, so in order to
         // map it back to its original value, we can multiply by the factor we divided with
         const qreal newValue = QLineF(mAdjustPosition, getCurrentPoint()).length() * 2.0;
         setWidth(newValue);
         break;
     }
-    case FEATHER: {
+    case StrokeSettings::FEATHER_VALUE: {
         // The radius of the width is the max value we can get
         const qreal inputMin = 0.0;
         const qreal inputMax = mStrokeSettings->width() * 0.5;

@@ -39,9 +39,10 @@ void SelectTool::createSettings(ToolSettings*)
 void SelectTool::loadSettings()
 {
     QSettings settings(PENCIL2D, PENCIL2D);
-    mPropertyEnabled[SHOWSELECTIONINFO] = true;
 
     QHash<int, PropertyInfo> info;
+
+    mPropertyUsed[SelectionSettings::SHOWSELECTIONINFO_ON] = { Layer::BITMAP, Layer::VECTOR };
 
     info[SelectionSettings::SHOWSELECTIONINFO_ON] = false;
     mSettings->load(typeName(), settings, info);

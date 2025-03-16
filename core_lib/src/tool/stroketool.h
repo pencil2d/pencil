@@ -106,7 +106,7 @@ protected:
     static bool mQuickSizingEnabled;
     static bool msIsAdjusting;
 
-    QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
+    QHash<Qt::KeyboardModifiers, int> mQuickSizingProperties;
     bool mFirstDraw = false;
 
     QList<QPointF> mStrokePoints;

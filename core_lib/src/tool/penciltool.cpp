@@ -41,12 +41,6 @@ void PencilTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[PRESSURE] = true;
-    mPropertyEnabled[VECTORMERGE] = false;
-    mPropertyEnabled[STABILIZATION] = true;
-    mPropertyEnabled[FILLCONTOUR] = true;
-
     mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP };
     mPropertyUsed[StrokeSettings::PRESSURE_ON] = { Layer::BITMAP };
     mPropertyUsed[StrokeSettings::FILLCONTOUR_ON] = { Layer::VECTOR };
@@ -65,7 +59,7 @@ void PencilTool::loadSettings()
 
     mStrokeSettings->load(typeName(), settings, info);
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
 }
 
 QCursor PencilTool::cursor()

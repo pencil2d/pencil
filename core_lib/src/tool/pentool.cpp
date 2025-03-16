@@ -40,13 +40,12 @@ void PenTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[PRESSURE] = true;
-    mPropertyEnabled[VECTORMERGE] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
-    mPropertyEnabled[STABILIZATION] = true;
-
     QSettings settings(PENCIL2D, PENCIL2D);
+
+    mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::PRESSURE_ON] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::ANTI_ALIASING_ON] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::STABILIZATION_VALUE] = { Layer::BITMAP, Layer::VECTOR };
 
     QHash<int, PropertyInfo> info;
 
@@ -55,7 +54,7 @@ void PenTool::loadSettings()
     info[StrokeSettings::ANTI_ALIASING_ON] = true;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
 }
 
 QCursor PenTool::cursor()

@@ -46,18 +46,18 @@ void SmudgeTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[FEATHER] = true;
-
     QHash<int, PropertyInfo> info;
     QSettings settings(PENCIL2D, PENCIL2D);
+    mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
+
     info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
 
     mStrokeSettings->load(typeName(), settings, info);
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
+    mQuickSizingProperties.insert(Qt::ControlModifier, StrokeSettings::FEATHER_VALUE);
 }
 
 bool SmudgeTool::emptyFrameActionEnabled()
