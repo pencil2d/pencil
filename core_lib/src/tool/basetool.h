@@ -47,6 +47,7 @@ class BaseTool : public QObject
     Q_OBJECT
 protected:
     explicit BaseTool(QObject* parent);
+    explicit BaseTool(QObject* parent, ToolSettings* settings);
 public:
     static QString TypeName(ToolType);
     QString typeName() { return TypeName(type()); }
@@ -85,7 +86,7 @@ public:
      */
     virtual bool isActive() const;
 
-    virtual ToolSettings* getSettings() { return nullptr; }
+    virtual ToolSettings* settings() { return mSettings; }
 
     virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 
@@ -108,6 +109,7 @@ protected:
     Editor* editor() { return mEditor; }
     QHash<ToolPropertyType, bool> mPropertyEnabled;
     QHash<int, QSet<Layer::LAYER_TYPE>> mPropertyUsed;
+    ToolSettings* mSettings = nullptr;
 
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;

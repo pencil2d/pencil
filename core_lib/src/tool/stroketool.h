@@ -35,7 +35,8 @@ class StrokeTool : public BaseTool
     Q_OBJECT
 
 public:
-    explicit StrokeTool(QObject* parent);
+    explicit StrokeTool(QObject* parent, ToolSettings* settings = nullptr);
+    ~StrokeTool();
 
     void startStroke(PointerEvent::InputType inputType);
     void drawStroke();
@@ -101,8 +102,6 @@ protected:
     virtual void stopAdjusting();
     virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
 
-    ToolSettings* getSettings() override { return &properties; }
-
     static bool mQuickSizingEnabled;
     static bool msIsAdjusting;
 
@@ -135,7 +134,7 @@ protected:
 
     const UndoSaveState* mUndoSaveState = nullptr;
 
-    StrokeSettings properties;
+    StrokeSettings* mStrokeSettings = nullptr;
 };
 
 #endif // STROKETOOL_H

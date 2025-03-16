@@ -61,7 +61,7 @@ public:
     //     return mInterpolator.getLastPixel();
     // }
 
-    ToolSettings* getSettings() override { return &properties; }
+    ToolSettings* settings() override { return &properties; }
 
 
 private:

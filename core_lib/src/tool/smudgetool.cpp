@@ -54,7 +54,7 @@ void SmudgeTool::loadSettings()
     info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
 
-    properties.load(typeName(), settings, info);
+    mStrokeSettings->load(typeName(), settings, info);
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
@@ -278,9 +278,9 @@ void SmudgeTool::drawStroke()
     }
 
     qreal opacity = 1.0;
-    mCurrentWidth = properties.width();
-    qreal brushWidth = mCurrentWidth + 0.0 * properties.feather();
-    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * properties.feather()) / brushWidth;
+    mCurrentWidth = mStrokeSettings->width();
+    qreal brushWidth = mCurrentWidth + 0.0 * mStrokeSettings->feather();
+    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * mStrokeSettings->feather()) / brushWidth;
     //opacity = currentPressure; // todo: Probably not interesting?!
     //brushWidth = brushWidth * opacity;
 

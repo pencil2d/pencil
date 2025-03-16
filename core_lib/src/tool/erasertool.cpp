@@ -97,9 +97,9 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
     {
         mCurrentPressure = mInterpolator.getPressure();
         updateStrokes();
-        if (properties.stabilizerLevel() != mInterpolator.getStabilizerLevel())
+        if (mStrokeSettings->stabilizerLevel() != mInterpolator.getStabilizerLevel())
         {
-            mInterpolator.setStabilizerLevel(properties.stabilizerLevel());
+            mInterpolator.setStabilizerLevel(mStrokeSettings->stabilizerLevel());
         }
     }
 
@@ -139,19 +139,19 @@ void EraserTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
-        qreal opacity = (properties.usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal brushWidth = properties.width() * pressure;
+        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mStrokeSettings->usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = mStrokeSettings->width() * pressure;
         mCurrentWidth = brushWidth;
 
         mScribbleArea->drawBrush(point,
                                  brushWidth,
-                                 properties.feather(),
+                                 mStrokeSettings->feather(),
                                  QColor(255, 255, 255, 255),
                                  QPainter::CompositionMode_SourceOver,
                                  opacity,
-                                 properties.useFeather(),
-                                 properties.useAntiAliasing() == ON);
+                                 mStrokeSettings->useFeather(),
+                                 mStrokeSettings->useAntiAliasing() == ON);
     }
 }
 
@@ -164,9 +164,9 @@ void EraserTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
-        qreal opacity = (properties.usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal brushWidth = properties.width() * pressure;
+        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mStrokeSettings->usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = mStrokeSettings->width() * pressure;
         mCurrentWidth = brushWidth;
 
         qreal brushStep = (0.5 * brushWidth);
@@ -186,12 +186,12 @@ void EraserTool::drawStroke()
 
             mScribbleArea->drawBrush(point,
                                      brushWidth,
-                                     properties.feather(),
+                                     mStrokeSettings->feather(),
                                      Qt::white,
                                      QPainter::CompositionMode_SourceOver,
                                      opacity,
-                                     properties.useFeather(),
-                                     properties.useAntiAliasing() == ON);
+                                     mStrokeSettings->useFeather(),
+                                     mStrokeSettings->useAntiAliasing() == ON);
             if (i == (steps - 1))
             {
                 mLastBrushPoint = getCurrentPoint();
@@ -200,8 +200,8 @@ void EraserTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        mCurrentWidth = properties.width();
-        if (properties.usePressure())
+        mCurrentWidth = mStrokeSettings->width();
+        if (mStrokeSettings->usePressure())
         {
             mCurrentWidth = (mCurrentWidth + (mInterpolator.getPressure() * mCurrentWidth)) * 0.5;
         }
@@ -247,7 +247,7 @@ void EraserTool::updateStrokes()
 
     if (layer->type() == Layer::VECTOR)
     {
-        qreal radius = properties.width() / 2;
+        qreal radius = mStrokeSettings->width() / 2;
 
         VectorImage* currKey = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         QList<VertexRef> nearbyVertices = currKey->getVerticesCloseTo(getCurrentPoint(), radius);

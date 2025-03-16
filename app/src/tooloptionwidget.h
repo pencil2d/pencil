@@ -24,19 +24,12 @@ namespace Ui
 {
     class ToolOptions;
 }
-class QToolButton;
-class SpinSlider;
-class QCheckBox;
-class QComboBox;
-class QSpinBox;
-class QDoubleSpinBox;
-class QGroupBox;
+
 class Editor;
 class BaseTool;
 class BucketOptionsWidget;
 class CameraOptionsWidget;
 class StrokeOptionsWidget;
-
 
 class ToolOptionWidget : public BaseDockWidget
 {
@@ -55,21 +48,7 @@ public slots:
     void onLayerChanged(int index);
 
 private:
-    // void setPenWidth(qreal);
-    // void setPenFeather(qreal);
-    // void setUseFeather(bool);
-    // void setPenInvisibility(int);
-    // void setPressure(int);
-    // void setPreserveAlpha(int);
-    // void setVectorMergeEnabled(int);
-    // void setAA(int);
-    // void setStabilizerLevel(int);
-    // void setFillContour(int);
-    // void setBezier(bool);
-    // void setClosedPath(bool);
-    // void setShowSelectionInfo(bool);
-
-    void setVisibility(BaseTool*);
+    void setWidgetVisibility(BaseTool*);
 
 private:
     Ui::ToolOptions* ui = nullptr;

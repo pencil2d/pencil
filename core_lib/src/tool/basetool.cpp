@@ -63,19 +63,23 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
     mPropertyEnabled.insert(CAMERA_SHOWPATH_CHECKED, false);
 }
 
+BaseTool::BaseTool(QObject* parent, ToolSettings* settings) : QObject(parent),
+    mSettings(settings)
+{
+}
+
 void BaseTool::saveSettings()
 {
-    if (getSettings()) {
-        QSettings settings(PENCIL2D, PENCIL2D);
-        getSettings()->save(settings);
+    if (settings()) {
+        QSettings storedSettings(PENCIL2D, PENCIL2D);
+        settings()->save(storedSettings);
     }
 }
 
 void BaseTool::resetSettings()
 {
-    if (getSettings()) {
-        QSettings settings(PENCIL2D, PENCIL2D);
-        getSettings()->setDefaults();
+    if (settings()) {
+        settings()->setDefaults();
     }
 }
 

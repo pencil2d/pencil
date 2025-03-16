@@ -63,7 +63,7 @@ void PencilTool::loadSettings()
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
     info[StrokeSettings::FILLCONTOUR_ON] = false;
 
-    properties.load(typeName(), settings, info);
+    mStrokeSettings->load(typeName(), settings, info);
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
@@ -109,9 +109,9 @@ void PencilTool::pointerMoveEvent(PointerEvent* event)
     {
         mCurrentPressure = mInterpolator.getPressure();
         drawStroke();
-        if (properties.stabilizerLevel() != mInterpolator.getStabilizerLevel())
+        if (mStrokeSettings->stabilizerLevel() != mInterpolator.getStabilizerLevel())
         {
-            mInterpolator.setStabilizerLevel(properties.stabilizerLevel());
+            mInterpolator.setStabilizerLevel(mStrokeSettings->stabilizerLevel());
         }
     }
     StrokeTool::pointerMoveEvent(event);
@@ -153,10 +153,10 @@ void PencilTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal opacity = (properties.usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
-        qreal brushWidth = properties.width() * pressure;
-        qreal fixedBrushFeather = properties.feather();
+        qreal opacity = (mStrokeSettings->usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1.0;
+        qreal brushWidth = mStrokeSettings->width() * pressure;
+        qreal fixedBrushFeather = mStrokeSettings->feather();
 
         mCurrentWidth = brushWidth;
         mScribbleArea->drawPencil(point,
@@ -177,12 +177,12 @@ void PencilTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (properties.usePressure()) ? mCurrentPressure : 1.0;
-        qreal opacity = (properties.usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal brushWidth = properties.width() * pressure;
+        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mStrokeSettings->usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = mStrokeSettings->width() * pressure;
         mCurrentWidth = brushWidth;
 
-        qreal fixedBrushFeather = properties.feather();
+        qreal fixedBrushFeather = mStrokeSettings->feather();
         qreal brushStep = qMax(1.0, (0.5 * brushWidth));
 
         QPointF a = mLastBrushPoint;
@@ -246,7 +246,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
     if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), false);
 
-    if (properties.useFillContour())
+    if (mStrokeSettings->useFillContour())
     {
         vectorImage->fillContour(mStrokePoints,
                                  mEditor->color()->frontColorNumber());

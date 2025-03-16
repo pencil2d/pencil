@@ -51,13 +51,15 @@ public:
 
     bool isActive() const override;
 
-    ToolSettings* getSettings() override { return &mSettings; }
+    ToolSettings* settings() override { return mSettings; }
 
 signals:
     void useBezierChanged(bool useBezier);
     void closePathChanged(bool closePath);
 
+
 private:
+    PolylineSettings* mSettings = nullptr;
     QList<QPointF> mPoints;
     bool mClosedPathOverrideEnabled = false;
 
@@ -66,7 +68,6 @@ private:
     void cancelPolyline();
     void endPolyline(QList<QPointF> points);
 
-    PolyLineSettings mSettings;
 };
 
 #endif // POLYLINETOOL_H

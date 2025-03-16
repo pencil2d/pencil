@@ -197,6 +197,8 @@ private:
 
 struct ToolSettings
 {
+    virtual ~ToolSettings() {}
+
     void load(const QString& toolIdentifier, QSettings& settings, QHash<int, PropertyInfo> props) {
         mIdentifier = toolIdentifier.toLower();
 
@@ -367,7 +369,7 @@ struct StrokeSettings: public ToolSettings
 /// This struct is an example of how we can
 /// share settings among tools rather than duplicating logic, eg. polyline uses settings from StrokeSettings.
 /// The same could be done for PencilTool, BrushTool, Eraser etc...
-struct PolyLineSettings: public StrokeSettings
+struct PolylineSettings: public StrokeSettings
 {
     enum Type {
         START           = 200,
@@ -379,7 +381,7 @@ struct PolyLineSettings: public StrokeSettings
     };
 
     QString identifier(int typeRaw) const override {
-        auto type = static_cast<PolyLineSettings::Type>(typeRaw);
+        auto type = static_cast<PolylineSettings::Type>(typeRaw);
         QString propertyID = ToolSettings::identifier(typeRaw);
         switch (type)
         {

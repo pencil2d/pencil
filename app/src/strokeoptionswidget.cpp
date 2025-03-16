@@ -50,7 +50,7 @@ void StrokeOptionsWidget::updateUI()
 
     setVisibility(currentTool);
 
-    const StrokeSettings* p = static_cast<const StrokeSettings*>(currentTool->getSettings());
+    const StrokeSettings* p = static_cast<const StrokeSettings*>(currentTool->settings());
 
     if (currentTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
     {
@@ -91,7 +91,7 @@ void StrokeOptionsWidget::updateUI()
     // }
 
     if (currentTool->type() == POLYLINE) {
-        const PolyLineSettings* polyP = static_cast<const PolyLineSettings*>(currentTool->getSettings());
+        const PolylineSettings* polyP = static_cast<const PolylineSettings*>(currentTool->settings());
         setClosedPath(polyP->closedPath());
         setBezier(polyP->useBezier());
     }
@@ -197,8 +197,8 @@ void StrokeOptionsWidget::setVisibility(BaseTool* tool)
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ON));
-    ui->useBezierBox->setVisible(tool->isPropertyEnabled(PolyLineSettings::BEZIER_ON));
-    ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(PolyLineSettings::CLOSEDPATH_ON));
+    ui->useBezierBox->setVisible(tool->isPropertyEnabled(PolylineSettings::BEZIER_ON));
+    ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(PolylineSettings::CLOSEDPATH_ON));
 }
 
 // void StrokeOptionsWidget::onToolChanged(ToolType)
