@@ -48,6 +48,8 @@ public:
     void onLayerChanged(int);
 
 private:
+    void makeConnectionsFromUIToModel();
+    void makeConnectionsFromModelToUI();
     void updatePropertyVisibility();
 
     BucketTool* mBucketTool;
