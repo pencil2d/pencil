@@ -23,6 +23,7 @@ GNU General Public License for more details.
 class Editor;
 class Layer;
 class BucketTool;
+struct BucketSettings;
 
 namespace Ui {
 class BucketOptionsWidget;
@@ -52,13 +53,10 @@ private:
     void makeConnectionsFromModelToUI();
     void updatePropertyVisibility();
 
-    BucketTool* mBucketTool;
+    BucketTool* mBucketTool = nullptr;
+    const BucketSettings* mSettings = nullptr;
     Ui::BucketOptionsWidget *ui;
     Editor* mEditor = nullptr;
-
-    const static int MAX_EXPAND = 25;
-    const static int MAX_COLOR_TOLERANCE = 100;
-    const static int MAX_STROKE_THICKNESS = 200;
 };
 
 #endif // BUCKETOPTIONSWIDGET_H

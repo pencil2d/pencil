@@ -58,10 +58,10 @@ void BucketTool::loadSettings()
 
     QHash<int, PropertyInfo> info;
 
-    info[BucketSettings::FILLTHICKNESS_VALUE] = { 0.0, 100.0, 4.0 };
-    info[BucketSettings::TOLERANCE_VALUE] = { 0, 100, 32 };
+    info[BucketSettings::FILLTHICKNESS_VALUE] = { 1.0, 100.0, 4.0 };
+    info[BucketSettings::TOLERANCE_VALUE] = { 1, 100, 32 };
     info[BucketSettings::TOLERANCE_ON] = false;
-    info[BucketSettings::FILLEXPAND_VALUE] = { 0, 25, 2 };
+    info[BucketSettings::FILLEXPAND_VALUE] = { 1, 25, 2 };
     info[BucketSettings::FILLEXPAND_ON] = true;
     info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { 0, 1, 0 };
     info[BucketSettings::FILLMODE_VALUE] = { 0, 2, 0 };

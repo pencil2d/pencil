@@ -259,6 +259,11 @@ struct ToolSettings
         }
     }
 
+    PropertyInfo getInfo(int rawPropertyType) const
+    {
+        return mProps[rawPropertyType];
+    }
+
     void setDefaults() {
         for (auto it = mProps.begin(); it != mProps.end(); ++it) {
             it.value().resetBaseValue();
