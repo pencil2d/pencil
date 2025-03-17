@@ -66,9 +66,6 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     makeConnectionsFromUIToModel();
     makeConnectionsFromModelToUI();
 
-    // connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &BucketOptionsWidget::onPropertyChanged);
-    // connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &BucketOptionsWidget::onLayerChanged);
-
     clearFocusOnFinished(ui->colorToleranceSpinbox);
     clearFocusOnFinished(ui->expandSpinBox);
 
