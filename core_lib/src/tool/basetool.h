@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include <QCursor>
 #include <QPainter>
 #include <QHash>
+#include <QSet>
 #include <QEvent>
 #include "pencildef.h"
 #include "toolsettings.h"
