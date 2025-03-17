@@ -110,22 +110,22 @@ struct PropertyInfo
     }
 
     qreal getMaxReal() const {
-        if (mValueType == REAL) {
+        if (mValueType != REAL) {
             return -1.0;
         }
 
         return mMaxValue.realValue;
     }
 
-    qreal getMinInt() const {
+    int getMinInt() const {
         if (mValueType != INTEGER) {
-            return -1.0;
+            return -1;
         }
         return mMinValue.intValue;
     }
 
     int getMaxInt() const {
-        if (mValueType == INTEGER) {
+        if (mValueType != INTEGER) {
             return -1;
         }
 
@@ -150,7 +150,7 @@ struct PropertyInfo
 
     /// Returns the default value as an real, otherwise -1 if it hasn't been specified or the type doesn't match
     int defaultInt() {
-        if (mValueType == INTEGER) {
+        if (mValueType != INTEGER) {
             return -1;
         }
         return mDefaultValue.intValue;
@@ -158,7 +158,7 @@ struct PropertyInfo
 
     /// Returns the default value as an real, otherwise -1.0 if it hasn't been specified or the type doesn't match
     qreal defaultReal() {
-        if (mValueType == REAL) {
+        if (mValueType != REAL) {
             return -1.0;
         }
         return mDefaultValue.realValue;
@@ -166,7 +166,7 @@ struct PropertyInfo
 
     /// Returns the default value as an bool, otherwise false if it hasn't been specified or the type doesn't match
     bool defaultBool() {
-        if (mValueType == BOOL) {
+        if (mValueType != BOOL) {
             return false;
         }
         return mDefaultValue.boolValue;
