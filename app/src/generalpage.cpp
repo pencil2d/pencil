@@ -18,12 +18,16 @@ GNU General Public License for more details.
 #include "generalpage.h"
 
 #include <memory>
+#include <QFileInfo>
 #include <QMessageBox>
 #include <QSettings>
 #include <QTranslator>
 
+#include "errordialog.h"
+#include "filedialog.h"
 #include "pencildef.h"
 #include "preferencemanager.h"
+#include "theming.h"
 
 #include "ui_generalpage.h"
 
@@ -32,6 +36,11 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     ui->setupUi(this);
 
     QSettings settings(PENCIL2D, PENCIL2D);
+
+    ui->styleCombo->addItem("System Default", "");
+    ui->styleCombo->addItems(Theming::availableStyles());
+
+    populatePaletteCombo(false);
 
     QString languages [][3]
         {
@@ -77,6 +86,10 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
         ui->languageCombo->addItem(itemText, localeCode);
     }
 
+    QIcon warningIcon = style()->standardIcon(QStyle::SP_MessageBoxWarning);
+    ui->paletteWarningLabel->setPixmap(warningIcon.pixmap(28, 28));
+    ui->paletteWarningLabel->setVisible(false);
+
     int value = settings.value("windowOpacity").toInt();
     ui->windowOpacityLevel->setValue(100 - value);
 
@@ -109,6 +122,10 @@ GeneralPage::GeneralPage() : ui(new Ui::GeneralPage)
     connect(ui->languageCombo, curIndexChanged, this, &GeneralPage::languageChanged);
     connect(ui->windowOpacityLevel, &QSlider::valueChanged, this, &GeneralPage::windowOpacityChange);
     connect(ui->backgroundButtons, buttonClicked, this, &GeneralPage::backgroundChanged);
+    connect(ui->styleCombo, curIndexChanged, this, &GeneralPage::styleChanged);
+    connect(ui->paletteCombo, curIndexChanged, this, &GeneralPage::paletteChanged);
+    connect(ui->addPaletteButton, &QPushButton::pressed, this, &GeneralPage::addPalette);
+    connect(ui->removePaletteButton, &QPushButton::pressed, this, &GeneralPage::removePalette);
     connect(ui->shadowsBox, &QCheckBox::stateChanged, this, &GeneralPage::shadowsCheckboxStateChanged);
     connect(ui->toolCursorsBox, &QCheckBox::stateChanged, this, &GeneralPage::toolCursorsCheckboxStateChanged);
     connect(ui->antialiasingBox, &QCheckBox::stateChanged, this, &GeneralPage::antiAliasCheckboxStateChanged);
@@ -150,6 +167,13 @@ void GeneralPage::updateValues()
     ui->curveSmoothingLevel->setValue(mManager->getInt(SETTING::CURVE_SMOOTHING));
     QSignalBlocker b2(ui->windowOpacityLevel);
     ui->windowOpacityLevel->setValue(100 - mManager->getInt(SETTING::WINDOW_OPACITY));
+    QSignalBlocker b19(ui->styleCombo);
+    int styleIndex = ui->styleCombo->findText(mManager->getString(SETTING::STYLE_ID), Qt::MatchFixedString);
+    ui->styleCombo->setCurrentIndex(qMax(0, styleIndex));
+    QSignalBlocker b20(ui->styleCombo);
+    QString paletteKey = mManager->getString(SETTING::PALETTE_ID);
+    setCurrentPalette(paletteKey);
+    ui->removePaletteButton->setEnabled(!paletteKey.isEmpty() && !Theming::getPalette(paletteKey).isBuiltIn());
     QSignalBlocker b3(ui->shadowsBox);
     ui->shadowsBox->setChecked(mManager->isOn(SETTING::SHADOW));
     QSignalBlocker b4(ui->toolCursorsBox);
@@ -247,6 +271,60 @@ void GeneralPage::curveSmoothingChanged(int value)
 void GeneralPage::highResCheckboxStateChanged(int b)
 {
     mManager->set(SETTING::HIGH_RESOLUTION, b != Qt::Unchecked);
+}
+
+void GeneralPage::styleChanged(int index)
+{
+    mManager->set(SETTING::STYLE_ID, ui->styleCombo->itemText(index));
+}
+
+void GeneralPage::paletteChanged(int index)
+{
+    QString paletteKey = ui->paletteCombo->itemData(index).toString();
+    mManager->set(SETTING::PALETTE_ID, paletteKey);
+    ui->removePaletteButton->setEnabled(!paletteKey.isEmpty() && !Theming::getPalette(paletteKey).isBuiltIn());
+    if (m_showMissingPalette)
+    {
+        ui->paletteWarningLabel->setVisible(index == 1);
+    }
+}
+
+void GeneralPage::addPalette()
+{
+    QString filePath = FileDialog::getOpenFileName(this, FileType::THEME_PALETTE);
+    if (!filePath.isEmpty())
+    {
+        QFileInfo fileInfo(filePath);
+        auto result = Theming::addPalette(filePath);
+        Status st = result.first;
+        ThemeColorPalette newPalette = result.second;
+        if (st.ok())
+        {
+            mManager->set(SETTING::PALETTE_ID, newPalette.id());
+            populatePaletteCombo();
+        }
+        else
+        {
+            ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+            errorDialog.exec();
+        }
+    }
+}
+
+void GeneralPage::removePalette()
+{
+    QString key = ui->paletteCombo->currentData().toString();
+    Status st = Theming::removePalette(key);
+    if (st.ok())
+    {
+        ui->paletteCombo->removeItem(ui->paletteCombo->currentIndex());
+        ui->paletteCombo->setCurrentIndex(0);
+    }
+    else
+    {
+        ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
+        errorDialog.exec();
+    }
 }
 
 void GeneralPage::shadowsCheckboxStateChanged(int b)
@@ -407,4 +485,58 @@ void GeneralPage::undoRedoCancelButtonPressed()
     ui->newUndoRedoCheckBox->setCheckState(mManager->isOn(SETTING::NEW_UNDO_REDO_SYSTEM_ON) ? Qt::Checked : Qt::Unchecked);
     ui->undoRedoGroupCancelButton->setDisabled(true);
     ui->undoRedoGroupApplyButton->setDisabled(true);
+}
+
+void GeneralPage::populatePaletteCombo(bool usePreference)
+{
+    {
+        QSignalBlocker b(ui->paletteCombo);
+
+        ui->paletteCombo->clear();
+        m_showMissingPalette = false;
+        ui->paletteCombo->addItem("Default", "");
+        ui->paletteCombo->insertSeparator(1);
+        QList<ThemeColorPalette> palettes = Theming::availablePalettes();
+        std::sort(palettes.begin(), palettes.end(), [](ThemeColorPalette a, ThemeColorPalette b) { return a.displayName().toLower() < b.displayName().toLower(); });
+        for (const auto& palette : palettes)
+        {
+            if (palette.isDark()) continue;
+            ui->paletteCombo->addItem(palette.displayName(), palette.id());
+        }
+        ui->paletteCombo->insertSeparator(ui->paletteCombo->count());
+        for (const auto& palette : palettes)
+        {
+            if (!palette.isDark()) continue;
+            ui->paletteCombo->addItem(palette.displayName(), palette.id());
+        }
+    }
+
+    if (usePreference)
+    {
+        setCurrentPalette(mManager->getString(SETTING::PALETTE_ID));
+        QString paletteKey = mManager->getString(SETTING::PALETTE_ID);
+    }
+}
+
+void GeneralPage::setCurrentPalette(const QString& paletteKey)
+{
+    int paletteIndex = ui->paletteCombo->findData(paletteKey, Qt::UserRole, Qt::MatchFixedString);
+    ThemeColorPalette palette = Theming::getPalette(paletteKey);
+    if (paletteIndex >= 0)
+    {
+        ui->paletteCombo->setCurrentIndex(paletteIndex);
+    }
+    else if (palette.isValid())
+    {
+        populatePaletteCombo(false);
+        paletteIndex = ui->paletteCombo->findData(paletteKey, Qt::UserRole, Qt::MatchFixedString);
+        ui->paletteCombo->setCurrentIndex(paletteIndex);
+    }
+    else
+    {
+        ui->paletteCombo->insertItem(1, palette.displayName(), paletteKey);
+        ui->paletteCombo->setCurrentIndex(1);
+        m_showMissingPalette = true;
+        ui->paletteWarningLabel->setVisible(true);
+    }
 }
