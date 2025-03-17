@@ -51,43 +51,6 @@ enum ToolType : int
     TOOL_TYPE_COUNT
 };
 
-/// This list should consist of all tool properties
-/// Each tool or Tool category, depending on the granularity of the Property should
-/// follow this naming convention: <TOOL>_<DESCRIPTION>_<VALUE|TYPE|CHECKED>
-///
-/// eg. CAMERA_PATH_DOTCOLOR_TYPE because we're dealing with an enum
-///
-/// - Use Value for int, real and similar
-/// - Use TYPE for enum values
-/// - Use CHECKED for bool states
-///
-/// Adding a property here means you intend to store the value in pencil settings
-/// So it can be retrieved again upon the next launch
-///
-enum ToolPropertyType
-{
-    WIDTH,
-    FEATHER,
-    PRESSURE,
-    INVISIBILITY,
-    PRESERVEALPHA,
-    BEZIER,
-    CLOSEDPATH,
-    USEFEATHER,
-    VECTORMERGE,
-    ANTI_ALIASING,
-    FILL_MODE,
-    STABILIZATION,
-    TOLERANCE,
-    FILLCONTOUR,
-    SHOWSELECTIONINFO,
-    USETOLERANCE,
-    BUCKETFILLEXPAND,
-    USEBUCKETFILLEXPAND,
-    BUCKETFILLLAYERREFERENCEMODE,
-    CAMERA_SHOWPATH_CHECKED,
-    CAMERA_PATH_DOTCOLOR_TYPE,
-};
 enum class DotColorType {
     RED,
     BLUE,
