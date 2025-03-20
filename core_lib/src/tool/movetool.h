@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #ifndef MOVETOOL_H
 #define MOVETOOL_H
 
-#include "basetool.h"
+#include "transformtool.h"
 #include "movemode.h"
 #include "preferencemanager.h"
 #include "undoredomanager.h"
@@ -27,7 +27,7 @@ class Layer;
 class VectorImage;
 
 
-class MoveTool : public BaseTool
+class MoveTool : public TransformTool
 {
     Q_OBJECT
 public:
@@ -35,9 +35,9 @@ public:
     QCursor cursor() override;
 
     QCursor cursor(MoveMode mode) const;
+    ToolCategory category() const override { return TRANSFORMTOOL; }
     ToolType type() const override;
 
-    void createSettings(ToolSettings*) override;
     void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;
@@ -46,8 +46,6 @@ public:
 
     bool leavingThisTool() override;
     bool isActive() const override;
-
-    void setShowSelectionInfo(bool b);
 
     ToolSettings* settings() override { return mSettings; }
 
@@ -72,8 +70,6 @@ private:
     QPointF mOffset;
 
     const UndoSaveState* mUndoSaveState = nullptr;
-
-    SelectionSettings* mSettings;
 };
 
 #endif

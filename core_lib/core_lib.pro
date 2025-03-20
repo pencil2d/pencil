@@ -89,6 +89,7 @@ HEADERS +=  \
     src/tool/strokeinterpolator.h \
     src/tool/stroketool.h \
     src/tool/toolsettings.h \
+    src/tool/transformtool.h \
     src/util/blitrect.h \
     src/util/cameraeasingtype.h \
     src/util/camerafieldoption.h \
@@ -176,6 +177,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tool/smudgetool.cpp \
     src/tool/strokeinterpolator.cpp \
     src/tool/stroketool.cpp \
+    src/tool/transformtool.cpp \
     src/util/blitrect.cpp \
     src/util/cameraeasingtype.cpp \
     src/util/fileformat.cpp \

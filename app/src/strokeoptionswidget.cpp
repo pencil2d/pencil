@@ -31,8 +31,6 @@ StrokeOptionsWidget::~StrokeOptionsWidget()
 
 void StrokeOptionsWidget::initUI()
 {
-    QSettings settings(PENCIL2D, PENCIL2D);
-
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, SpinSlider::INTEGER, StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX);
     ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, StrokeTool::FEATHER_MIN, StrokeTool::FEATHER_MAX);
 
@@ -286,6 +284,7 @@ void StrokeOptionsWidget::setAA(int x)
 
 void StrokeOptionsWidget::setStabilizerLevel(int x)
 {
+    QSignalBlocker b(ui->inpolLevelsCombo);
     ui->inpolLevelsCombo->setCurrentIndex(qBound(0, x, ui->inpolLevelsCombo->count() - 1));
 }
 

@@ -501,7 +501,7 @@ struct CameraSettings: public ToolSettings
 };
 
 // Used by both select and move tool
-struct SelectionSettings: public ToolSettings
+struct TransformSettings: public ToolSettings
 {
     enum Type {
         START                   = 500,
@@ -511,7 +511,7 @@ struct SelectionSettings: public ToolSettings
     };
 
     QString identifier(int typeRaw) const override {
-        auto type = static_cast<SelectionSettings::Type>(typeRaw);
+        auto type = static_cast<TransformSettings::Type>(typeRaw);
         QString propertyID = ToolSettings::identifier(typeRaw);
 
         switch (type)

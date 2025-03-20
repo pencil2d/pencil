@@ -26,14 +26,8 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "undoredomanager.h"
 
-SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
+SelectTool::SelectTool(QObject* parent) : TransformTool(parent)
 {
-}
-
-void SelectTool::createSettings(ToolSettings*)
-{
-    mSettings = new SelectionSettings();
-    BaseTool::createSettings(mSettings);
 }
 
 void SelectTool::loadSettings()
@@ -42,9 +36,9 @@ void SelectTool::loadSettings()
 
     QHash<int, PropertyInfo> info;
 
-    mPropertyUsed[SelectionSettings::SHOWSELECTIONINFO_ON] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ON] = { Layer::BITMAP, Layer::VECTOR };
 
-    info[SelectionSettings::SHOWSELECTIONINFO_ON] = false;
+    info[TransformSettings::SHOWSELECTIONINFO_ON] = false;
     mSettings->load(typeName(), settings, info);
 }
 
@@ -296,7 +290,7 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
     }
 
     // Follow the generic behavior anyway
-    return BaseTool::keyPressEvent(event);
+    return TransformTool::keyPressEvent(event);
 }
 
 QPointF SelectTool::offsetFromPressPos(const QPointF& pos)

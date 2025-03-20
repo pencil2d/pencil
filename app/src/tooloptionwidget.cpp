@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "cameraoptionswidget.h"
 #include "bucketoptionswidget.h"
 #include "strokeoptionswidget.h"
+#include "transformoptionswidget.h"
 #include "spinslider.h"
 #include "editor.h"
 #include "util.h"
@@ -52,9 +53,11 @@ void ToolOptionWidget::initUI()
     mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
     mCameraOptionsWidget = new CameraOptionsWidget(editor(), this);
     mStrokeOptionsWidget = new StrokeOptionsWidget(editor(), this);
+    mTransformOptionsWidget = new TransformOptionsWidget(editor(), this);
     ui->scrollAreaWidgetContents->layout()->addWidget(mBucketOptionsWidget);
     ui->scrollAreaWidgetContents->layout()->addWidget(mCameraOptionsWidget);
     ui->scrollAreaWidgetContents->layout()->addWidget(mStrokeOptionsWidget);
+    ui->scrollAreaWidgetContents->layout()->addWidget(mTransformOptionsWidget);
     ui->scrollAreaWidgetContents->layout()->addItem(new QSpacerItem(0, 0, QSizePolicy::MinimumExpanding, QSizePolicy::Expanding));
 
     makeConnectionToEditor(editor());
@@ -86,6 +89,8 @@ void ToolOptionWidget::setWidgetVisibility(BaseTool* tool)
     mCameraOptionsWidget->updateUI();
     mStrokeOptionsWidget->setVisible(tool->category() == STROKETOOL);
     mStrokeOptionsWidget->updateUI();
+    mTransformOptionsWidget->setVisible(tool->category() == TRANSFORMTOOL);
+    mTransformOptionsWidget->updateUI();
 }
 
 void ToolOptionWidget::onLayerChanged(int layerIndex)

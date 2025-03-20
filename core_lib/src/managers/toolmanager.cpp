@@ -102,6 +102,7 @@ BaseTool* ToolManager::getTool(ToolType eToolType)
 BaseTool* ToolManager::getTool(ToolCategory eToolCategory)
 {
     switch (eToolCategory) {
+        case ToolCategory::TRANSFORMTOOL:
         case ToolCategory::STROKETOOL: {
             if (currentTool()->category() == eToolCategory) {
                 return currentTool();

@@ -35,7 +35,7 @@ GNU General Public License for more details.
 #include "mathutils.h"
 #include "vectorimage.h"
 
-MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
+MoveTool::MoveTool(QObject* parent) : TransformTool(parent)
 {
 }
 
@@ -44,21 +44,15 @@ ToolType MoveTool::type() const
     return MOVE;
 }
 
-void MoveTool::createSettings(ToolSettings*)
-{
-    mSettings = new SelectionSettings();
-    BaseTool::createSettings(mSettings);
-}
-
 void MoveTool::loadSettings()
 {
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    mPropertyUsed[SelectionSettings::SHOWSELECTIONINFO_ON] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ON] = { Layer::BITMAP, Layer::VECTOR };
     QHash<int, PropertyInfo> info;
 
-    info[SelectionSettings::SHOWSELECTIONINFO_ON] = false;
+    info[TransformSettings::SHOWSELECTIONINFO_ON] = false;
     mSettings->load(typeName(), settings, info);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
@@ -328,7 +322,7 @@ void MoveTool::applyTransformation()
 
 bool MoveTool::leavingThisTool()
 {
-    BaseTool::leavingThisTool();
+    TransformTool::leavingThisTool();
 
     if (currentPaintableLayer())
     {
@@ -340,11 +334,6 @@ bool MoveTool::leavingThisTool()
 bool MoveTool::isActive() const {
     return mScribbleArea->isPointerInUse() &&
            (mEditor->select()->somethingSelected() || mEditor->overlays()->getMoveMode() != MoveMode::NONE);
-}
-
-void MoveTool::setShowSelectionInfo(bool b)
-{
-    mSettings->setBaseValue(SelectionSettings::SHOWSELECTIONINFO_ON, b);
 }
 
 Layer* MoveTool::currentPaintableLayer()

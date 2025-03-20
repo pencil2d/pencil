@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #ifndef SELECTTOOL_H
 #define SELECTTOOL_H
 
-#include "basetool.h"
+#include "transformtool.h"
 #include "movemode.h"
 #include "undoredomanager.h"
 
@@ -27,7 +27,7 @@ GNU General Public License for more details.
 class Layer;
 class SelectionManager;
 
-class SelectTool : public BaseTool
+class SelectTool : public TransformTool
 {
     Q_OBJECT
 
@@ -35,8 +35,8 @@ public:
     explicit SelectTool(QObject* parent = nullptr);
 
     ToolType type() const override { return SELECT; }
+    ToolCategory category() const override { return TRANSFORMTOOL; }
 
-    void createSettings(ToolSettings*) override;
     void loadSettings() override;
     QCursor cursor() override;
 
@@ -70,8 +70,6 @@ private:
     QPixmap mCursorPixmap = QPixmap(24, 24);
 
     const UndoSaveState* mUndoState = nullptr;
-
-    SelectionSettings* mSettings = nullptr;
 };
 
 #endif

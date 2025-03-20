@@ -124,7 +124,8 @@ HEADERS += \
     src/commandlineexporter.h \
     src/statusbar.h \
     src/elidedlabel.h \
-    src/cameraoptionswidget.h
+    src/cameraoptionswidget.h \
+    src/transformoptionswidget.h
 
 SOURCES += \
     src/addtransparencytopaperdialog.cpp \
@@ -177,9 +178,11 @@ SOURCES += \
     src/commandlineexporter.cpp \
     src/statusbar.cpp \
     src/elidedlabel.cpp \
-    src/cameraoptionswidget.cpp
+    src/cameraoptionswidget.cpp \
+    src/transformoptionswidget.cpp
 
 FORMS += \
+    src/transformoptionswidget.ui \
     ui/strokeoptionswidget.ui \
     ui/addtransparencytopaperdialog.ui \
     ui/cameraoptionswidget.ui \

@@ -1033,12 +1033,10 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
 
     TransformParameters params = { currentSelectionRect, editor()->view()->getView(), selectMan->selectionTransform() };
 
-    // TODO: this should not use SELECT tool specifically.. we need to fetch this from SELECT or move tool respectively
-    // consider creating a TRANSFORM tool category.
     mSelectionPainter.paint(painter,
                             object,
                             mEditor->currentLayerIndex(),
-                            static_cast<const SelectionSettings*>(editor()->tools()->getTool(SELECT)->settings()),
+                            static_cast<const TransformSettings*>(editor()->tools()->getTool(TRANSFORMTOOL)->settings()),
                             params);
     emit selectionUpdated();
 }

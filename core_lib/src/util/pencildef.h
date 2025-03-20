@@ -29,8 +29,9 @@ GNU General Public License for more details.
 
 enum ToolCategory: int
 {
-    BASETOOL    = 0,
-    STROKETOOL  = 1
+    BASETOOL        = 0,
+    STROKETOOL      = 1,
+    TRANSFORMTOOL   = 2
 };
 
 enum ToolType : int
