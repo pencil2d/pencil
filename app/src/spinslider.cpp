@@ -29,7 +29,7 @@ GNU General Public License for more details.
 SpinSlider::SpinSlider(QWidget* parent) : QWidget(parent)
 {}
 
-void SpinSlider::init(QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal min, qreal max)
+void SpinSlider::init(QString text, GROWTH_TYPE type, qreal min, qreal max)
 {
     if (type == LOG)
     {
@@ -39,7 +39,6 @@ void SpinSlider::init(QString text, GROWTH_TYPE type, VALUE_TYPE dataType, qreal
 
     mValue = 1.0;
     mGrowthType = type;
-    mValueType = dataType;
     mMin = min;
     mMax = max;
 

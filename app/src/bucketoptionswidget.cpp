@@ -45,9 +45,9 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     auto expandInfo = mSettings->getInfo(BucketSettings::FILLEXPAND_VALUE);
     auto thicknessInfo = mSettings->getInfo(BucketSettings::FILLTHICKNESS_VALUE);
 
-    ui->colorToleranceSlider->init(tr("Color tolerance"), SpinSlider::GROWTH_TYPE::LINEAR, SpinSlider::VALUE_TYPE::INTEGER, toleranceInfo.getMinInt(), toleranceInfo.getMaxInt());
-    ui->expandSlider->init(tr("Expand fill"), SpinSlider::GROWTH_TYPE::LINEAR, SpinSlider::VALUE_TYPE::INTEGER, expandInfo.getMinInt(), expandInfo.getMaxInt());
-    ui->strokeThicknessSlider->init(tr("Stroke thickness"), SpinSlider::GROWTH_TYPE::LOG, SpinSlider::VALUE_TYPE::FLOAT, thicknessInfo.getMinReal(), thicknessInfo.getMaxReal());
+    ui->colorToleranceSlider->init(tr("Color tolerance"), SpinSlider::GROWTH_TYPE::LINEAR, toleranceInfo.getMinInt(), toleranceInfo.getMaxInt());
+    ui->expandSlider->init(tr("Expand fill"), SpinSlider::GROWTH_TYPE::LINEAR, expandInfo.getMinInt(), expandInfo.getMaxInt());
+    ui->strokeThicknessSlider->init(tr("Stroke thickness"), SpinSlider::GROWTH_TYPE::LOG, thicknessInfo.getMinReal(), thicknessInfo.getMaxReal());
 
     ui->expandSpinBox->setMaximum(expandInfo.getMaxInt());
     ui->strokeThicknessSpinBox->setMaximum(thicknessInfo.getMaxReal());

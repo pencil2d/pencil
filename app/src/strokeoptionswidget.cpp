@@ -31,8 +31,8 @@ StrokeOptionsWidget::~StrokeOptionsWidget()
 
 void StrokeOptionsWidget::initUI()
 {
-    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, SpinSlider::INTEGER, StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX);
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, StrokeTool::FEATHER_MIN, StrokeTool::FEATHER_MAX);
+    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX);
+    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, StrokeTool::FEATHER_MIN, StrokeTool::FEATHER_MAX);
 
     makeConnectionFromUIToModel();
 }
@@ -82,11 +82,6 @@ void StrokeOptionsWidget::updateUI()
     if (currentTool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ON)) {
         setFillContour(p->useFillContour());
     }
-
-    // if (currentTool->isPropertyEnabled(SHOWSELECTIONINFO) && currentTool->type() == SELECT) {
-    //     const SelectionProperties* selectP = static_cast<const SelectionProperties*>(currentTool->getProperties());
-    //     setShowSelectionInfo(selectP->showSelectionInfo());
-    // }
 
     if (currentTool->type() == POLYLINE) {
         const PolylineSettings* polyP = static_cast<const PolylineSettings*>(currentTool->settings());
@@ -199,11 +194,6 @@ void StrokeOptionsWidget::setVisibility(BaseTool* tool)
     ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(PolylineSettings::CLOSEDPATH_ON));
 }
 
-// void StrokeOptionsWidget::onToolChanged(ToolType)
-// {
-//     updateUI();
-// }
-
 void StrokeOptionsWidget::setPenWidth(qreal width)
 {
     QSignalBlocker b(ui->sizeSlider);
@@ -244,20 +234,6 @@ void StrokeOptionsWidget::setPressure(int x)
     ui->usePressureBox->setEnabled(true);
     ui->usePressureBox->setChecked(x > 0);
 }
-
-// void StrokeOptionsWidget::setPreserveAlpha(int x)
-// {
-//     QSignalBlocker b(ui->preserveAlphaBox);
-//     ui->preserveAlphaBox->setEnabled(true);
-//     ui->preserveAlphaBox->setChecked(x > 0);
-// }
-
-// void StrokeOptionsWidget::setVectorMergeEnabled(int x)
-// {
-//     QSignalBlocker b(ui->vectorMergeBox);
-//     ui->vectorMergeBox->setEnabled(true);
-//     ui->vectorMergeBox->setChecked(x > 0);
-// }
 
 void StrokeOptionsWidget::setAA(int x)
 {
@@ -307,12 +283,6 @@ void StrokeOptionsWidget::setClosedPath(bool useClosedPath)
     ui->useClosedPathBox->setChecked(useClosedPath);
 }
 
-// void StrokeOptionsWidget::setShowSelectionInfo(bool showSelectionInfo)
-// {
-//     QSignalBlocker b(ui->showInfoBox);
-//     ui->showInfoBox->setChecked(showSelectionInfo);
-// }
-
 void StrokeOptionsWidget::disableAllOptions()
 {
     ui->sizeSlider->hide();
@@ -320,8 +290,6 @@ void StrokeOptionsWidget::disableAllOptions()
     ui->featherSlider->hide();
     ui->featherSpinBox->hide();
     ui->useFeatherBox->hide();
-    // ui->useBezierBox->hide();
-    // ui->useClosedPathBox->hide();
     ui->usePressureBox->hide();
     ui->makeInvisibleBox->hide();
     ui->useAABox->hide();

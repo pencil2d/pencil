@@ -43,7 +43,7 @@ public:
         FLOAT,
     };
     SpinSlider(QWidget* parent = nullptr);
-    void init(QString text, GROWTH_TYPE, VALUE_TYPE, qreal min, qreal max);
+    void init(QString text, GROWTH_TYPE, qreal min, qreal max);
     void setValue(qreal);
     void setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown);
     void setExponent(const qreal);
@@ -66,7 +66,6 @@ private:
     QLabel* mLabel = nullptr;
 
     GROWTH_TYPE mGrowthType = LINEAR;
-    VALUE_TYPE  mValueType = INTEGER;
 };
 
 #endif // SPINSLIDER_H
