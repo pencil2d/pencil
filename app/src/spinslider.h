@@ -48,6 +48,7 @@ public:
     void setPixelPos(qreal min, qreal max, int val, int space, bool upsideDown);
     void setExponent(const qreal);
     void setLabel(QString newText);
+    void setRange(qreal min, qreal max);
 
 signals:
     void valueChanged(qreal);

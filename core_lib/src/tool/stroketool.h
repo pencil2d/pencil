@@ -47,11 +47,6 @@ public:
 
     void updateCanvasCursor();
 
-    static const qreal FEATHER_MIN;
-    static const qreal FEATHER_MAX;
-    static const qreal WIDTH_MIN;
-    static const qreal WIDTH_MAX;
-
     void createSettings(ToolSettings* settings) override;
     void loadSettings() override;
     bool isActive() const override { return mInterpolator.isActive(); }
@@ -136,6 +131,11 @@ protected:
     const UndoSaveState* mUndoSaveState = nullptr;
 
     StrokeSettings* mStrokeSettings = nullptr;
+
+    static const qreal FEATHER_MIN;
+    static const qreal FEATHER_MAX;
+    static const qreal WIDTH_MIN;
+    static const qreal WIDTH_MAX;
 };
 
 #endif // STROKETOOL_H

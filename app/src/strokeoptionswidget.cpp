@@ -31,8 +31,12 @@ StrokeOptionsWidget::~StrokeOptionsWidget()
 
 void StrokeOptionsWidget::initUI()
 {
-    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX);
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, StrokeTool::FEATHER_MIN, StrokeTool::FEATHER_MAX);
+    BaseTool* currentTool = mEditor->tools()->currentTool();
+    const StrokeSettings* p = static_cast<const StrokeSettings*>(currentTool->settings());
+
+    auto widthInfo = p->getInfo(StrokeSettings::WIDTH_VALUE);
+    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.getMinReal(), widthInfo.getMaxReal());
+    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, widthInfo.getMinReal(), widthInfo.getMaxReal());
 
     makeConnectionFromUIToModel();
 }
@@ -52,10 +56,16 @@ void StrokeOptionsWidget::updateUI()
 
     if (currentTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
     {
+        auto info = p->getInfo(StrokeSettings::WIDTH_VALUE);
+        ui->sizeSlider->setRange(info.getMinReal(), info.getMaxReal());
+        ui->sizeSpinBox->setRange(info.getMinReal(), info.getMaxReal());
         setPenWidth(p->width());
     }
     if (currentTool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE))
     {
+        auto info = p->getInfo(StrokeSettings::FEATHER_VALUE);
+        ui->featherSlider->setRange(info.getMinReal(), info.getMaxReal());
+        ui->featherSpinBox->setRange(info.getMinReal(), info.getMaxReal());
         setPenFeather(p->feather());
     }
 

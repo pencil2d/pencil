@@ -62,6 +62,13 @@ void SpinSlider::init(QString text, GROWTH_TYPE type, qreal min, qreal max)
     connect(mSlider, &QSlider::valueChanged, this, &SpinSlider::onSliderValueChanged);
 }
 
+void SpinSlider::setRange(qreal min, qreal max)
+{
+    mMin = min;
+    mMax = max;
+    setValue(mValue);
+}
+
 void SpinSlider::changeValue(qreal value)
 {
     mValue = value;
