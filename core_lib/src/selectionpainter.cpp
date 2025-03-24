@@ -76,7 +76,7 @@ void SelectionPainter::paint(QPainter& painter,
                                            HANDLE_WIDTH, HANDLE_WIDTH);
     painter.drawRect(bottomLeftCorner);
 
-    if (toolProperties->showSelectionInfo()) {
+    if (toolProperties->showSelectionInfoEnabled()) {
         paintSelectionInfo(painter, transform, tParams.viewTransform, tParams.originalSelectionRectF, projectedSelectionPolygon);
     }
 }

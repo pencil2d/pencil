@@ -36,9 +36,9 @@ void SelectTool::loadSettings()
 
     QHash<int, PropertyInfo> info;
 
-    mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ON] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
 
-    info[TransformSettings::SHOWSELECTIONINFO_ON] = false;
+    info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
     mSettings->load(typeName(), settings, info);
 }
 

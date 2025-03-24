@@ -316,11 +316,11 @@ struct StrokeSettings: public ToolSettings
 
         FEATHER_VALUE       = 101,
         STABILIZATION_VALUE = 102,
-        PRESSURE_ON         = 103,
-        INVISIBILITY_ON     = 104,
-        FEATHER_ON          = 105,
-        ANTI_ALIASING_ON    = 106,
-        FILLCONTOUR_ON      = 107,
+        PRESSURE_ENABLED         = 103,
+        INVISIBILITY_ENABLED     = 104,
+        FEATHER_ENABLED          = 105,
+        ANTI_ALIASING_ENABLED    = 106,
+        FILLCONTOUR_ENABLED      = 107,
 
         END                 = 199,
     };
@@ -339,20 +339,20 @@ struct StrokeSettings: public ToolSettings
         case STABILIZATION_VALUE:
             propertyID = "LineStabilization";
             break;
-        case PRESSURE_ON:
+        case PRESSURE_ENABLED:
             propertyID = "Pressure";
             break;
-        case INVISIBILITY_ON:
+        case INVISIBILITY_ENABLED:
             propertyID = "Invisibility";
             break;
-        case FEATHER_ON:
-            propertyID = "UseFeather";
+        case FEATHER_ENABLED:
+            propertyID = "FeatherEnabled";
             break;
-        case ANTI_ALIASING_ON:
-            propertyID = "UseAA";
+        case ANTI_ALIASING_ENABLED:
+            propertyID = "AntiAliasingEnabled";
             break;
-        case FILLCONTOUR_ON:
-            propertyID = "FillContour";
+        case FILLCONTOUR_ENABLED:
+            propertyID = "FillContourEnabled";
             break;
         case END:
             break;
@@ -364,11 +364,11 @@ struct StrokeSettings: public ToolSettings
     qreal width() const { return mProps[WIDTH_VALUE].getReal(); }
     qreal feather() const { return mProps[FEATHER_VALUE].getReal(); }
     int stabilizerLevel() const { return mProps[STABILIZATION_VALUE].getInt(); }
-    bool usePressure() const { return mProps[PRESSURE_ON].getBool(); }
-    bool invisibility() const { return mProps[INVISIBILITY_ON].getBool(); }
-    bool useFeather() const { return mProps[FEATHER_ON].getBool(); }
-    bool useAntiAliasing() const { return mProps[ANTI_ALIASING_ON].getBool(); }
-    bool useFillContour() const { return mProps[FILLCONTOUR_ON].getBool(); }
+    bool pressureEnabled() const { return mProps[PRESSURE_ENABLED].getBool(); }
+    bool invisibilityEnabled() const { return mProps[INVISIBILITY_ENABLED].getBool(); }
+    bool featherEnabled() const { return mProps[FEATHER_ENABLED].getBool(); }
+    bool AntiAliasingEnabled() const { return mProps[ANTI_ALIASING_ENABLED].getBool(); }
+    bool fillContourEnabled() const { return mProps[FILLCONTOUR_ENABLED].getBool(); }
 };
 
 /// This struct is an example of how we can
@@ -377,12 +377,12 @@ struct StrokeSettings: public ToolSettings
 struct PolylineSettings: public StrokeSettings
 {
     enum Type {
-        START           = 200,
+        START               = 200,
 
-        CLOSEDPATH_ON   = START,
-        BEZIER_ON       = 201,
+        CLOSEDPATH_ENABLED  = START,
+        BEZIERPATH_ENABLED  = 201,
 
-        END             = 299,
+        END                 = 299,
     };
 
     QString identifier(int typeRaw) const override {
@@ -390,11 +390,11 @@ struct PolylineSettings: public StrokeSettings
         QString propertyID = ToolSettings::identifier(typeRaw);
         switch (type)
         {
-        case CLOSEDPATH_ON:
+        case CLOSEDPATH_ENABLED:
             propertyID = "ClosedPathEnabled";
             break;
-        case BEZIER_ON:
-            propertyID = "BezierEnabled";
+        case BEZIERPATH_ENABLED:
+            propertyID = "BezierPathEnabled";
             break;
         default:
             propertyID = StrokeSettings::identifier(typeRaw);
@@ -404,9 +404,9 @@ struct PolylineSettings: public StrokeSettings
     }
 
     qreal width() const { return mProps[StrokeSettings::WIDTH_VALUE].getReal(); }
-    bool closedPath() const { return mProps[CLOSEDPATH_ON].getBool(); }
-    bool useBezier() const { return mProps[BEZIER_ON].getBool(); }
-    bool useAntiAliasing() const { return mProps[StrokeSettings::ANTI_ALIASING_ON].getBool(); }
+    bool closedPathEnabled() const { return mProps[CLOSEDPATH_ENABLED].getBool(); }
+    bool bezierPathEnabled() const { return mProps[BEZIERPATH_ENABLED].getBool(); }
+    bool AntiAliasingEnabled() const { return mProps[StrokeSettings::ANTI_ALIASING_ENABLED].getBool(); }
 };
 
 struct BucketSettings: public ToolSettings
@@ -419,8 +419,8 @@ struct BucketSettings: public ToolSettings
         FILLEXPAND_VALUE                = 302,
         FILLLAYERREFERENCEMODE_VALUE    = 304,
         FILLMODE_VALUE                  = 305,
-        TOLERANCE_ON                    = 307,
-        FILLEXPAND_ON                   = 308,
+        COLORTOLERANCE_ENABLED          = 307,
+        FILLEXPAND_ENABLED              = 308,
 
         END                             = 399,
     };
@@ -434,12 +434,12 @@ struct BucketSettings: public ToolSettings
             propertyID = "FillThickness";
             break;
         case TOLERANCE_VALUE:
-            propertyID = "Tolerance";
+            propertyID = "ColorTolerance";
             break;
-        case TOLERANCE_ON:
-            propertyID = "ToleranceEnabled";
+        case COLORTOLERANCE_ENABLED:
+            propertyID = "ColorToleranceEnabled";
             break;
-        case FILLEXPAND_ON:
+        case FILLEXPAND_ENABLED:
             propertyID = "FillExpandEnabled";
             break;
         case FILLEXPAND_VALUE:
@@ -463,15 +463,15 @@ struct BucketSettings: public ToolSettings
     int fillExpandAmount() const { return mProps[FILLEXPAND_VALUE].getInt(); }
     int fillReferenceMode() const { return mProps[FILLLAYERREFERENCEMODE_VALUE].getInt(); }
     int fillMode() const { return mProps[FILLMODE_VALUE].getInt(); }
-    bool useTolerance() const { return mProps[TOLERANCE_ON].getBool(); }
-    bool useFillExpand() const { return mProps[FILLEXPAND_ON].getBool(); }
+    bool toleranceEnabled() const { return mProps[COLORTOLERANCE_ENABLED].getBool(); }
+    bool fillExpandEnabled() const { return mProps[FILLEXPAND_ENABLED].getBool(); }
 };
 
 struct CameraSettings: public ToolSettings
 {
     enum Type {
         START               = 400,
-        SHOWPATH_ON         = START,
+        SHOWPATH_ENABLED    = START,
 
         PATH_DOTCOLOR_TYPE  = 401,
 
@@ -484,8 +484,8 @@ struct CameraSettings: public ToolSettings
 
         switch (type)
         {
-        case SHOWPATH_ON:
-            propertyID = "ShowPath";
+        case SHOWPATH_ENABLED:
+            propertyID = "ShowPathEnabled";
             break;
         case PATH_DOTCOLOR_TYPE:
             propertyID = "PathDotColorType";
@@ -496,7 +496,7 @@ struct CameraSettings: public ToolSettings
         return propertyID;
     }
 
-    bool showPath() const { return mProps[SHOWPATH_ON].getBool(); }
+    bool showPathEnabled() const { return mProps[SHOWPATH_ENABLED].getBool(); }
     DotColorType dotColorType() const { return static_cast<DotColorType>(mProps[PATH_DOTCOLOR_TYPE].getInt()); }
 };
 
@@ -505,7 +505,7 @@ struct TransformSettings: public ToolSettings
 {
     enum Type {
         START                   = 500,
-        SHOWSELECTIONINFO_ON    = START,
+        SHOWSELECTIONINFO_ENABLED    = START,
 
         END                     = 599,
     };
@@ -516,7 +516,7 @@ struct TransformSettings: public ToolSettings
 
         switch (type)
         {
-            case SHOWSELECTIONINFO_ON:
+            case SHOWSELECTIONINFO_ENABLED:
                 propertyID = "ShowSelectionInfoEnabled";
                 break;
             case END:
@@ -526,7 +526,7 @@ struct TransformSettings: public ToolSettings
         return propertyID;
     }
 
-    bool showSelectionInfo() const { return mProps[SHOWSELECTIONINFO_ON].getBool(); }
+    bool showSelectionInfoEnabled() const { return mProps[SHOWSELECTIONINFO_ENABLED].getBool(); }
 };
 
 #endif // TOOLSETTINGS_H

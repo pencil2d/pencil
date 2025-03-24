@@ -85,12 +85,12 @@ void StrokeTool::loadSettings()
     QHash<int, PropertyInfo> info;
     info[StrokeSettings::WIDTH_VALUE] = { 1.0, 100.0, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { 1.0, 99.0, 48.0 };
-    info[StrokeSettings::FEATHER_ON] = false;
-    info[StrokeSettings::PRESSURE_ON] = false;
-    info[StrokeSettings::INVISIBILITY_ON] = false;
+    info[StrokeSettings::FEATHER_ENABLED] = false;
+    info[StrokeSettings::PRESSURE_ENABLED] = false;
+    info[StrokeSettings::INVISIBILITY_ENABLED] = false;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
-    info[StrokeSettings::ANTI_ALIASING_ON] = false;
-    info[StrokeSettings::FILLCONTOUR_ON] = false;
+    info[StrokeSettings::ANTI_ALIASING_ENABLED] = false;
+    info[StrokeSettings::FILLCONTOUR_ENABLED] = false;
 
     mStrokeSettings->load(typeName(), settings, info);
 
@@ -306,7 +306,7 @@ void StrokeTool::updateCanvasCursor()
                                  brushWidth * featherWidthFactor);
     options.showCursor = mCanvasCursorEnabled;
     options.isAdjusting = msIsAdjusting && mQuickSizingEnabled;
-    options.useFeather = mStrokeSettings->useFeather();
+    options.useFeather = mStrokeSettings->featherEnabled();
 
     mCanvasCursorPainter.preparePainter(options, mEditor->view()->getView());
 
@@ -415,10 +415,10 @@ void StrokeTool::setStablizationLevel(int level)
     emit stabilizationLevelChanged(level);
 }
 
-void StrokeTool::setFeatherON(bool isON)
+void StrokeTool::setFeatherEnabled(bool isON)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_ON, isON);
-    emit featherONChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_ENABLED, isON);
+    emit featherEnabledChanged(isON);
 }
 
 void StrokeTool::setFeather(qreal feather)
@@ -433,26 +433,26 @@ void StrokeTool::setWidth(qreal width)
     emit widthChanged(width);
 }
 
-void StrokeTool::setPressureON(bool isON)
+void StrokeTool::setPressureEnabled(bool isON)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ON, isON);
-    emit pressureONChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, isON);
+    emit pressureEnabledChanged(isON);
 }
 
-void StrokeTool::setFillContourON(bool isON)
+void StrokeTool::setFillContourEnabled(bool isON)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::FILLCONTOUR_ON, isON);
-    emit fillContourONChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, isON);
+    emit fillContourEnabledChanged(isON);
 }
 
-void StrokeTool::setAntiAliasingON(bool isON)
+void StrokeTool::setAntiAliasingEnabled(bool isON)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ON, isON);
-    emit antiAliasingONChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, isON);
+    emit antiAliasingEnabledChanged(isON);
 }
 
-void StrokeTool::setInvisibilityON(bool isON)
+void StrokeTool::setStrokeInvisibleEnabled(bool isON)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::INVISIBILITY_ON, isON);
-    emit invisibilityONChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, isON);
+    emit InvisibleStrokeEnabledChanged(isON);
 }

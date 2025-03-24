@@ -36,16 +36,15 @@ private:
 
     void setPenWidth(qreal);
     void setPenFeather(qreal);
-    void setUseFeather(bool);
+    void setFeatherEnabled(bool);
     void setPenInvisibility(int);
     void setPressure(int);
     void setAA(int);
     void setStabilizerLevel(int);
     void setFillContour(int);
-    void setBezier(bool);
-    void setClosedPath(bool);
+    void setBezierPathEnabled(bool);
+    void setClosedPathEnabled(bool);
 
-    void disableAllOptions();
     void setVisibility(BaseTool*);
 
     StrokeTool* strokeTool();

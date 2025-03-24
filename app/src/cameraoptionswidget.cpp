@@ -90,7 +90,7 @@ void CameraOptionsWidget::updateUI()
 
     const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->settings());
 
-    setShowCameraPath(p->showPath());
+    setShowCameraPath(p->showPathEnabled());
     setPathDotColorType(p->dotColorType());
 }
 

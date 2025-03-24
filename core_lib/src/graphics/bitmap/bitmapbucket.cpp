@@ -47,7 +47,7 @@ BitmapBucket::BitmapBucket(Editor* editor,
     mTargetFillToLayer = initialLayer;
     mTargetFillToLayerIndex = initialLayerIndex;
 
-    mTolerance = mProperties.useTolerance() ? mProperties.tolerance() : 0;
+    mTolerance = mProperties.toleranceEnabled() ? mProperties.tolerance() : 0;
     const QPoint& point = QPoint(qFloor(fillPoint.x()), qFloor(fillPoint.y()));
 
     Q_ASSERT(mTargetFillToLayer);
@@ -145,7 +145,7 @@ void BitmapBucket::paint(const QPointF& updatedPoint, std::function<void(BucketS
 
     BitmapImage* replaceImage = nullptr;
 
-    int expandValue = mProperties.useFillExpand() ? mProperties.fillExpandAmount() : 0;
+    int expandValue = mProperties.fillExpandEnabled() ? mProperties.fillExpandAmount() : 0;
     bool didFloodFill = BitmapImage::floodFill(&replaceImage,
                            &mReferenceImage,
                            mMaxFillRegion,

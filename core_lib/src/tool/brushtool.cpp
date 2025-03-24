@@ -50,8 +50,8 @@ void BrushTool::loadSettings()
 
     mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
     mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
-    mPropertyUsed[StrokeSettings::PRESSURE_ON] = { Layer::BITMAP, Layer::VECTOR };
-    mPropertyUsed[StrokeSettings::INVISIBILITY_ON] = { Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::PRESSURE_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::INVISIBILITY_ENABLED] = { Layer::VECTOR };
     mPropertyUsed[StrokeSettings::STABILIZATION_VALUE] = { Layer::BITMAP, Layer::VECTOR };
 
     QSettings settings(PENCIL2D, PENCIL2D);
@@ -59,8 +59,8 @@ void BrushTool::loadSettings()
     QHash<int, PropertyInfo> info;
     info[StrokeSettings::WIDTH_VALUE] = { 1.0, 100.0, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { 1.0, 99.0, 48.0 };
-    info[StrokeSettings::PRESSURE_ON] = true;
-    info[StrokeSettings::INVISIBILITY_ON] = false;
+    info[StrokeSettings::PRESSURE_ENABLED] = true;
+    info[StrokeSettings::INVISIBILITY_ENABLED] = false;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG } ;
 
     mStrokeSettings->load(typeName(), settings, info);
@@ -151,8 +151,8 @@ void BrushTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1.0;
-        qreal opacity = (mStrokeSettings->usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal pressure = (mStrokeSettings->pressureEnabled()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mStrokeSettings->pressureEnabled()) ? (mCurrentPressure * 0.5) : 1.0;
         qreal brushWidth = mStrokeSettings->width() * pressure;
         mCurrentWidth = brushWidth;
         mScribbleArea->drawBrush(point,
@@ -174,8 +174,8 @@ void BrushTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1.0;
-        qreal opacity = (mStrokeSettings->usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal pressure = (mStrokeSettings->pressureEnabled()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mStrokeSettings->pressureEnabled()) ? (mCurrentPressure * 0.5) : 1.0;
         qreal brushWidth = mStrokeSettings->width() * pressure;
         mCurrentWidth = brushWidth;
 
@@ -223,7 +223,7 @@ void BrushTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1;
+        qreal pressure = (mStrokeSettings->pressureEnabled()) ? mCurrentPressure : 1;
         qreal brushWidth = mStrokeSettings->width() * pressure;
 
         QPen pen(mEditor->color()->frontColor(),
@@ -259,8 +259,8 @@ void BrushTool::paintVectorStroke(Layer* layer)
         curve.setWidth(mStrokeSettings->width());
         curve.setFeather(mStrokeSettings->feather());
         curve.setFilled(false);
-        curve.setInvisibility(mStrokeSettings->invisibility());
-        curve.setVariableWidth(mStrokeSettings->usePressure());
+        curve.setInvisibility(mStrokeSettings->invisibilityEnabled());
+        curve.setVariableWidth(mStrokeSettings->pressureEnabled());
         curve.setColorNumber(mEditor->color()->frontColorNumber());
 
         VectorImage* vectorImage = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));

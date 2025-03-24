@@ -50,17 +50,17 @@ void EraserTool::loadSettings()
 
     mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
     mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
-    mPropertyUsed[StrokeSettings::FEATHER_ON] = { Layer::BITMAP };
-    mPropertyUsed[StrokeSettings::PRESSURE_ON] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[StrokeSettings::FEATHER_ENABLED] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::PRESSURE_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
     mPropertyUsed[StrokeSettings::STABILIZATION_VALUE] = { Layer::BITMAP, Layer::VECTOR };
-    mPropertyUsed[StrokeSettings::ANTI_ALIASING_ON] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::ANTI_ALIASING_ENABLED] = { Layer::BITMAP };
 
     info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
-    info[StrokeSettings::FEATHER_ON] = true;
-    info[StrokeSettings::PRESSURE_ON] = true;
+    info[StrokeSettings::FEATHER_ENABLED] = true;
+    info[StrokeSettings::PRESSURE_ENABLED] = true;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::NONE };
-    info[StrokeSettings::ANTI_ALIASING_ON] = true;
+    info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
     mQuickSizingProperties.insert(Qt::ControlModifier, StrokeSettings::FEATHER_VALUE);
@@ -138,8 +138,8 @@ void EraserTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1.0;
-        qreal opacity = (mStrokeSettings->usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal pressure = (mStrokeSettings->pressureEnabled()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mStrokeSettings->pressureEnabled()) ? (mCurrentPressure * 0.5) : 1.0;
         qreal brushWidth = mStrokeSettings->width() * pressure;
         mCurrentWidth = brushWidth;
 
@@ -149,8 +149,8 @@ void EraserTool::paintAt(QPointF point)
                                  QColor(255, 255, 255, 255),
                                  QPainter::CompositionMode_SourceOver,
                                  opacity,
-                                 mStrokeSettings->useFeather(),
-                                 mStrokeSettings->useAntiAliasing() == ON);
+                                 mStrokeSettings->featherEnabled(),
+                                 mStrokeSettings->AntiAliasingEnabled() == ON);
     }
 }
 
@@ -163,8 +163,8 @@ void EraserTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (mStrokeSettings->usePressure()) ? mCurrentPressure : 1.0;
-        qreal opacity = (mStrokeSettings->usePressure()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal pressure = (mStrokeSettings->pressureEnabled()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mStrokeSettings->pressureEnabled()) ? (mCurrentPressure * 0.5) : 1.0;
         qreal brushWidth = mStrokeSettings->width() * pressure;
         mCurrentWidth = brushWidth;
 
@@ -189,8 +189,8 @@ void EraserTool::drawStroke()
                                      Qt::white,
                                      QPainter::CompositionMode_SourceOver,
                                      opacity,
-                                     mStrokeSettings->useFeather(),
-                                     mStrokeSettings->useAntiAliasing() == ON);
+                                     mStrokeSettings->featherEnabled(),
+                                     mStrokeSettings->AntiAliasingEnabled() == ON);
             if (i == (steps - 1))
             {
                 mLastBrushPoint = getCurrentPoint();
@@ -200,7 +200,7 @@ void EraserTool::drawStroke()
     else if (layer->type() == Layer::VECTOR)
     {
         mCurrentWidth = mStrokeSettings->width();
-        if (mStrokeSettings->usePressure())
+        if (mStrokeSettings->pressureEnabled())
         {
             mCurrentWidth = (mCurrentWidth + (mInterpolator.getPressure() * mCurrentWidth)) * 0.5;
         }

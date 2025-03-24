@@ -48,9 +48,9 @@ void BucketTool::loadSettings()
 {
     mPropertyUsed[BucketSettings::FILLTHICKNESS_VALUE] = { Layer::VECTOR };
     mPropertyUsed[BucketSettings::TOLERANCE_VALUE] = { Layer::BITMAP };
-    mPropertyUsed[BucketSettings::TOLERANCE_ON] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::COLORTOLERANCE_ENABLED] = { Layer::BITMAP };
     mPropertyUsed[BucketSettings::FILLEXPAND_VALUE] = { Layer::BITMAP };
-    mPropertyUsed[BucketSettings::FILLEXPAND_ON] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLEXPAND_ENABLED] = { Layer::BITMAP };
     mPropertyUsed[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { Layer::BITMAP };
     mPropertyUsed[BucketSettings::FILLMODE_VALUE] = { Layer::BITMAP };
 
@@ -60,9 +60,9 @@ void BucketTool::loadSettings()
 
     info[BucketSettings::FILLTHICKNESS_VALUE] = { 1.0, 100.0, 4.0 };
     info[BucketSettings::TOLERANCE_VALUE] = { 1, 100, 32 };
-    info[BucketSettings::TOLERANCE_ON] = false;
+    info[BucketSettings::COLORTOLERANCE_ENABLED] = false;
     info[BucketSettings::FILLEXPAND_VALUE] = { 1, 25, 2 };
-    info[BucketSettings::FILLEXPAND_ON] = true;
+    info[BucketSettings::FILLEXPAND_ENABLED] = true;
     info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { 0, 1, 0 };
     info[BucketSettings::FILLMODE_VALUE] = { 0, 2, 0 };
 
@@ -196,7 +196,7 @@ void BucketTool::setTolerance(int tolerance)
 
 void BucketTool::setToleranceON(bool isON)
 {
-    mSettings->setBaseValue(BucketSettings::TOLERANCE_ON, isON);
+    mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_ENABLED, isON);
     emit toleranceONChanged(isON);
 }
 
@@ -208,7 +208,7 @@ void BucketTool::setFillExpand(int fillExpandValue)
 
 void BucketTool::setFillExpandON(bool isON)
 {
-    mSettings->setBaseValue(BucketSettings::FILLEXPAND_ON, isON);
+    mSettings->setBaseValue(BucketSettings::FILLEXPAND_ENABLED, isON);
     emit fillExpandONChanged(isON);
 }
 

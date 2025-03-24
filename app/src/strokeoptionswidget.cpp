@@ -69,34 +69,34 @@ void StrokeOptionsWidget::updateUI()
         setPenFeather(p->feather());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::FEATHER_ON)) {
-        setUseFeather(p->useFeather());
+    if (currentTool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED)) {
+        setFeatherEnabled(p->featherEnabled());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::PRESSURE_ON)) {
-        setPressure(p->usePressure());
+    if (currentTool->isPropertyEnabled(StrokeSettings::PRESSURE_ENABLED)) {
+        setPressure(p->pressureEnabled());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ON)) {
-        setPenInvisibility(p->invisibility());
+    if (currentTool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED)) {
+        setPenInvisibility(p->invisibilityEnabled());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::ANTI_ALIASING_ON)) {
-        setAA(p->useAntiAliasing());
+    if (currentTool->isPropertyEnabled(StrokeSettings::ANTI_ALIASING_ENABLED)) {
+        setAA(p->AntiAliasingEnabled());
     }
 
     if (currentTool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE)) {
         setStabilizerLevel(p->stabilizerLevel());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ON)) {
-        setFillContour(p->useFillContour());
+    if (currentTool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ENABLED)) {
+        setFillContour(p->fillContourEnabled());
     }
 
     if (currentTool->type() == POLYLINE) {
         const PolylineSettings* polyP = static_cast<const PolylineSettings*>(currentTool->settings());
-        setClosedPath(polyP->closedPath());
-        setBezier(polyP->useBezier());
+        setClosedPathEnabled(polyP->closedPathEnabled());
+        setBezierPathEnabled(polyP->bezierPathEnabled());
     }
 }
 
@@ -116,17 +116,17 @@ void StrokeOptionsWidget::makeConnectionFromModelToUI(StrokeTool* strokeTool)
 {
     connect(strokeTool, &StrokeTool::widthChanged, this, &StrokeOptionsWidget::setPenWidth);
     connect(strokeTool, &StrokeTool::featherChanged, this, &StrokeOptionsWidget::setPenFeather);
-    connect(strokeTool, &StrokeTool::featherONChanged, this, &StrokeOptionsWidget::setUseFeather);
-    connect(strokeTool, &StrokeTool::pressureONChanged, this, &StrokeOptionsWidget::setPressure);
+    connect(strokeTool, &StrokeTool::featherEnabledChanged, this, &StrokeOptionsWidget::setFeatherEnabled);
+    connect(strokeTool, &StrokeTool::pressureEnabledChanged, this, &StrokeOptionsWidget::setPressure);
     connect(strokeTool, &StrokeTool::stabilizationLevelChanged, this, &StrokeOptionsWidget::setStabilizerLevel);
-    connect(strokeTool, &StrokeTool::antiAliasingONChanged, this, &StrokeOptionsWidget::setAA);
-    connect(strokeTool, &StrokeTool::fillContourONChanged, this, &StrokeOptionsWidget::setFillContour);
-    connect(strokeTool, &StrokeTool::invisibilityONChanged, this, &StrokeOptionsWidget::setPenInvisibility);
+    connect(strokeTool, &StrokeTool::antiAliasingEnabledChanged, this, &StrokeOptionsWidget::setAA);
+    connect(strokeTool, &StrokeTool::fillContourEnabledChanged, this, &StrokeOptionsWidget::setFillContour);
+    connect(strokeTool, &StrokeTool::InvisibleStrokeEnabledChanged, this, &StrokeOptionsWidget::setPenInvisibility);
 
     if (strokeTool->type() == POLYLINE) {
         PolylineTool* polyline = static_cast<PolylineTool*>(strokeTool);
-        connect(polyline, &PolylineTool::useBezierChanged, this, &StrokeOptionsWidget::setBezier);
-        connect(polyline, &PolylineTool::closePathChanged, this, &StrokeOptionsWidget::setClosedPath);
+        connect(polyline, &PolylineTool::useBezierChanged, this, &StrokeOptionsWidget::setBezierPathEnabled);
+        connect(polyline, &PolylineTool::closePathChanged, this, &StrokeOptionsWidget::setClosedPathEnabled);
     }
 }
 
@@ -144,23 +144,23 @@ void StrokeOptionsWidget::makeConnectionFromUIToModel()
         tool->setClosePath(enabled);
     });
     connect(ui->usePressureBox, &QCheckBox::clicked, [=](bool enabled) {
-        mCurrentTool->setPressureON(enabled);
+        mCurrentTool->setPressureEnabled(enabled);
     });
 
     connect(ui->makeInvisibleBox, &QCheckBox::clicked, [=](bool enabled) {
-        mCurrentTool->setInvisibilityON(enabled);
+        mCurrentTool->setStrokeInvisibleEnabled(enabled);
     });
 
     connect(ui->useFeatherBox, &QCheckBox::clicked, [=](bool enabled) {
-        mCurrentTool->setFeatherON(enabled);
+        mCurrentTool->setFeatherEnabled(enabled);
     });
 
     connect(ui->useAABox, &QCheckBox::clicked, [=](bool enabled) {
-        mCurrentTool->setAntiAliasingON(enabled);
+        mCurrentTool->setAntiAliasingEnabled(enabled);
     });
 
     connect(ui->fillContourBox, &QCheckBox::clicked, [=](bool enabled) {
-        mCurrentTool->setFillContourON(enabled);
+        mCurrentTool->setFillContourEnabled(enabled);
     });
 
     connect(ui->sizeSlider, &SpinSlider::valueChanged, [=](qreal value) {
@@ -193,15 +193,15 @@ void StrokeOptionsWidget::setVisibility(BaseTool* tool)
     ui->sizeSpinBox->setVisible(tool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE));
     ui->featherSlider->setVisible(tool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE));
     ui->featherSpinBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE));
-    ui->useFeatherBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FEATHER_ON));
-    ui->usePressureBox->setVisible(tool->isPropertyEnabled(StrokeSettings::PRESSURE_ON));
-    ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ON));
-    ui->useAABox->setVisible(tool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ON));
+    ui->useFeatherBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED));
+    ui->usePressureBox->setVisible(tool->isPropertyEnabled(StrokeSettings::PRESSURE_ENABLED));
+    ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED));
+    ui->useAABox->setVisible(tool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED));
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE));
-    ui->fillContourBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ON));
-    ui->useBezierBox->setVisible(tool->isPropertyEnabled(PolylineSettings::BEZIER_ON));
-    ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(PolylineSettings::CLOSEDPATH_ON));
+    ui->fillContourBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ENABLED));
+    ui->useBezierBox->setVisible(tool->isPropertyEnabled(PolylineSettings::BEZIERPATH_ENABLED));
+    ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(PolylineSettings::CLOSEDPATH_ENABLED));
 }
 
 void StrokeOptionsWidget::setPenWidth(qreal width)
@@ -224,7 +224,7 @@ void StrokeOptionsWidget::setPenFeather(qreal featherValue)
     ui->featherSpinBox->setValue(featherValue);
 }
 
-void StrokeOptionsWidget::setUseFeather(bool useFeather)
+void StrokeOptionsWidget::setFeatherEnabled(bool useFeather)
 {
     QSignalBlocker b(ui->useFeatherBox);
     ui->useFeatherBox->setEnabled(true);
@@ -281,31 +281,16 @@ void StrokeOptionsWidget::setFillContour(int useFill)
     ui->fillContourBox->setChecked(useFill > 0);
 }
 
-void StrokeOptionsWidget::setBezier(bool useBezier)
+void StrokeOptionsWidget::setBezierPathEnabled(bool useBezier)
 {
     QSignalBlocker b(ui->useBezierBox);
     ui->useBezierBox->setChecked(useBezier);
 }
 
-void StrokeOptionsWidget::setClosedPath(bool useClosedPath)
+void StrokeOptionsWidget::setClosedPathEnabled(bool useClosedPath)
 {
     QSignalBlocker b(ui->useClosedPathBox);
     ui->useClosedPathBox->setChecked(useClosedPath);
-}
-
-void StrokeOptionsWidget::disableAllOptions()
-{
-    ui->sizeSlider->hide();
-    ui->sizeSpinBox->hide();
-    ui->featherSlider->hide();
-    ui->featherSpinBox->hide();
-    ui->useFeatherBox->hide();
-    ui->usePressureBox->hide();
-    ui->makeInvisibleBox->hide();
-    ui->useAABox->hide();
-    ui->inpolLevelsCombo->hide();
-    ui->fillContourBox->hide();
-    ui->stabilizerLabel->hide();
 }
 
 StrokeTool* StrokeOptionsWidget::strokeTool()

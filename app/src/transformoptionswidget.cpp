@@ -51,8 +51,8 @@ void TransformOptionsWidget::updateUI()
     updateToolConnections(currentTool);
     const TransformSettings* selectP = static_cast<const TransformSettings*>(currentTool->settings());
 
-    if (currentTool->isPropertyEnabled(TransformSettings::SHOWSELECTIONINFO_ON)) {
-        setShowSelectionInfo(selectP->showSelectionInfo());
+    if (currentTool->isPropertyEnabled(TransformSettings::SHOWSELECTIONINFO_ENABLED)) {
+        setShowSelectionInfo(selectP->showSelectionInfoEnabled());
     }
 }
 

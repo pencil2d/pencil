@@ -162,8 +162,8 @@ void BucketOptionsWidget::updateUI()
         mBucketTool->setStrokeThickness(mSettings->fillThickness());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ON)) {
-        mBucketTool->setFillExpandON(mSettings->useFillExpand());
+    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ENABLED)) {
+        mBucketTool->setFillExpandON(mSettings->fillExpandEnabled());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE)) {
@@ -182,8 +182,8 @@ void BucketOptionsWidget::updateUI()
         mBucketTool->setTolerance(mSettings->tolerance());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_ON)) {
-        mBucketTool->setToleranceON(mSettings->useTolerance());
+    if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_ENABLED)) {
+        mBucketTool->setToleranceON(mSettings->toleranceEnabled());
     }
 }
 
@@ -191,10 +191,10 @@ void BucketOptionsWidget::updatePropertyVisibility()
 {
     ui->strokeThicknessSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE));
     ui->strokeThicknessSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE));
-    ui->colorToleranceCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_ON));
+    ui->colorToleranceCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_ENABLED));
     ui->colorToleranceSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_VALUE));
     ui->colorToleranceSpinbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_VALUE));
-    ui->expandCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ON));
+    ui->expandCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ENABLED));
     ui->expandSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE));
     ui->expandSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE));
     ui->referenceLayerComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLLAYERREFERENCEMODE_VALUE));

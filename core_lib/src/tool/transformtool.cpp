@@ -40,7 +40,7 @@ void TransformTool::createSettings(ToolSettings* settings)
 
 void TransformTool::setShowSelectionInfo(bool isOn)
 {
-    mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ON, isOn);
+    mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, isOn);
     emit showSelectionInfoChanged(isOn);
 
     mEditor->updateFrame();
