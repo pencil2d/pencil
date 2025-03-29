@@ -34,14 +34,14 @@ private:
     void makeConnectionFromUIToModel();
     void updateToolConnections(BaseTool* tool);
 
-    void setPenWidth(qreal);
-    void setPenFeather(qreal);
+    void setWidthValue(qreal);
+    void setFeatherValue(qreal);
     void setFeatherEnabled(bool);
-    void setPenInvisibility(int);
-    void setPressure(int);
-    void setAA(int);
+    void setPenInvisibilityEnabled(bool);
+    void setPressureEnabled(bool);
+    void setAntiAliasingEnabled(bool);
     void setStabilizerLevel(int);
-    void setFillContour(int);
+    void setFillContourEnabled(bool);
     void setBezierPathEnabled(bool);
     void setClosedPathEnabled(bool);
 
