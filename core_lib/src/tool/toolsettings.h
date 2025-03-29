@@ -216,6 +216,8 @@ struct ToolSettings
 
     void save(QSettings& settings) {
         settings.beginGroup(mIdentifier);
+        settings.setValue(mVersionKey, mVersion);
+
         for (auto it = mProps.begin(); it != mProps.end(); ++it) {
 
             QString propertyId = identifier(it.key());
@@ -270,6 +272,16 @@ struct ToolSettings
         }
     }
 
+    /// Use this function to load old tool property keys before being migrated
+    bool requireMigration(QSettings& settings, int version) {
+        settings.beginGroup(mIdentifier);
+
+        if (settings.childKeys().isEmpty()) {
+            return true;
+        }
+        return settings.value(mVersionKey).isNull() || (version > settings.value(mVersionKey).toInt());
+    }
+
 protected:
 
     virtual QString identifier(int) const {
@@ -305,6 +317,9 @@ private:
             }
         }
     }
+
+    int mVersion = 1;
+    QString mVersionKey = "Version";
 };
 
 struct StrokeSettings: public ToolSettings
@@ -415,7 +430,7 @@ struct BucketSettings: public ToolSettings
         START                           = 300,
         FILLTHICKNESS_VALUE             = START,
 
-        TOLERANCE_VALUE                 = 301,
+        COLORTOLERANCE_VALUE            = 301,
         FILLEXPAND_VALUE                = 302,
         FILLLAYERREFERENCEMODE_VALUE    = 304,
         FILLMODE_VALUE                  = 305,
@@ -433,7 +448,7 @@ struct BucketSettings: public ToolSettings
         case FILLTHICKNESS_VALUE:
             propertyID = "FillThickness";
             break;
-        case TOLERANCE_VALUE:
+        case COLORTOLERANCE_VALUE:
             propertyID = "ColorTolerance";
             break;
         case COLORTOLERANCE_ENABLED:
@@ -459,7 +474,7 @@ struct BucketSettings: public ToolSettings
     }
 
     qreal fillThickness() const { return mProps[FILLTHICKNESS_VALUE].getReal(); }
-    int tolerance() const { return mProps[TOLERANCE_VALUE].getInt(); }
+    int tolerance() const { return mProps[COLORTOLERANCE_VALUE].getInt(); }
     int fillExpandAmount() const { return mProps[FILLEXPAND_VALUE].getInt(); }
     int fillReferenceMode() const { return mProps[FILLLAYERREFERENCEMODE_VALUE].getInt(); }
     int fillMode() const { return mProps[FILLMODE_VALUE].getInt(); }

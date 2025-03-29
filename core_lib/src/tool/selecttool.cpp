@@ -40,6 +40,10 @@ void SelectTool::loadSettings()
 
     info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
     mSettings->load(typeName(), settings, info);
+
+    if (mSettings->requireMigration(settings, 1)) {
+        mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, settings.value("ShowSelectionInfo", false).toBool());
+    }
 }
 
 QCursor SelectTool::cursor()

@@ -56,6 +56,11 @@ void SmudgeTool::loadSettings()
 
     mStrokeSettings->load(typeName(), settings, info);
 
+    if (mStrokeSettings->requireMigration(settings, 1)) {
+        mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("smudgeWidth", 24.0).toReal());
+        mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("smudgeFeather", 48.0).toReal());
+    }
+
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
     mQuickSizingProperties.insert(Qt::ControlModifier, StrokeSettings::FEATHER_VALUE);
 }

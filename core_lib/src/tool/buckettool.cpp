@@ -47,7 +47,7 @@ void BucketTool::createSettings(ToolSettings*)
 void BucketTool::loadSettings()
 {
     mPropertyUsed[BucketSettings::FILLTHICKNESS_VALUE] = { Layer::VECTOR };
-    mPropertyUsed[BucketSettings::TOLERANCE_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::COLORTOLERANCE_VALUE] = { Layer::BITMAP };
     mPropertyUsed[BucketSettings::COLORTOLERANCE_ENABLED] = { Layer::BITMAP };
     mPropertyUsed[BucketSettings::FILLEXPAND_VALUE] = { Layer::BITMAP };
     mPropertyUsed[BucketSettings::FILLEXPAND_ENABLED] = { Layer::BITMAP };
@@ -59,7 +59,7 @@ void BucketTool::loadSettings()
     QHash<int, PropertyInfo> info;
 
     info[BucketSettings::FILLTHICKNESS_VALUE] = { 1.0, 100.0, 4.0 };
-    info[BucketSettings::TOLERANCE_VALUE] = { 1, 100, 32 };
+    info[BucketSettings::COLORTOLERANCE_VALUE] = { 1, 100, 32 };
     info[BucketSettings::COLORTOLERANCE_ENABLED] = false;
     info[BucketSettings::FILLEXPAND_VALUE] = { 1, 25, 2 };
     info[BucketSettings::FILLEXPAND_ENABLED] = true;
@@ -67,6 +67,16 @@ void BucketTool::loadSettings()
     info[BucketSettings::FILLMODE_VALUE] = { 0, 2, 0 };
 
     mSettings->load(typeName(), settings, info);
+
+    if (mSettings->requireMigration(settings, 1)) {
+        mSettings->setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, settings.value("fillThickness", 4.0).toReal());
+        mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_VALUE, settings.value("Tolerance", 32).toInt());
+        mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_ENABLED, settings.value("BucketToleranceEnabled", false).toBool());
+        mSettings->setBaseValue(BucketSettings::FILLEXPAND_VALUE, settings.value("BucketFillExpand", 2).toInt());
+        mSettings->setBaseValue(BucketSettings::FILLEXPAND_ENABLED, settings.value("BucketFillExpandEnabled", true).toBool());
+        mSettings->setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, settings.value("BucketFillReferenceMode", 0).toInt());
+        mSettings->setBaseValue(BucketSettings::FILLMODE_VALUE, settings.value("FillMode", 0).toInt());
+    }
 }
 
 QCursor BucketTool::cursor()
@@ -190,7 +200,7 @@ void BucketTool::setStrokeThickness(qreal width)
 
 void BucketTool::setTolerance(int tolerance)
 {
-    mSettings->setBaseValue(BucketSettings::TOLERANCE_VALUE, tolerance);
+    mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_VALUE, tolerance);
     emit toleranceChanged(tolerance);
 }
 

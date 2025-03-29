@@ -65,6 +65,14 @@ void BrushTool::loadSettings()
 
     mStrokeSettings->load(typeName(), settings, info);
 
+    if (mStrokeSettings->requireMigration(settings, 1)) {
+        mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("brushWidth", 24.0).toReal());
+        mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("brushFeather", 48.0).toReal());
+        mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("brushPressure", true).toBool());
+        mStrokeSettings->setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, settings.value("brushInvisibility", false).toBool());
+        mStrokeSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt());
+    }
+
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
     mQuickSizingProperties.insert(Qt::ControlModifier, StrokeSettings::FEATHER_VALUE);
 }

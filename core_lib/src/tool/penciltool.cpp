@@ -59,6 +59,13 @@ void PencilTool::loadSettings()
 
     mStrokeSettings->load(typeName(), settings, info);
 
+    if (mStrokeSettings->requireMigration(settings, 1)) {
+        mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("pencilWidth", 4.0).toReal());
+        mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("pencilPressure", true).toBool());
+        mStrokeSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt());
+        mStrokeSettings->setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, settings.value("FillContour", false).toBool());
+    }
+
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
 }
 

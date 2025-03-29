@@ -55,6 +55,10 @@ void MoveTool::loadSettings()
     info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
     mSettings->load(typeName(), settings, info);
 
+    if (mSettings->requireMigration(settings, 1)) {
+        mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, settings.value("ShowSelectionInfo", false).toBool());
+    }
+
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
 }
 

@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 #include "editor.h"
 #include "toolmanager.h"
-#include "transformtool.h""
+#include "transformtool.h"
 
 TransformOptionsWidget::TransformOptionsWidget(Editor* editor, QWidget *parent) :
     QWidget(parent),

@@ -81,7 +81,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = 0;
     info[BucketSettings::FILLEXPAND_ENABLED] = false;
     info[BucketSettings::FILLMODE_VALUE] = 0;
-    info[BucketSettings::TOLERANCE_VALUE] = 25;
+    info[BucketSettings::COLORTOLERANCE_VALUE] = 25;
     info[BucketSettings::COLORTOLERANCE_ENABLED] = true;
     properties.load("BucketTest", settings, info);
 

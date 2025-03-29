@@ -304,15 +304,6 @@ const static int MaxFramesBound = 9999;
 #define SETTING_NEW_UNDO_REDO_ON        "NewUndoRedoOn"
 #define SETTING_UNDO_REDO_MAX_STEPS     "UndoRedoMaxSteps"
 
-#define SETTING_BUCKET_FILLTHICKNESS "fillThickness"
-#define SETTING_BUCKET_TOLERANCE "Tolerance"
-#define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
-#define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"
-#define SETTING_BUCKET_FILL_EXPAND_ON "BucketFillExpandEnabled"
-#define SETTING_BUCKET_FILL_REFERENCE_MODE "BucketFillReferenceMode"
-
-#define SETTING_FILL_MODE "FillMode"
-
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"
 

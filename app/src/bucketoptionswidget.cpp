@@ -41,7 +41,7 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     mBucketTool = static_cast<BucketTool*>(mEditor->tools()->getTool(BUCKET));
     mSettings = static_cast<const BucketSettings*>(mBucketTool->settings());
 
-    auto toleranceInfo = mSettings->getInfo(BucketSettings::TOLERANCE_VALUE);
+    auto toleranceInfo = mSettings->getInfo(BucketSettings::COLORTOLERANCE_VALUE);
     auto expandInfo = mSettings->getInfo(BucketSettings::FILLEXPAND_VALUE);
     auto thicknessInfo = mSettings->getInfo(BucketSettings::FILLTHICKNESS_VALUE);
 
@@ -178,7 +178,7 @@ void BucketOptionsWidget::updateUI()
         mBucketTool->setFillMode(mSettings->fillMode());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_VALUE)) {
+    if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE)) {
         mBucketTool->setTolerance(mSettings->tolerance());
     }
 
@@ -192,8 +192,8 @@ void BucketOptionsWidget::updatePropertyVisibility()
     ui->strokeThicknessSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE));
     ui->strokeThicknessSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE));
     ui->colorToleranceCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_ENABLED));
-    ui->colorToleranceSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_VALUE));
-    ui->colorToleranceSpinbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::TOLERANCE_VALUE));
+    ui->colorToleranceSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE));
+    ui->colorToleranceSpinbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE));
     ui->expandCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ENABLED));
     ui->expandSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE));
     ui->expandSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE));
