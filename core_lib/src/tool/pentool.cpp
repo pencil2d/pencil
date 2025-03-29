@@ -54,6 +54,8 @@ void PenTool::loadSettings()
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
 
+    mStrokeSettings->load(typeName(), settings, info);
+
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
 }
 
