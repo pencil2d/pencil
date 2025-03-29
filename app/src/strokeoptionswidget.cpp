@@ -56,16 +56,22 @@ void StrokeOptionsWidget::updateUI()
 
     if (currentTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
     {
-        auto info = p->getInfo(StrokeSettings::WIDTH_VALUE);
+        PropertyInfo info = p->getInfo(StrokeSettings::WIDTH_VALUE);
+        QSignalBlocker b(ui->sizeSlider);
         ui->sizeSlider->setRange(info.getMinReal(), info.getMaxReal());
+        QSignalBlocker b2(ui->sizeSpinBox);
         ui->sizeSpinBox->setRange(info.getMinReal(), info.getMaxReal());
+
         setPenWidth(p->width());
     }
     if (currentTool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE))
     {
         auto info = p->getInfo(StrokeSettings::FEATHER_VALUE);
+        QSignalBlocker b3(ui->featherSlider);
         ui->featherSlider->setRange(info.getMinReal(), info.getMaxReal());
+        QSignalBlocker b4(ui->featherSpinBox);
         ui->featherSpinBox->setRange(info.getMinReal(), info.getMaxReal());
+
         setPenFeather(p->feather());
     }
 

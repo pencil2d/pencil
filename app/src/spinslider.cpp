@@ -66,6 +66,9 @@ void SpinSlider::setRange(qreal min, qreal max)
 {
     mMin = min;
     mMax = max;
+
+    mValue = qBound(mMin, mValue, mMax);
+
     setValue(mValue);
 }
 
