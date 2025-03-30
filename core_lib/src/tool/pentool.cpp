@@ -61,6 +61,11 @@ void PenTool::loadSettings()
         mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("penPressure", true).toBool());
         mStrokeSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, settings.value("penAA", true).toBool());
         mStrokeSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, settings.value("penLineStablization", StabilizationLevel::STRONG).toInt());
+
+        settings.remove("penWidth");
+        settings.remove("penPressure");
+        settings.remove("penAA");
+        settings.remove("penLineStablization");
     }
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);

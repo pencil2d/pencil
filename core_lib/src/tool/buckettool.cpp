@@ -76,6 +76,14 @@ void BucketTool::loadSettings()
         mSettings->setBaseValue(BucketSettings::FILLEXPAND_ENABLED, settings.value("BucketFillExpandEnabled", true).toBool());
         mSettings->setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, settings.value("BucketFillReferenceMode", 0).toInt());
         mSettings->setBaseValue(BucketSettings::FILLMODE_VALUE, settings.value("FillMode", 0).toInt());
+
+        settings.remove("fillThickness");
+        settings.remove("Tolerance");
+        settings.remove("BucketToleranceEnabled");
+        settings.remove("BucketFillExpand");
+        settings.remove("BucketFillExpandEnabled");
+        settings.remove("BucketFillReferenceMode");
+        settings.remove("FillMode");
     }
 }
 

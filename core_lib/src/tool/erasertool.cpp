@@ -69,6 +69,13 @@ void EraserTool::loadSettings()
         mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_ENABLED, settings.value("eraserUseFeather", true).toBool());
         mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("eraserPressure", true).toBool());
         mStrokeSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, settings.value("eraserAA", true).toBool());
+
+        settings.remove("eraserWidth");
+        settings.remove("eraserFeather");
+        settings.remove("stabilizerLevel");
+        settings.remove("eraserUseFeather");
+        settings.remove("eraserPressure");
+        settings.remove("eraserAA");
     }
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);

@@ -70,6 +70,10 @@ void PolylineTool::loadSettings()
         mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("polylineWidth", 8.0).toReal());
         mSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, settings.value("brushAA", true).toBool());
         mSettings->setBaseValue(PolylineSettings::CLOSEDPATH_ENABLED, settings.value("closedPolylinePath", false).toBool());
+
+        settings.remove("polylineWidth");
+        settings.remove("brushAA");
+        settings.remove("closedPolylinePath");
     }
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);

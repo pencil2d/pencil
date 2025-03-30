@@ -71,6 +71,12 @@ void BrushTool::loadSettings()
         mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("brushPressure", true).toBool());
         mStrokeSettings->setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, settings.value("brushInvisibility", false).toBool());
         mStrokeSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, settings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt());
+
+        settings.remove("brushWidth");
+        settings.remove("brushFeather");
+        settings.remove("brushPressure");
+        settings.remove("brushInvisibility");
+        settings.remove("brushLineStabilization");
     }
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
