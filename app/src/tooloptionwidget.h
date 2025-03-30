@@ -45,6 +45,7 @@ public:
     void makeConnectionToEditor(Editor* editor);
 
 public slots:
+    void onToolsReset();
     void onToolChanged(ToolType);
     void onLayerChanged(int index);
 

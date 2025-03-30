@@ -55,6 +55,7 @@ public:
 
 signals:
     void toolChanged(ToolType);
+    void toolsReset();
 
 public slots:
     void resetAllTools();

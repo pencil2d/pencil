@@ -168,6 +168,7 @@ void ToolManager::resetAllTools()
     {
         tool->resetSettings();
     }
+    emit toolsReset();
     qDebug("tools restored to default settings");
 }
 

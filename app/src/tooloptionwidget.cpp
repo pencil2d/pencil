@@ -75,6 +75,7 @@ void ToolOptionWidget::updateUI()
 void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 {
     connect(editor->tools(), &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
+    connect(editor->tools(), &ToolManager::toolsReset, this, &ToolOptionWidget::onToolsReset);
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &ToolOptionWidget::onLayerChanged);
 }
 
@@ -108,4 +109,9 @@ void ToolOptionWidget::onToolChanged(ToolType toolType)
 {
     BaseTool* tool = editor()->tools()->getTool(toolType);
     setWidgetVisibility(tool);
+}
+
+void ToolOptionWidget::onToolsReset()
+{
+    setWidgetVisibility(editor()->tools()->currentTool());
 }
