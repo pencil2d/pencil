@@ -34,14 +34,11 @@ CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
 
     makeConnectionsFromUIToModel();
     makeConnectionsFromModelToUI();
-
-    // connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraOptionsWidget::updateUI);
-    // connect(mEditor->tools(), &ToolManager::toolChanged, this, &CameraOptionsWidget::updateUI);
 }
 
 void CameraOptionsWidget::makeConnectionsFromModelToUI()
 {
-    connect(mCameraTool, &CameraTool::cameraPathONChanged, this, [=](bool enabled) {
+    connect(mCameraTool, &CameraTool::cameraPathEnabledChanged, this, [=](bool enabled) {
        setShowCameraPath(enabled);
     });
 
@@ -53,7 +50,7 @@ void CameraOptionsWidget::makeConnectionsFromModelToUI()
 void CameraOptionsWidget::makeConnectionsFromUIToModel()
 {
     connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, [=](bool enabled) {
-        mCameraTool->setCameraPathON(enabled);
+        mCameraTool->setCameraPathEnabled(enabled);
     });
 
     connect(ui->pathColorComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int value) {

@@ -247,14 +247,14 @@ void CameraTool::performAction(ActionType actionType)
     }
 }
 
-void CameraTool::setCameraPathON(bool isON)
+void CameraTool::setCameraPathEnabled(bool enabled)
 {
     LayerCamera* layer = static_cast<LayerCamera*>(editor()->layers()->currentLayer());
 
     Q_ASSERT(layer->type() == Layer::CAMERA);
-    layer->setShowCameraPath(isON);
-    mSettings->setBaseValue(CameraSettings::SHOWPATH_ENABLED, isON);
-    emit cameraPathONChanged(isON);
+    layer->setShowCameraPath(enabled);
+    mSettings->setBaseValue(CameraSettings::SHOWPATH_ENABLED, enabled);
+    emit cameraPathEnabledChanged(enabled);
 
     emit mEditor->frameModified(mEditor->currentFrame());
 }

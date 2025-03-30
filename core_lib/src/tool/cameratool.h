@@ -70,7 +70,7 @@ public:
     void pointerReleaseEvent(PointerEvent* event) override;
     void pointerMoveEvent(PointerEvent* event) override;
 
-    void setCameraPathON(bool isON);
+    void setCameraPathEnabled(bool enabled);
     void resetCameraPath();
     void setPathDotColorType(DotColorType pathDotColor);
     void resetTransform(CameraFieldOption option);
@@ -83,7 +83,7 @@ public:
 
 signals:
     void pathColorChanged(DotColorType colorType);
-    void cameraPathONChanged(bool isON);
+    void cameraPathEnabledChanged(bool enabled);
 
 private:
 
