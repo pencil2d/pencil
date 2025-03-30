@@ -35,10 +35,10 @@ void StrokeOptionsWidget::initUI()
     const StrokeSettings* p = static_cast<const StrokeSettings*>(strokeTool->settings());
 
     auto widthInfo = p->getInfo(StrokeSettings::WIDTH_VALUE);
-    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.getMinReal(), widthInfo.getMaxReal());
+    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.minReal(), widthInfo.maxReal());
 
     auto featherInfo = p->getInfo(StrokeSettings::FEATHER_VALUE);
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, featherInfo.getMinReal(), featherInfo.getMaxReal());
+    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, featherInfo.minReal(), featherInfo.maxReal());
 
     mCurrentTool = strokeTool;
 
@@ -62,21 +62,21 @@ void StrokeOptionsWidget::updateUI()
     {
         PropertyInfo info = p->getInfo(StrokeSettings::WIDTH_VALUE);
         QSignalBlocker b(ui->sizeSlider);
-        ui->sizeSlider->setRange(info.getMinReal(), info.getMaxReal());
+        ui->sizeSlider->setRange(info.minReal(), info.maxReal());
         QSignalBlocker b2(ui->sizeSpinBox);
-        ui->sizeSpinBox->setRange(info.getMinReal(), info.getMaxReal());
+        ui->sizeSpinBox->setRange(info.minReal(), info.maxReal());
 
-        setWidthValue(info.getReal());
+        setWidthValue(info.realValue());
     }
     if (strokeTool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE))
     {
         auto info = p->getInfo(StrokeSettings::FEATHER_VALUE);
         QSignalBlocker b3(ui->featherSlider);
-        ui->featherSlider->setRange(info.getMinReal(), info.getMaxReal());
+        ui->featherSlider->setRange(info.minReal(), info.maxReal());
         QSignalBlocker b4(ui->featherSpinBox);
-        ui->featherSpinBox->setRange(info.getMinReal(), info.getMaxReal());
+        ui->featherSpinBox->setRange(info.minReal(), info.maxReal());
 
-        setFeatherValue(info.getReal());
+        setFeatherValue(info.realValue());
     }
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED)) {

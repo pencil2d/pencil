@@ -76,7 +76,7 @@ struct PropertyInfo
         mBaseValue.boolValue = newValue;
     }
 
-    int getInt() const {
+    int intValue() const {
         if (mValueType != INTEGER) {
             Q_ASSERT(false);
             return -1;
@@ -85,7 +85,7 @@ struct PropertyInfo
         return qBound(mMinValue.intValue, mBaseValue.intValue, mMaxValue.intValue);
     }
 
-    qreal getReal() const {
+    qreal realValue() const {
         if (mValueType != REAL) {
             Q_ASSERT(false);
             return -1.0;
@@ -94,7 +94,7 @@ struct PropertyInfo
         return qBound(mMinValue.realValue, mBaseValue.realValue, mMaxValue.realValue);
     }
 
-    bool getBool() const {
+    bool boolValue() const {
         if (mValueType != BOOL) {
             Q_ASSERT(false);
             return false;
@@ -102,14 +102,14 @@ struct PropertyInfo
         return mBaseValue.boolValue;
     }
 
-    qreal getMinReal() const {
+    qreal minReal() const {
         if (mValueType != REAL) {
             return -1.0;
         }
         return mMinValue.realValue;
     }
 
-    qreal getMaxReal() const {
+    qreal maxReal() const {
         if (mValueType != REAL) {
             return -1.0;
         }
@@ -117,14 +117,14 @@ struct PropertyInfo
         return mMaxValue.realValue;
     }
 
-    int getMinInt() const {
+    int minInt() const {
         if (mValueType != INTEGER) {
             return -1;
         }
         return mMinValue.intValue;
     }
 
-    int getMaxInt() const {
+    int maxInt() const {
         if (mValueType != INTEGER) {
             return -1;
         }
@@ -173,10 +173,6 @@ struct PropertyInfo
     }
 
     ValueType type() const { return mValueType; }
-    bool isType(ValueType type) const { return mValueType == type; }
-    bool hasValue() {
-        return mValueType != INVALID;
-    }
 
 private:
 
@@ -224,13 +220,13 @@ struct ToolSettings
             switch (it.value().type())
             {
             case PropertyInfo::INTEGER:
-                settings.setValue(propertyId, it.value().getInt());
+                settings.setValue(propertyId, it.value().intValue());
                 break;
             case PropertyInfo::REAL:
-                settings.setValue(propertyId, it.value().getReal());
+                settings.setValue(propertyId, it.value().realValue());
                 break;
             case PropertyInfo::BOOL:
-                settings.setValue(propertyId, it.value().getBool());
+                settings.setValue(propertyId, it.value().boolValue());
                 break;
             case PropertyInfo::INVALID:
                 Q_ASSERT_X(false, __func__, "Wrong state, expected a value type but got INVALID. You've probably misconfigured the property. "
@@ -247,13 +243,13 @@ struct ToolSettings
         switch (value.type())
         {
         case PropertyInfo::INTEGER:
-            mProps[rawType].setBaseValue(value.getInt());
+            mProps[rawType].setBaseValue(value.intValue());
             break;
         case PropertyInfo::REAL:
-            mProps[rawType].setBaseValue(value.getReal());
+            mProps[rawType].setBaseValue(value.realValue());
             break;
         case PropertyInfo::BOOL:
-            mProps[rawType].setBaseValue(value.getBool());
+            mProps[rawType].setBaseValue(value.boolValue());
             break;
         case PropertyInfo::INVALID:
             Q_ASSERT_X(false, __func__, "Expected value but got INVALID. Make sure the property has been setup properly before trying to set its base value.");
@@ -376,14 +372,14 @@ struct StrokeSettings: public ToolSettings
         return propertyID;
     }
 
-    qreal width() const { return mProps[WIDTH_VALUE].getReal(); }
-    qreal feather() const { return mProps[FEATHER_VALUE].getReal(); }
-    int stabilizerLevel() const { return mProps[STABILIZATION_VALUE].getInt(); }
-    bool pressureEnabled() const { return mProps[PRESSURE_ENABLED].getBool(); }
-    bool invisibilityEnabled() const { return mProps[INVISIBILITY_ENABLED].getBool(); }
-    bool featherEnabled() const { return mProps[FEATHER_ENABLED].getBool(); }
-    bool AntiAliasingEnabled() const { return mProps[ANTI_ALIASING_ENABLED].getBool(); }
-    bool fillContourEnabled() const { return mProps[FILLCONTOUR_ENABLED].getBool(); }
+    qreal width() const { return mProps[WIDTH_VALUE].realValue(); }
+    qreal feather() const { return mProps[FEATHER_VALUE].realValue(); }
+    int stabilizerLevel() const { return mProps[STABILIZATION_VALUE].intValue(); }
+    bool pressureEnabled() const { return mProps[PRESSURE_ENABLED].boolValue(); }
+    bool invisibilityEnabled() const { return mProps[INVISIBILITY_ENABLED].boolValue(); }
+    bool featherEnabled() const { return mProps[FEATHER_ENABLED].boolValue(); }
+    bool AntiAliasingEnabled() const { return mProps[ANTI_ALIASING_ENABLED].boolValue(); }
+    bool fillContourEnabled() const { return mProps[FILLCONTOUR_ENABLED].boolValue(); }
 };
 
 /// This struct is an example of how we can
@@ -418,10 +414,10 @@ struct PolylineSettings: public StrokeSettings
         return propertyID;
     }
 
-    qreal width() const { return mProps[StrokeSettings::WIDTH_VALUE].getReal(); }
-    bool closedPathEnabled() const { return mProps[CLOSEDPATH_ENABLED].getBool(); }
-    bool bezierPathEnabled() const { return mProps[BEZIERPATH_ENABLED].getBool(); }
-    bool AntiAliasingEnabled() const { return mProps[StrokeSettings::ANTI_ALIASING_ENABLED].getBool(); }
+    qreal width() const { return mProps[StrokeSettings::WIDTH_VALUE].realValue(); }
+    bool closedPathEnabled() const { return mProps[CLOSEDPATH_ENABLED].boolValue(); }
+    bool bezierPathEnabled() const { return mProps[BEZIERPATH_ENABLED].boolValue(); }
+    bool AntiAliasingEnabled() const { return mProps[StrokeSettings::ANTI_ALIASING_ENABLED].boolValue(); }
 };
 
 struct BucketSettings: public ToolSettings
@@ -473,13 +469,13 @@ struct BucketSettings: public ToolSettings
         return  propertyID;
     }
 
-    qreal fillThickness() const { return mProps[FILLTHICKNESS_VALUE].getReal(); }
-    int tolerance() const { return mProps[COLORTOLERANCE_VALUE].getInt(); }
-    int fillExpandAmount() const { return mProps[FILLEXPAND_VALUE].getInt(); }
-    int fillReferenceMode() const { return mProps[FILLLAYERREFERENCEMODE_VALUE].getInt(); }
-    int fillMode() const { return mProps[FILLMODE_VALUE].getInt(); }
-    bool colorToleranceEnabled() const { return mProps[COLORTOLERANCE_ENABLED].getBool(); }
-    bool fillExpandEnabled() const { return mProps[FILLEXPAND_ENABLED].getBool(); }
+    qreal fillThickness() const { return mProps[FILLTHICKNESS_VALUE].realValue(); }
+    int tolerance() const { return mProps[COLORTOLERANCE_VALUE].intValue(); }
+    int fillExpandAmount() const { return mProps[FILLEXPAND_VALUE].intValue(); }
+    int fillReferenceMode() const { return mProps[FILLLAYERREFERENCEMODE_VALUE].intValue(); }
+    int fillMode() const { return mProps[FILLMODE_VALUE].intValue(); }
+    bool colorToleranceEnabled() const { return mProps[COLORTOLERANCE_ENABLED].boolValue(); }
+    bool fillExpandEnabled() const { return mProps[FILLEXPAND_ENABLED].boolValue(); }
 };
 
 struct CameraSettings: public ToolSettings
@@ -511,8 +507,8 @@ struct CameraSettings: public ToolSettings
         return propertyID;
     }
 
-    bool showPathEnabled() const { return mProps[SHOWPATH_ENABLED].getBool(); }
-    DotColorType dotColorType() const { return static_cast<DotColorType>(mProps[PATH_DOTCOLOR_TYPE].getInt()); }
+    bool showPathEnabled() const { return mProps[SHOWPATH_ENABLED].boolValue(); }
+    DotColorType dotColorType() const { return static_cast<DotColorType>(mProps[PATH_DOTCOLOR_TYPE].intValue()); }
 };
 
 // Used by both select and move tool
@@ -541,7 +537,7 @@ struct TransformSettings: public ToolSettings
         return propertyID;
     }
 
-    bool showSelectionInfoEnabled() const { return mProps[SHOWSELECTIONINFO_ENABLED].getBool(); }
+    bool showSelectionInfoEnabled() const { return mProps[SHOWSELECTIONINFO_ENABLED].boolValue(); }
 };
 
 #endif // TOOLSETTINGS_H
