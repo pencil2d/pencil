@@ -52,8 +52,6 @@ public:
 
     bool isActive() const override;
 
-    ToolSettings* settings() override { return mSettings; }
-
 signals:
     void bezierPathEnabledChanged(bool useBezier);
     void closePathChanged(bool closePath);

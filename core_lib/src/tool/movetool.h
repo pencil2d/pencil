@@ -47,8 +47,6 @@ public:
     bool leavingThisTool() override;
     bool isActive() const override;
 
-    ToolSettings* settings() override { return mSettings; }
-
 private:
     void applyTransformation();
     void updateSettings(const SETTING setting);

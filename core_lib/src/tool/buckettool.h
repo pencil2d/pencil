@@ -59,8 +59,6 @@ public:
     QPointF getCurrentPoint() const;
     QPointF getCurrentPixel() const;
 
-    ToolSettings* settings() override { return mSettings; }
-
 signals:
     void fillModeChanged(int mode);
     void fillReferenceModeChanged(int referenceMode);

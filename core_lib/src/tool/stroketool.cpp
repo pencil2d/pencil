@@ -69,11 +69,10 @@ void StrokeTool::createSettings(ToolSettings* settings)
 {
     if (settings == nullptr) {
         mStrokeSettings = new StrokeSettings();
-        BaseTool::createSettings(mStrokeSettings);
     } else {
         mStrokeSettings = static_cast<StrokeSettings*>(settings);
-        BaseTool::createSettings(settings);
     }
+    BaseTool::createSettings(mStrokeSettings);
 }
 
 void StrokeTool::loadSettings()
