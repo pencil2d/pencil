@@ -206,16 +206,16 @@ void BucketTool::setStrokeThickness(qreal width)
     emit strokeThicknessChanged(width);
 }
 
-void BucketTool::setTolerance(int tolerance)
+void BucketTool::setColorTolerance(int tolerance)
 {
     mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_VALUE, tolerance);
     emit toleranceChanged(tolerance);
 }
 
-void BucketTool::setToleranceON(bool isON)
+void BucketTool::setColorToleranceEnabled(bool enabled)
 {
-    mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_ENABLED, isON);
-    emit toleranceONChanged(isON);
+    mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_ENABLED, enabled);
+    emit toleranceEnabledChanged(enabled);
 }
 
 void BucketTool::setFillExpand(int fillExpandValue)
@@ -224,10 +224,10 @@ void BucketTool::setFillExpand(int fillExpandValue)
     emit fillExpandChanged(fillExpandValue);
 }
 
-void BucketTool::setFillExpandON(bool isON)
+void BucketTool::setFillExpandEnabled(bool enabled)
 {
-    mSettings->setBaseValue(BucketSettings::FILLEXPAND_ENABLED, isON);
-    emit fillExpandONChanged(isON);
+    mSettings->setBaseValue(BucketSettings::FILLEXPAND_ENABLED, enabled);
+    emit fillExpandEnabledChanged(enabled);
 }
 
 void BucketTool::setFillReferenceMode(int referenceMode)

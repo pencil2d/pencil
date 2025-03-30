@@ -478,7 +478,7 @@ struct BucketSettings: public ToolSettings
     int fillExpandAmount() const { return mProps[FILLEXPAND_VALUE].getInt(); }
     int fillReferenceMode() const { return mProps[FILLLAYERREFERENCEMODE_VALUE].getInt(); }
     int fillMode() const { return mProps[FILLMODE_VALUE].getInt(); }
-    bool toleranceEnabled() const { return mProps[COLORTOLERANCE_ENABLED].getBool(); }
+    bool colorToleranceEnabled() const { return mProps[COLORTOLERANCE_ENABLED].getBool(); }
     bool fillExpandEnabled() const { return mProps[FILLEXPAND_ENABLED].getBool(); }
 };
 

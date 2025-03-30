@@ -135,7 +135,7 @@ void StrokeOptionsWidget::makeConnectionFromModelToUI(StrokeTool* strokeTool)
 
     if (strokeTool->type() == POLYLINE) {
         PolylineTool* polyline = static_cast<PolylineTool*>(strokeTool);
-        connect(polyline, &PolylineTool::useBezierChanged, this, &StrokeOptionsWidget::setBezierPathEnabled);
+        connect(polyline, &PolylineTool::bezierPathEnabledChanged, this, &StrokeOptionsWidget::setBezierPathEnabled);
         connect(polyline, &PolylineTool::closePathChanged, this, &StrokeOptionsWidget::setClosedPathEnabled);
     }
 }

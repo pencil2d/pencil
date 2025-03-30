@@ -349,7 +349,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
 void PolylineTool::setUseBezier(bool useBezier)
 {
     mSettings->setBaseValue(PolylineSettings::BEZIERPATH_ENABLED, useBezier);
-    emit useBezierChanged(useBezier);
+    emit bezierPathEnabledChanged(useBezier);
 }
 
 void PolylineTool::setClosePath(bool closePath)

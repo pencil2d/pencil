@@ -65,20 +65,20 @@ public:
     virtual void setStablizationLevel(int level);
     virtual void setWidth(qreal width);
     virtual void setFeather(qreal feather);
-    virtual void setPressureEnabled(bool isON);
-    virtual void setFeatherEnabled(bool isON);
-    virtual void setAntiAliasingEnabled(bool isON);
-    virtual void setFillContourEnabled(bool isON);
-    virtual void setStrokeInvisibleEnabled(bool isON);
+    virtual void setPressureEnabled(bool enabled);
+    virtual void setFeatherEnabled(bool enabled);
+    virtual void setAntiAliasingEnabled(bool enabled);
+    virtual void setFillContourEnabled(bool enabled);
+    virtual void setStrokeInvisibleEnabled(bool enabled);
 
 signals:
     void widthChanged(qreal value);
     void featherChanged(qreal value);
-    void pressureEnabledChanged(bool isON);
-    void featherEnabledChanged(bool isON);
-    void antiAliasingEnabledChanged(bool isON);
-    void fillContourEnabledChanged(bool isON);
-    void InvisibleStrokeEnabledChanged(bool isON);
+    void pressureEnabledChanged(bool enabled);
+    void featherEnabledChanged(bool enabled);
+    void antiAliasingEnabledChanged(bool enabled);
+    void fillContourEnabledChanged(bool enabled);
+    void InvisibleStrokeEnabledChanged(bool enabled);
     void stabilizationLevelChanged(int level);
 
 public slots:

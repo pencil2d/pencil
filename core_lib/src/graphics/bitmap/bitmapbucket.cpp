@@ -47,7 +47,7 @@ BitmapBucket::BitmapBucket(Editor* editor,
     mTargetFillToLayer = initialLayer;
     mTargetFillToLayerIndex = initialLayerIndex;
 
-    mTolerance = mProperties.toleranceEnabled() ? mProperties.tolerance() : 0;
+    mTolerance = mProperties.colorToleranceEnabled() ? mProperties.tolerance() : 0;
     const QPoint& point = QPoint(qFloor(fillPoint.x()), qFloor(fillPoint.y()));
 
     Q_ASSERT(mTargetFillToLayer);

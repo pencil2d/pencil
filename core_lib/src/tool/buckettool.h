@@ -49,12 +49,12 @@ public:
     void applyChanges();
 
     void setStrokeThickness(qreal width);
-    void setTolerance(int tolerance);
+    void setColorTolerance(int tolerance);
+    void setColorToleranceEnabled(bool enabled);
     void setFillExpand(int fillExpandValue);
+    void setFillExpandEnabled(bool enabled);
     void setFillReferenceMode(int referenceMode);
     void setFillMode(int mode);
-    void setToleranceON(bool isON);
-    void setFillExpandON(bool isON);
 
     QPointF getCurrentPoint() const;
     QPointF getCurrentPixel() const;
@@ -64,9 +64,9 @@ public:
 signals:
     void fillModeChanged(int mode);
     void fillReferenceModeChanged(int referenceMode);
-    void fillExpandONChanged(bool isON);
+    void fillExpandEnabledChanged(bool isON);
     void fillExpandChanged(int fillExpandValue);
-    void toleranceONChanged(bool isON);
+    void toleranceEnabledChanged(bool isON);
     void toleranceChanged(int width);
     void strokeThicknessChanged(qreal width);
 

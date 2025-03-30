@@ -55,7 +55,7 @@ public:
     ToolSettings* settings() override { return mSettings; }
 
 signals:
-    void useBezierChanged(bool useBezier);
+    void bezierPathEnabledChanged(bool useBezier);
     void closePathChanged(bool closePath);
 
 

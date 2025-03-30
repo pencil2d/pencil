@@ -415,10 +415,10 @@ void StrokeTool::setStablizationLevel(int level)
     emit stabilizationLevelChanged(level);
 }
 
-void StrokeTool::setFeatherEnabled(bool isON)
+void StrokeTool::setFeatherEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_ENABLED, isON);
-    emit featherEnabledChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_ENABLED, enabled);
+    emit featherEnabledChanged(enabled);
 }
 
 void StrokeTool::setFeather(qreal feather)
@@ -433,26 +433,26 @@ void StrokeTool::setWidth(qreal width)
     emit widthChanged(width);
 }
 
-void StrokeTool::setPressureEnabled(bool isON)
+void StrokeTool::setPressureEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, isON);
-    emit pressureEnabledChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, enabled);
+    emit pressureEnabledChanged(enabled);
 }
 
-void StrokeTool::setFillContourEnabled(bool isON)
+void StrokeTool::setFillContourEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, isON);
-    emit fillContourEnabledChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, enabled);
+    emit fillContourEnabledChanged(enabled);
 }
 
-void StrokeTool::setAntiAliasingEnabled(bool isON)
+void StrokeTool::setAntiAliasingEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, isON);
-    emit antiAliasingEnabledChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, enabled);
+    emit antiAliasingEnabledChanged(enabled);
 }
 
-void StrokeTool::setStrokeInvisibleEnabled(bool isON)
+void StrokeTool::setStrokeInvisibleEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, isON);
-    emit InvisibleStrokeEnabledChanged(isON);
+    mStrokeSettings->setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, enabled);
+    emit InvisibleStrokeEnabledChanged(enabled);
 }

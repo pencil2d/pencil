@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QDebug>
 
 #include "spinslider.h"
-#include "pencilsettings.h"
 
 #include "layer.h"
 #include "editor.h"
@@ -83,7 +82,7 @@ void BucketOptionsWidget::makeConnectionsFromModelToUI()
        setColorTolerance(value);
     });
 
-    connect(mBucketTool, &BucketTool::toleranceONChanged, this, [=](bool enabled) {
+    connect(mBucketTool, &BucketTool::toleranceEnabledChanged, this, [=](bool enabled) {
        setColorToleranceEnabled(enabled);
     });
 
@@ -91,7 +90,7 @@ void BucketOptionsWidget::makeConnectionsFromModelToUI()
        setFillExpand(value);
     });
 
-    connect(mBucketTool, &BucketTool::fillExpandONChanged, this, [=](bool enabled) {
+    connect(mBucketTool, &BucketTool::fillExpandEnabledChanged, this, [=](bool enabled) {
        setFillExpandEnabled(enabled);
     });
 
@@ -111,14 +110,14 @@ void BucketOptionsWidget::makeConnectionsFromModelToUI()
 void BucketOptionsWidget::makeConnectionsFromUIToModel()
 {
     connect(ui->colorToleranceSlider, &SpinSlider::valueChanged, [=](int value) {
-        mBucketTool->setTolerance(value);
+        mBucketTool->setColorTolerance(value);
     });
     connect(ui->colorToleranceSpinbox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [=](int value) {
-        mBucketTool->setTolerance(value);
+        mBucketTool->setColorTolerance(value);
     });
 
     connect(ui->colorToleranceCheckbox, &QCheckBox::toggled, [=](bool enabled) {
-        mBucketTool->setToleranceON(enabled);
+        mBucketTool->setColorToleranceEnabled(enabled);
     });
 
     connect(ui->expandSlider, &SpinSlider::valueChanged, [=](int value) {
@@ -130,7 +129,7 @@ void BucketOptionsWidget::makeConnectionsFromUIToModel()
     });
 
     connect(ui->expandCheckbox, &QCheckBox::toggled, [=](bool enabled) {
-        mBucketTool->setFillExpandON(enabled);
+        mBucketTool->setFillExpandEnabled(enabled);
     });
 
     connect(ui->referenceLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int value) {
@@ -159,7 +158,7 @@ void BucketOptionsWidget::updateUI()
     }
 
     if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ENABLED)) {
-        mBucketTool->setFillExpandON(mSettings->fillExpandEnabled());
+        mBucketTool->setFillExpandEnabled(mSettings->fillExpandEnabled());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE)) {
@@ -175,11 +174,11 @@ void BucketOptionsWidget::updateUI()
     }
 
     if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE)) {
-        mBucketTool->setTolerance(mSettings->tolerance());
+        mBucketTool->setColorTolerance(mSettings->tolerance());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_ENABLED)) {
-        mBucketTool->setToleranceON(mSettings->toleranceEnabled());
+        mBucketTool->setColorToleranceEnabled(mSettings->colorToleranceEnabled());
     }
 }
 
