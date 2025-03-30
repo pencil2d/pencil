@@ -1134,7 +1134,6 @@ void TimeLineCells::mouseDoubleClickEvent(QMouseEvent* event)
             if (!layer->keyExistsWhichCovers(frameNumber))
             {
                 mEditor->scrubTo(frameNumber);
-                emit insertNewKeyFrame();
             }
 
             // The release event will toggle the frame on again, so we make sure it gets
