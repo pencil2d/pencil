@@ -17,7 +17,7 @@ GNU General Public License for more details.
 #ifndef TRANSFORMOPTIONSWIDGET_H
 #define TRANSFORMOPTIONSWIDGET_H
 
-#include <QWidget>
+#include "basewidget.h"
 
 #include "toolsettings.h"
 
@@ -29,7 +29,7 @@ namespace Ui {
 class TransformOptionsWidget;
 }
 
-class TransformOptionsWidget : public QWidget
+class TransformOptionsWidget : public BaseWidget
 {
     Q_OBJECT
 
@@ -37,8 +37,9 @@ public:
     explicit TransformOptionsWidget(Editor* editor, QWidget *parent = nullptr);
     ~TransformOptionsWidget();
 
-    void initUI();
-    void updateUI();
+    void initUI() override;
+    void updateUI() override;
+
     void makeConnectionsFromUIToModel();
     void makeConnectionFromModelToUI(TransformTool* transformTool);
 

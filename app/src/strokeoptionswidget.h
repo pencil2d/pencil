@@ -1,8 +1,7 @@
 #ifndef STROKEOPTIONSWIDGET_H
 #define STROKEOPTIONSWIDGET_H
 
-#include <QWidget>
-
+#include "basewidget.h"
 #include "pencildef.h"
 
 class Editor;
@@ -18,7 +17,7 @@ namespace Ui {
 class StrokeOptionsWidget;
 }
 
-class StrokeOptionsWidget : public QWidget
+class StrokeOptionsWidget : public BaseWidget
 {
     Q_OBJECT
 
@@ -26,8 +25,8 @@ public:
     explicit StrokeOptionsWidget(Editor* editor, QWidget *parent = nullptr);
     ~StrokeOptionsWidget();
 
-    void updateUI();
-    void initUI();
+    void updateUI() override;
+    void initUI() override;
 
 private:
     void makeConnectionFromModelToUI(StrokeTool* strokeTool);

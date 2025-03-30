@@ -24,7 +24,7 @@ GNU General Public License for more details.
 #include "cameratool.h"
 
 CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
-    QWidget(parent),
+    BaseWidget(parent),
     ui(new Ui::CameraOptionsWidget), mEditor(editor)
 {
     ui->setupUi(this);
@@ -85,7 +85,6 @@ CameraOptionsWidget::~CameraOptionsWidget()
 
 void CameraOptionsWidget::updateUI()
 {
-
     Q_ASSERT(mCameraTool->type() == CAMERA);
 
     const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->settings());

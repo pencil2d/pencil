@@ -17,7 +17,8 @@ GNU General Public License for more details.
 #ifndef BUCKETOPTIONSWIDGET_H
 #define BUCKETOPTIONSWIDGET_H
 
-#include <QWidget>
+
+#include "basewidget.h"
 #include "pencildef.h"
 
 class Editor;
@@ -29,7 +30,7 @@ namespace Ui {
 class BucketOptionsWidget;
 }
 
-class BucketOptionsWidget : public QWidget
+class BucketOptionsWidget : public BaseWidget
 {
     Q_OBJECT
 
@@ -37,7 +38,7 @@ public:
     explicit BucketOptionsWidget(Editor* editor, QWidget* parent);
     ~BucketOptionsWidget();
 
-    void updateUI();
+    void updateUI() override;
 
     void setStrokeWidth(qreal value);
     void setColorToleranceEnabled(bool enabled);

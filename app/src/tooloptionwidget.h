@@ -25,6 +25,7 @@ namespace Ui
     class ToolOptions;
 }
 
+class BaseWidget;
 class Editor;
 class BaseTool;
 class BucketOptionsWidget;
@@ -50,7 +51,8 @@ public slots:
     void onLayerChanged(int index);
 
 private:
-    void setWidgetVisibility(BaseTool*);
+    void setWidgetVisibility(BaseWidget* widget, bool visible);
+    void updateUIForTool(BaseTool* tool);
 
 private:
     Ui::ToolOptions* ui = nullptr;

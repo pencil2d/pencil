@@ -31,6 +31,7 @@ GNU General Public License for more details.
 #include "layermanager.h"
 #include "stroketool.h"
 #include "toolmanager.h"
+#include "basewidget.h"
 
 
 ToolOptionWidget::ToolOptionWidget(QWidget* parent) : BaseDockWidget(parent)
@@ -69,7 +70,7 @@ void ToolOptionWidget::updateUI()
     BaseTool* currentTool = editor()->tools()->currentTool();
     Q_ASSERT(currentTool);
 
-    setWidgetVisibility(currentTool);
+    updateUIForTool(currentTool);
 }
 
 void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
@@ -79,21 +80,21 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(editor->layers(), &LayerManager::currentLayerChanged, this, &ToolOptionWidget::onLayerChanged);
 }
 
-void ToolOptionWidget::setWidgetVisibility(BaseTool* tool)
+void ToolOptionWidget::setWidgetVisibility(BaseWidget* widget, bool isVisible)
 {
-    Q_ASSERT(mBucketOptionsWidget);
-    Q_ASSERT(mCameraOptionsWidget);
-    Q_ASSERT(mStrokeOptionsWidget);
-    Q_ASSERT(mTransformOptionsWidget);
+    widget->setVisible(isVisible);
 
-    mBucketOptionsWidget->setVisible(tool->type() == BUCKET);
-    mBucketOptionsWidget->updateUI();
-    mCameraOptionsWidget->setVisible(tool->type() == CAMERA);
-    mCameraOptionsWidget->updateUI();
-    mStrokeOptionsWidget->setVisible(tool->category() == STROKETOOL);
-    mStrokeOptionsWidget->updateUI();
-    mTransformOptionsWidget->setVisible(tool->category() == TRANSFORMTOOL);
-    mTransformOptionsWidget->updateUI();
+    if (isVisible) {
+        widget->updateUI();
+    }
+}
+
+void ToolOptionWidget::updateUIForTool(BaseTool* tool)
+{
+    setWidgetVisibility(mBucketOptionsWidget, tool->type() == BUCKET);
+    setWidgetVisibility(mCameraOptionsWidget, tool->type() == CAMERA);
+    setWidgetVisibility(mStrokeOptionsWidget, tool->category() == STROKETOOL);
+    setWidgetVisibility(mTransformOptionsWidget, tool->category() == TRANSFORMTOOL);
 }
 
 void ToolOptionWidget::onLayerChanged(int layerIndex)
@@ -104,16 +105,16 @@ void ToolOptionWidget::onLayerChanged(int layerIndex)
         return;
     }
 
-    setWidgetVisibility(editor()->tools()->currentTool());
+    updateUIForTool(editor()->tools()->currentTool());
 }
 
 void ToolOptionWidget::onToolChanged(ToolType toolType)
 {
     BaseTool* tool = editor()->tools()->getTool(toolType);
-    setWidgetVisibility(tool);
+    updateUIForTool(tool);
 }
 
 void ToolOptionWidget::onToolsReset()
 {
-    setWidgetVisibility(editor()->tools()->currentTool());
+    updateUIForTool(editor()->tools()->currentTool());
 }

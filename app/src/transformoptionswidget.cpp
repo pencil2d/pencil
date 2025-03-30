@@ -22,7 +22,7 @@ GNU General Public License for more details.
 #include "transformtool.h"
 
 TransformOptionsWidget::TransformOptionsWidget(Editor* editor, QWidget *parent) :
-    QWidget(parent),
+    BaseWidget(parent),
     ui(new Ui::TransformOptionsWidget), mEditor(editor)
 {
     ui->setupUi(this);
@@ -41,10 +41,6 @@ void TransformOptionsWidget::initUI()
 
 void TransformOptionsWidget::updateUI()
 {
-    if (!isVisible()) {
-        return;
-    }
-
     BaseTool* currentTool = mEditor->tools()->currentTool();
     if (currentTool->category() != TRANSFORMTOOL) { return; }
 

@@ -12,7 +12,7 @@
 #include "layermanager.h"
 
 StrokeOptionsWidget::StrokeOptionsWidget(Editor* editor, QWidget *parent) :
-    QWidget(parent),
+    BaseWidget(parent),
     ui(new Ui::StrokeOptionsWidget)
 {
     ui->setupUi(this);
@@ -31,8 +31,8 @@ StrokeOptionsWidget::~StrokeOptionsWidget()
 
 void StrokeOptionsWidget::initUI()
 {
-    BaseTool* currentTool = mEditor->tools()->currentTool();
-    const StrokeSettings* p = static_cast<const StrokeSettings*>(currentTool->settings());
+    StrokeTool* strokeTool = static_cast<StrokeTool*>(mEditor->tools()->getTool(ToolCategory::STROKETOOL));
+    const StrokeSettings* p = static_cast<const StrokeSettings*>(strokeTool->settings());
 
     auto widthInfo = p->getInfo(StrokeSettings::WIDTH_VALUE);
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.getMinReal(), widthInfo.getMaxReal());
@@ -40,25 +40,25 @@ void StrokeOptionsWidget::initUI()
     auto featherInfo = p->getInfo(StrokeSettings::FEATHER_VALUE);
     ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, featherInfo.getMinReal(), featherInfo.getMaxReal());
 
+    mCurrentTool = strokeTool;
+
     makeConnectionFromUIToModel();
 }
 
 void StrokeOptionsWidget::updateUI()
 {
-    BaseTool* currentTool = mEditor->tools()->currentTool();
-    if (currentTool->category() != STROKETOOL) { return; }
+    StrokeTool* strokeTool = static_cast<StrokeTool*>(mEditor->tools()->getTool(ToolCategory::STROKETOOL));
+    if (strokeTool == nullptr) { return; }
 
-    if (!isVisible()) { return; }
+    Q_ASSERT(strokeTool);
 
-    Q_ASSERT(currentTool);
+    updateToolConnections(strokeTool);
 
-    updateToolConnections(currentTool);
+    setVisibility(strokeTool);
 
-    setVisibility(currentTool);
+    const StrokeSettings* p = static_cast<const StrokeSettings*>(strokeTool->settings());
 
-    const StrokeSettings* p = static_cast<const StrokeSettings*>(currentTool->settings());
-
-    if (currentTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
+    if (strokeTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
     {
         PropertyInfo info = p->getInfo(StrokeSettings::WIDTH_VALUE);
         QSignalBlocker b(ui->sizeSlider);
@@ -68,7 +68,7 @@ void StrokeOptionsWidget::updateUI()
 
         setWidthValue(info.getReal());
     }
-    if (currentTool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE))
+    if (strokeTool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE))
     {
         auto info = p->getInfo(StrokeSettings::FEATHER_VALUE);
         QSignalBlocker b3(ui->featherSlider);
@@ -79,32 +79,32 @@ void StrokeOptionsWidget::updateUI()
         setFeatherValue(info.getReal());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED)) {
         setFeatherEnabled(p->featherEnabled());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::PRESSURE_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeSettings::PRESSURE_ENABLED)) {
         setPressureEnabled(p->pressureEnabled());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED)) {
         setPenInvisibilityEnabled(p->invisibilityEnabled());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::ANTI_ALIASING_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeSettings::ANTI_ALIASING_ENABLED)) {
         setAntiAliasingEnabled(p->AntiAliasingEnabled());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE)) {
+    if (strokeTool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE)) {
         setStabilizerLevel(p->stabilizerLevel());
     }
 
-    if (currentTool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ENABLED)) {
         setFillContourEnabled(p->fillContourEnabled());
     }
 
-    if (currentTool->type() == POLYLINE) {
-        const PolylineSettings* polyP = static_cast<const PolylineSettings*>(currentTool->settings());
+    if (strokeTool->type() == POLYLINE) {
+        const PolylineSettings* polyP = static_cast<const PolylineSettings*>(strokeTool->settings());
         setClosedPathEnabled(polyP->closedPathEnabled());
         setBezierPathEnabled(polyP->bezierPathEnabled());
     }

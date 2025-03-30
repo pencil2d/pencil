@@ -32,7 +32,7 @@ GNU General Public License for more details.
 #include "buckettool.h"
 
 BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
-    QWidget(parent),
+    BaseWidget(parent),
     ui(new Ui::BucketOptionsWidget),
     mEditor(editor)
 {
@@ -152,10 +152,6 @@ void BucketOptionsWidget::makeConnectionsFromUIToModel()
 
 void BucketOptionsWidget::updateUI()
 {
-    if (!isVisible()) {
-        return;
-    }
-
     updatePropertyVisibility();
 
     if (mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE)) {
