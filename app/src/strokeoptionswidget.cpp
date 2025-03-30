@@ -36,7 +36,9 @@ void StrokeOptionsWidget::initUI()
 
     auto widthInfo = p->getInfo(StrokeSettings::WIDTH_VALUE);
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.getMinReal(), widthInfo.getMaxReal());
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, widthInfo.getMinReal(), widthInfo.getMaxReal());
+
+    auto featherInfo = p->getInfo(StrokeSettings::FEATHER_VALUE);
+    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, featherInfo.getMinReal(), featherInfo.getMaxReal());
 
     makeConnectionFromUIToModel();
 }
@@ -45,6 +47,8 @@ void StrokeOptionsWidget::updateUI()
 {
     BaseTool* currentTool = mEditor->tools()->currentTool();
     if (currentTool->category() != STROKETOOL) { return; }
+
+    if (!isVisible()) { return; }
 
     Q_ASSERT(currentTool);
 

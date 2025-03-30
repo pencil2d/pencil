@@ -83,6 +83,8 @@ void ToolOptionWidget::setWidgetVisibility(BaseTool* tool)
 {
     Q_ASSERT(mBucketOptionsWidget);
     Q_ASSERT(mCameraOptionsWidget);
+    Q_ASSERT(mStrokeOptionsWidget);
+    Q_ASSERT(mTransformOptionsWidget);
 
     mBucketOptionsWidget->setVisible(tool->type() == BUCKET);
     mBucketOptionsWidget->updateUI();
