@@ -67,6 +67,8 @@ enum ToolPropertyType
     USEBUCKETFILLEXPAND,
     BUCKETFILLLAYERREFERENCEMODE,
     CAMERAPATH,
+    SNAPTOANGLE,
+    SNAPDEGREE,
 };
 
 enum class DotColorType {

@@ -128,8 +128,12 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->showInfoBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowSelectionInfo);
 
+    connect(ui->snapAngleBox, &QCheckBox::clicked, toolManager, &ToolManager::setSnapAngleBox);
+    connect(ui->snapAngleDegrees, &QSpinBox::valueChanged, toolManager, &ToolManager::setSnapAngleDegrees);
+
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
+
 }
 
 void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType)
@@ -158,6 +162,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case USEBUCKETFILLEXPAND: break;
     case BUCKETFILLLAYERREFERENCEMODE: break;
     case FILL_MODE: break;
+    case SNAPTOANGLE: (p.snapAngleState); break;
     default:
         Q_ASSERT(false);
         break;
@@ -201,6 +206,8 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
     ui->showInfoBox->setVisible(tool->isPropertyEnabled(SHOWSELECTIONINFO));
+    ui->snapAngleBox->setVisible(tool->isPropertyEnabled(SNAPTOANGLE));
+    ui->snapAngleDegrees->setVisible(tool->isPropertyEnabled(SNAPTOANGLE));
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
     auto propertyType = editor()->tools()->currentTool()->type();
@@ -358,6 +365,17 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
+void ToolManager::setSnapAngleBox(bool enabled)
+{
+    if (currentTool() == nullptr) return;
+    currentTool()->properties.snapAngleState = enabled;
+}
+
+void ToolManager::setSnapAngleDegrees(double degrees)
+{
+    if (currentTool() == nullptr) return;
+    currentTool()->properties.snapAngleDegrees = degrees;
+}
 void ToolOptionWidget::setClosedPath(bool useClosedPath)
 {
     QSignalBlocker b(ui->useClosedPathBox);
@@ -379,6 +397,8 @@ void ToolOptionWidget::disableAllOptions()
     ui->useFeatherBox->hide();
     ui->useBezierBox->hide();
     ui->useClosedPathBox->hide();
+    ui->snapAngleBox->hide();
+    ui->snapAngleDegrees->hide();
     ui->usePressureBox->hide();
     ui->makeInvisibleBox->hide();
     ui->preserveAlphaBox->hide();

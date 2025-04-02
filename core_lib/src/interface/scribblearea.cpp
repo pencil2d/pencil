@@ -198,7 +198,8 @@ void ScribbleArea::onTileCreated(TiledBuffer* tiledBuffer, Tile* tile)
 
 void ScribbleArea::updateFrame()
 {
-    if (currentTool()->isActive() && currentTool()->isDrawingTool()) {
+    if (currentTool()->type() == POLYLINE) { update();}
+    else if (currentTool()->isActive() && currentTool()->isDrawingTool()) {
         return;
     }
 
@@ -259,7 +260,8 @@ void ScribbleArea::invalidateOnionSkinsCacheAround(int frameNumber)
 
 void ScribbleArea::invalidateAllCache()
 {
-    if (currentTool()->isDrawingTool() && currentTool()->isActive()) { return; }
+    if (currentTool()->type() == POLYLINE) { update(); }
+    else if (currentTool()->isDrawingTool() && currentTool()->isActive()) { return; }
 
     QPixmapCache::clear();
     mPixmapCacheKeys.clear();
