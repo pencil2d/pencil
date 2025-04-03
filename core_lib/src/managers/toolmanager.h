@@ -85,7 +85,7 @@ public slots:
     void setCameraPathDotColor(int);
     void resetCameraTransform(CameraFieldOption option);
     void setSnapAngleBox(bool);
-    void setSnapAngleDegrees(double);
+    void setSnapAngleDegrees(int);
 
     /// Layer mode will be enforced by the the choice the reference mode selected.
     /// @return Returns true if reference mode is ``current layer`, otherwise false.

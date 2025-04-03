@@ -129,7 +129,7 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(ui->showInfoBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowSelectionInfo);
 
     connect(ui->snapAngleBox, &QCheckBox::clicked, toolManager, &ToolManager::setSnapAngleBox);
-    connect(ui->snapAngleDegrees, &QSpinBox::valueChanged, toolManager, &ToolManager::setSnapAngleDegrees);
+    connect(ui->snapAngleDegrees, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setSnapAngleDegrees);
 
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
@@ -365,17 +365,6 @@ void ToolOptionWidget::setBezier(bool useBezier)
     ui->useBezierBox->setChecked(useBezier);
 }
 
-void ToolManager::setSnapAngleBox(bool enabled)
-{
-    if (currentTool() == nullptr) return;
-    currentTool()->properties.snapAngleState = enabled;
-}
-
-void ToolManager::setSnapAngleDegrees(double degrees)
-{
-    if (currentTool() == nullptr) return;
-    currentTool()->properties.snapAngleDegrees = degrees;
-}
 void ToolOptionWidget::setClosedPath(bool useClosedPath)
 {
     QSignalBlocker b(ui->useClosedPathBox);
@@ -386,6 +375,18 @@ void ToolOptionWidget::setShowSelectionInfo(bool showSelectionInfo)
 {
     QSignalBlocker b(ui->showInfoBox);
     ui->showInfoBox->setChecked(showSelectionInfo);
+}
+
+void ToolOptionWidget::setSnapAngleBox(bool enabled)
+{
+    QSignalBlocker blocker(ui->snapAngleBox);
+    ui->snapAngleBox->setChecked(enabled);
+}
+
+void ToolOptionWidget::setSnapAngleDegrees(int degrees)
+{
+    QSignalBlocker blocker(ui->snapAngleDegrees);
+    ui->snapAngleDegrees->setValue(degrees);
 }
 
 void ToolOptionWidget::disableAllOptions()
