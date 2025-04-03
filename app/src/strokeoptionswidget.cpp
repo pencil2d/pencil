@@ -206,7 +206,7 @@ void StrokeOptionsWidget::setVisibility(BaseTool* tool)
     ui->useFeatherBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED));
     ui->usePressureBox->setVisible(tool->isPropertyEnabled(StrokeSettings::PRESSURE_ENABLED));
     ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED));
-    ui->useAABox->setVisible(tool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED));
+    ui->useAABox->setVisible(tool->isPropertyEnabled(StrokeSettings::ANTI_ALIASING_ENABLED));
     ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE));
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ENABLED));
@@ -232,28 +232,28 @@ void StrokeOptionsWidget::setFeatherValue(qreal featherValue)
     ui->featherSpinBox->setValue(featherValue);
 }
 
-void StrokeOptionsWidget::setFeatherEnabled(bool isOn)
+void StrokeOptionsWidget::setFeatherEnabled(bool enabled)
 {
     QSignalBlocker b(ui->useFeatherBox);
-    ui->useFeatherBox->setChecked(isOn);
+    ui->useFeatherBox->setChecked(enabled);
 }
 
-void StrokeOptionsWidget::setPenInvisibilityEnabled(bool isOn)
+void StrokeOptionsWidget::setPenInvisibilityEnabled(bool enabled)
 {
     QSignalBlocker b(ui->makeInvisibleBox);
-    ui->makeInvisibleBox->setChecked(isOn);
+    ui->makeInvisibleBox->setChecked(enabled);
 }
 
-void StrokeOptionsWidget::setPressureEnabled(bool isOn)
+void StrokeOptionsWidget::setPressureEnabled(bool enabled)
 {
     QSignalBlocker b(ui->usePressureBox);
-    ui->usePressureBox->setChecked(isOn);
+    ui->usePressureBox->setChecked(enabled);
 }
 
-void StrokeOptionsWidget::setAntiAliasingEnabled(bool isOn)
+void StrokeOptionsWidget::setAntiAliasingEnabled(bool enabled)
 {
     QSignalBlocker b(ui->useAABox);
-    ui->useAABox->setEnabled(isOn);
+    ui->useAABox->setChecked(enabled);
 }
 
 void StrokeOptionsWidget::setStabilizerLevel(int level)
@@ -262,22 +262,22 @@ void StrokeOptionsWidget::setStabilizerLevel(int level)
     ui->inpolLevelsCombo->setCurrentIndex(level);
 }
 
-void StrokeOptionsWidget::setFillContourEnabled(bool isOn)
+void StrokeOptionsWidget::setFillContourEnabled(bool enabled)
 {
     QSignalBlocker b(ui->fillContourBox);
-    ui->fillContourBox->setChecked(isOn);
+    ui->fillContourBox->setChecked(enabled);
 }
 
-void StrokeOptionsWidget::setBezierPathEnabled(bool isOn)
+void StrokeOptionsWidget::setBezierPathEnabled(bool enabled)
 {
     QSignalBlocker b(ui->useBezierBox);
-    ui->useBezierBox->setChecked(isOn);
+    ui->useBezierBox->setChecked(enabled);
 }
 
-void StrokeOptionsWidget::setClosedPathEnabled(bool isOn)
+void StrokeOptionsWidget::setClosedPathEnabled(bool enabled)
 {
     QSignalBlocker b(ui->useClosedPathBox);
-    ui->useClosedPathBox->setChecked(isOn);
+    ui->useClosedPathBox->setChecked(enabled);
 }
 
 StrokeTool* StrokeOptionsWidget::strokeTool()
