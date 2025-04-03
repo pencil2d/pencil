@@ -27,66 +27,64 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layermanager.h"
 #include "colormanager.h"
+#include "toolmanager.h"
 #include "viewmanager.h"
 #include "vectorimage.h"
 #include "editor.h"
 #include "scribblearea.h"
 
 
-BucketTool::BucketTool(QObject* parent) : StrokeTool(parent)
+BucketTool::BucketTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-ToolType BucketTool::type()
+void BucketTool::createSettings(ToolSettings*)
 {
-    return BUCKET;
+    mSettings = new BucketSettings();
+    BaseTool::createSettings(mSettings);
 }
 
 void BucketTool::loadSettings()
 {
-    mPropertyEnabled[TOLERANCE] = true;
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[FILL_MODE] = true;
+    mPropertyUsed[BucketSettings::FILLTHICKNESS_VALUE] = { Layer::VECTOR };
+    mPropertyUsed[BucketSettings::COLORTOLERANCE_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::COLORTOLERANCE_ENABLED] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLEXPAND_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLEXPAND_ENABLED] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[BucketSettings::FILLMODE_VALUE] = { Layer::BITMAP };
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("fillThickness", 4.0).toDouble();
-    properties.feather = 10;
-    properties.stabilizerLevel = StabilizationLevel::NONE;
-    properties.useAA = DISABLED;
-    properties.tolerance = settings.value(SETTING_BUCKET_TOLERANCE, 32.0).toDouble();
-    properties.toleranceEnabled = settings.value(SETTING_BUCKET_TOLERANCE_ON, false).toBool();
+    QHash<int, PropertyInfo> info;
 
-    properties.bucketFillExpand = settings.value(SETTING_BUCKET_FILL_EXPAND, 2.0).toInt();
-    properties.bucketFillExpandEnabled = settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool();
-    properties.bucketFillReferenceMode = settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt();
-    properties.fillMode = settings.value(SETTING_FILL_MODE, 0).toInt();
-}
+    info[BucketSettings::FILLTHICKNESS_VALUE] = { 1.0, 100.0, 4.0 };
+    info[BucketSettings::COLORTOLERANCE_VALUE] = { 1, 100, 32 };
+    info[BucketSettings::COLORTOLERANCE_ENABLED] = false;
+    info[BucketSettings::FILLEXPAND_VALUE] = { 1, 25, 2 };
+    info[BucketSettings::FILLEXPAND_ENABLED] = true;
+    info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { 0, 1, 0 };
+    info[BucketSettings::FILLMODE_VALUE] = { 0, 2, 0 };
 
-void BucketTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
+    mSettings->load(typeName(), settings, info);
 
-    settings.setValue("fillThickness", properties.width);
-    settings.setValue(SETTING_BUCKET_TOLERANCE, properties.tolerance);
-    settings.setValue(SETTING_BUCKET_TOLERANCE_ON, properties.toleranceEnabled);
-    settings.setValue(SETTING_BUCKET_FILL_EXPAND, properties.bucketFillExpand);
-    settings.setValue(SETTING_BUCKET_FILL_EXPAND_ON, properties.bucketFillExpandEnabled);
-    settings.setValue(SETTING_BUCKET_FILL_REFERENCE_MODE, properties.bucketFillReferenceMode);
-    settings.setValue(SETTING_FILL_MODE, properties.fillMode);
+    if (mSettings->requireMigration(settings, 1)) {
+        mSettings->setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, settings.value("fillThickness", 4.0).toReal());
+        mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_VALUE, settings.value("Tolerance", 32).toInt());
+        mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_ENABLED, settings.value("BucketToleranceEnabled", false).toBool());
+        mSettings->setBaseValue(BucketSettings::FILLEXPAND_VALUE, settings.value("BucketFillExpand", 2).toInt());
+        mSettings->setBaseValue(BucketSettings::FILLEXPAND_ENABLED, settings.value("BucketFillExpandEnabled", true).toBool());
+        mSettings->setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, settings.value("BucketFillReferenceMode", 0).toInt());
+        mSettings->setBaseValue(BucketSettings::FILLMODE_VALUE, settings.value("FillMode", 0).toInt());
 
-    settings.sync();
-}
-
-void BucketTool::resetToDefault()
-{
-    setWidth(4.0);
-    setTolerance(32.0);
-    setFillMode(0);
-    setFillExpand(2);
-    setFillExpandEnabled(true);
-    setToleranceEnabled(false);
-    setFillReferenceMode(0);
+        settings.remove("fillThickness");
+        settings.remove("Tolerance");
+        settings.remove("BucketToleranceEnabled");
+        settings.remove("BucketFillExpand");
+        settings.remove("BucketFillExpandEnabled");
+        settings.remove("BucketFillReferenceMode");
+        settings.remove("FillMode");
+    }
 }
 
 QCursor BucketTool::cursor()
@@ -101,55 +99,9 @@ QCursor BucketTool::cursor()
     }
 }
 
-void BucketTool::setTolerance(const int tolerance)
-{
-    // Set current property
-    properties.tolerance = tolerance;
-}
-
-/**
- * @brief BrushTool::setWidth
- * @param width
- * set fill thickness
- */
-void BucketTool::setWidth(const qreal width)
-{
-    // Set current property
-    properties.width = width;
-}
-
-void BucketTool::setFillMode(int mode)
-{
-    // Set current property
-    properties.fillMode = mode;
-}
-
-void BucketTool::setToleranceEnabled(const bool enabled)
-{
-    properties.toleranceEnabled = enabled;
-
-}
-
-void BucketTool::setFillExpandEnabled(const bool enabled)
-{
-    properties.bucketFillExpandEnabled = enabled;
-
-}
-
-void BucketTool::setFillExpand(const int fillExpandValue)
-{
-    properties.bucketFillExpand = fillExpandValue;
-}
-
-void BucketTool::setFillReferenceMode(int referenceMode)
-{
-    properties.bucketFillReferenceMode = referenceMode;
-}
-
 void BucketTool::pointerPressEvent(PointerEvent* event)
 {
     mInterpolator.pointerPressEvent(event);
-    startStroke(event->inputType());
 
     Layer* targetLayer = mEditor->layers()->currentLayer();
 
@@ -157,11 +109,12 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 
     LayerCamera* layerCam = mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex());
 
+    mUndoSaveState = mEditor->undoRedo()->state(UndoRedoRecordType::KEYFRAME_MODIFY);
     mBitmapBucket = BitmapBucket(mEditor,
                                  mEditor->color()->frontColor(),
                                  layerCam ? layerCam->getViewAtFrame(mEditor->currentFrame()).inverted().mapRect(layerCam->getViewRect()) : QRect(),
                                  getCurrentPoint(),
-                                 properties);
+                                 *mSettings);
 
     // Because we can change layer to on the fly, but we do not act reactively
     // on it, it's necessary to invalidate layer cache on press event.
@@ -172,14 +125,10 @@ void BucketTool::pointerPressEvent(PointerEvent* event)
 void BucketTool::pointerMoveEvent(PointerEvent* event)
 {
     mInterpolator.pointerMoveEvent(event);
-    if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
+    if (event->buttons() & Qt::LeftButton)
     {
         Layer* layer = mEditor->layers()->currentLayer();
-        if (layer->type() == Layer::VECTOR)
-        {
-            drawStroke();
-        }
-        else if (layer->type() == Layer::BITMAP)
+        if (layer->type() == Layer::BITMAP)
         {
             paintBitmap();
             mFilledOnMove = true;
@@ -190,7 +139,6 @@ void BucketTool::pointerMoveEvent(PointerEvent* event)
 void BucketTool::pointerReleaseEvent(PointerEvent* event)
 {
     mInterpolator.pointerReleaseEvent(event);
-    if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = editor()->layers()->currentLayer();
     if (layer == nullptr) { return; }
@@ -208,8 +156,6 @@ void BucketTool::pointerReleaseEvent(PointerEvent* event)
         }
     }
     mFilledOnMove = false;
-
-    endStroke();
 }
 
 void BucketTool::paintBitmap()
@@ -222,6 +168,7 @@ void BucketTool::paintBitmap()
         }
         else if (progress == BucketState::DidFillTarget)
         {
+            mEditor->undoRedo()->record(mUndoSaveState, typeName());
             mEditor->setModified(layerIndex, frameIndex);
         }
     });
@@ -239,7 +186,7 @@ void BucketTool::paintVector(Layer* layer)
         vectorImage->fillSelectedPath(mEditor->color()->frontColorNumber());
     }
 
-    vectorImage->applyWidthToSelection(properties.width);
+    vectorImage->applyWidthToSelection(mSettings->fillThickness());
     vectorImage->applyColorToSelectedCurve(mEditor->color()->frontColorNumber());
     vectorImage->applyColorToSelectedArea(mEditor->color()->frontColorNumber());
 
@@ -253,35 +200,55 @@ void BucketTool::applyChanges()
     mScribbleArea->applyTransformedSelection();
 }
 
-void BucketTool::drawStroke()
+void BucketTool::setStrokeThickness(qreal width)
 {
-    StrokeTool::drawStroke();
-
-    if (properties.stabilizerLevel != mInterpolator.getStabilizerLevel())
-    {
-        mInterpolator.setStabilizerLevel(properties.stabilizerLevel);
-    }
-
-    QList<QPointF> p = mInterpolator.interpolateStroke();
-
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    if (layer->type() == Layer::VECTOR)
-    {
-        mCurrentWidth = 30;
-        QColor pathColor = qPremultiply(mEditor->color()->frontColor().rgba());
-
-        QPen pen(pathColor,
-                 mCurrentWidth * mEditor->view()->scaling(),
-                 Qt::NoPen,
-                 Qt::RoundCap,
-                 Qt::RoundJoin);
-
-        if (p.size() == 4)
-        {
-            QPainterPath path(p[0]);
-            path.cubicTo(p[1], p[2], p[3]);
-            mScribbleArea->drawPath(path, pen, Qt::NoBrush, QPainter::CompositionMode_Source);
-        }
-    }
+    mSettings->setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, width);
+    emit strokeThicknessChanged(width);
 }
+
+void BucketTool::setColorTolerance(int tolerance)
+{
+    mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_VALUE, tolerance);
+    emit toleranceChanged(tolerance);
+}
+
+void BucketTool::setColorToleranceEnabled(bool enabled)
+{
+    mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_ENABLED, enabled);
+    emit toleranceEnabledChanged(enabled);
+}
+
+void BucketTool::setFillExpand(int fillExpandValue)
+{
+    mSettings->setBaseValue(BucketSettings::FILLEXPAND_VALUE, fillExpandValue);
+    emit fillExpandChanged(fillExpandValue);
+}
+
+void BucketTool::setFillExpandEnabled(bool enabled)
+{
+    mSettings->setBaseValue(BucketSettings::FILLEXPAND_ENABLED, enabled);
+    emit fillExpandEnabledChanged(enabled);
+}
+
+void BucketTool::setFillReferenceMode(int referenceMode)
+{
+    mSettings->setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, referenceMode);
+    emit fillReferenceModeChanged(referenceMode);
+}
+
+void BucketTool::setFillMode(int mode)
+{
+    mSettings->setBaseValue(BucketSettings::FILLMODE_VALUE, mode);
+    emit fillModeChanged(mode);
+}
+
+QPointF BucketTool::getCurrentPoint() const
+{
+    return mEditor->view()->mapScreenToCanvas(getCurrentPixel());
+}
+
+QPointF BucketTool::getCurrentPixel() const
+{
+    return mInterpolator.getCurrentPixel();
+}
+

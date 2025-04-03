@@ -27,11 +27,16 @@ class PolylineTool : public StrokeTool
     Q_OBJECT
 public:
     explicit PolylineTool(QObject* parent = 0);
-    ToolType type() override;
+
+    ToolType type() const override;
+    ToolCategory category() const override { return STROKETOOL; }
+
+    void createSettings(ToolSettings *) override;
     void loadSettings() override;
-    void saveSettings() override;
     QCursor cursor() override;
-    void resetToDefault() override;
+
+    void setUseBezier(bool useBezier);
+    void setClosePath(bool closePath);
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
@@ -43,16 +48,17 @@ public:
 
     void clearToolData() override;
 
-    void setWidth(const qreal width) override;
-    void setFeather(const qreal feather) override;
-    void setAA(const int AA) override;
-    void setClosedPath(const bool closed) override;
-
     bool leavingThisTool() override;
 
     bool isActive() const override;
 
+signals:
+    void bezierPathEnabledChanged(bool useBezier);
+    void closePathChanged(bool closePath);
+
+
 private:
+    PolylineSettings* mSettings = nullptr;
     QList<QPointF> mPoints;
     bool mClosedPathOverrideEnabled = false;
 
@@ -60,6 +66,7 @@ private:
     void removeLastPolylineSegment();
     void cancelPolyline();
     void endPolyline(QList<QPointF> points);
+
 };
 
 #endif // POLYLINETOOL_H
