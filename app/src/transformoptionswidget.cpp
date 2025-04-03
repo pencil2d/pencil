@@ -44,12 +44,25 @@ void TransformOptionsWidget::updateUI()
     BaseTool* currentTool = mEditor->tools()->currentTool();
     if (currentTool->category() != TRANSFORMTOOL) { return; }
 
+    updatePropertyVisibility();
     updateToolConnections(currentTool);
     const TransformSettings* selectP = static_cast<const TransformSettings*>(currentTool->settings());
 
     if (currentTool->isPropertyEnabled(TransformSettings::SHOWSELECTIONINFO_ENABLED)) {
         setShowSelectionInfo(selectP->showSelectionInfoEnabled());
     }
+
+    if (currentTool->isPropertyEnabled(TransformSettings::ANTI_ALIASING_ENABLED)) {
+        setAntiAliasingEnabled(selectP->antiAliasingEnabled());
+    }
+}
+
+void TransformOptionsWidget::updatePropertyVisibility()
+{
+    BaseTool* currentTool = mEditor->tools()->currentTool();
+    if (currentTool->category() != TRANSFORMTOOL) { return; }
+
+    ui->antiAliasingCheckBox->setVisible(currentTool->isPropertyEnabled(TransformSettings::ANTI_ALIASING_ENABLED));
 }
 
 void TransformOptionsWidget::updateToolConnections(BaseTool* tool)
@@ -65,18 +78,29 @@ void TransformOptionsWidget::updateToolConnections(BaseTool* tool)
 
 void TransformOptionsWidget::makeConnectionsFromUIToModel()
 {
-    connect(ui->showSelectionInfoCheckBox, &QCheckBox::clicked, this, [=](bool isOn) {
-       mTransformTool->setShowSelectionInfo(isOn);
+    connect(ui->showSelectionInfoCheckBox, &QCheckBox::clicked, this, [=](bool enabled) {
+       mTransformTool->setShowSelectionInfo(enabled);
+    });
+
+    connect(ui->antiAliasingCheckBox, &QCheckBox::clicked, this, [=](bool enabled) {
+       mTransformTool->setAntiAliasingEnabled(enabled);
     });
 }
 
 void TransformOptionsWidget::makeConnectionFromModelToUI(TransformTool* transformTool)
 {
     connect(transformTool, &TransformTool::showSelectionInfoChanged, this, &TransformOptionsWidget::setShowSelectionInfo);
+    connect(transformTool, &TransformTool::antiAliasingChanged, this, &TransformOptionsWidget::setAntiAliasingEnabled);
 }
 
-void TransformOptionsWidget::setShowSelectionInfo(bool isOn)
+void TransformOptionsWidget::setShowSelectionInfo(bool enabled)
 {
     QSignalBlocker b(ui->showSelectionInfoCheckBox);
-    ui->showSelectionInfoCheckBox->setChecked(isOn);
+    ui->showSelectionInfoCheckBox->setChecked(enabled);
+}
+
+void TransformOptionsWidget::setAntiAliasingEnabled(bool enabled)
+{
+    QSignalBlocker b(ui->antiAliasingCheckBox);
+    ui->antiAliasingCheckBox->setChecked(enabled);
 }

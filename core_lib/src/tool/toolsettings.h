@@ -515,10 +515,10 @@ struct CameraSettings: public ToolSettings
 struct TransformSettings: public ToolSettings
 {
     enum Type {
-        START                   = 500,
+        START                        = 500,
         SHOWSELECTIONINFO_ENABLED    = START,
-
-        END                     = 599,
+        ANTI_ALIASING_ENABLED        = 501,
+        END                          = 599,
     };
 
     QString identifier(int typeRaw) const override {
@@ -530,6 +530,9 @@ struct TransformSettings: public ToolSettings
             case SHOWSELECTIONINFO_ENABLED:
                 propertyID = "ShowSelectionInfoEnabled";
                 break;
+            case ANTI_ALIASING_ENABLED:
+                propertyID = "AntiAliasingEnabled";
+                break;
             case END:
                 break;
         }
@@ -538,6 +541,7 @@ struct TransformSettings: public ToolSettings
     }
 
     bool showSelectionInfoEnabled() const { return mProps[SHOWSELECTIONINFO_ENABLED].boolValue(); }
+    bool antiAliasingEnabled() const { return mProps[ANTI_ALIASING_ENABLED].boolValue(); }
 };
 
 #endif // TOOLSETTINGS_H

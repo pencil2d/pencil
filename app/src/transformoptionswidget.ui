@@ -41,6 +41,13 @@
        </property>
       </widget>
      </item>
+     <item>
+      <widget class="QCheckBox" name="antiAliasingCheckBox">
+       <property name="text">
+        <string>Anti-Aliasing</string>
+       </property>
+      </widget>
+     </item>
     </layout>
    </item>
   </layout>

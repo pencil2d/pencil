@@ -45,8 +45,11 @@ public:
 
 private:
 
+    void updatePropertyVisibility();
+
     void updateToolConnections(BaseTool* tool);
-    void setShowSelectionInfo(bool isOn);
+    void setShowSelectionInfo(bool enabled);
+    void setAntiAliasingEnabled(bool enabled);
 
     Ui::TransformOptionsWidget *ui;
 

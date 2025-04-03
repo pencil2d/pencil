@@ -37,10 +37,16 @@ void TransformTool::createSettings(ToolSettings* settings)
     BaseTool::createSettings(mTransformSettings);
 }
 
-void TransformTool::setShowSelectionInfo(bool isOn)
+void TransformTool::setShowSelectionInfo(bool enabled)
 {
-    mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, isOn);
-    emit showSelectionInfoChanged(isOn);
+    mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, enabled);
+    emit showSelectionInfoChanged(enabled);
 
     mEditor->updateFrame();
+}
+
+void TransformTool::setAntiAliasingEnabled(bool enabled)
+{
+    mSettings->setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, enabled);
+    emit antiAliasingChanged(enabled);
 }

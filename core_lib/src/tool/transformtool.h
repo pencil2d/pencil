@@ -27,10 +27,12 @@ public:
     ~TransformTool();
 
     void createSettings(ToolSettings* settings) override;
-    void setShowSelectionInfo(bool isOn);
+    void setShowSelectionInfo(bool enabled);
+    void setAntiAliasingEnabled(bool enabled);
 
 signals:
-    void showSelectionInfoChanged(bool isOn);
+    void showSelectionInfoChanged(bool enabled);
+    void antiAliasingChanged(bool enabled);
 
 protected:
     TransformSettings* mTransformSettings = nullptr;
