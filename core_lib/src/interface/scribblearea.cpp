@@ -1335,6 +1335,9 @@ void ScribbleArea::applyTransformedSelection()
     mCanvasPainter.ignoreTransformedSelection();
 
     Layer* layer = mEditor->layers()->currentLayer();
+
+    bool useAA = mEditor->tools()->currentTool()->properties.useAA;
+
     if (layer == nullptr) { return; }
 
     auto selectMan = mEditor->select();
@@ -1347,7 +1350,7 @@ void ScribbleArea::applyTransformedSelection()
             handleDrawingOnEmptyFrame();
             BitmapImage* bitmapImage = currentBitmapImage(layer);
             if (bitmapImage == nullptr) { return; }
-            BitmapImage transformedImage = bitmapImage->transformed(selectMan->mySelectionRect().toRect(), selectMan->selectionTransform(), true);
+            BitmapImage transformedImage = bitmapImage->transformed(selectMan->mySelectionRect().toRect(), selectMan->selectionTransform(), useAA);
 
 
             bitmapImage->clear(selectMan->mySelectionRect());

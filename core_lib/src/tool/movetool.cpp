@@ -332,6 +332,9 @@ bool MoveTool::leavingThisTool()
     {
         applyTransformation();
     }
+
+    saveSettings();
+
     return true;
 }
 

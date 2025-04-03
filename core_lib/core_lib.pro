@@ -96,6 +96,7 @@ HEADERS +=  \
     src/util/colordictionary.h \
     src/util/fileformat.h \
     src/util/filetype.h \
+    src/util/importimageconfig.h \
     src/util/mathutils.h \
     src/util/onionskinpainteroptions.h \
     src/util/onionskinpaintstate.h \
