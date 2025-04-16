@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include "filemanager.h"
 
 #include <ctime>
+#include <QDebug>
 #include <QDir>
 #include <QVersionNumber>
 #include "qminiz.h"

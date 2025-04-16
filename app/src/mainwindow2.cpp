@@ -34,6 +34,7 @@ GNU General Public License for more details.
 #include <QClipboard>
 #include <QToolBar>
 #include <QToolButton>
+#include <QDebug>
 
 // core_lib headers
 #include "pencildef.h"
