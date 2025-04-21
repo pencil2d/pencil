@@ -17,6 +17,8 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 
 #include <cmath>
+#include <QDebug>
+
 #include "stroketool.h"
 #include "pentool.h"
 #include "penciltool.h"
