@@ -61,7 +61,13 @@ public:
 
     const BitmapImage& getBitmapClipboard() const { return mBitmapImage; }
     const VectorImage& getVectorClipboard() const { return mVectorImage; }
-    std::map<int, KeyFrame*> getClipboardFrames() { return mFrames; }
+
+    /** Return a copy of all clipboard frames keyed by their position.
+     *
+     *  The caller takes ownership of the returned keyframe objects and is
+     *  responsible for deleting them when no longer in use.
+     */
+    std::map<int, KeyFrame*> getClipboardFrames();
 
     Layer::LAYER_TYPE framesLayerType() const { return mFramesType; }
     bool framesIsEmpty() const { return mFrames.empty(); }

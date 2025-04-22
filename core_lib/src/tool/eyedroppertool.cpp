@@ -45,6 +45,10 @@ void EyedropperTool::loadSettings()
     properties.useAA = -1;
 }
 
+void EyedropperTool::saveSettings()
+{
+}
+
 QCursor EyedropperTool::cursor()
 {
     if (mEditor->preference()->isOn(SETTING::TOOL_CURSOR))

@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "vectorimage.h"
 #include "bitmapimage.h"
 #include "soundclip.h"
+#include "camera.h"
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "layercamera.h"
@@ -330,19 +331,19 @@ void Editor::pasteToFrames()
             currentLayer->moveSelectedFrames(1);
         }
 
+        KeyFrame* key = it->second;
         // It's a bug if the keyframe is nullptr at this point...
-        Q_ASSERT(it->second != nullptr);
+        Q_ASSERT(key != nullptr);
 
         // TODO: undo/redo implementation
-        KeyFrame* keyClone = it->second->clone();
-        currentLayer->addKeyFrame(newPosition, keyClone);
+        currentLayer->addKeyFrame(newPosition, key);
         if (currentLayer->type() == Layer::SOUND)
         {
-            auto soundClip = static_cast<SoundClip*>(keyClone);
+            auto soundClip = static_cast<SoundClip*>(key);
             sound()->loadSound(soundClip, soundClip->fileName());
         }
 
-        currentLayer->setFrameSelected(keyClone->pos(), true);
+        currentLayer->setFrameSelected(key->pos(), true);
     }
 }
 
@@ -354,7 +355,7 @@ void Editor::paste()
 
     if (!canPaste()) { return; }
 
-    if (clipboards()->getClipboardFrames().empty()) {
+    if (clipboards()->framesIsEmpty()) {
 
         backup(tr("Paste"));
 
@@ -436,7 +437,7 @@ LayerVisibility Editor::layerVisibility()
 
 qreal Editor::viewScaleInversed()
 {
-    return view()->getViewScaleInverse();
+    return view()->getScaleInversed();
 }
 
 void Editor::increaseLayerVisibilityIndex()
@@ -579,7 +580,7 @@ void Editor::updateObject()
     }
 }
 
-Status Editor::importBitmapImage(const QString& filePath)
+Status Editor::importBitmapImage(const QString& filePath, const QTransform& importTransform)
 {
     QImageReader reader(filePath);
 
@@ -622,8 +623,8 @@ Status Editor::importBitmapImage(const QString& filePath)
         status = Status(Status::FAIL, dd, tr("Import failed"), errorDesc);
     }
 
-    const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
-                     view()->getImportView().dy() - (img.height() / 2));
+    const QPoint pos = importTransform.map(QPoint(-img.width() / 2,
+                                        -img.height() / 2));
 
     if (!layer->keyExists(mFrame))
     {
@@ -676,24 +677,44 @@ Status Editor::importVectorImage(const QString& filePath)
     return status;
 }
 
-Status Editor::importImage(const QString& filePath)
+Status Editor::importImage(const QString& filePath, const ImportImageConfig importConfig)
 {
     Layer* layer = layers()->currentLayer();
 
     DebugDetails dd;
     dd << QString("Raw file path: %1").arg(filePath);
 
-    if (view()->getImportFollowsCamera())
+    QTransform transform;
+    switch (importConfig.positionType)
     {
-        LayerCamera* camera = static_cast<LayerCamera*>(layers()->getLastCameraLayer());
-        Q_ASSERT(camera);
-        QTransform transform = camera->getViewAtFrame(currentFrame());
-        view()->setImportView(transform);
+        case ImportImageConfig::CenterOfCamera: {
+            LayerCamera* layerCam = static_cast<LayerCamera*>(layers()->getCameraLayerBelow(currentLayerIndex()));
+            Q_ASSERT(layerCam);
+            transform = layerCam->getViewAtFrame(importConfig.importFrame).inverted();
+            break;
+        }
+        case ImportImageConfig::CenterOfCameraFollowed: {
+            LayerCamera* camera = static_cast<LayerCamera*>(layers()->getCameraLayerBelow(currentLayerIndex()));
+            Q_ASSERT(camera);
+            transform = camera->getViewAtFrame(currentFrame()).inverted();
+            break;
+        }
+        case ImportImageConfig::CenterOfView: {
+            QPointF centralPoint = mScribbleArea->getCentralPoint();
+            transform = QTransform::fromTranslate(centralPoint.x(), centralPoint.y());
+            break;
+        }
+        case ImportImageConfig::CenterOfCanvas:
+        case ImportImageConfig::None: {
+            transform = QTransform();
+            break;
+        }
     }
+
     switch (layer->type())
     {
     case Layer::BITMAP:
-        return importBitmapImage(filePath);
+        return importBitmapImage(filePath, transform);
 
     case Layer::VECTOR:
         return importVectorImage(filePath);
@@ -726,8 +747,8 @@ Status Editor::importAnimatedImage(const QString& filePath, int frameSpacing, co
     }
 
     QImage img(reader.size(), QImage::Format_ARGB32_Premultiplied);
-    const QPoint pos(view()->getImportView().dx() - (img.width() / 2),
-                     view()->getImportView().dy() - (img.height() / 2));
+    const QPoint pos(view()->getView().dx() - (img.width() / 2),
+                     view()->getView().dy() - (img.height() / 2));
     int totalFrames = reader.imageCount();
     while (reader.read(&img))
     {
@@ -845,8 +866,6 @@ void Editor::scrubTo(int frame)
     if (frame < 1) { frame = 1; }
     mFrame = frame;
 
-    emit scrubbed(frame);
-
     // FIXME: should not emit Timeline update here.
     // Editor must be an individual class.
     // Will remove all Timeline related code in Editor class.
@@ -855,6 +874,7 @@ void Editor::scrubTo(int frame)
         emit updateTimeLineCached(); // needs to update the timeline to update onion skin positions
     }
     mObject->updateActiveFrames(frame);
+    emit scrubbed(frame);
 }
 
 void Editor::scrubForward()

@@ -29,6 +29,7 @@ public:
     explicit PolylineTool(QObject* parent = 0);
     ToolType type() override;
     void loadSettings() override;
+    void saveSettings() override;
     QCursor cursor() override;
     void resetToDefault() override;
 
@@ -47,8 +48,6 @@ public:
     void setAA(const int AA) override;
     void setClosedPath(const bool closed) override;
 
-    void removeLastPolylineSegment();
-
     bool leavingThisTool() override;
 
     bool isActive() const override;
@@ -58,6 +57,7 @@ private:
     bool mClosedPathOverrideEnabled = false;
 
     void drawPolyline(QList<QPointF> points, QPointF endPoint);
+    void removeLastPolylineSegment();
     void cancelPolyline();
     void endPolyline(QList<QPointF> points);
 };

@@ -43,6 +43,7 @@ CameraTool::CameraTool(QObject* object) : BaseTool(object)
 
 CameraTool::~CameraTool()
 {
+    saveSettings();
 }
 
 void CameraTool::loadSettings()
@@ -64,6 +65,10 @@ void CameraTool::loadSettings()
     mHandlePen.setWidth(2);
 }
 
+void CameraTool::saveSettings()
+{
+}
+
 void CameraTool::updateUIAssists(const Layer* layer)
 {
     const LayerCamera* camLayer = static_cast<const LayerCamera*>(layer);
@@ -81,7 +86,7 @@ void CameraTool::updateUIAssists(const Layer* layer)
 
     Camera* cam = camLayer->getLastCameraAtFrame(mEditor->currentFrame(), 0);
     if (cam) {
-        mRotationHandlePoint = localRotationHandlePoint(cameraRect.topLeft(), localCamT, cam->scaling(), mEditor->view()->getViewScaleInverse());
+        mRotationHandlePoint = localRotationHandlePoint(cameraRect.topLeft(), localCamT, cam->scaling(), mEditor->view()->getScaleInversed());
     }
 }
 

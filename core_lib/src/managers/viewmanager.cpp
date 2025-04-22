@@ -108,9 +108,9 @@ QTransform ViewManager::getViewInverse() const
     return mViewCanvasInverse;
 }
 
-qreal ViewManager::getViewScaleInverse() const
+qreal ViewManager::getScaleInversed() const
 {
-    return mViewCanvasInverse.m11();
+    return 1. / mScaling;
 }
 
 void ViewManager::updateViewTransforms()
@@ -308,46 +308,6 @@ void ViewManager::flipVertical(bool b)
 
         emit viewChanged();
         emit viewFlipped();
-    }
-}
-
-void ViewManager::setOverlayCenter(bool b)
-{
-    if (b != mOverlayCenter)
-    {
-        mOverlayCenter = b;
-        updateViewTransforms();
-        emit viewChanged();
-    }
-}
-
-void ViewManager::setOverlayThirds(bool b)
-{
-    if (b != mOverlayThirds)
-    {
-        mOverlayThirds = b;
-        updateViewTransforms();
-        emit viewChanged();
-    }
-}
-
-void ViewManager::setOverlayGoldenRatio(bool b)
-{
-    if (b != mOverlayGoldenRatio)
-    {
-        mOverlayGoldenRatio = b;
-        updateViewTransforms();
-        emit viewChanged();
-    }
-}
-
-void ViewManager::setOverlaySafeAreas(bool b)
-{
-    if (b != mOverlaySafeAreas)
-    {
-        mOverlaySafeAreas = b;
-        updateViewTransforms();
-        emit viewChanged();
     }
 }
 

@@ -63,6 +63,17 @@ void PolylineTool::loadSettings()
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
 
+void PolylineTool::saveSettings()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    settings.setValue("polyLineWidth", properties.width);
+    settings.setValue("brushAA", properties.useAA);
+    settings.setValue("closedPolylinePath", properties.closedPolylinePath);
+
+    settings.sync();
+}
+
 void PolylineTool::resetToDefault()
 {
     setWidth(8.0);
@@ -74,11 +85,6 @@ void PolylineTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("polyLineWidth", width);
-    settings.sync();
 }
 
 void PolylineTool::setFeather(const qreal feather)
@@ -91,21 +97,11 @@ void PolylineTool::setAA(const int AA)
 {
     // Set current property
     properties.useAA = AA;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushAA", AA);
-    settings.sync();
 }
 
 void PolylineTool::setClosedPath(const bool closed)
 {
     BaseTool::setClosedPath(closed);
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("closedPolylinePath", closed);
-    settings.sync();
 }
 
 bool PolylineTool::leavingThisTool()
@@ -216,8 +212,6 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
 
 void PolylineTool::removeLastPolylineSegment()
 {
-    if (!isActive()) return;
-
     if (mPoints.size() > 1)
     {
         mPoints.removeLast();
@@ -249,7 +243,12 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
             return true;
         }
         break;
-
+    case Qt::Key_Backspace:
+        if (mPoints.size() > 0)
+        {
+            removeLastPolylineSegment();
+            return true;
+        }
     case Qt::Key_Escape:
         if (mPoints.size() > 0)
         {

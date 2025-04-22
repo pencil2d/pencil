@@ -35,6 +35,7 @@ public:
     explicit SelectTool(QObject* parent = nullptr);
     ToolType type() override { return SELECT; }
     void loadSettings() override;
+    void saveSettings() override;
     QCursor cursor() override;
 
     void resetToDefault() override;

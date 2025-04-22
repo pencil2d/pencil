@@ -31,6 +31,7 @@ public:
     explicit BrushTool(QObject* parent = 0);
     ToolType type() override;
     void loadSettings() override;
+    void saveSettings() override;
     void resetToDefault() override;
     QCursor cursor() override;
 

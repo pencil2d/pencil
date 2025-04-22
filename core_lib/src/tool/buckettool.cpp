@@ -63,6 +63,21 @@ void BucketTool::loadSettings()
     properties.fillMode = settings.value(SETTING_FILL_MODE, 0).toInt();
 }
 
+void BucketTool::saveSettings()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    settings.setValue("fillThickness", properties.width);
+    settings.setValue(SETTING_BUCKET_TOLERANCE, properties.tolerance);
+    settings.setValue(SETTING_BUCKET_TOLERANCE_ON, properties.toleranceEnabled);
+    settings.setValue(SETTING_BUCKET_FILL_EXPAND, properties.bucketFillExpand);
+    settings.setValue(SETTING_BUCKET_FILL_EXPAND_ON, properties.bucketFillExpandEnabled);
+    settings.setValue(SETTING_BUCKET_FILL_REFERENCE_MODE, properties.bucketFillReferenceMode);
+    settings.setValue(SETTING_FILL_MODE, properties.fillMode);
+
+    settings.sync();
+}
+
 void BucketTool::resetToDefault()
 {
     setWidth(4.0);
@@ -90,11 +105,6 @@ void BucketTool::setTolerance(const int tolerance)
 {
     // Set current property
     properties.tolerance = tolerance;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_BUCKET_TOLERANCE, tolerance);
-    settings.sync();
 }
 
 /**
@@ -106,62 +116,34 @@ void BucketTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("fillThickness", width);
-    settings.sync();
 }
 
 void BucketTool::setFillMode(int mode)
 {
     // Set current property
     properties.fillMode = mode;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_FILL_MODE, mode);
-    settings.sync();
 }
 
 void BucketTool::setToleranceEnabled(const bool enabled)
 {
     properties.toleranceEnabled = enabled;
 
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_BUCKET_TOLERANCE_ON, enabled);
-    settings.sync();
 }
 
 void BucketTool::setFillExpandEnabled(const bool enabled)
 {
     properties.bucketFillExpandEnabled = enabled;
 
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_BUCKET_FILL_EXPAND_ON, enabled);
-    settings.sync();
 }
 
 void BucketTool::setFillExpand(const int fillExpandValue)
 {
     properties.bucketFillExpand = fillExpandValue;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_BUCKET_FILL_EXPAND, fillExpandValue);
-    settings.sync();
 }
 
 void BucketTool::setFillReferenceMode(int referenceMode)
 {
     properties.bucketFillReferenceMode = referenceMode;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_BUCKET_FILL_REFERENCE_MODE, referenceMode);
-    settings.sync();
 }
 
 void BucketTool::pointerPressEvent(PointerEvent* event)

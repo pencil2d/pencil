@@ -58,6 +58,19 @@ void PencilTool::loadSettings()
     mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
 }
 
+void PencilTool::saveSettings()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    settings.setValue("pencilWidth", properties.width);
+    settings.setValue("pencilPressure", properties.pressure);
+    settings.setValue("brushUseFeather", properties.useFeather);
+    settings.setValue("pencilLineStabilization", properties.stabilizerLevel);
+    settings.setValue("FillContour", properties.useFillContour);
+
+    settings.sync();
+}
+
 void PencilTool::resetToDefault()
 {
     setWidth(4.0);
@@ -70,11 +83,6 @@ void PencilTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("pencilWidth", width);
-    settings.sync();
 }
 
 void PencilTool::setFeather(const qreal feather)
@@ -87,10 +95,6 @@ void PencilTool::setUseFeather(const bool usingFeather)
     // Set current property
     properties.useFeather = usingFeather;
 
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushUseFeather", usingFeather);
-    settings.sync();
 }
 
 void PencilTool::setInvisibility(const bool)
@@ -103,11 +107,6 @@ void PencilTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("pencilPressure", pressure);
-    settings.sync();
 }
 
 void PencilTool::setPreserveAlpha(const bool preserveAlpha)
@@ -120,19 +119,11 @@ void PencilTool::setPreserveAlpha(const bool preserveAlpha)
 void PencilTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("pencilLineStabilization", level);
-    settings.sync();
 }
 
 void PencilTool::setUseFillContour(const bool useFillContour)
 {
     properties.useFillContour = useFillContour;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("FillContour", useFillContour);
-    settings.sync();
 }
 
 QCursor PencilTool::cursor()

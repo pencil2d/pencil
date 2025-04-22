@@ -18,7 +18,9 @@ GNU General Public License for more details.
 #include <QAudioOutput>
 #include <QMediaPlayer>
 #include <QFile>
+#include <QDebug>
 #include "soundclip.h"
+#include "util.h"
 
 SoundPlayer::SoundPlayer()
 {
