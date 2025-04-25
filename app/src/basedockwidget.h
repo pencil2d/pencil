@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QDockWidget>
 
 class Editor;
-
+class TitleBarWidget;
 
 class BaseDockWidget : public QDockWidget
 {
@@ -34,11 +34,24 @@ public:
     virtual void initUI() = 0;
     virtual void updateUI() = 0;
 
+    void lock(bool locked);
+    void setTitle(const QString& title);
+
+    bool isLocked() const { return mLocked; }
+
     Editor* editor() const { return mEditor; }
     void setEditor( Editor* e ) { mEditor = e; }
 
+protected:
+    void resizeEvent(QResizeEvent* event) override;
+
 private:
     Editor* mEditor = nullptr;
+
+    QWidget* mNoTitleBarWidget = nullptr;
+    TitleBarWidget* mTitleBarWidget = nullptr;
+
+    bool mLocked = false;
 };
 
 #endif // BASEDOCKWIDGET_H
