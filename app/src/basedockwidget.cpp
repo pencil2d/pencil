@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include "basedockwidget.h"
 #include "platformhandler.h"
+#include "titlebarwidget.h"
 
 BaseDockWidget::BaseDockWidget(QWidget* pParent)
 : QDockWidget(pParent, Qt::Tool)
@@ -34,8 +35,54 @@ BaseDockWidget::BaseDockWidget(QWidget* pParent)
                       "border-width: 1px; }");
     }
 #endif
+
+    mTitleBarWidget = new TitleBarWidget();
+    mNoTitleBarWidget = new QWidget();
+
+    setTitleBarWidget(mTitleBarWidget);
+
+    connect(mTitleBarWidget, &TitleBarWidget::closeButtonPressed, this, [this] {
+       close();
+    });
+
+    connect(mTitleBarWidget, &TitleBarWidget::undockButtonPressed, this, [this] {
+       setFloating(!isFloating());
+    });
+
+    connect(this, &QDockWidget::topLevelChanged, mTitleBarWidget, &TitleBarWidget::setIsFloating);
+    connect(this, &QDockWidget::windowTitleChanged, mTitleBarWidget, &TitleBarWidget::setTitle);
 }
 
 BaseDockWidget::~BaseDockWidget()
 {
+}
+
+void BaseDockWidget::lock(bool locked)
+{
+    // https://doc.qt.io/qt-5/qdockwidget.html#setTitleBarWidget
+    // A empty QWidget results in the title bar being hidden.
+    // nullptr means removing the custom title bar and restoring the default one
+
+    if (locked) {
+        setTitleBarWidget(mNoTitleBarWidget);
+    } else {
+        setTitleBarWidget(mTitleBarWidget);
+    }
+
+    mLocked = locked;
+}
+
+void BaseDockWidget::setTitle(const QString& title)
+{
+    if (!mTitleBarWidget) { return; }
+    mTitleBarWidget->setTitle(title);
+}
+
+void BaseDockWidget::resizeEvent(QResizeEvent *event)
+{
+    QDockWidget::resizeEvent(event);
+
+    if (mTitleBarWidget) {
+        mTitleBarWidget->resizeEvent(event);
+    }
 }
