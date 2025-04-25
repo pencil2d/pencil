@@ -28,6 +28,8 @@ namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
 
+    bool isDarkMode() { return false; }
+
     void initialise()
     {
         /* If running as an AppImage, sets GStreamer environment variables to ensure
