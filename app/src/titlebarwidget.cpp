@@ -107,10 +107,10 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
     });
 
     mMenu = new QMenu(this);
-    mMenu->addAction(closeIcon, tr("Close"), [=] {
+    mMenu->addAction(closeHoverButtonRes.lightMode, tr("Close"), [=] {
         emit closeButtonPressed();
     });
-    mDockAction = mMenu->addAction(dockIcon, "", [=] {
+    mDockAction = mMenu->addAction(dockHoverButtonRes.lightMode, "", [=] {
         emit undockButtonPressed();
     });
 
