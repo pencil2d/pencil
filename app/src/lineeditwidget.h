@@ -1,9 +1,7 @@
 /*
 
 Pencil2D - Traditional Animation Software
-Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2008-2009 Mj Mendoza IV
-Copyright (C) 2012-2020 Matthew Chiawen Chang
+Copyright (C) 2025 Oliver S. Larsen
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -38,6 +36,7 @@ public:
     void mouseDoubleClickEvent(QMouseEvent *) override;
     void focusOutEvent(QFocusEvent* event) override;
     void keyPressEvent(QKeyEvent* event) override;
+    void contextMenuEvent(QContextMenuEvent *event) override;
 
     void deselect();
 

@@ -1,9 +1,7 @@
 /*
 
 Pencil2D - Traditional Animation Software
-Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
-Copyright (C) 2008-2009 Mj Mendoza IV
-Copyright (C) 2012-2020 Matthew Chiawen Chang
+Copyright (C) 2025 Oliver S. Larsen
 
 This program is free software; you can redistribute it and/or
 modify it under the terms of the GNU General Public License
@@ -29,25 +27,46 @@ LineEditWidget::LineEditWidget(QWidget* parent, QString text)
 
     setStyleSheet("LineEditWidget[readOnly=true] {"
                   "background-color: transparent;"
-                  "border: 0;"
+                  "selection-color: palette(bright-text);"
+                  "selection-background-color: palette(dark);"
+                  "border: none;"
                   "}");
     setText(text);
     setReadOnly(true);
+}
+
+void LineEditWidget::contextMenuEvent(QContextMenuEvent *event)
+{
+    if (isReadOnly()) {
+        // No context menu is shown while
+        // we're in read only mode.
+        return;
+    }
+
+    QLineEdit::contextMenuEvent(event);
 }
 
 void LineEditWidget::mousePressEvent(QMouseEvent* event)
 {
     QLineEdit::mousePressEvent(event);
 
-    // The event is ignored explicitly
-    // so that we can allow it to propergate up the chain
-    event->ignore();
+    const QPoint& parentPos = mapToParent(event->pos());
+    if (this->geometry().contains(parentPos) && !isReadOnly()) {
+        event->accept();
+    } else {
+        event->ignore();
+    }
 }
 
 void LineEditWidget::mouseMoveEvent(QMouseEvent* event)
 {
     QLineEdit::mouseMoveEvent(event);
 
+    if (isReadOnly()) {
+        // While we're not editing, we don't
+        // allow selecting the text.
+        setSelection(0,0);
+    }
     // The event is ignored explicitly
     // so that we can allow it to propergate up the chain
     event->ignore();
@@ -81,7 +100,12 @@ void LineEditWidget::mouseDoubleClickEvent(QMouseEvent* event)
 void LineEditWidget::focusOutEvent(QFocusEvent *event)
 {
     QLineEdit::focusOutEvent(event);
-    setReadOnly(true);
+
+    if (!geometry().contains(mapToParent(mapFromGlobal(QCursor::pos())))) {
+        // If we're clicking outside the widget, set the widget back to read only.
+        setReadOnly(true);
+    }
+
     reloadStylesheet();
 }
 
@@ -94,17 +118,25 @@ void LineEditWidget::reloadStylesheet()
 
 void LineEditWidget::keyPressEvent(QKeyEvent* event)
 {
+    // We need to get the readonly value here because
+    // QLineEdit othewise negates our intended behavour.
+    bool toggle = isReadOnly();
+
     QLineEdit::keyPressEvent(event);
 
+    bool eventAccepted = false;
     if (event->key() == Qt::Key_Return) {
-        setReadOnly(true);
+        setReadOnly(!toggle);
+        reloadStylesheet();
+        eventAccepted = true;
     } else if (event->key() == Qt::Key_Escape) {
         undo();
         setReadOnly(true);
+        reloadStylesheet();
+        eventAccepted = true;
     }
-    reloadStylesheet();
 
-    event->accept();
+    event->setAccepted(eventAccepted);
 }
 
 void LineEditWidget::deselect()
