@@ -33,6 +33,13 @@ LineEditWidget::LineEditWidget(QWidget* parent, QString text)
                   "}");
     setText(text);
     setReadOnly(true);
+
+    connect(this, &QLineEdit::selectionChanged, this, [=] {
+
+        if (isReadOnly()) {
+            mOldText = displayText();
+        }
+    });
 }
 
 void LineEditWidget::contextMenuEvent(QContextMenuEvent *event)
@@ -129,8 +136,11 @@ void LineEditWidget::keyPressEvent(QKeyEvent* event)
         setReadOnly(!toggle);
         reloadStylesheet();
         eventAccepted = true;
-    } else if (event->key() == Qt::Key_Escape) {
-        undo();
+    } else if (event->key() == Qt::Key_Escape && !isReadOnly()) {
+        if (!mOldText.isEmpty()) {
+            setText(mOldText);
+            mOldText = "";
+        }
         setReadOnly(true);
         reloadStylesheet();
         eventAccepted = true;
@@ -145,4 +155,15 @@ void LineEditWidget::deselect()
     setReadOnly(true);
 
     reloadStylesheet();
+}
+
+void LineEditWidget::setReadOnly(bool readOnly)
+{
+    QLineEdit::setReadOnly(readOnly);
+
+    if (readOnly) {
+        // This is silly but apparently it's
+        // the only way to reset the internal undo/redo history...
+        setText(text());
+    }
 }

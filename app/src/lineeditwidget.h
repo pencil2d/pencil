@@ -40,10 +40,16 @@ public:
 
     void deselect();
 
+    /// Sets the widget readOnly and clears the internal undo stack.
+    void setReadOnly(bool readOnly);
+
 private:
+
     // The stylesheet has to be updated on every event
     // where the read-only property is changed
     void reloadStylesheet();
+
+    QString mOldText;
 
 };
 
