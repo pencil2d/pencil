@@ -55,11 +55,13 @@ public:
 private:
     QList<QPointF> mPoints;
     bool mClosedPathOverrideEnabled = false;
-
+    bool snapAngleEnabled = false;
+    int snapAngleDegrees;
+    QPointF getSnappedPoint(const QPointF& lastPoint, const QPointF& currentPoint);
     void drawPolyline(QList<QPointF> points, QPointF endPoint);
     void removeLastPolylineSegment();
     void cancelPolyline();
-    void endPolyline(QList<QPointF> points);
+    void endPolyline(QList<QPointF> points);   
 };
 
 #endif // POLYLINETOOL_H
