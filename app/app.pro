@@ -117,6 +117,7 @@ HEADERS += \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
+    src/bitmapcoloring.h \
     src/presetdialog.h \
     src/repositionframesdialog.h \
     src/commandlineparser.h \
@@ -168,6 +169,7 @@ SOURCES += \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
+    src/bitmapcoloring.cpp \
     src/presetdialog.cpp \
     src/repositionframesdialog.cpp \
     src/app_util.cpp \
@@ -207,6 +209,7 @@ FORMS += \
     ui/filespage.ui \
     ui/toolspage.ui \
     ui/toolboxwidget.ui \
+    ui/bitmapcoloringwidget.ui \
     ui/presetdialog.ui
 
 GIT {
