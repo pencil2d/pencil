@@ -27,6 +27,7 @@ class SpinSlider;
 class DisplayOptionWidget;
 class ToolOptionWidget;
 class Editor;
+class ToolBoxLayout;
 
 namespace Ui {
 class ToolBoxWidget;
@@ -60,12 +61,18 @@ public slots:
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
+    QSize minimumSizeHint() const override;
 
 private:
+    void updateLayoutAlignment();
     void deselectAllTools();
     void toolOn(ToolType toolType, QToolButton* toolButton);
 
+    int getMinHeightForWidth(int width) const;
+
     Ui::ToolBoxWidget* ui = nullptr;
+
+    ToolBoxLayout* mFlowlayout = nullptr;
 };
 
 #endif
