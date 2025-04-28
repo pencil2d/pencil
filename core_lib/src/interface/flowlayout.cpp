@@ -217,7 +217,7 @@ RowLayoutInfo FlowLayout::alignHCenterRow(int startIndex, int count, const QRect
 
         const QSize& itemSize = rowItem->sizeHint();
         rowItem->setGeometry(QRect(QPoint(rowOffsetX, rowItem->geometry().y()), itemSize));
-        rowOffsetX += spaceX + itemSize.width();
+        rowOffsetX += row.spacing + itemSize.width();
     }
 
     return row;
@@ -295,10 +295,10 @@ int FlowLayout::applyLayout(const QRect &rect) const
             spaceY = wid->style()->layoutSpacing(
                 QSizePolicy::PushButton, QSizePolicy::PushButton, Qt::Vertical);
 
-        int rowWidth = calculateRowWidth(0, currentRowCount, spaceX);
+        int startRowIndex = i - currentRowCount;
+        int rowWidth = calculateRowWidth(startRowIndex, currentRowCount, spaceX);
 
         if (currentRowCount > 0) {
-            int startRowIndex = i - currentRowCount;
             maxRowCount = qMax(currentRowCount, maxRowCount);
 
             if (rowWidth + item->sizeHint().width() + spaceX >= effectiveRect.width()) {
@@ -311,8 +311,6 @@ int FlowLayout::applyLayout(const QRect &rect) const
                 y = y + lineHeight + spaceY;
                 lineHeight = 0;
                 currentRowCount = 0;
-            } else if (maxRowCount == itemList.length() - 1) {
-                rowAlignments.append(alignHCenterRow(startRowIndex, currentRowCount, effectiveRect, spaceX));
             }
         }
 
@@ -322,7 +320,9 @@ int FlowLayout::applyLayout(const QRect &rect) const
         currentRowCount += 1;
     }
 
-    if (currentRowCount > 0) {
+    if (maxRowCount == itemList.length() - 1) {
+        alignHCenterRow(itemList.length() - currentRowCount, currentRowCount, effectiveRect, spaceX);
+    } else if (currentRowCount > 0) {
         lastLineAlignment(itemList.length() - currentRowCount, currentRowCount, rowAlignments.last(), effectiveRect);
     }
 
