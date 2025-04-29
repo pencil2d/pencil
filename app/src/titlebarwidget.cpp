@@ -143,7 +143,8 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
     mContainerLayout->setContentsMargins(0,0,0,0);
 
     containerWidget->setLayout(mContainerLayout);
-    containerWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
+    containerWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    containerWidget->setMinimumSize(QSize(1,1));
 
     return containerWidget;
 }
