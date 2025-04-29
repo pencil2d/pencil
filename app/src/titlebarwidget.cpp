@@ -20,7 +20,7 @@ GNU General Public License for more details.
 #include <QVBoxLayout>
 #include <QLabel>
 #include <QIcon>
-#include <QPushButton>
+#include <QToolButton>
 #include <QResizeEvent>
 #include <QStyle>
 #include <QPainter>
@@ -57,8 +57,9 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
 
     mContainerLayout = new QHBoxLayout(parent);
 
-    mCloseButton = new QPushButton(parent);
-    mCloseButton->setFlat(true);
+    mCloseButton = new QToolButton(parent);
+
+    mCloseButton->setStyleSheet(flatButtonStylesheet());
 
     QSize iconSize = QSize(14,14);
     QSize padding = QSize(2,2);
@@ -80,7 +81,7 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
                                                                  closeHoverButtonRes,
                                                             this));
 
-    connect(mCloseButton, &QPushButton::clicked, this, [this] {
+    connect(mCloseButton, &QToolButton::clicked, this, [this] {
         emit closeButtonPressed();
     });
 
@@ -92,17 +93,17 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
     dockHoverButtonRes.lightMode = QIcon("://icons/themes/playful/window/window-float-button-active.svg");
     dockHoverButtonRes.darkMode = dockHoverButtonRes.lightMode;
 
-    mDockButton = new QPushButton(parent);
+    mDockButton = new QToolButton(parent);
 
     QIcon dockIcon = dockButtonRes.iconForMode(isDarkmode);
     mDockButton->setIcon(dockIcon);
-    mDockButton->setFlat(true);
+    mDockButton->setStyleSheet(flatButtonStylesheet());
 
     mDockButton->setIconSize(iconSize);
     mDockButton->setFixedSize(iconSize + padding);
     mDockButton->installEventFilter(new ButtonAppearanceWatcher(dockButtonRes, dockHoverButtonRes, this));
 
-    connect(mDockButton, &QPushButton::clicked, this, [this] {
+    connect(mDockButton, &QToolButton::clicked, this, [this] {
        emit undockButtonPressed();
     });
 
@@ -145,6 +146,13 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
     containerWidget->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
 
     return containerWidget;
+}
+
+QString TitleBarWidget::flatButtonStylesheet() const
+{
+    return "QToolButton {"
+            "border: 0;"
+            "}";
 }
 
 void TitleBarWidget::setTitle(const QString &title)
