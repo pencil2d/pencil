@@ -65,6 +65,8 @@ public:
     void GotoPrevKeyFrame();
     Status addNewKey();
 
+    void resetAllTools();
+
     /** Will insert a keyframe at the current position and push connected frames to the right */
     Status insertKeyFrameAtCurrentPosition();
     void removeKey();
