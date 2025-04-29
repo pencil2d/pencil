@@ -23,8 +23,8 @@ GNU General Public License for more details.
 
 class QLabel;
 class QHBoxLayout;
-class QPushButton;
 class QMenu;
+class QToolButton;
 
 class TitleBarWidget : public QWidget
 {
@@ -44,6 +44,7 @@ signals:
     void undockButtonPressed();
 
 private:
+    QString flatButtonStylesheet() const;
     void showEvent(QShowEvent* event) override;
     void hideButtons(bool hide);
     void hideButtonsIfNeeded(int width);
@@ -54,8 +55,8 @@ private:
     QLayout* mContainerLayout = nullptr;
 
     QLabel* mTitleLabel = nullptr;
-    QPushButton* mCloseButton = nullptr;
-    QPushButton* mDockButton = nullptr;
+    QToolButton* mCloseButton = nullptr;
+    QToolButton* mDockButton = nullptr;
 
     QMenu* mMenu = nullptr;
     QAction* mDockAction = nullptr;
