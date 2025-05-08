@@ -26,28 +26,24 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "undoredomanager.h"
 
-SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
+SelectTool::SelectTool(QObject* parent) : TransformTool(parent)
 {
 }
 
 void SelectTool::loadSettings()
 {
-    properties.width = -1;
-    properties.feather = -1;
-    properties.stabilizerLevel = -1;
-    properties.useAA = -1;
-    QSettings settings(PENCIL2D, PENCIL2D);
-    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
-    mPropertyEnabled[SHOWSELECTIONINFO] = true;
-}
-
-void SelectTool::saveSettings()
-{
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    settings.setValue("ShowSelectionInfo", properties.showSelectionInfo);
+    QHash<int, PropertyInfo> info;
 
-    settings.sync();
+    mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
+
+    info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
+    mSettings->load(typeName(), settings, info);
+
+    if (mSettings->requireMigration(settings, 1)) {
+        mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, settings.value("ShowSelectionInfo", false).toBool());
+    }
 }
 
 QCursor SelectTool::cursor()
@@ -88,16 +84,6 @@ QCursor SelectTool::cursor()
         break;
     }
     return QCursor(mCursorPixmap);
-}
-
-void SelectTool::resetToDefault()
-{
-    setShowSelectionInfo(false);
-}
-
-void SelectTool::setShowSelectionInfo(const bool b)
-{
-    properties.showSelectionInfo = b;
 }
 
 void SelectTool::beginSelection(Layer* currentLayer, const QPointF& pos)
@@ -308,7 +294,7 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
     }
 
     // Follow the generic behavior anyway
-    return BaseTool::keyPressEvent(event);
+    return TransformTool::keyPressEvent(event);
 }
 
 QPointF SelectTool::offsetFromPressPos(const QPointF& pos)
