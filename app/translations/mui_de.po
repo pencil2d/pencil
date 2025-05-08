@@ -1,14 +1,14 @@
 # 
 # Translators:
-# Jakob <j5lx@fmail.co.uk>, 2023
+# Jakob <j5lx@fmail.co.uk>, 2024
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-09-22 15:26+0200\n"
-"PO-Revision-Date: 2023-09-22 14:10+0000\n"
-"Last-Translator: Jakob <j5lx@fmail.co.uk>, 2023\n"
+"PO-Revision-Date: 2024-05-19 14:29+0000\n"
+"Last-Translator: Jakob <j5lx@fmail.co.uk>, 2024\n"
 "Language-Team: German (https://app.transifex.com/pencil2d/teams/76612/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
