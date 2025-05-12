@@ -815,6 +815,470 @@ BitmapImage* BitmapImage::scanToTransparent(BitmapImage *img, const int threshol
     return img;
 }
 
+BitmapImage* BitmapImage::prepDrawing(BitmapImage* img, bool redEnabled, bool greenEnabled, bool blueEnabled)
+{
+    Q_ASSERT(img != nullptr);
+
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            QRgb rgba = img->constScanLine(x, y);
+            if (qAlpha(rgba) > 0)
+            {
+                int redValue = qRed(rgba);
+                int greenValue = qGreen(rgba);
+                int blueValue = qBlue(rgba);
+
+                if(redValue > greenValue + COLORDIFF && redValue > blueValue + COLORDIFF)
+                {   // IF Red line
+                    if (redEnabled)
+                    {
+                        img->scanLine(x, y, redline);
+                    }
+                    else
+                    {
+                        img->scanLine(x, y, transp);
+                    }
+                }
+
+                else if(greenValue > redValue + COLORDIFF && greenValue > blueValue + COLORDIFF)
+                {   // IF Green line
+                    if (greenEnabled)
+                    {
+                        img->scanLine(x, y, greenline);
+                    }
+                    else
+                    {
+                        img->scanLine(x, y, transp);
+                    }
+                }
+                else if(blueValue > redValue + COLORDIFF && blueValue > greenValue + COLORDIFF)
+                {   // IF Blue line
+                    if (blueEnabled)
+                    {
+                        img->scanLine(x, y, blueline);
+                    }
+                    else
+                    {
+                        img->scanLine(x, y, transp);
+                    }
+                }
+            }
+
+        }
+    }
+    img->modification();
+    return img;
+}
+
+void BitmapImage::traceLine(BitmapImage* img, bool blackEnabled, bool redEnabled, bool greenEnabled, bool blueEnabled)
+{
+    Q_ASSERT(img != nullptr);
+
+    QRgb rgba;
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            rgba = img->constScanLine(x, y);
+
+            int redValue = qRed(rgba);
+            int greenValue = qGreen(rgba);
+            int blueValue = qBlue(rgba);
+            int alphaValue = qAlpha(rgba);
+            if (alphaValue > 0)
+            {
+                if(redValue > greenValue && redValue > blueValue)
+                {
+                    if(redEnabled)
+                        img->scanLine(x, y, redline);
+                    else
+                        img->scanLine(x, y, transp);
+                }
+                else if(blueValue > redValue && blueValue > greenValue)
+                {
+                    if(blueEnabled)
+                        img->scanLine(x, y, blueline);
+                    else
+                        img->scanLine(x, y, transp);
+                }
+                else if(greenValue > redValue && greenValue > blueValue)
+                {
+                    if(greenEnabled)
+                        img->scanLine(x, y, greenline);
+                    else
+                        img->scanLine(x, y, transp);
+                }
+                else
+                {
+                    if (blackEnabled && alphaValue > TRANSP_THRESHOLD)
+                    {
+                        img->scanLine(x, y, blackline);
+                    }
+                    else if (blackEnabled)
+                        img->scanLine(x, y, transp);
+                }
+            }
+        }
+    }
+    img->modification();
+}
+
+void BitmapImage::eraseRedGreenBlueLines(BitmapImage *img)
+{
+    Q_ASSERT(img != nullptr);
+
+    QRgb rgba;
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            rgba = img->constScanLine(x, y);
+            if (rgba == redline || rgba == greenline || rgba == blueline)
+            {
+                img->scanLine(x, y, transp);
+            }
+        }
+    }
+    img->modification();
+}
+
+void BitmapImage::fillSpotAreas(BitmapImage *img)
+{
+    Q_ASSERT(img != nullptr);
+
+    // fill areas size 'area' or less with appropriate color
+    QVector<QPoint> points;
+    points.clear();
+    QRgb active;
+    QRgb previous = blackline;
+    for (int x = img->left() + 1; x < img->right(); x++)
+    {
+        for (int y = img->top() + 1; y < img->bottom(); y++)
+        {
+            active = img->constScanLine(x, y);
+            if (qAlpha(active) == 0)
+            {
+                points.append(QPoint(x, y));
+                int areaSize = fillWithColor(QPoint(x, y), transp, rosa, img);
+                if (areaSize <= mSpotArea)
+                {   // replace rosa with last color
+                    fillWithColor(points.last(), rosa, previous, img);
+                    points.removeLast();
+                }
+            }
+            previous = active;
+        }
+    }
+    // replace rosa with trans
+    while (!points.isEmpty()) {
+        fillWithColor(points[0], rosa, transp, img);
+        points.removeFirst();
+    }
+    img->modification();
+}
+
+void BitmapImage::toThinLine(BitmapImage * img, bool black, bool red, bool green, bool blue)
+{
+    Q_ASSERT(img != nullptr);
+
+    bool N = true, E = true, S = true, W = true, pixelRemoved, search;
+
+    QList<QRgb> colors;
+    if (black) colors.append(blackline);
+    if (red) colors.append(redline);
+    if (green) colors.append(greenline);
+    if (blue) colors.append(blueline);
+
+    QRgb pixColor;
+
+    while (N || E || S || W)
+    {
+        if (N)  // from NORTH
+        {
+            // set 'pixelRemoved' to false. 'pixelRemoved' is set to true whenever a pixel is removed
+            pixelRemoved = false;
+            // 'search' is true while pixels are transparent
+            // when blackline pixel is found, 'search' is set to false until next transparent pixel
+            search = true;
+            for (int x = img->left(); x < img->right(); x++)
+            {
+                for (int y = img->top(); y < img->bottom(); y++)
+                {
+                    if (search)
+                    {
+                        pixColor = img->constScanLine(x,y);
+                        if (qAlpha(pixColor) > 0)
+                        {
+                            search = false;
+                            if (qAlpha(img->constScanLine(x,y+1)) > 0 && colors.contains(pixColor))
+                            {
+                                if ((qAlpha(img->constScanLine(x-1,y-1)) == 0 && qAlpha(img->constScanLine(x+1,y-1)) == 0) &&
+                                        (qAlpha(img->constScanLine(x+1, y)) > 0 || qAlpha(img->constScanLine(x-1, y)) >0 ||
+                                         qAlpha(img->constScanLine(x+1, y+1)) > 0 || qAlpha(img->constScanLine(x-1, y+1)) >0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                                else if ((qAlpha(img->constScanLine(x-1,y-1)) > 0 && qAlpha(img->constScanLine(x+1,y-1)) > 0) &&
+                                         (qAlpha(img->constScanLine(x+1,y)) > 0 && qAlpha(img->constScanLine(x-1,y)) > 0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                                else if ((qAlpha(img->constScanLine(x-1,y-1)) > 0 && qAlpha(img->constScanLine(x-1,y)) > 0) ||
+                                         (qAlpha(img->constScanLine(x+1,y-1)) > 0 && qAlpha(img->constScanLine(x+1,y)) > 0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->constScanLine(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            N = pixelRemoved; // if none is removed, N = false
+        }
+        if (E)  // from EAST
+        {
+            pixelRemoved = false;
+            search = true;
+            for (int y = img->top(); y < img->bottom(); y++)
+            {
+                for (int x = img->right(); x > img->left(); x--)
+                {
+                    if (search)
+                    {
+                        pixColor = img->constScanLine(x,y);
+                        if (qAlpha(pixColor) > 0)
+                        {
+                            search = false;
+                            if (qAlpha(img->constScanLine(x-1,y)) > 0 && colors.contains(pixColor))
+                            {
+                                if ((qAlpha(img->constScanLine(x+1,y-1)) == 0 && qAlpha(img->constScanLine(x+1,y+1)) == 0) &&
+                                        (qAlpha(img->constScanLine(x,y-1)) > 0 || qAlpha(img->constScanLine(x,y+1)) >0 ||
+                                         qAlpha(img->constScanLine(x-1,y-1)) > 0 || qAlpha(img->constScanLine(x-1,y+1)) >0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                                else if ((qAlpha(img->constScanLine(x+1,y+1)) > 0 && qAlpha(img->constScanLine(x+1,y-1)) > 0) &&
+                                         (qAlpha(img->constScanLine(x,y+1)) > 0 && qAlpha(img->constScanLine(x,y-1)) > 0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                                else if ((qAlpha(img->constScanLine(x+1,y+1)) > 0 && qAlpha(img->constScanLine(x,y+1)) > 0) ||
+                                         (qAlpha(img->constScanLine(x+1,y-1)) > 0 && qAlpha(img->constScanLine(x,y-1)) > 0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->constScanLine(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            E = pixelRemoved; // if none is removed, E = false
+        }
+        if (S)  // from SOUTH
+        {
+            pixelRemoved = false;
+            search = true;
+            for (int x = img->left(); x < img->right(); x++)
+            {
+                for (int y = img->bottom(); y > img->top(); y--)
+                {
+                    if (search)
+                    {
+                        pixColor = img->constScanLine(x,y);
+                        if (qAlpha(pixColor) > 0)
+                        {
+                            search = false;
+                            if (qAlpha(img->constScanLine(x,y-1)) > 0 && colors.contains(pixColor))
+                            {
+                                if ((qAlpha(img->constScanLine(x-1,y+1)) == 0 && qAlpha(img->constScanLine(x+1,y+1)) == 0) &&
+                                        (qAlpha(img->constScanLine(x-1, y)) > 0 || qAlpha(img->constScanLine(x+1, y)) >0 ||
+                                         qAlpha(img->constScanLine(x-1, y-1)) > 0 || qAlpha(img->constScanLine(x+1, y-1)) >0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                                else if ((qAlpha(img->constScanLine(x-1,y+1)) > 0 && qAlpha(img->constScanLine(x+1,y+1)) > 0) &&
+                                         (qAlpha(img->constScanLine(x+1,y)) > 0 && qAlpha(img->constScanLine(x-1,y)) > 0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                                else if ((qAlpha(img->constScanLine(x-1,y+1)) > 0 && qAlpha(img->constScanLine(x-1,y)) > 0) ||
+                                         (qAlpha(img->constScanLine(x+1,y+1)) > 0 && qAlpha(img->constScanLine(x+1,y)) > 0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->constScanLine(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            S = pixelRemoved; // if none is removed, S = false
+        }
+        if (W)  // from WEST
+        {
+            pixelRemoved = false;
+            search = true;
+            for (int y = img->top(); y <= img->bottom(); y++)
+            {
+                for (int x = img->left(); x < img->right(); x++)
+                {
+                    if (search)
+                    {
+                        pixColor = img->constScanLine(x,y);
+                        if (qAlpha(pixColor) > 0)
+                        {
+                            search = false;
+                            if (qAlpha(img->constScanLine(x+1,y)) > 0 && colors.contains(pixColor))
+                            {
+                                if ((qAlpha(img->constScanLine(x-1,y-1)) == 0 && qAlpha(img->constScanLine(x-1,y+1)) == 0) &&
+                                        (qAlpha(img->constScanLine(x,y-1)) > 0 || qAlpha(img->constScanLine(x,y+1)) >0 ||
+                                         qAlpha(img->constScanLine(x+1,y-1)) > 0 || qAlpha(img->constScanLine(x+1,y+1)) >0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                                else if ((qAlpha(img->constScanLine(x-1,y+1)) > 0 && qAlpha(img->constScanLine(x-1,y-1)) > 0) &&
+                                         (qAlpha(img->constScanLine(x,y+1)) > 0 && qAlpha(img->constScanLine(x,y-1)) > 0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                                else if ((qAlpha(img->constScanLine(x-1,y+1)) > 0 && qAlpha(img->constScanLine(x,y+1)) > 0) ||
+                                         (qAlpha(img->constScanLine(x-1,y-1)) > 0 && qAlpha(img->constScanLine(x,y-1)) > 0))
+                                {
+                                    img->scanLine(x, y, transp);
+                                    pixelRemoved = true;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (qAlpha(img->constScanLine(x,y)) == 0)
+                            search = true;
+                    }
+                }
+            }
+            W = pixelRemoved; // if none is removed, W = false
+        }
+    }
+    img->modification();
+}
+
+void BitmapImage::blendLines(BitmapImage *img, bool black, bool red, bool green, bool blue)
+{
+    Q_ASSERT(img != nullptr);
+
+    int r, g, b, a;         //red, green, blue, alpha
+    QList<QPoint> points;   // QPoints to add in calculation
+    QList<QRgb> rgblist;    // QRgb's that should be excluded
+    if (black) rgblist << blackline;
+    if (red) rgblist << redline;
+    if (green) rgblist << greenline;
+    if (blue) rgblist << blueline;
+    for (int x = img->left(); x <= img->right(); x++)
+    {
+        for (int y = img->top(); y <= img->bottom(); y++)
+        {
+            points.clear();
+            r=0; g=0; b=0; a=0;
+            if (rgblist.contains(img->constScanLine(x,y)))
+            {
+                if (!rgblist.contains(img->pixel(x-1, y-1))) points.append(QPoint(x-1, y-1));
+                if (!rgblist.contains(img->pixel(x-1, y  ))) points.append(QPoint(x-1, y  ));
+                if (!rgblist.contains(img->pixel(x-1, y+1))) points.append(QPoint(x-1, y+1));
+                if (!rgblist.contains(img->pixel(x  , y-1))) points.append(QPoint(x  , y-1));
+                if (!rgblist.contains(img->pixel(x  , y+1))) points.append(QPoint(x  , y+1));
+                if (!rgblist.contains(img->pixel(x+1, y-1))) points.append(QPoint(x+1, y-1));
+                if (!rgblist.contains(img->pixel(x+1, y  ))) points.append(QPoint(x+1, y  ));
+                if (!rgblist.contains(img->pixel(x+1, y+1))) points.append(QPoint(x+1, y+1));
+                for (int i = 0; i < points.size(); i++)
+                {
+                    r += static_cast<int>(qPow(qRed(img->pixel(points.at(i))), 2));
+                    g += static_cast<int>(qPow(qGreen(img->pixel(points.at(i))), 2));
+                    b += static_cast<int>(qPow(qBlue(img->pixel(points.at(i))), 2));
+                    a += static_cast<int>(qPow(qAlpha(img->pixel(points.at(i))), 2));
+                }
+                r = static_cast<int>(sqrt(r/points.size()));
+                g = static_cast<int>(sqrt(g/points.size()));
+                b = static_cast<int>(sqrt(b/points.size()));
+                a = static_cast<int>(sqrt(a/points.size()));
+                img->scanLine(x, y, qRgba(r, g, b, a));
+            }
+        }
+    }
+    img->modification();
+}
+
+int BitmapImage::fillWithColor(QPoint point, QRgb orgColor, QRgb newColor, BitmapImage *img)
+{
+    Q_ASSERT(img != nullptr);
+
+    QList<QPoint> fillList;
+    fillList.clear();
+    // fill first pixel
+    img->scanLine(point.x(), point.y(), newColor);
+    int pixels = 1;
+    fillList.append(point);
+
+    QRect rect = img->bounds();
+    while (!fillList.isEmpty())
+    {
+        QPoint tmp = fillList.takeFirst();
+        if (rect.contains(QPoint(tmp.x() + 1, tmp.y())) && img->pixel(QPoint(tmp.x() + 1, tmp.y())) == orgColor)
+        {
+            img->scanLine(tmp.x() + 1, tmp.y(), newColor);
+            fillList.append(QPoint(tmp.x() + 1, tmp.y()));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x(), tmp.y() + 1)) && img->pixel(QPoint(tmp.x(), tmp.y() + 1)) == orgColor)
+        {
+            img->scanLine(tmp.x(), tmp.y() + 1, newColor);
+            fillList.append(QPoint(tmp.x(), tmp.y() + 1));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x() - 1, tmp.y())) && img->pixel(QPoint(tmp.x() - 1, tmp.y())) == orgColor)
+        {
+            img->scanLine(tmp.x() - 1, tmp.y(), newColor);
+            fillList.append(QPoint(tmp.x() - 1, tmp.y()));
+            pixels++;
+        }
+        if (rect.contains(QPoint(tmp.x(), tmp.y() - 1)) && img->pixel(QPoint(tmp.x(), tmp.y() - 1)) == orgColor)
+        {
+            img->scanLine(tmp.x(), tmp.y() - 1, newColor);
+            fillList.append(QPoint(tmp.x(), tmp.y() - 1));
+            pixels++;
+        }
+    }
+    img->modification();
+    return pixels;
+}
+
 Status BitmapImage::writeFile(const QString& filename)
 {
     if (!mImage.isNull())
