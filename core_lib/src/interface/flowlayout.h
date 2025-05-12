@@ -47,6 +47,22 @@
 ** $QT_END_LICENSE$
 **
 ****************************************************************************/
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
 
 #ifndef FLOWLAYOUT_H
 #define FLOWLAYOUT_H
@@ -54,6 +70,12 @@
 #include <QLayout>
 #include <QRect>
 #include <QStyle>
+
+struct RowLayoutInfo {
+    int startIndex;
+    int startX;
+    int spacing;
+};
 
 class FlowLayout : public QLayout
 {
@@ -75,13 +97,26 @@ public:
     QSize sizeHint() const override;
     QLayoutItem *takeAt(int index) override;
 
-private:
-    int doLayout(const QRect &rect, bool testOnly) const;
-    int smartSpacing(QStyle::PixelMetric pm) const;
+    int rows() const { return mNumberOfRows; }
+
+protected:
+    virtual void lastLineAlignment(int startIndex, int count, RowLayoutInfo rowInfo, const QRect& effectiveRect) const;
 
     QList<QLayoutItem *> itemList;
-    int m_hSpace;
-    int m_vSpace;
+    int m_hSpace = 0;
+    int m_vSpace = 0;
+
+private:
+    RowLayoutInfo alignHCenterRow(int startIndex, int count, const QRect &effectiveRect, int spaceX) const;
+    RowLayoutInfo alignJustifiedRow(int startIndex, int count, const QRect& effectiveRect, int spaceX) const;
+
+    int calculateHeightForWidth(int width) const;
+    int calculateRowWidth(int start, int end, int spacing) const;
+
+    int applyLayout(const QRect &rect) const;
+    int smartSpacing(QStyle::PixelMetric pm) const;
+
+    int mNumberOfRows = 0;
 };
 
 #endif // FLOWLAYOUT_H
