@@ -35,7 +35,7 @@ setup_linux() {
       libqt6svg6-dev qt6-wayland-dev libgl1-mesa-dev libarchive-tools ffmpeg \
       gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
       gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-alsa \
-      gstreamer1.0-pulseaudio git curl libfuse2
+      gstreamer1.0-pulseaudio git curl libfuse2 fuse qmake6 patchelf file
   fi
   echo "::endgroup::"
 }

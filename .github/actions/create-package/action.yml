@@ -6,6 +6,9 @@ inputs:
   qt:
     description: Qt Version
     required: true
+  bundler:
+    description: Bundler (Linux)
+    required: false
 outputs:
   output-basename:
     description: Output basename
@@ -21,4 +24,5 @@ runs:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
       INPUT_QT: ${{inputs.qt}}
+      INPUT_BUNDLER: ${{inputs.bundler}}
       IS_RELEASE: ${{ startsWith(github.ref, 'refs/heads/release/') }}
