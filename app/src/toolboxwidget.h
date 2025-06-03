@@ -44,8 +44,10 @@ public:
     void updateUI();
 
 public slots:
-    void setToolChecked(ToolType toolType);
-    void onLayerDidChange(int index);
+    void setActiveTool(ToolType toolType);
+
+public:
+
     void pencilOn();
     void eraserOn();
     void selectOn();
@@ -58,6 +60,10 @@ public slots:
     void brushOn();
     void smudgeOn();
 
+    void updateLayoutAlignment();
+    void deselectAllTools();
+    void toolOn(ToolType toolType, QToolButton* toolButton);
+
 protected:
     int getMinHeightForWidth(int width) const;
     QSize minimumSizeHint() const override;
@@ -65,10 +71,6 @@ protected:
     void resizeEvent(QResizeEvent* event) override;
 
 private:
-    void updateLayoutAlignment();
-    void deselectAllTools();
-    void toolOn(ToolType toolType, QToolButton* toolButton);
-
     FlowLayout* mFlowlayout = nullptr;
 
     Ui::ToolBoxWidget* ui = nullptr;

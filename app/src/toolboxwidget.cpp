@@ -129,8 +129,6 @@ void ToolBoxWidget::initUI()
     connect(ui->brushButton, &QToolButton::clicked, this, &ToolBoxWidget::brushOn);
     connect(ui->smudgeButton, &QToolButton::clicked, this, &ToolBoxWidget::smudgeOn);
 
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &ToolBoxWidget::onLayerDidChange);
-
     mFlowlayout = new ToolBoxLayout(nullptr, 3,3,3);
 
     mFlowlayout->addWidget(ui->pencilButton);
@@ -205,9 +203,8 @@ void ToolBoxWidget::updateUI()
 {
 }
 
-void ToolBoxWidget::setToolChecked(ToolType toolType)
+void ToolBoxWidget::setActiveTool(ToolType toolType)
 {
-    QToolButton* button = nullptr;
     switch (toolType) {
     case ToolType::BRUSH:
         brushOn();
@@ -335,13 +332,4 @@ void ToolBoxWidget::toolOn(ToolType toolType, QToolButton* toolButton)
         return;
     }
     mEditor->tools()->setCurrentTool(toolType);
-}
-
-void ToolBoxWidget::onLayerDidChange(int)
-{
-    BaseTool* currentTool = mEditor->tools()->currentTool();
-    if (currentTool->type() == MOVE || currentTool->type() == CAMERA)
-    {
-        moveOn();
-    }
 }

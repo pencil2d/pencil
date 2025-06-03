@@ -67,7 +67,7 @@ void ToolBoxDockWidget::initUI()
 
 void ToolBoxDockWidget::setActiveTool(ToolType type)
 {
-    mWidget->setToolChecked(type);
+    mWidget->setActiveTool(type);
 }
 
 void ToolBoxDockWidget::updateUI()
