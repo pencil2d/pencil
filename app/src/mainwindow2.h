@@ -33,7 +33,7 @@ class ColorPaletteWidget;
 class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
-class ToolBoxWidget;
+class ToolBoxDockWidget;
 class PreferencesDialog;
 class PreviewWidget;
 class ColorBox;
@@ -156,7 +156,7 @@ private:
     ColorBox*             mColorBox = nullptr;
     ColorPaletteWidget*   mColorPalette = nullptr;
     ToolOptionWidget*     mToolOptions = nullptr;
-    ToolBoxWidget*        mToolBox = nullptr;
+    ToolBoxDockWidget*        mToolBox = nullptr;
     RecentFileMenu*       mRecentFileMenu = nullptr;
     PreferencesDialog*    mPrefDialog = nullptr;
     //PreviewWidget*      mPreview = nullptr;

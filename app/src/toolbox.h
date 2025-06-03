@@ -14,11 +14,13 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#ifndef TOOLBOXWIDGET_H
-#define TOOLBOXWIDGET_H
+#ifndef TOOLBOXDOCKWIDGET_H
+#define TOOLBOXDOCKWIDGET_H
 
 #include "pencildef.h"
 #include "basedockwidget.h"
+
+#include "toolboxwidget.h"
 
 class QToolButton;
 class QGridLayout;
@@ -27,45 +29,25 @@ class SpinSlider;
 class DisplayOptionWidget;
 class ToolOptionWidget;
 class Editor;
+class FlowLayout;
 
-namespace Ui {
-class ToolBoxWidget;
-}
-
-class ToolBoxWidget : public BaseDockWidget
+class ToolBoxDockWidget : public BaseDockWidget
 {
     Q_OBJECT
 
 public:
-    ToolBoxWidget(QWidget* parent);
-    ~ToolBoxWidget() override;
+    ToolBoxDockWidget(QWidget* parent);
+    ~ToolBoxDockWidget() override;
 
     void initUI() override;
     void updateUI() override;
 
-public slots:
-    void onToolSetActive(ToolType toolType);
-    void onLayerDidChange(int index);
-    void pencilOn();
-    void eraserOn();
-    void selectOn();
-    void moveOn();
-    void penOn();
-    void handOn();
-    void polylineOn();
-    void bucketOn();
-    void eyedropperOn();
-    void brushOn();
-    void smudgeOn();
-
-protected:
-    int getMinHeightForWidth(int width) override;
+    void setActiveTool(ToolType type);
 
 private:
-    void deselectAllTools();
-    void toolOn(ToolType toolType, QToolButton* toolButton);
+    void onLayerDidChange(int);
 
-    Ui::ToolBoxWidget* ui = nullptr;
+    ToolBoxWidget* mWidget = nullptr;
 };
 
 #endif
