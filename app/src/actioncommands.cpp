@@ -30,6 +30,7 @@ GNU General Public License for more details.
 #include "viewmanager.h"
 #include "layermanager.h"
 #include "scribblearea.h"
+#include "toolmanager.h"
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "colormanager.h"
@@ -940,6 +941,12 @@ void ActionCommands::changeallKeyframeLineColor()
         }
         mEditor->updateFrame();
     }
+}
+
+
+void ActionCommands::resetAllTools()
+{
+    mEditor->tools()->resetAllTools();
 }
 
 void ActionCommands::help()
