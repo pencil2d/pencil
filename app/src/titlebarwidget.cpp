@@ -39,9 +39,7 @@ TitleBarWidget::TitleBarWidget(QWidget* parent)
     vLayout->setContentsMargins(3,4,3,4);
     vLayout->setSpacing(0);
 
-    mNormalTitleBarWidget = createNormalTitleBarWidget(this);
-
-    vLayout->addWidget(mNormalTitleBarWidget);
+    vLayout->addWidget(createCustomTitleBarWidget(this));
 
     setLayout(vLayout);
 }
@@ -50,12 +48,12 @@ TitleBarWidget::~TitleBarWidget()
 {
 }
 
-QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
+QWidget* TitleBarWidget::createCustomTitleBarWidget(QWidget* parent)
 {
     bool isDarkmode = PlatformHandler::isDarkMode();
     QWidget* containerWidget = new QWidget(parent);
 
-    mContainerLayout = new QHBoxLayout(parent);
+    QHBoxLayout* containerLayout = new QHBoxLayout(parent);
 
     mCloseButton = new QToolButton(parent);
 
@@ -81,9 +79,7 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
                                                                  closeHoverButtonRes,
                                                             this));
 
-    connect(mCloseButton, &QToolButton::clicked, this, [this] {
-        emit closeButtonPressed();
-    });
+    connect(mCloseButton, &QToolButton::clicked, this, &TitleBarWidget::closeButtonPressed);
 
     IconResource dockButtonRes;
     dockButtonRes.lightMode = QIcon("://icons/themes/playful/window/window-float-button-normal.svg");
@@ -130,19 +126,19 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
     mTitleLabel->setAlignment(Qt::AlignVCenter);
 
 #ifdef __APPLE__
-    mContainerLayout->addWidget(mCloseButton);
-    mContainerLayout->addWidget(mDockButton);
-    mContainerLayout->addWidget(mTitleLabel);
+    containerLayout->addWidget(mCloseButton);
+    containerLayout->addWidget(mDockButton);
+    containerLayout->addWidget(mTitleLabel);
 #else
-    mContainerLayout->addWidget(mTitleLabel);
-    mContainerLayout->addWidget(mDockButton);
-    mContainerLayout->addWidget(mCloseButton);
+    containerLayout->addWidget(mTitleLabel);
+    containerLayout->addWidget(mDockButton);
+    containerLayout->addWidget(mCloseButton);
 #endif
 
-    mContainerLayout->setSpacing(3);
-    mContainerLayout->setContentsMargins(0,0,0,0);
+    containerLayout->setSpacing(3);
+    containerLayout->setContentsMargins(0,0,0,0);
 
-    containerWidget->setLayout(mContainerLayout);
+    containerWidget->setLayout(containerLayout);
     containerWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     containerWidget->setMinimumSize(QSize(1,1));
 
@@ -151,9 +147,7 @@ QWidget* TitleBarWidget::createNormalTitleBarWidget(QWidget* parent)
 
 QString TitleBarWidget::flatButtonStylesheet() const
 {
-    return "QToolButton {"
-            "border: 0;"
-            "}";
+    return "QToolButton { border: 0; }";
 }
 
 void TitleBarWidget::setTitle(const QString &title)

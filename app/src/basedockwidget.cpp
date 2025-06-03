@@ -36,14 +36,12 @@ BaseDockWidget::BaseDockWidget(QWidget* pParent)
     }
 #endif
 
-    mTitleBarWidget = new TitleBarWidget();
-    mNoTitleBarWidget = new QWidget();
+    mTitleBarWidget = new TitleBarWidget(pParent);
+    mNoTitleBarWidget = new QWidget(pParent);
 
     setTitleBarWidget(mTitleBarWidget);
 
-    connect(mTitleBarWidget, &TitleBarWidget::closeButtonPressed, this, [this] {
-       close();
-    });
+    connect(mTitleBarWidget, &TitleBarWidget::closeButtonPressed, this, &BaseDockWidget::close);
 
     connect(mTitleBarWidget, &TitleBarWidget::undockButtonPressed, this, [this] {
        setFloating(!isFloating());

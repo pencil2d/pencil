@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include "appearance.h"
 
 class QLabel;
-class QHBoxLayout;
 class QMenu;
 class QToolButton;
 
@@ -49,10 +48,7 @@ private:
     void hideButtons(bool hide);
     void hideButtonsIfNeeded(int width);
 
-    QWidget* createNormalTitleBarWidget(QWidget* parent);
-
-    QWidget* mNormalTitleBarWidget = nullptr;
-    QLayout* mContainerLayout = nullptr;
+    QWidget* createCustomTitleBarWidget(QWidget* parent);
 
     QLabel* mTitleLabel = nullptr;
     QToolButton* mCloseButton = nullptr;
