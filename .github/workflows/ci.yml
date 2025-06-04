@@ -36,12 +36,12 @@ jobs:
           #  container:
           #  qt: 5
           - name: Qt 5 / Windows x86
-            os: windows-2019
+            os: windows-2022
             arch: win32_msvc2019
             container:
             qt: 5
           - name: Qt 5 / Windows x86_64
-            os: windows-2019
+            os: windows-2022
             arch: win64_msvc2019_64
             container:
             qt: 5
@@ -58,7 +58,7 @@ jobs:
           #  container:
           #  qt: 6
           - name: Qt 6 / Windows x86_64
-            os: windows-2019
+            os: windows-2022
             arch: win64_msvc2019_64
             container:
             qt: 6
