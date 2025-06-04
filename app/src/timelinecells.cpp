@@ -446,16 +446,15 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
     int recHeight = height - 4;
 
     const QList<int> selectedFrames = layer->getSelectedFramesByPos();
-    for (auto pair : layer->keyframes())
+    layer->foreachKeyFrame([&](KeyFrame* key)
     {
-        const KeyFrame* key = pair.second;
         int framePos = key->pos();
         int recWidth = standardWidth;
         int recLeft = getFrameX(framePos) - recWidth;
 
         // Selected frames are painted separately
         if (selectedFrames.contains(framePos)) {
-            continue;
+            return;
         }
 
         if (key->length() > 1)
@@ -475,7 +474,7 @@ void TimeLineCells::paintFrames(QPainter& painter, QColor trackCol, const Layer*
         }
 
         painter.drawRect(recLeft, recTop, recWidth, recHeight);
-    }
+    });
 }
 
 void TimeLineCells::paintCurrentFrameBorder(QPainter &painter, int recLeft, int recTop, int recWidth, int recHeight) const
