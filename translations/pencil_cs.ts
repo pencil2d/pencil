@@ -2590,119 +2590,119 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="202"/>
         <source>Copy</source>
         <translation>Kopírovat</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="574"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="588"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="247"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="261"/>
         <source>Paste from Previous Keyframe</source>
         <translation>Vložit z předchozího klíčového snímku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="686"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="359"/>
         <source>Paste</source>
         <translation>Vložit</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="708"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="381"/>
         <source>Flip selection vertically</source>
         <translation>Převrátit výběr svisle</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="710"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="383"/>
         <source>Flip selection horizontally</source>
         <translation>Převrátit výběr vodorovně</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="726"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="399"/>
         <source>Reposition frame</source>
         <translation>Přemístění snímku</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="810"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="819"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="828"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="860"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="481"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="490"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="499"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="531"/>
         <source>Could not open file</source>
         <translation>Nepodařilo se otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="811"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="482"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>Soubor, jejž jste vybral, je adresář, takže jej nelze otevřít. Pokud se pokoušíte o otevření projektu, který používá starou stavbu, otevřete, prosím, soubor končící na .pcl, ne složku s daty.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="820"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="491"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>Soubor, jejž jste vybral, není, takže jej nelze otevřít. Ujistěte se, prosím, že jste zadal správnou cestu a že je soubor přístupný a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="829"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="500"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Tento program nemá oprávnění ke čtení vybraného souboru. Ověřte, prosím, že máte oprávnění k tomuto souboru a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="861"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>Při pokusu o nahrání souboru se vyskytla neznámá chyba. Soubor nelze nahrát.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="944"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1074"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="614"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="744"/>
         <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
         <translation>Soubor nebyl nalezen v cestě &quot;%1&quot;. Zkontrolujte, prosím, zda je obrázek v zadaném umístění přítomen, a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="947"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1077"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="617"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="747"/>
         <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
 %1</source>
         <translation>Formát obrázku není podporován. Převeďte, prosím, obrázkový soubor do jednoho z následujících formátů, a zkuste to znovu:
 %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="951"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1081"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="621"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="751"/>
         <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
         <translation>Při čtení obrázku došlo k chybě. Zkontrolujte, zda je soubor platným obrázkem, a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="954"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1005"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1035"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1050"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1057"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1084"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="624"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="754"/>
         <source>Import failed</source>
         <translation>Nepodařilo se zavést</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="972"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1002"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1103"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="642"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="672"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="773"/>
         <source>Import Image</source>
         <translation>Zavést obrázek</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1005"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
         <source>You cannot import images into a vector layer.</source>
         <translation>Obrázky nelze do vektorové vrstvy zavést.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1035"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1050"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
         <source>You can only import images to a bitmap layer.</source>
         <translation>Obrázky lze zavádět pouze do bitmapové vrstvy.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1057"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
         <source>The selected image has a format that does not support animation.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1269"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="939"/>
         <source>Remove frame</source>
         <translation>Odstranit snímek</translation>
     </message>
@@ -2723,6 +2723,16 @@
         <location filename="../app/ui/errordialog.ui" line="68"/>
         <source>Description</source>
         <translation>Popis</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/errordialog.ui" line="88"/>
+        <source>This report contains vital information. Copy all of it when submitting a bug.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/errordialog.cpp" line="41"/>
+        <source>Copy to Clipboard</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3089,99 +3099,103 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="260"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="268"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="275"/>
         <source>Invalid Save Path</source>
         <translation>Neplatná ukládací cesta</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>The path is empty.</source>
         <translation>Cesta je prázdná.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Cesta (&quot;%1&quot;) ukazuje na adresář.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="254"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="269"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Adresář (&quot;%1&quot;) neexistuje.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="276"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Cesta (&quot;%1&quot;) není zapisovatelná.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="307"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="314"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="323"/>
         <source>Cannot Create Data Directory</source>
         <translation>Nelze vytvořit adresář s daty</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="299"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="315"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>Nepodařilo se vytvořit adresář &quot;%1&quot;. Ujistěte se, prosím, že máte dostatečná oprávnění.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="308"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="324"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; je soubor. Smažte, prosím, soubor a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="341"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="353"/>
+        <source>An internal error occurred. The project could not be saved.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="363"/>
         <source>Miniz Error</source>
         <translation>Chyba Miniz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="332"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="342"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="357"/>
-        <source>An internal error occurred. Your file may not be saved successfully.</source>
-        <translation>Vyskytla se vnitřní chyba. Soubor se nemuselo podařit uložit úspěšně.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="331"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="356"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="352"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="380"/>
         <source>Internal Error</source>
         <translation>Vnitřní chyba</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="525"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="364"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="381"/>
+        <source>An internal error occurred. The project may not have been saved successfully.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="549"/>
         <source>Could not open file</source>
         <translation>Nepodařilo se otevřít soubor</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="535"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="559"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
         <translation>Soubor není, takže jej nelze otevřít. Podívejte se, prosím, a ujistěte se, že je cesta správná a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="540"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="564"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
         <translation>Nemáte oprávnění číst soubor. Ověřte, prosím, že máte oprávnění k tomuto souboru a zkuste to znovu.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="546"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="570"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
         <translation>Při zpracování souboru se vyskytla chyba. Obyčejně to znamená, že váš projekt byl alespoň částečně poškozen. Zkuste to znovu s novou verzí Pencil2D, nebo vyzkoušejte použití záložního souboru, pokud nějaký máte. Pokud se s námi spojíte přes jeden z našich veřejných kanálů, můžeme vám být schopni pomoci. Pro hlášení potíží jsou nejlepšími místy, jak nás dosáhnout:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="977"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1013"/>
         <source>Bitmap Layer %1</source>
         <translation>Bitmapová vrstva %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="979"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1015"/>
         <source>Vector Layer %1</source>
         <translation>Vektorová vrstva %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="981"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1017"/>
         <source>Sound Layer %1</source>
         <translation>Zvuková vrstva %1</translation>
     </message>
@@ -3391,14 +3405,44 @@
         <translation>Pokročilé</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="447"/>
+        <location filename="../app/ui/generalpage.ui" line="449"/>
         <source>Memory Cache Budget</source>
         <translation>Rozpočet vyrovnávací paměti paměti</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="478"/>
+        <location filename="../app/ui/generalpage.ui" line="480"/>
         <source>MB</source>
         <translation>MB</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="501"/>
+        <source>Undo/Redo</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="507"/>
+        <source>Enable New System (Experimental)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="519"/>
+        <source>How many steps you&apos;re allowed to undo/redo</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="522"/>
+        <source>Maximum Number of Undo/Redo Steps</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="555"/>
+        <source>Apply</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="562"/>
+        <source>Cancel</source>
+        <translation>Zrušit</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="39"/>
@@ -3561,14 +3605,43 @@
         <translation>Čínština (Tchaj-wan)</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="212"/>
+        <location filename="../app/src/generalpage.cpp" line="225"/>
         <source>Restart Required</source>
         <translation>Požadováno opětovné spuštění</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="213"/>
+        <location filename="../app/src/generalpage.cpp" line="226"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Změna jazyka se projeví po znovuspuštění Pencil2D</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="365"/>
+        <source>Resets your current undo history</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="366"/>
+        <source>Changing the maximum number of undo/redo steps resets your current undo/redo history. 
+
+Are you sure you want to proceed?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="381"/>
+        <source>Experimental feature!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="382"/>
+        <source>This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. 
+
+Do you still want to try?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="394"/>
+        <source>The undo/redo system will be changed on the next launch of the application</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4265,7 +4338,7 @@ Přečtěte si pokyny a zkuste to znovu</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="614"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1538"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1531"/>
         <source>Play</source>
         <translation>Přehrát</translation>
     </message>
@@ -4528,6 +4601,16 @@ Přečtěte si pokyny a zkuste to znovu</translation>
         <translation>Poměrně</translation>
     </message>
     <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1278"/>
+        <source>Remove Last Polyline Segment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1281"/>
+        <source>Removes the lastest Polyline segment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../app/ui/mainwindow2.ui" line="975"/>
         <source>Peg bar Alignment</source>
         <translation>Zarovnání příložníku</translation>
@@ -4618,166 +4701,153 @@ Přečtěte si pokyny a zkuste to znovu</translation>
         <translation>Stavový řádek</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="153"/>
+        <location filename="../app/src/mainwindow2.cpp" line="155"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>Paleta barev:&lt;br&gt;použijte přepínač &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;v poloze ukazatele</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="157"/>
+        <location filename="../app/src/mainwindow2.cpp" line="159"/>
         <source>Color inspector</source>
         <translation>Správce barev</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="459"/>
+        <location filename="../app/src/mainwindow2.cpp" line="460"/>
         <source>Open Recent</source>
         <translation>Otevřít nedávné</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="484"/>
-        <location filename="../app/src/mainwindow2.cpp" line="508"/>
+        <location filename="../app/src/mainwindow2.cpp" line="501"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>Dialog is already open!</source>
         <translation>Dialog již je otevřen!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="530"/>
+        <location filename="../app/src/mainwindow2.cpp" line="547"/>
         <source>Please select at least 2 frames!</source>
         <translation>Vyberte, prosím, alespoň 2 snímky!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="658"/>
+        <location filename="../app/src/mainwindow2.cpp" line="675"/>
         <source>Opening document...</source>
         <translation>Otevírá se dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="658"/>
-        <location filename="../app/src/mainwindow2.cpp" line="715"/>
+        <location filename="../app/src/mainwindow2.cpp" line="675"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>Abort</source>
         <translation>Zrušit</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="703"/>
-        <location filename="../app/src/mainwindow2.cpp" line="805"/>
+        <location filename="../app/src/mainwindow2.cpp" line="720"/>
+        <location filename="../app/src/mainwindow2.cpp" line="821"/>
         <source>Warning</source>
         <translation>Varování</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="704"/>
+        <location filename="../app/src/mainwindow2.cpp" line="721"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Tento program nyní nemá oprávnění k zapsání vybraného souboru. Ujistěte se, prosím, před pokusem o jeho uložení, že máte oprávnění k tomuto souboru. Náhradním způsobem je použití volby v nabídce Uložit jako... pro zápis do zapisovatelného umístění.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="715"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>Saving document...</source>
         <translation>Ukládá se dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="758"/>
-        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;Vyskytla se chyba, a tak soubor nemusí být úspěšně uložen. Pokud si myslíte, že potíže souvisí s Pencil2D, vytvořte, prosím, nové téma na:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Ujistěte se, prosím, že do záznamu o problému zahrnete následující podrobnosti:</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="806"/>
+        <location filename="../app/src/mainwindow2.cpp" line="822"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Tato animace byla změněna.
 Přejete si uložit změny?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="829"/>
+        <location filename="../app/src/mainwindow2.cpp" line="845"/>
         <source>AutoSave Reminder</source>
         <translation>Připomínka automatického uložení</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="830"/>
+        <location filename="../app/src/mainwindow2.cpp" line="846"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Animace ještě není uložena.
 Chcete ji uložit nyní?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="831"/>
+        <location filename="../app/src/mainwindow2.cpp" line="847"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Už se znovu neptat</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1323"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1328"/>
-        <source>Undo</source>
-        <comment>Menu item text</comment>
-        <translation>Zpět</translation>
+        <location filename="../app/src/mainwindow2.cpp" line="775"/>
+        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.
+If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1336"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1343"/>
-        <source>Redo</source>
-        <comment>Menu item text</comment>
-        <translation>Znovu</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1379"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1371"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>Otevření palety nahradí starou paletu.
 Touto činností se změní barva(y) v tazích!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1381"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1373"/>
         <source>Open Palette</source>
         <translation>Otevřít paletu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1533"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1526"/>
         <source>Stop</source>
         <translation>Zastavit</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1582"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1575"/>
         <source>Restore Project?</source>
         <translation>Obnovit projekt?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1583"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1576"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D se nezavřel správně. Chcete projekt obnovit?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1588"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1581"/>
         <source>Restore project</source>
         <translation>Obnovit projekt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1622"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1615"/>
         <source>Recovery Failed.</source>
         <translation>Nepodařilo se obnovit.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1623"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1616"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>Promiňte! Pencil2D nemůže obnovit váš projekt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1626"/>
         <source>Recovery Succeeded!</source>
         <translation>Podařilo se obnovit.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1634"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1627"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>Okamžitě, prosím, uložte svou práci, abyste zabránili ztrátě dat</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1640"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
         <source>Main Toolbar</source>
         <translation>Hlavní nástrojový pruh</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1654"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1647"/>
         <source>View Toolbar</source>
         <translation>Nástrojový pruh pro zobrazení</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1666"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1659"/>
         <source>Overlay Toolbar</source>
         <translation>Nástrojový pruh pro překrytí</translation>
     </message>
@@ -4938,122 +5008,122 @@ Touto činností se změní barva(y) v tazích!</translation>
         <translation>chyba</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="681"/>
         <source>Black</source>
         <translation>Černá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="682"/>
         <source>Red</source>
         <translation>Červená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
         <source>Dark Red</source>
         <translation>Tmavá červená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
         <source>Orange</source>
         <translation>Oranžová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
         <source>Dark Orange</source>
         <translation>Tmavá oranžová</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
         <source>Yellow</source>
         <translation>Žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
         <source>Dark Yellow</source>
         <translation>Tmavá žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
         <source>Green</source>
         <translation>Zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
         <source>Dark Green</source>
         <translation>Tmavá zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
         <source>Cyan</source>
         <translation>Modrozelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
         <source>Dark Cyan</source>
         <translation>Tmavá modrozelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
         <source>Blue</source>
         <translation>Modrá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
         <source>Dark Blue</source>
         <translation>Tmavá modrá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
         <source>White</source>
         <translation>Bílá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
         <source>Very Light Grey</source>
         <translation>Velmi světlá zelená</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
         <source>Light Grey</source>
         <translation>Světlá šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
         <source>Grey</source>
         <translation>Šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
         <source>Dark Grey</source>
         <translation>Tmavá šedá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
         <source>Pale Orange Yellow</source>
         <translation>Bledá oranžová žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
         <source>Pale Grayish Orange Yellow</source>
         <translation>Bledá šedavá oranžová žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
         <source>Orange Yellow </source>
         <translation>Oranžová žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
         <source>Grayish Orange Yellow</source>
         <translation>Šedavá oranžová žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="705"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
         <source>Light Orange Yellow</source>
         <translation>Světlá oranžová žlutá</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="706"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
         <source>Light Grayish Orange Yellow</source>
         <translation>Světlá šedavá oranžová žlutá</translation>
     </message>
@@ -6100,54 +6170,60 @@ or cancel</source>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="403"/>
+        <source>Remove Last Polyline Segment</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="404"/>
         <source>Set Zoom to 100%</source>
         <comment>Shortcut</comment>
         <translation>Nastavit zvětšení na 100 %</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="404"/>
+        <location filename="../app/src/shortcutspage.cpp" line="405"/>
         <source>Set Zoom to 200%</source>
         <comment>Shortcut</comment>
         <translation>Nastavit zvětšení na 200 %</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="405"/>
+        <location filename="../app/src/shortcutspage.cpp" line="406"/>
         <source>Set Zoom to 25%</source>
         <comment>Shortcut</comment>
         <translation>Nastavit zvětšení na 25 %</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="406"/>
+        <location filename="../app/src/shortcutspage.cpp" line="407"/>
         <source>Set Zoom to 300%</source>
         <comment>Shortcut</comment>
         <translation>Nastavit zvětšení na 300 %</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="407"/>
+        <location filename="../app/src/shortcutspage.cpp" line="408"/>
         <source>Set Zoom to 33%</source>
         <comment>Shortcut</comment>
         <translation>Nastavit zvětšení na 33 %</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="408"/>
+        <location filename="../app/src/shortcutspage.cpp" line="409"/>
         <source>Set Zoom to 400%</source>
         <comment>Shortcut</comment>
         <translation>Nastavit zvětšení na 400 %</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="409"/>
+        <location filename="../app/src/shortcutspage.cpp" line="410"/>
         <source>Set Zoom to 50%</source>
         <comment>Shortcut</comment>
         <translation>Nastavit zvětšení na 50 %</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="410"/>
+        <location filename="../app/src/shortcutspage.cpp" line="411"/>
         <source>Zoom In</source>
         <comment>Shortcut</comment>
         <translation>Přiblížit</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="411"/>
+        <location filename="../app/src/shortcutspage.cpp" line="412"/>
         <source>Zoom Out</source>
         <comment>Shortcut</comment>
         <translation>Oddálit</translation>
@@ -6156,32 +6232,32 @@ or cancel</source>
 <context>
     <name>Status</name>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="108"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
         <source>Everything ok.</source>
         <translation>Vše v pořádku.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
         <source>Ooops, Something went wrong.</source>
         <translation>Jujky. Něco se pokazilo.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
         <source>File doesn&apos;t exist.</source>
         <translation>Soubor neexistuje.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
         <source>Cannot open file.</source>
         <translation>Soubor nelze otevřít.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
         <source>The file is not a valid xml document.</source>
         <translation>Tento soubor není platný dokument XML.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="114"/>
         <source>The file is not valid pencil document.</source>
         <translation>Tento soubor není platný dokument Pencil.</translation>
     </message>
@@ -6935,6 +7011,34 @@ or cancel</source>
         <location filename="../app/src/toolspage.cpp" line="71"/>
         <source>%1 degrees</source>
         <translation>%1 stupňů</translation>
+    </message>
+</context>
+<context>
+    <name>UndoRedoManager</name>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="256"/>
+        <source>Undo</source>
+        <translation>Zpět</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="276"/>
+        <source>Redo</source>
+        <translation>Znovu</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="297"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="303"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="306"/>
+        <source>Undo</source>
+        <comment>Menu item text</comment>
+        <translation>Zpět</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="323"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="330"/>
+        <source>Redo</source>
+        <comment>Menu item text</comment>
+        <translation>Znovu</translation>
     </message>
 </context>
 </TS>

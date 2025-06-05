@@ -1,3 +1,4 @@
+
 ## Pencil2D v0.8.0 - Draft
 
 ### Features
@@ -23,6 +24,27 @@
 + Fixed potential issue on some systems when repeatedly copying bitmap frames - [#1896](https://github.com/pencil2d/pencil/pull/1896)
 + Fixed bitmap frame wipe that can occur under specific situations when using keyframe copy & paste - [#1896](https://github.com/pencil2d/pencil/pull/1896)
 + Fix camera handles not being draggable at 90 deg [#1897](https://github.com/pencil2d/pencil/issues/1897)
+
+## Pencil2D v0.7.1 - Draft
+
+### Enhancements
++ Improve handling for moving frames beyond the track cell area [#1882](https://github.com/pencil2d/pencil/pull/1882)
++ Timeline: Remove ability to add keyframe on double-click [#1907](https://github.com/pencil2d/pencil/pull/1907)
+
+### Bugfixes:
++ Canvas rotation affects view handles [#1897](https://github.com/pencil2d/pencil/issues/1897)
++ Fix memory leak in ClipboardManager [8b65b39](https://github.com/pencil2d/pencil/commit/8b65b39cd9c37c45708d40cd290ba784c0e265a4)
++ Use different naming scheme for cloned frames [0d690add](https://github.com/pencil2d/pencil/commit/0d690add30e024a75f098a562d67c8bc1ba30a79)
++ Always copy backing file if image is not modified [76d7116d](https://github.com/pencil2d/pencil/commit/76d7116d366aca3e06e5d33e10e22fde3de04b5e)
++ Don't force file name or modification state of cloned keyframes [b3b10b3](https://github.com/pencil2d/pencil/commit/b3b10b370d19442e070a06d4346927a4cc9c70ea)
++ Copy data diretory to temporary directory when using pcl [008eb9e2](https://github.com/pencil2d/pencil/commit/008eb9e24ecd640364bb64cba7737417de699887)
++ Fix insufficient quoting when embedding AppImage update information [42d52f10](https://github.com/pencil2d/pencil/commit/42d52f105b2bc227e0ef434be6113b12739202ba)
++ Run actions outside container to fix Linux build failure [#1902](https://github.com/pencil2d/pencil/pull/1902)
++ Fix workflows YAML indentation [5dedbada](https://github.com/pencil2d/pencil/commit/5dedbadac9b79053376eb1f50e319fd4d08e32d5)
++ Add more details to FileManager error report [#1895](https://github.com/pencil2d/pencil/pull/1895)
++ Fix fade in/out not working properly. [#1854](https://github.com/pencil2d/pencil/pull/1854)
++ Improve preference layout for long translations [f8ea883](https://github.com/pencil2d/pencil/commit/f8ea883fbf0bb184ce959347d099a42e50f41e0b)
++ Fix broken image import camera transform [#1877](https://github.com/pencil2d/pencil/issues/1877)
 
 ## Pencil2D v0.7.0 - 12 July 2024
 

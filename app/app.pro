@@ -100,6 +100,7 @@ HEADERS += \
     src/timelinepage.h \
     src/timelinetrackheaderwidget.h \
     src/timelinetracklist.h \
+    src/toolboxwidget.h \
     src/toolspage.h \
     src/basedockwidget.h \
     src/colorbox.h \
@@ -161,6 +162,7 @@ SOURCES += \
     src/timelinepage.cpp \
     src/timelinetrackheaderwidget.cpp \
     src/timelinetracklist.cpp \
+    src/toolboxwidget.cpp \
     src/toolspage.cpp \
     src/basedockwidget.cpp \
     src/colorbox.cpp \
