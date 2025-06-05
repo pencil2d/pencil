@@ -434,3 +434,18 @@ void ToolManager::clearTemporaryTool()
     mTemporaryTriggerMouseButtons = Qt::NoButton;
     emit toolChanged(currentTool()->type());
 }
+
+void ToolManager::setSnapAngleBox(bool enabled)
+{
+    if (currentTool() == nullptr) return;
+    currentTool()->properties.snapAngleState = enabled;
+    emit toolPropertyChanged(currentTool()->type(), SNAPTOANGLE);
+}
+
+void ToolManager::setSnapAngleDegrees(int degrees)
+{
+    if (currentTool() == nullptr) return;
+    currentTool()->properties.snapAngleDegrees = degrees;
+    emit toolPropertyChanged(currentTool()->type(), SNAPDEGREE);
+}
+
