@@ -24,7 +24,6 @@ GNU General Public License for more details.
 #include <QResizeEvent>
 #include <QStyle>
 #include <QPainter>
-#include <QMenu>
 #include <QDebug>
 
 #include "platformhandler.h"
@@ -99,28 +98,7 @@ QWidget* TitleBarWidget::createCustomTitleBarWidget(QWidget* parent)
     mDockButton->setFixedSize(iconSize + padding);
     mDockButton->installEventFilter(new ButtonAppearanceWatcher(dockButtonRes, dockHoverButtonRes, this));
 
-    connect(mDockButton, &QToolButton::clicked, this, [this] {
-       emit undockButtonPressed();
-    });
-
-    mMenu = new QMenu(this);
-    mMenu->addAction(closeHoverButtonRes.lightMode, tr("Close"), [=] {
-        emit closeButtonPressed();
-    });
-    mDockAction = mMenu->addAction(dockHoverButtonRes.lightMode, "", [=] {
-        emit undockButtonPressed();
-    });
-
-    setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(this, &QWidget::customContextMenuRequested, this, [=](const QPoint& pos) {
-
-        if (mIsFloating) {
-            mDockAction->setText(tr("Dock"));
-        } else {
-            mDockAction->setText(tr("Undock"));
-        }
-        mMenu->exec(mapToGlobal(pos));
-    });
+    connect(mDockButton, &QToolButton::clicked, this, &TitleBarWidget::undockButtonPressed);
 
     mTitleLabel = new QLabel(parent);
     mTitleLabel->setAlignment(Qt::AlignVCenter);

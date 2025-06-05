@@ -22,7 +22,6 @@ GNU General Public License for more details.
 #include "appearance.h"
 
 class QLabel;
-class QMenu;
 class QToolButton;
 
 class TitleBarWidget : public QWidget
@@ -54,8 +53,6 @@ private:
     QToolButton* mCloseButton = nullptr;
     QToolButton* mDockButton = nullptr;
 
-    QMenu* mMenu = nullptr;
-    QAction* mDockAction = nullptr;
     bool mIsFloating = false;
 
     int mWidthOfFullLayout = 0;
