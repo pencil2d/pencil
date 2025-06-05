@@ -17,6 +17,9 @@ Keywords=picture;drawing;vector;bitmap;cartoon;animation;
 
 
 # Translations
+
+
+# Translations
 Name[ar]=بنسل2دي
 GenericName[ar]=برنامج رسوم متحركة
 Comment[ar]=إنشاء رسوم متحركة كلاسيكية باستخدام الصور النقطية والمتجهة
@@ -119,7 +122,7 @@ Name[nl_NL]=Pencil2D
 GenericName[nl_NL]=Animatie software
 Comment[nl_NL]=Maak traditionele handgetekende animaties met Bitmap en Vector afbeeldingen
 Icon[nl_NL]=org.pencil2d.Pencil2D
-Name[si]=Pencil2D
+Name[si]=පැන්සල්2D
 GenericName[si]=සජීවීකරණ මෘදුකාංගය
 Comment[si]=බිට්මැප් සහ දෛශික ග්‍රැෆික් යන දෙකෙන්ම සාම්ප්‍රදායික අතින් ඇද ගත් සජීවිකරණයක් සාදන්න
 Icon[si]=org.pencil2d.Pencil2D

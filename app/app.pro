@@ -92,6 +92,7 @@ HEADERS += \
     src/shortcutspage.h \
     src/strokeoptionswidget.h \
     src/timelinepage.h \
+    src/toolboxwidget.h \
     src/toolspage.h \
     src/basedockwidget.h \
     src/colorbox.h \
@@ -147,6 +148,7 @@ SOURCES += \
     src/shortcutspage.cpp \
     src/strokeoptionswidget.cpp \
     src/timelinepage.cpp \
+    src/toolboxwidget.cpp \
     src/toolspage.cpp \
     src/basedockwidget.cpp \
     src/colorbox.cpp \

@@ -53,6 +53,10 @@ void ToolOptionWidget::initUI()
 {
     mBucketOptionsWidget = new BucketOptionsWidget(editor(), this);
     mCameraOptionsWidget = new CameraOptionsWidget(editor(), this);
+
+    mBucketOptionsWidget->setHidden(true);
+    mCameraOptionsWidget->setHidden(true);
+    
     mStrokeOptionsWidget = new StrokeOptionsWidget(editor(), this);
     mTransformOptionsWidget = new TransformOptionsWidget(editor(), this);
     ui->scrollAreaWidgetContents->layout()->addWidget(mBucketOptionsWidget);

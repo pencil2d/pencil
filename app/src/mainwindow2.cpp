@@ -170,7 +170,7 @@ void MainWindow2::createDockWidgets()
     mToolOptions = new ToolOptionWidget(this);
     mToolOptions->setObjectName("ToolOption");
 
-    mToolBox = new ToolBoxWidget(this);
+    mToolBox = new ToolBoxDockWidget(this);
     mToolBox->setObjectName("ToolBox");
 
     mDockWidgets
@@ -409,19 +409,37 @@ void MainWindow2::createMenus()
     connect(ui->actionReverse_Frames_Order, &QAction::triggered, mCommands, &ActionCommands::reverseSelectedFrames);
     connect(ui->actionRemove_Frames, &QAction::triggered, mCommands, &ActionCommands::removeSelectedFrames);
 
-    //--- Tool Menu ---
-    connect(ui->actionMove, &QAction::triggered, mToolBox, &ToolBoxWidget::moveOn);
-    connect(ui->actionSelect, &QAction::triggered, mToolBox, &ToolBoxWidget::selectOn);
-    connect(ui->actionBrush, &QAction::triggered, mToolBox, &ToolBoxWidget::brushOn);
-    connect(ui->actionPolyline, &QAction::triggered, mToolBox, &ToolBoxWidget::polylineOn);
-    connect(ui->actionSmudge, &QAction::triggered, mToolBox, &ToolBoxWidget::smudgeOn);
-    connect(ui->actionPen, &QAction::triggered, mToolBox, &ToolBoxWidget::penOn);
-    connect(ui->actionHand, &QAction::triggered, mToolBox, &ToolBoxWidget::handOn);
-    connect(ui->actionPencil, &QAction::triggered, mToolBox, &ToolBoxWidget::pencilOn);
-    connect(ui->actionBucket, &QAction::triggered, mToolBox, &ToolBoxWidget::bucketOn);
-    connect(ui->actionEyedropper, &QAction::triggered, mToolBox, &ToolBoxWidget::eyedropperOn);
-    connect(ui->actionEraser, &QAction::triggered, mToolBox, &ToolBoxWidget::eraserOn);
-    connect(ui->actionResetToolsDefault, &QAction::triggered, mEditor->tools(), &ToolManager::resetAllTools);
+
+    auto toolsActionGroup = new QActionGroup(this);
+    toolsActionGroup->setExclusive(true);
+    toolsActionGroup->addAction(ui->actionMove);
+    toolsActionGroup->addAction(ui->actionSelect);
+    toolsActionGroup->addAction(ui->actionBrush);
+    toolsActionGroup->addAction(ui->actionPolyline);
+    toolsActionGroup->addAction(ui->actionSmudge);
+    toolsActionGroup->addAction(ui->actionPen);
+    toolsActionGroup->addAction(ui->actionHand);
+    toolsActionGroup->addAction(ui->actionPencil);
+    toolsActionGroup->addAction(ui->actionBucket);
+    toolsActionGroup->addAction(ui->actionEyedropper);
+    toolsActionGroup->addAction(ui->actionEraser);
+    toolsActionGroup->addAction(ui->actionResetToolsDefault);
+
+    connect(toolsActionGroup, &QActionGroup::triggered, this, [&](QAction* action) {
+        if (action == ui->actionMove) mToolBox->setActiveTool(MOVE);
+        else if (action == ui->actionSelect) mToolBox->setActiveTool(SELECT);
+        else if (action == ui->actionBrush) mToolBox->setActiveTool(BRUSH);
+        else if (action == ui->actionPolyline) mToolBox->setActiveTool(POLYLINE);
+        else if (action == ui->actionSmudge) mToolBox->setActiveTool(SMUDGE);
+        else if (action == ui->actionPen) mToolBox->setActiveTool(PEN);
+        else if (action == ui->actionHand) mToolBox->setActiveTool(HAND);
+        else if (action == ui->actionPencil) mToolBox->setActiveTool(PENCIL);
+        else if (action == ui->actionBucket) mToolBox->setActiveTool(BUCKET);
+        else if (action == ui->actionEyedropper) mToolBox->setActiveTool(EYEDROPPER);
+        else if (action == ui->actionEraser) mToolBox->setActiveTool(ERASER);
+        else if (action == ui->actionResetToolsDefault) mCommands->resetAllTools();
+        else Q_UNREACHABLE();
+    });
 
     //--- Window Menu ---
     QMenu* winMenu = ui->menuWindows;
@@ -1446,7 +1464,7 @@ void MainWindow2::makeConnections(Editor* editor, ColorInspector* colorInspector
 void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-    connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxWidget::onToolSetActive);
+    connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxDockWidget::setActiveTool);
 
     connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::onLayerChanged);
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::onLayerChanged);

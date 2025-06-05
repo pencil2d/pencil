@@ -3,9 +3,17 @@ inputs:
   arch:
     description: Architecture
     required: true
+  vcvars:
+    description: Visual Studio architecture (Windows only)
+    required: false
 runs:
   using: composite
   steps:
+  - name: Setup MSVC (Windows only)
+    if: runner.os == 'Windows'
+    uses: ilammy/msvc-dev-cmd@v1
+    with:
+      arch: ${{ inputs.vcvars }}
   - run: ${GITHUB_ACTION_PATH}/setup-environment.sh
     shell: bash
     env:
