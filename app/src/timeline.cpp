@@ -432,15 +432,19 @@ void TimeLine::updateVerticalScrollbarPosition()
     int layerCount = mLayerManager->count();
     int idx = layerCount - editor()->currentLayerIndex() - 1;
 
-    int numOfVisibleCells = layerCount - (verticalTrackScrollBar->maximum() / mLayerList->getLayerHeight());
+    float layerHeightF = static_cast<float>(mLayerList->getLayerHeight());
+    float diff = qRound(static_cast<float>(verticalTrackScrollBar->maximum()) / layerHeightF);
+    int numOfVisibleCells = layerCount - diff;
 
     int pos = verticalTrackScrollBar->value();
     if (pos > 0) {
-        pos = pos / mLayerList->getLayerHeight();
+        float fracPosition = static_cast<float>(pos) / layerHeightF;
+        pos = qRound(fracPosition);
     }
 
     bool aboveVisibleArea = idx < pos;
     bool belowVisibleArea = idx >= numOfVisibleCells + pos;
+
     if (belowVisibleArea || aboveVisibleArea) {
         int value = 0;
         if (aboveVisibleArea) {
