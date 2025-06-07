@@ -318,11 +318,17 @@ void TimeLineTrackList::paintFrames(QPainter& painter, QColor trackCol, const La
 
     int recHeight = height - 4;
 
+    const QList<int> selectedFrames = layer->getSelectedFramesByPos();
     layer->foreachKeyFrame([&](KeyFrame* key)
     {
         int framePos = key->pos();
         int recWidth = standardWidth;
         int recLeft = getFrameX(framePos) - recWidth;
+
+        // Selected frames are painted separately
+        if (selectedFrames.contains(framePos)) {
+            return;
+        }
 
         if (key->length() > 1)
         {
@@ -337,18 +343,10 @@ void TimeLineTrackList::paintFrames(QPainter& painter, QColor trackCol, const La
         // Paint the frame contents
         if (selected)
         {
-            if (key->isSelected()) {
-                painter.setBrush(QColor(60, 60, 60));
-            }
-            else
-            {
-                painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
-            }
+            painter.setBrush(QColor(trackCol.red(), trackCol.green(), trackCol.blue(), 150));
         }
 
-        if (!key->isSelected()) {
-            painter.drawRect(recLeft, recTop, recWidth, recHeight);
-        }
+        painter.drawRect(recLeft, recTop, recWidth, recHeight);
     });
 }
 
@@ -459,7 +457,7 @@ void TimeLineTrackList::paintEvent(QPaintEvent*)
     int currentFrame = mEditor->currentFrame();
     Layer* currentLayer = mEditor->layers()->currentLayer();
     KeyFrame* keyFrame = currentLayer->getKeyFrameWhichCovers(currentFrame);
-    if (keyFrame != nullptr && !keyFrame->isSelected())
+    if (keyFrame != nullptr)
     {
         int recWidth = keyFrame->length() == 1 ? mFrameSize - 2 : mFrameSize * keyFrame->length();
         int recLeft = getFrameX(keyFrame->pos()) - (mFrameSize - 2);

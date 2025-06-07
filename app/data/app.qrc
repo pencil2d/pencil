@@ -94,6 +94,12 @@
         <file>icons/blue.png</file>
         <file>icons/green.png</file>
         <file>icons/red.png</file>
+        <file>icons/themes/playful/window/window-float-button-active.svg</file>
+        <file>icons/themes/playful/window/window-close-button-active.svg</file>
+        <file>icons/themes/playful/window/window-close-button-normal-darkm.svg</file>
+        <file>icons/themes/playful/window/window-float-button-normal-darkm.svg</file>
+        <file>icons/themes/playful/window/window-float-button-normal.svg</file>
+        <file>icons/themes/playful/window/window-close-button-normal.svg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>

@@ -1032,15 +1032,10 @@ void MainWindow2::lockWidgets(bool shouldLock)
            QDockWidget::DockWidgetFeature::DockWidgetMovable |
            QDockWidget::DockWidgetFeature::DockWidgetFloatable);
 
-    for (QDockWidget* d : mDockWidgets)
+    for (BaseDockWidget* d : mDockWidgets)
     {
         d->setFeatures(feat);
-
-        // https://doc.qt.io/qt-5/qdockwidget.html#setTitleBarWidget
-        // A empty QWidget looks like the tittle bar is hidden.
-        // nullptr means removing the custom title bar and restoring the default one
-        QWidget* customTitleBarWidget = shouldLock ? (new QWidget) : nullptr;
-        d->setTitleBarWidget(customTitleBarWidget);
+        d->lock(shouldLock);
     }
 }
 
