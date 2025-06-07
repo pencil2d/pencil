@@ -453,5 +453,5 @@ void StrokeTool::setAntiAliasingEnabled(bool enabled)
 void StrokeTool::setStrokeInvisibleEnabled(bool enabled)
 {
     mStrokeSettings->setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, enabled);
-    emit InvisibleStrokeEnabledChanged(enabled);
+    emit invisibleStrokeEnabledChanged(enabled);
 }

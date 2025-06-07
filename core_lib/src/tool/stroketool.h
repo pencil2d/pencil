@@ -78,7 +78,7 @@ signals:
     void featherEnabledChanged(bool enabled);
     void antiAliasingEnabledChanged(bool enabled);
     void fillContourEnabledChanged(bool enabled);
-    void InvisibleStrokeEnabledChanged(bool enabled);
+    void invisibleStrokeEnabledChanged(bool enabled);
     void stabilizationLevelChanged(int level);
 
 public slots:

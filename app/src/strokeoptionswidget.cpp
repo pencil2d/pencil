@@ -131,7 +131,7 @@ void StrokeOptionsWidget::makeConnectionFromModelToUI(StrokeTool* strokeTool)
     connect(strokeTool, &StrokeTool::stabilizationLevelChanged, this, &StrokeOptionsWidget::setStabilizerLevel);
     connect(strokeTool, &StrokeTool::antiAliasingEnabledChanged, this, &StrokeOptionsWidget::setAntiAliasingEnabled);
     connect(strokeTool, &StrokeTool::fillContourEnabledChanged, this, &StrokeOptionsWidget::setFillContourEnabled);
-    connect(strokeTool, &StrokeTool::InvisibleStrokeEnabledChanged, this, &StrokeOptionsWidget::setPenInvisibilityEnabled);
+    connect(strokeTool, &StrokeTool::invisibleStrokeEnabledChanged, this, &StrokeOptionsWidget::setPenInvisibilityEnabled);
 
     if (strokeTool->type() == POLYLINE) {
         PolylineTool* polyline = static_cast<PolylineTool*>(strokeTool);
