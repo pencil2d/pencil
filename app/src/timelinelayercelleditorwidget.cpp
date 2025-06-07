@@ -62,6 +62,7 @@ TimeLineLayerCellEditorWidget::TimeLineLayerCellEditorWidget(QWidget* parent,
     mHBoxLayout->addWidget(iconLabel);
     mHBoxLayout->addSpacing(4);
     mLayerNameEditWidget = new LineEditWidget(this, mLayer->name());
+    mLayerNameEditWidget->setFocusPolicy(Qt::NoFocus);
     mHBoxLayout->addWidget(mLayerNameEditWidget);
     mHBoxLayout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Expanding, QSizePolicy::Ignored));
     mHBoxLayout->setContentsMargins(0,0,0,0);
