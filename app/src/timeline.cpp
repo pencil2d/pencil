@@ -221,6 +221,7 @@ void TimeLine::initUI()
     mLayerManager = editor()->layers();
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
+    setFocusPolicy(Qt::StrongFocus);
 
     connect(mHScrollbar, &QScrollBar::valueChanged, mTracks, &TimeLineTrackList::hScrollChange);
     connect(mHScrollbar, &QScrollBar::valueChanged, mTrackHeader, &TimeLineTrackHeaderWidget::onHScrollChange);
@@ -456,4 +457,26 @@ void TimeLine::updateVerticalScrollbarPosition()
         mLayerScrollArea->verticalScrollBar()->setValue(value * mLayerList->getLayerHeight());
         mTrackScrollArea->verticalScrollBar()->setValue(value * mLayerList->getLayerHeight());
     }
+}
+
+void TimeLine::keyPressEvent(QKeyEvent* event)
+{
+    switch (event->key())
+    {
+    case Qt::Key_Right:
+        editor()->scrubForward();
+        break;
+    case Qt::Key_Left:
+        editor()->scrubBackward();
+        break;
+    case Qt::Key_Up:
+        editor()->layers()->gotoNextLayer();
+        break;
+    case Qt::Key_Down:
+        editor()->layers()->gotoPreviouslayer();
+        break;
+    default:
+        break;
+    }
+    event->ignore();
 }

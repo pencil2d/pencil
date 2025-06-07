@@ -88,6 +88,7 @@ public:
     bool scrubbing = false;
 
 protected:
+    void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent( QResizeEvent* event ) override;
     void wheelEvent( QWheelEvent* ) override;
 
