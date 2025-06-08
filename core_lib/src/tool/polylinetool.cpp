@@ -193,9 +193,9 @@ void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
     // include the current point before ending the line.
     mPoints << getCurrentPoint();
 
-    mEditor->backup(typeName());
-
-    endPolyline(mPoints);
+    if (mPoints.size() > 0) {
+        endPolyline(mPoints);
+    }
 }
 
 
@@ -206,6 +206,8 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
+            // include the current point before ending the line.
+            mPoints << getCurrentPoint();
             endPolyline(mPoints);
             return true;
         }
@@ -280,6 +282,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
 {
     Layer* layer = mEditor->layers()->currentLayer();
 
+    mEditor->backup(typeName());
     if (layer->type() == Layer::VECTOR)
     {
         BezierCurve curve = BezierCurve(points, properties.bezier_state);
