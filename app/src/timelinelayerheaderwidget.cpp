@@ -37,7 +37,7 @@ TimeLineLayerHeaderWidget::TimeLineLayerHeaderWidget(TimeLine* timeLine,
     mHLayout = new QHBoxLayout(this);
     mVisibilityButton = new LayerVisibilityButton(this, LayerVisibilityContext::GLOBAL, nullptr, editor);
 
-    mHLayout->setContentsMargins(0,0,0,0);
+    mHLayout->setContentsMargins(1,0,0,0);
     mHLayout->addWidget(mVisibilityButton);
     mHLayout->addSpacerItem(new QSpacerItem(0,0, QSizePolicy::Expanding, QSizePolicy::Expanding));
 }
