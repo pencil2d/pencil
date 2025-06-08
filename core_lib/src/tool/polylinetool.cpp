@@ -190,10 +190,13 @@ void PolylineTool::pointerReleaseEvent(PointerEvent* event)
 void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
 {
     mInterpolator.pointerPressEvent(event);
-    // include the current point before ending the line.
-    mPoints << getCurrentPoint();
+
 
     if (mPoints.size() > 0) {
+        if (mPoints.last() != getCurrentPoint()) {
+            // include the current point before ending the line.
+            mPoints << getCurrentPoint();
+        }
         endPolyline(mPoints);
     }
 }
