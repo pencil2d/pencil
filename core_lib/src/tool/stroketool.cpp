@@ -423,13 +423,13 @@ void StrokeTool::setFeatherEnabled(bool enabled)
 void StrokeTool::setFeather(qreal feather)
 {
     mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, feather);
-    emit featherChanged(feather);
+    emit featherChanged(mStrokeSettings->feather());
 }
 
 void StrokeTool::setWidth(qreal width)
 {
     mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, width);
-    emit widthChanged(width);
+    emit widthChanged(mStrokeSettings->width());
 }
 
 void StrokeTool::setPressureEnabled(bool enabled)
