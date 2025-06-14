@@ -216,6 +216,8 @@ struct ToolSettings
         mIdentifier = toolIdentifier.toLower();
 
         settings.beginGroup(mIdentifier);
+
+        Q_ASSERT(mProps.count() > 0);
         for (auto it = mProps.begin(); it != mProps.end(); ++it) {
 
             PropertyInfo& info = it.value();
