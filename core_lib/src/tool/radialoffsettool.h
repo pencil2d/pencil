@@ -23,6 +23,19 @@ GNU General Public License for more details.
 
 class PointerEvent;
 
+/*
+ * A tool that can be used to make quick adjustments
+ * based on an offset vector from current pointer position
+ *
+ *         Drag origin                Cursor position
+             ●                           ●
+             |                         /
+             |                        /
+             |  offset vector       /
+             |                    /
+             ▼                  ▼
+        [Adjusted Point] —————————————>  (Direction of drag)
+*/
 class RadialOffsetTool : public QObject
 {
     Q_OBJECT
