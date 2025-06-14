@@ -222,9 +222,7 @@ bool Layer::removeKeyFrame(int position)
 
     if (frame)
     {
-        if (frame->isSelected()) {
-            removeFromSelectionList(frame->pos());
-        }
+        removeFromSelectionList(frame->pos());
         mKeyFrames.erase(frame->pos());
         markFrameAsDirty(frame->pos());
         delete frame;
@@ -384,9 +382,7 @@ bool Layer::isFrameSelected(int position) const
     KeyFrame* keyFrame = getKeyFrameWhichCovers(position);
     if (keyFrame == nullptr) { return false; }
 
-    int frameFound = mSelectedFrames_byLast.contains(keyFrame->pos());
-    Q_ASSERT(!frameFound || keyFrame->isSelected());
-    return frameFound;
+    return mSelectedFrames_byLast.contains(keyFrame->pos());
 }
 
 void Layer::setFrameSelected(int position, bool isSelected)
@@ -411,7 +407,6 @@ void Layer::setFrameSelected(int position, bool isSelected)
             mSelectedFrames_byLast.removeOne(startPosition);
             mSelectedFrames_byPosition.removeOne(startPosition);
         }
-        keyFrame->setSelected(isSelected);
     }
 }
 
@@ -497,11 +492,6 @@ void Layer::deselectAll()
 {
     mSelectedFrames_byLast.clear();
     mSelectedFrames_byPosition.clear();
-
-    for (auto pair : mKeyFrames)
-    {
-        pair.second->setSelected(false);
-    }
 }
 
 bool Layer::canMoveSelectedFramesToOffset(int offset) const

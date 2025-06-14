@@ -77,6 +77,8 @@ HEADERS += \
     src/addtransparencytopaperdialog.h \
     src/app-pch.h \
     src/basewidget.h \
+    src/appearance.h \
+    src/buttonappearancewatcher.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/layeropacitydialog.h \
@@ -94,6 +96,7 @@ HEADERS += \
     src/timelinepage.h \
     src/toolboxwidget.h \
     src/toolspage.h \
+    src/titlebarwidget.h \
     src/basedockwidget.h \
     src/colorbox.h \
     src/colorinspector.h \
@@ -132,6 +135,7 @@ HEADERS += \
 SOURCES += \
     src/addtransparencytopaperdialog.cpp \
     src/basewidget.cpp \
+    src/buttonappearancewatcher.cpp \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/layeropacitydialog.cpp \
@@ -150,6 +154,7 @@ SOURCES += \
     src/timelinepage.cpp \
     src/toolboxwidget.cpp \
     src/toolspage.cpp \
+    src/titlebarwidget.cpp \
     src/basedockwidget.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \
