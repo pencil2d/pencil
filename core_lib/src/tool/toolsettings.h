@@ -203,6 +203,11 @@ struct ToolSettings
         mProps = defaultProps;
     }
 
+    /* Update the default properties with additional properties */
+    void updateDefaults(const QHash<int, PropertyInfo>& defaultProps) {
+        mProps.insert(defaultProps);
+    }
+
     /*  Loads settings for the given tool
         By setting the initial BaseValue
 

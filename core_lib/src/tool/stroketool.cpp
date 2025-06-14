@@ -82,8 +82,8 @@ void StrokeTool::loadSettings()
 
     QSettings settings(PENCIL2D, PENCIL2D);
     QHash<int, PropertyInfo> info;
-    info[StrokeSettings::WIDTH_VALUE] = { 1.0, 100.0, 24.0 };
-    info[StrokeSettings::FEATHER_VALUE] = { 1.0, 99.0, 48.0 };
+    info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
+    info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
     info[StrokeSettings::FEATHER_ENABLED] = false;
     info[StrokeSettings::PRESSURE_ENABLED] = false;
     info[StrokeSettings::INVISIBILITY_ENABLED] = false;

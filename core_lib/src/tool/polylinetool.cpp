@@ -64,7 +64,7 @@ void PolylineTool::loadSettings()
     info[PolylineSettings::BEZIERPATH_ENABLED] = false;
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
 
-    mSettings->setDefaults(info);
+    mSettings->updateDefaults(info);
     mSettings->load(typeName(), settings);
 
     if (mSettings->requireMigration(settings, 1)) {
