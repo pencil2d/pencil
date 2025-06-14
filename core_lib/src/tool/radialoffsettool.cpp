@@ -57,8 +57,14 @@ bool RadialOffsetTool::startAdjusting(PointerEvent* event)
 {
     const qreal rad = mOffset;
 
-    QPointF direction(-1, -1); // 45 deg back
-    QLineF line(event->canvasPos(), event->canvasPos() + direction);
+    QPointF directionDelta;
+    if (mAdjustPoint.isNull()) {
+        directionDelta = QPointF(-1, -1); // 45 deg back
+    } else {
+        directionDelta = -(event->canvasPos() - mAdjustPoint);
+    }
+
+    QLineF line(event->canvasPos(), event->canvasPos() + directionDelta);
     line.setLength(rad);
 
     mAdjustPoint = line.p2(); // Adjusted point on circle boundary
@@ -69,7 +75,5 @@ bool RadialOffsetTool::startAdjusting(PointerEvent* event)
 
 void RadialOffsetTool::stopAdjusting()
 {
-    Q_UNUSED(event)
     mIsAdjusting = false;
-    mAdjustPoint = QPointF();
 }
