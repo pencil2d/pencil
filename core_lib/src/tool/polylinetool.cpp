@@ -53,6 +53,7 @@ void PolylineTool::loadSettings()
 
     properties.width = settings.value("polyLineWidth", 8.0).toDouble();
     properties.feather = -1;
+    properties.useFeather = false;
     properties.pressure = false;
     properties.invisibility = OFF;
     properties.preserveAlpha = OFF;
