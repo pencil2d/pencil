@@ -71,6 +71,8 @@ void PencilTool::loadSettings()
         settings.remove("FillContour");
     }
 
+    mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, info[StrokeSettings::FEATHER_VALUE].defaultReal());
+
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
 }
 
