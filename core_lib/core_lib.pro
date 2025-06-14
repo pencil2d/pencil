@@ -85,6 +85,7 @@ HEADERS +=  \
     src/tool/penciltool.h \
     src/tool/pentool.h \
     src/tool/polylinetool.h \
+    src/tool/radialoffsettool.h \
     src/tool/selecttool.h \
     src/tool/smudgetool.h \
     src/tool/strokeinterpolator.h \
@@ -174,6 +175,7 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/tool/penciltool.cpp \
     src/tool/pentool.cpp \
     src/tool/polylinetool.cpp \
+    src/tool/radialoffsettool.cpp \
     src/tool/selecttool.cpp \
     src/tool/smudgetool.cpp \
     src/tool/strokeinterpolator.cpp \
