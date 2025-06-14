@@ -54,12 +54,12 @@ void SmudgeTool::loadSettings()
     info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
 
-    mStrokeSettings->setDefaults(info);
-    mStrokeSettings->load(typeName(), settings);
+    mSettings->setDefaults(info);
+    mSettings->load(typeName(), settings);
 
-    if (mStrokeSettings->requireMigration(settings, 1)) {
-        mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("smudgeWidth", 24.0).toReal());
-        mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("smudgeFeather", 48.0).toReal());
+    if (mSettings->requireMigration(settings, 1)) {
+        mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("smudgeWidth", 24.0).toReal());
+        mSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("smudgeFeather", 48.0).toReal());
 
         settings.remove("smudgeWidth");
         settings.remove("smudgeFeather");
@@ -287,9 +287,9 @@ void SmudgeTool::drawStroke()
     }
 
     qreal opacity = 1.0;
-    mCurrentWidth = mStrokeSettings->width();
-    qreal brushWidth = mCurrentWidth + 0.0 * mStrokeSettings->feather();
-    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * mStrokeSettings->feather()) / brushWidth;
+    mCurrentWidth = mSettings->width();
+    qreal brushWidth = mCurrentWidth + 0.0 * mSettings->feather();
+    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * mSettings->feather()) / brushWidth;
     //opacity = currentPressure; // todo: Probably not interesting?!
     //brushWidth = brushWidth * opacity;
 

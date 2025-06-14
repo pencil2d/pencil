@@ -57,22 +57,22 @@ StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
 
 StrokeTool::~StrokeTool()
 {
-    if (mStrokeSettings) {
+    if (mSettings) {
         // Technically this is probably not neccesary since a tool exists for the entire
         // lifetime of the program.
-        delete(mStrokeSettings);
-        mStrokeSettings = nullptr;
+        delete(mSettings);
+        mSettings = nullptr;
     }
 }
 
 void StrokeTool::createSettings(ToolSettings* settings)
 {
     if (settings == nullptr) {
-        mStrokeSettings = new StrokeSettings();
+        mSettings = new StrokeSettings();
     } else {
-        mStrokeSettings = static_cast<StrokeSettings*>(settings);
+        mSettings = static_cast<StrokeSettings*>(settings);
     }
-    BaseTool::createSettings(mStrokeSettings);
+    BaseTool::createSettings(mSettings);
 }
 
 void StrokeTool::loadSettings()
@@ -91,8 +91,8 @@ void StrokeTool::loadSettings()
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = false;
     info[StrokeSettings::FILLCONTOUR_ENABLED] = false;
 
-    mStrokeSettings->setDefaults(info);
-    mStrokeSettings->load(typeName(), settings);
+    mSettings->setDefaults(info);
+    mSettings->load(typeName(), settings);
 
     /// Given the way that we update preferences currently, this connection should not be removed
     /// when the tool is not active.
@@ -289,8 +289,8 @@ bool StrokeTool::leaveEvent(QEvent*)
 
 void StrokeTool::updateCanvasCursor()
 {
-    const qreal brushWidth = mStrokeSettings->width();
-    const qreal brushFeather = mStrokeSettings->feather();
+    const qreal brushWidth = mSettings->width();
+    const qreal brushFeather = mSettings->feather();
 
     const QPointF& cursorPos = msIsAdjusting ? mAdjustPosition : getCurrentPoint();
     const qreal cursorRad = brushWidth * 0.5;
@@ -306,7 +306,7 @@ void StrokeTool::updateCanvasCursor()
                                  brushWidth * featherWidthFactor);
     options.showCursor = mCanvasCursorEnabled;
     options.isAdjusting = msIsAdjusting && mQuickSizingEnabled;
-    options.useFeather = mStrokeSettings->featherEnabled();
+    options.useFeather = mSettings->featherEnabled();
 
     mCanvasCursorPainter.preparePainter(options, mEditor->view()->getView());
 
@@ -339,15 +339,15 @@ bool StrokeTool::startAdjusting(Qt::KeyboardModifiers modifiers)
     switch (propertyType) {
     case StrokeSettings::WIDTH_VALUE: {
         const qreal factor = 0.5;
-        const qreal rad = mStrokeSettings->width() * factor;
+        const qreal rad = mSettings->width() * factor;
         const qreal distance = QLineF(currentPressPoint - QPointF(rad, rad), currentPoint).length();
         mAdjustPosition = currentPressPoint - QPointF(distance * factor, distance * factor);
         break;
     }
     case StrokeSettings::FEATHER_VALUE: {
         const qreal factor = 0.5;
-        const qreal cursorRad = mStrokeSettings->width() * factor;
-        const qreal featherWidthFactor = MathUtils::normalize(mStrokeSettings->feather(), 0.0, FEATHER_MAX);
+        const qreal cursorRad = mSettings->width() * factor;
+        const qreal featherWidthFactor = MathUtils::normalize(mSettings->feather(), 0.0, FEATHER_MAX);
         const qreal offset = (cursorRad * featherWidthFactor) * factor;
         const qreal distance = QLineF(currentPressPoint - QPointF(offset, offset), currentPoint).length();
         mAdjustPosition = currentPressPoint - QPointF(distance, distance);
@@ -390,7 +390,7 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
     case StrokeSettings::FEATHER_VALUE: {
         // The radius of the width is the max value we can get
         const qreal inputMin = 0.0;
-        const qreal inputMax = mStrokeSettings->width() * 0.5;
+        const qreal inputMax = mSettings->width() * 0.5;
         const qreal distance = QLineF(mAdjustPosition, getCurrentPoint()).length();
         const qreal outputMax = FEATHER_MAX;
         const qreal outputMin = 0.0;
@@ -415,48 +415,48 @@ void StrokeTool::paint(QPainter& painter, const QRect& blitRect)
 
 void StrokeTool::setStablizationLevel(int level)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, level);
+    mSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, level);
     emit stabilizationLevelChanged(level);
 }
 
 void StrokeTool::setFeatherEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_ENABLED, enabled);
+    mSettings->setBaseValue(StrokeSettings::FEATHER_ENABLED, enabled);
     emit featherEnabledChanged(enabled);
 }
 
 void StrokeTool::setFeather(qreal feather)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, feather);
-    emit featherChanged(mStrokeSettings->feather());
+    mSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, feather);
+    emit featherChanged(mSettings->feather());
 }
 
 void StrokeTool::setWidth(qreal width)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, width);
-    emit widthChanged(mStrokeSettings->width());
+    mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, width);
+    emit widthChanged(mSettings->width());
 }
 
 void StrokeTool::setPressureEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, enabled);
+    mSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, enabled);
     emit pressureEnabledChanged(enabled);
 }
 
 void StrokeTool::setFillContourEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, enabled);
+    mSettings->setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, enabled);
     emit fillContourEnabledChanged(enabled);
 }
 
 void StrokeTool::setAntiAliasingEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, enabled);
+    mSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, enabled);
     emit antiAliasingEnabledChanged(enabled);
 }
 
 void StrokeTool::setStrokeInvisibleEnabled(bool enabled)
 {
-    mStrokeSettings->setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, enabled);
+    mSettings->setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, enabled);
     emit invisibleStrokeEnabledChanged(enabled);
 }

@@ -130,7 +130,7 @@ protected:
 
     const UndoSaveState* mUndoSaveState = nullptr;
 
-    StrokeSettings* mStrokeSettings = nullptr;
+    StrokeSettings* mSettings = nullptr;
 
     static const qreal FEATHER_MIN;
     static const qreal FEATHER_MAX;

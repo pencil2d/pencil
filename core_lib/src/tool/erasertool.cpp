@@ -62,13 +62,13 @@ void EraserTool::loadSettings()
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::NONE };
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
 
-    if (mStrokeSettings->requireMigration(settings, 1)) {
-        mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("eraserWidth", 24.0).toReal());
-        mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("eraserFeather", 48.0).toReal());
-        mStrokeSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, settings.value("stabilizerLevel", StabilizationLevel::NONE).toInt());
-        mStrokeSettings->setBaseValue(StrokeSettings::FEATHER_ENABLED, settings.value("eraserUseFeather", true).toBool());
-        mStrokeSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("eraserPressure", true).toBool());
-        mStrokeSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, settings.value("eraserAA", true).toBool());
+    if (mSettings->requireMigration(settings, 1)) {
+        mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("eraserWidth", 24.0).toReal());
+        mSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("eraserFeather", 48.0).toReal());
+        mSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, settings.value("stabilizerLevel", StabilizationLevel::NONE).toInt());
+        mSettings->setBaseValue(StrokeSettings::FEATHER_ENABLED, settings.value("eraserUseFeather", true).toBool());
+        mSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("eraserPressure", true).toBool());
+        mSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, settings.value("eraserAA", true).toBool());
 
         settings.remove("eraserWidth");
         settings.remove("eraserFeather");
@@ -112,9 +112,9 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
     {
         mCurrentPressure = mInterpolator.getPressure();
         updateStrokes();
-        if (mStrokeSettings->stabilizerLevel() != mInterpolator.getStabilizerLevel())
+        if (mSettings->stabilizerLevel() != mInterpolator.getStabilizerLevel())
         {
-            mInterpolator.setStabilizerLevel(mStrokeSettings->stabilizerLevel());
+            mInterpolator.setStabilizerLevel(mSettings->stabilizerLevel());
         }
     }
 
@@ -154,19 +154,19 @@ void EraserTool::paintAt(QPointF point)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (mStrokeSettings->pressureEnabled()) ? mCurrentPressure : 1.0;
-        qreal opacity = (mStrokeSettings->pressureEnabled()) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal brushWidth = mStrokeSettings->width() * pressure;
+        qreal pressure = (mSettings->pressureEnabled()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mSettings->pressureEnabled()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = mSettings->width() * pressure;
         mCurrentWidth = brushWidth;
 
         mScribbleArea->drawBrush(point,
                                  brushWidth,
-                                 mStrokeSettings->feather(),
+                                 mSettings->feather(),
                                  QColor(255, 255, 255, 255),
                                  QPainter::CompositionMode_SourceOver,
                                  opacity,
-                                 mStrokeSettings->featherEnabled(),
-                                 mStrokeSettings->AntiAliasingEnabled() == ON);
+                                 mSettings->featherEnabled(),
+                                 mSettings->AntiAliasingEnabled() == ON);
     }
 }
 
@@ -179,9 +179,9 @@ void EraserTool::drawStroke()
 
     if (layer->type() == Layer::BITMAP)
     {
-        qreal pressure = (mStrokeSettings->pressureEnabled()) ? mCurrentPressure : 1.0;
-        qreal opacity = (mStrokeSettings->pressureEnabled()) ? (mCurrentPressure * 0.5) : 1.0;
-        qreal brushWidth = mStrokeSettings->width() * pressure;
+        qreal pressure = (mSettings->pressureEnabled()) ? mCurrentPressure : 1.0;
+        qreal opacity = (mSettings->pressureEnabled()) ? (mCurrentPressure * 0.5) : 1.0;
+        qreal brushWidth = mSettings->width() * pressure;
         mCurrentWidth = brushWidth;
 
         qreal brushStep = (0.5 * brushWidth);
@@ -201,12 +201,12 @@ void EraserTool::drawStroke()
 
             mScribbleArea->drawBrush(point,
                                      brushWidth,
-                                     mStrokeSettings->feather(),
+                                     mSettings->feather(),
                                      Qt::white,
                                      QPainter::CompositionMode_SourceOver,
                                      opacity,
-                                     mStrokeSettings->featherEnabled(),
-                                     mStrokeSettings->AntiAliasingEnabled() == ON);
+                                     mSettings->featherEnabled(),
+                                     mSettings->AntiAliasingEnabled() == ON);
             if (i == (steps - 1))
             {
                 mLastBrushPoint = getCurrentPoint();
@@ -215,8 +215,8 @@ void EraserTool::drawStroke()
     }
     else if (layer->type() == Layer::VECTOR)
     {
-        mCurrentWidth = mStrokeSettings->width();
-        if (mStrokeSettings->pressureEnabled())
+        mCurrentWidth = mSettings->width();
+        if (mSettings->pressureEnabled())
         {
             mCurrentWidth = (mCurrentWidth + (mInterpolator.getPressure() * mCurrentWidth)) * 0.5;
         }
@@ -262,7 +262,7 @@ void EraserTool::updateStrokes()
 
     if (layer->type() == Layer::VECTOR)
     {
-        qreal radius = mStrokeSettings->width() / 2;
+        qreal radius = mSettings->width() / 2;
 
         VectorImage* currKey = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
         QList<VertexRef> nearbyVertices = currKey->getVerticesCloseTo(getCurrentPoint(), radius);
