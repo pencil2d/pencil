@@ -373,6 +373,10 @@ void StrokeTool::stopAdjusting()
 
 void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
 {
+    if (!mQuickSizingProperties.contains(modifiers)) {
+        return;
+    }
+
     switch (mQuickSizingProperties.value(modifiers))
     {
     case StrokeSettings::WIDTH_VALUE: {
@@ -397,8 +401,8 @@ void StrokeTool::adjustCursor(Qt::KeyboardModifiers modifiers)
         break;
     }
     default:
+        qWarning() << "Unhandled quick sizing property for tool" << typeName() << "setting: " << mQuickSizingProperties.value(modifiers);
         Q_UNREACHABLE();
-        qWarning() << "Unhandled quick sizing property for tool" << typeName();
     }
     updateCanvasCursor();
 }
