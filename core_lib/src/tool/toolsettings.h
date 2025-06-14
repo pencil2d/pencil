@@ -285,6 +285,8 @@ struct ToolSettings
         }
     }
 
+    void setVersion(int version) { mVersion = version; }
+
     PropertyInfo getInfo(int rawPropertyType) const
     {
         return mProps[rawPropertyType];
