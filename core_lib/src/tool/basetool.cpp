@@ -82,7 +82,7 @@ void BaseTool::saveSettings()
 void BaseTool::resetSettings()
 {
     if (settings()) {
-        settings()->setDefaults();
+        settings()->restoreDefaults();
     }
 }
 

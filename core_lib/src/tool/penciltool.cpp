@@ -57,7 +57,8 @@ void PencilTool::loadSettings()
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
     info[StrokeSettings::FILLCONTOUR_ENABLED] = false;
 
-    mStrokeSettings->load(typeName(), settings, info);
+    mStrokeSettings->setDefaults(info);
+    mStrokeSettings->load(typeName(), settings);
 
     if (mStrokeSettings->requireMigration(settings, 1)) {
         mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("pencilWidth", 4.0).toReal());

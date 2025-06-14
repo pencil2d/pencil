@@ -195,21 +195,37 @@ struct ToolSettings
 {
     virtual ~ToolSettings() {}
 
-    void load(const QString& toolIdentifier, QSettings& settings, QHash<int, PropertyInfo> props) {
+    /*  The default properties that will be used for loading and restoring ToolSettings
+
+        @param defaultProps A QHash that's constructed like so: QHash<MyToolSettingProperty::WIDTH_VALUE, PropertyInfo>
+    */
+    void setDefaults(const QHash<int, PropertyInfo>& defaultProps) {
+        mProps = defaultProps;
+    }
+
+    /*  Loads settings for the given tool
+        By setting the initial BaseValue
+
+        If an existing value is found in QSettings then that will be the BaseValue, otherwise
+        it'll use use the default value.
+
+        @param toolIdentifier The identifier for the tool. This is later used to look up settings, so make sure it's consistent
+        @param settings The QSettings instance that is used to store the tool settings
+    */
+    void load(const QString& toolIdentifier, QSettings& settings) {
         mIdentifier = toolIdentifier.toLower();
 
         settings.beginGroup(mIdentifier);
-        for (auto it = props.begin(); it != props.end(); ++it) {
+        for (auto it = mProps.begin(); it != mProps.end(); ++it) {
 
-            PropertyInfo info = it.value();
+            PropertyInfo& info = it.value();
             const QString& settingName = identifier(it.key());
             loadProperty(settingName, info, settings);
-
-            mProps.insert(it.key(), info);
         }
         settings.endGroup();
     }
 
+    /* Store the latest changes in settings */
     void save(QSettings& settings) {
         settings.beginGroup(mIdentifier);
         settings.setValue(mVersionKey, mVersion);
@@ -238,18 +254,23 @@ struct ToolSettings
         settings.sync();
     }
 
-    void setBaseValue(int rawType, const PropertyInfo& value)
+    /*  Sets the BaseValue for the given property
+
+        @param rawType The type that identifies with the value, eg. StrokeSettings::WIDTH_VALUE
+        @param info A PropertyInfo struct which can either be INTEGER|REAL|BOOL
+    */
+    void setBaseValue(int rawType, const PropertyInfo& info)
     {
-        switch (value.type())
+        switch (info.type())
         {
         case PropertyInfo::INTEGER:
-            mProps[rawType].setBaseValue(value.intValue());
+            mProps[rawType].setBaseValue(info.intValue());
             break;
         case PropertyInfo::REAL:
-            mProps[rawType].setBaseValue(value.realValue());
+            mProps[rawType].setBaseValue(info.realValue());
             break;
         case PropertyInfo::BOOL:
-            mProps[rawType].setBaseValue(value.boolValue());
+            mProps[rawType].setBaseValue(info.boolValue());
             break;
         case PropertyInfo::INVALID:
             Q_ASSERT_X(false, __func__, "Expected value but got INVALID. Make sure the property has been setup properly before trying to set its base value.");
@@ -262,13 +283,13 @@ struct ToolSettings
         return mProps[rawPropertyType];
     }
 
-    void setDefaults() {
+    void restoreDefaults() {
         for (auto it = mProps.begin(); it != mProps.end(); ++it) {
             it.value().resetBaseValue();
         }
     }
 
-    /// Use this function to load old tool property keys before being migrated
+    /* Checks whether keys referred to in settings needs to be migrated from the input version */
     bool requireMigration(QSettings& settings, int version) {
         settings.beginGroup(mIdentifier);
 

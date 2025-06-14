@@ -66,7 +66,8 @@ void BucketTool::loadSettings()
     info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { 0, 1, 0 };
     info[BucketSettings::FILLMODE_VALUE] = { 0, 2, 0 };
 
-    mSettings->load(typeName(), settings, info);
+    mSettings->setDefaults(info);
+    mSettings->load(typeName(), settings);
 
     if (mSettings->requireMigration(settings, 1)) {
         mSettings->setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, settings.value("fillThickness", 4.0).toReal());

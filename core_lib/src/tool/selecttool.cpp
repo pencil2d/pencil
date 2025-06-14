@@ -39,7 +39,8 @@ void SelectTool::loadSettings()
     mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
 
     info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
-    mSettings->load(typeName(), settings, info);
+    mSettings->setDefaults(info);
+    mSettings->load(typeName(), settings);
 
     if (mSettings->requireMigration(settings, 1)) {
         mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, settings.value("ShowSelectionInfo", false).toBool());

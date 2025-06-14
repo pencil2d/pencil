@@ -69,7 +69,8 @@ void CameraTool::loadSettings()
                                                  static_cast<int>(DotColorType::BLACK) };
     info[CameraSettings::SHOWPATH_ENABLED] = false;
 
-    mSettings->load(typeName(), settings, info);
+    mSettings->setDefaults(info);
+    mSettings->load(typeName(), settings);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &CameraTool::updateSettings);
 

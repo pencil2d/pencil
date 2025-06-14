@@ -64,7 +64,8 @@ void PolylineTool::loadSettings()
     info[PolylineSettings::BEZIERPATH_ENABLED] = false;
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
 
-    mSettings->load(typeName(), settings, info);
+    mSettings->setDefaults(info);
+    mSettings->load(typeName(), settings);
 
     if (mSettings->requireMigration(settings, 1)) {
         mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("polylineWidth", 8.0).toReal());

@@ -63,7 +63,8 @@ void BrushTool::loadSettings()
     info[StrokeSettings::INVISIBILITY_ENABLED] = false;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG } ;
 
-    mStrokeSettings->load(typeName(), settings, info);
+    mStrokeSettings->setDefaults(info);
+    mStrokeSettings->load(typeName(), settings);
 
     if (mStrokeSettings->requireMigration(settings, 1)) {
         mStrokeSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("brushWidth", 24.0).toReal());

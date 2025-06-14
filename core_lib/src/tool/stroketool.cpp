@@ -91,7 +91,8 @@ void StrokeTool::loadSettings()
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = false;
     info[StrokeSettings::FILLCONTOUR_ENABLED] = false;
 
-    mStrokeSettings->load(typeName(), settings, info);
+    mStrokeSettings->setDefaults(info);
+    mStrokeSettings->load(typeName(), settings);
 
     /// Given the way that we update preferences currently, this connection should not be removed
     /// when the tool is not active.
