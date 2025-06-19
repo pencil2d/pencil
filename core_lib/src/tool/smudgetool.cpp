@@ -198,7 +198,6 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
         return;
     }
 
-    if (event->inputType() != mCurrentInputType) return;
 
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) { return; }
@@ -209,43 +208,45 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
     }
 
     auto selectMan = mEditor->select();
-    if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging) {
-    {
-        if (layer->type() == Layer::BITMAP)
+    if (event->inputType() == mCurrentInputType) {
+        if (event->buttons() & Qt::LeftButton)   // the user is also pressing the mouse (dragging) {
         {
-            drawStroke();
+            if (layer->type() == Layer::BITMAP)
+            {
+                drawStroke();
+            }
+            else //if (layer->type() == Layer::VECTOR)
+            {
+                if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
+                {
+                    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+                    if (vectorImage == nullptr) { return; }
+                    // transforms the selection
+
+                    BlitRect blit;
+
+                    // Use the previous dirty bound and extend it with the current dirty bound
+                    // this ensures that we won't get painting artifacts
+                    blit.extend(vectorImage->getBoundsOfTransformedCurves().toRect());
+                    selectMan->setSelectionTransform(QTransform().translate(offsetFromPressPos().x(), offsetFromPressPos().y()));
+                    vectorImage->setSelectionTransformation(selectMan->selectionTransform());
+                    blit.extend(vectorImage->getBoundsOfTransformedCurves().toRect());
+
+                    // And now tell the widget to update the portion in local coordinates
+                    mScribbleArea->update(mEditor->view()->mapCanvasToScreen(blit).toRect().adjusted(-1, -1, 1, 1));
+                }
+            }
         }
-        else //if (layer->type() == Layer::VECTOR)
+        else     // the user is moving the mouse without pressing it
         {
-            if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
+            if (layer->type() == Layer::VECTOR)
             {
                 VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
                 if (vectorImage == nullptr) { return; }
-                // transforms the selection
 
-                BlitRect blit;
-
-                // Use the previous dirty bound and extend it with the current dirty bound
-                // this ensures that we won't get painting artifacts
-                blit.extend(vectorImage->getBoundsOfTransformedCurves().toRect());
-                selectMan->setSelectionTransform(QTransform().translate(offsetFromPressPos().x(), offsetFromPressPos().y()));
-                vectorImage->setSelectionTransformation(selectMan->selectionTransform());
-                blit.extend(vectorImage->getBoundsOfTransformedCurves().toRect());
-
-                // And now tell the widget to update the portion in local coordinates
-                mScribbleArea->update(mEditor->view()->mapCanvasToScreen(blit).toRect().adjusted(-1, -1, 1, 1));
+                selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
+                mScribbleArea->update();
             }
-        }
-    }
-    else     // the user is moving the mouse without pressing it
-    {
-        if (layer->type() == Layer::VECTOR)
-        {
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
-            if (vectorImage == nullptr) { return; }
-
-            selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
-            mScribbleArea->update();
         }
     }
 
