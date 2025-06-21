@@ -39,14 +39,6 @@ EyedropperTool::EyedropperTool(QObject* parent) : BaseTool(parent)
 
 void EyedropperTool::loadSettings()
 {
-    properties.width = -1;
-    properties.feather = -1;
-    properties.useFeather = false;
-    properties.useAA = -1;
-}
-
-void EyedropperTool::saveSettings()
-{
 }
 
 QCursor EyedropperTool::cursor()
