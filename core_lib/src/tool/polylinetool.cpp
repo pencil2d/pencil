@@ -48,6 +48,7 @@ void PolylineTool::loadSettings()
     mPropertyEnabled[BEZIER] = true;
     mPropertyEnabled[CLOSEDPATH] = true;
     mPropertyEnabled[ANTI_ALIASING] = true;
+    mPropertyEnabled[SNAPTOANGLE] = true;
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
@@ -163,7 +164,13 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
                     mScribbleArea->toggleThinLines();
                 }
             }
-            mPoints << getCurrentPoint();
+
+            QPointF currentPoint = getCurrentPoint();
+            if (properties.snapAngleState && !mPoints.isEmpty()) {
+                currentPoint = getSnappedPoint(mPoints.last(), currentPoint);
+            }
+
+            mPoints << currentPoint;
             emit isActiveChanged(POLYLINE, true);
         }
     }
@@ -181,7 +188,12 @@ void PolylineTool::pointerMoveEvent(PointerEvent* event)
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer->type() == Layer::BITMAP || layer->type() == Layer::VECTOR)
     {
-        drawPolyline(mPoints, getCurrentPoint());
+        QPointF currentPoint = getCurrentPoint();
+        if (properties.snapAngleState && !mPoints.isEmpty()) {
+            currentPoint = getSnappedPoint(mPoints.last(), currentPoint);
+        }
+        drawPolyline(mPoints, currentPoint);
+
     }
 
     StrokeTool::pointerMoveEvent(event);
@@ -281,10 +293,25 @@ bool PolylineTool::keyReleaseEvent(QKeyEvent* event)
     return BaseTool::keyReleaseEvent(event);
 }
 
+
+QPointF PolylineTool::getSnappedPoint(const QPointF& lastPoint, const QPointF& currentPoint)
+{
+    QPointF delta = currentPoint - lastPoint;
+    qreal angle = qAtan2(delta.y(), delta.x());
+    qreal snapAngle = qDegreesToRadians(properties.snapAngleDegrees);
+    angle = qRound(angle / snapAngle) * snapAngle;
+    qreal length = qSqrt(delta.x() * delta.x() + delta.y() * delta.y());
+    return lastPoint + QPointF(qCos(angle) * length, qSin(angle) * length);
+}
+
 void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 {
     if (points.size() > 0)
     {
+        if (properties.snapAngleState && !points.isEmpty()) {
+            endPoint = getSnappedPoint(points.last(), endPoint);
+        }
+
         QPen pen(mEditor->color()->frontColor(),
                  properties.width,
                  Qt::SolidLine,

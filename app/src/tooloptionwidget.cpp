@@ -128,8 +128,12 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
 
     connect(ui->showInfoBox, &QCheckBox::clicked, toolManager, &ToolManager::setShowSelectionInfo);
 
+    connect(ui->snapAngleBox, &QCheckBox::clicked, toolManager, &ToolManager::setSnapAngleBox);
+    connect(ui->snapAngleDegrees, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), toolManager, &ToolManager::setSnapAngleDegrees);
+
     connect(toolManager, &ToolManager::toolChanged, this, &ToolOptionWidget::onToolChanged);
     connect(toolManager, &ToolManager::toolPropertyChanged, this, &ToolOptionWidget::onToolPropertyChanged);
+
 }
 
 void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType)
@@ -158,6 +162,7 @@ void ToolOptionWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropert
     case USEBUCKETFILLEXPAND: break;
     case BUCKETFILLLAYERREFERENCEMODE: break;
     case FILL_MODE: break;
+    case SNAPTOANGLE: (p.snapAngleState); break;
     default:
         Q_ASSERT(false);
         break;
@@ -201,6 +206,8 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(STABILIZATION));
     ui->fillContourBox->setVisible(tool->isPropertyEnabled(FILLCONTOUR));
     ui->showInfoBox->setVisible(tool->isPropertyEnabled(SHOWSELECTIONINFO));
+    ui->snapAngleBox->setVisible(tool->isPropertyEnabled(SNAPTOANGLE));
+    ui->snapAngleDegrees->setVisible(tool->isPropertyEnabled(SNAPTOANGLE));
 
     auto currentLayerType = editor()->layers()->currentLayer()->type();
     auto propertyType = editor()->tools()->currentTool()->type();
@@ -370,6 +377,18 @@ void ToolOptionWidget::setShowSelectionInfo(bool showSelectionInfo)
     ui->showInfoBox->setChecked(showSelectionInfo);
 }
 
+void ToolOptionWidget::setSnapAngleBox(bool enabled)
+{
+    QSignalBlocker blocker(ui->snapAngleBox);
+    ui->snapAngleBox->setChecked(enabled);
+}
+
+void ToolOptionWidget::setSnapAngleDegrees(int degrees)
+{
+    QSignalBlocker blocker(ui->snapAngleDegrees);
+    ui->snapAngleDegrees->setValue(degrees);
+}
+
 void ToolOptionWidget::disableAllOptions()
 {
     ui->sizeSlider->hide();
@@ -379,6 +398,8 @@ void ToolOptionWidget::disableAllOptions()
     ui->useFeatherBox->hide();
     ui->useBezierBox->hide();
     ui->useClosedPathBox->hide();
+    ui->snapAngleBox->hide();
+    ui->snapAngleDegrees->hide();
     ui->usePressureBox->hide();
     ui->makeInvisibleBox->hide();
     ui->preserveAlphaBox->hide();
