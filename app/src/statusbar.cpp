@@ -103,48 +103,59 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
         // Read the TODO below
         [[maybe_unused]]bool isInOriginal = false;
 
-        for (int index{0}; index < originalSizes; index++){
-          if (currentDouble == zoomList[index]){
-            isInOriginal = true;
-            // qDebug() << "the number inserted is in the original";
-          }
+        for (int index{0}; index < originalSizes; index++)
+        {
+            if (currentDouble == zoomList[index])
+            {
+                isInOriginal = true;
+                // qDebug() << "the number inserted is in the original";
+            }
         }
 
         // Insert custom number into the ZoomBox
         if (includedIn == -1 && mZoomBox->maxCount() == originalSizes + 1)
         {
             mZoomBox->setMaxCount(originalSizes + 2);
-            for(int index{0}; index < mZoomBox->count(); index++){
+            for(int index{0}; index < mZoomBox->count(); index++)
+            {
                 double compTo = locale.toDouble(QString(mZoomBox->itemText(index)).remove(locale.percent()));
-                if (currentDouble > compTo){
+                if (currentDouble > compTo)
+                {
                   mZoomBox->insertItem(index,locale.toString(currentDouble, 'f', 1) + locale.percent());
                   break;
                 }
             }
         }
         // Replace the existing custom value if a new one is inserted
-        else if(includedIn == -1){
+        else if(includedIn == -1)
+        {
             // Remove the old value
             int newMemberPlace = -1;
-            for (int outOfPlace{0}; outOfPlace < originalSizes; outOfPlace++){
+            for (int outOfPlace{0}; outOfPlace < originalSizes; outOfPlace++)
+            {
                 double compare = locale.toDouble(QString(mZoomBox->itemText(outOfPlace)).remove(locale.percent()));
-                if (compare != zoomList[outOfPlace]){
+                if (compare != zoomList[outOfPlace])
+                {
                     newMemberPlace = outOfPlace;
                     // qDebug() << "this index of mZoomBox:" << newMemberPlace << "was not in the original:" << compare;
                     break;
                 }
             }
-            if (newMemberPlace == -1){
+            if (newMemberPlace == -1)
+            {
               mZoomBox->removeItem(mZoomBox->maxCount() - 1);
             }
-            else{
+            else
+            {
               mZoomBox->removeItem(newMemberPlace);
             }
 
             // Find the correct place and insert the new one
-            for(int index{0}; index < mZoomBox->count(); index++){
+            for(int index{0}; index < mZoomBox->count(); index++)
+            {
                 double compTo = locale.toDouble(QString(mZoomBox->itemText(index)).remove(locale.percent()));
-                if (currentDouble > compTo){
+                if (currentDouble > compTo)
+                {
                   mZoomBox->insertItem(index,locale.toString(currentDouble, 'f', 1) + locale.percent());
                   break;
                 }
