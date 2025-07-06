@@ -18,6 +18,7 @@ GNU General Public License for more details.
 #include <QComboBox>
 #include <QLabel>
 #include <QLineEdit>
+#include <array>
 
 #include "editor.h"
 #include "elidedlabel.h"
@@ -45,23 +46,40 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
 
     QLocale locale;
     mZoomBox = new QComboBox(this);
+    const int originalSizes = 13;
+    std::array<double, originalSizes> zoomList = {
+      10000.,
+      6400.,
+      1600.,
+      800.,
+      400.,
+      200.,
+      100.,
+      75.,
+      50.,
+      33.,
+      25.,
+      12.,
+      1.
+    };
     mZoomBox->addItems(QStringList()
-                           << locale.toString(10000., 'f', 1) + locale.percent()
-                           << locale.toString(6400., 'f', 1) + locale.percent()
-                           << locale.toString(1600., 'f', 1) + locale.percent()
-                           << locale.toString(800., 'f', 1) + locale.percent()
-                           << locale.toString(400., 'f', 1) + locale.percent()
-                           << locale.toString(200., 'f', 1) + locale.percent()
-                           << locale.toString(100., 'f', 1) + locale.percent()
-                           << locale.toString(75., 'f', 1) + locale.percent()
-                           << locale.toString(50., 'f', 1) + locale.percent()
-                           << locale.toString(33., 'f', 1) + locale.percent()
-                           << locale.toString(25., 'f', 1) + locale.percent()
-                           << locale.toString(12., 'f', 1) + locale.percent()
-                           << locale.toString(1., 'f', 1) + locale.percent());
+                           << locale.toString(zoomList[0], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[1], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[2], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[3], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[4], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[5], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[6], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[7], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[8], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[9], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[10], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[11], 'f', 1) + locale.percent()
+                           << locale.toString(zoomList[12], 'f', 1) + locale.percent());
     mZoomBox->setMaxCount(mZoomBox->count() + 1);
     mZoomBox->setEditable(true);
     mZoomBox->lineEdit()->setAlignment(Qt::AlignRight);
+
 #if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
     connect(mZoomBox, &QComboBox::textActivated, [=](const QString &currentText)
 #else
@@ -74,6 +92,87 @@ StatusBar::StatusBar(QWidget *parent) : QStatusBar(parent)
             // insertPolicy is unsuitable as it prevents entering custom values at all
             mZoomBox->removeItem(mZoomBox->maxCount() - 1);
         }
+
+        double currentDouble = locale.toDouble(QString(currentText).remove(locale.percent()));
+
+        // Accurate text search
+        int includedIn = mZoomBox->findText(locale.toString(currentDouble, 'f', 1) + locale.percent());
+        // qDebug() << "number inserted is in place" << includedIn;
+
+        // Needed for the removal of custom values when non-custom is inserted
+        // Read the TODO below
+        [[maybe_unused]]bool isInOriginal = false;
+
+        for (int index{0}; index < originalSizes; index++){
+          if (currentDouble == zoomList[index]){
+            isInOriginal = true;
+            // qDebug() << "the number inserted is in the original";
+          }
+        }
+
+        // Insert custom number into the ZoomBox
+        if (includedIn == -1 && mZoomBox->maxCount() == originalSizes + 1)
+        {
+            mZoomBox->setMaxCount(originalSizes + 2);
+            for(int index{0}; index < mZoomBox->count(); index++){
+                double compTo = locale.toDouble(QString(mZoomBox->itemText(index)).remove(locale.percent()));
+                if (currentDouble > compTo){
+                  mZoomBox->insertItem(index,locale.toString(currentDouble, 'f', 1) + locale.percent());
+                  break;
+                }
+            }
+        }
+        // Replace the existing custom value if a new one is inserted
+        else if(includedIn == -1){
+            // Remove the old value
+            int newMemberPlace = -1;
+            for (int outOfPlace{0}; outOfPlace < originalSizes; outOfPlace++){
+                double compare = locale.toDouble(QString(mZoomBox->itemText(outOfPlace)).remove(locale.percent()));
+                if (compare != zoomList[outOfPlace]){
+                    newMemberPlace = outOfPlace;
+                    // qDebug() << "this index of mZoomBox:" << newMemberPlace << "was not in the original:" << compare;
+                    break;
+                }
+            }
+            if (newMemberPlace == -1){
+              mZoomBox->removeItem(mZoomBox->maxCount() - 1);
+            }
+            else{
+              mZoomBox->removeItem(newMemberPlace);
+            }
+
+            // Find the correct place and insert the new one
+            for(int index{0}; index < mZoomBox->count(); index++){
+                double compTo = locale.toDouble(QString(mZoomBox->itemText(index)).remove(locale.percent()));
+                if (currentDouble > compTo){
+                  mZoomBox->insertItem(index,locale.toString(currentDouble, 'f', 1) + locale.percent());
+                  break;
+                }
+            }
+
+        }
+        // TODO: Figure out how to differentiate between value change and manual
+        // keyboard input
+
+        // else if(includedIn >= 0 && isInOriginal){
+        //     int newMemberPlace = -1;
+        //     for (int outOfPlace{0}; outOfPlace < originalSizes; outOfPlace++){
+        //         double compare = locale.toDouble(QString(mZoomBox->itemText(outOfPlace)).remove(locale.percent()));
+        //         if (compare != zoomList[outOfPlace]){
+        //             newMemberPlace = outOfPlace;
+        //             qDebug() << "this index of mZoomBox:" << newMemberPlace << "was not in the original:" << compare;
+        //             break;
+        //         }
+        //     }
+        //     if (newMemberPlace == -1){
+        //       mZoomBox->removeItem(mZoomBox->maxCount() - 1);
+        //     }
+        //     else{
+        //       mZoomBox->removeItem(newMemberPlace);
+        //     }
+        //     mZoomBox->setMaxCount(originalSizes + 1);
+        // }
+
         emit zoomChanged(locale.toDouble(QString(currentText).remove(locale.percent())) / 100);
     });
     addPermanentWidget(mZoomBox);
