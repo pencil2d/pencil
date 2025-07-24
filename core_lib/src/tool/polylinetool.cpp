@@ -170,14 +170,18 @@ void PolylineTool::pointerReleaseEvent(PointerEvent* event)
 void PolylineTool::pointerDoubleClickEvent(PointerEvent* event)
 {
     mInterpolator.pointerPressEvent(event);
-    // include the current point before ending the line.
-    mPoints << getCurrentPoint();
 
-    SAVESTATE_ID saveStateId = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MODIFY);
-    mEditor->backup(typeName());
 
-    endPolyline(mPoints);
-    mEditor->undoRedo()->record(saveStateId, typeName());
+    if (mPoints.size() > 0) {
+        if (mPoints.last() != getCurrentPoint()) {
+            // include the current point before ending the line.
+            mPoints << getCurrentPoint();
+        }
+        SAVESTATE_ID saveStateId = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MODIFY);
+        mEditor->backup(typeName());
+        endPolyline(mPoints);
+        mEditor->undoRedo()->record(saveStateId, typeName());
+    }
 }
 
 void PolylineTool::removeLastPolylineSegment()
@@ -207,6 +211,8 @@ bool PolylineTool::keyPressEvent(QKeyEvent* event)
     case Qt::Key_Return:
         if (mPoints.size() > 0)
         {
+            // include the current point before ending the line.
+            mPoints << getCurrentPoint();
             SAVESTATE_ID saveStateId = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MODIFY);
             endPolyline(mPoints);
             mEditor->undoRedo()->record(saveStateId, typeName());
