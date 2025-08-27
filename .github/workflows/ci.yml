@@ -72,6 +72,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+
       - name: Set up container (Linux)
         if: runner.os == 'Linux'
         # XXX: --privileged is sort of a brute-force solution to get FUSE
@@ -115,6 +116,18 @@ jobs:
         with:
           arch: ${{matrix.arch}}
           qt: ${{matrix.qt}}
+
+      - name: Code Sign and Notarize App
+        if: runner.os == 'macOS'
+        uses: ./.github/actions/notarize-macos-app
+        with:
+          app_path: "build/${{steps.package.outputs.output-basename}}.zip"
+          p12_base64: ${{ secrets.P12_BASE64 }}
+          p12_password: ${{ secrets.P12_PASSWORD }}
+          apple_id: ${{ secrets.APPLE_ID }}
+          apple_id_password: ${{ secrets.APPLE_ID_PASSWORD }}
+          team_id: ${{ secrets.APPLE_TEAM_ID }}
+          certificate_identity: ${{ secrets.CODESIGN_CERT_IDENTITY }}
 
       - name: Upload package
         if: runner.os != 'Linux' || matrix.qt == 5
