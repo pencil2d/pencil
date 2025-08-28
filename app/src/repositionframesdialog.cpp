@@ -190,7 +190,7 @@ void RepositionFramesDialog::updateLayersBox()
 
 void RepositionFramesDialog::closeClicked()
 {
-    rejected();
+    reject();
 }
 
 void RepositionFramesDialog::updateLayersToSelect()
