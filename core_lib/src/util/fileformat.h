@@ -57,6 +57,8 @@ GNU General Public License for more details.
 #define PFF_SOUND_EXT_FILTER \
     QCoreApplication::translate("FileFormat", "Sound formats") + " (*.wav *.mp3 *.wma *.ogg *.flac *.opus *.aiff *.aac *.caf);;WAV (*.wav);;MP3 (*.mp3);;WMA (*.wma);;OGG (*.ogg);;FLAC (*.flac);;Opus (*.opus);;AIFF (*.aiff);;AAC (*.aac);;CAF (*.caf)"
 
+#define PFF_THEME_PALETTE_EXT_FILTER \
+    QCoreApplication::translate("FileFormat", "qt5ct Color Palette") + " (*.conf);;"
 
 #define PFF_DEFAULT_PROJECT_EXT \
     QString(".pclx")
@@ -78,6 +80,9 @@ GNU General Public License for more details.
 
 #define PFF_DEFAULT_SOUND_EXT \
     QString(".wav")
+
+#define PFF_DEFAULT_THEME_PALETTE_EXT \
+    QString(".conf")
 
 #define PFF_OLD_DATA_DIR 		"data"
 #define PFF_DATA_DIR            "data"
