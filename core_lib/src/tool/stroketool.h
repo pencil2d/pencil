@@ -55,6 +55,7 @@ public:
     bool isActive() const override { return mInterpolator.isActive(); };
 
     bool keyPressEvent(QKeyEvent* event) override;
+    bool keyReleaseEvent(QKeyEvent* event) override;
     void pointerPressEvent(PointerEvent* event) override;
     void pointerMoveEvent(PointerEvent* event) override;
     void pointerReleaseEvent(PointerEvent* event) override;
@@ -103,6 +104,7 @@ protected:
     /// Returns true by default.
     virtual bool emptyFrameActionEnabled();
 
+    bool mXYSnappingMode = false;
     bool mCanvasCursorEnabled = false;
     QPointF mLastPixel { 0, 0 };
 
