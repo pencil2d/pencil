@@ -28,6 +28,7 @@ class Editor;
 class ScribbleArea;
 class BaseDockWidget;
 class ColorPaletteWidget;
+class BitmapColoring;
 class OnionSkinWidget;
 class ToolOptionWidget;
 class TimeLine;
@@ -163,6 +164,7 @@ private:
     //PreviewWidget*      mPreview = nullptr;
     TimeLine*             mTimeLine = nullptr;
     ColorInspector*       mColorInspector = nullptr;
+    BitmapColoring*       mBitmapColoring = nullptr;
     OnionSkinWidget*      mOnionSkinWidget = nullptr;
     QToolBar*             mMainToolbar = nullptr;
     QToolBar*             mViewToolbar = nullptr;
