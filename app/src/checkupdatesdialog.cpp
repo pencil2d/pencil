@@ -111,7 +111,7 @@ void CheckUpdatesDialog::nightlyBuildCheck()
 {
     mTitleLabel->setText(tr("<b>You are using a Pencil2D nightly build</b>"));
     mDetailLabel->setText(tr("Please go %1 here %2 to check new nightly builds.")
-                          .arg("<a href=\"https://www.pencil2d.org/download/#nightlybuild\">", "</a>"));
+                          .arg("<a href=\"https://www.pencil2d.org/download/nightly/\">", "</a>"));
     mDetailLabel->setOpenExternalLinks(true);
     mProgressBar->setRange(0, 1);
     mProgressBar->setValue(1);
