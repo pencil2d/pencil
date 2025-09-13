@@ -212,8 +212,12 @@ QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
                 xmlReader.readNext();
                 if (xmlReader.name() == QLatin1String("title"))
                 {
-                    QString titleTag = xmlReader.readElementText();
-                    return titleTag.remove(QRegularExpression("^v")); // remove the leading 'v'
+                    QString title = xmlReader.readElementText();
+                    title = title.remove(QRegularExpression("^v")); // remove the leading 'v'
+                    // Ignore release candidate versions
+                    if (!title.contains("Release Candidate")) {
+                        return title;
+                    }
                 }
             }
         }
