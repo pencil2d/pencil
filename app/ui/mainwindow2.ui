@@ -216,6 +216,9 @@
     <addaction name="actionShowInvisibleLines"/>
     <addaction name="actionShowOutlinesOnly"/>
     <addaction name="separator"/>
+    <addaction name="actionDrawMirror_Horizontally"/>
+    <addaction name="actionDrawMirror_Vertically"/>
+    <addaction name="separator"/>
    </widget>
    <widget class="QMenu" name="menuAnimation">
     <property name="title">
@@ -1283,6 +1286,30 @@
    </property>
    <property name="text">
     <string>30°</string>
+   </property>
+  </action>
+  <action name="actionDrawMirror_Horizontally">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/themes/playful/display/horizontal.jpeg</normaloff>:/icons/themes/playful/display/horizontal.jpeg</iconset>
+   </property>
+   <property name="text">
+    <string>Mirror Draw Horizontally</string>
+   </property>
+  </action>
+  <action name="actionDrawMirror_Vertically">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="../data/app.qrc">
+     <normaloff>:/icons/themes/playful/display/vertical.jpeg</normaloff>:/icons/themes/playful/display/vertical.jpeg</iconset>
+   </property>
+   <property name="text">
+    <string>Mirror Draw Vertically</string>
    </property>
   </action>
  </widget>

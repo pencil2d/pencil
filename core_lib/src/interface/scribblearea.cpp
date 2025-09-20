@@ -144,6 +144,8 @@ void ScribbleArea::settingUpdated(SETTING setting)
     case SETTING::OUTLINES:
     case SETTING::ONION_TYPE:
     case SETTING::ONION_WHILE_PLAYBACK:
+    case SETTING::DRAW_MIRROR_H:
+    case SETTING::DRAW_MIRROR_V:
         invalidateAllCache();
         break;
     case SETTING::ONION_MUTLIPLE_LAYERS:
@@ -1167,10 +1169,61 @@ void ScribbleArea::drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter:
     mTiledBuffer.drawPath(mEditor->view()->mapScreenToCanvas(path), pen, brush, cm, mPrefs->isOn(SETTING::ANTIALIAS));
 }
 
+//mirror equation
+//x1 = x - (2a*(ax+by+c))/(a*a + b*b)
+//y1 = y - (2b*(ax+by+c))/(a*a + b*b)
+
+// in case of a vertical line
+// a = 1 b = 0 c = 0
+QPointF mirrorV(QPointF p)
+{
+    QPointF mirror;
+    mirror.setX(p.x() - (2.f * p.x()));
+    mirror.setY(p.y());
+    return mirror;
+}
+
+// in case of a horizontal line
+// a = 0 b = 1 c = 0
+QPointF mirrorH(QPointF p)
+{
+    QPointF mirror;
+    mirror.setX(p.x());
+    mirror.setY(p.y() - (2.f * p.y()));
+    return mirror;
+}
+
+QPointF mirrorHV(QPointF p)
+{
+    QPointF mirror;
+    mirror.setX(p.x() - (2.f * p.x()));
+    mirror.setY(p.y() - (2.f * p.y()));
+    return mirror;
+}
+
 void ScribbleArea::drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA)
 {
+    QBrush solid(fillColor, Qt::SolidPattern);
     // We use Source as opposed to SourceOver here to avoid the dabs being added on top of each other
-    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, QBrush(fillColor, Qt::SolidPattern), QPainter::CompositionMode_Source, useAA);
+    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, solid, QPainter::CompositionMode_Source, useAA);
+
+    if (mPrefs->isOn(SETTING::DRAW_MIRROR_H))
+    {
+        QPointF mirrorPoint = mirrorH(thePoint);
+        mTiledBuffer.drawBrush(mirrorPoint, brushWidth, Qt::NoPen, solid, QPainter::CompositionMode_Source, useAA);
+    }
+
+    if (mPrefs->isOn(SETTING::DRAW_MIRROR_V))
+    {
+        QPointF mirrorPoint = mirrorV(thePoint);
+        mTiledBuffer.drawBrush(mirrorPoint, brushWidth, Qt::NoPen, solid, QPainter::CompositionMode_Source, useAA);
+    }
+
+    if (mPrefs->isOn(SETTING::DRAW_MIRROR_H) && mPrefs->isOn(SETTING::DRAW_MIRROR_V))
+    {
+        QPointF mirrorPoint = mirrorHV(thePoint);
+        mTiledBuffer.drawBrush(mirrorPoint, brushWidth, Qt::NoPen, solid, QPainter::CompositionMode_Source, useAA);
+    }
 }
 
 void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity)
@@ -1181,17 +1234,55 @@ void ScribbleArea::drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBru
 void ScribbleArea::drawBrush(QPointF thePoint, qreal brushWidth, qreal mOffset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather, bool useAA)
 {
     QBrush brush;
-    if (usingFeather)
     {
-        QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
-        setGaussianGradient(radialGrad, fillColor, opacity, mOffset);
-        brush = radialGrad;
+        if (usingFeather)
+        {
+            QRadialGradient radialGrad(thePoint, 0.5 * brushWidth);
+            setGaussianGradient(radialGrad, fillColor, opacity, mOffset);
+            brush = radialGrad;
+        }
+        else
+        {
+            brush = QBrush(fillColor, Qt::SolidPattern);
+        }
+        mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, brush, compMode, useAA);
     }
-    else
+
+    if (mPrefs->isOn(SETTING::DRAW_MIRROR_H))
     {
-        brush = QBrush(fillColor, Qt::SolidPattern);
+        QPointF mirrorPoint = mirrorH(thePoint);
+        if (usingFeather)
+        {
+            QRadialGradient radialGrad(mirrorPoint, 0.5 * brushWidth);
+            setGaussianGradient(radialGrad, fillColor, opacity, mOffset);
+            brush = radialGrad;
+        }
+        mTiledBuffer.drawBrush(mirrorPoint, brushWidth, Qt::NoPen, brush, compMode, useAA);
     }
-    mTiledBuffer.drawBrush(thePoint, brushWidth, Qt::NoPen, brush, compMode, useAA);
+
+    if (mPrefs->isOn(SETTING::DRAW_MIRROR_V))
+    {
+        QPointF mirrorPoint = mirrorV(thePoint);
+        if (usingFeather)
+        {
+            QRadialGradient radialGrad(mirrorPoint, 0.5 * brushWidth);
+            setGaussianGradient(radialGrad, fillColor, opacity, mOffset);
+            brush = radialGrad;
+        }
+        mTiledBuffer.drawBrush(mirrorPoint, brushWidth, Qt::NoPen, brush, compMode, useAA);
+    }
+
+    if (mPrefs->isOn(SETTING::DRAW_MIRROR_H) && mPrefs->isOn(SETTING::DRAW_MIRROR_V))
+    {
+        QPointF mirrorPoint = mirrorHV(thePoint);
+        if (usingFeather)
+        {
+            QRadialGradient radialGrad(mirrorPoint, 0.5 * brushWidth);
+            setGaussianGradient(radialGrad, fillColor, opacity, mOffset);
+            brush = radialGrad;
+        }
+        mTiledBuffer.drawBrush(mirrorPoint, brushWidth, Qt::NoPen, brush, compMode, useAA);
+    }
 }
 
 void ScribbleArea::drawPolyline(QPainterPath path, QPen pen, bool useAA)
@@ -1256,6 +1347,9 @@ void ScribbleArea::prepOverlays(int frame)
     o.mMiddlePerspPoint = mEditor->overlays()->getMiddlePerspectivePoint();
 
     o.nFrameIndex = frame;
+
+    o.bShowHorizontalMirrorLine = mPrefs->isOn(SETTING::DRAW_MIRROR_H);
+    o.bshowVerticalMirrorLine = mPrefs->isOn(SETTING::DRAW_MIRROR_V);
 
     mOverlayPainter.setOptions(o);
     mOverlayPainter.preparePainter(mEditor->layers()->getCameraLayerBelow(mEditor->currentLayerIndex()), palette());
