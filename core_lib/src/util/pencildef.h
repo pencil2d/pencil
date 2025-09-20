@@ -321,6 +321,9 @@ const static int MaxFramesBound = 9999;
 #define SETTING_NEW_UNDO_REDO_ON        "NewUndoRedoOn"
 #define SETTING_UNDO_REDO_MAX_STEPS     "UndoRedoMaxSteps"
 
+#define SETTING_DRAW_MIRROR_H     "DrawMirrorHorizontally"
+#define SETTING_DRAW_MIRROR_V     "DrawMirrorVertically"
+
 #define SETTING_BUCKET_TOLERANCE "Tolerance"
 #define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
 #define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"

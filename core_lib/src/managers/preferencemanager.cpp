@@ -471,6 +471,12 @@ void PreferenceManager::set(SETTING option, bool value)
     case SETTING::NEW_UNDO_REDO_SYSTEM_ON:
         settings.setValue(SETTING_NEW_UNDO_REDO_ON, value);
         break;
+    case SETTING::DRAW_MIRROR_H:
+        settings.setValue(SETTING_DRAW_MIRROR_H, value);
+        break;
+    case SETTING::DRAW_MIRROR_V:
+        settings.setValue(SETTING_DRAW_MIRROR_V, value);
+        break;
     default:
         Q_ASSERT(false);
         break;
