@@ -36,10 +36,11 @@ BaseDockWidget::BaseDockWidget(QWidget* pParent)
     }
 #endif
 
-    mTitleBarWidget = new TitleBarWidget(pParent);
-    mNoTitleBarWidget = new QWidget(pParent);
+    mTitleBarWidget = new TitleBarWidget(this);
+    mNoTitleBarWidget = new QWidget(this);
 
     setTitleBarWidget(mTitleBarWidget);
+    mNoTitleBarWidget->hide();
 
     connect(mTitleBarWidget, &TitleBarWidget::closeButtonPressed, this, &BaseDockWidget::close);
 
