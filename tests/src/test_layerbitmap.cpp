@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "layerbitmap.h"
 #include "bitmapimage.h"
+#include "util.h"
 
 #include <memory>
 #include <QDir>
@@ -61,7 +62,7 @@ TEST_CASE("Load bitmap layer from XML")
         REQUIRE(frame != nullptr);
         REQUIRE(frame->top() == 0);
         REQUIRE(frame->left() == 0);
-        REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath("001.001.png")));
+        REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath("001.001.png")));
     }
 
     SECTION("Multiple frames")
@@ -78,7 +79,7 @@ TEST_CASE("Load bitmap layer from XML")
             REQUIRE(frame != nullptr);
             REQUIRE(frame->top() == 0);
             REQUIRE(frame->left() == 0);
-            REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath(QString("001.%1.png").arg(QString::number(i), 3, QChar('0')))));
+            REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath(QString("001.%1.png").arg(QString::number(i), 3, QChar('0')))));
         }
     }
 
@@ -112,6 +113,6 @@ TEST_CASE("Load bitmap layer from XML")
         REQUIRE(frame != nullptr);
         REQUIRE(frame->top() == 0);
         REQUIRE(frame->left() == 0);
-        REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath("subdir/001.001.png")));
+        REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath("subdir/001.001.png")));
     }
 }
