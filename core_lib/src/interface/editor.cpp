@@ -32,6 +32,8 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "backupelement.h"
 
+#include "movetool.h"
+
 #include "colormanager.h"
 #include "filemanager.h"
 #include "toolmanager.h"
@@ -151,22 +153,10 @@ void Editor::settingUpdated(SETTING setting)
 
 void Editor::onCurrentLayerWillChange(int index)
 {
-    Layer* newLayer = layers()->getLayer(index);
-    Layer* currentLayer = layers()->currentLayer();
-    Q_ASSERT(newLayer && currentLayer);
-    if (currentLayer->type() != newLayer->type()) {
-        // We apply transform changes upon leaving a layer and deselect all
-        mScribbleArea->applyTransformedSelection();
+    Q_UNUSED(index)
 
-        if (currentLayer->type() == Layer::VECTOR) {
-            auto keyFrame = static_cast<VectorImage*>(currentLayer->getLastKeyFrameAtPosition(mFrame));
-            if (keyFrame)
-            {
-                keyFrame->deselectAll();
-            }
-        }
-
-        select()->resetSelectionProperties();
+    if (select()->somethingSelected()) {
+        static_cast<MoveTool*>(tools()->getTool(MOVE))->applyTransformationAndDeselect();
     }
 }
 
@@ -1195,6 +1185,10 @@ void Editor::setCurrentLayerIndex(int i)
 
 void Editor::scrubTo(int frame)
 {
+    if (select()->somethingSelected()) {
+        static_cast<MoveTool*>(tools()->getTool(MOVE))->applyTransformationAndDeselect();
+    }
+
     if (frame < 1) { frame = 1; }
     mFrame = frame;
 
