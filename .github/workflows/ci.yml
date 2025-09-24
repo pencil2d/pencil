@@ -52,7 +52,7 @@ jobs:
             container: "ubuntu:22.04"
             qt: 6
           - name: Qt 6 / macOS x86_64
-            os: macos-13
+            os: macos-14
             container:
             qt: 6
           #- name: Qt 6 / macOS arm64
