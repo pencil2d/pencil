@@ -43,7 +43,7 @@
     <message>
         <location filename="../app/src/actioncommands.cpp" line="89"/>
         <source>Importing Animated Image...</source>
-        <translation type="unfinished"/>
+        <translation>Animasyonlu Resim İçe Aktarılıyor...</translation>
     </message>
     <message>
         <location filename="../app/src/actioncommands.cpp" line="131"/>
@@ -487,22 +487,22 @@
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="25"/>
         <source>Moderate Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Orta Derecede Kolay Giriş</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="26"/>
         <source>Moderate Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Orta Derecede Kolay Çıkış</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="27"/>
         <source>Moderate Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Orta Derecede Kolay Giriş - Kolay Çıkış</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="28"/>
         <source>Moderate Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Orta Derecede Kolay Çıkış - Kolay Giriş</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="29"/>
@@ -2590,119 +2590,119 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="202"/>
         <source>Copy</source>
         <translation>Kopya</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="574"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="588"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="247"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="261"/>
         <source>Paste from Previous Keyframe</source>
         <translation>Önceki Ana Kareden Yapıştır</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="686"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="359"/>
         <source>Paste</source>
         <translation>Yapıştır</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="708"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="381"/>
         <source>Flip selection vertically</source>
         <translation>Seçimi dikey olarak çevir</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="710"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="383"/>
         <source>Flip selection horizontally</source>
         <translation>Seçimi yatay olarak çevir</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="726"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="399"/>
         <source>Reposition frame</source>
         <translation>Çerçeveyi yeniden konumlandır</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="810"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="819"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="828"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="860"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="481"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="490"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="499"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="531"/>
         <source>Could not open file</source>
         <translation>Dosya açılamadı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="811"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="482"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>Seçtiğiniz dosya bir dizin olduğundan onu açamıyoruz. Eski yapıyı kullanan bir proje açmaya çalışıyorsanız, lütfen data klasörünü değil, .pcl ile biten dosyayı açın.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="820"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="491"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>Seçtiğiniz dosya mevcut değil, bu yüzden onu açamıyoruz. Lütfen doğru yolu girdiğinizden ve dosyanın erişilebilir olduğundan emin olun ve tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="829"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="500"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>Bu programın seçtiğiniz dosyayı okuma izni yok. Lütfen bu dosya için okuma izninizin olup olmadığını kontrol edin ve tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="861"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>Dosyayı yüklemeye çalışırken bilinmeyen bir hata oluştu ve dosyanızı yükleyemiyoruz.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="944"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1074"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="614"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="744"/>
         <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
         <translation>&quot;%1&quot; yolunda dosya bulunamadı. Lütfen görüntünün belirtilen konumda olup olmadığını kontrol edin ve tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="947"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1077"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="617"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="747"/>
         <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
 %1</source>
         <translation>Görüntü biçimi desteklenmiyor. Lütfen görüntü dosyasını aşağıdaki biçimlerden birine dönüştürün ve tekrar deneyin:
 %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="951"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1081"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="621"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="751"/>
         <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
         <translation>Görüntü okunurken bir hata oluştu. Lütfen dosyanın geçerli bir görüntü olduğunu kontrol edin ve tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="954"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1005"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1035"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1050"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1057"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1084"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="624"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="754"/>
         <source>Import failed</source>
         <translation>İçe aktarma başarısız oldu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="972"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1002"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1103"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="642"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="672"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="773"/>
         <source>Import Image</source>
         <translation>Resmi İçe Aktar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1005"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
         <source>You cannot import images into a vector layer.</source>
         <translation>Görüntüleri bir vektör katmanına aktaramazsınız.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1035"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1050"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
         <source>You can only import images to a bitmap layer.</source>
         <translation>Görüntüleri yalnızca bir bitmap katmanına aktarabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1057"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
         <source>The selected image has a format that does not support animation.</source>
-        <translation type="unfinished"/>
+        <translation>Seçili görselin biçimi animasyonu desteklemiyor.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1269"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="939"/>
         <source>Remove frame</source>
         <translation>Çerçeveyi kaldır</translation>
     </message>
@@ -2723,6 +2723,16 @@
         <location filename="../app/ui/errordialog.ui" line="68"/>
         <source>Description</source>
         <translation>Açıklama</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/errordialog.ui" line="88"/>
+        <source>This report contains vital information. Copy all of it when submitting a bug.</source>
+        <translation>Bu rapor hayati bilgiler içeriyor. Bir hata gönderirken hepsini kopyalayın.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/errordialog.cpp" line="41"/>
+        <source>Copy to Clipboard</source>
+        <translation>Panoya Kopyala</translation>
     </message>
 </context>
 <context>
@@ -2778,7 +2788,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="103"/>
         <source>WEBP</source>
-        <translation type="unfinished"/>
+        <translation>WEBP</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="111"/>
@@ -2859,7 +2869,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="66"/>
         <source>The MP4 format does not support odd width. Please specify an even width or use a different file format.</source>
-        <translation type="unfinished"/>
+        <translation>MP4 formatı tek genişliği desteklemez. Lütfen çift genişlik belirtin veya farklı bir dosya formatı kullanın.</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="98"/>
@@ -2869,7 +2879,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="105"/>
         <source>The MP4 format does not support odd height. Please specify an even height or use a different file format.</source>
-        <translation type="unfinished"/>
+        <translation>MP4 formatı tek yüksekliği desteklemez. Lütfen çift bir yükseklik belirtin veya farklı bir dosya formatı kullanın.</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="128"/>
@@ -2957,7 +2967,7 @@
     <message>
         <location filename="../app/src/filedialog.cpp" line="171"/>
         <source>Import animated image</source>
-        <translation type="unfinished"/>
+        <translation>Hareketli görseli içe aktar</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="172"/>
@@ -2997,7 +3007,7 @@
     <message>
         <location filename="../app/src/filedialog.cpp" line="187"/>
         <source>Export animated image</source>
-        <translation type="unfinished"/>
+        <translation>Hareketli görseli dışa aktar</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="188"/>
@@ -3078,7 +3088,7 @@
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="55"/>
         <source>Animated image formats</source>
-        <translation type="unfinished"/>
+        <translation>Haraketli görsel biçimleri</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="58"/>
@@ -3089,99 +3099,103 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="260"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="268"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="275"/>
         <source>Invalid Save Path</source>
         <translation>Geçersiz Kayıt Yolu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>The path is empty.</source>
         <translation>Yol boş.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>Yol (&quot;%1&quot;) bir dizini işaret eder.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="254"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="269"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>Dizin (&quot;%1&quot;) mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="276"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>Yol (&quot;%1&quot;) yazılabilir değil.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="307"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="314"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="323"/>
         <source>Cannot Create Data Directory</source>
         <translation>Veri Dizini Oluşturulamıyor</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="299"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="315"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>&quot;%1&quot; dizini oluşturulamadı. Lütfen yeterli izniniz olduğundan emin olun.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="308"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="324"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot; bir dosyadır. Lütfen dosyayı silin ve tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="341"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="353"/>
+        <source>An internal error occurred. The project could not be saved.</source>
+        <translation>Dahili bir hata oluştu. Proje kaydedilemedi.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="363"/>
         <source>Miniz Error</source>
         <translation>Miniz Hatası</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="332"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="342"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="357"/>
-        <source>An internal error occurred. Your file may not be saved successfully.</source>
-        <translation>Bir iç hata oluştu. Dosyanız başarıyla kaydedilemeyebilir.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="331"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="356"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="352"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="380"/>
         <source>Internal Error</source>
         <translation>İç Hata</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="525"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="364"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="381"/>
+        <source>An internal error occurred. The project may not have been saved successfully.</source>
+        <translation>Dahili bir hata oluştu. Proje başarıyla kaydedilememiş olabilir.</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="549"/>
         <source>Could not open file</source>
         <translation>Dosya açılamadı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="535"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="559"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
         <translation>Dosya mevcut değil, bu yüzden onu açamıyoruz. Lütfen yolun doğru olduğundan emin olmak için kontrol edin ve tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="540"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="564"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
         <translation>Dosyayı okuma izni yok. Lütfen bu dosya için okuma izniniz olup olmadığını kontrol edin ve tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="546"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="570"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
         <translation>Dosyanız işlenirken bir hata oluştu. Bu genellikle projenizin en azından kısmen bozulduğu anlamına gelir. Pencil2D&apos;nin daha yeni bir sürümüyle tekrar deneyin veya varsa bir yedekleme dosyası kullanmayı deneyin. Bizimle resmi kanallarımızdan biri aracılığıyla iletişime geçerseniz size yardımcı olabiliriz. Sorunları bildirmek için bize ulaşabileceğiniz en iyi yerler:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="977"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1013"/>
         <source>Bitmap Layer %1</source>
         <translation>Bitmap Katmanı %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="979"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1015"/>
         <source>Vector Layer %1</source>
         <translation>Vektör Katmanı %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="981"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1017"/>
         <source>Sound Layer %1</source>
         <translation>Ses Katmanı %1</translation>
     </message>
@@ -3298,7 +3312,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="108"/>
         <source>Canvas Cursor</source>
-        <translation type="unfinished"/>
+        <translation>Tuval İmleci</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="118"/>
@@ -3377,12 +3391,12 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="404"/>
         <source>Scroll Wheel Zoom</source>
-        <translation type="unfinished"/>
+        <translation>Kaydırma Tekerleği Yakınlaştırması</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="422"/>
         <source>Invert Scroll Direction</source>
-        <translation type="unfinished"/>
+        <translation>Kaydırma Yönünü Tersine Çevir</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="432"/>
@@ -3391,14 +3405,44 @@
         <translation>Gelişmiş</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="447"/>
+        <location filename="../app/ui/generalpage.ui" line="449"/>
         <source>Memory Cache Budget</source>
         <translation>Bellek Önbellek Miktarı</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="478"/>
+        <location filename="../app/ui/generalpage.ui" line="480"/>
         <source>MB</source>
         <translation>MB</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="501"/>
+        <source>Undo/Redo</source>
+        <translation>Geri al/Yinele</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="507"/>
+        <source>Enable New System (Experimental)</source>
+        <translation>Yeni Sistemi Etkinleştir (Deneysel)</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="519"/>
+        <source>How many steps you&apos;re allowed to undo/redo</source>
+        <translation>Kaç adımı geri alabilir/yeniden yapabilirsiniz</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="522"/>
+        <source>Maximum Number of Undo/Redo Steps</source>
+        <translation>Geri Alma/Yineleme Adımlarının Maksimum Sayısı</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="555"/>
+        <source>Apply</source>
+        <translation>Uygula</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="562"/>
+        <source>Cancel</source>
+        <translation>İptal et</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="39"/>
@@ -3408,7 +3452,7 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="40"/>
         <source>Bulgarian</source>
-        <translation type="unfinished"/>
+        <translation>Bulgarca</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="41"/>
@@ -3453,7 +3497,7 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="49"/>
         <source>Persian</source>
-        <translation type="unfinished"/>
+        <translation>Farsça</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="50"/>
@@ -3493,17 +3537,17 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="57"/>
         <source>Korean</source>
-        <translation type="unfinished"/>
+        <translation>Korece</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="58"/>
         <source>Norwegian Bokmål</source>
-        <translation type="unfinished"/>
+        <translation>Norveççe Bokmål</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="59"/>
         <source>Dutch – Netherlands</source>
-        <translation type="unfinished"/>
+        <translation>Hollandaca – Hollanda</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="60"/>
@@ -3548,7 +3592,7 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="68"/>
         <source>Cantonese</source>
-        <translation type="unfinished"/>
+        <translation>Kantonca</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="69"/>
@@ -3561,14 +3605,47 @@
         <translation>Çince - Taiwan</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="212"/>
+        <location filename="../app/src/generalpage.cpp" line="225"/>
         <source>Restart Required</source>
         <translation>Yeniden Başlatma Gerekiyor</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="213"/>
+        <location filename="../app/src/generalpage.cpp" line="226"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Dil değişikliği, Pencil2D&apos;nin yeniden başlatılmasından sonra geçerli olacaktır</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="365"/>
+        <source>Resets your current undo history</source>
+        <translation>Mevcut geri alma geçmişinizi sıfırlar</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="366"/>
+        <source>Changing the maximum number of undo/redo steps resets your current undo/redo history. 
+
+Are you sure you want to proceed?</source>
+        <translation>Geri alma/yineleme adımlarının maksimum sayısını değiştirmek, geçerli geri alma/yineleme geçmişinizi sıfırlar. 
+
+Devam etmek istediğinize emin misiniz?</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="381"/>
+        <source>Experimental feature!</source>
+        <translation>Deneysel özellik!</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="382"/>
+        <source>This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. 
+
+Do you still want to try?</source>
+        <translation>Bu özellik üzerinde çalışılıyor ve şu anda geçerli geri alma/yineleme sistemiyle aynı özelliklere izin vermiyor olabilir. Etkinleştirildikten sonra, kullanmaya başlamak için uygulamayı yeniden başlatmanız gerekir. 
+
+Hala denemek istiyor musun?</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="394"/>
+        <source>The undo/redo system will be changed on the next launch of the application</source>
+        <translation>Uygulamanın bir sonraki başlatılışında geri alma/yineleme sistemi değiştirilecek</translation>
     </message>
 </context>
 <context>
@@ -3614,7 +3691,7 @@
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="70"/>
         <source>Import animated image</source>
-        <translation type="unfinished"/>
+        <translation>Hareketli görseli içe aktar</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="79"/>
@@ -4265,7 +4342,7 @@ Talimatları okuyun ve yeniden deneyin</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="614"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1538"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1531"/>
         <source>Play</source>
         <translation>Oynat</translation>
     </message>
@@ -4450,7 +4527,7 @@ Talimatları okuyun ve yeniden deneyin</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="905"/>
         <source>Animated Image...</source>
-        <translation type="unfinished"/>
+        <translation>Hareketli Resim...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="910"/>
@@ -4526,6 +4603,16 @@ Talimatları okuyun ve yeniden deneyin</translation>
         <location filename="../app/ui/mainwindow2.ui" line="1021"/>
         <source>Relative</source>
         <translation>İlgili</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1278"/>
+        <source>Remove Last Polyline Segment</source>
+        <translation>Son Poliline Segmentini Kaldır</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1281"/>
+        <source>Removes the lastest Polyline segment</source>
+        <translation>En son Polyline segmentini kaldırır</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="975"/>
@@ -4618,166 +4705,154 @@ Talimatları okuyun ve yeniden deneyin</translation>
         <translation>Durum Çubuğu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="153"/>
+        <location filename="../app/src/mainwindow2.cpp" line="155"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>renk paleti:&lt;br&gt; imleçte geçiş yapmak için &lt;b&gt; (C) &lt;/b&gt; &lt;br&gt; kullanın</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="157"/>
+        <location filename="../app/src/mainwindow2.cpp" line="159"/>
         <source>Color inspector</source>
         <translation>Renk denetçisi</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="459"/>
+        <location filename="../app/src/mainwindow2.cpp" line="460"/>
         <source>Open Recent</source>
         <translation>Son Kullanılanı Aç</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="484"/>
-        <location filename="../app/src/mainwindow2.cpp" line="508"/>
+        <location filename="../app/src/mainwindow2.cpp" line="501"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>Dialog is already open!</source>
         <translation>İletişim kutusu zaten açık!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="530"/>
+        <location filename="../app/src/mainwindow2.cpp" line="547"/>
         <source>Please select at least 2 frames!</source>
         <translation>Lütfen en az 2 kare seçin!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="658"/>
+        <location filename="../app/src/mainwindow2.cpp" line="675"/>
         <source>Opening document...</source>
         <translation>Belge açılıyor...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="658"/>
-        <location filename="../app/src/mainwindow2.cpp" line="715"/>
+        <location filename="../app/src/mainwindow2.cpp" line="675"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>Abort</source>
         <translation>İptal et</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="703"/>
-        <location filename="../app/src/mainwindow2.cpp" line="805"/>
+        <location filename="../app/src/mainwindow2.cpp" line="720"/>
+        <location filename="../app/src/mainwindow2.cpp" line="821"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="704"/>
+        <location filename="../app/src/mainwindow2.cpp" line="721"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Bu programın şu anda seçtiğiniz dosyaya yazma izni yok. Lütfen kaydetmeye çalışmadan önce bu dosya için yazma iznine sahip olduğunuzdan emin olun. Alternatif olarak, yazılabilir bir konuma kaydetmek için Farklı Kaydet... menü seçeneğini kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="715"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>Saving document...</source>
         <translation>Belge kaydediliyor...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="758"/>
-        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;Bir hata oluştu ve dosyanız başarıyla kaydedilmemiş olabilir.Bu hatanın Pencil2D ile ilgili bir sorun olduğunu düşünüyorsanız, lütfen şu adreste yeni bir sorun oluşturun:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Lütfen sorununuza aşağıdaki ayrıntıları eklediğinizden emin olun:</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="806"/>
+        <location filename="../app/src/mainwindow2.cpp" line="822"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Bu animasyon değiştirildi.
  Değişikliklerinizi kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="829"/>
+        <location filename="../app/src/mainwindow2.cpp" line="845"/>
         <source>AutoSave Reminder</source>
         <translation>Otomatik Kaydetme Hatırlatıcısı</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="830"/>
+        <location filename="../app/src/mainwindow2.cpp" line="846"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Animasyon henüz kaydedilmedi.
  Şimdi kaydetmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="831"/>
+        <location filename="../app/src/mainwindow2.cpp" line="847"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Asla tekrar sorma</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1323"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1328"/>
-        <source>Undo</source>
-        <comment>Menu item text</comment>
-        <translation>Geri al</translation>
+        <location filename="../app/src/mainwindow2.cpp" line="775"/>
+        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.
+If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
+        <translation>&lt;br&gt;&lt;br&gt;Bir hata oluştu ve dosyanız başarıyla kaydedilememiş olabilir.
+Bu hatanın Pencil2D ile ilgili bir sorun olduğunu düşünüyorsanız lütfen şu adreste yeni bir sorun oluşturun::&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Lütfen sorununuza aşağıdaki bilgileri eklemeyi unutmayın:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1336"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1343"/>
-        <source>Redo</source>
-        <comment>Menu item text</comment>
-        <translation>Yinele</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1379"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1371"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>Bir palet açmak eski paletin yerini alacaktır.
 Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1381"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1373"/>
         <source>Open Palette</source>
         <translation>Palet Aç</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1533"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1526"/>
         <source>Stop</source>
         <translation>Dur</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1582"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1575"/>
         <source>Restore Project?</source>
         <translation>Proje Geri Yüklensin mi?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1583"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1576"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D doğru şekilde kapanmadı. Projeyi geri yüklemek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1588"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1581"/>
         <source>Restore project</source>
         <translation>Projeyi geri yükle</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1622"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1615"/>
         <source>Recovery Failed.</source>
         <translation>Kurtarma Başarısız.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1623"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1616"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>Afedersiniz! Pencil2D, projenizi geri yükleyemiyor</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1626"/>
         <source>Recovery Succeeded!</source>
         <translation>Kurtarma Başarılı!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1634"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1627"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>Veri kaybını önlemek için lütfen çalışmanızı hemen kaydedin</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1640"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
         <source>Main Toolbar</source>
         <translation>Ana Araç Çubuğu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1654"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1647"/>
         <source>View Toolbar</source>
         <translation>Araç Çubuğunu Görüntüle</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1666"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1659"/>
         <source>Overlay Toolbar</source>
         <translation>Bindirme Araç Çubuğu</translation>
     </message>
@@ -4938,122 +5013,122 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
         <translation>hata</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="681"/>
         <source>Black</source>
         <translation>Siyah</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="682"/>
         <source>Red</source>
         <translation>Kırmızı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
         <source>Dark Red</source>
         <translation>Koyu Kırmızı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
         <source>Orange</source>
         <translation>Turuncu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
         <source>Dark Orange</source>
         <translation>Koyu Turuncu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
         <source>Yellow</source>
         <translation>Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
         <source>Dark Yellow</source>
         <translation>Koyu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
         <source>Green</source>
         <translation>Yeşil</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
         <source>Dark Green</source>
         <translation>Koyu Yeşil</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
         <source>Cyan</source>
         <translation>Cam göbeği</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
         <source>Dark Cyan</source>
         <translation>Koyu Cam göbeği</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
         <source>Blue</source>
         <translation>Mavi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
         <source>Dark Blue</source>
         <translation>Koyu Mavi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
         <source>White</source>
         <translation>Beyaz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
         <source>Very Light Grey</source>
         <translation>Çok Açık Gri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
         <source>Light Grey</source>
         <translation>Açık Gri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
         <source>Grey</source>
         <translation>Gri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
         <source>Dark Grey</source>
         <translation>Koyu Gri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
         <source>Pale Orange Yellow</source>
         <translation>Soluk Turuncu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
         <source>Pale Grayish Orange Yellow</source>
         <translation>Soluk Grimsi Turuncu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
         <source>Orange Yellow </source>
         <translation>Turuncu Sarı </translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
         <source>Grayish Orange Yellow</source>
         <translation>Grimsi Turuncu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="705"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
         <source>Light Orange Yellow</source>
         <translation>Açık Turuncu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="706"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
         <source>Light Grayish Orange Yellow</source>
         <translation>Açık Grimsi Turuncu Sarı</translation>
     </message>
@@ -5581,7 +5656,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="315"/>
         <source>View: Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Görünüm: Yatay Çevirme</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="313"/>
@@ -5593,7 +5668,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="316"/>
         <source>View: Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Görünüm: Dikey Çevirme</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="319"/>
@@ -5617,13 +5692,13 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="322"/>
         <source>Selection: Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Seçim: Yatay Çevirme</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="323"/>
         <source>Selection: Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Seçim: Dikey Çevirme</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="324"/>
@@ -5635,7 +5710,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="325"/>
         <source>Selection: Reposition Frames</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Seçim: Çerçeveleri Yeniden Konumlandır</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="326"/>
@@ -5671,43 +5746,43 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="331"/>
         <source>Toggle Center Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Orta Kaplamayı Değiştir</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="332"/>
         <source>Toggle Thirds Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Üçüncü Katmanı Değiştir</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="333"/>
         <source>Toggle Golden Ratio Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Altın Oran Kaplamasını Aç/Kapat</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="334"/>
         <source>Toggle Safe Areas Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Güvenli Alanlar Kaplamasını Aç/Kapat</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="335"/>
         <source>Toggle One Point Perspective Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Bir Nokta Perspektif Kaplamasını Aç/Kapat</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="336"/>
         <source>Toggle Two Point Perspective Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>İki Noktalı Perspektif Kaplamasını Aç/Kapat</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="337"/>
         <source>Toggle Three Point Perspective Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Üç Nokta Perspektif Kaplamasını Aç/Kapat</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="338"/>
@@ -5725,43 +5800,43 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="340"/>
         <source>Import Image Predefined Set</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Görüntü Önceden Tanımlanmış Kümesini İçe Aktar</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="341"/>
         <source>Import Movie Video</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Film Videosunu İçe Aktar</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="342"/>
         <source>Import Movie Audio</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Film Sesini İçe Aktar</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="343"/>
         <source>Import Animated Image</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Haraketli Görseli İçe Aktar</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="344"/>
         <source>Import Layers from project file</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Katmanları proje dosyasından içe aktar</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="345"/>
         <source>Import Palette (Append)</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>İçe Aktarma Paleti (Ekle)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="346"/>
         <source>Import Palette (Replace)</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Palet İçe Aktar (Değiştir)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="347"/>
@@ -5797,7 +5872,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="352"/>
         <source>Toggle Range Playback</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Aralıklı Oynatmayı Değiştir</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="353"/>
@@ -6073,25 +6148,25 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="398"/>
         <source>Reset all tools to default</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Tüm araçları varsayılana sıfırla</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="399"/>
         <source>Change Line Color (Current keyframe)</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Çizgi Rengini Değiştir (Geçerli anahtar kare)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="400"/>
         <source>Change Line Color (All keyframes on layer)</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Çizgi Rengini Değiştir (Katmandaki tüm anahtar kareler)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="401"/>
         <source>Change Layer / Keyframe Opacity</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Katman / Anahtar Kare Opaklığını Değiştir</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="402"/>
@@ -6101,54 +6176,60 @@ ya da iptal edin</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="403"/>
+        <source>Remove Last Polyline Segment</source>
+        <comment>Shortcut</comment>
+        <translation>Son Poliline Segmentini Kaldır</translation>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="404"/>
         <source>Set Zoom to 100%</source>
         <comment>Shortcut</comment>
         <translation>Yakınlaştırmayı % 100&apos;e ayarla</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="404"/>
+        <location filename="../app/src/shortcutspage.cpp" line="405"/>
         <source>Set Zoom to 200%</source>
         <comment>Shortcut</comment>
         <translation>Yakınlaştırmayı % 200&apos;e ayarla</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="405"/>
+        <location filename="../app/src/shortcutspage.cpp" line="406"/>
         <source>Set Zoom to 25%</source>
         <comment>Shortcut</comment>
         <translation>Yakınlaştırmayı % 25 olarak ayarla</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="406"/>
+        <location filename="../app/src/shortcutspage.cpp" line="407"/>
         <source>Set Zoom to 300%</source>
         <comment>Shortcut</comment>
         <translation>Yakınlaştırmayı % 300 olarak ayarla</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="407"/>
+        <location filename="../app/src/shortcutspage.cpp" line="408"/>
         <source>Set Zoom to 33%</source>
         <comment>Shortcut</comment>
         <translation>Yakınlaştırmayı % 33&apos;e ayarla</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="408"/>
+        <location filename="../app/src/shortcutspage.cpp" line="409"/>
         <source>Set Zoom to 400%</source>
         <comment>Shortcut</comment>
         <translation>Yakınlaştırmayı % 400 olarak ayarla</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="409"/>
+        <location filename="../app/src/shortcutspage.cpp" line="410"/>
         <source>Set Zoom to 50%</source>
         <comment>Shortcut</comment>
         <translation>Yakınlaştırmayı % 50&apos;ye ayarla</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="410"/>
+        <location filename="../app/src/shortcutspage.cpp" line="411"/>
         <source>Zoom In</source>
         <comment>Shortcut</comment>
         <translation>Yakınlaştır</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="411"/>
+        <location filename="../app/src/shortcutspage.cpp" line="412"/>
         <source>Zoom Out</source>
         <comment>Shortcut</comment>
         <translation>Uzaklaştır</translation>
@@ -6157,32 +6238,32 @@ ya da iptal edin</translation>
 <context>
     <name>Status</name>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="108"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
         <source>Everything ok.</source>
         <translation>Her şey yolunda.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
         <source>Ooops, Something went wrong.</source>
         <translation>Hata! Bir şeyler ters gitti.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
         <source>File doesn&apos;t exist.</source>
         <translation>Dosya mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
         <source>Cannot open file.</source>
         <translation>Dosya açılamıyor.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
         <source>The file is not a valid xml document.</source>
         <translation>Dosya geçerli bir xml belgesi değil.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="114"/>
         <source>The file is not valid pencil document.</source>
         <translation>Dosya geçerli bir kalem belge değil.</translation>
     </message>
@@ -6277,7 +6358,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/timecontrols.cpp" line="54"/>
         <source>Display timecode</source>
         <comment>Timeline menu for choose a timecode</comment>
-        <translation type="unfinished"/>
+        <translation>Zaman kodunu görüntüle</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="57"/>
@@ -6782,12 +6863,12 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="181"/>
         <source>Close Polyline path (hold Ctrl to temporarily invert)</source>
-        <translation type="unfinished"/>
+        <translation>Polyline yolunu kapatın (geçici olarak ters çevirmek için Ctrl tuşunu basılı tutun)</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="184"/>
         <source>Closed Path</source>
-        <translation type="unfinished"/>
+        <translation>Kapalı Yol</translation>
     </message>
     <message>
         <location filename="../app/ui/tooloptions.ui" line="191"/>
@@ -6925,17 +7006,45 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/ui/toolspage.ui" line="117"/>
         <source>Zoom in by dragging the cursor up instead of down</source>
-        <translation type="unfinished"/>
+        <translation>İmleci aşağı yerine yukarı sürükleyerek yakınlaştırın</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="120"/>
         <source>Invert Zoom Direction</source>
-        <translation type="unfinished"/>
+        <translation>Yakınlaştırma Yönünü Tersine Çevir</translation>
     </message>
     <message>
         <location filename="../app/src/toolspage.cpp" line="71"/>
         <source>%1 degrees</source>
         <translation>%1 derece</translation>
+    </message>
+</context>
+<context>
+    <name>UndoRedoManager</name>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="256"/>
+        <source>Undo</source>
+        <translation>Geri al</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="276"/>
+        <source>Redo</source>
+        <translation>Yinele</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="297"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="303"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="306"/>
+        <source>Undo</source>
+        <comment>Menu item text</comment>
+        <translation>Geri al</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="323"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="330"/>
+        <source>Redo</source>
+        <comment>Menu item text</comment>
+        <translation>Yinele</translation>
     </message>
 </context>
 </TS>

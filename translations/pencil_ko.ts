@@ -2591,118 +2591,118 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="529"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="202"/>
         <source>Copy</source>
         <translation>복사하기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="574"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="588"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="247"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="261"/>
         <source>Paste from Previous Keyframe</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="686"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="359"/>
         <source>Paste</source>
         <translation>붙여넣기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="708"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="381"/>
         <source>Flip selection vertically</source>
         <translation>선택한 것을 수직으로 뒤집기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="710"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="383"/>
         <source>Flip selection horizontally</source>
         <translation>선택한 것을 수평으로 뒤집기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="726"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="399"/>
         <source>Reposition frame</source>
         <translation>프레임 위치 재설정</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="810"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="819"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="828"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="860"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="481"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="490"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="499"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="531"/>
         <source>Could not open file</source>
         <translation>파일을 열 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="811"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="482"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>선택한 파일은 폴더라서, 열 수 없습니다. 이전 구성을 사용하는 프로젝트를 열려면 폴더가 아니라 .pcl로 끝나는 파일을 열어주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="820"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="491"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>선택한 파일이 존재하지 않아서, 열 수 없습니다. 파일이 있는 올바른 경로를 입력했는지 확인하고 다시 시도해주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="829"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="500"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>이 프로그램은 선택한 파일을 읽을 권한이 없습니다. 파일의 읽기 권한을 확인하고 다시 시도해주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="861"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>파일을 읽어오는 동안 알 수 없는 오류가 발생해서 파일을 읽어올 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="944"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1074"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="614"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="744"/>
         <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="947"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1077"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="617"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="747"/>
         <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="951"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1081"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="621"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="751"/>
         <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="954"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1005"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1035"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1050"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1057"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1084"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="624"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="754"/>
         <source>Import failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="972"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1002"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1103"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="642"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="672"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="773"/>
         <source>Import Image</source>
         <translation>이미지 가져오기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1005"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
         <source>You cannot import images into a vector layer.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1035"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1050"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
         <source>You can only import images to a bitmap layer.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1057"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
         <source>The selected image has a format that does not support animation.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="1269"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="939"/>
         <source>Remove frame</source>
         <translation>프레임 제거하기</translation>
     </message>
@@ -2723,6 +2723,16 @@
         <location filename="../app/ui/errordialog.ui" line="68"/>
         <source>Description</source>
         <translation>설명</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/errordialog.ui" line="88"/>
+        <source>This report contains vital information. Copy all of it when submitting a bug.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/errordialog.cpp" line="41"/>
+        <source>Copy to Clipboard</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -3089,99 +3099,103 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="230"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="253"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="260"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="268"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="275"/>
         <source>Invalid Save Path</source>
         <translation>잘못된 저장 경로</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="231"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
         <source>The path is empty.</source>
         <translation>경로가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>경로 (&quot;%1&quot;)이 폴더를 가리키고 있습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="254"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="269"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>폴더 (&quot;%1&quot;)이 존재하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="276"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>경로 (&quot;%1&quot;)에 쓸 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="298"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="307"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="314"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="323"/>
         <source>Cannot Create Data Directory</source>
         <translation>데이터 디렉토리를 생성할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="299"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="315"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>디렉토리 &quot;%1&quot; 생성에 실패했습니다. 권한이 있는지 확인하세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="308"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="324"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot;은/는 파일입니다. 파일을 지우고 다시 시도하세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="341"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="353"/>
+        <source>An internal error occurred. The project could not be saved.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="363"/>
         <source>Miniz Error</source>
         <translation>miniz 오류</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="332"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="342"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="357"/>
-        <source>An internal error occurred. Your file may not be saved successfully.</source>
-        <translation>내부적으로 오류가 발생했습니다. 파일이 성공적으로 저장되지 않았을 수도 있습니다.</translation>
-    </message>
-    <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="331"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="356"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="352"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="380"/>
         <source>Internal Error</source>
         <translation>내부 오류</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="525"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="364"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="381"/>
+        <source>An internal error occurred. The project may not have been saved successfully.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="549"/>
         <source>Could not open file</source>
         <translation>파일을 열 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="535"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="559"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
         <translation>파일이 존재하지 않아서 열 수 없습니다. 경로가 올바른지 확인하고 다시 시도해주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="540"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="564"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
         <translation>파일 읽기 권한이 없습니다. 이 파일에 대한 읽기 권한이 있는지 확인하고 다시 시도하세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="546"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="570"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
         <translation>파일 가공 중에 오류가 생겼습니다. 이것은 프로젝트가 적어도 부분적으로 망가졌다는 것을 의미합니다. 최신 버전의 Pencil2D로 다시 시도하거나, 백업 파일이 있다면 그것을 사용해주세요. 저희 공식 채널을 통해 연락을 주시면 도와드리겠습니다. 문제를 신고하려면 이곳으로 연락하세요:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="977"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1013"/>
         <source>Bitmap Layer %1</source>
         <translation>비트맵 레이어 %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="979"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1015"/>
         <source>Vector Layer %1</source>
         <translation>벡터 레이어 %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="981"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1017"/>
         <source>Sound Layer %1</source>
         <translation>사운드 레이어 %1</translation>
     </message>
@@ -3391,14 +3405,44 @@
         <translation>고급</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="447"/>
+        <location filename="../app/ui/generalpage.ui" line="449"/>
         <source>Memory Cache Budget</source>
         <translation>메모리 캐시 용량</translation>
     </message>
     <message>
-        <location filename="../app/ui/generalpage.ui" line="478"/>
+        <location filename="../app/ui/generalpage.ui" line="480"/>
         <source>MB</source>
         <translation>MB</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="501"/>
+        <source>Undo/Redo</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="507"/>
+        <source>Enable New System (Experimental)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="519"/>
+        <source>How many steps you&apos;re allowed to undo/redo</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="522"/>
+        <source>Maximum Number of Undo/Redo Steps</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="555"/>
+        <source>Apply</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/generalpage.ui" line="562"/>
+        <source>Cancel</source>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="39"/>
@@ -3561,14 +3605,43 @@
         <translation>중국어 - 대만</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="212"/>
+        <location filename="../app/src/generalpage.cpp" line="225"/>
         <source>Restart Required</source>
         <translation>재시작 해야합니다</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="213"/>
+        <location filename="../app/src/generalpage.cpp" line="226"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>언어 변경은 Pencil2D 재시작 후에 적용됩니다.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="365"/>
+        <source>Resets your current undo history</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="366"/>
+        <source>Changing the maximum number of undo/redo steps resets your current undo/redo history. 
+
+Are you sure you want to proceed?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="381"/>
+        <source>Experimental feature!</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="382"/>
+        <source>This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. 
+
+Do you still want to try?</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/generalpage.cpp" line="394"/>
+        <source>The undo/redo system will be changed on the next launch of the application</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -4265,7 +4338,7 @@ Read the instructions and try again</source>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="614"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1538"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1531"/>
         <source>Play</source>
         <translation>재생</translation>
     </message>
@@ -4528,6 +4601,16 @@ Read the instructions and try again</source>
         <translation>상대적인</translation>
     </message>
     <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1278"/>
+        <source>Remove Last Polyline Segment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1281"/>
+        <source>Removes the lastest Polyline segment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
         <location filename="../app/ui/mainwindow2.ui" line="975"/>
         <source>Peg bar Alignment</source>
         <translation>페그바 정렬</translation>
@@ -4618,166 +4701,153 @@ Read the instructions and try again</source>
         <translation>상태 표시줄</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="153"/>
+        <location filename="../app/src/mainwindow2.cpp" line="155"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>색상 팔레트:&lt;br&gt;사용&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;커서로 켜기/끄기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="157"/>
+        <location filename="../app/src/mainwindow2.cpp" line="159"/>
         <source>Color inspector</source>
         <translation>색상 인스펙터</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="459"/>
+        <location filename="../app/src/mainwindow2.cpp" line="460"/>
         <source>Open Recent</source>
         <translation>최근 파일 열기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="484"/>
-        <location filename="../app/src/mainwindow2.cpp" line="508"/>
+        <location filename="../app/src/mainwindow2.cpp" line="501"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
         <source>Dialog is already open!</source>
         <translation>대화가 이미 열려있습니다!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="530"/>
+        <location filename="../app/src/mainwindow2.cpp" line="547"/>
         <source>Please select at least 2 frames!</source>
         <translation>최소 2개 이상의 프레임을 선택하세요!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="658"/>
+        <location filename="../app/src/mainwindow2.cpp" line="675"/>
         <source>Opening document...</source>
         <translation>문서 여는 중...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="658"/>
-        <location filename="../app/src/mainwindow2.cpp" line="715"/>
+        <location filename="../app/src/mainwindow2.cpp" line="675"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>Abort</source>
         <translation>중단하기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="703"/>
-        <location filename="../app/src/mainwindow2.cpp" line="805"/>
+        <location filename="../app/src/mainwindow2.cpp" line="720"/>
+        <location filename="../app/src/mainwindow2.cpp" line="821"/>
         <source>Warning</source>
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="704"/>
+        <location filename="../app/src/mainwindow2.cpp" line="721"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>이 프로그램은 현재 선택한 파일에 대해 쓰기 권한이 없습니다. 저장하기 전에 파일에 쓰기 권한이 있는지 확인해주세요. 다른 방법으로 다른 이름으로 저장하기를 사용하여 저장할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="715"/>
+        <location filename="../app/src/mainwindow2.cpp" line="732"/>
         <source>Saving document...</source>
         <translation>문서 저장중...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="758"/>
-        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation>&lt;br&gt;&lt;br&gt;오류가 발생해 파일이 성공적으로 저장되지 않았을 수 있습니다. 만약 Pencil2D의 문제라고 생각되면, 다음 주소에 새로운 이슈를 생성을 해주세요:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;이슈에 다음 내용을 포함해주세요:</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="806"/>
+        <location filename="../app/src/mainwindow2.cpp" line="822"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>애니메이션이 수정되었습니다.
 변경 사항을 저장할까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="829"/>
+        <location filename="../app/src/mainwindow2.cpp" line="845"/>
         <source>AutoSave Reminder</source>
         <translation>자동저장 알림</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="830"/>
+        <location filename="../app/src/mainwindow2.cpp" line="846"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>애니메이션이 저장되지 않았습니다.
 지금 저장할까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="831"/>
+        <location filename="../app/src/mainwindow2.cpp" line="847"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>다시 묻지 않기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1323"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1328"/>
-        <source>Undo</source>
-        <comment>Menu item text</comment>
-        <translation>되돌리기</translation>
+        <location filename="../app/src/mainwindow2.cpp" line="775"/>
+        <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.
+If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
+        <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1336"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1343"/>
-        <source>Redo</source>
-        <comment>Menu item text</comment>
-        <translation>되돌리기</translation>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1379"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1371"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>팔레트를 열면 기존 팔레트가 대체됩니다.
 이 작업으로 붓의 색상(들)이 변경될 수 있습니다!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1381"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1373"/>
         <source>Open Palette</source>
         <translation>팔레트 열기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1533"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1526"/>
         <source>Stop</source>
         <translation>중지</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1582"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1575"/>
         <source>Restore Project?</source>
         <translation>프로젝트를 되돌릴까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1583"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1576"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D가 제대로 종료되지 않았습니다. 프로젝트를 되돌릴까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1588"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1581"/>
         <source>Restore project</source>
         <translation>프로젝트 되돌리기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1622"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1615"/>
         <source>Recovery Failed.</source>
         <translation>복구 실패</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1623"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1616"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>죄송합니다! Pencil2D가 프로젝트를 되돌릴 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1626"/>
         <source>Recovery Succeeded!</source>
         <translation>복구 성공했습니다!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1634"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1627"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>데이터를 잃지 않으려면 지금 바로 저장하세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1640"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
         <source>Main Toolbar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1654"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1647"/>
         <source>View Toolbar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1666"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1659"/>
         <source>Overlay Toolbar</source>
         <translation type="unfinished"/>
     </message>
@@ -4938,122 +5008,122 @@ Color(s) in strokes will be altered by this action!</source>
         <translation>오류</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="681"/>
         <source>Black</source>
         <translation>검정</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="682"/>
         <source>Red</source>
         <translation>빨강</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
         <source>Dark Red</source>
         <translation>어두운 빨강</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
         <source>Orange</source>
         <translation>주황</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
         <source>Dark Orange</source>
         <translation>어두운 주황</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
         <source>Yellow</source>
         <translation>노랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
         <source>Dark Yellow</source>
         <translation>어두운 노랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
         <source>Green</source>
         <translation>초록</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
         <source>Dark Green</source>
         <translation>진한 초록</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
         <source>Cyan</source>
         <translation>청록</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
         <source>Dark Cyan</source>
         <translation>어두운 청록</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
         <source>Blue</source>
         <translation>파랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
         <source>Dark Blue</source>
         <translation>어두운 파랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
         <source>White</source>
         <translation>흰색</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
         <source>Very Light Grey</source>
         <translation>아주 연한 회색</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
         <source>Light Grey</source>
         <translation>연한 회색</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
         <source>Grey</source>
         <translation>회색</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
         <source>Dark Grey</source>
         <translation>어두운 회색</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
         <source>Pale Orange Yellow</source>
         <translation>옅은 주황빛 노랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
         <source>Pale Grayish Orange Yellow</source>
         <translation>옅은 회색 주황빛 노랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
         <source>Orange Yellow </source>
         <translation>주황빛 노랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
         <source>Grayish Orange Yellow</source>
         <translation>회색 주황빛 노랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="705"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
         <source>Light Orange Yellow</source>
         <translation>연한 주황빛 노랑</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="706"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
         <source>Light Grayish Orange Yellow</source>
         <translation>연한 회색 주황빛 노랑</translation>
     </message>
@@ -6101,54 +6171,60 @@ or cancel</source>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="403"/>
+        <source>Remove Last Polyline Segment</source>
+        <comment>Shortcut</comment>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/shortcutspage.cpp" line="404"/>
         <source>Set Zoom to 100%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 100%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="404"/>
+        <location filename="../app/src/shortcutspage.cpp" line="405"/>
         <source>Set Zoom to 200%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 200%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="405"/>
+        <location filename="../app/src/shortcutspage.cpp" line="406"/>
         <source>Set Zoom to 25%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 25%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="406"/>
+        <location filename="../app/src/shortcutspage.cpp" line="407"/>
         <source>Set Zoom to 300%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 300%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="407"/>
+        <location filename="../app/src/shortcutspage.cpp" line="408"/>
         <source>Set Zoom to 33%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 33%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="408"/>
+        <location filename="../app/src/shortcutspage.cpp" line="409"/>
         <source>Set Zoom to 400%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 400%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="409"/>
+        <location filename="../app/src/shortcutspage.cpp" line="410"/>
         <source>Set Zoom to 50%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 50%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="410"/>
+        <location filename="../app/src/shortcutspage.cpp" line="411"/>
         <source>Zoom In</source>
         <comment>Shortcut</comment>
         <translation>확대</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="411"/>
+        <location filename="../app/src/shortcutspage.cpp" line="412"/>
         <source>Zoom Out</source>
         <comment>Shortcut</comment>
         <translation>축소</translation>
@@ -6157,32 +6233,32 @@ or cancel</source>
 <context>
     <name>Status</name>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="108"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
         <source>Everything ok.</source>
         <translation>모든 것이 완벽합니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
         <source>Ooops, Something went wrong.</source>
         <translation>이런, 무엇인가 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
         <source>File doesn&apos;t exist.</source>
         <translation>파일이 존재하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
         <source>Cannot open file.</source>
         <translation>파일을 열 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
         <source>The file is not a valid xml document.</source>
         <translation>파일이 유효한 xml 형식이 아닙니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="114"/>
         <source>The file is not valid pencil document.</source>
         <translation>파일이 유효하지 않은 그리기 문서입니다.</translation>
     </message>
@@ -6938,6 +7014,34 @@ or cancel</source>
         <location filename="../app/src/toolspage.cpp" line="71"/>
         <source>%1 degrees</source>
         <translation>%1도</translation>
+    </message>
+</context>
+<context>
+    <name>UndoRedoManager</name>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="256"/>
+        <source>Undo</source>
+        <translation>되돌리기</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="276"/>
+        <source>Redo</source>
+        <translation>되돌리기</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="297"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="303"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="306"/>
+        <source>Undo</source>
+        <comment>Menu item text</comment>
+        <translation>되돌리기</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="323"/>
+        <location filename="../core_lib/src/managers/undoredomanager.cpp" line="330"/>
+        <source>Redo</source>
+        <comment>Menu item text</comment>
+        <translation>되돌리기</translation>
     </message>
 </context>
 </TS>

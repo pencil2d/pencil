@@ -28,7 +28,7 @@ GNU General Public License for more details.
 namespace PlatformHandler
 {
     void configurePlatformSpecificSettings() {}
-    bool isDarkMode() { return false; };
+    bool isDarkMode() { return false; }
     void initialise()
     {
 #if _WIN32_WINNT >= _WIN32_WINNT_WIN7

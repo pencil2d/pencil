@@ -36,13 +36,15 @@ jobs:
           #  container:
           #  qt: 5
           - name: Qt 5 / Windows x86
-            os: windows-2019
+            os: windows-2022
             arch: win32_msvc2019
+            vcvars: x86
             container:
             qt: 5
           - name: Qt 5 / Windows x86_64
-            os: windows-2019
+            os: windows-2022
             arch: win64_msvc2019_64
+            vcvars: x64
             container:
             qt: 5
           - name: Qt 6 / Linux x86_64
@@ -50,7 +52,7 @@ jobs:
             container: "ubuntu:22.04"
             qt: 6
           - name: Qt 6 / macOS x86_64
-            os: macos-13
+            os: macos-14
             container:
             qt: 6
           #- name: Qt 6 / macOS arm64
@@ -58,8 +60,9 @@ jobs:
           #  container:
           #  qt: 6
           - name: Qt 6 / Windows x86_64
-            os: windows-2019
+            os: windows-2022
             arch: win64_msvc2019_64
+            vcvars: x64
             container:
             qt: 6
 
@@ -69,6 +72,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+
       - name: Set up container (Linux)
         if: runner.os == 'Linux'
         # XXX: --privileged is sort of a brute-force solution to get FUSE
@@ -86,12 +90,11 @@ jobs:
         with:
           arch: ${{matrix.arch}}
           qt: ${{matrix.qt}}
-
       - name: Set up environment
         uses: ./.github/actions/setup-environment
         with:
           arch: ${{matrix.arch}}
-
+          vcvars: ${{matrix.vcvars}}
       - name: Configure build
         run: >
           mkdir build; ${{runner.os == 'Linux' && '${BUILD_CMD}' || ''}}
@@ -113,6 +116,18 @@ jobs:
         with:
           arch: ${{matrix.arch}}
           qt: ${{matrix.qt}}
+
+      - name: Code Sign and Notarize App
+        if: runner.os == 'macOS'
+        uses: ./.github/actions/notarize-macos-app
+        with:
+          app_path: "build/${{steps.package.outputs.output-basename}}.zip"
+          p12_base64: ${{ secrets.P12_BASE64 }}
+          p12_password: ${{ secrets.P12_PASSWORD }}
+          apple_id: ${{ secrets.APPLE_ID }}
+          apple_id_password: ${{ secrets.APPLE_ID_PASSWORD }}
+          team_id: ${{ secrets.APPLE_TEAM_ID }}
+          certificate_identity: ${{ secrets.CODESIGN_CERT_IDENTITY }}
 
       - name: Upload package
         if: runner.os != 'Linux' || matrix.qt == 5

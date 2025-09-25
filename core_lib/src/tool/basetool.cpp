@@ -72,6 +72,9 @@ bool BaseTool::leavingThisTool()
        disconnect(connection);
        mActiveConnections.removeOne(connection);
    }
+
+   saveSettings();
+
    return true;
 }
 

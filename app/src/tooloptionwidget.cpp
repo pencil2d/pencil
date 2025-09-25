@@ -52,6 +52,9 @@ void ToolOptionWidget::initUI()
     ui->horizontalLayout_2->addWidget(mBucketOptionsWidget);
     ui->horizontalLayout_2->addWidget(mCameraOptionsWidget);
 
+    mBucketOptionsWidget->setHidden(true);
+    mCameraOptionsWidget->setHidden(true);
+
     QSettings settings(PENCIL2D, PENCIL2D);
 
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, SpinSlider::INTEGER, StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX);

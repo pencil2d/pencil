@@ -30,6 +30,7 @@ public:
     explicit PencilTool(QObject* parent);
     ToolType type() override { return PENCIL; }
     void loadSettings() override;
+    void saveSettings() override;
     QCursor cursor() override;
     void resetToDefault() override;
 

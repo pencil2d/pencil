@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include "layersound.h"
 #include "soundclip.h"
+#include "util.h"
 
 #include <memory>
 #include <QDir>
@@ -63,7 +64,7 @@ TEST_CASE("Load sound layer from XML")
         REQUIRE(soundLayer->keyFrameCount() == 1);
         SoundClip* frame = static_cast<SoundClip*>(soundLayer->getKeyFrameAt(1));
         REQUIRE(frame != nullptr);
-        REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath("sound_001.wav")));
+        REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath("sound_001.wav")));
     }
 
     SECTION("Multiple clips")
@@ -78,7 +79,7 @@ TEST_CASE("Load sound layer from XML")
         {
             SoundClip* frame = static_cast<SoundClip*>(soundLayer->getKeyFrameAt(i));
             REQUIRE(frame != nullptr);
-            REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath(QString("sound_%1.wav").arg(QString::number(i), 3, QChar('0')))));
+            REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath(QString("sound_%1.wav").arg(QString::number(i), 3, QChar('0')))));
         }
     }
 
@@ -111,6 +112,6 @@ TEST_CASE("Load sound layer from XML")
         REQUIRE(soundLayer->keyFrameCount() == 1);
         SoundClip* frame = static_cast<SoundClip*>(soundLayer->getKeyFrameAt(1));
         REQUIRE(frame != nullptr);
-        REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath("subdir/sound_001.wav")));
+        REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath("subdir/sound_001.wav")));
     }
 }

@@ -170,7 +170,7 @@ void ImportImageSeqDialog::setSpace(int number)
     uiOptionsBox->spaceSpinBox->setValue(number);
 }
 
-void ImportImageSeqDialog::importArbitrarySequence()
+void ImportImageSeqDialog::importArbitrarySequence(const ImportImageConfig importImageConfig)
 {
     QStringList files = getFilePaths();
     int number = getSpace();
@@ -187,7 +187,7 @@ void ImportImageSeqDialog::importArbitrarySequence()
 
     for (const QString& strImgFile : files)
     {
-        Status st = mEditor->importImage(strImgFile);
+        Status st = mEditor->importImage(strImgFile, importImageConfig);
         if (!st.ok())
         {
             ErrorDialog errorDialog(st.title(), st.description(), st.details().html());
@@ -285,7 +285,7 @@ const PredefinedKeySetParams ImportImageSeqDialog::predefinedKeySetParams() cons
     return setParams;
 }
 
-void ImportImageSeqDialog::importPredefinedSet()
+void ImportImageSeqDialog::importPredefinedSet(const ImportImageConfig importImageConfig)
 {
     PredefinedKeySet keySet = generatePredefinedKeySet();
 
@@ -307,7 +307,7 @@ void ImportImageSeqDialog::importPredefinedSet()
         const QString& filePath = keySet.filePathAt(i);
 
         mEditor->scrubTo(frameIndex);
-        Status st = mEditor->importImage(filePath);
+        Status st = mEditor->importImage(filePath, importImageConfig);
         if (!st.ok())
         {
             ErrorDialog errorDialog(st.title(), st.description(), st.details().html());

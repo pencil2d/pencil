@@ -76,6 +76,8 @@ PRECOMPILED_HEADER = src/app-pch.h
 HEADERS += \
     src/addtransparencytopaperdialog.h \
     src/app-pch.h \
+    src/appearance.h \
+    src/buttonappearancewatcher.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/layeropacitydialog.h \
@@ -90,7 +92,9 @@ HEADERS += \
     src/generalpage.h \
     src/shortcutspage.h \
     src/timelinepage.h \
+    src/toolboxwidget.h \
     src/toolspage.h \
+    src/titlebarwidget.h \
     src/basedockwidget.h \
     src/colorbox.h \
     src/colorinspector.h \
@@ -127,6 +131,7 @@ HEADERS += \
 
 SOURCES += \
     src/addtransparencytopaperdialog.cpp \
+    src/buttonappearancewatcher.cpp \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/layeropacitydialog.cpp \
@@ -142,7 +147,9 @@ SOURCES += \
     src/generalpage.cpp \
     src/shortcutspage.cpp \
     src/timelinepage.cpp \
+    src/toolboxwidget.cpp \
     src/toolspage.cpp \
+    src/titlebarwidget.cpp \
     src/basedockwidget.cpp \
     src/colorbox.cpp \
     src/colorinspector.cpp \

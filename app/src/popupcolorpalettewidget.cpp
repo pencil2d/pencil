@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QGraphicsDropShadowEffect>
 #include <QPushButton>
 #include <QKeyEvent>
+#include <QDebug>
 #include "colorbox.h"
 #include "editor.h"
 #include "scribblearea.h"

@@ -29,6 +29,7 @@ public:
     PenTool(QObject* parent = 0);
     ToolType type() override { return PEN; }
     void loadSettings() override;
+    void saveSettings() override;
     QCursor cursor() override;
     void resetToDefault() override;
 

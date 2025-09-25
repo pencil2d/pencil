@@ -71,7 +71,6 @@ class BaseTool : public QObject
     Q_OBJECT
 protected:
     explicit BaseTool(QObject* parent);
-
 public:
     static QString TypeName(ToolType);
     QString typeName() { return TypeName(type()); }
@@ -80,6 +79,7 @@ public:
 
     virtual ToolType type() = 0;
     virtual void loadSettings() = 0;
+    virtual void saveSettings() = 0;
     virtual QCursor cursor();
 
     virtual void pointerPressEvent(PointerEvent*) = 0;

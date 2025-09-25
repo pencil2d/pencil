@@ -96,13 +96,12 @@ create_package_macos() {
   echo "::endgroup::"
   
   popd >/dev/null
-  echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
   local arch=`uname -m`
   local fileinfo="${qtsuffix/-qt5/}-mac-${arch}-$3"
-  mv Pencil2D "pencil2d${fileinfo}"
-  ditto -c -k --sequesterRsrc --keepParent "pencil2d${fileinfo}" "pencil2d${fileinfo}.zip"
-  rm -r "pencil2d${fileinfo}"
+  echo "Create ZIP: pencil2d${fileinfo}.zip"
+  ditto -c -k --sequesterRsrc "Pencil2D" "pencil2d${fileinfo}.zip"
+  rm -r "Pencil2D"
   echo "output-basename=pencil2d${fileinfo}" > "${GITHUB_OUTPUT}"
 }
 

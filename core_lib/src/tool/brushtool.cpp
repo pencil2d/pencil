@@ -71,6 +71,19 @@ void BrushTool::loadSettings()
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
+void BrushTool::saveSettings()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    settings.setValue("brushWidth", properties.width);
+    settings.setValue("brushFeather", properties.feather);
+    settings.setValue("brushPressure", properties.pressure);
+    settings.setValue("brushInvisibility", properties.invisibility);
+    settings.setValue("brushLineStabilization", properties.stabilizerLevel);
+
+    settings.sync();
+}
+
 void BrushTool::resetToDefault()
 {
     setWidth(24.0);
@@ -82,52 +95,29 @@ void BrushTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushWidth", width);
-    settings.sync();
 }
 
 void BrushTool::setFeather(const qreal feather)
 {
     // Set current property
     properties.feather = feather;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushFeather", feather);
-    settings.sync();
 }
 
 void BrushTool::setInvisibility(const bool invisibility)
 {
     // force value
     properties.invisibility = invisibility;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushInvisibility", invisibility);
-    settings.sync();
 }
 
 void BrushTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushPressure", pressure);
-    settings.sync();
 }
 
 void BrushTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("brushLineStabilization", level);
-    settings.sync();
 }
 
 QCursor BrushTool::cursor()

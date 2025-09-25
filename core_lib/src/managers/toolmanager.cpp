@@ -17,6 +17,7 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 
 #include <cmath>
+#include <QDebug>
 #include "pentool.h"
 #include "penciltool.h"
 #include "brushtool.h"
@@ -34,6 +35,14 @@ GNU General Public License for more details.
 
 ToolManager::ToolManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
+}
+
+ToolManager::~ToolManager()
+{
+    foreach(BaseTool* tool, mToolSetHash)
+    {
+        tool->saveSettings();
+    }
 }
 
 bool ToolManager::init()

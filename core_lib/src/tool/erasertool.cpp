@@ -69,6 +69,20 @@ void EraserTool::loadSettings()
     mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
 }
 
+void EraserTool::saveSettings()
+{
+    QSettings settings(PENCIL2D, PENCIL2D);
+
+    settings.setValue("eraserWidth", properties.width);
+    settings.setValue("eraserFeather", properties.feather);
+    settings.setValue("eraserUseFeather", properties.useFeather);
+    settings.setValue("eraserPressure", properties.pressure);
+    settings.setValue("eraserAA", properties.useAA);
+    settings.setValue("stabilizerLevel", properties.stabilizerLevel);
+
+    settings.sync();
+}
+
 void EraserTool::resetToDefault()
 {
     setWidth(24.0);
@@ -83,64 +97,35 @@ void EraserTool::setWidth(const qreal width)
 {
     // Set current property
     properties.width = width;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("eraserWidth", width);
-    settings.sync();
 }
 
 void EraserTool::setUseFeather(const bool usingFeather)
 {
     // Set current property
     properties.useFeather = usingFeather;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("eraserUseFeather", usingFeather);
-    settings.sync();
 }
 
 void EraserTool::setFeather(const qreal feather)
 {
     // Set current property
     properties.feather = feather;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("eraserFeather", feather);
-    settings.sync();
 }
 
 void EraserTool::setPressure(const bool pressure)
 {
     // Set current property
     properties.pressure = pressure;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("eraserPressure", pressure);
-    settings.sync();
 }
 
 void EraserTool::setAA(const int AA)
 {
     // Set current property
     properties.useAA = AA;
-
-    // Update settings
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("eraserAA", AA);
-    settings.sync();
 }
 
 void EraserTool::setStabilizerLevel(const int level)
 {
     properties.stabilizerLevel = level;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("stabilizerLevel", level);
-    settings.sync();
 }
 
 

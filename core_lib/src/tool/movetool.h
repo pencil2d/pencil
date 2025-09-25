@@ -34,6 +34,7 @@ public:
     explicit MoveTool(QObject* parent);
     ToolType type() override;
     void loadSettings() override;
+    void saveSettings() override;
     QCursor cursor() override;
     QCursor cursor(MoveMode mode) const;
 

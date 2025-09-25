@@ -1,4 +1,4 @@
-<?xml version="1.0"?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:okp="okapi-framework:xliff-extensions" xmlns:its="http://www.w3.org/2005/11/its" xmlns:itsxlf="http://www.w3.org/ns/its-xliff/" version="1.2" its:version="2.0">
+<?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:okp="okapi-framework:xliff-extensions" xmlns:its="http://www.w3.org/2005/11/its" xmlns:itsxlf="http://www.w3.org/ns/its-xliff/" version="1.2" its:version="2.0">
 <file original="pencil2d.wxl" source-language="en" target-language="de" datatype="xml" okp:inputEncoding="UTF-8" okp:configId="okf_xml_wxl.fprm">
 <body>
 <trans-unit id="1" resname="ConfirmCancelMessage" restype="x-Value" xml:space="preserve">
@@ -88,15 +88,18 @@
 </trans-unit>
 <trans-unit id="18" resname="Caption" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] Setup</source>
+<target xml:lang="de">[WixBundleName] Setup</target>
 
 </trans-unit>
 <trans-unit id="19" resname="Version" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Version [WixBundleVersion]</source>
-<target xml:lang="en">Version [WixBundleVersion]</target>
+<target xml:lang="de">Version [WixBundleVersion]</target>
+
 </trans-unit>
 <trans-unit id="20" resname="VersionNightly" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</source>
-<target xml:lang="en">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</target>
+<target xml:lang="de">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</target>
+
 </trans-unit>
 <trans-unit id="21" resname="CheckingForUpdatesLabel" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Checking for updates</source>
@@ -142,7 +145,8 @@ InstallFolder=[Verzeichnis] | DesktopShortcut=[0|1] – Installationsoptionen ü
 </trans-unit>
 <trans-unit id="27" resname="InstallUpgradeButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Upgrade [WixBundleName]</source>
-<target xml:lang="en">[WixBundleName] a&amp;ktualisieren</target>
+<target xml:lang="de">[WixBundleName] a&amp;ktualisieren</target>
+
 </trans-unit>
 <trans-unit id="28" resname="InstallOptionsButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Options</source>
@@ -226,7 +230,8 @@ InstallFolder=[Verzeichnis] | DesktopShortcut=[0|1] – Installationsoptionen ü
 </trans-unit>
 <trans-unit id="44" resname="SuccessUpgradeText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully upgraded.</source>
-<target xml:lang="en">[WixBundleName] wurde erfolgreich aktualisiert.</target>
+<target xml:lang="de">[WixBundleName] wurde erfolgreich aktualisiert.</target>
+
 </trans-unit>
 <trans-unit id="45" resname="SuccessModifyText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully modified.</source>
@@ -285,7 +290,8 @@ InstallFolder=[Verzeichnis] | DesktopShortcut=[0|1] – Installationsoptionen ü
 </trans-unit>
 <trans-unit id="56" resname="FailureUpgradeText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to upgrade [WixBundleName].</source>
-<target xml:lang="en">Aktualisierung von [WixBundleName] fehlgeschlagen.</target>
+<target xml:lang="de">Aktualisierung von [WixBundleName] fehlgeschlagen.</target>
+
 </trans-unit>
 <trans-unit id="57" resname="FailureModifyText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to modify [WixBundleName].</source>
@@ -298,8 +304,8 @@ InstallFolder=[Verzeichnis] | DesktopShortcut=[0|1] – Installationsoptionen ü
 
 </trans-unit>
 <trans-unit id="59" resname="FailureHyperlinkLogText" restype="x-Value" xml:space="preserve">
-<source xml:lang="en">One or more issues caused the operation to fail. Please fix the issues and then retry. For more information see the &lt;a href="#"&gt;log file&lt;/a&gt;.</source>
-<target xml:lang="de">Einer oder mehrere Fehler haben dazu geführt, dass der Vorgang fehlgeschlagen ist. Bitte beheben Sie die Probleme und versuchen Sie es noch einmal. Weitere Informationen finden Sie in der &lt;a href="#"&gt;Protokolldatei&lt;/a&gt;.</target>
+<source xml:lang="en">One or more issues caused the operation to fail. Please fix the issues and then retry. For more information see the &lt;a href=&quot;#&quot;&gt;log file&lt;/a&gt;.</source>
+<target xml:lang="de">Einer oder mehrere Fehler haben dazu geführt, dass der Vorgang fehlgeschlagen ist. Bitte beheben Sie die Probleme und versuchen Sie es noch einmal. Weitere Informationen finden Sie in der &lt;a href=&quot;#&quot;&gt;Protokolldatei&lt;/a&gt;.</target>
 
 </trans-unit>
 <trans-unit id="60" resname="FailureRestartText" restype="x-Value" xml:space="preserve">

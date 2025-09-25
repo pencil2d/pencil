@@ -1,3 +1,4 @@
+
 ## Pencil2D v0.8.0 - Draft
 
 ### Features
@@ -9,20 +10,39 @@
 + Update shortcuts [#1866](https://github.com/pencil2d/pencil/pull/1866)
 + Improve dock layout for lower resolutions [#1840](https://github.com/pencil2d/pencil/pull/1840)
 + Add ability to remove Last Polyline Segment using backspace [#1861](https://github.com/pencil2d/pencil/pull/1861)
-+ Changed handling of pcl projects - [#1896](https://github.com/pencil2d/pencil/pull/1896)
 
 ### Bugfixes:
-+ Do not make a new keyframe if double clicking on an existing keyframe - [#1851](https://github.com/pencil2d/pencil/pull/1851)
 + Save backup when applying Polyline with Enter key [#1860](https://github.com/pencil2d/pencil/pull/1860)
 + Fix brush cursor size with canvas rotation [#1869](https://github.com/pencil2d/pencil/pull/1869)
 + Fix hanging when adjusting cursor because of too many writes to disk [#1853](https://github.com/pencil2d/pencil/pull/1853)
 + Avoid updating width/feather sliders for tools that don’t use them [cce3107](https://github.com/pencil2d/pencil/commit/cce31079c871fcc04e957c44d5c6e65990f635f1)
 + Fix fill misbehaving when drawing was partly outside border [#1865](https://github.com/pencil2d/pencil/pull/1865)
 + Fix clearing selection with the delete shortcut [#1892](https://github.com/pencil2d/pencil/pull/1892)
-+ Fixed memory leak when copying bitmap keyframes - [#1896](https://github.com/pencil2d/pencil/pull/1896)
-+ Fixed potential issue on some systems when repeatedly copying bitmap frames - [#1896](https://github.com/pencil2d/pencil/pull/1896)
-+ Fixed bitmap frame wipe that can occur under specific situations when using keyframe copy & paste - [#1896](https://github.com/pencil2d/pencil/pull/1896)
-+ Fix camera handles not being draggable at 90 deg [#1897](https://github.com/pencil2d/pencil/issues/1897)
+
+## Pencil2D v0.7.1
+
+## Improvements 
+- #1916 Improved toolbox layout. Tools now intelligently arrange in rows with consistent spacing and can shrink to single column.
+
+## Fixes
+- #1873 Fixed frame not being drawn on the timeline 
+- #1878 Fixed broken image import camera transform 
+- #1881 Fixed keyframes moving beyond layer name boundaries in Timeline
+- #1896 Fixed memory leak in ClipboardManager where cloned frames were not deleted
+- #1896 Fixed frame data loss when copying/pasting bitmap keyframes by properly cloning backing files and implementing temporary working directory for PCL projects
+- #1896 Fixed frame filename exceeding path length limit
+- #1897 Fixed view rotation affecting various view handles
+- #1918 Fixed SoundManager calculating frame length incorrectly
+
+## Changes
+- #1907 Disabled Timeline double-click keyframe creation to prevent accidental keyframes
+
+## DevOps
+- #1895 Added more details to FileManager error reports
+- #1902 Fixed Linux build failure by running actions outside container
+- #1912 Ensured QDebug is included for all qDebug uses
+- Fixed insufficient quoting when embedding AppImage update information [42d52f10](https://github.com/pencil2d/pencil/commit/42d52f105b2bc227e0ef434be6113b12739202ba)
+
 
 ## Pencil2D v0.7.0 - 12 July 2024
 
@@ -110,6 +130,7 @@
 + Fixed an issue where trying to import an image onto a hidden layer did not produce an error if a keyframe already existed on the target frame - [#1820](https://github.com/pencil2d/pencil/pull/1820)
 + Fixed an issue where opening the preferences dialog on a system using Wayland caused the program to crash under certain circumstances - [#1856](https://github.com/pencil2d/pencil/pull/1856)
 + Fixed various memory leaks
++ Fixed fade in/out not working properly. [#1854](https://github.com/pencil2d/pencil/pull/1854)
 
 ### Various
 + Raised minimum system requirements of our AppImages to Ubuntu 16.04 "Xenial Xerus" or newer distributions - [#1635](https://github.com/pencil2d/pencil/pull/1635)
