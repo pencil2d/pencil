@@ -111,7 +111,7 @@ void CheckUpdatesDialog::nightlyBuildCheck()
 {
     mTitleLabel->setText(tr("<b>You are using a Pencil2D nightly build</b>"));
     mDetailLabel->setText(tr("Please go %1 here %2 to check new nightly builds.")
-                          .arg("<a href=\"https://www.pencil2d.org/download/#nightlybuild\">", "</a>"));
+                          .arg("<a href=\"https://www.pencil2d.org/download/nightly/\">", "</a>"));
     mDetailLabel->setOpenExternalLinks(true);
     mProgressBar->setRange(0, 1);
     mProgressBar->setValue(1);
@@ -212,8 +212,12 @@ QString CheckUpdatesDialog::getVersionNumberFromXml(QString xml)
                 xmlReader.readNext();
                 if (xmlReader.name() == QLatin1String("title"))
                 {
-                    QString titleTag = xmlReader.readElementText();
-                    return titleTag.remove(QRegularExpression("^v")); // remove the leading 'v'
+                    QString title = xmlReader.readElementText();
+                    title = title.remove(QRegularExpression("^v")); // remove the leading 'v'
+                    // Ignore release candidate versions
+                    if (!title.contains("Release Candidate")) {
+                        return title;
+                    }
                 }
             }
         }
