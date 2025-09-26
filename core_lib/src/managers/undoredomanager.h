@@ -194,7 +194,6 @@ private:
     void legacyUndo();
     void legacyRedo();
 
-    UndoSaveState* mCurrentState = nullptr;
     QUndoStack mUndoStack;
 
     // Legacy system
