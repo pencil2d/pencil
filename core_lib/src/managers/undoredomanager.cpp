@@ -136,9 +136,8 @@ void UndoRedoManager::record(UndoSaveState*& undoState, const QString& descripti
 
 void UndoRedoManager::clearState(UndoSaveState*& state)
 {
-    if (mCurrentState) {
-        delete mCurrentState;
-        mCurrentState = nullptr;
+    if (state) {
+        delete state;
         state = nullptr;
     }
 }
@@ -247,13 +246,11 @@ void UndoRedoManager::replaceVector(const UndoSaveState& undoState, const QStrin
 
 UndoSaveState* UndoRedoManager::createState(UndoRedoRecordType recordType)
 {
-    clearState(mCurrentState);
+    UndoSaveState* state = new UndoSaveState();
+    state->recordType = recordType;
+    initCommonKeyFrameState(state);
 
-    mCurrentState = new UndoSaveState();
-    mCurrentState->recordType = recordType;
-    initCommonKeyFrameState(mCurrentState);
-
-    return mCurrentState;
+    return state;
 }
 
 void UndoRedoManager::initCommonKeyFrameState(UndoSaveState* undoSaveState) const
