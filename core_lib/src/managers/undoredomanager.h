@@ -26,6 +26,7 @@ GNU General Public License for more details.
 
 #include <QUndoStack>
 #include <QRectF>
+#include <QMap>
 
 class QAction;
 class QUndoCommand;
@@ -37,6 +38,8 @@ class SoundClip;
 class KeyFrame;
 class LegacyBackupElement;
 class UndoRedoCommand;
+
+typedef int SAVESTATE_ID;
 
 /// The undo/redo type which correspond to what is being recorded
 enum class UndoRedoRecordType {
@@ -75,7 +78,6 @@ struct SelectionSaveState {
     QPointF anchor;
 };
 
-
 struct MoveFramesSaveState {
 
     MoveFramesSaveState() { }
@@ -88,6 +90,15 @@ struct MoveFramesSaveState {
 
     int offset = 0;
     QList<int> positions;
+};
+
+/// Use this struct to store user related data that will later be added to the backup
+/// This struct is meant to be safely shared and stored temporarily,
+/// as such don't store ptrs here...
+/// All data stored in here should be based on ZII (zero is initialization) principle
+/// Only store what you need.
+struct UserSaveState {
+    MoveFramesSaveState moveFramesState = {};
 };
 
 /// This is the main undo/redo state structure which is meant to populate
@@ -106,10 +117,10 @@ struct UndoSaveState {
     int layerId = 0;
     int currentFrameIndex = 0;
     Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
-
     std::unique_ptr<KeyFrame> keyframe;
     SelectionSaveState selectionState = {};
-    MoveFramesSaveState moveFramesState = {};
+
+    UserSaveState userState = {};
 };
 
 class UndoRedoManager : public BaseManager
@@ -126,10 +137,10 @@ public:
 
     /** Records the given save state.
      *  The input save state is cleaned up and set to nullptr after use.
-    * @param undoState The state to record.
+    * @param SaveStateId The state that will be fetched and recorded based on the input SaveStateId.
     * @param description The description that will bound to the undo/redo action.
     */
-    void record(UndoSaveState*& undoState, const QString& description);
+    void record(SAVESTATE_ID SaveStateId, const QString& description);
 
 
     /** Checks whether there are unsaved changes.
@@ -138,7 +149,14 @@ public:
 
     /** Prepares and returns an save state with common data
      * @return A UndoSaveState struct with common keyframe data */
-    UndoSaveState* createState(UndoRedoRecordType recordType);
+    SAVESTATE_ID createState(UndoRedoRecordType recordType);
+
+    /** Adds userState to the saveState found at SaveStateId
+     *  If no record is found matching the id, nothing happens.
+     *  @param SaveStateId The id used to fetch the saveState
+     *  @param userState The data to be inserted onto on the saveState
+     */
+    void addUserState(SAVESTATE_ID SaveStateId, UserSaveState userState);
 
     QAction* createUndoAction(QObject* parent, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QIcon& icon);
@@ -190,11 +208,14 @@ private:
     void pushCommand(QUndoCommand* command);
 
     void clearState(UndoSaveState*& state);
+    void clearSaveStates();
 
     void legacyUndo();
     void legacyRedo();
 
     QUndoStack mUndoStack;
+
+    QMap<SAVESTATE_ID, UndoSaveState*> mSaveStates;
 
     // Legacy system
     int mLegacyBackupIndex = -1;
@@ -203,6 +224,8 @@ private:
 
     int mLegacyLastModifiedLayer = -1;
     int mLegacyLastModifiedFrame = -1;
+
+    SAVESTATE_ID mSaveStateId = 1;
 
     bool mNewBackupSystemEnabled = false;
 };
