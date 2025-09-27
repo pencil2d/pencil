@@ -53,6 +53,7 @@ UndoRedoManager::~UndoRedoManager()
     {
         clearStack();
     }
+    clearSaveStates();
     qDebug() << "UndoRedoManager: destroyed";
 }
 
@@ -92,33 +93,35 @@ Status UndoRedoManager::save(Object* /*o*/)
     return Status::OK;
 }
 
-void UndoRedoManager::record(UndoSaveState*& undoState, const QString& description)
+void UndoRedoManager::record(SAVESTATE_ID saveStateId, const QString& description)
 {
-    if (!undoState) {
+    if (!mSaveStates.contains(saveStateId)) {
         return;
     }
 
-    if (!mNewBackupSystemEnabled && undoState) {
-        clearState(undoState);
+    UndoSaveState* saveState = mSaveStates.take(saveStateId);
+
+    if (!mNewBackupSystemEnabled && saveState) {
+        clearState(saveState);
         return;
     }
 
-    switch (undoState->recordType)
+    switch (saveState->recordType)
     {
         case UndoRedoRecordType::KEYFRAME_MODIFY: {
-            replaceKeyFrame(*undoState, description);
+            replaceKeyFrame(*saveState, description);
             break;
         }
         case UndoRedoRecordType::KEYFRAME_REMOVE: {
-            removeKeyFrame(*undoState, description);
+            removeKeyFrame(*saveState, description);
             break;
         }
         case UndoRedoRecordType::KEYFRAME_ADD: {
-            addKeyFrame(*undoState, description);
+            addKeyFrame(*saveState, description);
             break;
         }
         case UndoRedoRecordType::KEYFRAME_MOVE: {
-            moveKeyFrames(*undoState, description);
+            moveKeyFrames(*saveState, description);
             break;
         }
         default: {
@@ -129,9 +132,8 @@ void UndoRedoManager::record(UndoSaveState*& undoState, const QString& descripti
         }
     }
 
-
     // The save state has now been used and should be invalidated so we can't use it again.
-    clearState(undoState);
+    clearState(saveState);
 }
 
 void UndoRedoManager::clearState(UndoSaveState*& state)
@@ -140,6 +142,13 @@ void UndoRedoManager::clearState(UndoSaveState*& state)
         delete state;
         state = nullptr;
     }
+}
+
+void UndoRedoManager::clearSaveStates()
+{
+    if (mSaveStates.isEmpty()) { return; }
+
+    mSaveStates.clear();
 }
 
 bool UndoRedoManager::hasUnsavedChanges() const
@@ -192,7 +201,7 @@ void UndoRedoManager::replaceKeyFrame(const UndoSaveState& undoState, const QStr
 
 void UndoRedoManager::moveKeyFrames(const UndoSaveState& undoState, const QString& description)
 {
-    const MoveFramesSaveState& state = undoState.moveFramesState;
+    const MoveFramesSaveState& state = undoState.userState.moveFramesState;
     MoveKeyFramesCommand* element = new MoveKeyFramesCommand(state.offset,
                                                              state.positions,
                                                              undoState.layerId,
@@ -244,13 +253,23 @@ void UndoRedoManager::replaceVector(const UndoSaveState& undoState, const QStrin
     pushCommand(element);
 }
 
-UndoSaveState* UndoRedoManager::createState(UndoRedoRecordType recordType)
+SAVESTATE_ID UndoRedoManager::createState(UndoRedoRecordType recordType)
 {
+    int saveStateId = mSaveStateId;
     UndoSaveState* state = new UndoSaveState();
     state->recordType = recordType;
     initCommonKeyFrameState(state);
 
-    return state;
+    mSaveStates[mSaveStateId] = state;
+    mSaveStateId += 1;
+
+    return saveStateId;
+}
+
+void UndoRedoManager::addUserState(SAVESTATE_ID saveStateId, UserSaveState userState)
+{
+    if (!mSaveStates.contains(saveStateId)) { return; }
+    mSaveStates[saveStateId]->userState = userState;
 }
 
 void UndoRedoManager::initCommonKeyFrameState(UndoSaveState* undoSaveState) const

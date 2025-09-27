@@ -67,7 +67,7 @@ private:
     MoveMode mPerspMode;
     QPointF mOffset;
 
-    UndoSaveState* mUndoSaveState = nullptr;
+    SAVESTATE_ID mUndoSaveStateId = 0;
 };
 
 #endif
