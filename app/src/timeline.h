@@ -21,12 +21,16 @@ GNU General Public License for more details.
 
 class QScrollBar;
 class Editor;
-class TimeLineCells;
+class TimeLineTrackList;
 class TimeControls;
+class LayerManager;
 
 class QToolButton;
 class QWheelEvent;
-
+class QScrollArea;
+class TimeLineLayerList;
+class TimeLineLayerHeaderWidget;
+class TimeLineTrackHeaderWidget;
 
 class TimeLine : public BaseDockWidget
 {
@@ -40,8 +44,7 @@ public:
     void updateUICached();
 
     void updateFrame( int frameNumber );
-    void updateLayerNumber( int number );
-    void updateLayerView();
+    void updateVerticalScrollbarPageCount(int numberOfLayers);
     void updateLength();
     void updateContent();
     void setLoop( bool loop );
@@ -55,7 +58,9 @@ public:
 
     void onObjectLoaded();
     void onCurrentLayerChanged();
-    void onScrollbarValueChanged();
+    void onScrollbarValueChanged(int value);
+    void onLayerCountUpdated( int number );
+    void onLayerOrderUpdated();
 
 signals:
     void selectionChanged();
@@ -83,6 +88,7 @@ public:
     bool scrubbing = false;
 
 protected:
+    void keyPressEvent(QKeyEvent* event) override;
     void resizeEvent( QResizeEvent* event ) override;
     void wheelEvent( QWheelEvent* ) override;
 
@@ -90,15 +96,20 @@ private:
     void updateVerticalScrollbarPosition();
 
     QScrollBar* mHScrollbar = nullptr;
-    QScrollBar* mVScrollbar = nullptr;
-    TimeLineCells* mTracks = nullptr;
-    TimeLineCells* mLayerList = nullptr;
+    TimeLineTrackList* mTracks = nullptr;
+
+    QScrollArea* mLayerScrollArea = nullptr;
+    QScrollArea* mTrackScrollArea = nullptr;
+    TimeLineLayerHeaderWidget* mLayerHeader = nullptr;
+    TimeLineTrackHeaderWidget* mTrackHeader = nullptr;
+    TimeLineLayerList* mLayerList = nullptr;
     TimeControls* mTimeControls = nullptr;
+
+    LayerManager* mLayerManager = nullptr;
 
     QTimer* mScrollingStoppedTimer = nullptr;
 
     QToolButton* mLayerDeleteButton = nullptr;
-    int mNumLayers = 0;
     int mLastUpdatedFrame = 0;
 };
 
