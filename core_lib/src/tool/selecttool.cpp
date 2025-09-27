@@ -132,7 +132,7 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     if (event->button() != Qt::LeftButton) { return; }
     auto selectMan = mEditor->select();
 
-    mUndoState = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MODIFY);
+    mUndoStateId = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MODIFY);
 
     mPressPoint = event->canvasPos();
     selectMan->setMoveModeForAnchorInRange(mPressPoint);
@@ -193,7 +193,7 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
         keepSelection(currentLayer);
     }
 
-    mEditor->undoRedo()->record(mUndoState, typeName());
+    mEditor->undoRedo()->record(mUndoStateId, typeName());
 
     mStartMoveMode = MoveMode::NONE;
     mSelectionRect = mEditor->select()->mapToSelection(mEditor->select()->mySelectionRect()).boundingRect();
