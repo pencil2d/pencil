@@ -61,14 +61,14 @@ KeyFrameRemoveCommand::~KeyFrameRemoveCommand()
 
 void KeyFrameRemoveCommand::undo()
 {
-    UndoRedoCommand::undo();
-
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
     if (layer == nullptr) {
         // Until we support layer deletion recovery, we mark the command as
         // obsolete as soon as it's been
         return setObsolete(true);
     }
+
+    UndoRedoCommand::undo();
 
     layer->addKeyFrame(undoKeyFrame->pos(), undoKeyFrame->clone());
 
@@ -79,11 +79,17 @@ void KeyFrameRemoveCommand::undo()
 
 void KeyFrameRemoveCommand::redo()
 {
+    Layer* layer = editor()->layers()->findLayerById(redoLayerId);
+    if (layer == nullptr) {
+        // Until we support layer deletion recovery, we mark the command as
+        // obsolete as soon as it's been
+        return setObsolete(true);
+    }
+
     UndoRedoCommand::redo();
 
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
-    Layer* layer = editor()->layers()->findLayerById(redoLayerId);
     layer->removeKeyFrame(redoPosition);
 
     emit editor()->frameModified(redoPosition);
@@ -113,12 +119,12 @@ KeyFrameAddCommand::~KeyFrameAddCommand()
 
 void KeyFrameAddCommand::undo()
 {
-    UndoRedoCommand::undo();
-
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
     if (!layer) {
         return setObsolete(true);
     }
+
+    UndoRedoCommand::undo();
 
     layer->removeKeyFrame(undoPosition);
 
@@ -130,15 +136,15 @@ void KeyFrameAddCommand::undo()
 
 void KeyFrameAddCommand::redo()
 {
-    UndoRedoCommand::redo();
-
-    // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
-
     Layer* layer = editor()->layers()->findLayerById(redoLayerId);
     if (!layer) {
         return setObsolete(true);
     }
+
+    UndoRedoCommand::redo();
+
+    // Ignore automatic redo when added to undo stack
+    if (isFirstRedo()) { setFirstRedo(false); return; }
 
     layer->addNewKeyFrameAt(redoPosition);
 
@@ -167,13 +173,13 @@ MoveKeyFramesCommand::MoveKeyFramesCommand(int offset,
 
 void MoveKeyFramesCommand::undo()
 {
-    UndoRedoCommand::undo();
-
     Layer* undoLayer = editor()->layers()->findLayerById(undoLayerId);
 
     if (!undoLayer) {
         return setObsolete(true);
     }
+
+    UndoRedoCommand::undo();
 
     for (int position : qAsConst(positions)) {
         undoLayer->moveKeyFrame(position + frameOffset, -frameOffset);
@@ -184,16 +190,16 @@ void MoveKeyFramesCommand::undo()
 
 void MoveKeyFramesCommand::redo()
 {
-    UndoRedoCommand::redo();
-
-    // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
-
     Layer* redoLayer = editor()->layers()->findLayerById(redoLayerId);
 
     if (!redoLayer) {
         return setObsolete(true);
     }
+
+    UndoRedoCommand::redo();
+
+    // Ignore automatic redo when added to undo stack
+    if (isFirstRedo()) { setFirstRedo(false); return; }
 
     for (int position : qAsConst(positions)) {
         redoLayer->moveKeyFrame(position, frameOffset);
@@ -221,12 +227,12 @@ BitmapReplaceCommand::BitmapReplaceCommand(const BitmapImage* undoBitmap,
 
 void BitmapReplaceCommand::undo()
 {
-    UndoRedoCommand::undo();
-
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
     if (!layer) {
         return setObsolete(true);
     }
+
+    UndoRedoCommand::undo();
 
     static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&undoBitmap);
 
@@ -235,15 +241,15 @@ void BitmapReplaceCommand::undo()
 
 void BitmapReplaceCommand::redo()
 {
-    UndoRedoCommand::redo();
-
-    // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
-
     Layer* layer = editor()->layers()->findLayerById(redoLayerId);
     if (!layer) {
         return setObsolete(true);
     }
+
+    UndoRedoCommand::redo();
+
+    // Ignore automatic redo when added to undo stack
+    if (isFirstRedo()) { setFirstRedo(false); return; }
 
     static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&redoBitmap);
 
@@ -269,12 +275,12 @@ VectorReplaceCommand::VectorReplaceCommand(const VectorImage* undoVector,
 
 void VectorReplaceCommand::undo()
 {
-    UndoRedoCommand::undo();
-
     Layer* layer = editor()->layers()->findLayerById(undoLayerId);
     if (!layer) {
         return setObsolete(true);
     }
+
+    UndoRedoCommand::undo();
 
     static_cast<LayerVector*>(layer)->replaceKeyFrame(&undoVector);
 
@@ -283,15 +289,15 @@ void VectorReplaceCommand::undo()
 
 void VectorReplaceCommand::redo()
 {
-    UndoRedoCommand::redo();
-
-    // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
-
     Layer* layer = editor()->layers()->findLayerById(redoLayerId);
     if (!layer) {
         return setObsolete(true);
     }
+
+    UndoRedoCommand::redo();
+
+    // Ignore automatic redo when added to undo stack
+    if (isFirstRedo()) { setFirstRedo(false); return; }
 
     static_cast<LayerVector*>(layer)->replaceKeyFrame(&redoVector);
 
