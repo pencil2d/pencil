@@ -1460,8 +1460,6 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::updateToolCursor);
     connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxDockWidget::setActiveTool);
-    connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-
 
     connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::onLayerChanged);
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::onLayerChanged);
@@ -1510,7 +1508,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor, &Editor::updateTimeLineCached, pTimeline, &TimeLine::updateUICached);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
-    connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
