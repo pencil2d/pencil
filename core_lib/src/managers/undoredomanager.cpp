@@ -260,13 +260,13 @@ SAVESTATE_ID UndoRedoManager::createState(UndoRedoRecordType recordType)
     state->recordType = recordType;
     initCommonKeyFrameState(state);
 
-    mSaveStates[mSaveStateId] = state;
+    mSaveStates[saveStateId] = state;
     mSaveStateId += 1;
 
     return saveStateId;
 }
 
-void UndoRedoManager::addUserState(SAVESTATE_ID saveStateId, UserSaveState userState)
+void UndoRedoManager::addUserState(SAVESTATE_ID saveStateId, const UserSaveState& userState)
 {
     if (!mSaveStates.contains(saveStateId)) { return; }
     mSaveStates[saveStateId]->userState = userState;

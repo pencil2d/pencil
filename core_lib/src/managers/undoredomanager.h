@@ -156,7 +156,7 @@ public:
      *  @param SaveStateId The id used to fetch the saveState
      *  @param userState The data to be inserted onto on the saveState
      */
-    void addUserState(SAVESTATE_ID SaveStateId, UserSaveState userState);
+    void addUserState(SAVESTATE_ID SaveStateId, const UserSaveState& userState);
 
     QAction* createUndoAction(QObject* parent, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QIcon& icon);
