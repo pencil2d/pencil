@@ -506,32 +506,26 @@ void BitmapImage::autoCrop()
     int relLeft = 0;
     int relRight = mBounds.width()-1;
 
-    // Check left row
+    // Check left column
     isEmpty = (relBottom >= relTop); // Check left only when
     while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
     {
-        // Point cursor to the pixel at row relTop and column relLeft
-        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(relTop)) + relLeft;
-        // Loop through pixels in column
-        // Note: we only need to loop from relTop to relBottom (inclusive)
-        //       not the full image height, because rows 0 to relTop-1 and
-        //       relBottom+1 to mBounds.height() have already been
-        //       confirmed to contain only transparent pixels
-        for (int row = relTop; row <= relBottom; row++)
+        // Loop through each row between relTop and relBottom
+        for (int row = relTop; row <= relBottom; ++row)
         {
-            // If the pixel is not transparent
-            // (i.e. alpha channel > 0)
-            if(qAlpha(*cursor) != 0)
+            // Get scanline pointer for this row
+            const QRgb* line = reinterpret_cast<const QRgb*>(mImage.constScanLine(row));
+            const QRgb* pixel = line + relLeft;
+
+            if (qAlpha(*pixel) != 0)
             {
                 // We've found a non-transparent pixel in column relLeft,
                 // so we can stop looking for one
                 isEmpty = false;
                 break;
             }
-            // Move cursor to point to next pixel in the column
-            // Increment by width because the data is in row-major order
-            cursor += width;
         }
+
         if (isEmpty)
         {
             // If the column we just checked was empty, increase relLeft
@@ -540,32 +534,22 @@ void BitmapImage::autoCrop()
         }
     }
 
-    // Check right row
+    // Check right column
     isEmpty = (relBottom >= relTop); // Reset isEmpty
     while (isEmpty && relRight >= relLeft) // Loop through columns
     {
-        // Point cursor to the pixel at row relTop and column relRight
-        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(relTop)) + relRight;
-        // Loop through pixels in column
-        // Note: we only need to loop from relTop to relBottom (inclusive)
-        //       not the full image height, because rows 0 to relTop-1 and
-        //       relBottom+1 to mBounds.height()-1 have already been
-        //       confirmed to contain only transparent pixels
-        for (int row = relTop; row <= relBottom; row++)
+        for (int row = relTop; row <= relBottom; ++row)
         {
-            // If the pixel is not transparent
-            // (i.e. alpha channel > 0)
-            if(qAlpha(*cursor) != 0)
+            const QRgb* line = reinterpret_cast<const QRgb*>(mImage.constScanLine(row));
+            const QRgb* pixel = line + relRight;
+
+            if (qAlpha(*pixel) != 0)
             {
-                // We've found a non-transparent pixel in column relRight,
-                // so we can stop looking for one
                 isEmpty = false;
                 break;
             }
-            // Move cursor to point to next pixel in the column
-            // Increment by width because the data is in row-major order
-            cursor += width;
         }
+
         if (isEmpty)
         {
             // If the column we just checked was empty, increase relRight
