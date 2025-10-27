@@ -514,8 +514,7 @@ void BitmapImage::autoCrop()
         for (int row = relTop; row <= relBottom; ++row)
         {
             // Get scanline pointer for this row
-            const QRgb* line = reinterpret_cast<const QRgb*>(mImage.constScanLine(row));
-            const QRgb* pixel = line + relLeft;
+            const QRgb* pixel = reinterpret_cast<const QRgb*>(mImage.constScanLine(row)) + relLeft;
 
             if (qAlpha(*pixel) != 0)
             {
@@ -540,8 +539,7 @@ void BitmapImage::autoCrop()
     {
         for (int row = relTop; row <= relBottom; ++row)
         {
-            const QRgb* line = reinterpret_cast<const QRgb*>(mImage.constScanLine(row));
-            const QRgb* pixel = line + relRight;
+            const QRgb* pixel = reinterpret_cast<const QRgb*>(mImage.constScanLine(row)) + relRight;
 
             if (qAlpha(*pixel) != 0)
             {
