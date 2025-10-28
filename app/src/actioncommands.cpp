@@ -535,6 +535,39 @@ Status ActionCommands::exportImage()
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
 
+    QString extension = "";
+    QString formatStr = exportFormat;
+    if (formatStr == "PNG" || formatStr == "png")
+    {
+        exportFormat = "PNG";
+        extension = ".png";
+    }
+    if (formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG" || formatStr == "jpeg")
+    {
+        exportFormat = "JPG";
+        extension = ".jpg";
+        useTranparency = false; // JPG doesn't support transparency, so we have to include the background
+    }
+    if (formatStr == "TIFF" || formatStr == "tiff" || formatStr == "TIF" || formatStr == "tif")
+    {
+        exportFormat = "TIFF";
+        extension = ".tiff";
+    }
+    if (formatStr == "BMP" || formatStr == "bmp")
+    {
+        exportFormat = "BMP";
+        extension = ".bmp";
+        useTranparency = false;
+    }
+    if (formatStr == "WEBP" || formatStr == "webp") {
+        exportFormat = "WEBP";
+        extension = ".webp";
+    }
+    if (!filePath.endsWith(extension, Qt::CaseInsensitive))
+    {
+        filePath += extension;
+    }
+
     // Export
     QString sCameraLayerName = dialog->getCameraLayerName();
     LayerCamera* cameraLayer = static_cast<LayerCamera*>(mEditor->layers()->findLayerByName(sCameraLayerName, Layer::CAMERA));
