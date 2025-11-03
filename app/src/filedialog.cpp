@@ -226,6 +226,8 @@ QString FileDialog::saveFileFilters(FileType fileType)
 
 bool FileDialog::hasValidSuffix(const QString& filters, const QString& filePath)
 {
+    if (filters.isEmpty()) return true;
+
     QString fileName = QFileInfo(filePath).fileName();
     for (const QString& filter : filters.split(";;"))
     {
