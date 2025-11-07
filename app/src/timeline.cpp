@@ -171,6 +171,7 @@ void TimeLine::initUI()
 
     QGridLayout* rightLayout = new QGridLayout();
     rightLayout->addWidget(rightToolBar, 0, 0);
+    rightLayout->setAlignment(Qt::AlignLeft);
     rightLayout->addWidget(mTracks, 1, 0);
     rightLayout->setContentsMargins(0, 0, 0, 0);
     rightLayout->setSpacing(0);

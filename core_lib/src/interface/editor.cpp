@@ -176,7 +176,7 @@ void Editor::onCurrentLayerWillChange(int index)
 
 void Editor::updateAutoSaveCounter()
 {
-    if (mIsAutosave == false)
+    if (mIsAutosave == false || mIsDoingRepeatInColoring)
         return;
 
     mAutosaveCounter++;
