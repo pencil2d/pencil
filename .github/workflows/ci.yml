@@ -29,6 +29,7 @@ jobs:
             qt: 5
           - name: Qt 5 / macOS x86_64
             os: macos-14
+            arch: x86_64
             container:
             qt: 5
           #- name: Qt 5 / macOS arm64
@@ -53,6 +54,7 @@ jobs:
             qt: 6
           - name: Qt 6 / macOS x86_64
             os: macos-14
+            arch: x86_64
             container:
             qt: 6
           #- name: Qt 6 / macOS arm64
