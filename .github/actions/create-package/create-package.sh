@@ -97,7 +97,7 @@ create_package_macos() {
   
   popd >/dev/null
   local qtsuffix="-qt${INPUT_QT}"
-  local arch=`uname -m`
+  local arch="${INPUT_ARCH}"
   local fileinfo="${qtsuffix/-qt5/}-mac-${arch}-$3"
   echo "Create ZIP: pencil2d${fileinfo}.zip"
   ditto -c -k --sequesterRsrc "Pencil2D" "pencil2d${fileinfo}.zip"
