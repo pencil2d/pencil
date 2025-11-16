@@ -112,7 +112,7 @@ protected:
 
     StrokeInterpolator mInterpolator;
 
-    const UndoSaveState* mUndoSaveState = nullptr;
+    SAVESTATE_ID mUndoSaveStateId = 0;
 };
 
 #endif // STROKETOOL_H
