@@ -81,6 +81,8 @@ void CanvasPainter::setTransformedSelection(QRect selection, QTransform transfor
 void CanvasPainter::ignoreTransformedSelection()
 {
     mRenderTransform = false;
+    mSelectionTransform.reset();
+    mSelection = QRect();
 }
 
 void CanvasPainter::paintCached(const QRect& blitRect)
