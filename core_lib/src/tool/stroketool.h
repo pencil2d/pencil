@@ -36,6 +36,7 @@ class StrokeTool : public BaseTool
 
 public:
     explicit StrokeTool(QObject* parent);
+    ~StrokeTool();
 
     void startStroke(PointerEvent::InputType inputType);
     void drawStroke();
@@ -46,13 +47,9 @@ public:
 
     void updateCanvasCursor();
 
-    static const qreal FEATHER_MIN;
-    static const qreal FEATHER_MAX;
-    static const qreal WIDTH_MIN;
-    static const qreal WIDTH_MAX;
-
+    void createSettings(ToolSettings* settings) override;
     void loadSettings() override;
-    bool isActive() const override { return mInterpolator.isActive(); };
+    bool isActive() const override { return mInterpolator.isActive(); }
 
     bool keyPressEvent(QKeyEvent* event) override;
     void pointerPressEvent(PointerEvent* event) override;
@@ -64,6 +61,25 @@ public:
     bool handleQuickSizing(PointerEvent* event);
 
     void paint(QPainter& painter, const QRect& blitRect) override;
+
+    virtual void setStablizationLevel(int level);
+    virtual void setWidth(qreal width);
+    virtual void setFeather(qreal feather);
+    virtual void setPressureEnabled(bool enabled);
+    virtual void setFeatherEnabled(bool enabled);
+    virtual void setAntiAliasingEnabled(bool enabled);
+    virtual void setFillContourEnabled(bool enabled);
+    virtual void setStrokeInvisibleEnabled(bool enabled);
+
+signals:
+    void widthChanged(qreal value);
+    void featherChanged(qreal value);
+    void pressureEnabledChanged(bool enabled);
+    void featherEnabledChanged(bool enabled);
+    void antiAliasingEnabledChanged(bool enabled);
+    void fillContourEnabledChanged(bool enabled);
+    void invisibleStrokeEnabledChanged(bool enabled);
+    void stabilizationLevelChanged(int level);
 
 public slots:
     void onPreferenceChanged(SETTING setting);
@@ -85,7 +101,7 @@ protected:
     static bool mQuickSizingEnabled;
     static bool msIsAdjusting;
 
-    QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
+    QHash<Qt::KeyboardModifiers, int> mQuickSizingProperties;
     bool mFirstDraw = false;
 
     QList<QPointF> mStrokePoints;
@@ -113,6 +129,13 @@ protected:
     StrokeInterpolator mInterpolator;
 
     const UndoSaveState* mUndoSaveState = nullptr;
+
+    StrokeSettings* mSettings = nullptr;
+
+    static const qreal FEATHER_MIN;
+    static const qreal FEATHER_MAX;
+    static const qreal WIDTH_MIN;
+    static const qreal WIDTH_MAX;
 };
 
 #endif // STROKETOOL_H
