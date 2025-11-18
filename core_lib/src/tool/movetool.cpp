@@ -317,6 +317,24 @@ void MoveTool::applyTransformation()
     mRotatedAngle = 0;
 }
 
+void MoveTool::applyTransformationAndDeselect()
+{
+    // We apply transform changes upon leaving a layer and deselect all
+    mScribbleArea->applyTransformedSelection();
+
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (currentLayer->type() == Layer::VECTOR) {
+        auto keyFrame = static_cast<VectorImage*>(currentLayer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
+        if (keyFrame)
+        {
+            keyFrame->deselectAll();
+        }
+    }
+
+    mEditor->select()->resetSelectionProperties();
+    mRotatedAngle = 0;
+}
+
 bool MoveTool::leavingThisTool()
 {
     BaseTool::leavingThisTool();
