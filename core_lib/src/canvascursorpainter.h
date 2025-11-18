@@ -23,11 +23,9 @@ class QPainter;
 
 struct CanvasCursorPainterOptions
 {
-    QRectF widthRect;
-    QRectF featherRect;
-    bool isAdjusting = false;
-    bool useFeather = false;
+    QRectF circleRect;
     bool showCursor = false;
+    bool showCross = false;
 };
 
 class CanvasCursorPainter
@@ -37,7 +35,7 @@ public:
     CanvasCursorPainter();
     void paint(QPainter& painter, const QRect& blitRect);
 
-    void preparePainter(const CanvasCursorPainterOptions& painterOptions, const QTransform& viewTransform);
+    void preparePainter(const CanvasCursorPainterOptions& painterOptions);
 
     const QRect dirtyRect() { return mDirtyRect; }
     bool isDirty() const { return mIsDirty; }
@@ -49,7 +47,6 @@ private:
 
     /// @brief precision circular cursor: used for drawing a cursor on the canvas.
     void paintWidthCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthCircleBounds);
-    void paintFeatherCursor(QPainter& painter, const QRect& blitRect, const QRectF& widthCircleBounds, const QRectF& featherCircleBounds);
 
     CanvasCursorPainterOptions mOptions;
     QRect mDirtyRect;
