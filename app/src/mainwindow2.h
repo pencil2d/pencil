@@ -149,8 +149,9 @@ private:
     void makeConnections(Editor*, OnionSkinWidget*);
     void makeConnections(Editor*, StatusBar*);
 
-    bool tryRecoverUnsavedProject();
-    void startProjectRecovery(int result);
+    bool checkForRecoverableProjects();
+    bool tryRecoverProject(const QString recoverPath);
+    bool startProjectRecovery(const QString recoverPath);
 
     // UI: Dock widgets
     ColorBox*             mColorBox = nullptr;
