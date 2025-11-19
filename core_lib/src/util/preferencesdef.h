@@ -91,6 +91,8 @@ enum class SETTING
     LOAD_MOST_RECENT,
     LOAD_DEFAULT_PRESET,
     DEFAULT_PRESET,
+    DRAW_MIRROR_H,
+    DRAW_MIRROR_V,
     COUNT, // COUNT must always be the last one.
 };
 

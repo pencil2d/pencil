@@ -84,6 +84,16 @@ void OverlayPainter::paint(QPainter &painter, const QRect& viewport)
         paintGrid(painter);
     }
 
+    if (mOptions.bShowHorizontalMirrorLine)
+    {
+        paintOverlayMirrorLine(painter, camTransform, cameraRect, true);
+    }
+
+    if (mOptions.bshowVerticalMirrorLine)
+    {
+        paintOverlayMirrorLine(painter, camTransform, cameraRect, false);
+    }
+
     painter.restore();
 }
 
@@ -111,6 +121,39 @@ void OverlayPainter::paintOverlayCenter(QPainter &painter, const QTransform& cam
                      QLineF(centerTop, centerBottom).pointAt(0.6).toPoint());
     painter.drawLine(QLineF(centerLeft, centerRight).pointAt(0.4).toPoint(),
                      QLineF(centerLeft, centerRight).pointAt(0.6).toPoint());
+
+    painter.restore();
+}
+
+void OverlayPainter::paintOverlayMirrorLine(QPainter &painter, const QTransform& camTransform, const QRect& camRect, bool bHoriozontal) const
+{
+    painter.save();
+    painter.setCompositionMode(QPainter::RasterOp_NotSourceAndNotDestination);
+
+    QPen pen(Qt::SolidLine);
+    pen.setCosmetic(true);
+    painter.setPen(pen);
+    painter.setBrush(Qt::NoBrush);
+    painter.setRenderHint(QPainter::Antialiasing, false);
+
+    QPolygon poly = camTransform.inverted().mapToPolygon(camRect);
+    QPoint centerTop = QLineF(poly.at(0), poly.at(1)).pointAt(0.5).toPoint();
+    QPoint centerBottom = QLineF(poly.at(2), poly.at(3)).pointAt(0.5).toPoint();
+
+    QPoint centerLeft = QLineF(poly.at(0), poly.at(3)).pointAt(0.5).toPoint();
+    QPoint centerRight = QLineF(poly.at(1), poly.at(2)).pointAt(0.5).toPoint();
+
+    if (bHoriozontal)
+    {
+        painter.drawLine(QLineF(centerLeft, centerRight).pointAt(0.1).toPoint(),
+                         QLineF(centerLeft, centerRight).pointAt(0.9).toPoint());
+    }
+    else
+    {
+        painter.drawLine(QLineF(centerTop, centerBottom).pointAt(0.1).toPoint(),
+                     QLineF(centerTop, centerBottom).pointAt(0.9).toPoint());
+    }
+
 
     painter.restore();
 }

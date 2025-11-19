@@ -32,6 +32,8 @@ struct OverlayPainterOptions
     QPointF mLeftPerspPoint;
     QPointF mRightPerspPoint;
     QPointF mMiddlePerspPoint;
+    bool bShowHorizontalMirrorLine = false;
+    bool bshowVerticalMirrorLine = false;
 };
 
 class OverlayPainter
@@ -51,6 +53,7 @@ private:
 
     void paintGrid(QPainter& painter) const;
     void paintOverlayCenter(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
+    void paintOverlayMirrorLine(QPainter& painter, const QTransform& camTransform, const QRect& camRect, bool bHorizontal) const;
     void paintOverlayThirds(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
     void paintOverlayGolden(QPainter& painter, const QTransform& camTransform, const QRect& camRect) const;
     void paintOverlaySafeAreas(QPainter& painter, const Camera& camera, const QTransform& camTransform, const QRect& camRect) const;
