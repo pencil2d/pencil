@@ -34,8 +34,6 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "colormanager.h"
-#include "preferencemanager.h"
-#include "selectionmanager.h"
 #include "util.h"
 #include "app_util.h"
 
@@ -44,7 +42,6 @@ GNU General Public License for more details.
 #include "layerbitmap.h"
 #include "layervector.h"
 #include "bitmapimage.h"
-#include "vectorimage.h"
 #include "soundclip.h"
 #include "camera.h"
 
@@ -689,6 +686,71 @@ Status ActionCommands::addNewKey()
     }
 
     return Status::OK;
+}
+
+void ActionCommands::interpolateKeyframes()
+{
+    bool cont = true;
+    // must be bitmap layer
+    if (mEditor->layers()->currentLayer()->type() != Layer::BITMAP)
+        cont = false;
+
+    LayerBitmap* layer = static_cast<LayerBitmap*>(mEditor->layers()->currentLayer());
+    QList<int> framePair = layer->selectedKeyFramesPositions();
+
+    // must be exactly two frames
+    if (framePair.length() != 2)
+        cont = false;
+
+    int first = framePair[0];
+    int last = layer->getNextKeyFramePosition(first);
+    // first and last must be adjacent keyframes, with minimum 1 keyframe in between
+    if (last != framePair[1] || first == last - 1)
+        cont = false;
+
+    if (!cont) {
+        QMessageBox::information(mParent,
+                                 tr("Information"),
+                                 tr("To interpolate keyframes, select two adjacent keyframes with space between."),
+                                 QMessageBox::Ok);
+        return;
+    }
+
+    layer->deselectAll();
+    BitmapImage* img1 = layer->getBitmapImageAtFrame(first);
+    mEditor->scrubTo(first);
+    QRect rect1 = img1->bounds();
+    BitmapImage* img2 = layer->getBitmapImageAtFrame(last);
+    mEditor->scrubTo(last);
+    QRect rect2 = img2->bounds();
+
+    QLineF upperLine = QLineF(rect1.topLeft(), rect2.topLeft());
+    QLineF bottomLine = QLineF(rect1.bottomRight(), rect2.bottomRight());
+
+    KeyFrame* keyframe = layer->getKeyFrameAt(first);
+
+    qreal percent = 0.0;
+    int counter = 1;
+    qreal interpolations = static_cast<qreal>(last - first);
+
+    for (int i = first + 1; i < last; i++)
+    {
+        if (counter > 1)
+            keyframe = layer->getKeyFrameAt(i - 1);
+        KeyFrame* dupKey = keyframe->clone();
+        layer->addKeyFrame(i, dupKey);
+        mEditor->scrubTo(i);
+        emit mEditor->frameModified(i);
+        BitmapImage* image = layer->getBitmapImageAtFrame(i);
+        percent = counter / interpolations;
+        QRect transformer = QRect(upperLine.pointAt(percent).toPoint(),
+                                  bottomLine.pointAt(percent).toPoint());
+        image->transform(transformer, true);
+        image->modification();
+        counter++;
+        layer->markFrameAsDirty(i);
+    }
+    mEditor->scrubTo(last);
 }
 
 void ActionCommands::exposeSelectedFrames(int offset)

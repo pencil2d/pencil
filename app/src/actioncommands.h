@@ -64,6 +64,7 @@ public:
     void GotoNextKeyFrame();
     void GotoPrevKeyFrame();
     Status addNewKey();
+    void interpolateKeyframes();
 
     void resetAllTools();
 
