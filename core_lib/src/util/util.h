@@ -21,6 +21,10 @@ GNU General Public License for more details.
 #include <functional>
 
 class QAbstractSpinBox;
+class QLineF;
+class QRect;
+class QImage;
+class QString;
 
 /**
  * Clips a given line to a clipping window using the Liang-Barsky algorithm.
