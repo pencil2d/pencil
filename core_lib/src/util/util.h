@@ -62,7 +62,11 @@ private:
 template <typename Container, typename Pred>
 Container filter(const Container& container, Pred predicate) {
     Container result;
-    std::copy_if(container.begin(), container.end(), std::back_inserter(result), predicate);
+    for (const auto& item : container) {
+        if (predicate(item)) {
+            result.push_back(item);
+        }
+    }
     return result;
 }
 
