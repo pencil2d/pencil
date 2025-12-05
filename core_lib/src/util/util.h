@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <cstddef>
 #include <functional>
+#include <QtGlobal>
 
 class QAbstractSpinBox;
 class QLineF;
