@@ -42,6 +42,7 @@
 - #1902 Fixed Linux build failure by running actions outside container
 - #1912 Ensured QDebug is included for all qDebug uses
 - Fixed insufficient quoting when embedding AppImage update information [42d52f10](https://github.com/pencil2d/pencil/commit/42d52f105b2bc227e0ef434be6113b12739202ba)
+- Bump Qt6 macOS runner to Sonoma [6b8e1aa](https://github.com/pencil2d/pencil/commit/6b8e1aa19744edd0247b808baeea2f210cd31638)
 
 
 ## Pencil2D v0.7.0 - 12 July 2024
