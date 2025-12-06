@@ -662,6 +662,8 @@ void Editor::pasteToFrames()
 
         currentLayer->setFrameSelected(key->pos(), true);
     }
+
+    layers()->notifyAnimationLengthChanged();
 }
 
 void Editor::paste()
