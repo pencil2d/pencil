@@ -1,31 +1,42 @@
 ## Pencil2D v0.7.1
 
 
-## Improvements 
+## Improvements
 
-- #1916 Improved toolbox layout. Tools now intelligently arrange in rows with consistent spacing and can shrink to single column.
+- Improved toolbox layout. Tools now intelligently arrange in rows with consistent spacing and can shrink to single column. [bd54b72](https://github.com/pencil2d/pencil/commit/bd54b720d74b356c0beff67b6f9ffb5c8d5e6cd3)
+- Project recovery dialog improvements [#1944](https://github.com/pencil2d/pencil/commit/99f6d7ef594ab4118d4ed330941d1fedeadb08dd) 
+- Notarizing Pencil2D macOS app before distribution [#1922](https://github.com/pencil2d/pencil/issues/1922)
 
 ## Fixes
 
-- #1873 Fixed frame not being drawn on the timeline 
-- #1878 Fixed broken image import camera transform 
-- #1881 Fixed keyframes moving beyond layer name boundaries in Timeline
-- #1896 Fixed memory leak in ClipboardManager where cloned frames were not deleted
-- #1896 Fixed frame data loss when copying/pasting bitmap keyframes by properly cloning backing files and implementing temporary working directory for PCL projects
-- #1896 Fixed frame filename exceeding path length limit
-- #1897 Fixed view rotation affecting various view handles
-- #1918 Fixed SoundManager calculating frame length incorrectly
+- Fix Timeline frame disappearing [#1873](https://github.com/pencil2d/pencil/issues/1873)
+- Fixed broken image import camera transform [#1877](https://github.com/pencil2d/pencil/issues/1877)
+- Fixed keyframes moving beyond layer name boundaries in Timeline [#1881](https://github.com/pencil2d/pencil/issues/1881) 
+- Fixed memory leak in ClipboardManager where cloned frames were not deleted [2029158](https://github.com/pencil2d/pencil/commit/202915883da1139b588cfcf588d83f615f8701fb)
+- Fixed frame data loss when copying/pasting bitmap keyframes by properly cloning backing files and implementing temporary working directory for PCL projects [2029158](https://github.com/pencil2d/pencil/commit/202915883da1139b588cfcf588d83f615f8701fb)
+- Fixed frame filename exceeding path length limit [2029158](https://github.com/pencil2d/pencil/commit/202915883da1139b588cfcf588d83f615f8701fb)
+- Fixed canvas rotation affects view handles [#1897](https://github.com/pencil2d/pencil/issues/1897)
+- Fixed SoundManager calculating frame length incorrectly [a9013b6](https://github.com/pencil2d/pencil/commit/a9013b659d3ec6786ea4148c386fe61adad346a2)
+- Fixed timeline not updated when pasting frames [#1954](https://github.com/pencil2d/pencil/issues/1954) 
+- Fix some file extension issues with image and image sequence export [6148971](https://github.com/pencil2d/pencil/commit/614897138fd7266168ebd45d0493a98fc5c085fd) 
+- Fix keyframe opacity being adjusted globally in canvas rendering [5c3bf55](https://github.com/pencil2d/pencil/commit/5c3bf55fd7b79ed454f51df141144ff984205ebd)
+- Apply transformation before changing keyframe or layer [ef709c2](https://github.com/pencil2d/pencil/commit/ef709c2a932209441735fd340363658de37dfa9d)
+- Refactor validateDataPath and fix macOS unit tests [cd98e1b](https://github.com/pencil2d/pencil/commit/cd98e1b495a2ba2cce70276c59d5472382087b48)
+- Fix polyline not creating a backup on end with keyboard [33f6238](https://github.com/pencil2d/pencil/commit/33f6238a7457938c35126233d8c1c2bbc0365c3b)
+- Reposition frame dialog: fix cancel button not working [b8f8672](https://github.com/pencil2d/pencil/commit/b8f86721678c46a56e497bbc537f9bc0c9c98e56)
+- Shrink/resize the tools window at the maximum to just fit the content of the toolbar [#1893](https://github.com/pencil2d/pencil/issues/1893)
 
 ## Changes
 
-- #1907 Disabled Timeline double-click keyframe creation to prevent accidental keyframes
+- Timeline: Remove ability to add keyframe on double-click [cbb004a](https://github.com/pencil2d/pencil/commit/cbb004a6971fec41f13adf7fddc2852451f478e8)
 
 ## DevOps
 
-- #1895 Added more details to FileManager error reports
-- #1902 Fixed Linux build failure by running actions outside container
-- #1912 Ensured QDebug is included for all qDebug uses
+- Added more details to FileManager error reports [fe4f2bc](https://github.com/pencil2d/pencil/commit/fe4f2bc09a88fb2f76a8d589411609fc06d7e7f8)
+- Fixed Linux build failure by running actions outside container [5682937](https://github.com/pencil2d/pencil/commit/56829379d930dfb978220d56e7b8a6cdc5aab4be)
+- Ensured QDebug is included for all qDebug uses [18d877a](https://github.com/pencil2d/pencil/commit/18d877a4fce76195e46d1d8da94be7ac21cf545c)
 - Fixed insufficient quoting when embedding AppImage update information [42d52f10](https://github.com/pencil2d/pencil/commit/42d52f105b2bc227e0ef434be6113b12739202ba)
+- Bump Qt6 macOS runner to Sonoma [6b8e1aa](https://github.com/pencil2d/pencil/commit/6b8e1aa19744edd0247b808baeea2f210cd31638)
 
 
 ## Pencil2D v0.7.0 - 12 July 2024
