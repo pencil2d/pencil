@@ -95,6 +95,10 @@ create_package_macos() {
   macdeployqt Pencil2D.app
   echo "::endgroup::"
   
+  echo "::group::Verify universal binary"
+  lipo -archs Pencil2D.app/Contents/MacOS/Pencil2D
+  echo "::endgroup::"
+  
   popd >/dev/null
   local qtsuffix="-qt${INPUT_QT}"
   local arch="${INPUT_ARCH}"
