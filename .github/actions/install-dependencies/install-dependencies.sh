@@ -3,39 +3,34 @@
 setup_linux() {
   # Because of how bare-bones our docker image is
   echo "::group::Install prerequisites"
-  ${BUILD_CMD} apt-get -yq update
-  ${BUILD_CMD} apt-get -yq install software-properties-common
-  echo "::endgroup::"
-
-  echo "::group::Add APT sources"
-  for ppa in ppa:ubuntu-toolchain-r/test ppa:ubuntu-sdk-team/ppa \
-             ppa:git-core/ppa; do
-    ${BUILD_CMD} apt-add-repository -y "${ppa}"
-  done
+  ${BUILD_CMD} dnf -yq check-update
+  ${BUILD_CMD} dnf -yq install epel-release
   if [ "${INPUT_QT}" -eq 5 ]; then
-    ${BUILD_CMD} apt-add-repository -y ppa:beineri/opt-qt-5.15.2-xenial
+    ${BUILD_CMD} dnf config-manager --set-enabled powertools
+    ${BUILD_CMD} dnf install -yq --nogpgcheck https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-8.noarch.rpm
+  else
+    ${BUILD_CMD} dnf config-manager --set-enabled crb
+    ${BUILD_CMD} dnf install -yq --nogpgcheck https://mirrors.rpmfusion.org/nonfree/el/rpmfusion-nonfree-release-9.noarch.rpm
   fi
   echo "::endgroup::"
 
-  echo "::group::Fetch APT updates"
-  ${BUILD_CMD} apt-get update -yq
-  echo "::endgroup::"
-
-  echo "::group::Install APT packages"
+  echo "::group::Install packages"
+  ${BUILD_CMD} dnf group install -yq "Development Tools"
   if [ "${INPUT_QT}" -eq 5 ]; then
-    ${BUILD_CMD} apt-get install -yq --no-install-suggests --no-install-recommends \
-      build-essential qt515tools qt515base qt515multimedia qt515svg \
-      qt515wayland libgl1-mesa-dev bsdtar ffmpeg gstreamer1.0-plugins-base \
-      gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
-      gstreamer1.0-plugins-ugly gstreamer1.0-alsa gstreamer1.0-pulseaudio git \
-      curl libfuse2
+    ${BUILD_CMD} dnf install -yq \
+      qt5-qttools-devel qt5-qtbase-devel qt5-qtmultimedia-devel qt5-qtsvg-devel \
+      qt5-qtwayland-devel mesa-libGL-devel bsdtar ffmpeg \
+      gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good \
+      gstreamer1-plugins-base gstreamer1-plugins-good \
+      gstreamer1-plugins-bad-free gstreamer1-plugins-ugly \
+      curl fuse-libs
   else
-    ${BUILD_CMD} apt-get install -yq --no-install-suggests --no-install-recommends \
-      build-essential qt6-l10n-tools qt6-base-dev qt6-multimedia-dev \
-      libqt6svg6-dev qt6-wayland-dev libgl1-mesa-dev libarchive-tools ffmpeg \
-      gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
-      gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-alsa \
-      gstreamer1.0-pulseaudio git curl libfuse2
+    ${BUILD_CMD} dnf install -yq \
+      qt6-linguist qt6-qtbase-devel qt6-qtmultimedia-devel \
+      qt6-qtsvg-devel qt6-qtwayland-devel mesa-libGL-devel bsdtar ffmpeg \
+      gstreamer1 gstreamer1-plugins-base gstreamer1-plugins-good \
+      gstreamer1-plugins-bad-free gstreamer1-plugins-ugly \
+      curl-minimal fuse-libs
   fi
   echo "::endgroup::"
 }

@@ -35,13 +35,13 @@ create_package_linux() {
   ${BUILD_CMD} sed -i "/^Keywords\(\[[a-zA-Z_.@]\+\]\)\?=/d;/^Version=/cVersion=1.0" \
     Pencil2D/usr/share/applications/org.pencil2d.Pencil2D.desktop
   ${BUILD_CMD} install -Dm755 /usr/bin/ffmpeg Pencil2D/usr/plugins/ffmpeg
-  ${BUILD_CMD} install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
+  ${BUILD_CMD} install -Dm755 "/usr/libexec/gstreamer-1.0/gst-plugin-scanner" \
     "Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
-  local gst_executables="-executable=Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
+  local gst_executables="-executable=Pencil2D/usr/libexec/gstreamer-1.0/gst-plugin-scanner"
   for plugin in adpcmdec alsa app audioconvert audioparsers audioresample \
-      autodetect coreelements gsm id3demux jack mpg123 mulaw playback \
-      pulse typefindfunctions wavparse apetag; do
-    ${BUILD_CMD} install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgst${plugin}.so" \
+      autodetect coreelements gsm id3demux mpg123 mulaw playback \
+      pulseaudio typefindfunctions wavparse apetag; do
+    ${BUILD_CMD} install -Dm755 "/usr/lib64/gstreamer-1.0/libgst${plugin}.so" \
       "Pencil2D/usr/lib/gstreamer-1.0/libgst${plugin}.so"
     gst_executables="${gst_executables} -executable=Pencil2D/usr/lib/gstreamer-1.0/libgst${plugin}.so"
   done
