@@ -47,12 +47,6 @@ namespace PlatformHandler
 
 extern "C" {
 
-// this is not declared in Carbon.h anymore, but it's in the framework
-OSStatus
-SetMouseCoalescingEnabled(
- Boolean    inNewState,
- Boolean *  outOldState);
-
 bool gIsMouseCoalescing = false;
 
 void detectWhichOSX()
@@ -67,14 +61,12 @@ void detectWhichOSX()
 
 void disableCoalescing()
 {
-    SetMouseCoalescingEnabled(gIsMouseCoalescing, nullptr);
-    //MacOSXNative::setMouseCoalescingEnabled(false);
+    MacOSXNative::setMouseCoalescingEnabled(gIsMouseCoalescing);
 }
 
 void enableCoalescing()
 {
-    SetMouseCoalescingEnabled(true, nullptr);
-    //MacOSXNative::setMouseCoalescingEnabled(true);
+    MacOSXNative::setMouseCoalescingEnabled(true);
 }
 
 } // extern "C"

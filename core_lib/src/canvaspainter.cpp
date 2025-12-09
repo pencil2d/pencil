@@ -273,7 +273,7 @@ void CanvasPainter::paintOnionSkinFrame(QPainter& painter, QPainter& onionSkinPa
     // Don't transform the image here as we used the viewTransform in the image output
     painter.setWorldMatrixEnabled(false);
     // Remember to adjust overall opacity based on opacity value from image
-    painter.setOpacity(frameOpacity - (1.0-painter.opacity()));
+    onionSkinPainter.setOpacity(frameOpacity - (1.0-painter.opacity()));
     if (colorize)
     {
         QColor colorBrush = Qt::transparent; //no color for the current frame
@@ -308,9 +308,9 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
     QPainter currentBitmapPainter;
     initializePainter(currentBitmapPainter, mCurrentLayerPixmap, blitRect);
 
-    painter.setOpacity(paintedImage->getOpacity() - (1.0-painter.opacity()));
     painter.setWorldMatrixEnabled(false);
 
+    currentBitmapPainter.setOpacity(paintedImage->getOpacity() - (1.0-painter.opacity()));
     currentBitmapPainter.drawImage(paintedImage->topLeft(), *paintedImage->image());
 
     if (isCurrentLayer && isDrawing)
@@ -350,6 +350,8 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     }
 
     // Paint existing vector image to the painter
+    // Remember to adjust opacity based on additional opacity value from the keyframe
+    currentVectorPainter.setOpacity(vectorImage->getOpacity() - (1.0-painter.opacity()));
     vectorImage->paintImage(currentVectorPainter, *mObject, mOptions.bOutlines, mOptions.bThinLines, mOptions.bAntiAlias);
 
     if (isCurrentLayer && isDrawing) {
@@ -365,8 +367,6 @@ void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blit
     painter.setWorldMatrixEnabled(false);
     painter.setTransform(QTransform());
 
-    // Remember to adjust opacity based on additional opacity value from the keyframe
-    painter.setOpacity(vectorImage->getOpacity() - (1.0-painter.opacity()));
     painter.drawPixmap(mPointZero, mCurrentLayerPixmap);
 }
 

@@ -19,8 +19,13 @@ GNU General Public License for more details.
 
 #include <cstddef>
 #include <functional>
+#include <QtGlobal>
 
 class QAbstractSpinBox;
+class QLineF;
+class QRect;
+class QImage;
+class QString;
 
 /**
  * Clips a given line to a clipping window using the Liang-Barsky algorithm.
@@ -58,7 +63,11 @@ private:
 template <typename Container, typename Pred>
 Container filter(const Container& container, Pred predicate) {
     Container result;
-    std::copy_if(container.begin(), container.end(), std::back_inserter(result), predicate);
+    for (const auto& item : container) {
+        if (predicate(item)) {
+            result.push_back(item);
+        }
+    }
     return result;
 }
 
@@ -68,6 +77,18 @@ QString ffmpegLocation();
 quint64 imageSize(const QImage&);
 QString uniqueString(int len);
 
+/**
+ * Converts a filesystem path to its canonical form, ie. an absolute path with any existing symlinks resolved.
+ *
+ * This function does the same thing as QDir::canonicalPath if a file or directory exists at the path.
+ * If the path does not point to an existing file or directory, then this function will resolve the symlinks only
+ * for the existing parent directories, rather than returning an empty string as QDir::canonicalPath does.
+ * This function may still return a blank string if the path contains dangling symbolic links.
+ *
+ * @param path The path to convert to canonical form.
+ * @return A canonical path, or as close to one as possible.
+ */
+QString closestCanonicalPath(QString path);
 /**
  * Performs safety checks for paths to data directory assets.
  *
@@ -83,10 +104,11 @@ QString uniqueString(int len);
  * function if:
  * - An existing file is being modified/appended in-place (not overwritten) in the data directory.
  * - The data directory is not guaranteed to be the immediate parent directory of the file being written.
+ * - The path comes from an untrusted source or could contain sections to navigate up the directory heirarchy (ie. '../')
  *
  * @param filePath A path to a data file.
  * @param dataDir The path to the data directory.
- * @return The valid resolved path, or empty if the path is not valid.
+ * @return The closest canonical resolved path, or empty if the path did not pass validation or contains dangling symbolic links.
  */
 QString validateDataPath(QString filePath, QString dataDirPath);
 

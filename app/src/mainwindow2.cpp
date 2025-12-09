@@ -696,7 +696,7 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openStartupFile(const QString& filename)
 {
-    if (tryRecoverUnsavedProject())
+    if (checkForRecoverableProjects())
     {
         return;
     }
@@ -1030,15 +1030,10 @@ void MainWindow2::lockWidgets(bool shouldLock)
            QDockWidget::DockWidgetFeature::DockWidgetMovable |
            QDockWidget::DockWidgetFeature::DockWidgetFloatable);
 
-    for (QDockWidget* d : mDockWidgets)
+    for (BaseDockWidget* d : mDockWidgets)
     {
         d->setFeatures(feat);
-
-        // https://doc.qt.io/qt-5/qdockwidget.html#setTitleBarWidget
-        // A empty QWidget looks like the tittle bar is hidden.
-        // nullptr means removing the custom title bar and restoring the default one
-        QWidget* customTitleBarWidget = shouldLock ? (new QWidget) : nullptr;
-        d->setTitleBarWidget(customTitleBarWidget);
+        d->lock(shouldLock);
     }
 }
 
@@ -1606,7 +1601,7 @@ void MainWindow2::displayMessageBoxNoTitle(const QString& body)
     QMessageBox::information(this, nullptr, tr(qPrintable(body)), QMessageBox::Ok);
 }
 
-bool MainWindow2::tryRecoverUnsavedProject()
+bool MainWindow2::checkForRecoverableProjects()
 {
     FileManager fm;
     QStringList recoverables = fm.searchForUnsavedProjects();
@@ -1616,41 +1611,52 @@ bool MainWindow2::tryRecoverUnsavedProject()
         return false;
     }
 
+    foreach (const QString path, recoverables)
+    {
+        if (tryRecoverProject(path))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool MainWindow2::tryRecoverProject(const QString recoverPath)
+{
     QString caption = tr("Restore Project?");
     QString text = tr("Pencil2D didn't close correctly. Would you like to restore the project?");
 
-    QString recoverPath = recoverables[0];
+    QMessageBox msgBox(this);
+    hideQuestionMark(msgBox); // Must be before setDefaultButton
+    msgBox.setWindowTitle(tr("Restore project"));
+    msgBox.setWindowModality(Qt::ApplicationModal);
+    msgBox.setIconPixmap(QPixmap(":/icons/logo.png"));
+    msgBox.setText(QString("<h4>%1</h4>%2").arg(caption, text));
+    msgBox.setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
+    msgBox.setStandardButtons(QMessageBox::Open | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
 
-    QMessageBox* msgBox = new QMessageBox(this);
-    msgBox->setWindowTitle(tr("Restore project"));
-    msgBox->setWindowModality(Qt::ApplicationModal);
-    msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setIconPixmap(QPixmap(":/icons/logo.png"));
-    msgBox->setText(QString("<h4>%1</h4>%2").arg(caption, text));
-    msgBox->setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
-    msgBox->setStandardButtons(QMessageBox::Open | QMessageBox::Discard);
-    msgBox->setProperty("RecoverPath", recoverPath);
-    hideQuestionMark(*msgBox);
+    int result = msgBox.exec();
 
-    connect(msgBox, &QMessageBox::finished, this, &MainWindow2::startProjectRecovery);
-    msgBox->open();
-    return true;
+    switch (result)
+    {
+    case QMessageBox::Discard:
+        QDir(recoverPath).removeRecursively();
+        return false;
+    case QMessageBox::Cancel:
+        return false;
+    case QMessageBox::Open:
+        return startProjectRecovery(recoverPath);
+    default:
+        Q_ASSERT(false);
+    }
+
+    return false;
 }
 
-void MainWindow2::startProjectRecovery(int result)
+bool MainWindow2::startProjectRecovery(const QString recoverPath)
 {
-    const QMessageBox* msgBox = dynamic_cast<QMessageBox*>(QObject::sender());
-    const QString recoverPath = msgBox->property("RecoverPath").toString();
-
-    if (result == QMessageBox::Discard)
-    {
-        // The user presses discard
-        QDir(recoverPath).removeRecursively();
-        tryLoadPreset();
-        return;
-    }
-    Q_ASSERT(result == QMessageBox::Open);
-
     FileManager fm;
     Object* o = fm.recoverUnsavedProject(recoverPath);
     if (!fm.error().ok())
@@ -1659,7 +1665,7 @@ void MainWindow2::startProjectRecovery(int result)
         const QString title = tr("Recovery Failed.");
         const QString text = tr("Sorry! Pencil2D is unable to restore your project");
         QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
-        return;
+        return false;
     }
 
     Q_ASSERT(o);
@@ -1670,6 +1676,8 @@ void MainWindow2::startProjectRecovery(int result)
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
     QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
+
+    return true;
 }
 
 void MainWindow2::createToolbars()

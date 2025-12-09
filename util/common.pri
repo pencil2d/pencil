@@ -40,7 +40,7 @@ WIN_LEGACY {
     DEFINES += _WIN32_WINNT=0x0501
 }
 
-macx: LIBS += -lobjc -framework Carbon -framework AppKit
+macx: LIBS += -lobjc -framework AppKit
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings

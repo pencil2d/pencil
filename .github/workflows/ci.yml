@@ -29,13 +29,10 @@ jobs:
             qt: 5
             bundler: linuxdeployqt
           - name: Qt 5 / macOS x86_64
-            os: macos-13
+            os: macos-14
+            arch: x86_64
             container:
             qt: 5
-          #- name: Qt 5 / macOS arm64
-          #  os: macos-latest
-          #  container:
-          #  qt: 5
           - name: Qt 5 / Windows x86
             os: windows-2022
             arch: win32_msvc2019
@@ -53,14 +50,11 @@ jobs:
             container: "ubuntu:22.04"
             qt: 6
             bundler: linuxdeploy
-          - name: Qt 6 / macOS x86_64
-            os: macos-13
+          - name: Qt 6 / macOS Universal
+            os: macos-14
+            arch: universal
             container:
             qt: 6
-          #- name: Qt 6 / macOS arm64
-          #  os: macos-latest
-          #  container:
-          #  qt: 6
           - name: Qt 6 / Windows x86_64
             os: windows-2022
             arch: win64_msvc2019_64
@@ -74,6 +68,7 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v3
+
       - name: Set up container (Linux)
         if: runner.os == 'Linux'
         # XXX: --privileged is sort of a brute-force solution to get FUSE
@@ -103,6 +98,7 @@ jobs:
           -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
           CONFIG+=PENCIL2D_${{ startsWith(github.ref, 'refs/heads/release/') && 'RELEASE' || 'NIGHTLY' }}
           VERSION=${{ env.VERSION_NUMBER }}
+          ${{runner.os == 'macOS' && matrix.qt == 6 && 'QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"' || ''}}
 
       - name: Build Pencil2D
         run: ${{runner.os != 'Windows' && '${BUILD_CMD} make -C build' || 'cd build; nmake'}}
@@ -118,11 +114,23 @@ jobs:
           qt: ${{matrix.qt}}
           bundler: ${{matrix.bundler}}
 
+      - name: Code Sign and Notarize App
+        if: runner.os == 'macOS'
+        uses: ./.github/actions/notarize-macos-app
+        with:
+          app_path: "build/${{steps.package.outputs.output-basename}}.zip"
+          p12_base64: ${{ secrets.P12_BASE64 }}
+          p12_password: ${{ secrets.P12_PASSWORD }}
+          apple_id: ${{ secrets.APPLE_ID }}
+          apple_id_password: ${{ secrets.APPLE_ID_PASSWORD }}
+          team_id: ${{ secrets.APPLE_TEAM_ID }}
+          certificate_identity: ${{ secrets.CODESIGN_CERT_IDENTITY }}
+
       - name: Upload package
         uses: actions/upload-artifact@v4
         with:
           name: ${{steps.package.outputs.output-basename}}
-          path: build/${{steps.package.outputs.output-basename}}*
+          path: ${{ runner.os == 'macOS' && format('build/{0}.dmg', steps.package.outputs.output-basename) || format('build/{0}*', steps.package.outputs.output-basename) }}
       - name: Generate summary
         shell: bash
         run: >
