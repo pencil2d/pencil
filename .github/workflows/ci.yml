@@ -136,7 +136,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{steps.package.outputs.output-basename}}
-          path: build/${{steps.package.outputs.output-basename}}*
+          path: ${{ runner.os == 'macOS' && format('build/{0}.dmg', steps.package.outputs.output-basename) || format('build/{0}*', steps.package.outputs.output-basename) }}
       - name: Generate summary
         shell: bash
         run: >
