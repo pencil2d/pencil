@@ -27,6 +27,7 @@ jobs:
             os: ubuntu-latest
             container: "ubuntu:16.04"
             qt: 5
+            bundler: linuxdeployqt
           - name: Qt 5 / macOS x86_64
             os: macos-14
             arch: x86_64
@@ -48,6 +49,7 @@ jobs:
             os: ubuntu-latest
             container: "ubuntu:22.04"
             qt: 6
+            bundler: linuxdeploy
           - name: Qt 6 / macOS Universal
             os: macos-14
             arch: universal
@@ -106,11 +108,11 @@ jobs:
 
       - name: Create package
         id: package
-        if: runner.os != 'Linux' || matrix.qt == 5
         uses: ./.github/actions/create-package
         with:
           arch: ${{matrix.arch}}
           qt: ${{matrix.qt}}
+          bundler: ${{matrix.bundler}}
 
       - name: Code Sign and Notarize App
         if: runner.os == 'macOS'
@@ -125,7 +127,6 @@ jobs:
           certificate_identity: ${{ secrets.CODESIGN_CERT_IDENTITY }}
 
       - name: Upload package
-        if: runner.os != 'Linux' || matrix.qt == 5
         uses: actions/upload-artifact@v4
         with:
           name: ${{steps.package.outputs.output-basename}}
