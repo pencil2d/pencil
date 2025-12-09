@@ -32,10 +32,6 @@ jobs:
             arch: x86_64
             container:
             qt: 5
-          #- name: Qt 5 / macOS arm64
-          #  os: macos-latest
-          #  container:
-          #  qt: 5
           - name: Qt 5 / Windows x86
             os: windows-2022
             arch: win32_msvc2019
@@ -52,15 +48,11 @@ jobs:
             os: ubuntu-latest
             container: "ubuntu:22.04"
             qt: 6
-          - name: Qt 6 / macOS x86_64
+          - name: Qt 6 / macOS Universal
             os: macos-14
-            arch: x86_64
+            arch: universal
             container:
             qt: 6
-          #- name: Qt 6 / macOS arm64
-          #  os: macos-latest
-          #  container:
-          #  qt: 6
           - name: Qt 6 / Windows x86_64
             os: windows-2022
             arch: win64_msvc2019_64
@@ -104,6 +96,7 @@ jobs:
           -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
           CONFIG+=PENCIL2D_${{ startsWith(github.ref, 'refs/heads/release/') && 'RELEASE' || 'NIGHTLY' }}
           VERSION=${{ env.VERSION_NUMBER }}
+          ${{runner.os == 'macOS' && matrix.qt == 6 && 'QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"' || ''}}
 
       - name: Build Pencil2D
         run: ${{runner.os != 'Windows' && '${BUILD_CMD} make -C build' || 'cd build; nmake'}}
