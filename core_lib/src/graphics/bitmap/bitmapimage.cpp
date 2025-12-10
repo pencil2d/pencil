@@ -506,57 +506,42 @@ void BitmapImage::autoCrop()
     int relLeft = 0;
     int relRight = mBounds.width()-1;
 
-    // Check left column
-    isEmpty = (relBottom >= relTop); // Check left only when
-    while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
+    // Check left column - find minimum transparent span at start of each row
+    int minLeft = mBounds.width();
+    for (int row = relTop; row <= relBottom; ++row)
     {
-        // Loop through each row between relTop and relBottom
-        for (int row = relTop; row <= relBottom; ++row)
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(row));
+        for (int col = 0; col < minLeft; ++col)
         {
-            // Get scanline pointer for this row
-            const QRgb* pixel = reinterpret_cast<const QRgb*>(mImage.constScanLine(row)) + relLeft;
-
-            if (qAlpha(*pixel) != 0)
+            if (qAlpha(*cursor) != 0)
             {
-                // We've found a non-transparent pixel in column relLeft,
-                // so we can stop looking for one
-                isEmpty = false;
+                minLeft = col;
                 break;
             }
-        }
-
-        if (isEmpty)
-        {
-            // If the column we just checked was empty, increase relLeft
-            // to remove the empty column from the left of the bounding box
-            ++relLeft;
+            ++cursor;
         }
     }
+    relLeft = minLeft;
 
-    // Check right column
-    isEmpty = (relBottom >= relTop); // Reset isEmpty
-    while (isEmpty && relRight >= relLeft) // Loop through columns
+    // Check right column - find minimum transparent span at end of each row
+    int minRight = 0;
+    for (int row = relTop; row <= relBottom; ++row)
     {
-        for (int row = relTop; row <= relBottom; ++row)
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(row)) + mBounds.width() - 1;
+        for (int col = mBounds.width() - 1; col > minRight; --col)
         {
-            const QRgb* pixel = reinterpret_cast<const QRgb*>(mImage.constScanLine(row)) + relRight;
-
-            if (qAlpha(*pixel) != 0)
+            if (qAlpha(*cursor) != 0)
             {
-                isEmpty = false;
+                minRight = col;
                 break;
             }
-        }
-
-        if (isEmpty)
-        {
-            // If the column we just checked was empty, increase relRight
-            // to remove the empty column from the left of the bounding box
-            --relRight;
+            --cursor;
         }
     }
+    relRight = minRight;
 
-    if (relTop > relBottom || relLeft > relRight) {
+    if (relTop > relBottom || relLeft > relRight)
+    {
         clear();
         return;
     }
