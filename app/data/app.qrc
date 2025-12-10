@@ -100,6 +100,8 @@
         <file>icons/themes/playful/window/window-float-button-normal-darkm.svg</file>
         <file>icons/themes/playful/window/window-float-button-normal.svg</file>
         <file>icons/themes/playful/window/window-close-button-normal.svg</file>
+        <file>icons/themes/playful/display/horizontal.jpeg</file>
+        <file>icons/themes/playful/display/vertical.jpeg</file>
     </qresource>
     <qresource prefix="/app">
         <file>pencil2d_quick_guide.pdf</file>

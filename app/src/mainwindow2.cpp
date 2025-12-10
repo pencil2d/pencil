@@ -340,6 +340,8 @@ void MainWindow2::createMenus()
     bindPreferenceSetting(ui->actionShowInvisibleLines, prefs, SETTING::INVISIBLE_LINES);
     bindPreferenceSetting(ui->actionOnionPrev, prefs, SETTING::PREV_ONION);
     bindPreferenceSetting(ui->actionOnionNext, prefs, SETTING::NEXT_ONION);
+    bindPreferenceSetting(ui->actionDrawMirror_Horizontally, prefs, SETTING::DRAW_MIRROR_H);
+    bindPreferenceSetting(ui->actionDrawMirror_Vertically, prefs, SETTING::DRAW_MIRROR_V);
 
     bool enableSafeArea = (prefs->isOn(SETTING::ACTION_SAFE_ON) || prefs->isOn(SETTING::TITLE_SAFE_ON));
     ui->actionSafeAreas->setEnabled(enableSafeArea);
@@ -1718,6 +1720,7 @@ void MainWindow2::createToolbars()
     mOverlayToolbar->addAction(ui->actionOnePointPerspective);
     mOverlayToolbar->addAction(ui->actionTwoPointPerspective);
     mOverlayToolbar->addAction(ui->actionThreePointPerspective);
+
     mOverlayToolbar->setIconSize(QSize(22,22));
     mViewToolbar->setIconSize(QSize(22,22));
     mMainToolbar->setIconSize(QSize(22,22));
@@ -1726,6 +1729,10 @@ void MainWindow2::createToolbars()
     perspectiveLinesAngleButton->setDefaultAction(ui->menuPerspectiveLinesAngle->menuAction());
     perspectiveLinesAngleButton->setPopupMode(QToolButton::InstantPopup);
     mOverlayToolbar->addWidget(perspectiveLinesAngleButton);
+
+    mOverlayToolbar->addSeparator();
+    mOverlayToolbar->addAction(ui->actionDrawMirror_Horizontally);
+    mOverlayToolbar->addAction(ui->actionDrawMirror_Vertically);
 
     mToolbars = { mMainToolbar, mViewToolbar, mOverlayToolbar };
 
