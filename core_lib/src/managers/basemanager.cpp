@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include "basemanager.h"
 #include "editor.h"
-#include <QtDebug>
 
 BaseManager::BaseManager(Editor* editor, const QString& name) : QObject(editor)
 {
