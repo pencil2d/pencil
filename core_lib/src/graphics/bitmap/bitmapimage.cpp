@@ -505,75 +505,42 @@ void BitmapImage::autoCrop()
     int relLeft = 0;
     int relRight = mBounds.width()-1;
 
-    // Check left row
-    isEmpty = (relBottom >= relTop); // Check left only when
-    while (isEmpty && relBottom >= relTop && relLeft <= relRight) // Loop through columns
+    // Check left column - find minimum transparent span at start of each row
+    int minLeft = mBounds.width();
+    for (int row = relTop; row <= relBottom; ++row)
     {
-        // Point cursor to the pixel at row relTop and column relLeft
-        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(relTop)) + relLeft;
-        // Loop through pixels in column
-        // Note: we only need to loop from relTop to relBottom (inclusive)
-        //       not the full image height, because rows 0 to relTop-1 and
-        //       relBottom+1 to mBounds.height() have already been
-        //       confirmed to contain only transparent pixels
-        for (int row = relTop; row <= relBottom; row++)
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(row));
+        for (int col = 0; col < minLeft; ++col)
         {
-            // If the pixel is not transparent
-            // (i.e. alpha channel > 0)
-            if(qAlpha(*cursor) != 0)
+            if (qAlpha(*cursor) != 0)
             {
-                // We've found a non-transparent pixel in column relLeft,
-                // so we can stop looking for one
-                isEmpty = false;
+                minLeft = col;
                 break;
             }
-            // Move cursor to point to next pixel in the column
-            // Increment by width because the data is in row-major order
-            cursor += width;
-        }
-        if (isEmpty)
-        {
-            // If the column we just checked was empty, increase relLeft
-            // to remove the empty column from the left of the bounding box
-            ++relLeft;
+            ++cursor;
         }
     }
+    relLeft = minLeft;
 
-    // Check right row
-    isEmpty = (relBottom >= relTop); // Reset isEmpty
-    while (isEmpty && relRight >= relLeft) // Loop through columns
+    // Check right column - find minimum transparent span at end of each row
+    int minRight = 0;
+    for (int row = relTop; row <= relBottom; ++row)
     {
-        // Point cursor to the pixel at row relTop and column relRight
-        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(relTop)) + relRight;
-        // Loop through pixels in column
-        // Note: we only need to loop from relTop to relBottom (inclusive)
-        //       not the full image height, because rows 0 to relTop-1 and
-        //       relBottom+1 to mBounds.height()-1 have already been
-        //       confirmed to contain only transparent pixels
-        for (int row = relTop; row <= relBottom; row++)
+        const QRgb* cursor = reinterpret_cast<const QRgb*>(mImage.constScanLine(row)) + mBounds.width() - 1;
+        for (int col = mBounds.width() - 1; col > minRight; --col)
         {
-            // If the pixel is not transparent
-            // (i.e. alpha channel > 0)
-            if(qAlpha(*cursor) != 0)
+            if (qAlpha(*cursor) != 0)
             {
-                // We've found a non-transparent pixel in column relRight,
-                // so we can stop looking for one
-                isEmpty = false;
+                minRight = col;
                 break;
             }
-            // Move cursor to point to next pixel in the column
-            // Increment by width because the data is in row-major order
-            cursor += width;
-        }
-        if (isEmpty)
-        {
-            // If the column we just checked was empty, increase relRight
-            // to remove the empty column from the left of the bounding box
-            --relRight;
+            --cursor;
         }
     }
+    relRight = minRight;
 
-    if (relTop > relBottom || relLeft > relRight) {
+    if (relTop > relBottom || relLeft > relRight)
+    {
         clear();
         return;
     }
