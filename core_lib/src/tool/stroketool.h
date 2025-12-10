@@ -103,8 +103,6 @@ protected:
     bool mCanvasCursorEnabled = false;
     QPointF mLastPixel { 0, 0 };
 
-    QPointF mAdjustPosition;
-
     StrokeInterpolator mInterpolator;
 
     const UndoSaveState* mUndoSaveState = nullptr;

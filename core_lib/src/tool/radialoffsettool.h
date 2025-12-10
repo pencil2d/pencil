@@ -52,7 +52,7 @@ public:
     const QPointF& offsetPoint() const { return mAdjustPoint; }
 
 signals:
-    void offsetChanged(qreal newSize);
+    void offsetChanged(qreal distance);
 
 private:
 

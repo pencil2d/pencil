@@ -248,8 +248,8 @@ bool StrokeTool::handleQuickSizing(PointerEvent* event)
 
     switch (setting) {
         case WIDTH: {
-          mWidthSizingTool.pointerEvent(event);
-          break;
+            mWidthSizingTool.pointerEvent(event);
+            break;
         }
         case FEATHER: {
             mFeatherSizingTool.pointerEvent(event);
@@ -337,9 +337,9 @@ void StrokeTool::updateCanvasCursor()
     featherOptions.showCross = false;
 
     if (mFeatherSizingTool.isAdjusting()) {
-        widthOptions.circleRect = cursorRect(WIDTH, mFeatherSizingTool.isAdjusting() ? mFeatherSizingTool.offsetPoint() : getCurrentPoint());
+        widthOptions.circleRect = cursorRect(WIDTH, mFeatherSizingTool.offsetPoint());
     } else if (mWidthSizingTool.isAdjusting()) {
-        featherOptions.circleRect = cursorRect(FEATHER, mWidthSizingTool.isAdjusting() ? mWidthSizingTool.offsetPoint() : getCurrentPoint());
+        featherOptions.circleRect = cursorRect(FEATHER, mWidthSizingTool.offsetPoint());
     }
 
     mWidthCursorPainter.preparePainter(widthOptions);
