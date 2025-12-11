@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "undoredomanager.h"
 
 #include "canvascursorpainter.h"
+#include "radialoffsettool.h"
 
 #include <QList>
 #include <QPointF>
@@ -52,7 +53,7 @@ public:
     static const qreal WIDTH_MAX;
 
     void loadSettings() override;
-    bool isActive() const override { return mInterpolator.isActive(); };
+    bool isActive() const override { return mInterpolator.isActive(); }
 
     bool keyPressEvent(QKeyEvent* event) override;
     void pointerPressEvent(PointerEvent* event) override;
@@ -77,13 +78,9 @@ protected:
     QPointF getLastPixel() const;
     QPointF getLastPoint() const;
 
-    // dynamic cursor adjustment
-    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers);
-    virtual void stopAdjusting();
-    virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
+    QRectF cursorRect(ToolPropertyType settingType, const QPointF& point);
 
     static bool mQuickSizingEnabled;
-    static bool msIsAdjusting;
 
     QHash<Qt::KeyboardModifiers, ToolPropertyType> mQuickSizingProperties;
     bool mFirstDraw = false;
@@ -106,13 +103,16 @@ protected:
     bool mCanvasCursorEnabled = false;
     QPointF mLastPixel { 0, 0 };
 
-    QPointF mAdjustPosition;
-
-    CanvasCursorPainter mCanvasCursorPainter;
-
     StrokeInterpolator mInterpolator;
 
     const UndoSaveState* mUndoSaveState = nullptr;
+
+private:
+    CanvasCursorPainter mWidthCursorPainter;
+    CanvasCursorPainter mFeatherCursorPainter;
+
+    RadialOffsetTool mWidthSizingTool;
+    RadialOffsetTool mFeatherSizingTool;
 };
 
 #endif // STROKETOOL_H
