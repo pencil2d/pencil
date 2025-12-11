@@ -3077,9 +3077,7 @@ static WCHAR *mz_utf8z_to_widechar(const char *str)
 
 static FILE *mz_fopen(const char *pFilename, const char *pMode)
 {
-    printf("mz_fopen: %s, mode=%s\n", pFilename, pMode);
     WCHAR *wFilename = mz_utf8z_to_widechar(pFilename);
-    wprintf_s(L"FileName: %s\n", wFilename);
     WCHAR *wMode = mz_utf8z_to_widechar(pMode);
     FILE *pFile = NULL;
     errno_t err = _wfopen_s(&pFile, wFilename, wMode);
