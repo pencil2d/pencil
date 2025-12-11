@@ -34,7 +34,6 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "colormanager.h"
-#include "preferencemanager.h"
 #include "selectionmanager.h"
 #include "util.h"
 #include "app_util.h"
@@ -42,7 +41,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layersound.h"
 #include "layerbitmap.h"
-#include "layervector.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
@@ -534,6 +532,39 @@ Status ActionCommands::exportImage()
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool useTranparency = dialog->getTransparency();
+
+    QString extension = "";
+    QString formatStr = exportFormat;
+    if (formatStr == "PNG" || formatStr == "png")
+    {
+        exportFormat = "PNG";
+        extension = ".png";
+    }
+    if (formatStr == "JPG" || formatStr == "jpg" || formatStr == "JPEG" || formatStr == "jpeg")
+    {
+        exportFormat = "JPG";
+        extension = ".jpg";
+        useTranparency = false; // JPG doesn't support transparency, so we have to include the background
+    }
+    if (formatStr == "TIFF" || formatStr == "tiff" || formatStr == "TIF" || formatStr == "tif")
+    {
+        exportFormat = "TIFF";
+        extension = ".tiff";
+    }
+    if (formatStr == "BMP" || formatStr == "bmp")
+    {
+        exportFormat = "BMP";
+        extension = ".bmp";
+        useTranparency = false;
+    }
+    if (formatStr == "WEBP" || formatStr == "webp") {
+        exportFormat = "WEBP";
+        extension = ".webp";
+    }
+    if (!filePath.endsWith(extension, Qt::CaseInsensitive))
+    {
+        filePath += extension;
+    }
 
     // Export
     QString sCameraLayerName = dialog->getCameraLayerName();

@@ -16,7 +16,6 @@ GNU General Public License for more details.
 */
 #include "bitmapimage.h"
 
-#include <cmath>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
@@ -574,6 +573,10 @@ void BitmapImage::autoCrop()
         }
     }
 
+    if (relTop > relBottom || relLeft > relRight) {
+        clear();
+        return;
+    }
     //qDebug() << "Original" << mBounds;
     //qDebug() << "Autocrop" << relLeft << relTop << relRight - mBounds.width() + 1 << relBottom - mBounds.height() + 1;
     // Update mBounds and mImage if necessary

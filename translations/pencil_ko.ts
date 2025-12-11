@@ -28,194 +28,267 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="123"/>
+        <location filename="../app/src/actioncommands.cpp" line="124"/>
         <source>Importing movie...</source>
         <translation>영화 가져오는 중...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="89"/>
-        <location filename="../app/src/actioncommands.cpp" line="123"/>
-        <location filename="../app/src/actioncommands.cpp" line="246"/>
-        <location filename="../app/src/actioncommands.cpp" line="473"/>
+        <location filename="../app/src/actioncommands.cpp" line="90"/>
+        <location filename="../app/src/actioncommands.cpp" line="124"/>
+        <location filename="../app/src/actioncommands.cpp" line="247"/>
+        <location filename="../app/src/actioncommands.cpp" line="474"/>
         <source>Abort</source>
         <translation>중단하기</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="89"/>
+        <location filename="../app/src/actioncommands.cpp" line="90"/>
         <source>Importing Animated Image...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="131"/>
+        <location filename="../app/src/actioncommands.cpp" line="132"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
         <translation>많은 프레임을 가져오고 있습니다. 시간이 걸릴 수 있는데, 정말 계속하시겠습니까?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="179"/>
+        <location filename="../app/src/actioncommands.cpp" line="180"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>가져오기 위한 음성 레이어가 존재하지 않습니다. 새 음성 레이어를 만들까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="180"/>
+        <location filename="../app/src/actioncommands.cpp" line="181"/>
         <source>Create sound layer</source>
         <translation>음성 레이어 만들기</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="181"/>
+        <location filename="../app/src/actioncommands.cpp" line="182"/>
         <source>Don&apos;t create layer</source>
         <translation>레이어 만들지 않기</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="191"/>
+        <location filename="../app/src/actioncommands.cpp" line="192"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>레이어 속성</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="192"/>
-        <location filename="../app/src/actioncommands.cpp" line="847"/>
-        <location filename="../app/src/actioncommands.cpp" line="860"/>
-        <location filename="../app/src/actioncommands.cpp" line="873"/>
-        <location filename="../app/src/actioncommands.cpp" line="886"/>
+        <location filename="../app/src/actioncommands.cpp" line="193"/>
+        <location filename="../app/src/actioncommands.cpp" line="872"/>
+        <location filename="../app/src/actioncommands.cpp" line="885"/>
+        <location filename="../app/src/actioncommands.cpp" line="898"/>
+        <location filename="../app/src/actioncommands.cpp" line="911"/>
         <source>Layer name:</source>
         <translation>레이어 이름:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="193"/>
+        <location filename="../app/src/actioncommands.cpp" line="194"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>음성 레이어</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="246"/>
+        <location filename="../app/src/actioncommands.cpp" line="247"/>
         <source>Importing sound...</source>
         <translation>음성 가져오는 중...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="287"/>
+        <location filename="../app/src/actioncommands.cpp" line="288"/>
         <source>Something went wrong</source>
         <translation>무엇인가 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="287"/>
-        <location filename="../app/src/actioncommands.cpp" line="1024"/>
+        <location filename="../app/src/actioncommands.cpp" line="288"/>
+        <location filename="../app/src/actioncommands.cpp" line="1055"/>
         <source>You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="345"/>
+        <location filename="../app/src/actioncommands.cpp" line="346"/>
         <source>Exporting movie</source>
         <translation>영화 출력 중</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="389"/>
+        <location filename="../app/src/actioncommands.cpp" line="390"/>
         <source>Finished. Open file location?</source>
         <translation>완료했습니다. 파일 경로를 열까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="399"/>
+        <location filename="../app/src/actioncommands.cpp" line="400"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>완료했습니다. 영화를 열까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="407"/>
+        <location filename="../app/src/actioncommands.cpp" line="408"/>
         <source>Unknown export error</source>
         <translation>알 수 없는 출력 오류</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="407"/>
+        <location filename="../app/src/actioncommands.cpp" line="408"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
         <translation>출력 중 오류가 발생하진 않았지만, 출력 파일을 찾을 수 없습니다. 출력이 성공적이지 않을 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="473"/>
+        <location filename="../app/src/actioncommands.cpp" line="474"/>
         <source>Exporting image sequence...</source>
         <translation>사진 시퀀스 출력 중...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="555"/>
-        <location filename="../app/src/actioncommands.cpp" line="1005"/>
-        <location filename="../app/src/actioncommands.cpp" line="1024"/>
+        <location filename="../app/src/actioncommands.cpp" line="589"/>
+        <location filename="../app/src/actioncommands.cpp" line="1036"/>
+        <location filename="../app/src/actioncommands.cpp" line="1055"/>
         <source>Warning</source>
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="556"/>
+        <location filename="../app/src/actioncommands.cpp" line="590"/>
         <source>Unable to export image.</source>
         <translation>이미지를 출력할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="712"/>
+        <location filename="../app/src/actioncommands.cpp" line="746"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
         <translation>선택된 프레임 제거</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="713"/>
+        <location filename="../app/src/actioncommands.cpp" line="747"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
         <translation>선택된 프레임을 정말로 제거하시겠습니까? 이 작업은 되돌릴 수 없습니다!</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="753"/>
+        <location filename="../app/src/actioncommands.cpp" line="787"/>
         <source>%1 (copy)</source>
         <comment>Default duplicate layer name</comment>
         <translation>%1 (복사)</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="846"/>
-        <location filename="../app/src/actioncommands.cpp" line="859"/>
-        <location filename="../app/src/actioncommands.cpp" line="885"/>
+        <location filename="../app/src/actioncommands.cpp" line="871"/>
+        <location filename="../app/src/actioncommands.cpp" line="884"/>
+        <location filename="../app/src/actioncommands.cpp" line="910"/>
         <source>Layer Properties</source>
         <translation>레이어 속성</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="848"/>
+        <location filename="../app/src/actioncommands.cpp" line="873"/>
         <source>Bitmap Layer</source>
         <translation>비트맵 레이어</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="861"/>
+        <location filename="../app/src/actioncommands.cpp" line="886"/>
         <source>Vector Layer</source>
         <translation>벡터 레이어</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="872"/>
+        <location filename="../app/src/actioncommands.cpp" line="897"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
         <translation>레이어 속성</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="874"/>
+        <location filename="../app/src/actioncommands.cpp" line="899"/>
         <source>Camera Layer</source>
         <translation>카메라 레이어</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="887"/>
+        <location filename="../app/src/actioncommands.cpp" line="912"/>
         <source>Sound Layer</source>
         <translation>음성 레이어</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="906"/>
+        <location filename="../app/src/actioncommands.cpp" line="931"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>레이어 삭제</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="907"/>
+        <location filename="../app/src/actioncommands.cpp" line="932"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
         <translation>정말로 레이어 %1을/를 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="916"/>
+        <location filename="../app/src/actioncommands.cpp" line="941"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>프로젝트에 적어도 한 개의 카메라 레이어가 존재해야 합니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="1005"/>
+        <location filename="../app/src/actioncommands.cpp" line="1036"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
         <translation>임시 폴더는 오직 Pencil2D에서만 사용됩니다. 가능하면 수정하지 마세요.</translation>
+    </message>
+</context>
+<context>
+    <name>AddTransparencyToPaperDialog</name>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="14"/>
+        <source>Replace Paper with Transparency</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="24"/>
+        <source>Threshold</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="61"/>
+        <source>Color values above this threshold will be made transparent</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="81"/>
+        <source>Trace Red</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="109"/>
+        <source>Trace Green</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="137"/>
+        <source>Trace Blue</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="170"/>
+        <source>Apply to:</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="176"/>
+        <source>Current Keyframe</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="183"/>
+        <source>All Keyframes on Layer</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="245"/>
+        <source>Zoom</source>
+        <translation>확대/축소</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/addtransparencytopaperdialog.ui" line="265"/>
+        <source>Test Transparency</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/addtransparencytopaperdialog.cpp" line="153"/>
+        <source>Previewing Frame %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/addtransparencytopaperdialog.cpp" line="234"/>
+        <source>Tracing scanned drawings...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/src/addtransparencytopaperdialog.cpp" line="234"/>
+        <source>Abort</source>
+        <translation>중단하기</translation>
     </message>
 </context>
 <context>
@@ -2591,118 +2664,118 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="202"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="203"/>
         <source>Copy</source>
         <translation>복사하기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="247"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="261"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="248"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="262"/>
         <source>Paste from Previous Keyframe</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="359"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="362"/>
         <source>Paste</source>
         <translation>붙여넣기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="381"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="384"/>
         <source>Flip selection vertically</source>
         <translation>선택한 것을 수직으로 뒤집기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="383"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="386"/>
         <source>Flip selection horizontally</source>
         <translation>선택한 것을 수평으로 뒤집기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="399"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="402"/>
         <source>Reposition frame</source>
         <translation>프레임 위치 재설정</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="481"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="490"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="499"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="531"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="484"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="493"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="502"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="534"/>
         <source>Could not open file</source>
         <translation>파일을 열 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="482"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="485"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation>선택한 파일은 폴더라서, 열 수 없습니다. 이전 구성을 사용하는 프로젝트를 열려면 폴더가 아니라 .pcl로 끝나는 파일을 열어주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="491"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="494"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation>선택한 파일이 존재하지 않아서, 열 수 없습니다. 파일이 있는 올바른 경로를 입력했는지 확인하고 다시 시도해주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="500"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="503"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation>이 프로그램은 선택한 파일을 읽을 권한이 없습니다. 파일의 읽기 권한을 확인하고 다시 시도해주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="535"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation>파일을 읽어오는 동안 알 수 없는 오류가 발생해서 파일을 읽어올 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="614"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="744"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="617"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="767"/>
         <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="617"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="747"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="620"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="770"/>
         <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="621"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="751"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="624"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="774"/>
         <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="624"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="754"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="627"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="678"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="728"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="743"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="750"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="777"/>
         <source>Import failed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="642"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="672"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="773"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="645"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="796"/>
         <source>Import Image</source>
         <translation>이미지 가져오기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="678"/>
         <source>You cannot import images into a vector layer.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="728"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="743"/>
         <source>You can only import images to a bitmap layer.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="750"/>
         <source>The selected image has a format that does not support animation.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="939"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="961"/>
         <source>Remove frame</source>
         <translation>프레임 제거하기</translation>
     </message>
@@ -3025,12 +3098,12 @@
         <translation>움직이는 GIF</translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="273"/>
+        <location filename="../app/src/filedialog.cpp" line="275"/>
         <source>untitled</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="280"/>
+        <location filename="../app/src/filedialog.cpp" line="282"/>
         <source>MyAnimation</source>
         <translation type="unfinished"/>
     </message>
@@ -3099,103 +3172,103 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="245"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="260"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="268"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="275"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="250"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="265"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="273"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="280"/>
         <source>Invalid Save Path</source>
         <translation>잘못된 저장 경로</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="246"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="251"/>
         <source>The path is empty.</source>
         <translation>경로가 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="261"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="266"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation>경로 (&quot;%1&quot;)이 폴더를 가리키고 있습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="269"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="274"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation>폴더 (&quot;%1&quot;)이 존재하지 않습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="276"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="281"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation>경로 (&quot;%1&quot;)에 쓸 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="314"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="323"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="319"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="328"/>
         <source>Cannot Create Data Directory</source>
         <translation>데이터 디렉토리를 생성할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="315"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="320"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation>디렉토리 &quot;%1&quot; 생성에 실패했습니다. 권한이 있는지 확인하세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="324"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="329"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation>&quot;%1&quot;은/는 파일입니다. 파일을 지우고 다시 시도하세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="353"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="358"/>
         <source>An internal error occurred. The project could not be saved.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="363"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="368"/>
         <source>Miniz Error</source>
         <translation>miniz 오류</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="352"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="380"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="357"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="385"/>
         <source>Internal Error</source>
         <translation>내부 오류</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="364"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="381"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="369"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="386"/>
         <source>An internal error occurred. The project may not have been saved successfully.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="549"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="554"/>
         <source>Could not open file</source>
         <translation>파일을 열 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="559"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="564"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
         <translation>파일이 존재하지 않아서 열 수 없습니다. 경로가 올바른지 확인하고 다시 시도해주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="564"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="569"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
         <translation>파일 읽기 권한이 없습니다. 이 파일에 대한 읽기 권한이 있는지 확인하고 다시 시도하세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="570"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="575"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
         <translation>파일 가공 중에 오류가 생겼습니다. 이것은 프로젝트가 적어도 부분적으로 망가졌다는 것을 의미합니다. 최신 버전의 Pencil2D로 다시 시도하거나, 백업 파일이 있다면 그것을 사용해주세요. 저희 공식 채널을 통해 연락을 주시면 도와드리겠습니다. 문제를 신고하려면 이곳으로 연락하세요:</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="1013"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1075"/>
         <source>Bitmap Layer %1</source>
         <translation>비트맵 레이어 %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="1015"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1077"/>
         <source>Vector Layer %1</source>
         <translation>벡터 레이어 %1</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="1017"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1079"/>
         <source>Sound Layer %1</source>
         <translation>사운드 레이어 %1</translation>
     </message>
@@ -3819,22 +3892,22 @@ Read the instructions and try again</source>
         <translation>관련된 이미지 불러오기:</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="31"/>
         <source>Center of current view</source>
         <translation>현재 뷰의 중심</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="35"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="32"/>
         <source>Center of canvas (0,0)</source>
         <translation>캔버스 중심 (0,0)</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="36"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="33"/>
         <source>Center of camera, current frame</source>
         <translation>카메라 중심, 현재 프레임</translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="37"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
         <source>Center of camera, follow camera</source>
         <translation>카메라 중심, 카메라 따라가기</translation>
     </message>
@@ -3996,858 +4069,858 @@ Read the instructions and try again</source>
         <translation>선택</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="127"/>
+        <location filename="../app/ui/mainwindow2.ui" line="134"/>
         <source>View</source>
         <translation>보기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="131"/>
+        <location filename="../app/ui/mainwindow2.ui" line="138"/>
         <source>Onion Skin</source>
         <translation>반투명 효과</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="138"/>
+        <location filename="../app/ui/mainwindow2.ui" line="145"/>
         <source>Zoom</source>
         <translation>확대/축소</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="154"/>
+        <location filename="../app/ui/mainwindow2.ui" line="161"/>
         <source>Layer Visibility</source>
         <translation>레이어 보이기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="162"/>
+        <location filename="../app/ui/mainwindow2.ui" line="169"/>
         <source>Overlays</source>
         <translation>겹쳐보이기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="166"/>
+        <location filename="../app/ui/mainwindow2.ui" line="173"/>
         <source>Perspective Lines Angle</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="215"/>
+        <location filename="../app/ui/mainwindow2.ui" line="222"/>
         <source>Animation</source>
         <translation>애니메이션</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="219"/>
+        <location filename="../app/ui/mainwindow2.ui" line="226"/>
         <source>Timeline Selection</source>
         <translation>타임라인 선택</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="251"/>
+        <location filename="../app/ui/mainwindow2.ui" line="258"/>
         <source>Tools</source>
         <translation>도구</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="269"/>
+        <location filename="../app/ui/mainwindow2.ui" line="276"/>
         <source>Layer</source>
         <translation>레이어</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="273"/>
+        <location filename="../app/ui/mainwindow2.ui" line="280"/>
         <source>Change line color</source>
         <translation>선 색 바꾸기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="291"/>
-        <location filename="../app/ui/mainwindow2.ui" line="812"/>
+        <location filename="../app/ui/mainwindow2.ui" line="298"/>
+        <location filename="../app/ui/mainwindow2.ui" line="819"/>
         <source>Help</source>
         <translation>도움말</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="308"/>
+        <location filename="../app/ui/mainwindow2.ui" line="315"/>
         <source>Windows</source>
         <translation>화면</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="312"/>
+        <location filename="../app/ui/mainwindow2.ui" line="319"/>
         <source>Toolbars</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="336"/>
+        <location filename="../app/ui/mainwindow2.ui" line="343"/>
         <source>New</source>
         <translation>새로만들기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="345"/>
+        <location filename="../app/ui/mainwindow2.ui" line="352"/>
         <source>Open</source>
         <translation>열기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="354"/>
+        <location filename="../app/ui/mainwindow2.ui" line="361"/>
         <source>Save</source>
         <translation>저장하기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="363"/>
+        <location filename="../app/ui/mainwindow2.ui" line="370"/>
         <source>Save As...</source>
         <translation>다음으로 저장...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="368"/>
+        <location filename="../app/ui/mainwindow2.ui" line="375"/>
         <source>Exit</source>
         <translation>나가기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="373"/>
-        <location filename="../app/ui/mainwindow2.ui" line="401"/>
+        <location filename="../app/ui/mainwindow2.ui" line="380"/>
+        <location filename="../app/ui/mainwindow2.ui" line="408"/>
         <source>Image Sequence...</source>
         <translation>이미지 순서...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="378"/>
-        <location filename="../app/ui/mainwindow2.ui" line="396"/>
+        <location filename="../app/ui/mainwindow2.ui" line="385"/>
+        <location filename="../app/ui/mainwindow2.ui" line="403"/>
         <source>Image...</source>
         <translation>이미지...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="383"/>
+        <location filename="../app/ui/mainwindow2.ui" line="390"/>
         <source>Movie...</source>
         <translation>영상...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="391"/>
+        <location filename="../app/ui/mainwindow2.ui" line="398"/>
         <source>Palette</source>
         <translation>팔레트</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="406"/>
+        <location filename="../app/ui/mainwindow2.ui" line="413"/>
         <source>Movie Video...</source>
         <translation>영상 비디오...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="411"/>
+        <location filename="../app/ui/mainwindow2.ui" line="418"/>
         <source>Sound...</source>
         <translation>사운드...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="416"/>
+        <location filename="../app/ui/mainwindow2.ui" line="423"/>
         <source>Image Predefined set...</source>
         <translation>미리 정의된 이미지 설정...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="425"/>
+        <location filename="../app/ui/mainwindow2.ui" line="432"/>
         <source>Undo</source>
         <translation>되돌리기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="434"/>
+        <location filename="../app/ui/mainwindow2.ui" line="441"/>
         <source>Redo</source>
         <translation>되돌리기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="446"/>
+        <location filename="../app/ui/mainwindow2.ui" line="453"/>
         <source>Cut</source>
         <translation>자르기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="458"/>
+        <location filename="../app/ui/mainwindow2.ui" line="465"/>
         <source>Copy</source>
         <translation>복사하기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="470"/>
+        <location filename="../app/ui/mainwindow2.ui" line="477"/>
         <source>Paste</source>
         <translation>붙여넣기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1057"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1064"/>
         <source>Center</source>
         <comment>To move sth. to the center</comment>
         <translation>중심</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1098"/>
-        <location filename="../app/ui/mainwindow2.ui" line="1101"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1074"/>
+        <source>Replace Paper with Transparency</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1110"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1113"/>
         <source>Paste from Previous Keyframe</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1113"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1125"/>
         <source>Show Invisible Lines</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1125"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1137"/>
         <source>Show Outlines Only</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1137"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1149"/>
         <source>Center</source>
         <comment>The middle point of an area</comment>
         <translation>중심</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1149"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1161"/>
         <source>Thirds</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1161"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1173"/>
         <source>Golden Ratio</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1173"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1185"/>
         <source>Safe Areas</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1185"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1197"/>
         <source>One Point Perspective</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1197"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1209"/>
         <source>Two Point Perspective</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1209"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1221"/>
         <source>Three Point Perspective</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1217"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1229"/>
         <source>2°</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1225"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1237"/>
         <source>3°</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1233"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1245"/>
         <source>5°</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1241"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1253"/>
         <source>7.5°</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1249"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1261"/>
         <source>10°</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1257"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1269"/>
         <source>15°</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1265"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1277"/>
         <source>20°</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1273"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1285"/>
         <source>30°</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="475"/>
+        <location filename="../app/ui/mainwindow2.ui" line="482"/>
         <source>Select All</source>
         <translation>모두 선택</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="480"/>
+        <location filename="../app/ui/mainwindow2.ui" line="109"/>
+        <source>Prepare Scanned Drawings</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="487"/>
         <source>Deselect All</source>
         <translation>모두 선택 해제</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="489"/>
+        <location filename="../app/ui/mainwindow2.ui" line="496"/>
         <source>Clear Frame</source>
         <translation>프레임 비우기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="494"/>
+        <location filename="../app/ui/mainwindow2.ui" line="501"/>
         <source>Preferences</source>
         <translation>설정</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="502"/>
+        <location filename="../app/ui/mainwindow2.ui" line="509"/>
         <source>Reset Windows</source>
         <translation>화면 초기화</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="511"/>
+        <location filename="../app/ui/mainwindow2.ui" line="518"/>
         <source>Zoom In</source>
         <translation>확대</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="520"/>
+        <location filename="../app/ui/mainwindow2.ui" line="527"/>
         <source>Zoom Out</source>
         <translation>축소</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="525"/>
+        <location filename="../app/ui/mainwindow2.ui" line="532"/>
         <source>Rotate Clockwise</source>
         <translation>시계 방향 회전</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="530"/>
+        <location filename="../app/ui/mainwindow2.ui" line="537"/>
         <source>Rotate Anticlockwise</source>
         <translation>반 시계 방향 회전</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="539"/>
+        <location filename="../app/ui/mainwindow2.ui" line="546"/>
         <source>Reset</source>
         <translation>초기화</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="551"/>
+        <location filename="../app/ui/mainwindow2.ui" line="558"/>
         <source>Horizontal Flip</source>
         <translation>수평 뒤집기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="563"/>
+        <location filename="../app/ui/mainwindow2.ui" line="570"/>
         <source>Vertical Flip</source>
         <translation>수직 뒤집기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="575"/>
+        <location filename="../app/ui/mainwindow2.ui" line="582"/>
         <source>Grid</source>
         <translation>격자</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="587"/>
+        <location filename="../app/ui/mainwindow2.ui" line="594"/>
         <source>Previous</source>
         <translation>이전</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="590"/>
+        <location filename="../app/ui/mainwindow2.ui" line="597"/>
         <source>Show previous onion skin</source>
         <translation>이전 반투명창 보이기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="602"/>
+        <location filename="../app/ui/mainwindow2.ui" line="609"/>
         <source>Next</source>
         <translation>다음</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="605"/>
+        <location filename="../app/ui/mainwindow2.ui" line="612"/>
         <source>Show next onion skin</source>
         <translation>다음 반투명창 보이기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="614"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1531"/>
+        <location filename="../app/ui/mainwindow2.ui" line="621"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1570"/>
         <source>Play</source>
         <translation>재생</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="626"/>
+        <location filename="../app/ui/mainwindow2.ui" line="633"/>
         <source>Loop</source>
         <translation>반복</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="631"/>
+        <location filename="../app/ui/mainwindow2.ui" line="638"/>
         <source>Next Frame</source>
         <translation>다음 프레임</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="636"/>
+        <location filename="../app/ui/mainwindow2.ui" line="643"/>
         <source>Previous Frame</source>
         <translation>이전 프레임</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="645"/>
+        <location filename="../app/ui/mainwindow2.ui" line="652"/>
         <source>Add Frame</source>
         <translation>프레임 추가</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="654"/>
+        <location filename="../app/ui/mainwindow2.ui" line="661"/>
         <source>Duplicate Frame</source>
         <translation>프레임 복제</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="663"/>
+        <location filename="../app/ui/mainwindow2.ui" line="670"/>
         <source>Remove Frame</source>
         <translation>프레임 제거</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="672"/>
+        <location filename="../app/ui/mainwindow2.ui" line="679"/>
         <source>Move</source>
         <translation>이동</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="681"/>
+        <location filename="../app/ui/mainwindow2.ui" line="688"/>
         <source>Select</source>
         <translation>선택</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="690"/>
+        <location filename="../app/ui/mainwindow2.ui" line="697"/>
         <source>Brush</source>
         <translation>붓</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="699"/>
+        <location filename="../app/ui/mainwindow2.ui" line="706"/>
         <source>Polyline</source>
         <translation>폴리선</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="708"/>
+        <location filename="../app/ui/mainwindow2.ui" line="715"/>
         <source>Smudge</source>
         <translation>문지르기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="717"/>
+        <location filename="../app/ui/mainwindow2.ui" line="724"/>
         <source>Pen</source>
         <translation>펜</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="726"/>
+        <location filename="../app/ui/mainwindow2.ui" line="733"/>
         <source>Hand</source>
         <translation>손 도구</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="735"/>
+        <location filename="../app/ui/mainwindow2.ui" line="742"/>
         <source>Pencil</source>
         <translation>연필</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="744"/>
+        <location filename="../app/ui/mainwindow2.ui" line="751"/>
         <source>Bucket</source>
         <translation>채우기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="753"/>
+        <location filename="../app/ui/mainwindow2.ui" line="760"/>
         <source>Eyedropper</source>
         <translation>스포이트</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="762"/>
+        <location filename="../app/ui/mainwindow2.ui" line="769"/>
         <source>Eraser</source>
         <translation>지우개</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="771"/>
+        <location filename="../app/ui/mainwindow2.ui" line="778"/>
         <source>New Bitmap Layer</source>
         <translation>새 비트맵 레이어</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="780"/>
+        <location filename="../app/ui/mainwindow2.ui" line="787"/>
         <source>New Vector Layer</source>
         <translation>새 벡터 레이어</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="789"/>
+        <location filename="../app/ui/mainwindow2.ui" line="796"/>
         <source>New Sound Layer</source>
         <translation>새 사운드 레이어</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="798"/>
+        <location filename="../app/ui/mainwindow2.ui" line="805"/>
         <source>New Camera Layer</source>
         <translation>새 카메라 레이어</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="807"/>
+        <location filename="../app/ui/mainwindow2.ui" line="814"/>
         <source>Delete Current Layer</source>
         <translation>현재 레이어 삭제</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="817"/>
+        <location filename="../app/ui/mainwindow2.ui" line="824"/>
         <source>About</source>
         <translation>정보</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="822"/>
-        <location filename="../app/ui/mainwindow2.ui" line="825"/>
+        <location filename="../app/ui/mainwindow2.ui" line="829"/>
+        <location filename="../app/ui/mainwindow2.ui" line="832"/>
         <source>Reset to default</source>
         <translation>기본값으로 초기화</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="835"/>
-        <location filename="../app/ui/mainwindow2.ui" line="838"/>
+        <location filename="../app/ui/mainwindow2.ui" line="842"/>
+        <location filename="../app/ui/mainwindow2.ui" line="845"/>
         <source>Next Keyframe</source>
         <translation>다음 키프레임</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="848"/>
-        <location filename="../app/ui/mainwindow2.ui" line="851"/>
+        <location filename="../app/ui/mainwindow2.ui" line="855"/>
+        <location filename="../app/ui/mainwindow2.ui" line="858"/>
         <source>Previous KeyFrame</source>
         <translation>이전 키 프레임</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="862"/>
+        <location filename="../app/ui/mainwindow2.ui" line="869"/>
         <source>Range</source>
         <translation>범위</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="867"/>
+        <location filename="../app/ui/mainwindow2.ui" line="874"/>
         <source>Flip X</source>
         <translation>X축으로 뒤집기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="872"/>
+        <location filename="../app/ui/mainwindow2.ui" line="879"/>
         <source>Flip Y</source>
         <translation>Y축으로 뒤집기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="877"/>
+        <location filename="../app/ui/mainwindow2.ui" line="884"/>
         <source>Move Frame Forward</source>
         <translation>프레임 앞으로 가져오기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="882"/>
+        <location filename="../app/ui/mainwindow2.ui" line="889"/>
         <source>Move Frame Backward</source>
         <translation>프레임 뒤로 보내기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="887"/>
+        <location filename="../app/ui/mainwindow2.ui" line="894"/>
         <source>Pencil2D Website</source>
         <translation>Pencil2D 웹사이트</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="892"/>
+        <location filename="../app/ui/mainwindow2.ui" line="899"/>
         <source>Report a Bug</source>
         <translation>오류 신고</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="897"/>
+        <location filename="../app/ui/mainwindow2.ui" line="904"/>
         <source>Quick Reference Guide</source>
         <translation>빠른 레퍼런스 가이드</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="900"/>
+        <location filename="../app/ui/mainwindow2.ui" line="907"/>
         <source>F1</source>
         <translation>F1</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="905"/>
+        <location filename="../app/ui/mainwindow2.ui" line="912"/>
         <source>Animated Image...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="910"/>
+        <location filename="../app/ui/mainwindow2.ui" line="917"/>
         <source>Animated GIF...</source>
         <translation>움직이는 GIF...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="915"/>
+        <location filename="../app/ui/mainwindow2.ui" line="922"/>
         <source>Check for Updates</source>
         <translation>업데이트 사항 확인</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="920"/>
+        <location filename="../app/ui/mainwindow2.ui" line="927"/>
         <source>Pencil2D Forum</source>
         <translation>Pencil2D 포럼</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="925"/>
+        <location filename="../app/ui/mainwindow2.ui" line="932"/>
         <source>Pencil2D Discord</source>
         <translation>Pencil2D 디스코드</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="930"/>
+        <location filename="../app/ui/mainwindow2.ui" line="937"/>
         <source>200%</source>
         <translation>200%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="935"/>
+        <location filename="../app/ui/mainwindow2.ui" line="942"/>
         <source>300%</source>
         <translation>300%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="940"/>
+        <location filename="../app/ui/mainwindow2.ui" line="947"/>
         <source>400%</source>
         <translation>400%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="945"/>
+        <location filename="../app/ui/mainwindow2.ui" line="952"/>
         <source>50%</source>
         <translation>50%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="950"/>
+        <location filename="../app/ui/mainwindow2.ui" line="957"/>
         <source>33%</source>
         <translation>33%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="955"/>
+        <location filename="../app/ui/mainwindow2.ui" line="962"/>
         <source>25%</source>
         <translation>25%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="960"/>
+        <location filename="../app/ui/mainwindow2.ui" line="967"/>
         <source>100%</source>
         <translation>100%</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="965"/>
+        <location filename="../app/ui/mainwindow2.ui" line="972"/>
         <source>Flip In-Between</source>
         <translation>중간에서 뒤집기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="970"/>
+        <location filename="../app/ui/mainwindow2.ui" line="977"/>
         <source>Flip Rolling</source>
         <translation>롤링 뒤집기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1013"/>
+        <location filename="../app/ui/mainwindow2.ui" line="982"/>
+        <source>Peg Bar Alignment</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/mainwindow2.ui" line="1020"/>
         <source>Current layer only</source>
         <translation>현재 레이어만</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1021"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1028"/>
         <source>Relative</source>
         <translation>상대적인</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1278"/>
-        <source>Remove Last Polyline Segment</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1281"/>
-        <source>Removes the lastest Polyline segment</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="975"/>
-        <source>Peg bar Alignment</source>
-        <translation>페그바 정렬</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/mainwindow2.ui" line="980"/>
+        <location filename="../app/ui/mainwindow2.ui" line="987"/>
         <source>Movie Audio...</source>
         <translation>영상 오디오...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="985"/>
+        <location filename="../app/ui/mainwindow2.ui" line="992"/>
         <source>Append to Palette...</source>
         <translation>팔레트에 추가하기...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="990"/>
+        <location filename="../app/ui/mainwindow2.ui" line="997"/>
         <source>Replace Palette...</source>
         <translation>팔레트 교체...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="995"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1002"/>
         <source>Current keyframe</source>
         <translation>현재 키프레임</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1000"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1007"/>
         <source>All keyframes on layer</source>
         <translation>레이어의 모든 키프레임</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1005"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1012"/>
         <source>Layers from Project file...</source>
         <translation>프로젝트 파일의 레이어...</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1029"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1036"/>
         <source>All layers</source>
         <translation>모든 레이어</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1034"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1041"/>
         <source>Reposition Selected Frames</source>
         <translation>선택된 프레임 위치 재조정</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1039"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1046"/>
         <source>Layer / Keyframe opacity</source>
         <translation>레이어 / 키프레임 불투명도</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1044"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1051"/>
         <source>Open Temporary Directory</source>
         <translation>임시 폴더 열기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1052"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1059"/>
         <source>Lock Windows</source>
         <translation>화면 잠금</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1062"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1069"/>
         <source>Reset Rotation</source>
         <translation>회전 초기화</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1067"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1079"/>
         <source>Add Exposure</source>
         <translation>노출 추가</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1072"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1084"/>
         <source>Subtract Exposure</source>
         <translation>노출 빼기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1077"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1089"/>
         <source>Reverse Frames Order</source>
         <translation>프레임 순서 뒤집기</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1082"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1094"/>
         <source>Remove Frames</source>
         <translation>프레임 제거</translation>
     </message>
     <message>
-        <location filename="../app/ui/mainwindow2.ui" line="1093"/>
+        <location filename="../app/ui/mainwindow2.ui" line="1105"/>
         <source>Status Bar</source>
         <translation>상태 표시줄</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="155"/>
+        <location filename="../app/src/mainwindow2.cpp" line="156"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>색상 팔레트:&lt;br&gt;사용&lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;커서로 켜기/끄기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="159"/>
+        <location filename="../app/src/mainwindow2.cpp" line="160"/>
         <source>Color inspector</source>
         <translation>색상 인스펙터</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="460"/>
+        <location filename="../app/src/mainwindow2.cpp" line="479"/>
         <source>Open Recent</source>
         <translation>최근 파일 열기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="501"/>
-        <location filename="../app/src/mainwindow2.cpp" line="525"/>
+        <location filename="../app/src/mainwindow2.cpp" line="520"/>
+        <location filename="../app/src/mainwindow2.cpp" line="544"/>
         <source>Dialog is already open!</source>
         <translation>대화가 이미 열려있습니다!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="547"/>
+        <location filename="../app/src/mainwindow2.cpp" line="594"/>
         <source>Please select at least 2 frames!</source>
         <translation>최소 2개 이상의 프레임을 선택하세요!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="675"/>
+        <location filename="../app/src/mainwindow2.cpp" line="722"/>
         <source>Opening document...</source>
         <translation>문서 여는 중...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="675"/>
-        <location filename="../app/src/mainwindow2.cpp" line="732"/>
+        <location filename="../app/src/mainwindow2.cpp" line="722"/>
+        <location filename="../app/src/mainwindow2.cpp" line="779"/>
         <source>Abort</source>
         <translation>중단하기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="720"/>
-        <location filename="../app/src/mainwindow2.cpp" line="821"/>
+        <location filename="../app/src/mainwindow2.cpp" line="767"/>
+        <location filename="../app/src/mainwindow2.cpp" line="868"/>
         <source>Warning</source>
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="721"/>
+        <location filename="../app/src/mainwindow2.cpp" line="768"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>이 프로그램은 현재 선택한 파일에 대해 쓰기 권한이 없습니다. 저장하기 전에 파일에 쓰기 권한이 있는지 확인해주세요. 다른 방법으로 다른 이름으로 저장하기를 사용하여 저장할 수 있습니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="732"/>
+        <location filename="../app/src/mainwindow2.cpp" line="779"/>
         <source>Saving document...</source>
         <translation>문서 저장중...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="822"/>
+        <location filename="../app/src/mainwindow2.cpp" line="869"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>애니메이션이 수정되었습니다.
 변경 사항을 저장할까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="845"/>
+        <location filename="../app/src/mainwindow2.cpp" line="892"/>
         <source>AutoSave Reminder</source>
         <translation>자동저장 알림</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="846"/>
+        <location filename="../app/src/mainwindow2.cpp" line="893"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>애니메이션이 저장되지 않았습니다.
 지금 저장할까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="847"/>
+        <location filename="../app/src/mainwindow2.cpp" line="894"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>다시 묻지 않기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="775"/>
+        <location filename="../app/src/mainwindow2.cpp" line="822"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.
 If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1371"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1410"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>팔레트를 열면 기존 팔레트가 대체됩니다.
 이 작업으로 붓의 색상(들)이 변경될 수 있습니다!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1373"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1412"/>
         <source>Open Palette</source>
         <translation>팔레트 열기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1526"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1565"/>
         <source>Stop</source>
         <translation>중지</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1575"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1627"/>
         <source>Restore Project?</source>
         <translation>프로젝트를 되돌릴까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1576"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1628"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D가 제대로 종료되지 않았습니다. 프로젝트를 되돌릴까요?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1581"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1632"/>
         <source>Restore project</source>
         <translation>프로젝트 되돌리기</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1615"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1665"/>
         <source>Recovery Failed.</source>
         <translation>복구 실패</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1616"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1666"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>죄송합니다! Pencil2D가 프로젝트를 되돌릴 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1626"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1676"/>
         <source>Recovery Succeeded!</source>
         <translation>복구 성공했습니다!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1627"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1677"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>데이터를 잃지 않으려면 지금 바로 저장하세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1685"/>
         <source>Main Toolbar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1647"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1699"/>
         <source>View Toolbar</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1659"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1711"/>
         <source>Overlay Toolbar</source>
         <translation type="unfinished"/>
     </message>
@@ -4960,42 +5033,42 @@ Color(s) in strokes will be altered by this action!</source>
         <translation>영상 가공 완료, 프레임 추가 중...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="312"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="301"/>
         <source>Failed import</source>
         <translation>가져오기 실패</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="313"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="302"/>
         <source>Was unable to find internal files, import unsuccessful.</source>
         <translation>내부 파일을 찾을 수 없어서, 가져오지 못했습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="328"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="317"/>
         <source>Sound only</source>
         <translation>사운드만</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="329"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="318"/>
         <source>You need to be on a sound layer to import the audio</source>
         <translation>오디오를 가져오기 위해서 사운드 레이어에 있어야 합니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="341"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="330"/>
         <source>Move to an empty frame</source>
         <translation>빈 프레임으로 옮기기</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="342"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="331"/>
         <source>A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again</source>
         <translation>프레임이 프레임:%1에 이미 존재합니다. 스크럽을 타임라인의 빈 곳으로 이동시키고 다시 시도해주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="384"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="373"/>
         <source>FFmpeg Not Found</source>
         <translation>FFmpeg이 없습니다</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="385"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="374"/>
         <source>Please place the ffmpeg binary in plugins directory and try again</source>
         <translation>ffmpeg 바이너리를 플러그인 폴더에 위치시키고 다시 시도하세요.</translation>
     </message>
@@ -5187,11 +5260,16 @@ Color(s) in strokes will be altered by this action!</source>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="450"/>
+        <source>Show On All Layers</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../app/ui/onionskin.ui" line="464"/>
         <source>Show Keyframes Only</source>
         <translation>키 프레임만 나타내기</translation>
     </message>
     <message>
-        <location filename="../app/ui/onionskin.ui" line="457"/>
+        <location filename="../app/ui/onionskin.ui" line="471"/>
         <source>Show During Playback</source>
         <translation>재생 중 보여주기</translation>
     </message>
@@ -5449,24 +5527,24 @@ or cancel</source>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="772"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="769"/>
         <source>Warning</source>
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="773"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="770"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>숨겨진 레이어를 수정하고 있습니다! 다른 레이어를 선택해주세요(또는 현재 레이어를 보이게 만드세요).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1463"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1464"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>선택한 것 삭제</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1489"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1501"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1490"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1502"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>이미지 없애기</translation>
@@ -6171,60 +6249,54 @@ or cancel</source>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="403"/>
-        <source>Remove Last Polyline Segment</source>
-        <comment>Shortcut</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/shortcutspage.cpp" line="404"/>
         <source>Set Zoom to 100%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 100%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="405"/>
+        <location filename="../app/src/shortcutspage.cpp" line="404"/>
         <source>Set Zoom to 200%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 200%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="406"/>
+        <location filename="../app/src/shortcutspage.cpp" line="405"/>
         <source>Set Zoom to 25%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 25%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="407"/>
+        <location filename="../app/src/shortcutspage.cpp" line="406"/>
         <source>Set Zoom to 300%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 300%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="408"/>
+        <location filename="../app/src/shortcutspage.cpp" line="407"/>
         <source>Set Zoom to 33%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 33%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="409"/>
+        <location filename="../app/src/shortcutspage.cpp" line="408"/>
         <source>Set Zoom to 400%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 400%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="410"/>
+        <location filename="../app/src/shortcutspage.cpp" line="409"/>
         <source>Set Zoom to 50%</source>
         <comment>Shortcut</comment>
         <translation>확대/축소를 50%로 설정</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="411"/>
+        <location filename="../app/src/shortcutspage.cpp" line="410"/>
         <source>Zoom In</source>
         <comment>Shortcut</comment>
         <translation>확대</translation>
     </message>
     <message>
-        <location filename="../app/src/shortcutspage.cpp" line="412"/>
+        <location filename="../app/src/shortcutspage.cpp" line="411"/>
         <source>Zoom Out</source>
         <comment>Shortcut</comment>
         <translation>축소</translation>
@@ -6542,12 +6614,12 @@ or cancel</source>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../app/src/timelinecells.cpp" line="1192"/>
+        <location filename="../app/src/timelinecells.cpp" line="1190"/>
         <source>Layer Properties</source>
         <translation>레이어 속성</translation>
     </message>
     <message>
-        <location filename="../app/src/timelinecells.cpp" line="1193"/>
+        <location filename="../app/src/timelinecells.cpp" line="1191"/>
         <source>Layer name:</source>
         <translation>레이어 이름:</translation>
     </message>
@@ -6672,6 +6744,15 @@ or cancel</source>
     </message>
 </context>
 <context>
+    <name>ToolBoxDockWidget</name>
+    <message>
+        <location filename="../app/src/toolbox.cpp" line="42"/>
+        <source>Tools</source>
+        <comment>Window title of Tools</comment>
+        <translation>도구</translation>
+    </message>
+</context>
+<context>
     <name>ToolBoxWidget</name>
     <message>
         <location filename="../app/ui/toolboxwidget.ui" line="20"/>
@@ -6680,117 +6761,117 @@ or cancel</source>
         <translation>도구</translation>
     </message>
     <message>
-        <location filename="../app/ui/toolboxwidget.ui" line="416"/>
+        <location filename="../app/ui/toolboxwidget.ui" line="415"/>
         <source>Smudge</source>
         <translation>문지르기</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="78"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="72"/>
         <source>Pencil Tool (%1): Sketch with pencil</source>
         <translation>연필 (%1) : 연필로 그리세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="80"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="74"/>
         <source>Select Tool (%1): Select an object</source>
         <translation>선택 (%1): 객체를 선택하세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="82"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="76"/>
         <source>Move Tool (%1): Move an object</source>
         <translation>이동 (%1): 객체를 움직이세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="84"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="78"/>
         <source>Hand Tool (%1): Move the canvas</source>
         <translation>손 (%1): 캔버스를 움직이세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="86"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="80"/>
         <source>Pen Tool (%1): Sketch with pen</source>
         <translation>펜 (%1): 펜으로 그리세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="88"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="82"/>
         <source>Eraser Tool (%1): Erase</source>
         <translation>지우개 (%1) : 지우세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="90"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="84"/>
         <source>Polyline Tool (%1): Create line/curves</source>
         <translation>폴리선 (%1): 선/곡선을 만드세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="92"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="86"/>
         <source>Paint Bucket Tool (%1): Fill selected area with a color</source>
         <translation>칠하기 (%1): 선택된 구역을 색으로 채우세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="94"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="88"/>
         <source>Brush Tool (%1): Paint smooth stroke with a brush</source>
         <translation>붓 (%1): 붓으로 부드러운 선을 그리세요.</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="96"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="90"/>
         <source>Eyedropper Tool (%1): Set color from the stage&lt;br&gt;[ALT] for instant access</source>
         <translation>스포이트 (%1): 색상을 가져와서 설정하기&lt;br&gt;바로 접근하려면 [ALT]를 누르세요</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="99"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="93"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
         <translation>문지르기 도구 (%1):&lt;br&gt;폴리선/곡선 편집&lt;br&gt;비트맵 픽셀 유동화&lt;br&gt;(%1)+[Alt]: 부드럽게</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="103"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="97"/>
         <source>Pencil Tool (%1)</source>
         <translation>연필 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="105"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="99"/>
         <source>Select Tool (%1)</source>
         <translation>선택 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="107"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="101"/>
         <source>Move Tool (%1)</source>
         <translation>이동 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="109"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="103"/>
         <source>Hand Tool (%1)</source>
         <translation>손 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="111"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="105"/>
         <source>Pen Tool (%1)</source>
         <translation>펜 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="113"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="107"/>
         <source>Eraser Tool (%1)</source>
         <translation>지우개 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="115"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="109"/>
         <source>Polyline Tool (%1)</source>
         <translation>폴리선 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="117"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="111"/>
         <source>Paint Bucket Tool (%1)</source>
         <translation>색 채우기 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="119"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="113"/>
         <source>Brush Tool (%1)</source>
         <translation>붓 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="121"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="115"/>
         <source>Eyedropper Tool (%1)</source>
         <translation>스포이트 (%1)</translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="123"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="117"/>
         <source>Smudge Tool (%1)</source>
         <translation>문지르기 (%1)</translation>
     </message>
@@ -6804,13 +6885,13 @@ or cancel</source>
         <translation>옵션</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="57"/>
-        <location filename="../app/src/tooloptionwidget.cpp" line="223"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="60"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="226"/>
         <source>Width</source>
         <translation>너비</translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="61"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="64"/>
         <source>Feather</source>
         <translation>흐리기</translation>
     </message>

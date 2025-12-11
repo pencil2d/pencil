@@ -35,6 +35,18 @@ create_package_linux() {
   ${BUILD_CMD} sed -i "/^Keywords\(\[[a-zA-Z_.@]\+\]\)\?=/d;/^Version=/cVersion=1.0" \
     Pencil2D/usr/share/applications/org.pencil2d.Pencil2D.desktop
   ${BUILD_CMD} install -Dm755 /usr/bin/ffmpeg Pencil2D/usr/plugins/ffmpeg
+  "bundle_package_linux_${INPUT_BUNDLER}" "$@"
+  local qtsuffix="-qt${INPUT_QT}"
+  local output_name="pencil2d${qtsuffix/-qt5/}-linux-$3"
+  mv "${GITHUB_WORKSPACE}"/Pencil2D*.AppImage "$output_name.AppImage"
+  mv "${GITHUB_WORKSPACE}"/Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" \
+    && sed -i '1,/^$/s/^\(Filename\|URL\): .*$/\1: '"$output_name.AppImage/" "$output_name.AppImage.zsync" \
+    || true
+  echo "output-basename=$output_name" >> "${GITHUB_OUTPUT}"
+  echo "::endgroup::"
+}
+
+bundle_package_linux_linuxdeployqt() {
   ${BUILD_CMD} install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
     "Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
   local gst_executables="-executable=Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
@@ -56,19 +68,19 @@ create_package_linux() {
     Pencil2D/usr/share/applications/org.pencil2d.Pencil2D.desktop \
     -executable=Pencil2D/usr/plugins/ffmpeg \
     ${gst_executables} \
-    -extra-plugins=platforms/libqwayland-egl.so,platforms/libqwayland-generic.so,\
-platforms/libqwayland-xcomposite-egl.so,platforms/libqwayland-xcomposite-glx.so,\
-wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-integration \
+    -extra-plugins=platforms/libqwayland-egl.so,platforms/libqwayland-generic.so,platforms/libqwayland-xcomposite-egl.so,platforms/libqwayland-xcomposite-glx.so,wayland-decoration-client,wayland-graphics-integration-client,wayland-shell-integration \
     ${update_info} \
     -appimage"
-  local qtsuffix="-qt${INPUT_QT}"
-  local output_name="pencil2d${qtsuffix/-qt5/}-linux-$3"
-  mv "${GITHUB_WORKSPACE}"/Pencil2D*.AppImage "$output_name.AppImage"
-  mv "${GITHUB_WORKSPACE}"/Pencil2D*.AppImage.zsync "$output_name.AppImage.zsync" \
-    && sed -i '1,/^$/s/^\(Filename\|URL\): .*$/\1: '"$output_name.AppImage/" "$output_name.AppImage.zsync" \
-    || true
-  echo "output-basename=$output_name" >> "${GITHUB_OUTPUT}"
-  echo "::endgroup::"
+}
+
+bundle_package_linux_linuxdeploy() {
+  ${BUILD_CMD} curl -fsSL https://github.com/linuxdeploy/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage -o /usr/local/bin/linuxdeploy
+  ${BUILD_CMD} curl -fsSL https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/continuous/linuxdeploy-plugin-qt-x86_64.AppImage -o /usr/local/bin/linuxdeploy-plugin-qt
+  ${BUILD_CMD} curl -fsSL https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage -o /usr/local/bin/linuxdeploy-plugin-appimage
+  ${BUILD_CMD} curl -fsSL https://raw.githubusercontent.com/linuxdeploy/linuxdeploy-plugin-gstreamer/refs/heads/master/linuxdeploy-plugin-gstreamer.sh -o /usr/local/bin/linuxdeploy-plugin-gstreamer
+  ${BUILD_CMD} chmod 755 /usr/local/bin/linuxdeploy /usr/local/bin/linuxdeploy-plugin-qt /usr/local/bin/linuxdeploy-plugin-appimage /usr/local/bin/linuxdeploy-plugin-gstreamer
+  export QMAKE=/usr/bin/qmake6
+  ${BUILD_CMD} linuxdeploy --appdir Pencil2D --plugin qt --plugin gstreamer --output appimage
 }
 
 create_package_macos() {
@@ -95,14 +107,17 @@ create_package_macos() {
   macdeployqt Pencil2D.app
   echo "::endgroup::"
   
+  echo "::group::Verify universal binary"
+  lipo -archs Pencil2D.app/Contents/MacOS/Pencil2D
+  echo "::endgroup::"
+
   popd >/dev/null
-  echo "Create ZIP"
   local qtsuffix="-qt${INPUT_QT}"
-  local arch=`uname -m`
+  local arch="${INPUT_ARCH}"
   local fileinfo="${qtsuffix/-qt5/}-mac-${arch}-$3"
-  mv Pencil2D "pencil2d${fileinfo}"
-  ditto -c -k --sequesterRsrc --keepParent "pencil2d${fileinfo}" "pencil2d${fileinfo}.zip"
-  rm -r "pencil2d${fileinfo}"
+  echo "Create ZIP: pencil2d${fileinfo}.zip"
+  ditto -c -k --sequesterRsrc "Pencil2D" "pencil2d${fileinfo}.zip"
+  rm -r "Pencil2D"
   echo "output-basename=pencil2d${fileinfo}" > "${GITHUB_OUTPUT}"
 }
 

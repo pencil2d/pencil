@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "undoredomanager.h"
 
 #include "canvascursorpainter.h"
+#include "radialoffsettool.h"
 
 #include <QList>
 #include <QPointF>
@@ -93,13 +94,9 @@ protected:
     QPointF getLastPixel() const;
     QPointF getLastPoint() const;
 
-    // dynamic cursor adjustment
-    virtual bool startAdjusting(Qt::KeyboardModifiers modifiers);
-    virtual void stopAdjusting();
-    virtual void adjustCursor(Qt::KeyboardModifiers modifiers);
+    QRectF cursorRect(StrokeSettings::Type settingType, const QPointF& point);
 
     static bool mQuickSizingEnabled;
-    static bool msIsAdjusting;
 
     QHash<Qt::KeyboardModifiers, int> mQuickSizingProperties;
     bool mFirstDraw = false;
@@ -122,10 +119,6 @@ protected:
     bool mCanvasCursorEnabled = false;
     QPointF mLastPixel { 0, 0 };
 
-    QPointF mAdjustPosition;
-
-    CanvasCursorPainter mCanvasCursorPainter;
-
     StrokeInterpolator mInterpolator;
 
     const UndoSaveState* mUndoSaveState = nullptr;
@@ -136,6 +129,13 @@ protected:
     static const qreal FEATHER_MAX;
     static const qreal WIDTH_MIN;
     static const qreal WIDTH_MAX;
+
+private:
+    CanvasCursorPainter mWidthCursorPainter;
+    CanvasCursorPainter mFeatherCursorPainter;
+
+    RadialOffsetTool mWidthSizingTool;
+    RadialOffsetTool mFeatherSizingTool;
 };
 
 #endif // STROKETOOL_H

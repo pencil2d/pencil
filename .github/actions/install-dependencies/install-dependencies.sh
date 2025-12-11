@@ -35,7 +35,7 @@ setup_linux() {
       libqt6svg6-dev qt6-wayland-dev libgl1-mesa-dev libarchive-tools ffmpeg \
       gstreamer1.0-plugins-base gstreamer1.0-plugins-good \
       gstreamer1.0-plugins-bad gstreamer1.0-plugins-ugly gstreamer1.0-alsa \
-      gstreamer1.0-pulseaudio git curl libfuse2
+      gstreamer1.0-pulseaudio git curl libfuse2 fuse qmake6 patchelf file
   fi
   echo "::endgroup::"
 }
@@ -45,8 +45,13 @@ setup_macos() {
   brew update
   echo "::endgroup::"
   echo "::group::Install Homebrew packages"
-  brew install libarchive qt@${INPUT_QT}
-  brew link qt@${INPUT_QT} --force
+  brew install libarchive
+  # For Qt 6, we use aqtinstall (jurplel/install-qt-action) instead of Homebrew
+  # because Homebrew's Qt 6 arm64 version is problematic
+  if [ "${INPUT_QT}" -eq 5 ]; then
+    brew install qt@${INPUT_QT}
+    brew link qt@${INPUT_QT} --force
+  fi
   echo "/usr/local/opt/libarchive/bin" >> "${GITHUB_PATH}"
   echo "::endgroup::"
 }
@@ -56,11 +61,11 @@ setup_windows() {
   curl -fsSLO https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
   mkdir okapi
   "${WINDIR}\\System32\\tar" xfC okapi-apps_win32-x86_64_1.45.0.zip okapi
-  dotnet tool install -g wix --version 5.0.0
-  wix extension add -g WixToolset.Util.wixext/5.0.0 WixToolset.BootstrapperApplications.wixext/5.0.0
-  nuget install -x -OutputDirectory util/installer WixToolset.DUtil -Version 5.0.0
-  nuget install -x -OutputDirectory util/installer WixToolset.BootstrapperApplicationApi -Version 5.0.0
-  nuget install -x -OutputDirectory util/installer WixToolset.WixStandardBootstrapperApplicationFunctionApi -Version 5.0.0
+  dotnet tool install -g wix --version 6.0.2
+  wix extension add -g WixToolset.Util.wixext/6.0.2 WixToolset.BootstrapperApplications.wixext/6.0.2
+  nuget install -x -OutputDirectory util/installer WixToolset.DUtil -Version 6.0.2
+  nuget install -x -OutputDirectory util/installer WixToolset.BootstrapperApplicationApi -Version 6.0.2
+  nuget install -x -OutputDirectory util/installer WixToolset.WixStandardBootstrapperApplicationFunctionApi -Version 6.0.2
 }
 
 "setup_$(echo "${RUNNER_OS}" | tr '[A-Z]' '[a-z]')"

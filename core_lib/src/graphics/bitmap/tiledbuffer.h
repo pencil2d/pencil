@@ -16,6 +16,7 @@ GNU General Public License for more details.
 #ifndef TILEDBUFFER_H
 #define TILEDBUFFER_H
 
+#include <QObject>
 #include <QPainter>
 #include <QHash>
 
