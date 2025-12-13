@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include <QScrollBar>
 #include <QBoxLayout>
 
+#include "basetool.h"
 #include "flowlayout.h"
 #include "spinslider.h"
 #include "editor.h"

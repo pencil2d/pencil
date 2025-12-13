@@ -27,6 +27,13 @@ GNU General Public License for more details.
 #define S__GIT_TIMESTAMP TOSTRING(GIT_TIMESTAMP)
 #define S__GIT_COMMIT_HASH TOSTRING(GIT_CURRENT_SHA1)
 
+enum ToolCategory: int
+{
+    BASETOOL        = 0,
+    STROKETOOL      = 1,
+    TRANSFORMTOOL   = 2
+};
+
 enum ToolType : int
 {
     INVALID_TOOL = -1,
@@ -43,30 +50,6 @@ enum ToolType : int
     EYEDROPPER,
     BRUSH,
     TOOL_TYPE_COUNT
-};
-
-enum ToolPropertyType
-{
-    WIDTH,
-    FEATHER,
-    PRESSURE,
-    INVISIBILITY,
-    PRESERVEALPHA,
-    BEZIER,
-    CLOSEDPATH,
-    USEFEATHER,
-    VECTORMERGE,
-    ANTI_ALIASING,
-    FILL_MODE,
-    STABILIZATION,
-    TOLERANCE,
-    FILLCONTOUR,
-    SHOWSELECTIONINFO,
-    USETOLERANCE,
-    BUCKETFILLEXPAND,
-    USEBUCKETFILLEXPAND,
-    BUCKETFILLLAYERREFERENCEMODE,
-    CAMERAPATH,
 };
 
 enum class DotColorType {
@@ -320,14 +303,6 @@ const static int MaxFramesBound = 9999;
 #define SETTING_SOUND_SCRUB_MSEC        "SoundScrubMsec"
 #define SETTING_NEW_UNDO_REDO_ON        "NewUndoRedoOn"
 #define SETTING_UNDO_REDO_MAX_STEPS     "UndoRedoMaxSteps"
-
-#define SETTING_BUCKET_TOLERANCE "Tolerance"
-#define SETTING_BUCKET_TOLERANCE_ON "BucketToleranceEnabled"
-#define SETTING_BUCKET_FILL_EXPAND "BucketFillExpand"
-#define SETTING_BUCKET_FILL_EXPAND_ON "BucketFillExpandEnabled"
-#define SETTING_BUCKET_FILL_REFERENCE_MODE "BucketFillReferenceMode"
-
-#define SETTING_FILL_MODE "FillMode"
 
 #define SETTING_LAYER_VISIBILITY "LayerVisibility"
 #define SETTING_LAYER_VISIBILITY_THRESHOLD "LayerVisibilityThreshold"

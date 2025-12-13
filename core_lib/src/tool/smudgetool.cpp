@@ -37,7 +37,7 @@ SmudgeTool::SmudgeTool(QObject* parent) : StrokeTool(parent)
     toolMode = 0; // tool mode
 }
 
-ToolType SmudgeTool::type()
+ToolType SmudgeTool::type() const
 {
     return SMUDGE;
 }
@@ -46,52 +46,27 @@ void SmudgeTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[FEATHER] = true;
-
+    QHash<int, PropertyInfo> info;
     QSettings settings(PENCIL2D, PENCIL2D);
-    properties.width = settings.value("smudgeWidth", 24.0).toDouble();
-    properties.feather = settings.value("smudgeFeather", 48.0).toDouble();
-    properties.pressure = false;
-    properties.stabilizerLevel = -1;
+    mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-    mQuickSizingProperties.insert(Qt::ControlModifier, FEATHER);
-}
+    info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
+    info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
 
-void SmudgeTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
+    mSettings->updateDefaults(info);
+    mSettings->load(typeName(), settings);
 
-    settings.setValue("smudgeWidth", properties.width);
-    settings.setValue("smudgeFeather", properties.feather);
-    settings.setValue("smudgePressure", properties.pressure);
+    if (mSettings->requireMigration(settings, 1)) {
+        mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("smudgeWidth", 24.0).toReal());
+        mSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("smudgeFeather", 48.0).toReal());
 
-    settings.sync();
-}
+        settings.remove("smudgeWidth");
+        settings.remove("smudgeFeather");
+    }
 
-void SmudgeTool::resetToDefault()
-{
-    setWidth(24.0);
-    setFeather(48.0);
-}
-
-void SmudgeTool::setWidth(const qreal width)
-{
-    // Set current property
-    properties.width = width;
-}
-
-void SmudgeTool::setFeather(const qreal feather)
-{
-    // Set current property
-    properties.feather = feather;
-}
-
-void SmudgeTool::setPressure(const bool pressure)
-{
-    // Set current property
-    properties.pressure = pressure;
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
+    mQuickSizingProperties.insert(Qt::ControlModifier, StrokeSettings::FEATHER_VALUE);
 }
 
 bool SmudgeTool::emptyFrameActionEnabled()
@@ -313,9 +288,9 @@ void SmudgeTool::drawStroke()
     }
 
     qreal opacity = 1.0;
-    mCurrentWidth = properties.width;
-    qreal brushWidth = mCurrentWidth + 0.0 * properties.feather;
-    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * properties.feather) / brushWidth;
+    mCurrentWidth = mSettings->width();
+    qreal brushWidth = mCurrentWidth + 0.0 * mSettings->feather();
+    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * mSettings->feather()) / brushWidth;
     //opacity = currentPressure; // todo: Probably not interesting?!
     //brushWidth = brushWidth * opacity;
 
