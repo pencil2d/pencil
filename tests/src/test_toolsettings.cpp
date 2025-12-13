@@ -23,10 +23,16 @@ GNU General Public License for more details.
 class MockSettings : public ToolSettings {
 public:
     enum PropertyKey {
-        WIDTH = 0,
+        START = 0,
+        WIDTH = START,
         ENABLED = 1,
-        SCALE = 2
+        SCALE = 2,
+        END = 3,
     };
+
+    MockSettings() {
+        mTypeRanges = { { START, END } };
+    }
 
 protected:
     QString identifier(int key) const override {
@@ -107,5 +113,10 @@ TEST_CASE("ToolSettings behavior", "[ToolSettings]") {
         newToolSettings.setVersion(2);  // Simulate version bump
 
         REQUIRE(newToolSettings.requireMigration(settings, 2) == true);
+    }
+
+    SECTION("ToolSetting can only use settings from valid range") {
+        toolSettings.setDefaults(defaultProps);
+        REQUIRE(toolSettings.isValidType(StrokeSettings::FEATHER_ENABLED) == false);
     }
 }

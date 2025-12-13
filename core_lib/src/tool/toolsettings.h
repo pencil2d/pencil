@@ -20,6 +20,9 @@ GNU General Public License for more details.
 
 #include <QHash>
 #include <QSettings>
+#include <QDebug>
+#include <QVector>
+#include <QPair>
 
 #include "pencildef.h"
 
@@ -268,6 +271,8 @@ struct ToolSettings
     */
     void setBaseValue(int rawType, const PropertyInfo& info)
     {
+        if (!isValidType(rawType)) { return; }
+
         switch (info.type())
         {
         case PropertyInfo::INTEGER:
@@ -308,6 +313,21 @@ struct ToolSettings
         return settings.value(mVersionKey).isNull() || (version > settings.value(mVersionKey).toInt());
     }
 
+    bool isValidType(int rawType) const {
+        QString rangeCheck;
+        for (const auto& r : mTypeRanges) {
+
+            #ifdef QT_DEBUG
+                rangeCheck += QString("[%1...%2]").arg(r.first).arg(r.second);
+            #endif
+            if (rawType >= r.first && rawType < r.second) {
+                return true;
+            }
+        }
+        qWarning() << __FUNCTION__ << ":" << QString("Expected a valid type in range of %1 but instead got: %2. Make sure the input value matches one of the ranges of the tool setting").arg(rangeCheck).arg(rawType);
+        return false;
+    }
+
 protected:
 
     virtual QString identifier(int) const {
@@ -316,6 +336,10 @@ protected:
 
     QString mIdentifier = "unidentified";
     QHash<int, PropertyInfo> mProps;
+
+    // The list of ranges that are valid for the given tool. ToolSettings can inherit its parents cases as well
+    // eg. PolyLineTool uses both StrokeSettings range as well as it's own
+    QVector<QPair<int, int>> mTypeRanges;
 
 private:
 
@@ -365,6 +389,10 @@ struct StrokeSettings: public ToolSettings
 
         END                 = 199,
     };
+
+    StrokeSettings() {
+        mTypeRanges = { { START, END } };
+    }
 
     QString identifier(int typeRaw) const override {
         auto type = static_cast<StrokeSettings::Type>(typeRaw);
@@ -426,6 +454,11 @@ struct PolylineSettings: public StrokeSettings
         END                 = 299,
     };
 
+    PolylineSettings() {
+        mTypeRanges.append(StrokeSettings::mTypeRanges);
+        mTypeRanges = { { START, END } };
+    }
+
     QString identifier(int typeRaw) const override {
         auto type = static_cast<PolylineSettings::Type>(typeRaw);
         QString propertyID = ToolSettings::identifier(typeRaw);
@@ -458,13 +491,17 @@ struct BucketSettings: public ToolSettings
 
         COLORTOLERANCE_VALUE            = 301,
         FILLEXPAND_VALUE                = 302,
-        FILLLAYERREFERENCEMODE_VALUE    = 304,
-        FILLMODE_VALUE                  = 305,
-        COLORTOLERANCE_ENABLED          = 307,
-        FILLEXPAND_ENABLED              = 308,
+        FILLLAYERREFERENCEMODE_VALUE    = 303,
+        FILLMODE_VALUE                  = 304,
+        COLORTOLERANCE_ENABLED          = 305,
+        FILLEXPAND_ENABLED              = 306,
 
         END                             = 399,
     };
+
+    BucketSettings() {
+        mTypeRanges = { { START, END } };
+    }
 
     QString identifier(int typeRaw) const override {
         auto type = static_cast<BucketSettings::Type>(typeRaw);
@@ -519,6 +556,10 @@ struct CameraSettings: public ToolSettings
         END                 = 499,
     };
 
+    CameraSettings() {
+        mTypeRanges = { { START, END } };
+    }
+
     QString identifier(int typeRaw) const override {
         auto type = static_cast<CameraSettings::Type>(typeRaw);
         QString propertyID = ToolSettings::identifier(typeRaw);
@@ -550,6 +591,10 @@ struct TransformSettings: public ToolSettings
         ANTI_ALIASING_ENABLED        = 501,
         END                          = 599,
     };
+
+    TransformSettings() {
+        mTypeRanges = { { START, END } };
+    }
 
     QString identifier(int typeRaw) const override {
         auto type = static_cast<TransformSettings::Type>(typeRaw);
