@@ -140,6 +140,8 @@ MainWindow2::MainWindow2(QWidget* parent) :
     ui->background->init(mEditor->preference());
 
     setWindowTitle(PENCIL_WINDOW_TITLE);
+
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 MainWindow2::~MainWindow2()
