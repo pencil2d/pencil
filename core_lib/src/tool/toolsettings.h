@@ -237,8 +237,8 @@ struct ToolSettings
 
     /* Store the latest changes in settings */
     void save(QSettings& settings) {
-        settings.beginGroup(mIdentifier);
         settings.setValue(mVersionKey, mVersion);
+        settings.beginGroup(mIdentifier);
 
         for (auto it = mProps.begin(); it != mProps.end(); ++it) {
 
@@ -305,12 +305,18 @@ struct ToolSettings
 
     /* Checks whether keys referred to in settings needs to be migrated from the input version */
     bool requireMigration(QSettings& settings, int version) {
-        settings.beginGroup(mIdentifier);
 
-        if (settings.childKeys().isEmpty()) {
+        if (hasLegacySettings(settings) && !settings.contains(mVersionKey)) {
+            // Let's assume we're dealing with an existing user
             return true;
         }
-        return settings.value(mVersionKey).isNull() || (version > settings.value(mVersionKey).toInt());
+
+        return settings.contains(mVersionKey) && version < mVersion && version > settings.value(mVersionKey).toInt();
+    }
+
+    bool hasLegacySettings(QSettings& settings) const {
+        // Crude check for existing settings...
+        return settings.contains("brushWidth") || settings.contains("pencilWidth") || settings.contains("penWidth");
     }
 
     bool isValidType(int rawType) const {
@@ -369,7 +375,7 @@ private:
     }
 
     int mVersion = 1;
-    QString mVersionKey = "Version";
+    QString mVersionKey = "ToolSettings_Version";
 };
 
 struct StrokeSettings: public ToolSettings

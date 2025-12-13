@@ -102,17 +102,46 @@ TEST_CASE("ToolSettings behavior", "[ToolSettings]") {
         REQUIRE(reloaded.getInfo(MockSettings::WIDTH).intValue() == 7);
     }
 
-    SECTION("requireMigration returns true when version is bumped") {
+    SECTION("Test migration from old settings") {
+        toolSettings.setDefaults(defaultProps);
+
+        GIVEN("The application is launched with old tool settings") {
+            settings.setValue("brushWidth", 50);
+            settings.sync();
+
+            REQUIRE(toolSettings.requireMigration(settings, 1) == true);
+
+            WHEN("Migrating from the old settings") {
+                toolSettings.setBaseValue(MockSettings::WIDTH, settings.value("brushWidth", 12).toInt());
+                settings.remove("brushWidth");
+
+                THEN("Migration is no longer required") {
+                    REQUIRE(toolSettings.requireMigration(settings, 1) == false);
+                }
+            }
+        }
+    }
+
+    SECTION("Ensure migration of modified settings when applicable") {
         toolSettings.setDefaults(defaultProps);
         toolSettings.setVersion(1);  // Set current version
         toolSettings.load("mocktool", settings);
         toolSettings.save(settings);
 
-        MockSettings newToolSettings;
-        newToolSettings.setDefaults(defaultProps);
-        newToolSettings.setVersion(2);  // Simulate version bump
+        REQUIRE(toolSettings.requireMigration(settings, 1) == false);
 
-        REQUIRE(newToolSettings.requireMigration(settings, 2) == true);
+        GIVEN("We update the settings version") {
+            toolSettings.setVersion(3);
+
+            WHEN("Old settings require migration") {
+                REQUIRE(toolSettings.requireMigration(settings, 2) == true);
+
+                THEN("After settings have been migrated and stored, migration of that particular version is no longer required") {
+                    toolSettings.save(settings);
+                    REQUIRE(toolSettings.requireMigration(settings, 2) == false);
+                }
+            }
+        }
     }
 
     SECTION("ToolSetting can only use settings from valid range") {
