@@ -59,6 +59,8 @@ public:
     bool  showSelectionInfo = true;
     bool  cameraShowPath = true;
     DotColorType cameraPathDotColorType = DotColorType::RED;
+    bool snapAngleState = false;
+    double snapAngleDegrees = 45;
 };
 
 const int ON = 1;
