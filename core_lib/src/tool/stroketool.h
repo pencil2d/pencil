@@ -105,7 +105,7 @@ protected:
 
     StrokeInterpolator mInterpolator;
 
-    const UndoSaveState* mUndoSaveState = nullptr;
+    UndoSaveState* mUndoSaveState = nullptr;
 
 private:
     CanvasCursorPainter mWidthCursorPainter;
@@ -113,6 +113,7 @@ private:
 
     RadialOffsetTool mWidthSizingTool;
     RadialOffsetTool mFeatherSizingTool;
+    SAVESTATE_ID mUndoSaveStateId = 0;
 };
 
 #endif // STROKETOOL_H
