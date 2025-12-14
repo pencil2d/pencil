@@ -10,8 +10,6 @@
 #include <QLabel>
 #include <QLayout>
 
-#include <QScreen>
-
 #include <QStackedLayout>
 
 #include "lineeditwidget.h"
@@ -166,11 +164,12 @@ void InlineSlider::drawSlider()
         }
     }
 
-    drawCaret(painter, borderRect, option.palette.text().color());
+    drawCaret(painter, borderRect, option.palette.dark().color());
     drawLabels(painter, borderRect, option.palette.text().color());
     painter.restore();
 
     if (mValueLineEditWidget->isReadOnly()) {
+        painter.setPen(option.palette.dark().color());
         painter.drawRoundedRect(borderRect, mAbsoluteCornerRadiusX, mAbsoluteCornerRadiusY);
     }
 
