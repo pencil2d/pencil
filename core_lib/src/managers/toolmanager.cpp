@@ -154,7 +154,7 @@ void ToolManager::resetAllTools()
     qDebug("tools restored to default settings");
 }
 
-void ToolManager::setWidth(float newWidth)
+void ToolManager::setWidth(qreal newWidth)
 {
     if (std::isnan(newWidth) || newWidth < 0)
     {
@@ -165,7 +165,7 @@ void ToolManager::setWidth(float newWidth)
     emit toolPropertyChanged(currentTool()->type(), WIDTH);
 }
 
-void ToolManager::setFeather(float newFeather)
+void ToolManager::setFeather(qreal newFeather)
 {
     if (std::isnan(newFeather) || newFeather < 0)
     {

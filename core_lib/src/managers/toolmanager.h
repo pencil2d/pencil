@@ -60,8 +60,8 @@ signals:
 public slots:
     void resetAllTools();
 
-    void setWidth(float);
-    void setFeather(float);
+    void setWidth(qreal);
+    void setFeather(qreal);
 
     void setUseFeather(bool);
     void setInvisibility(bool);

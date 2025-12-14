@@ -22,7 +22,7 @@ GNU General Public License for more details.
 
 #include "cameraoptionswidget.h"
 #include "bucketoptionswidget.h"
-#include "spinslider.h"
+#include "inlineslider.h"
 #include "editor.h"
 #include "util.h"
 #include "layer.h"
@@ -57,13 +57,8 @@ void ToolOptionWidget::initUI()
 
     QSettings settings(PENCIL2D, PENCIL2D);
 
-    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, SpinSlider::INTEGER, StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX);
-    ui->sizeSlider->setValue(settings.value("brushWidth", "3").toDouble());
-    ui->brushSpinBox->setValue(settings.value("brushWidth", "3").toDouble());
-
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, SpinSlider::INTEGER, StrokeTool::FEATHER_MIN, StrokeTool::FEATHER_MAX);
-    ui->featherSlider->setValue(settings.value("brushFeather", "5").toDouble());
-    ui->featherSpinBox->setValue(settings.value("brushFeather", "5").toDouble());
+    ui->sizeSlider->init(tr("Width"), StrokeTool::WIDTH_MIN, StrokeTool::WIDTH_MAX, SliderStartPosType::LEFT);
+    ui->featherSlider->init(tr("Feather"), StrokeTool::FEATHER_MIN, StrokeTool::FEATHER_MAX, SliderStartPosType::LEFT);
 }
 
 void ToolOptionWidget::updateUI()
@@ -108,14 +103,8 @@ void ToolOptionWidget::makeConnectionToEditor(Editor* editor)
     connect(ui->makeInvisibleBox, &QCheckBox::clicked, toolManager, &ToolManager::setInvisibility);
     connect(ui->preserveAlphaBox, &QCheckBox::clicked, toolManager, &ToolManager::setPreserveAlpha);
 
-    connect(ui->sizeSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setWidth);
-    connect(ui->featherSlider, &SpinSlider::valueChanged, toolManager, &ToolManager::setFeather);
-
-    auto spinboxValueChanged = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
-    connect(ui->brushSpinBox, spinboxValueChanged, toolManager, &ToolManager::setWidth);
-    clearFocusOnFinished(ui->brushSpinBox);
-    connect(ui->featherSpinBox, spinboxValueChanged, toolManager, &ToolManager::setFeather);
-    clearFocusOnFinished(ui->featherSpinBox);
+    connect(ui->sizeSlider, &InlineSlider::valueChanged, toolManager, &ToolManager::setWidth);
+    connect(ui->featherSlider, &InlineSlider::valueChanged, toolManager, &ToolManager::setFeather);
 
     connect(ui->useFeatherBox, &QCheckBox::clicked, toolManager, &ToolManager::setUseFeather);
 
@@ -187,9 +176,7 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
     }
 
     ui->sizeSlider->setVisible(tool->isPropertyEnabled(WIDTH));
-    ui->brushSpinBox->setVisible(tool->isPropertyEnabled(WIDTH));
     ui->featherSlider->setVisible(tool->isPropertyEnabled(FEATHER));
-    ui->featherSpinBox->setVisible(tool->isPropertyEnabled(FEATHER));
     ui->useFeatherBox->setVisible(tool->isPropertyEnabled(USEFEATHER));
     ui->useBezierBox->setVisible(tool->isPropertyEnabled(BEZIER));
     ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(CLOSEDPATH));
@@ -211,19 +198,15 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
         {
         case SMUDGE:
             ui->sizeSlider->setVisible(false);
-            ui->brushSpinBox->setVisible(false);
             ui->usePressureBox->setVisible(false);
             ui->featherSlider->setVisible(false);
-            ui->featherSpinBox->setVisible(false);
             ui->useFeatherBox->setVisible(false);
             break;
         case PENCIL:
             ui->sizeSlider->setVisible(false);
-            ui->brushSpinBox->setVisible(false);
             ui->usePressureBox->setVisible(false);
             break;
         default:
-            ui->sizeSlider->setLabel(tr("Width"));
             ui->useAABox->setVisible(false);
             break;
         }
@@ -236,16 +219,13 @@ void ToolOptionWidget::setVisibility(BaseTool* tool)
             ui->fillContourBox->setVisible(false);
             break;
         case BUCKET:
-            ui->brushSpinBox->setVisible(false);
             ui->sizeSlider->setVisible(false);
             break;
         case SELECT:
         case MOVE:
             ui->sizeSlider->setVisible(false);
-            ui->brushSpinBox->setVisible(false);
             ui->usePressureBox->setVisible(false);
             ui->featherSlider->setVisible(false);
-            ui->featherSpinBox->setVisible(false);
             ui->useFeatherBox->setVisible(false);
             break;
         default:
@@ -265,10 +245,6 @@ void ToolOptionWidget::setPenWidth(qreal width)
     QSignalBlocker b(ui->sizeSlider);
     ui->sizeSlider->setEnabled(true);
     ui->sizeSlider->setValue(width);
-
-    QSignalBlocker b2(ui->brushSpinBox);
-    ui->brushSpinBox->setEnabled(true);
-    ui->brushSpinBox->setValue(width);
 }
 
 void ToolOptionWidget::setPenFeather(qreal featherValue)
@@ -276,10 +252,6 @@ void ToolOptionWidget::setPenFeather(qreal featherValue)
     QSignalBlocker b(ui->featherSlider);
     ui->featherSlider->setEnabled(true);
     ui->featherSlider->setValue(featherValue);
-
-    QSignalBlocker b2(ui->featherSpinBox);
-    ui->featherSpinBox->setEnabled(true);
-    ui->featherSpinBox->setValue(featherValue);
 }
 
 void ToolOptionWidget::setUseFeather(bool useFeather)
@@ -373,9 +345,7 @@ void ToolOptionWidget::setShowSelectionInfo(bool showSelectionInfo)
 void ToolOptionWidget::disableAllOptions()
 {
     ui->sizeSlider->hide();
-    ui->brushSpinBox->hide();
     ui->featherSlider->hide();
-    ui->featherSpinBox->hide();
     ui->useFeatherBox->hide();
     ui->useBezierBox->hide();
     ui->useClosedPathBox->hide();

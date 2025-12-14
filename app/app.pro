@@ -118,6 +118,8 @@ HEADERS += \
     src/exportimagedialog.h \
     src/importimageseqdialog.h \
     src/spinslider.h \
+    src/inlineslider.h \
+    src/lineeditwidget.h \
     src/doubleprogressdialog.h \
     src/colorslider.h \
     src/checkupdatesdialog.h \
@@ -172,6 +174,8 @@ SOURCES += \
     src/exportimagedialog.cpp \
     src/importimageseqdialog.cpp \
     src/spinslider.cpp \
+    src/inlineslider.cpp \
+    src/lineeditwidget.cpp \
     src/doubleprogressdialog.cpp \
     src/colorslider.cpp \
     src/checkupdatesdialog.cpp \
