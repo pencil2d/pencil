@@ -259,7 +259,6 @@ void InlineSlider::setSliderValueFromPos(qreal pos)
     if (mSliderOrigin == SliderStartPosType::MIDDLE) {
         if (qAbs(pos - borderRect.center().x()) <= 0.5) {
             mSliderValue = 0;
-            return;
         }
     }
 
