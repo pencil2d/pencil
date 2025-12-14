@@ -158,10 +158,10 @@ void ToolManager::setWidth(qreal newWidth)
 {
     if (std::isnan(newWidth) || newWidth < 0)
     {
-        newWidth = 1.f;
+        newWidth = 1.;
     }
 
-    currentTool()->setWidth(static_cast<qreal>(newWidth));
+    currentTool()->setWidth(newWidth);
     emit toolPropertyChanged(currentTool()->type(), WIDTH);
 }
 
@@ -169,10 +169,10 @@ void ToolManager::setFeather(qreal newFeather)
 {
     if (std::isnan(newFeather) || newFeather < 0)
     {
-        newFeather = 0.f;
+        newFeather = 0.;
     }
 
-    currentTool()->setFeather(static_cast<qreal>(newFeather));
+    currentTool()->setFeather(newFeather);
     emit toolPropertyChanged(currentTool()->type(), FEATHER);
 }
 
