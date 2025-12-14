@@ -83,10 +83,17 @@ void InlineSlider::updateLineEditStylesheet()
 
 bool InlineSlider::event(QEvent *event)
 {
-    if (event->type() == QEvent::DevicePixelRatioChange) {
-        onScreenChanged(this->devicePixelRatio());
-        return true;
-    }
+
+    #if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+        if (event->type() == QEvent::DevicePixelRatioChange) {
+    #else
+        // Prior to the above version there was no way to easily check when the screen changed...
+        // As such we rely on this. The alternative would require more invasive changes which I think is out of scope for this PR.
+        if (event->type() == QEvent::ScreenChangeInternal) {
+    #endif
+            onScreenChanged(this->devicePixelRatio());
+            return true;
+        }
     return QWidget::event(event);
 }
 
