@@ -871,6 +871,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
         // Refresh canvas
         drawCanvas(frameNumber, mCanvas.rect());
+        update();
         break;
     default:
         break;
