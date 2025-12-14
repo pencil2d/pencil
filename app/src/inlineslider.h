@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QWidget>
 #include <QLabel>
 #include <QPainterPath>
+#include <QEvent>
 
 class LineEditNumberWidget;
 
