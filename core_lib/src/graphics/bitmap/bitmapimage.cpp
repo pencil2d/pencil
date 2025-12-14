@@ -21,6 +21,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QFile>
 #include <QFileInfo>
+#include <QImageWriter>
 #include <QPainterPath>
 #include "util.h"
 
@@ -706,10 +707,20 @@ void BitmapImage::drawPath(QPainterPath path, QPen pen, QBrush brush,
 
 Status BitmapImage::writeFile(const QString& filename)
 {
+    DebugDetails dd;
+    dd << "BitmapImage::writeFile";
+    dd << QString("&nbsp;&nbsp;filename = ").append(filename);
+
+    QImageWriter writer(filename);
     if (!mImage.isNull())
     {
-        bool b = mImage.save(filename);
-        return (b) ? Status::OK : Status::FAIL;
+        bool b = writer.write(mImage);
+        if (b) {
+            return Status::OK;
+        } else {
+            dd << QString("&nbsp;&nbsp;Error: %1 (Code %2)").arg(writer.errorString()).arg(static_cast<int>(writer.error()));
+            return Status(Status::FAIL, dd);
+        }
     }
 
     if (bounds().isEmpty())
@@ -719,6 +730,7 @@ Status BitmapImage::writeFile(const QString& filename)
         {
             bool b = f.remove();
             if (!b) {
+                dd << "&nbsp;&nbsp;Error: Image is empty but unable to remove file.";
                 return Status::FAIL;
             }
         }
