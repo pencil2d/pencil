@@ -32,7 +32,11 @@ void TransformTool::createSettings(ToolSettings* settings)
     if (settings == nullptr) {
         mSettings = new TransformSettings();
     } else {
-        mSettings = static_cast<TransformSettings*>(settings);
+        mSettings = dynamic_cast<TransformSettings*>(settings);
+
+        if (!mSettings) {
+            Q_ASSERT("Expected settings to be of type TransformSettings");
+        }
     }
     BaseTool::createSettings(mSettings);
 }

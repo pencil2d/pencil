@@ -63,7 +63,11 @@ void StrokeTool::createSettings(ToolSettings* settings)
     if (settings == nullptr) {
         mSettings = new StrokeSettings();
     } else {
-        mSettings = static_cast<StrokeSettings*>(settings);
+        mSettings = dynamic_cast<StrokeSettings*>(settings);
+
+        if (!mSettings) {
+            Q_ASSERT("Expected settings to be of type StrokeSettings");
+        }
     }
     BaseTool::createSettings(mSettings);
 }
