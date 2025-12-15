@@ -577,6 +577,7 @@ struct CameraSettings: public ToolSettings
             break;
         case PATH_DOTCOLOR_TYPE:
             propertyID = "PathDotColorType";
+            break;
         case END:
             break;
         }
