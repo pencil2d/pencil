@@ -43,6 +43,8 @@ public:
     void setValue(qreal value);
     qreal value() const;
 
+    void showDecimals(bool show);
+
     void deselect();
 
 private:
@@ -51,6 +53,8 @@ private:
     void reloadStylesheet();
 
     static constexpr const char* mValueKey = "value";
+
+    bool mShowDecimals = true;
 
 };
 

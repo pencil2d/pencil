@@ -19,6 +19,7 @@ InlineSlider::InlineSlider(QWidget* parent) : QWidget(parent)
     setCornerRadius(mCornerRadiusPercentage);
     setContentsMargins(0,0,0,0);
     setMinimumSize(50,20);
+    setMaximumHeight(30);
 
     setLayout(new QStackedLayout);
 
@@ -257,6 +258,11 @@ void InlineSlider::setValue(qreal newValue)
     mSliderValue = qBound(mMin, newValue, mMax);
     mValueLineEditWidget->setValue(mSliderValue);
     update();
+}
+
+void InlineSlider::showDecimals(bool show)
+{
+    mValueLineEditWidget->showDecimals(show);
 }
 
 void InlineSlider::setSliderValueFromPos(qreal pos)

@@ -106,7 +106,23 @@ void LineEditNumberWidget::reloadStylesheet()
 void LineEditNumberWidget::setValue(qreal value)
 {
     setProperty(mValueKey, value);
-    setText(QString::number(value, 'f', 2));
+
+    if (mShowDecimals) {
+        setText(QString::number(value, 'f', 2));
+    } else {
+        setText(QString::number(static_cast<int>(value)));
+    }
+}
+
+void LineEditNumberWidget::showDecimals(bool show)
+{
+    mShowDecimals = show;
+
+    if (show) {
+        setValue(value());
+    } else {
+        setValue(static_cast<int>(value()));
+    }
 }
 
 qreal LineEditNumberWidget::value() const

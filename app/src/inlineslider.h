@@ -45,6 +45,7 @@ public:
     void setMax(qreal max) { mMax = max; }
 
     void setValue(qreal value);
+    void showDecimals(bool show);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
