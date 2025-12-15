@@ -109,11 +109,13 @@ protected:
 
     Editor* editor() { return mEditor; }
     QHash<int, QSet<Layer::LAYER_TYPE>> mPropertyUsed;
-    ToolSettings* mSettings = nullptr;
 
     Editor* mEditor = nullptr;
     ScribbleArea* mScribbleArea = nullptr;
     QList<QMetaObject::Connection> mActiveConnections;
+
+private:
+    ToolSettings* mSettings = nullptr;
 };
 
 #endif // BASETOOL_H

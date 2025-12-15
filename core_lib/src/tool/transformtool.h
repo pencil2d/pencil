@@ -35,7 +35,7 @@ signals:
     void antiAliasingChanged(bool enabled);
 
 protected:
-    TransformSettings* mTransformSettings = nullptr;
+    TransformSettings* mSettings = nullptr;
 };
 
 #endif // TRANSFORMTOOL_H

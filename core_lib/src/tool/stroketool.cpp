@@ -56,12 +56,6 @@ StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
 
 StrokeTool::~StrokeTool()
 {
-    if (mSettings) {
-        // Technically this is probably not neccesary since a tool exists for the entire
-        // lifetime of the program.
-        delete(mSettings);
-        mSettings = nullptr;
-    }
 }
 
 void StrokeTool::createSettings(ToolSettings* settings)

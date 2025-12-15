@@ -30,11 +30,11 @@ TransformTool::~TransformTool()
 void TransformTool::createSettings(ToolSettings* settings)
 {
     if (settings == nullptr) {
-        mTransformSettings = new TransformSettings();
+        mSettings = new TransformSettings();
     } else {
-        mTransformSettings = static_cast<TransformSettings*>(settings);
+        mSettings = static_cast<TransformSettings*>(settings);
     }
-    BaseTool::createSettings(mTransformSettings);
+    BaseTool::createSettings(mSettings);
 }
 
 void TransformTool::setShowSelectionInfo(bool enabled)
