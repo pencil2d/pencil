@@ -51,6 +51,15 @@ BaseTool::BaseTool(QObject* parent) : QObject(parent)
 {
 }
 
+BaseTool::~BaseTool() {
+    if (mSettings) {
+        // Technically this is probably not neccesary since a tool exists for the entire
+        // lifetime of the program.
+        delete(mSettings);
+        mSettings = nullptr;
+    }
+}
+
 void BaseTool::initialize(Editor* editor)
 {
     Q_ASSERT(editor);

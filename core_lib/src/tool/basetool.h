@@ -48,6 +48,7 @@ class BaseTool : public QObject
     Q_OBJECT
 protected:
     explicit BaseTool(QObject* parent);
+    virtual ~BaseTool();
 public:
     static QString TypeName(ToolType);
     QString typeName() { return TypeName(type()); }
