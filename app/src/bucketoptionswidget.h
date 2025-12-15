@@ -38,6 +38,7 @@ public:
     explicit BucketOptionsWidget(Editor* editor, QWidget* parent);
     ~BucketOptionsWidget();
 
+    void initUI() override;
     void updateUI() override;
 
     void setStrokeWidth(qreal value);

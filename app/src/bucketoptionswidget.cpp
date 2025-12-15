@@ -37,6 +37,16 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
 {
     ui->setupUi(this);
 
+    initUI();
+}
+
+BucketOptionsWidget::~BucketOptionsWidget()
+{
+    delete ui;
+}
+
+void BucketOptionsWidget::initUI()
+{
     mBucketTool = static_cast<BucketTool*>(mEditor->tools()->getTool(BUCKET));
     mSettings = static_cast<const BucketSettings*>(mBucketTool->settings());
 
@@ -71,9 +81,37 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     updatePropertyVisibility();
 }
 
-BucketOptionsWidget::~BucketOptionsWidget()
+void BucketOptionsWidget::updateUI()
 {
-    delete ui;
+    updatePropertyVisibility();
+
+    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE)) {
+        mBucketTool->setStrokeThickness(mSettings->fillThickness());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ENABLED)) {
+        mBucketTool->setFillExpandEnabled(mSettings->fillExpandEnabled());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE)) {
+        mBucketTool->setFillExpand(mSettings->fillExpandAmount());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLLAYERREFERENCEMODE_VALUE)) {
+        mBucketTool->setFillReferenceMode(mSettings->fillReferenceMode());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLMODE_VALUE)) {
+        mBucketTool->setFillMode(mSettings->fillMode());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE)) {
+        mBucketTool->setColorTolerance(mSettings->tolerance());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_ENABLED)) {
+        mBucketTool->setColorToleranceEnabled(mSettings->colorToleranceEnabled());
+    }
 }
 
 void BucketOptionsWidget::makeConnectionsFromModelToUI()
@@ -147,39 +185,6 @@ void BucketOptionsWidget::makeConnectionsFromUIToModel()
     connect(ui->strokeThicknessSpinBox, static_cast<void (QDoubleSpinBox::*)(qreal)>(&QDoubleSpinBox::valueChanged), [=](qreal value) {
         mBucketTool->setStrokeThickness(value);
     });
-}
-
-void BucketOptionsWidget::updateUI()
-{
-    updatePropertyVisibility();
-
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE)) {
-        mBucketTool->setStrokeThickness(mSettings->fillThickness());
-    }
-
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ENABLED)) {
-        mBucketTool->setFillExpandEnabled(mSettings->fillExpandEnabled());
-    }
-
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE)) {
-        mBucketTool->setFillExpand(mSettings->fillExpandAmount());
-    }
-
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLLAYERREFERENCEMODE_VALUE)) {
-        mBucketTool->setFillReferenceMode(mSettings->fillReferenceMode());
-    }
-
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLMODE_VALUE)) {
-        mBucketTool->setFillMode(mSettings->fillMode());
-    }
-
-    if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE)) {
-        mBucketTool->setColorTolerance(mSettings->tolerance());
-    }
-
-    if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_ENABLED)) {
-        mBucketTool->setColorToleranceEnabled(mSettings->colorToleranceEnabled());
-    }
 }
 
 void BucketOptionsWidget::updatePropertyVisibility()

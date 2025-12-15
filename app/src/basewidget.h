@@ -22,11 +22,12 @@ GNU General Public License for more details.
 
 class BaseWidget : public QWidget
 {
+    Q_OBJECT
 public:
     BaseWidget(QWidget* parent = nullptr);
 
-    virtual void initUI();
-    virtual void updateUI();
+    virtual void initUI() = 0;
+    virtual void updateUI() = 0;
 };
 
 #endif // BASEWIDGET_H

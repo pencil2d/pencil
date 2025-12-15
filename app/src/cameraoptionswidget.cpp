@@ -29,11 +29,31 @@ CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
 {
     ui->setupUi(this);
 
+    initUI();
+}
+
+CameraOptionsWidget::~CameraOptionsWidget()
+{
+    delete ui;
+}
+
+void CameraOptionsWidget::initUI()
+{
     auto toolMan = mEditor->tools();
     mCameraTool = static_cast<CameraTool*>(toolMan->getTool(CAMERA));
 
     makeConnectionsFromUIToModel();
     makeConnectionsFromModelToUI();
+}
+
+void CameraOptionsWidget::updateUI()
+{
+    Q_ASSERT(mCameraTool->type() == CAMERA);
+
+    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->settings());
+
+    setShowCameraPath(p->showPathEnabled());
+    setPathDotColorType(p->dotColorType());
 }
 
 void CameraOptionsWidget::makeConnectionsFromModelToUI()
@@ -73,21 +93,6 @@ void CameraOptionsWidget::makeConnectionsFromUIToModel()
     connect(ui->resetScaleButton, &QPushButton::clicked, [=] {
         mCameraTool->performAction(CameraTool::RESET_SCALING);
     });
-}
-
-CameraOptionsWidget::~CameraOptionsWidget()
-{
-    delete ui;
-}
-
-void CameraOptionsWidget::updateUI()
-{
-    Q_ASSERT(mCameraTool->type() == CAMERA);
-
-    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->settings());
-
-    setShowCameraPath(p->showPathEnabled());
-    setPathDotColorType(p->dotColorType());
 }
 
 void CameraOptionsWidget::setShowCameraPath(bool showCameraPath)
