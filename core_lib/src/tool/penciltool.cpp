@@ -60,7 +60,7 @@ void PencilTool::loadSettings()
     mSettings->updateDefaults(info);
     mSettings->load(typeName(), settings);
 
-    if (mSettings->requireMigration(settings, 1)) {
+    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
         mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("pencilWidth", 4.0).toReal());
         mSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("pencilPressure", true).toBool());
         mSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, settings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt());

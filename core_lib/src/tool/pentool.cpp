@@ -57,7 +57,7 @@ void PenTool::loadSettings()
     mSettings->updateDefaults(info);
     mSettings->load(typeName(), settings);
 
-    if (mSettings->requireMigration(settings, 1)) {
+    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
         mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("penWidth", 12.0).toReal());
         mSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("penPressure", true).toBool());
         mSettings->setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, settings.value("penAA", true).toBool());

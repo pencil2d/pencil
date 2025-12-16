@@ -58,7 +58,7 @@ void MoveTool::loadSettings()
     mSettings->setDefaults(info);
     mSettings->load(typeName(), settings);
 
-    if (mSettings->requireMigration(settings, 1)) {
+    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
         mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, settings.value("ShowSelectionInfo", false).toBool());
         mSettings->setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, settings.value("moveAA", true).toBool());
     }

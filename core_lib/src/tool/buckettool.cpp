@@ -69,7 +69,7 @@ void BucketTool::loadSettings()
     mSettings->setDefaults(info);
     mSettings->load(typeName(), settings);
 
-    if (mSettings->requireMigration(settings, 1)) {
+    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
         mSettings->setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, settings.value("fillThickness", 4.0).toReal());
         mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_VALUE, settings.value("Tolerance", 32).toInt());
         mSettings->setBaseValue(BucketSettings::COLORTOLERANCE_ENABLED, settings.value("BucketToleranceEnabled", false).toBool());

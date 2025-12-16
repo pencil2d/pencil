@@ -196,6 +196,13 @@ private:
 
 struct ToolSettings
 {
+    enum Version {
+        NOT_SET = 0,
+        VERSION_1 = 1,
+        VERSION_2,
+        VERSION_3
+    };
+
     virtual ~ToolSettings() {}
 
     /*  The default properties that will be used for loading and restoring ToolSettings
@@ -290,7 +297,7 @@ struct ToolSettings
         }
     }
 
-    void setVersion(int version) { mVersion = version; }
+    void setVersion(Version version) { mVersion = version; }
 
     PropertyInfo getInfo(int rawPropertyType) const
     {
@@ -304,14 +311,16 @@ struct ToolSettings
     }
 
     /* Checks whether keys referred to in settings needs to be migrated from the input version */
-    bool requireMigration(QSettings& settings, int version) {
+    bool requireMigration(QSettings& settings, ToolSettings::Version version) {
 
         if (hasLegacySettings(settings) && !settings.contains(mVersionKey)) {
             // Let's assume we're dealing with an existing user
             return true;
         }
 
-        return settings.contains(mVersionKey) && version < mVersion && version > settings.value(mVersionKey).toInt();
+        int migrationNumber = static_cast<int>(version);
+
+        return settings.contains(mVersionKey) && migrationNumber < mVersion && migrationNumber > settings.value(mVersionKey).toInt();
     }
 
     bool hasLegacySettings(QSettings& settings) const {
@@ -374,7 +383,7 @@ private:
         }
     }
 
-    int mVersion = 1;
+    Version mVersion = VERSION_1;
     QString mVersionKey = "ToolSettings_Version";
 };
 

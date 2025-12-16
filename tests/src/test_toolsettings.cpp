@@ -109,14 +109,14 @@ TEST_CASE("ToolSettings behavior", "[ToolSettings]") {
             settings.setValue("brushWidth", 50);
             settings.sync();
 
-            REQUIRE(toolSettings.requireMigration(settings, 1) == true);
+            REQUIRE(toolSettings.requireMigration(settings, ToolSettings::VERSION_1) == true);
 
             WHEN("Migrating from the old settings") {
                 toolSettings.setBaseValue(MockSettings::WIDTH, settings.value("brushWidth", 12).toInt());
                 settings.remove("brushWidth");
 
                 THEN("Migration is no longer required") {
-                    REQUIRE(toolSettings.requireMigration(settings, 1) == false);
+                    REQUIRE(toolSettings.requireMigration(settings, ToolSettings::VERSION_1) == false);
                 }
             }
         }
@@ -124,21 +124,21 @@ TEST_CASE("ToolSettings behavior", "[ToolSettings]") {
 
     SECTION("Ensure migration of modified settings when applicable") {
         toolSettings.setDefaults(defaultProps);
-        toolSettings.setVersion(1);  // Set current version
+        toolSettings.setVersion(ToolSettings::VERSION_1);  // Set current version
         toolSettings.load("mocktool", settings);
         toolSettings.save(settings);
 
-        REQUIRE(toolSettings.requireMigration(settings, 1) == false);
+        REQUIRE(toolSettings.requireMigration(settings, ToolSettings::VERSION_1) == false);
 
         GIVEN("We update the settings version") {
-            toolSettings.setVersion(3);
+            toolSettings.setVersion(ToolSettings::VERSION_3);
 
             WHEN("Old settings require migration") {
-                REQUIRE(toolSettings.requireMigration(settings, 2) == true);
+                REQUIRE(toolSettings.requireMigration(settings, ToolSettings::VERSION_2) == true);
 
                 THEN("After settings have been migrated and stored, migration of that particular version is no longer required") {
                     toolSettings.save(settings);
-                    REQUIRE(toolSettings.requireMigration(settings, 2) == false);
+                    REQUIRE(toolSettings.requireMigration(settings, ToolSettings::VERSION_2) == false);
                 }
             }
         }

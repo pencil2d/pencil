@@ -57,7 +57,7 @@ void SmudgeTool::loadSettings()
     mSettings->updateDefaults(info);
     mSettings->load(typeName(), settings);
 
-    if (mSettings->requireMigration(settings, 1)) {
+    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
         mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("smudgeWidth", 24.0).toReal());
         mSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("smudgeFeather", 48.0).toReal());
 

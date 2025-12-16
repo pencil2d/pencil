@@ -65,7 +65,7 @@ void EraserTool::loadSettings()
     mSettings->updateDefaults(info);
     mSettings->load(typeName(), settings);
 
-    if (mSettings->requireMigration(settings, 1)) {
+    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
         mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("eraserWidth", 24.0).toReal());
         mSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("eraserFeather", 48.0).toReal());
         mSettings->setBaseValue(StrokeSettings::STABILIZATION_VALUE, settings.value("stabilizerLevel", StabilizationLevel::NONE).toInt());

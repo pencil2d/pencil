@@ -67,7 +67,7 @@ void BrushTool::loadSettings()
     mSettings->updateDefaults(info);
     mSettings->load(typeName(), settings);
 
-    if (mSettings->requireMigration(settings, 1)) {
+    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
         mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("brushWidth", 24.0).toReal());
         mSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("brushFeather", 48.0).toReal());
         mSettings->setBaseValue(StrokeSettings::PRESSURE_ENABLED, settings.value("brushPressure", true).toBool());
