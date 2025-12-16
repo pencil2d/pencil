@@ -41,25 +41,25 @@ struct PropertyInfo
     }
     PropertyInfo(int min, int max, int defaultValue)
         : mValueType(INTEGER) {
-        setBaseValue(defaultValue);
         mMinValue.intValue = min;
         mMaxValue.intValue = max;
         mDefaultValue.intValue = defaultValue;
+        setBaseValue(defaultValue);
     }
     PropertyInfo(qreal min, qreal max, qreal defaultValue)
         : mValueType(REAL) {
-        setBaseValue(defaultValue);
         mMinValue.realValue = min;
         mMaxValue.realValue = max;
         mDefaultValue.realValue = defaultValue;
+        setBaseValue(defaultValue);
     }
 
     PropertyInfo(bool base, bool defaultValue)
         : mValueType(BOOL) {
-        setBaseValue(base);
         mMinValue.boolValue = false;
         mMaxValue.boolValue = true;
         mDefaultValue.boolValue = defaultValue;
+        setBaseValue(base);
     }
 
     PropertyInfo(bool base) : PropertyInfo(base, base) {}
@@ -68,11 +68,11 @@ struct PropertyInfo
 
     void setBaseValue(int newValue) {
         Q_ASSERT(mValueType == INTEGER);
-        mBaseValue.intValue = newValue;
+        mBaseValue.intValue = qBound(mMinValue.intValue, newValue, mMaxValue.intValue);
     }
     void setBaseValue(qreal newValue) {
         Q_ASSERT(mValueType == REAL);
-        mBaseValue.realValue = newValue;
+        mBaseValue.realValue = qBound(mMinValue.realValue, newValue, mMaxValue.realValue);
     }
     void setBaseValue(bool newValue) {
         Q_ASSERT(mValueType == BOOL);
@@ -85,7 +85,7 @@ struct PropertyInfo
             return -1;
         }
 
-        return qBound(mMinValue.intValue, mBaseValue.intValue, mMaxValue.intValue);
+        return mBaseValue.intValue;
     }
 
     qreal realValue() const {
@@ -94,7 +94,7 @@ struct PropertyInfo
             return -1.0;
         }
 
-        return qBound(mMinValue.realValue, mBaseValue.realValue, mMaxValue.realValue);
+        return mBaseValue.realValue;
     }
 
     bool boolValue() const {
