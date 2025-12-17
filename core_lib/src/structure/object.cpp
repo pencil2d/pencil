@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include <QDir>
 #include <QDebug>
 #include <QDateTime>
+#include <QImageWriter>
 #include <QRegularExpression>
 
 #include "layer.h"
@@ -788,7 +789,7 @@ QString Object::copyFileToDataFolder(const QString& strFilePath)
     return destFile;
 }
 
-bool Object::exportFrames(int frameStart, int frameEnd,
+Status Object::exportFrames(int frameStart, int frameEnd,
                           const LayerCamera* cameraLayer,
                           QSize exportSize,
                           QString filePath,
@@ -840,6 +841,10 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         << frameEnd
         << "at size " << exportSize;
 
+    DebugDetails dd;
+    dd << "\n[Export frames diagnostics]\n";
+    bool ok = true;
+
     for (int currentFrame = frameStart; currentFrame <= frameEnd; currentFrame++)
     {
         if (progress != nullptr)
@@ -867,21 +872,36 @@ bool Object::exportFrames(int frameStart, int frameEnd,
         }
         QString sFileName = filePath + frameNumberString + extension;
         Layer* layer = findLayerByName(layerName);
+        Status st = Status::SAFE;
         if (exportKeyframesOnly)
         {
             if (layer->keyExists(currentFrame))
-                exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+            {
+                st = exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+            }
         }
         else
         {
-            exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+            st = exportIm(currentFrame, view, camSize, exportSize, sFileName, format, antialiasing, transparency);
+        }
+
+        if (!st.ok())
+        {
+            ok = false;
+            dd.collect(st.details());
         }
     }
 
-    return true;
+    if (!ok)
+    {
+        dd << "\nError: Failed to export one or more frames";
+        return Status(Status::FAIL, dd);
+    }
+
+    return Status::OK;
 }
 
-bool Object::exportIm(int frame, const QTransform& view, QSize cameraSize, QSize exportSize, const QString& filePath, const QString& format, bool antialiasing, bool transparency) const
+Status Object::exportIm(int frame, const QTransform& view, QSize cameraSize, QSize exportSize, const QString& filePath, const QString& format, bool antialiasing, bool transparency) const
 {
     QImage imageToExport(exportSize, QImage::Format_ARGB32_Premultiplied);
 
@@ -899,7 +919,17 @@ bool Object::exportIm(int frame, const QTransform& view, QSize cameraSize, QSize
 
     paintImage(painter, frame, false, antialiasing);
 
-    return imageToExport.save(filePath, format.toStdString().c_str());
+    QImageWriter writer(filePath, format.toStdString().c_str());
+    bool b = writer.write(imageToExport);
+    if (b) {
+        return Status::OK;
+    } else {
+        DebugDetails dd;
+        dd << "Object::exportIm";
+        dd << QString("&nbsp;&nbsp;filePath: ").append(filePath);
+        dd << QString("&nbsp;&nbsp;Error: %1 (code %2)").arg(writer.errorString()).arg(static_cast<int>(writer.error()));
+        return Status(Status::FAIL, dd);
+    }
 }
 
 int Object::getLayerCount() const
