@@ -185,19 +185,20 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     {
         mEditor->deselectAll();
     }
-    if (maybeDeselect(canvasPos))
+    else if (maybeDeselect(canvasPos))
     {
         mEditor->deselectAll();
     }
     else
     {
+        mSelectionRect = mEditor->select()->mapToSelection(mEditor->select()->mySelectionRect()).boundingRect();
         keepSelection(currentLayer);
     }
 
     mEditor->undoRedo()->record(mUndoState, typeName());
 
     mStartMoveMode = MoveMode::NONE;
-    mSelectionRect = mEditor->select()->mapToSelection(mEditor->select()->mySelectionRect()).boundingRect();
+    mMoveMode = MoveMode::NONE;
 
     mScribbleArea->updateToolCursor();
     mScribbleArea->updateFrame();
@@ -205,7 +206,8 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
 
 bool SelectTool::maybeDeselect(const QPointF& pos)
 {
-    return (!isSelectionPointValid(pos) && mEditor->select()->getMoveMode() == MoveMode::NONE);
+    return ((!isSelectionPointValid(pos) && mEditor->select()->getMoveMode() == MoveMode::NONE)
+            || !mEditor->select()->mySelectionRect().isValid());
 }
 
 /**
