@@ -284,13 +284,9 @@ void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint
         selectRect.setBottom(mouseY);
     }
 
-    if (selectRect.width() <= 0) {
-        selectRect.setWidth(1);
+    if (selectRect.size().isValid()) {
+        editor()->select()->setSelection(selectRect, layerType == Layer::BITMAP);
     }
-    if (selectRect.height() <= 0) {
-        selectRect.setHeight(1);
-    }
-    editor()->select()->setSelection(selectRect, layerType == Layer::BITMAP);
 }
 
 bool SelectTool::keyPressEvent(QKeyEvent* event)
