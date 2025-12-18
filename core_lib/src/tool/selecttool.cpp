@@ -110,7 +110,7 @@ void SelectTool::beginSelection(Layer* currentLayer, const QPointF& pos)
     }
     else
     {
-        selectMan->setSelection(QRectF(pos.x(), pos.y(), 1, 1), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
+        selectMan->setSelection(QRectF(pos.x(), pos.y(), 0, 0), mEditor->layers()->currentLayer()->type() == Layer::BITMAP);
         mAnchorOriginPoint = pos;
     }
 
@@ -126,6 +126,11 @@ void SelectTool::pointerPressEvent(PointerEvent* event)
     auto selectMan = mEditor->select();
 
     mPressPoint = event->canvasPos();
+
+    if (currentLayer->type() == Layer::BITMAP) {
+        mPressPoint = mPressPoint.toPoint();
+    }
+
     selectMan->setMoveModeForAnchorInRange(mPressPoint);
     mMoveMode = selectMan->getMoveMode();
     mStartMoveMode = mMoveMode;
@@ -140,15 +145,19 @@ void SelectTool::pointerMoveEvent(PointerEvent* event)
     if (!currentLayer->isPaintable()) { return; }
     auto selectMan = mEditor->select();
 
-    if (!selectMan->somethingSelected()) { return; }
+    QPointF canvasPos = event->canvasPos();
 
-    selectMan->setMoveModeForAnchorInRange(event->canvasPos());
+    if (currentLayer->type() == Layer::BITMAP) {
+        canvasPos = canvasPos.toPoint();
+    }
+
+    selectMan->setMoveModeForAnchorInRange(canvasPos);
     mMoveMode = selectMan->getMoveMode();
     mScribbleArea->updateToolCursor();
 
     if (mScribbleArea->isPointerInUse())
     {
-        controlOffsetOrigin(event->canvasPos(), mAnchorOriginPoint);
+        controlOffsetOrigin(canvasPos, mAnchorOriginPoint, currentLayer->type());
 
         if (currentLayer->type() == Layer::VECTOR)
         {
@@ -168,14 +177,19 @@ void SelectTool::pointerReleaseEvent(PointerEvent* event)
     if (currentLayer == nullptr) return;
     if (event->button() != Qt::LeftButton) return;
 
+    QPointF canvasPos = event->canvasPos();
+    if (currentLayer->type() == Layer::BITMAP) {
+        canvasPos = canvasPos.toPoint();
+    }
+
     // if there's a small very small distance between current and last point
     // discard the selection...
     // TODO: improve by adding a timer to check if the user is deliberately selecting
-    if (QLineF(mAnchorOriginPoint, event->canvasPos()).length() < 5.0)
+    if (QLineF(mAnchorOriginPoint, canvasPos).length() < 1.0)
     {
         mEditor->deselectAll();
     }
-    if (maybeDeselect(event->canvasPos()))
+    if (maybeDeselect(canvasPos))
     {
         mEditor->deselectAll();
     }
@@ -211,7 +225,7 @@ void SelectTool::keepSelection(Layer* currentLayer)
     }
 }
 
-void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
+void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint, Layer::LAYER_TYPE layerType)
 {
     // when the selection is none, manage the selection Origin
     if (mStartMoveMode != MoveMode::NONE) {
@@ -232,10 +246,10 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
 
         rect = rect.normalized();
         if (rect.isValid()) {
-            mEditor->select()->setSelection(rect, true);
+            mEditor->select()->setSelection(rect, layerType == Layer::BITMAP);
         }
     } else {
-        manageSelectionOrigin(currentPoint, anchorPoint);
+        manageSelectionOrigin(currentPoint, anchorPoint, layerType);
     }
 }
 
@@ -243,7 +257,7 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint)
  * @brief SelectTool::manageSelectionOrigin
  * switches anchor point when crossing threshold
  */
-void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint)
+void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint, Layer::LAYER_TYPE layerType)
 {
     qreal mouseX = currentPoint.x();
     qreal mouseY = currentPoint.y();
@@ -278,8 +292,7 @@ void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint
     if (selectRect.height() <= 0) {
         selectRect.setHeight(1);
     }
-
-    editor()->select()->setSelection(selectRect);
+    editor()->select()->setSelection(selectRect, layerType == Layer::BITMAP);
 }
 
 bool SelectTool::keyPressEvent(QKeyEvent* event)
