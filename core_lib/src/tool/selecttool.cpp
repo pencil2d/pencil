@@ -227,12 +227,8 @@ void SelectTool::keepSelection(Layer* currentLayer)
 
 void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint, Layer::LAYER_TYPE layerType)
 {
-    QRectF newSelection;
-    if (mStartMoveMode == MoveMode::NONE) {
-        // When the selection is none, manage the selection Origin
-        newSelection = QRectF(currentPoint, anchorPoint);
-    } else {
-        newSelection = mSelectionRect;
+    if (mStartMoveMode != MoveMode::NONE) {
+        QRectF newSelection = mSelectionRect;
 
         QPointF offset = offsetFromPressPos(currentPoint);
         if (mStartMoveMode == MoveMode::TOPLEFT) {
@@ -246,9 +242,56 @@ void SelectTool::controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint, 
         } else {
             newSelection.translate(offset.x(), offset.y());
         }
+
+        newSelection = newSelection.normalized();
+        if (newSelection.isValid()) {
+            mEditor->select()->setSelection(newSelection, layerType == Layer::BITMAP);
+        }
+    } else {
+        manageSelectionOrigin(currentPoint, anchorPoint, layerType);
     }
-    newSelection = newSelection.normalized();
-    mEditor->select()->setSelection(newSelection, layerType == Layer::BITMAP);
+}
+
+/**
+ * @brief SelectTool::manageSelectionOrigin
+ * switches anchor point when crossing threshold
+ */
+void SelectTool::manageSelectionOrigin(QPointF currentPoint, QPointF originPoint, Layer::LAYER_TYPE layerType)
+{
+    qreal mouseX = currentPoint.x();
+    qreal mouseY = currentPoint.y();
+
+    QRectF selectRect = mSelectionRect;
+
+    if (mouseX <= originPoint.x())
+    {
+        selectRect.setLeft(mouseX);
+        selectRect.setRight(originPoint.x());
+    }
+    else
+    {
+        selectRect.setLeft(originPoint.x());
+        selectRect.setRight(mouseX);
+    }
+
+    if (mouseY <= originPoint.y())
+    {
+        selectRect.setTop(mouseY);
+        selectRect.setBottom(originPoint.y());
+    }
+    else
+    {
+        selectRect.setTop(originPoint.y());
+        selectRect.setBottom(mouseY);
+    }
+
+    if (selectRect.width() <= 0) {
+        selectRect.setWidth(1);
+    }
+    if (selectRect.height() <= 0) {
+        selectRect.setHeight(1);
+    }
+    editor()->select()->setSelection(selectRect, layerType == Layer::BITMAP);
 }
 
 bool SelectTool::keyPressEvent(QKeyEvent* event)
