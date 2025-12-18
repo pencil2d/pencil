@@ -1036,7 +1036,7 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
     mSelectionPainter.paint(painter,
                             object,
                             mEditor->currentLayerIndex(),
-                            static_cast<const TransformSettings*>(editor()->tools()->getTool(TRANSFORMTOOL)->settings()),
+                            static_cast<const TransformSettings*>(editor()->tools()->getTool(SELECT)->settings()),
                             params);
     emit selectionUpdated();
 }

@@ -34,9 +34,7 @@ void TransformTool::createSettings(ToolSettings* settings)
     } else {
         mSettings = dynamic_cast<TransformSettings*>(settings);
 
-        if (!mSettings) {
-            Q_ASSERT("Expected settings to be of type TransformSettings");
-        }
+        Q_ASSERT_X(false, __func__, "Expected settings to be of type TransformSettings");
     }
     BaseTool::createSettings(mSettings);
 }
