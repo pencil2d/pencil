@@ -191,7 +191,7 @@ SOURCES += \
     src/transformoptionswidget.cpp
 
 FORMS += \
-    src/transformoptionswidget.ui \
+    ui/transformoptionswidget.ui \
     ui/strokeoptionswidget.ui \
     ui/addtransparencytopaperdialog.ui \
     ui/cameraoptionswidget.ui \
