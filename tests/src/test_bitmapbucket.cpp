@@ -142,10 +142,6 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         }
     }
 
-    // Cleanup: remove temporary test files
-    dir.setPath(resultsPath);
-    dir.removeRecursively();
-
     delete scribbleArea;
     delete editor;
 }
