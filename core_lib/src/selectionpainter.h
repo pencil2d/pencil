@@ -39,7 +39,7 @@ class SelectionPainter
 public:
     SelectionPainter();
 
-    void paint(QPainter& painter, const Object* object, int layerIndex, const TransformSettings* toolProperties, TransformParameters& transformParameters);
+    void paint(QPainter& painter, const Object* object, int layerIndex, const TransformSettings& toolProperties, TransformParameters& transformParameters);
 
 private:
     void paintSelectionInfo(QPainter& painter, const QTransform& mergedTransform, const QTransform& viewTransform, const QRectF& selectionRect, const QPolygonF& projectedPolygonF);

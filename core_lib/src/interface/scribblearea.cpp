@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QTimer>
 
 #include "basetool.h"
+#include "transformtool.h"
 #include "pointerevent.h"
 #include "beziercurve.h"
 #include "object.h"
@@ -1036,7 +1037,7 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
     mSelectionPainter.paint(painter,
                             object,
                             mEditor->currentLayerIndex(),
-                            static_cast<const TransformSettings*>(editor()->tools()->getTool(SELECT)->settings()),
+                            static_cast<const TransformTool*>(editor()->tools()->getTool(SELECT))->transformSettings(),
                             params);
     emit selectionUpdated();
 }
@@ -1336,7 +1337,7 @@ void ScribbleArea::applyTransformedSelection()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    bool useAA = mEditor->tools()->getTool(ToolType::MOVE)->settings()->getInfo(TransformSettings::ANTI_ALIASING_ENABLED).boolValue();
+    bool useAA = mEditor->tools()->getTool(ToolType::MOVE)->settings().getInfo(TransformSettings::ANTI_ALIASING_ENABLED).boolValue();
 
     if (layer == nullptr) { return; }
 

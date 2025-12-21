@@ -24,7 +24,8 @@ GNU General Public License for more details.
 class Editor;
 class Layer;
 class BucketTool;
-struct BucketSettings;
+
+#include "toolsettings.h"
 
 namespace Ui {
 class BucketOptionsWidget;
@@ -56,7 +57,7 @@ private:
     void updatePropertyVisibility();
 
     BucketTool* mBucketTool = nullptr;
-    const BucketSettings* mSettings = nullptr;
+    BucketSettings mSettings;
     Ui::BucketOptionsWidget *ui;
     Editor* mEditor = nullptr;
 };

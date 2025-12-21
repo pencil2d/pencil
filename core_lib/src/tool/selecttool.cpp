@@ -32,18 +32,18 @@ SelectTool::SelectTool(QObject* parent) : TransformTool(parent)
 
 void SelectTool::loadSettings()
 {
-    QSettings settings(PENCIL2D, PENCIL2D);
+    QSettings pencilSettings(PENCIL2D, PENCIL2D);
 
     QHash<int, PropertyInfo> info;
 
     mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
 
     info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
-    mSettings->setDefaults(info);
-    mSettings->load(typeName(), settings);
+    settings().setDefaults(info);
+    settings().load(typeName(), pencilSettings);
 
-    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
-        mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, settings.value("ShowSelectionInfo", false).toBool());
+    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        settings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
     }
 }
 

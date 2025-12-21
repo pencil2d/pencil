@@ -50,10 +50,10 @@ void CameraOptionsWidget::updateUI()
 {
     Q_ASSERT(mCameraTool->type() == CAMERA);
 
-    const CameraSettings* p = static_cast<const CameraSettings*>(mCameraTool->settings());
+    const CameraSettings p = mCameraTool->cameraSettings();
 
-    setShowCameraPath(p->showPathEnabled());
-    setPathDotColorType(p->dotColorType());
+    setShowCameraPath(p.showPathEnabled());
+    setPathDotColorType(p.dotColorType());
 }
 
 void CameraOptionsWidget::makeConnectionsFromModelToUI()

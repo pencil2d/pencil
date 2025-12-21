@@ -37,28 +37,28 @@ struct PropertyInfo
 
     PropertyInfo() {
         mValueType = INVALID;
-        mBaseValue.intValue = -1;
+        mBaseValue = -1;
     }
     PropertyInfo(int min, int max, int defaultValue)
         : mValueType(INTEGER) {
-        mMinValue.intValue = min;
-        mMaxValue.intValue = max;
-        mDefaultValue.intValue = defaultValue;
+        mMinValue = min;
+        mMaxValue = max;
+        mDefaultValue = defaultValue;
         setBaseValue(defaultValue);
     }
     PropertyInfo(qreal min, qreal max, qreal defaultValue)
         : mValueType(REAL) {
-        mMinValue.realValue = min;
-        mMaxValue.realValue = max;
-        mDefaultValue.realValue = defaultValue;
+        mMinValue = min;
+        mMaxValue = max;
+        mDefaultValue = defaultValue;
         setBaseValue(defaultValue);
     }
 
     PropertyInfo(bool base, bool defaultValue)
         : mValueType(BOOL) {
-        mMinValue.boolValue = false;
-        mMaxValue.boolValue = true;
-        mDefaultValue.boolValue = defaultValue;
+        mMinValue = false;
+        mMaxValue = true;
+        mDefaultValue = defaultValue;
         setBaseValue(base);
     }
 
@@ -68,15 +68,30 @@ struct PropertyInfo
 
     void setBaseValue(int newValue) {
         Q_ASSERT(mValueType == INTEGER);
-        mBaseValue.intValue = qBound(mMinValue.intValue, newValue, mMaxValue.intValue);
+        mBaseValue = qBound(mMinValue.toInt(), newValue, mMaxValue.toInt());
     }
+
     void setBaseValue(qreal newValue) {
         Q_ASSERT(mValueType == REAL);
-        mBaseValue.realValue = qBound(mMinValue.realValue, newValue, mMaxValue.realValue);
+        mBaseValue = qBound(mMinValue.toReal(), newValue, mMaxValue.toReal());
     }
+
     void setBaseValue(bool newValue) {
         Q_ASSERT(mValueType == BOOL);
-        mBaseValue.boolValue = newValue;
+        mBaseValue = newValue;
+    }
+
+    QVariant toVariant() const {
+        switch (mValueType) {
+            case INTEGER:
+                return mBaseValue;
+            case REAL:
+                return mBaseValue;
+            case BOOL:
+                return mBaseValue;
+            case INVALID:
+                return "INVALID";
+        }
     }
 
     int intValue() const {
@@ -85,7 +100,7 @@ struct PropertyInfo
             return -1;
         }
 
-        return mBaseValue.intValue;
+        return mBaseValue.toInt();
     }
 
     qreal realValue() const {
@@ -94,7 +109,7 @@ struct PropertyInfo
             return -1.0;
         }
 
-        return mBaseValue.realValue;
+        return mBaseValue.toReal();
     }
 
     bool boolValue() const {
@@ -102,14 +117,14 @@ struct PropertyInfo
             Q_ASSERT(false);
             return false;
         }
-        return mBaseValue.boolValue;
+        return mBaseValue.toBool();
     }
 
     qreal minReal() const {
         if (mValueType != REAL) {
             return -1.0;
         }
-        return mMinValue.realValue;
+        return mMinValue.toReal();
     }
 
     qreal maxReal() const {
@@ -117,14 +132,14 @@ struct PropertyInfo
             return -1.0;
         }
 
-        return mMaxValue.realValue;
+        return mMaxValue.toReal();
     }
 
     int minInt() const {
         if (mValueType != INTEGER) {
             return -1;
         }
-        return mMinValue.intValue;
+        return mMinValue.toInt();
     }
 
     int maxInt() const {
@@ -132,19 +147,19 @@ struct PropertyInfo
             return -1;
         }
 
-        return mMaxValue.intValue;
+        return mMaxValue.toInt();
     }
 
     void resetBaseValue() {
         switch (mValueType) {
         case INTEGER:
-            mBaseValue.intValue = mDefaultValue.intValue;
+            mBaseValue = mDefaultValue;
             break;
         case REAL:
-            mBaseValue.realValue = mDefaultValue.realValue;
+            mBaseValue = mDefaultValue;
             break;
         case BOOL:
-            mBaseValue.boolValue = mDefaultValue.boolValue;
+            mBaseValue = mDefaultValue;
             break;
         case INVALID:
             break;
@@ -156,7 +171,7 @@ struct PropertyInfo
         if (mValueType != INTEGER) {
             return -1;
         }
-        return mDefaultValue.intValue;
+        return mDefaultValue.toInt();
     }
 
     /// Returns the default value as an real, otherwise -1.0 if it hasn't been specified or the type doesn't match
@@ -164,7 +179,7 @@ struct PropertyInfo
         if (mValueType != REAL) {
             return -1.0;
         }
-        return mDefaultValue.realValue;
+        return mDefaultValue.toReal();
     }
 
     /// Returns the default value as an bool, otherwise false if it hasn't been specified or the type doesn't match
@@ -172,26 +187,17 @@ struct PropertyInfo
         if (mValueType != BOOL) {
             return false;
         }
-        return mDefaultValue.boolValue;
+        return mDefaultValue.toBool();
     }
 
     ValueType type() const { return mValueType; }
 
 private:
-
-    // This union is only meant ot store simple values.
-    // Do not attempt to store complicated objects in here.
-    union ValueUnion {
-        int intValue;
-        qreal realValue;
-        bool boolValue;
-    };
-
     ValueType mValueType;
-    ValueUnion mBaseValue;
-    ValueUnion mMinValue;
-    ValueUnion mMaxValue;
-    ValueUnion mDefaultValue;
+    QVariant mBaseValue;
+    QVariant mMinValue;
+    QVariant mMaxValue;
+    QVariant mDefaultValue;
 };
 
 struct ToolSettings
@@ -203,7 +209,8 @@ struct ToolSettings
         VERSION_3
     };
 
-    virtual ~ToolSettings() {}
+    // explicit ToolSettings();
+    ~ToolSettings() {}
 
     /*  The default properties that will be used for loading and restoring ToolSettings
 
@@ -228,8 +235,7 @@ struct ToolSettings
         @param settings The QSettings instance that is used to store the tool settings
     */
     void load(const QString& toolIdentifier, QSettings& settings) {
-        mIdentifier = toolIdentifier.toLower();
-
+        mIdentifier = toolIdentifier;
         settings.beginGroup(mIdentifier);
 
         Q_ASSERT(mProps.count() > 0);
@@ -250,22 +256,12 @@ struct ToolSettings
         for (auto it = mProps.begin(); it != mProps.end(); ++it) {
 
             QString propertyId = identifier(it.key());
-            switch (it.value().type())
-            {
-            case PropertyInfo::INTEGER:
-                settings.setValue(propertyId, it.value().intValue());
-                break;
-            case PropertyInfo::REAL:
-                settings.setValue(propertyId, it.value().realValue());
-                break;
-            case PropertyInfo::BOOL:
-                settings.setValue(propertyId, it.value().boolValue());
-                break;
-            case PropertyInfo::INVALID:
-                Q_ASSERT_X(false, __func__, "Wrong state, expected a value type but got INVALID. You've probably misconfigured the property. "
-                                        "Ensure the property has been setup correctly and try again.");
-                break;
+            if (it.value().type() == PropertyInfo::INVALID) {
+                Q_ASSERT_X(false, __func__, "Wrong state, expected a value type INTEGER|REAL|BOOL but got INVALID. You've probably misconfigured the property. "
+                                            "Ensure the property has been setup correctly and try again.");
+                continue;
             }
+            settings.setValue(propertyId, it.value().toVariant());
         }
         settings.endGroup();
         settings.sync();
@@ -343,18 +339,23 @@ struct ToolSettings
         return false;
     }
 
-protected:
-
-    virtual QString identifier(int) const {
-        return "Invalid";
+    void insertIdentifiers(const QHash<int, QString>& identifiers) {
+        this->mIdentifiers.insert(identifiers);
     }
 
-    QString mIdentifier = "unidentified";
-    QHash<int, PropertyInfo> mProps;
+    QString identifier(int rawKey) const {
+        auto it = mIdentifiers.find(rawKey);
+        Q_ASSERT_X(it != mIdentifiers.end(),
+                   "ToolSettings::identifier",
+                   "Unknown property identifier");
+        return it.value();
+    }
 
-    // The list of ranges that are valid for the given tool. ToolSettings can inherit its parents cases as well
-    // eg. PolyLineTool uses both StrokeSettings range as well as it's own
-    QVector<QPair<int, int>> mTypeRanges;
+    void setRanges(const QVector<QPair<int, int>>& ranges) { mTypeRanges = ranges; }
+    void addRange(QPair<int, int> range) { mTypeRanges.append(range); }
+    const QVector<QPair<int, int>>& typeRanges() const { return mTypeRanges; }
+
+    QHash<int, PropertyInfo> mProps;
 
 private:
 
@@ -383,11 +384,25 @@ private:
         }
     }
 
+    // The list of ranges that are valid for the given tool. ToolSettings can inherit its parents cases as well
+    // eg. PolyLineTool uses both StrokeSettings range as well as it's own
+    QVector<QPair<int, int>> mTypeRanges;
+    QHash<int, QString> mIdentifiers;
+
+    QString mIdentifier = "undefined";
     Version mVersion = VERSION_1;
     QString mVersionKey = "ToolSettings_Version";
 };
 
-struct StrokeSettings: public ToolSettings
+struct ToolSettingsBase {
+
+    virtual ~ToolSettingsBase() {}
+
+    virtual ToolSettings& general() = 0;
+    virtual PropertyInfo getInfo(int rawPropertyType) const = 0;
+};
+
+struct StrokeSettings: public ToolSettingsBase
 {
 
     enum Type {
@@ -406,59 +421,47 @@ struct StrokeSettings: public ToolSettings
     };
 
     StrokeSettings() {
-        mTypeRanges = { { START, END } };
+        mGeneralSettings.setRanges({ { START, END } });
+
+        mGeneralSettings.insertIdentifiers({
+            { WIDTH_VALUE,           "Width" },
+            { FEATHER_VALUE,         "Feather" },
+            { FEATHER_ENABLED,       "FeatherEnabled" },
+            { STABILIZATION_VALUE,   "LineStabilization" },
+            { PRESSURE_ENABLED,      "Pressure" }, // TODO: should be PressureEnabled
+            { INVISIBILITY_ENABLED,  "Invisibility" }, // TODO: should be InvisiblityEnabled
+            { ANTI_ALIASING_ENABLED, "AntiAliasingEnabled"},
+            { FILLCONTOUR_ENABLED,   "FillContourEnabled" }
+        });
     }
 
-    QString identifier(int typeRaw) const override {
-        auto type = static_cast<StrokeSettings::Type>(typeRaw);
-        QString propertyID = ToolSettings::identifier(typeRaw);
-        switch (type)
-        {
-        case WIDTH_VALUE:
-            propertyID = "Width";
-            break;
-        case FEATHER_VALUE:
-            propertyID = "Feather";
-            break;
-        case STABILIZATION_VALUE:
-            propertyID = "LineStabilization";
-            break;
-        case PRESSURE_ENABLED:
-            propertyID = "Pressure";
-            break;
-        case INVISIBILITY_ENABLED:
-            propertyID = "Invisibility";
-            break;
-        case FEATHER_ENABLED:
-            propertyID = "FeatherEnabled";
-            break;
-        case ANTI_ALIASING_ENABLED:
-            propertyID = "AntiAliasingEnabled";
-            break;
-        case FILLCONTOUR_ENABLED:
-            propertyID = "FillContourEnabled";
-            break;
-        case END:
-            break;
-        }
+    ToolSettings& general() override { return mGeneralSettings; }
 
-        return propertyID;
+    void addRange(const QPair<int, int> range) {
+        mGeneralSettings.addRange(range);
     }
 
-    qreal width() const { return mProps[WIDTH_VALUE].realValue(); }
-    qreal feather() const { return mProps[FEATHER_VALUE].realValue(); }
-    int stabilizerLevel() const { return mProps[STABILIZATION_VALUE].intValue(); }
-    bool pressureEnabled() const { return mProps[PRESSURE_ENABLED].boolValue(); }
-    bool invisibilityEnabled() const { return mProps[INVISIBILITY_ENABLED].boolValue(); }
-    bool featherEnabled() const { return mProps[FEATHER_ENABLED].boolValue(); }
-    bool AntiAliasingEnabled() const { return mProps[ANTI_ALIASING_ENABLED].boolValue(); }
-    bool fillContourEnabled() const { return mProps[FILLCONTOUR_ENABLED].boolValue(); }
+    PropertyInfo getInfo(int rawPropertyType) const override {
+        return mGeneralSettings.getInfo(rawPropertyType);
+    }
+
+    qreal width() const { return getInfo(WIDTH_VALUE).realValue(); }
+    qreal feather() const { return getInfo(FEATHER_VALUE).realValue(); }
+    int stabilizerLevel() const { return getInfo(STABILIZATION_VALUE).intValue(); }
+    bool pressureEnabled() const { return getInfo(PRESSURE_ENABLED).boolValue(); }
+    bool invisibilityEnabled() const { return getInfo(INVISIBILITY_ENABLED).boolValue(); }
+    bool featherEnabled() const { return getInfo(FEATHER_ENABLED).boolValue(); }
+    bool AntiAliasingEnabled() const { return getInfo(ANTI_ALIASING_ENABLED).boolValue(); }
+    bool fillContourEnabled() const { return getInfo(FILLCONTOUR_ENABLED).boolValue(); }
+
+private:
+    ToolSettings mGeneralSettings;
 };
 
 /// This struct is an example of how we can
 /// share settings among tools rather than duplicating logic, eg. polyline uses settings from StrokeSettings.
 /// The same could be done for PencilTool, BrushTool, Eraser etc...
-struct PolylineSettings: public StrokeSettings
+struct PolylineSettings: public ToolSettingsBase
 {
     enum Type {
         START               = 200,
@@ -470,35 +473,30 @@ struct PolylineSettings: public StrokeSettings
     };
 
     PolylineSettings() {
-        mTypeRanges.append(StrokeSettings::mTypeRanges);
-        mTypeRanges = { { START, END } };
+        mStrokeSettings.addRange({START, END});
+
+        general().insertIdentifiers({
+            { CLOSEDPATH_ENABLED, "ClosedPathEnabled"},
+            { BEZIERPATH_ENABLED, "BezierPathEnabled" }
+        });
     }
 
-    QString identifier(int typeRaw) const override {
-        auto type = static_cast<PolylineSettings::Type>(typeRaw);
-        QString propertyID = ToolSettings::identifier(typeRaw);
-        switch (type)
-        {
-        case CLOSEDPATH_ENABLED:
-            propertyID = "ClosedPathEnabled";
-            break;
-        case BEZIERPATH_ENABLED:
-            propertyID = "BezierPathEnabled";
-            break;
-        default:
-            propertyID = StrokeSettings::identifier(typeRaw);
-        }
+    ToolSettings& general() override { return mStrokeSettings.general(); }
 
-        return propertyID;
+    PropertyInfo getInfo(int rawPropertyType) const override {
+        return mStrokeSettings.getInfo(rawPropertyType);
     }
 
-    qreal width() const { return mProps[StrokeSettings::WIDTH_VALUE].realValue(); }
-    bool closedPathEnabled() const { return mProps[CLOSEDPATH_ENABLED].boolValue(); }
-    bool bezierPathEnabled() const { return mProps[BEZIERPATH_ENABLED].boolValue(); }
-    bool AntiAliasingEnabled() const { return mProps[StrokeSettings::ANTI_ALIASING_ENABLED].boolValue(); }
+    qreal width() const { return getInfo(StrokeSettings::WIDTH_VALUE).realValue(); }
+    bool closedPathEnabled() const { return getInfo(CLOSEDPATH_ENABLED).boolValue(); }
+    bool bezierPathEnabled() const { return getInfo(BEZIERPATH_ENABLED).boolValue(); }
+    bool AntiAliasingEnabled() const { return getInfo(StrokeSettings::ANTI_ALIASING_ENABLED).boolValue(); }
+
+private:
+    StrokeSettings mStrokeSettings;
 };
 
-struct BucketSettings: public ToolSettings
+struct BucketSettings: public ToolSettingsBase
 {
     enum Type {
         START                           = 300,
@@ -515,52 +513,39 @@ struct BucketSettings: public ToolSettings
     };
 
     BucketSettings() {
-        mTypeRanges = { { START, END } };
+        mGeneralSettings.setRanges({ { START, END } });
+
+        mGeneralSettings.insertIdentifiers({
+            { FILLTHICKNESS_VALUE,          "FillThickness"},
+            { COLORTOLERANCE_VALUE,         "ColorTolerance"},
+            { COLORTOLERANCE_ENABLED,       "ColorToleranceEnabled"},
+            { FILLEXPAND_VALUE,             "FillExpand"},
+            { FILLEXPAND_ENABLED,           "FillExpandEnabled"},
+            { COLORTOLERANCE_ENABLED,       "ColorToleranceEnabled"},
+            { FILLLAYERREFERENCEMODE_VALUE, "FillReferenceMode"},
+            { FILLMODE_VALUE,               "FillMode"}
+        });
     }
 
-    QString identifier(int typeRaw) const override {
-        auto type = static_cast<BucketSettings::Type>(typeRaw);
-        QString propertyID = ToolSettings::identifier(typeRaw);
-        switch (type)
-        {
-        case FILLTHICKNESS_VALUE:
-            propertyID = "FillThickness";
-            break;
-        case COLORTOLERANCE_VALUE:
-            propertyID = "ColorTolerance";
-            break;
-        case COLORTOLERANCE_ENABLED:
-            propertyID = "ColorToleranceEnabled";
-            break;
-        case FILLEXPAND_ENABLED:
-            propertyID = "FillExpandEnabled";
-            break;
-        case FILLEXPAND_VALUE:
-            propertyID = "FillExpand";
-            break;
-        case FILLLAYERREFERENCEMODE_VALUE:
-            propertyID = "FillReferenceMode";
-            break;
-        case FILLMODE_VALUE:
-            propertyID = "FillMode";
-            break;
-        case END:
-            break;
-        }
+    ToolSettings& general() override { return mGeneralSettings; }
 
-        return  propertyID;
+    PropertyInfo getInfo(int rawPropertyType) const override {
+        return mGeneralSettings.getInfo(rawPropertyType);
     }
 
-    qreal fillThickness() const { return mProps[FILLTHICKNESS_VALUE].realValue(); }
-    int tolerance() const { return mProps[COLORTOLERANCE_VALUE].intValue(); }
-    int fillExpandAmount() const { return mProps[FILLEXPAND_VALUE].intValue(); }
-    int fillReferenceMode() const { return mProps[FILLLAYERREFERENCEMODE_VALUE].intValue(); }
-    int fillMode() const { return mProps[FILLMODE_VALUE].intValue(); }
-    bool colorToleranceEnabled() const { return mProps[COLORTOLERANCE_ENABLED].boolValue(); }
-    bool fillExpandEnabled() const { return mProps[FILLEXPAND_ENABLED].boolValue(); }
+    qreal fillThickness() const { return getInfo(FILLTHICKNESS_VALUE).realValue(); }
+    int tolerance() const { return getInfo(COLORTOLERANCE_VALUE).intValue(); }
+    int fillExpandAmount() const { return getInfo(FILLEXPAND_VALUE).intValue(); }
+    int fillReferenceMode() const { return getInfo(FILLLAYERREFERENCEMODE_VALUE).intValue(); }
+    int fillMode() const { return getInfo(FILLMODE_VALUE).intValue(); }
+    bool colorToleranceEnabled() const { return getInfo(COLORTOLERANCE_ENABLED).boolValue(); }
+    bool fillExpandEnabled() const { return getInfo(FILLEXPAND_ENABLED).boolValue(); }
+
+private:
+    ToolSettings mGeneralSettings;
 };
 
-struct CameraSettings: public ToolSettings
+struct CameraSettings: public ToolSettingsBase
 {
     enum Type {
         START               = 400,
@@ -572,34 +557,29 @@ struct CameraSettings: public ToolSettings
     };
 
     CameraSettings() {
-        mTypeRanges = { { START, END } };
+        mGeneralSettings.setRanges({ { START, END }});
+
+        mGeneralSettings.insertIdentifiers({
+            { SHOWPATH_ENABLED,     "ShowPathEnabled"},
+            { PATH_DOTCOLOR_TYPE,   "PathDotColorType"},
+        });
     }
 
-    QString identifier(int typeRaw) const override {
-        auto type = static_cast<CameraSettings::Type>(typeRaw);
-        QString propertyID = ToolSettings::identifier(typeRaw);
+    ToolSettings& general() override { return mGeneralSettings; }
 
-        switch (type)
-        {
-        case SHOWPATH_ENABLED:
-            propertyID = "ShowPathEnabled";
-            break;
-        case PATH_DOTCOLOR_TYPE:
-            propertyID = "PathDotColorType";
-            break;
-        case END:
-            break;
-        }
-
-        return propertyID;
+    PropertyInfo getInfo(int rawPropertyType) const override {
+        return mGeneralSettings.getInfo(rawPropertyType);
     }
 
-    bool showPathEnabled() const { return mProps[SHOWPATH_ENABLED].boolValue(); }
-    DotColorType dotColorType() const { return static_cast<DotColorType>(mProps[PATH_DOTCOLOR_TYPE].intValue()); }
+    bool showPathEnabled() const { return getInfo(SHOWPATH_ENABLED).boolValue(); }
+    DotColorType dotColorType() const { return static_cast<DotColorType>(getInfo(PATH_DOTCOLOR_TYPE).intValue()); }
+
+private:
+    ToolSettings mGeneralSettings;
 };
 
 // Used by both select and move tool
-struct TransformSettings: public ToolSettings
+struct TransformSettings: public ToolSettingsBase
 {
     enum Type {
         START                        = 500,
@@ -609,30 +589,25 @@ struct TransformSettings: public ToolSettings
     };
 
     TransformSettings() {
-        mTypeRanges = { { START, END } };
+        mGeneralSettings.setRanges({ { START, END } });
+
+        mGeneralSettings.insertIdentifiers({
+            { SHOWSELECTIONINFO_ENABLED,    "ShowSelectionInfoEnabled" },
+            { ANTI_ALIASING_ENABLED,        "AntiAliasingEnabled" }
+        });
     }
 
-    QString identifier(int typeRaw) const override {
-        auto type = static_cast<TransformSettings::Type>(typeRaw);
-        QString propertyID = ToolSettings::identifier(typeRaw);
+    ToolSettings& general() override { return mGeneralSettings; }
 
-        switch (type)
-        {
-            case SHOWSELECTIONINFO_ENABLED:
-                propertyID = "ShowSelectionInfoEnabled";
-                break;
-            case ANTI_ALIASING_ENABLED:
-                propertyID = "AntiAliasingEnabled";
-                break;
-            case END:
-                break;
-        }
-
-        return propertyID;
+    PropertyInfo getInfo(int rawPropertyType) const override {
+        return mGeneralSettings.getInfo(rawPropertyType);
     }
 
-    bool showSelectionInfoEnabled() const { return mProps[SHOWSELECTIONINFO_ENABLED].boolValue(); }
-    bool antiAliasingEnabled() const { return mProps[ANTI_ALIASING_ENABLED].boolValue(); }
+    bool showSelectionInfoEnabled() const { return getInfo(SHOWSELECTIONINFO_ENABLED).boolValue(); }
+    bool antiAliasingEnabled() const { return getInfo(ANTI_ALIASING_ENABLED).boolValue(); }
+
+private:
+    ToolSettings mGeneralSettings;
 };
 
 #endif // TOOLSETTINGS_H

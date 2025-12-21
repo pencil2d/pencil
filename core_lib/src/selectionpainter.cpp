@@ -26,7 +26,7 @@ SelectionPainter::SelectionPainter()
 void SelectionPainter::paint(QPainter& painter,
                              const Object* object,
                              int layerIndex,
-                             const TransformSettings* toolProperties,
+                             const TransformSettings& toolProperties,
                              TransformParameters& tParams)
 {
     Layer* layer = object->getLayer(layerIndex);
@@ -76,7 +76,7 @@ void SelectionPainter::paint(QPainter& painter,
                                            HANDLE_WIDTH, HANDLE_WIDTH);
     painter.drawRect(bottomLeftCorner);
 
-    if (toolProperties->showSelectionInfoEnabled()) {
+    if (toolProperties.showSelectionInfoEnabled()) {
         paintSelectionInfo(painter, transform, tParams.viewTransform, tParams.originalSelectionRectF, projectedSelectionPolygon);
     }
 }

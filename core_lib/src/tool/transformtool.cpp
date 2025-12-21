@@ -29,19 +29,11 @@ TransformTool::~TransformTool()
 
 void TransformTool::createSettings(ToolSettings* settings)
 {
-    if (settings == nullptr) {
-        mSettings = new TransformSettings();
-    } else {
-        mSettings = dynamic_cast<TransformSettings*>(settings);
-
-        Q_ASSERT_X(false, __func__, "Expected settings to be of type TransformSettings");
-    }
-    BaseTool::createSettings(mSettings);
 }
 
 void TransformTool::setShowSelectionInfo(bool enabled)
 {
-    mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, enabled);
+    settings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, enabled);
     emit showSelectionInfoChanged(enabled);
 
     mEditor->updateFrame();
@@ -49,6 +41,6 @@ void TransformTool::setShowSelectionInfo(bool enabled)
 
 void TransformTool::setAntiAliasingEnabled(bool enabled)
 {
-    mSettings->setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, enabled);
+    settings().setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, enabled);
     emit antiAliasingChanged(enabled);
 }

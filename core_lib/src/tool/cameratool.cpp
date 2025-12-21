@@ -47,8 +47,9 @@ CameraTool::~CameraTool()
 
 void CameraTool::createSettings(ToolSettings*)
 {
-    mSettings = new CameraSettings();
-    BaseTool::createSettings(mSettings);
+    // mSettings = new CameraSettings();
+    // BaseTool::createSettings(mSettings);
+    // mCameraSettings =
 }
 
 void CameraTool::loadSettings()
@@ -58,7 +59,7 @@ void CameraTool::loadSettings()
 
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
 
-    QSettings settings(PENCIL2D, PENCIL2D);
+    QSettings pencilSettings(PENCIL2D, PENCIL2D);
 
     mPropertyUsed[CameraSettings::SHOWPATH_ENABLED] = { Layer::CAMERA };
     mPropertyUsed[CameraSettings::PATH_DOTCOLOR_TYPE] = { Layer::CAMERA };
@@ -69,8 +70,8 @@ void CameraTool::loadSettings()
                                                  static_cast<int>(DotColorType::BLACK) };
     info[CameraSettings::SHOWPATH_ENABLED] = false;
 
-    mSettings->setDefaults(info);
-    mSettings->load(typeName(), settings);
+    settings().setDefaults(info);
+    settings().load(typeName(), pencilSettings);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &CameraTool::updateSettings);
 
@@ -110,8 +111,8 @@ void CameraTool::updateProperties()
     if (!layer || layer->type() != Layer::CAMERA) { return; }
 
     LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
-    mSettings->setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(layerCam->getDotColorType()));
-    mSettings->setBaseValue(CameraSettings::SHOWPATH_ENABLED, layerCam->getShowCameraPath());
+    settings().setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(layerCam->getDotColorType()));
+    settings().setBaseValue(CameraSettings::SHOWPATH_ENABLED, layerCam->getShowCameraPath());
 }
 
 void CameraTool::updateSettings(const SETTING setting)
@@ -198,7 +199,7 @@ void CameraTool::updateMoveMode(const QPointF& pos)
     {
         mCamMoveMode = getCameraMoveMode(pos,
                                          selectionTolerance);
-    } else if (mSettings->showPathEnabled()) {
+    } else if (mSettings.showPathEnabled()) {
         int keyPos = cam->firstKeyFramePosition();
         while (keyPos <= cam->getMaxKeyFramePosition())
         {
@@ -254,7 +255,7 @@ void CameraTool::setCameraPathEnabled(bool enabled)
 
     Q_ASSERT(layer->type() == Layer::CAMERA);
     layer->setShowCameraPath(enabled);
-    mSettings->setBaseValue(CameraSettings::SHOWPATH_ENABLED, enabled);
+    settings().setBaseValue(CameraSettings::SHOWPATH_ENABLED, enabled);
     emit cameraPathEnabledChanged(enabled);
 
     emit mEditor->frameModified(mEditor->currentFrame());
@@ -266,7 +267,7 @@ void CameraTool::setPathDotColorType(DotColorType pathDotColor)
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     layer->updateDotColor(pathDotColor);
-    mSettings->setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(pathDotColor));
+    settings().setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(pathDotColor));
     emit pathColorChanged(pathDotColor);
 
     emit mEditor->frameModified(mEditor->currentFrame());

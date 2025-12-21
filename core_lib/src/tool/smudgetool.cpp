@@ -47,22 +47,22 @@ void SmudgeTool::loadSettings()
     StrokeTool::loadSettings();
 
     QHash<int, PropertyInfo> info;
-    QSettings settings(PENCIL2D, PENCIL2D);
+    QSettings pencilSettings(PENCIL2D, PENCIL2D);
     mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP };
     mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
 
     info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
 
-    mSettings->updateDefaults(info);
-    mSettings->load(typeName(), settings);
+    settings().updateDefaults(info);
+    settings().load(typeName(), pencilSettings);
 
-    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
-        mSettings->setBaseValue(StrokeSettings::WIDTH_VALUE, settings.value("smudgeWidth", 24.0).toReal());
-        mSettings->setBaseValue(StrokeSettings::FEATHER_VALUE, settings.value("smudgeFeather", 48.0).toReal());
+    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        settings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("smudgeWidth", 24.0).toReal());
+        settings().setBaseValue(StrokeSettings::FEATHER_VALUE, pencilSettings.value("smudgeFeather", 48.0).toReal());
 
-        settings.remove("smudgeWidth");
-        settings.remove("smudgeFeather");
+        pencilSettings.remove("smudgeWidth");
+        pencilSettings.remove("smudgeFeather");
     }
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
@@ -288,9 +288,9 @@ void SmudgeTool::drawStroke()
     }
 
     qreal opacity = 1.0;
-    mCurrentWidth = mSettings->width();
-    qreal brushWidth = mCurrentWidth + 0.0 * mSettings->feather();
-    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * mSettings->feather()) / brushWidth;
+    mCurrentWidth = mSettings.width();
+    qreal brushWidth = mCurrentWidth + 0.0 * mSettings.feather();
+    qreal offset = qMax(0.0, mCurrentWidth - 0.5 * mSettings.feather()) / brushWidth;
     //opacity = currentPressure; // todo: Probably not interesting?!
     //brushWidth = brushWidth * opacity;
 

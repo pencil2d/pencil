@@ -47,7 +47,7 @@ ToolType MoveTool::type() const
 void MoveTool::loadSettings()
 {
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
-    QSettings settings(PENCIL2D, PENCIL2D);
+    QSettings pencilSettings(PENCIL2D, PENCIL2D);
 
     mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
     mPropertyUsed[TransformSettings::ANTI_ALIASING_ENABLED] = { Layer::BITMAP };
@@ -55,12 +55,12 @@ void MoveTool::loadSettings()
 
     info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
     info[TransformSettings::ANTI_ALIASING_ENABLED] = true;
-    mSettings->setDefaults(info);
-    mSettings->load(typeName(), settings);
+    settings().setDefaults(info);
+    settings().load(typeName(), pencilSettings);
 
-    if (mSettings->requireMigration(settings, ToolSettings::VERSION_1)) {
-        mSettings->setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, settings.value("ShowSelectionInfo", false).toBool());
-        mSettings->setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, settings.value("moveAA", true).toBool());
+    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        settings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
+        settings().setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("moveAA", true).toBool());
     }
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);

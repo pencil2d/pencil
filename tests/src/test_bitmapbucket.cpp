@@ -83,8 +83,8 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     info[BucketSettings::FILLMODE_VALUE] = 0;
     info[BucketSettings::COLORTOLERANCE_VALUE] = 25;
     info[BucketSettings::COLORTOLERANCE_ENABLED] = true;
-    properties.setDefaults(info);
-    properties.load("BucketTest", settings);
+    properties.general().setDefaults(info);
+    properties.general().load("BucketTest", settings);
 
     QColor fillColor = QColor(255,255,0,100);
 
@@ -102,7 +102,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         Layer* strokeLayer = editor->layers()->currentLayer();
         SECTION("When reference is current layer, only transparent color is filled")
         {
-            properties.setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 0);
+            properties.general().setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 0);
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
@@ -114,7 +114,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
 
         SECTION("When reference is all layers, only transparent color is filled")
         {
-            properties.setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 1);
+            properties.general().setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 1);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
@@ -129,10 +129,10 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     SECTION("Filling on current layer - layer is pre-filled") {
 
         // Fill mode is set to `replace` because it makes it easier to compare colors...
-        properties.setBaseValue(BucketSettings::FILLMODE_VALUE, 1);
+        properties.general().setBaseValue(BucketSettings::FILLMODE_VALUE, 1);
         Layer* strokeLayer = editor->layers()->currentLayer();
         SECTION("When reference is current layer, only pixels matching the fill color are filled"){
-            properties.setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 0);
+            properties.general().setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 0);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
@@ -149,7 +149,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
 
         SECTION("When reference is all layers")
         {
-            properties.setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 1);
+            properties.general().setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 1);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);

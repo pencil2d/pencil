@@ -36,6 +36,9 @@ public:
     ToolType type() const override { return BUCKET; }
     ToolCategory category() const override { return BASETOOL; }
 
+    ToolSettings& settings() override { return mSettings.general(); }
+    const BucketSettings& bucketSettings() const { return mSettings; }
+
     void createSettings(ToolSettings*) override;
     void loadSettings() override;
 
@@ -75,7 +78,7 @@ private:
 
     bool mFilledOnMove = false;
 
-    BucketSettings* mSettings = nullptr;
+    BucketSettings mSettings;
     StrokeInterpolator mInterpolator;
     const UndoSaveState* mUndoSaveState = nullptr;
 };

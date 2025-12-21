@@ -41,19 +41,19 @@ void TransformOptionsWidget::initUI()
 
 void TransformOptionsWidget::updateUI()
 {
-    BaseTool* currentTool = mEditor->tools()->currentTool();
+    TransformTool* currentTool = static_cast<TransformTool*>(mEditor->tools()->getTool(SELECT));
     if (currentTool->category() != TRANSFORMTOOL) { return; }
 
     updatePropertyVisibility();
     updateToolConnections(currentTool);
-    const TransformSettings* selectP = static_cast<const TransformSettings*>(currentTool->settings());
+    const TransformSettings selectP = currentTool->transformSettings();
 
     if (currentTool->isPropertyEnabled(TransformSettings::SHOWSELECTIONINFO_ENABLED)) {
-        setShowSelectionInfo(selectP->showSelectionInfoEnabled());
+        setShowSelectionInfo(selectP.showSelectionInfoEnabled());
     }
 
     if (currentTool->isPropertyEnabled(TransformSettings::ANTI_ALIASING_ENABLED)) {
-        setAntiAliasingEnabled(selectP->antiAliasingEnabled());
+        setAntiAliasingEnabled(selectP.antiAliasingEnabled());
     }
 }
 

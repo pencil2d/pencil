@@ -32,12 +32,12 @@ StrokeOptionsWidget::~StrokeOptionsWidget()
 void StrokeOptionsWidget::initUI()
 {
     StrokeTool* strokeTool = static_cast<StrokeTool*>(mEditor->tools()->getTool(ToolCategory::STROKETOOL));
-    const StrokeSettings* p = static_cast<const StrokeSettings*>(strokeTool->settings());
+    const StrokeSettings p = strokeTool->strokeSettings();
 
-    auto widthInfo = p->getInfo(StrokeSettings::WIDTH_VALUE);
+    auto widthInfo = p.getInfo(StrokeSettings::WIDTH_VALUE);
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.minReal(), widthInfo.maxReal());
 
-    auto featherInfo = p->getInfo(StrokeSettings::FEATHER_VALUE);
+    auto featherInfo = p.getInfo(StrokeSettings::FEATHER_VALUE);
     ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, featherInfo.minReal(), featherInfo.maxReal());
 
     mCurrentTool = strokeTool;
@@ -56,11 +56,11 @@ void StrokeOptionsWidget::updateUI()
 
     setVisibility(strokeTool);
 
-    const StrokeSettings* p = static_cast<const StrokeSettings*>(strokeTool->settings());
+    const StrokeSettings p = strokeTool->strokeSettings();
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
     {
-        PropertyInfo info = p->getInfo(StrokeSettings::WIDTH_VALUE);
+        PropertyInfo info = p.getInfo(StrokeSettings::WIDTH_VALUE);
         QSignalBlocker b(ui->sizeSlider);
         ui->sizeSlider->setRange(info.minReal(), info.maxReal());
         QSignalBlocker b2(ui->sizeSpinBox);
@@ -70,7 +70,7 @@ void StrokeOptionsWidget::updateUI()
     }
     if (strokeTool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE))
     {
-        auto info = p->getInfo(StrokeSettings::FEATHER_VALUE);
+        auto info = p.getInfo(StrokeSettings::FEATHER_VALUE);
         QSignalBlocker b3(ui->featherSlider);
         ui->featherSlider->setRange(info.minReal(), info.maxReal());
         QSignalBlocker b4(ui->featherSpinBox);
@@ -80,33 +80,33 @@ void StrokeOptionsWidget::updateUI()
     }
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED)) {
-        setFeatherEnabled(p->featherEnabled());
+        setFeatherEnabled(p.featherEnabled());
     }
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::PRESSURE_ENABLED)) {
-        setPressureEnabled(p->pressureEnabled());
+        setPressureEnabled(p.pressureEnabled());
     }
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED)) {
-        setPenInvisibilityEnabled(p->invisibilityEnabled());
+        setPenInvisibilityEnabled(p.invisibilityEnabled());
     }
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::ANTI_ALIASING_ENABLED)) {
-        setAntiAliasingEnabled(p->AntiAliasingEnabled());
+        setAntiAliasingEnabled(p.AntiAliasingEnabled());
     }
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE)) {
-        setStabilizerLevel(p->stabilizerLevel());
+        setStabilizerLevel(p.stabilizerLevel());
     }
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ENABLED)) {
-        setFillContourEnabled(p->fillContourEnabled());
+        setFillContourEnabled(p.fillContourEnabled());
     }
 
     if (strokeTool->type() == POLYLINE) {
-        const PolylineSettings* polyP = static_cast<const PolylineSettings*>(strokeTool->settings());
-        setClosedPathEnabled(polyP->closedPathEnabled());
-        setBezierPathEnabled(polyP->bezierPathEnabled());
+        const PolylineSettings polyP = static_cast<const PolylineTool*>(strokeTool)->polylineSettings();
+        setClosedPathEnabled(polyP.closedPathEnabled());
+        setBezierPathEnabled(polyP.bezierPathEnabled());
     }
 }
 

@@ -58,6 +58,7 @@ public:
     virtual ToolType type() const = 0;
     virtual ToolCategory category() const { return ToolCategory::BASETOOL; }
 
+    virtual ToolSettings& settings() = 0;
     virtual void createSettings(ToolSettings* settings = nullptr);
     virtual void loadSettings() = 0;
     void saveSettings();
@@ -88,8 +89,6 @@ public:
      */
     virtual bool isActive() const;
 
-    ToolSettings* settings() { Q_ASSERT(mSettings); return mSettings; }
-
     virtual void paint(QPainter& painter, const QRect& blitRect) { Q_UNUSED(painter) Q_UNUSED(blitRect) }
 
     /// Will clean up `active` connections
@@ -106,7 +105,6 @@ signals:
     bool isActiveChanged(ToolType, bool);
 
 protected:
-
     Editor* editor() { return mEditor; }
     QHash<int, QSet<Layer::LAYER_TYPE>> mPropertyUsed;
 
@@ -114,8 +112,6 @@ protected:
     ScribbleArea* mScribbleArea = nullptr;
     QList<QMetaObject::Connection> mActiveConnections;
 
-private:
-    ToolSettings* mSettings = nullptr;
 };
 
 #endif // BASETOOL_H
