@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "camerafieldoption.h"
 
 class StrokeTool;
+class TransformTool;
 
 class ToolManager : public BaseManager
 {
@@ -40,7 +41,6 @@ public:
 
     BaseTool* currentTool() const;
     BaseTool* getTool(ToolType eToolType);
-    BaseTool* getTool(ToolCategory eToolCategory);
     void setDefaultTool();
     void setCurrentTool(ToolType eToolType);
     void tabletSwitchToEraser();
@@ -52,6 +52,12 @@ public:
     void clearTemporaryTool();
     void cleanupAllToolsData();
     bool leavingThisTool();
+
+    bool isTransformTool(const BaseTool* baseTool) const;
+    bool isStrokeTool(const BaseTool* baseTool) const;
+
+    StrokeTool* currentStrokeTool() const;
+    TransformTool* currentTransformTool() const;
 
 signals:
     void toolChanged(ToolType);

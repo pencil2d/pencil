@@ -96,26 +96,29 @@ BaseTool* ToolManager::currentTool() const
     return mCurrentTool;
 }
 
+StrokeTool* ToolManager::currentStrokeTool() const
+{
+    return dynamic_cast<StrokeTool*>(mCurrentTool);
+}
+
+bool ToolManager::isStrokeTool(const BaseTool *baseTool) const
+{
+    return dynamic_cast<const StrokeTool*>(baseTool) != nullptr;
+}
+
+bool ToolManager::isTransformTool(const BaseTool *baseTool) const
+{
+    return dynamic_cast<const TransformTool*>(baseTool) != nullptr;
+}
+
+TransformTool* ToolManager::currentTransformTool() const
+{
+    return dynamic_cast<TransformTool*>(mCurrentTool);
+}
+
 BaseTool* ToolManager::getTool(ToolType eToolType)
 {
     return mToolSetHash[eToolType];
-}
-
-BaseTool* ToolManager::getTool(ToolCategory eToolCategory)
-{
-    switch (eToolCategory) {
-        case ToolCategory::TRANSFORMTOOL:
-        case ToolCategory::STROKETOOL: {
-            if (currentTool()->category() == eToolCategory) {
-                return currentTool();
-            } else {
-                return nullptr;
-            }
-        }
-        case ToolCategory::BASETOOL: {
-            return currentTool();
-        }
-    }
 }
 
 void ToolManager::setDefaultTool()

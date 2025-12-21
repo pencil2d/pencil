@@ -29,7 +29,6 @@ public:
     PenTool(QObject* parent = 0);
 
     ToolType type() const override { return PEN; }
-    ToolCategory category() const override { return STROKETOOL; }
 
     void loadSettings() override;
     QCursor cursor() override;

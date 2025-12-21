@@ -29,7 +29,6 @@ public:
     explicit PolylineTool(QObject* parent = 0);
 
     ToolType type() const override;
-    ToolCategory category() const override { return STROKETOOL; }
 
     ToolSettings& generalSettings() override { return mSettings.general(); }
     const PolylineSettings& settings() const { return mSettings; }

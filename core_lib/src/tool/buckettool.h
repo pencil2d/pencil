@@ -34,7 +34,6 @@ public:
 
     QCursor cursor() override;
     ToolType type() const override { return BUCKET; }
-    ToolCategory category() const override { return BASETOOL; }
 
     ToolSettings& generalSettings() override { return mSettings.general(); }
     const BucketSettings& settings() const { return mSettings; }

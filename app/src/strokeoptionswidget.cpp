@@ -31,7 +31,9 @@ StrokeOptionsWidget::~StrokeOptionsWidget()
 
 void StrokeOptionsWidget::initUI()
 {
-    StrokeTool* strokeTool = static_cast<StrokeTool*>(mEditor->tools()->getTool(ToolCategory::STROKETOOL));
+    StrokeTool* strokeTool = mEditor->tools()->currentStrokeTool();
+    if (strokeTool == nullptr) { return; }
+
     const StrokeSettings p = strokeTool->settings();
 
     auto widthInfo = p.getInfo(StrokeSettings::WIDTH_VALUE);
@@ -47,7 +49,7 @@ void StrokeOptionsWidget::initUI()
 
 void StrokeOptionsWidget::updateUI()
 {
-    StrokeTool* strokeTool = static_cast<StrokeTool*>(mEditor->tools()->getTool(ToolCategory::STROKETOOL));
+    StrokeTool* strokeTool = mEditor->tools()->currentStrokeTool();;
     if (strokeTool == nullptr) { return; }
 
     Q_ASSERT(strokeTool);
@@ -278,9 +280,4 @@ void StrokeOptionsWidget::setClosedPathEnabled(bool enabled)
 {
     QSignalBlocker b(ui->useClosedPathBox);
     ui->useClosedPathBox->setChecked(enabled);
-}
-
-StrokeTool* StrokeOptionsWidget::strokeTool()
-{
-    return static_cast<StrokeTool*>(mEditor->tools()->getTool(STROKETOOL));
 }

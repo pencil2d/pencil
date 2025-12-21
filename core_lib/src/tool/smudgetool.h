@@ -27,7 +27,6 @@ public:
     explicit SmudgeTool(QObject* parent = 0);
 
     ToolType type() const override;
-    ToolCategory category() const override { return STROKETOOL; }
 
     uint toolMode;  // 0=normal/smooth 1=smudge - todo: move to basetool? could be useful
     void loadSettings() override;

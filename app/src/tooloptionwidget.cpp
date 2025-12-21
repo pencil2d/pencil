@@ -97,8 +97,8 @@ void ToolOptionWidget::updateUIForTool(BaseTool* tool)
 {
     setWidgetVisibility(mBucketOptionsWidget, tool->type() == BUCKET);
     setWidgetVisibility(mCameraOptionsWidget, tool->type() == CAMERA);
-    setWidgetVisibility(mStrokeOptionsWidget, tool->category() == STROKETOOL);
-    setWidgetVisibility(mTransformOptionsWidget, tool->category() == TRANSFORMTOOL);
+    setWidgetVisibility(mStrokeOptionsWidget, editor()->tools()->isStrokeTool(tool));
+    setWidgetVisibility(mTransformOptionsWidget, editor()->tools()->isTransformTool(tool));
 }
 
 void ToolOptionWidget::onLayerChanged(int layerIndex)

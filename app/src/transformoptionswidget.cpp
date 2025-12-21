@@ -41,8 +41,8 @@ void TransformOptionsWidget::initUI()
 
 void TransformOptionsWidget::updateUI()
 {
-    TransformTool* currentTool = static_cast<TransformTool*>(mEditor->tools()->getTool(SELECT));
-    if (currentTool->category() != TRANSFORMTOOL) { return; }
+    TransformTool* currentTool = mEditor->tools()->currentTransformTool();
+    if (currentTool == nullptr) { return; }
 
     updatePropertyVisibility();
     updateToolConnections(currentTool);
@@ -59,8 +59,8 @@ void TransformOptionsWidget::updateUI()
 
 void TransformOptionsWidget::updatePropertyVisibility()
 {
-    BaseTool* currentTool = mEditor->tools()->currentTool();
-    if (currentTool->category() != TRANSFORMTOOL) { return; }
+    TransformTool* currentTool = mEditor->tools()->currentTransformTool();
+    if (mEditor->tools()->currentTransformTool() == nullptr) { return; }
 
     ui->antiAliasingCheckBox->setVisible(currentTool->isPropertyEnabled(TransformSettings::ANTI_ALIASING_ENABLED));
 }

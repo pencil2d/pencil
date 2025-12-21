@@ -35,7 +35,6 @@ public:
     explicit SelectTool(QObject* parent = nullptr);
 
     ToolType type() const override { return SELECT; }
-    ToolCategory category() const override { return TRANSFORMTOOL; }
 
     void loadSettings() override;
     QCursor cursor() override;

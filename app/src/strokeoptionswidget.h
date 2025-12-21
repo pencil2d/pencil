@@ -9,7 +9,6 @@ class BaseTool;
 class QCheckBox;
 class SpinSlider;
 class QSpinBox;
-// class QComboBox;
 
 class StrokeTool;
 
@@ -45,8 +44,6 @@ private:
     void setClosedPathEnabled(bool);
 
     void setVisibility(BaseTool*);
-
-    StrokeTool* strokeTool();
 
 private:
     Ui::StrokeOptionsWidget *ui;

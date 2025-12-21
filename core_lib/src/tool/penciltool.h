@@ -30,7 +30,6 @@ public:
     explicit PencilTool(QObject* parent);
 
     ToolType type() const override { return PENCIL; }
-    ToolCategory category() const override { return STROKETOOL; }
 
     void loadSettings() override;
     QCursor cursor() override;

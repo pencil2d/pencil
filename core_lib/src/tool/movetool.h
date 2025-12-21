@@ -35,7 +35,6 @@ public:
     QCursor cursor() override;
 
     QCursor cursor(MoveMode mode) const;
-    ToolCategory category() const override { return TRANSFORMTOOL; }
     ToolType type() const override;
 
     ToolSettings& generalSettings() override { return mSettings.general(); }
