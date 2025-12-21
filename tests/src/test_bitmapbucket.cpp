@@ -83,8 +83,8 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     info[BucketSettings::FILLMODE_VALUE] = 0;
     info[BucketSettings::COLORTOLERANCE_VALUE] = 25;
     info[BucketSettings::COLORTOLERANCE_ENABLED] = true;
-    properties.general().setDefaults(info);
-    properties.general().load("BucketTest", settings);
+    properties.general().insertProperties(info);
+    properties.general().loadFrom("BucketTest", settings);
 
     QColor fillColor = QColor(255,255,0,100);
 

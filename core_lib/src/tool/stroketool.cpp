@@ -74,8 +74,8 @@ void StrokeTool::loadSettings()
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = false;
     info[StrokeSettings::FILLCONTOUR_ENABLED] = false;
 
-    generalSettings().setDefaults(info);
-    generalSettings().load(typeName(), pencilSettings);
+    generalSettings().insertProperties(info);
+    generalSettings().loadFrom(typeName(), pencilSettings);
 
     /// Given the way that we update preferences currently, this connection should not be removed
     /// when the tool is not active.

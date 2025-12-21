@@ -212,29 +212,20 @@ struct ToolSettings
     // explicit ToolSettings();
     ~ToolSettings() {}
 
-    /*  The default properties that will be used for loading and restoring ToolSettings
-
-        @param defaultProps A QHash that's constructed like so: QHash<MyToolSettingProperty::WIDTH_VALUE, PropertyInfo>
-    */
-    void setDefaults(const QHash<int, PropertyInfo>& defaultProps) {
-        mProps = defaultProps;
+    /* Inserts properties into the ToolSetting model for loading and saving */
+    void insertProperties(const QHash<int, PropertyInfo>& properties) {
+        mProps.insert(properties);
     }
 
-    /* Update the default properties with additional properties */
-    void updateDefaults(const QHash<int, PropertyInfo>& defaultProps) {
-        mProps.insert(defaultProps);
-    }
-
-    /*  Loads settings for the given tool
-        By setting the initial BaseValue
+    /*  Loads properties for the given tool from the input QSetting
 
         If an existing value is found in QSettings then that will be the BaseValue, otherwise
         it'll use use the default value.
 
         @param toolIdentifier The identifier for the tool. This is later used to look up settings, so make sure it's consistent
-        @param settings The QSettings instance that is used to store the tool settings
+        @param settings The QSettings instance that contains the settings to load properties from
     */
-    void load(const QString& toolIdentifier, QSettings& settings) {
+    void loadFrom(const QString& toolIdentifier, QSettings& settings) {
         mIdentifier = toolIdentifier;
         settings.beginGroup(mIdentifier);
 
@@ -248,8 +239,8 @@ struct ToolSettings
         settings.endGroup();
     }
 
-    /* Store the latest changes in settings */
-    void save(QSettings& settings) {
+    /* Store all tool property changes into the input QSetting instance */
+    void storeTo(QSettings& settings) {
         settings.setValue(mVersionKey, mVersion);
         settings.beginGroup(mIdentifier);
 
@@ -300,7 +291,7 @@ struct ToolSettings
         return mProps[rawPropertyType];
     }
 
-    void restoreDefaults() {
+    void restoreProperties() {
         for (auto it = mProps.begin(); it != mProps.end(); ++it) {
             it.value().resetBaseValue();
         }
@@ -347,7 +338,7 @@ struct ToolSettings
         auto it = mIdentifiers.find(rawKey);
         Q_ASSERT_X(it != mIdentifiers.end(),
                    "ToolSettings::identifier",
-                   "Unknown property identifier");
+                   QString("No identifier matching the key %1 found").arg(rawKey).toUtf8().constData());
         return it.value();
     }
 

@@ -58,8 +58,8 @@ void PolylineTool::loadSettings()
     info[PolylineSettings::BEZIERPATH_ENABLED] = false;
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
 
-    generalSettings().updateDefaults(info);
-    generalSettings().load(typeName(), pencilSettings);
+    generalSettings().insertProperties(info);
+    generalSettings().loadFrom(typeName(), pencilSettings);
 
     if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
         generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("polylineWidth", 8.0).toReal());

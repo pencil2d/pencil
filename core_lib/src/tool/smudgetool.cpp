@@ -54,8 +54,8 @@ void SmudgeTool::loadSettings()
     info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
 
-    generalSettings().updateDefaults(info);
-    generalSettings().load(typeName(), pencilSettings);
+    generalSettings().insertProperties(info);
+    generalSettings().loadFrom(typeName(), pencilSettings);
 
     if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
         generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("smudgeWidth", 24.0).toReal());

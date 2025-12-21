@@ -60,8 +60,8 @@ void BucketTool::loadSettings()
     info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = { 0, 1, 0 };
     info[BucketSettings::FILLMODE_VALUE] = { 0, 2, 0 };
 
-    generalSettings().setDefaults(info);
-    generalSettings().load(typeName(), pencilSettings);
+    generalSettings().insertProperties(info);
+    generalSettings().loadFrom(typeName(), pencilSettings);
 
     if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
         generalSettings().setBaseValue(BucketSettings::FILLTHICKNESS_VALUE, pencilSettings.value("fillThickness", 4.0).toReal());

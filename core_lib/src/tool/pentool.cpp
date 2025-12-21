@@ -54,8 +54,8 @@ void PenTool::loadSettings()
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
 
-    generalSettings().updateDefaults(info);
-    generalSettings().load(typeName(), pencilSettings);
+    generalSettings().insertProperties(info);
+    generalSettings().loadFrom(typeName(), pencilSettings);
 
     if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
         generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("penWidth", 12.0).toReal());

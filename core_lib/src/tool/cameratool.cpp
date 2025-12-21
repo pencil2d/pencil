@@ -63,8 +63,8 @@ void CameraTool::loadSettings()
                                                  static_cast<int>(DotColorType::BLACK) };
     info[CameraSettings::SHOWPATH_ENABLED] = false;
 
-    generalSettings().setDefaults(info);
-    generalSettings().load(typeName(), pencilSettings);
+    generalSettings().insertProperties(info);
+    generalSettings().loadFrom(typeName(), pencilSettings);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &CameraTool::updateSettings);
 

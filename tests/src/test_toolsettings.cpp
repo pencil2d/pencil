@@ -62,52 +62,52 @@ TEST_CASE("ToolSettings behavior", "[ToolSettings]") {
         { MockSettings::SCALE, PropertyInfo(0.5, 2.0, 1.0) }
     };
 
-    SECTION("setDefaults sets default properties") {
-        toolSettings.general().setDefaults(defaultProps);
+    SECTION("calling insertProperties inserts properties into the ToolSetting") {
+        toolSettings.general().insertProperties(defaultProps);
         REQUIRE(toolSettings.getInfo(MockSettings::WIDTH).intValue() == 5);
         REQUIRE(toolSettings.getInfo(MockSettings::ENABLED).boolValue() == true);
     }
 
     SECTION("updateDefaults adds to existing properties") {
-        toolSettings.general().setDefaults({ { MockSettings::WIDTH, PropertyInfo(0, 10, 3) } });
+        toolSettings.general().insertProperties({ { MockSettings::WIDTH, PropertyInfo(0, 10, 3) } });
 
         QHash<int, PropertyInfo> extra = {
             { MockSettings::ENABLED, PropertyInfo(false, false) }
         };
 
-        toolSettings.general().updateDefaults(extra);
+        toolSettings.general().insertProperties(extra);
         REQUIRE(toolSettings.getInfo(MockSettings::ENABLED).boolValue() == false);
         REQUIRE(toolSettings.getInfo(MockSettings::WIDTH).intValue() == 3);
     }
 
     SECTION("setBaseValue overrides individual value") {
-        toolSettings.general().setDefaults(defaultProps);
+        toolSettings.general().insertProperties(defaultProps);
         toolSettings.general().setBaseValue(MockSettings::WIDTH, 8);
         REQUIRE(toolSettings.getInfo(MockSettings::WIDTH).intValue() == 8);
     }
 
     SECTION("restoreDefaults resets to original defaults") {
-        toolSettings.general().setDefaults(defaultProps);
+        toolSettings.general().insertProperties(defaultProps);
         toolSettings.general().setBaseValue(MockSettings::WIDTH, 9);
-        toolSettings.general().restoreDefaults();
+        toolSettings.general().restoreProperties();
         REQUIRE(toolSettings.getInfo(MockSettings::WIDTH).intValue() == 5);  // back to default
     }
 
     SECTION("save and load persist values") {
-        toolSettings.general().setDefaults(defaultProps);
-        toolSettings.general().load("mocktool", settings); // loads and stores
+        toolSettings.general().insertProperties(defaultProps);
+        toolSettings.general().loadFrom("mocktool", settings); // loads and stores
         toolSettings.general().setBaseValue(MockSettings::WIDTH, 7);  // override
-        toolSettings.general().save(settings);
+        toolSettings.general().storeTo(settings);
 
         // New settings instance to simulate reload
         MockSettings reloaded;
-        reloaded.general().setDefaults(defaultProps);
-        reloaded.general().load("mocktool", settings);
+        reloaded.general().insertProperties(defaultProps);
+        reloaded.general().loadFrom("mocktool", settings);
         REQUIRE(reloaded.getInfo(MockSettings::WIDTH).intValue() == 7);
     }
 
     SECTION("Test migration from old settings") {
-        toolSettings.general().setDefaults(defaultProps);
+        toolSettings.general().insertProperties(defaultProps);
 
         GIVEN("The application is launched with old tool settings") {
             settings.setValue("brushWidth", 50);
@@ -127,10 +127,10 @@ TEST_CASE("ToolSettings behavior", "[ToolSettings]") {
     }
 
     SECTION("Ensure migration of modified settings when applicable") {
-        toolSettings.general().setDefaults(defaultProps);
+        toolSettings.general().insertProperties(defaultProps);
         toolSettings.general().setVersion(ToolSettings::VERSION_1);  // Set current version
-        toolSettings.general().load("mocktool", settings);
-        toolSettings.general().save(settings);
+        toolSettings.general().loadFrom("mocktool", settings);
+        toolSettings.general().storeTo(settings);
 
         REQUIRE(toolSettings.general().requireMigration(settings, ToolSettings::VERSION_1) == false);
 
@@ -141,7 +141,7 @@ TEST_CASE("ToolSettings behavior", "[ToolSettings]") {
                 REQUIRE(toolSettings.general().requireMigration(settings, ToolSettings::VERSION_2) == true);
 
                 THEN("After settings have been migrated and stored, migration of that particular version is no longer required") {
-                    toolSettings.general().save(settings);
+                    toolSettings.general().storeTo(settings);
                     REQUIRE(toolSettings.general().requireMigration(settings, ToolSettings::VERSION_2) == false);
                 }
             }
@@ -149,7 +149,7 @@ TEST_CASE("ToolSettings behavior", "[ToolSettings]") {
     }
 
     SECTION("ToolSetting can only use settings from valid range") {
-        toolSettings.general().setDefaults(defaultProps);
+        toolSettings.general().insertProperties(defaultProps);
         REQUIRE(toolSettings.general().isValidType(StrokeSettings::FEATHER_ENABLED) == false);
     }
 }

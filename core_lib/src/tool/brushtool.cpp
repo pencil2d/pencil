@@ -64,8 +64,8 @@ void BrushTool::loadSettings()
     info[StrokeSettings::INVISIBILITY_ENABLED] = false;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG } ;
 
-    generalSettings().updateDefaults(info);
-    generalSettings().load(typeName(), pencilSettings);
+    generalSettings().insertProperties(info);
+    generalSettings().loadFrom(typeName(), pencilSettings);
 
     if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
         generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("brushWidth", 24.0).toReal());

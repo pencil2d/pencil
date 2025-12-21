@@ -55,8 +55,9 @@ void MoveTool::loadSettings()
 
     info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
     info[TransformSettings::ANTI_ALIASING_ENABLED] = true;
-    generalSettings().setDefaults(info);
-    generalSettings().load(typeName(), pencilSettings);
+
+    generalSettings().insertProperties(info);
+    generalSettings().loadFrom(typeName(), pencilSettings);
 
     if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
         generalSettings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
