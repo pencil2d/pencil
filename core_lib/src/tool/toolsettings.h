@@ -471,6 +471,7 @@ struct PolylineSettings: public ToolSettingsBase
     }
 
     ToolSettings& general() override { return mStrokeSettings.general(); }
+    const StrokeSettings& strokeSettings() const { return mStrokeSettings; }
 
     PropertyInfo getInfo(int rawPropertyType) const override {
         return mStrokeSettings.getInfo(rawPropertyType);

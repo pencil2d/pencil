@@ -39,8 +39,7 @@ public:
     explicit StrokeTool(QObject* parent);
     ~StrokeTool();
 
-    ToolSettings& generalSettings() override { return mSettings.general(); }
-    const StrokeSettings& settings() const { return mSettings; }
+    virtual const StrokeSettings& strokeSettings() const = 0;
 
     void startStroke(PointerEvent::InputType inputType);
     void drawStroke();
@@ -124,8 +123,6 @@ protected:
     StrokeInterpolator mInterpolator;
 
     const UndoSaveState* mUndoSaveState = nullptr;
-
-    StrokeSettings mSettings;
 
     static const qreal FEATHER_MIN;
     static const qreal FEATHER_MAX;

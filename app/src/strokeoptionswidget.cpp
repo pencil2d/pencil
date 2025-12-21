@@ -34,7 +34,7 @@ void StrokeOptionsWidget::initUI()
     StrokeTool* strokeTool = mEditor->tools()->currentStrokeTool();
     if (strokeTool == nullptr) { return; }
 
-    const StrokeSettings p = strokeTool->settings();
+    const StrokeSettings p = strokeTool->strokeSettings();
 
     auto widthInfo = p.getInfo(StrokeSettings::WIDTH_VALUE);
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.minReal(), widthInfo.maxReal());
@@ -49,7 +49,7 @@ void StrokeOptionsWidget::initUI()
 
 void StrokeOptionsWidget::updateUI()
 {
-    StrokeTool* strokeTool = mEditor->tools()->currentStrokeTool();;
+    StrokeTool* strokeTool = mEditor->tools()->currentStrokeTool();
     if (strokeTool == nullptr) { return; }
 
     Q_ASSERT(strokeTool);
@@ -58,7 +58,7 @@ void StrokeOptionsWidget::updateUI()
 
     setVisibility(strokeTool);
 
-    const StrokeSettings p = strokeTool->settings();
+    const StrokeSettings& p = strokeTool->strokeSettings();
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
     {

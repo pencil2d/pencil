@@ -28,6 +28,9 @@ public:
     explicit EraserTool(QObject* parent = nullptr);
     ToolType type() const override;
 
+    ToolSettings& generalSettings() override { return mSettings.general(); }
+    const StrokeSettings& strokeSettings() const override { return mSettings; }
+
     void loadSettings() override;
     QCursor cursor() override;
 
@@ -43,6 +46,8 @@ public:
 protected:
     QPointF mLastBrushPoint;
     QPointF mMouseDownPoint;
+
+    StrokeSettings mSettings;
 };
 
 #endif // ERASERTOOL_H

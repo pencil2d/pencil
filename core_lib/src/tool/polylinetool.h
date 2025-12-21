@@ -31,6 +31,7 @@ public:
     ToolType type() const override;
 
     ToolSettings& generalSettings() override { return mSettings.general(); }
+    const StrokeSettings& strokeSettings() const override { return mSettings.strokeSettings(); }
     const PolylineSettings& settings() const { return mSettings; }
 
     void loadSettings() override;

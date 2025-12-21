@@ -87,7 +87,7 @@ void StrokeTool::loadSettings()
 
     connect(&mFeatherSizingTool, &RadialOffsetTool::offsetChanged, this, [=](qreal offset){
         const qreal inputMin = FEATHER_MIN;
-        const qreal inputMax = mSettings.width() * 0.5;
+        const qreal inputMax = strokeSettings().width() * 0.5;
         const qreal outputMax = FEATHER_MAX;
         const qreal outputMin = inputMin;
 
@@ -247,15 +247,15 @@ bool StrokeTool::handleQuickSizing(PointerEvent* event)
     if (event->eventType() == PointerEvent::Press) {
         switch (setting) {
             case StrokeSettings::WIDTH_VALUE: {
-                mWidthSizingTool.setOffset(mSettings.width() * 0.5);
+                mWidthSizingTool.setOffset(strokeSettings().width() * 0.5);
                 break;
             }
             case StrokeSettings::FEATHER_VALUE: {
                 const qreal factor = 0.5;
-                const qreal cursorRad = mSettings.width() * factor;
+                const qreal cursorRad = strokeSettings().width() * factor;
 
                 // Pull feather handle closer to center as feather increases
-                const qreal featherWidthFactor = MathUtils::normalize(mSettings.feather(), FEATHER_MIN, FEATHER_MAX);
+                const qreal featherWidthFactor = MathUtils::normalize(strokeSettings().feather(), FEATHER_MIN, FEATHER_MAX);
                 const qreal offset = (cursorRad * featherWidthFactor);
                 mFeatherSizingTool.setOffset(offset);
                 break;
@@ -316,8 +316,8 @@ bool StrokeTool::leaveEvent(QEvent*)
 
 QRectF StrokeTool::cursorRect(StrokeSettings::Type settingType, const QPointF& point)
 {
-    const qreal brushWidth = mSettings.width();
-    const qreal brushFeather = mSettings.feather();
+    const qreal brushWidth = strokeSettings().width();
+    const qreal brushFeather = strokeSettings().feather();
 
     const QPointF& cursorPos = point;
     const qreal cursorRad = brushWidth * 0.5;
@@ -379,7 +379,7 @@ void StrokeTool::paint(QPainter& painter, const QRect& blitRect)
     painter.save();
     painter.setTransform(mEditor->view()->getView());
 
-    if (mSettings.featherEnabled()) {
+    if (strokeSettings().featherEnabled()) {
         mFeatherCursorPainter.paint(painter, blitRect);
     }
 
@@ -403,13 +403,13 @@ void StrokeTool::setFeatherEnabled(bool enabled)
 void StrokeTool::setFeather(qreal feather)
 {
     generalSettings().setBaseValue(StrokeSettings::FEATHER_VALUE, feather);
-    emit featherChanged(mSettings.feather());
+    emit featherChanged(strokeSettings().feather());
 }
 
 void StrokeTool::setWidth(qreal width)
 {
     generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, width);
-    emit widthChanged(mSettings.width());
+    emit widthChanged(strokeSettings().width());
 }
 
 void StrokeTool::setPressureEnabled(bool enabled)
