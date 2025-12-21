@@ -59,8 +59,6 @@ void BaseTool::initialize(Editor* editor)
     mEditor = editor;
     mScribbleArea = editor->getScribbleArea();
     Q_ASSERT(mScribbleArea);
-    // createSettings(nullptr);
-
     loadSettings();
 }
 
