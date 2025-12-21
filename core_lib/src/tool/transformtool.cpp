@@ -27,10 +27,6 @@ TransformTool::~TransformTool()
 {
 }
 
-void TransformTool::createSettings(ToolSettings* settings)
-{
-}
-
 void TransformTool::setShowSelectionInfo(bool enabled)
 {
     settings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, enabled);

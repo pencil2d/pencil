@@ -66,7 +66,6 @@ public:
     ToolSettings& settings() override { return mSettings.general(); }
     CameraSettings cameraSettings() const { return mSettings; }
 
-    void createSettings(ToolSettings*) override;
     void loadSettings() override;
 
     void pointerPressEvent(PointerEvent* event) override;

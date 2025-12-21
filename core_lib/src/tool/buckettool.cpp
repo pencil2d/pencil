@@ -38,12 +38,6 @@ BucketTool::BucketTool(QObject* parent) : BaseTool(parent)
 {
 }
 
-void BucketTool::createSettings(ToolSettings*)
-{
-    // mSettings = new BucketSettings();
-    // BaseTool::createSettings(mSettings);
-}
-
 void BucketTool::loadSettings()
 {
     mPropertyUsed[BucketSettings::FILLTHICKNESS_VALUE] = { Layer::VECTOR };

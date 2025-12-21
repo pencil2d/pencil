@@ -64,15 +64,6 @@ void BaseTool::initialize(Editor* editor)
     loadSettings();
 }
 
-void BaseTool::createSettings(ToolSettings* settings)
-{
-    // if (settings == nullptr) {
-        // mSettings = new ToolSettings();
-    // } else {
-        // mSettings = settings;
-    // }
-}
-
 void BaseTool::saveSettings()
 {
     QSettings storedSettings(PENCIL2D, PENCIL2D);

@@ -51,7 +51,6 @@ public:
 
     void updateCanvasCursor();
 
-    void createSettings(ToolSettings* settings) override;
     void loadSettings() override;
     bool isActive() const override { return mInterpolator.isActive(); }
 

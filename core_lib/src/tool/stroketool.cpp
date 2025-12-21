@@ -58,10 +58,6 @@ StrokeTool::~StrokeTool()
 {
 }
 
-void StrokeTool::createSettings(ToolSettings* settings)
-{
-}
-
 void StrokeTool::loadSettings()
 {
     mQuickSizingEnabled = mEditor->preference()->isOn(SETTING::QUICK_SIZING);

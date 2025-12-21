@@ -33,7 +33,6 @@ public:
 
     ToolSettings& settings() override { return mSettings.general(); }
     PolylineSettings polylineSettings() const { return mSettings; }
-    void createSettings(ToolSettings *) override;
     void loadSettings() override;
     QCursor cursor() override;
 

@@ -39,7 +39,6 @@ public:
     ToolSettings& settings() override { return mSettings.general(); }
     const BucketSettings& bucketSettings() const { return mSettings; }
 
-    void createSettings(ToolSettings*) override;
     void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;

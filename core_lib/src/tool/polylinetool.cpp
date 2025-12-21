@@ -40,12 +40,6 @@ ToolType PolylineTool::type() const
     return POLYLINE;
 }
 
-void PolylineTool::createSettings(ToolSettings *)
-{
-    // mSettings = new PolylineSettings();
-    // StrokeTool::createSettings(mSettings);
-}
-
 void PolylineTool::loadSettings()
 {
     StrokeTool::loadSettings();

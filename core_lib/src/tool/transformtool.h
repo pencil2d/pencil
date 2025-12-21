@@ -29,7 +29,6 @@ public:
     ToolSettings& settings() override { return mSettings.general(); }
     const TransformSettings& transformSettings() const { return mSettings; }
 
-    void createSettings(ToolSettings* settings) override;
     void setShowSelectionInfo(bool enabled);
     void setAntiAliasingEnabled(bool enabled);
 

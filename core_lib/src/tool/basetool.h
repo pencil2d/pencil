@@ -59,7 +59,6 @@ public:
     virtual ToolCategory category() const { return ToolCategory::BASETOOL; }
 
     virtual ToolSettings& settings() = 0;
-    virtual void createSettings(ToolSettings* settings = nullptr);
     virtual void loadSettings() = 0;
     void saveSettings();
     void resetSettings();
