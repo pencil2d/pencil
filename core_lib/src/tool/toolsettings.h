@@ -209,7 +209,6 @@ struct ToolSettings
         VERSION_3
     };
 
-    // explicit ToolSettings();
     ~ToolSettings() {}
 
     /* Inserts properties into the ToolSetting model for loading and saving */
@@ -346,8 +345,6 @@ struct ToolSettings
     void addRange(QPair<int, int> range) { mTypeRanges.append(range); }
     const QVector<QPair<int, int>>& typeRanges() const { return mTypeRanges; }
 
-    QHash<int, PropertyInfo> mProps;
-
 private:
 
     void loadProperty(const QString& settingName, PropertyInfo& info, const QSettings& settings) {
@@ -379,6 +376,7 @@ private:
     // eg. PolyLineTool uses both StrokeSettings range as well as it's own
     QVector<QPair<int, int>> mTypeRanges;
     QHash<int, QString> mIdentifiers;
+    QHash<int, PropertyInfo> mProps;
 
     QString mIdentifier = "undefined";
     Version mVersion = VERSION_1;
@@ -464,7 +462,7 @@ struct PolylineSettings: public ToolSettingsBase
     };
 
     PolylineSettings() {
-        mStrokeSettings.addRange({START, END});
+        general().addRange({START, END});
 
         general().insertIdentifiers({
             { CLOSEDPATH_ENABLED, "ClosedPathEnabled"},
