@@ -63,8 +63,8 @@ public:
 
     void paint(QPainter& painter, const QRect&) override;
 
-    ToolSettings& settings() override { return mSettings.general(); }
-    CameraSettings cameraSettings() const { return mSettings; }
+    ToolSettings& generalSettings() override { return mSettings.general(); }
+    const CameraSettings& settings() const { return mSettings; }
 
     void loadSettings() override;
 

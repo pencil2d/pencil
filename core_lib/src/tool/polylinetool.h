@@ -31,8 +31,9 @@ public:
     ToolType type() const override;
     ToolCategory category() const override { return STROKETOOL; }
 
-    ToolSettings& settings() override { return mSettings.general(); }
-    PolylineSettings polylineSettings() const { return mSettings; }
+    ToolSettings& generalSettings() override { return mSettings.general(); }
+    const PolylineSettings& settings() const { return mSettings; }
+
     void loadSettings() override;
     QCursor cursor() override;
 

@@ -58,7 +58,7 @@ public:
     virtual ToolType type() const = 0;
     virtual ToolCategory category() const { return ToolCategory::BASETOOL; }
 
-    virtual ToolSettings& settings() = 0;
+    virtual ToolSettings& generalSettings() = 0;
     virtual void loadSettings() = 0;
     void saveSettings();
     void resetSettings();

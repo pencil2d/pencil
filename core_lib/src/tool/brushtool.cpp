@@ -64,15 +64,15 @@ void BrushTool::loadSettings()
     info[StrokeSettings::INVISIBILITY_ENABLED] = false;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG } ;
 
-    settings().updateDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().updateDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
-    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        settings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("brushWidth", 24.0).toReal());
-        settings().setBaseValue(StrokeSettings::FEATHER_VALUE, pencilSettings.value("brushFeather", 48.0).toReal());
-        settings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, pencilSettings.value("brushPressure", true).toBool());
-        settings().setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, pencilSettings.value("brushInvisibility", false).toBool());
-        settings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, pencilSettings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt());
+    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("brushWidth", 24.0).toReal());
+        generalSettings().setBaseValue(StrokeSettings::FEATHER_VALUE, pencilSettings.value("brushFeather", 48.0).toReal());
+        generalSettings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, pencilSettings.value("brushPressure", true).toBool());
+        generalSettings().setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, pencilSettings.value("brushInvisibility", false).toBool());
+        generalSettings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, pencilSettings.value("brushLineStabilization", StabilizationLevel::STRONG).toInt());
 
         pencilSettings.remove("brushWidth");
         pencilSettings.remove("brushFeather");

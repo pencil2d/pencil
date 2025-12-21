@@ -58,13 +58,13 @@ void PolylineTool::loadSettings()
     info[PolylineSettings::BEZIERPATH_ENABLED] = false;
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
 
-    settings().updateDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().updateDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
-    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        settings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("polylineWidth", 8.0).toReal());
-        settings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("brushAA", true).toBool());
-        settings().setBaseValue(PolylineSettings::CLOSEDPATH_ENABLED, pencilSettings.value("closedPolylinePath", false).toBool());
+    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("polylineWidth", 8.0).toReal());
+        generalSettings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("brushAA", true).toBool());
+        generalSettings().setBaseValue(PolylineSettings::CLOSEDPATH_ENABLED, pencilSettings.value("closedPolylinePath", false).toBool());
 
         pencilSettings.remove("polylineWidth");
         pencilSettings.remove("brushAA");
@@ -343,12 +343,12 @@ void PolylineTool::endPolyline(QList<QPointF> points)
 
 void PolylineTool::setUseBezier(bool useBezier)
 {
-    settings().setBaseValue(PolylineSettings::BEZIERPATH_ENABLED, useBezier);
+    generalSettings().setBaseValue(PolylineSettings::BEZIERPATH_ENABLED, useBezier);
     emit bezierPathEnabledChanged(useBezier);
 }
 
 void PolylineTool::setClosePath(bool closePath)
 {
-    settings().setBaseValue(PolylineSettings::CLOSEDPATH_ENABLED, closePath);
+    generalSettings().setBaseValue(PolylineSettings::CLOSEDPATH_ENABLED, closePath);
     emit closePathChanged(closePath);
 }

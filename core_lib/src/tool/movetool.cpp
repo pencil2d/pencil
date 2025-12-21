@@ -55,12 +55,12 @@ void MoveTool::loadSettings()
 
     info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
     info[TransformSettings::ANTI_ALIASING_ENABLED] = true;
-    settings().setDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().setDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
-    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        settings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
-        settings().setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("moveAA", true).toBool());
+    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        generalSettings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
+        generalSettings().setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("moveAA", true).toBool());
     }
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);

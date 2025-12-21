@@ -31,7 +31,7 @@ public:
 
     ToolType type() const override { return EYEDROPPER; }
 
-    ToolSettings& settings() override { return mSettings; }
+    ToolSettings& generalSettings() override { return mSettings; }
 
     void loadSettings() override;
     QCursor cursor() override;

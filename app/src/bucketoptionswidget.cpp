@@ -48,7 +48,7 @@ BucketOptionsWidget::~BucketOptionsWidget()
 void BucketOptionsWidget::initUI()
 {
     mBucketTool = static_cast<BucketTool*>(mEditor->tools()->getTool(BUCKET));
-    mSettings = mBucketTool->bucketSettings();
+    mSettings = mBucketTool->settings();
 
     auto toleranceInfo = mSettings.getInfo(BucketSettings::COLORTOLERANCE_VALUE);
     auto expandInfo = mSettings.getInfo(BucketSettings::FILLEXPAND_VALUE);

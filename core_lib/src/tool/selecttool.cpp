@@ -39,11 +39,11 @@ void SelectTool::loadSettings()
     mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
 
     info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
-    settings().setDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().setDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
-    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        settings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
+    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        generalSettings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
     }
 }
 

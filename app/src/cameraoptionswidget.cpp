@@ -50,7 +50,7 @@ void CameraOptionsWidget::updateUI()
 {
     Q_ASSERT(mCameraTool->type() == CAMERA);
 
-    const CameraSettings p = mCameraTool->cameraSettings();
+    const CameraSettings p = mCameraTool->settings();
 
     setShowCameraPath(p.showPathEnabled());
     setPathDotColorType(p.dotColorType());

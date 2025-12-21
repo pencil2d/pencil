@@ -67,12 +67,12 @@ void BaseTool::initialize(Editor* editor)
 void BaseTool::saveSettings()
 {
     QSettings storedSettings(PENCIL2D, PENCIL2D);
-    settings().save(storedSettings);
+    generalSettings().save(storedSettings);
 }
 
 void BaseTool::resetSettings()
 {
-    settings().restoreDefaults();
+    generalSettings().restoreDefaults();
 }
 
 bool BaseTool::isPropertyEnabled(int rawType)

@@ -26,7 +26,7 @@ public:
     TransformTool(QObject* parent = nullptr);
     ~TransformTool();
 
-    ToolSettings& settings() override { return mSettings.general(); }
+    ToolSettings& generalSettings() override { return mSettings.general(); }
     const TransformSettings& transformSettings() const { return mSettings; }
 
     void setShowSelectionInfo(bool enabled);

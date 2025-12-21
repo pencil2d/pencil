@@ -39,8 +39,8 @@ public:
     explicit StrokeTool(QObject* parent);
     ~StrokeTool();
 
-    ToolSettings& settings() override { return mSettings.general(); }
-    const StrokeSettings& strokeSettings() const { return mSettings; }
+    ToolSettings& generalSettings() override { return mSettings.general(); }
+    const StrokeSettings& settings() const { return mSettings; }
 
     void startStroke(PointerEvent::InputType inputType);
     void drawStroke();

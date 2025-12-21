@@ -74,8 +74,8 @@ void StrokeTool::loadSettings()
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = false;
     info[StrokeSettings::FILLCONTOUR_ENABLED] = false;
 
-    settings().setDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().setDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
     /// Given the way that we update preferences currently, this connection should not be removed
     /// when the tool is not active.
@@ -390,48 +390,48 @@ void StrokeTool::paint(QPainter& painter, const QRect& blitRect)
 
 void StrokeTool::setStablizationLevel(int level)
 {
-    settings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, level);
+    generalSettings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, level);
     emit stabilizationLevelChanged(level);
 }
 
 void StrokeTool::setFeatherEnabled(bool enabled)
 {
-    settings().setBaseValue(StrokeSettings::FEATHER_ENABLED, enabled);
+    generalSettings().setBaseValue(StrokeSettings::FEATHER_ENABLED, enabled);
     emit featherEnabledChanged(enabled);
 }
 
 void StrokeTool::setFeather(qreal feather)
 {
-    settings().setBaseValue(StrokeSettings::FEATHER_VALUE, feather);
+    generalSettings().setBaseValue(StrokeSettings::FEATHER_VALUE, feather);
     emit featherChanged(mSettings.feather());
 }
 
 void StrokeTool::setWidth(qreal width)
 {
-    settings().setBaseValue(StrokeSettings::WIDTH_VALUE, width);
+    generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, width);
     emit widthChanged(mSettings.width());
 }
 
 void StrokeTool::setPressureEnabled(bool enabled)
 {
-    settings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, enabled);
+    generalSettings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, enabled);
     emit pressureEnabledChanged(enabled);
 }
 
 void StrokeTool::setFillContourEnabled(bool enabled)
 {
-    settings().setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, enabled);
+    generalSettings().setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, enabled);
     emit fillContourEnabledChanged(enabled);
 }
 
 void StrokeTool::setAntiAliasingEnabled(bool enabled)
 {
-    settings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, enabled);
+    generalSettings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, enabled);
     emit antiAliasingEnabledChanged(enabled);
 }
 
 void StrokeTool::setStrokeInvisibleEnabled(bool enabled)
 {
-    settings().setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, enabled);
+    generalSettings().setBaseValue(StrokeSettings::INVISIBILITY_ENABLED, enabled);
     emit invisibleStrokeEnabledChanged(enabled);
 }

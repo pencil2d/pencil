@@ -54,14 +54,14 @@ void PenTool::loadSettings()
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
 
-    settings().updateDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().updateDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
-    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        settings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("penWidth", 12.0).toReal());
-        settings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, pencilSettings.value("penPressure", true).toBool());
-        settings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("penAA", true).toBool());
-        settings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, pencilSettings.value("penLineStablization", StabilizationLevel::STRONG).toInt());
+    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("penWidth", 12.0).toReal());
+        generalSettings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, pencilSettings.value("penPressure", true).toBool());
+        generalSettings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("penAA", true).toBool());
+        generalSettings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, pencilSettings.value("penLineStablization", StabilizationLevel::STRONG).toInt());
 
         pencilSettings.remove("penWidth");
         pencilSettings.remove("penPressure");

@@ -38,7 +38,7 @@ public:
     ToolCategory category() const override { return TRANSFORMTOOL; }
     ToolType type() const override;
 
-    ToolSettings& settings() override { return mSettings.general(); }
+    ToolSettings& generalSettings() override { return mSettings.general(); }
     void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;

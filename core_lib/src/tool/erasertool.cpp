@@ -62,16 +62,16 @@ void EraserTool::loadSettings()
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::NONE };
     info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
 
-    settings().updateDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().updateDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
-    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        settings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("eraserWidth", 24.0).toReal());
-        settings().setBaseValue(StrokeSettings::FEATHER_VALUE, pencilSettings.value("eraserFeather", 48.0).toReal());
-        settings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, pencilSettings.value("stabilizerLevel", StabilizationLevel::NONE).toInt());
-        settings().setBaseValue(StrokeSettings::FEATHER_ENABLED, pencilSettings.value("eraserUseFeather", true).toBool());
-        settings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, pencilSettings.value("eraserPressure", true).toBool());
-        settings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("eraserAA", true).toBool());
+    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("eraserWidth", 24.0).toReal());
+        generalSettings().setBaseValue(StrokeSettings::FEATHER_VALUE, pencilSettings.value("eraserFeather", 48.0).toReal());
+        generalSettings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, pencilSettings.value("stabilizerLevel", StabilizationLevel::NONE).toInt());
+        generalSettings().setBaseValue(StrokeSettings::FEATHER_ENABLED, pencilSettings.value("eraserUseFeather", true).toBool());
+        generalSettings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, pencilSettings.value("eraserPressure", true).toBool());
+        generalSettings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("eraserAA", true).toBool());
 
         pencilSettings.remove("eraserWidth");
         pencilSettings.remove("eraserFeather");

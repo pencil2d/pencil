@@ -57,14 +57,14 @@ void PencilTool::loadSettings()
     info[StrokeSettings::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
     info[StrokeSettings::FILLCONTOUR_ENABLED] = false;
 
-    settings().updateDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().updateDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
-    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        settings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("pencilWidth", 4.0).toReal());
-        settings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, pencilSettings.value("pencilPressure", true).toBool());
-        settings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, pencilSettings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt());
-        settings().setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, pencilSettings.value("FillContour", false).toBool());
+    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("pencilWidth", 4.0).toReal());
+        generalSettings().setBaseValue(StrokeSettings::PRESSURE_ENABLED, pencilSettings.value("pencilPressure", true).toBool());
+        generalSettings().setBaseValue(StrokeSettings::STABILIZATION_VALUE, pencilSettings.value("pencilLineStabilization", StabilizationLevel::STRONG).toInt());
+        generalSettings().setBaseValue(StrokeSettings::FILLCONTOUR_ENABLED, pencilSettings.value("FillContour", false).toBool());
 
         pencilSettings.remove("pencilWidth");
         pencilSettings.remove("pencilPressure");
@@ -72,7 +72,7 @@ void PencilTool::loadSettings()
         pencilSettings.remove("FillContour");
     }
 
-    settings().setBaseValue(StrokeSettings::FEATHER_VALUE, info[StrokeSettings::FEATHER_VALUE].defaultReal());
+    generalSettings().setBaseValue(StrokeSettings::FEATHER_VALUE, info[StrokeSettings::FEATHER_VALUE].defaultReal());
 
     mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
 }

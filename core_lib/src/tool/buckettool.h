@@ -36,8 +36,8 @@ public:
     ToolType type() const override { return BUCKET; }
     ToolCategory category() const override { return BASETOOL; }
 
-    ToolSettings& settings() override { return mSettings.general(); }
-    const BucketSettings& bucketSettings() const { return mSettings; }
+    ToolSettings& generalSettings() override { return mSettings.general(); }
+    const BucketSettings& settings() const { return mSettings; }
 
     void loadSettings() override;
 

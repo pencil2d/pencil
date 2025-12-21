@@ -32,7 +32,7 @@ StrokeOptionsWidget::~StrokeOptionsWidget()
 void StrokeOptionsWidget::initUI()
 {
     StrokeTool* strokeTool = static_cast<StrokeTool*>(mEditor->tools()->getTool(ToolCategory::STROKETOOL));
-    const StrokeSettings p = strokeTool->strokeSettings();
+    const StrokeSettings p = strokeTool->settings();
 
     auto widthInfo = p.getInfo(StrokeSettings::WIDTH_VALUE);
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.minReal(), widthInfo.maxReal());
@@ -56,7 +56,7 @@ void StrokeOptionsWidget::updateUI()
 
     setVisibility(strokeTool);
 
-    const StrokeSettings p = strokeTool->strokeSettings();
+    const StrokeSettings p = strokeTool->settings();
 
     if (strokeTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
     {
@@ -104,7 +104,7 @@ void StrokeOptionsWidget::updateUI()
     }
 
     if (strokeTool->type() == POLYLINE) {
-        const PolylineSettings polyP = static_cast<const PolylineTool*>(strokeTool)->polylineSettings();
+        const PolylineSettings polyP = static_cast<const PolylineTool*>(strokeTool)->settings();
         setClosedPathEnabled(polyP.closedPathEnabled());
         setBezierPathEnabled(polyP.bezierPathEnabled());
     }

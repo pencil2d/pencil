@@ -29,7 +29,7 @@ public:
     explicit HandTool( QObject* parent = 0 );
 
     ToolType type() const override { return HAND; }
-    ToolSettings& settings() override { return mSettings; }
+    ToolSettings& generalSettings() override { return mSettings; }
     void loadSettings() override;
     QCursor cursor() override;
 

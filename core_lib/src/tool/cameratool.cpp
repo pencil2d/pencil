@@ -63,8 +63,8 @@ void CameraTool::loadSettings()
                                                  static_cast<int>(DotColorType::BLACK) };
     info[CameraSettings::SHOWPATH_ENABLED] = false;
 
-    settings().setDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().setDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &CameraTool::updateSettings);
 
@@ -104,8 +104,8 @@ void CameraTool::updateProperties()
     if (!layer || layer->type() != Layer::CAMERA) { return; }
 
     LayerCamera* layerCam = static_cast<LayerCamera*>(layer);
-    settings().setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(layerCam->getDotColorType()));
-    settings().setBaseValue(CameraSettings::SHOWPATH_ENABLED, layerCam->getShowCameraPath());
+    generalSettings().setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(layerCam->getDotColorType()));
+    generalSettings().setBaseValue(CameraSettings::SHOWPATH_ENABLED, layerCam->getShowCameraPath());
 }
 
 void CameraTool::updateSettings(const SETTING setting)
@@ -248,7 +248,7 @@ void CameraTool::setCameraPathEnabled(bool enabled)
 
     Q_ASSERT(layer->type() == Layer::CAMERA);
     layer->setShowCameraPath(enabled);
-    settings().setBaseValue(CameraSettings::SHOWPATH_ENABLED, enabled);
+    generalSettings().setBaseValue(CameraSettings::SHOWPATH_ENABLED, enabled);
     emit cameraPathEnabledChanged(enabled);
 
     emit mEditor->frameModified(mEditor->currentFrame());
@@ -260,7 +260,7 @@ void CameraTool::setPathDotColorType(DotColorType pathDotColor)
     Q_ASSERT(layer->type() == Layer::CAMERA);
 
     layer->updateDotColor(pathDotColor);
-    settings().setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(pathDotColor));
+    generalSettings().setBaseValue(CameraSettings::PATH_DOTCOLOR_TYPE, static_cast<int>(pathDotColor));
     emit pathColorChanged(pathDotColor);
 
     emit mEditor->frameModified(mEditor->currentFrame());

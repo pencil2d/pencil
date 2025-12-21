@@ -54,12 +54,12 @@ void SmudgeTool::loadSettings()
     info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
     info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
 
-    settings().updateDefaults(info);
-    settings().load(typeName(), pencilSettings);
+    generalSettings().updateDefaults(info);
+    generalSettings().load(typeName(), pencilSettings);
 
-    if (settings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        settings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("smudgeWidth", 24.0).toReal());
-        settings().setBaseValue(StrokeSettings::FEATHER_VALUE, pencilSettings.value("smudgeFeather", 48.0).toReal());
+    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
+        generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("smudgeWidth", 24.0).toReal());
+        generalSettings().setBaseValue(StrokeSettings::FEATHER_VALUE, pencilSettings.value("smudgeFeather", 48.0).toReal());
 
         pencilSettings.remove("smudgeWidth");
         pencilSettings.remove("smudgeFeather");
