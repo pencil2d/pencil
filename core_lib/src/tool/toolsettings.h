@@ -417,8 +417,8 @@ struct StrokeSettings: public ToolSettingsBase
             { FEATHER_VALUE,         "Feather" },
             { FEATHER_ENABLED,       "FeatherEnabled" },
             { STABILIZATION_VALUE,   "LineStabilization" },
-            { PRESSURE_ENABLED,      "Pressure" }, // TODO: should be PressureEnabled
-            { INVISIBILITY_ENABLED,  "Invisibility" }, // TODO: should be InvisiblityEnabled
+            { PRESSURE_ENABLED,      "PressureEnabled" },
+            { INVISIBILITY_ENABLED,  "InvisibilityEnabled" },
             { ANTI_ALIASING_ENABLED, "AntiAliasingEnabled"},
             { FILLCONTOUR_ENABLED,   "FillContourEnabled" }
         });
