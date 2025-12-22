@@ -26,8 +26,8 @@ public:
     TransformTool(QObject* parent = nullptr);
     ~TransformTool();
 
-    ToolSettings& generalSettings() override { return mSettings.general(); }
-    const TransformSettings& transformSettings() const { return mSettings; }
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const TransformToolProperties& transformSettings() const { return mSettings; }
 
     void setShowSelectionInfo(bool enabled);
     void setAntiAliasingEnabled(bool enabled);
@@ -37,7 +37,7 @@ signals:
     void antiAliasingChanged(bool enabled);
 
 protected:
-    TransformSettings mSettings;
+    TransformToolProperties mSettings;
 };
 
 #endif // TRANSFORMTOOL_H

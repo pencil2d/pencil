@@ -44,34 +44,34 @@ void PolylineTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
-    mPropertyUsed[PolylineSettings::CLOSEDPATH_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
-    mPropertyUsed[PolylineSettings::BEZIERPATH_ENABLED] = { Layer::BITMAP };
-    mPropertyUsed[StrokeSettings::ANTI_ALIASING_ENABLED] = { Layer::BITMAP };
+    mPropertyUsed[StrokeToolProperties::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[PolylineToolProperties::CLOSEDPATH_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[PolylineToolProperties::BEZIERPATH_ENABLED] = { Layer::BITMAP };
+    mPropertyUsed[StrokeToolProperties::ANTI_ALIASING_ENABLED] = { Layer::BITMAP };
 
     QSettings pencilSettings(PENCIL2D, PENCIL2D);
 
     QHash<int, PropertyInfo> info;
 
-    info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 8.0 };
-    info[PolylineSettings::CLOSEDPATH_ENABLED] = false;
-    info[PolylineSettings::BEZIERPATH_ENABLED] = false;
-    info[StrokeSettings::ANTI_ALIASING_ENABLED] = true;
+    info[StrokeToolProperties::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 8.0 };
+    info[PolylineToolProperties::CLOSEDPATH_ENABLED] = false;
+    info[PolylineToolProperties::BEZIERPATH_ENABLED] = false;
+    info[StrokeToolProperties::ANTI_ALIASING_ENABLED] = true;
 
-    generalSettings().insertProperties(info);
-    generalSettings().loadFrom(typeName(), pencilSettings);
+    toolProperties().insertProperties(info);
+    toolProperties().loadFrom(typeName(), pencilSettings);
 
-    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("polylineWidth", 8.0).toReal());
-        generalSettings().setBaseValue(StrokeSettings::ANTI_ALIASING_ENABLED, pencilSettings.value("brushAA", true).toBool());
-        generalSettings().setBaseValue(PolylineSettings::CLOSEDPATH_ENABLED, pencilSettings.value("closedPolylinePath", false).toBool());
+    if (toolProperties().requireMigration(pencilSettings, ToolProperties::VERSION_1)) {
+        toolProperties().setBaseValue(StrokeToolProperties::WIDTH_VALUE, pencilSettings.value("polylineWidth", 8.0).toReal());
+        toolProperties().setBaseValue(StrokeToolProperties::ANTI_ALIASING_ENABLED, pencilSettings.value("brushAA", true).toBool());
+        toolProperties().setBaseValue(PolylineToolProperties::CLOSEDPATH_ENABLED, pencilSettings.value("closedPolylinePath", false).toBool());
 
         pencilSettings.remove("polylineWidth");
         pencilSettings.remove("brushAA");
         pencilSettings.remove("closedPolylinePath");
     }
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeToolProperties::WIDTH_VALUE);
 }
 
 bool PolylineTool::leavingThisTool()
@@ -343,12 +343,12 @@ void PolylineTool::endPolyline(QList<QPointF> points)
 
 void PolylineTool::setUseBezier(bool useBezier)
 {
-    generalSettings().setBaseValue(PolylineSettings::BEZIERPATH_ENABLED, useBezier);
+    toolProperties().setBaseValue(PolylineToolProperties::BEZIERPATH_ENABLED, useBezier);
     emit bezierPathEnabledChanged(useBezier);
 }
 
 void PolylineTool::setClosePath(bool closePath)
 {
-    generalSettings().setBaseValue(PolylineSettings::CLOSEDPATH_ENABLED, closePath);
+    toolProperties().setBaseValue(PolylineToolProperties::CLOSEDPATH_ENABLED, closePath);
     emit closePathChanged(closePath);
 }

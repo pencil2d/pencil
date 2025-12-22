@@ -15,8 +15,8 @@ GNU General Public License for more details.
 
 */
 
-#ifndef TOOLSETTINGS_H
-#define TOOLSETTINGS_H
+#ifndef TOOLPROPERTIES_H
+#define TOOLPROPERTIES_H
 
 #include <QHash>
 #include <QSettings>
@@ -200,7 +200,7 @@ private:
     QVariant mDefaultValue;
 };
 
-struct ToolSettings
+struct ToolProperties
 {
     enum Version {
         NOT_SET = 0,
@@ -209,7 +209,7 @@ struct ToolSettings
         VERSION_3
     };
 
-    ~ToolSettings() {}
+    ~ToolProperties() {}
 
     /* Inserts properties into the ToolSetting model for loading and saving */
     void insertProperties(const QHash<int, PropertyInfo>& properties) {
@@ -297,7 +297,7 @@ struct ToolSettings
     }
 
     /* Checks whether keys referred to in settings needs to be migrated from the input version */
-    bool requireMigration(QSettings& settings, ToolSettings::Version version) {
+    bool requireMigration(QSettings& settings, ToolProperties::Version version) {
 
         if (hasLegacySettings(settings) && !settings.contains(mVersionKey)) {
             // Let's assume we're dealing with an existing user
@@ -372,7 +372,7 @@ private:
         }
     }
 
-    // The list of ranges that are valid for the given tool. ToolSettings can inherit its parents cases as well
+    // The list of ranges that are valid for the given tool. ToolProperties can inherit its parents cases as well
     // eg. PolyLineTool uses both StrokeSettings range as well as it's own
     QVector<QPair<int, int>> mTypeRanges;
     QHash<int, QString> mIdentifiers;
@@ -380,18 +380,18 @@ private:
 
     QString mIdentifier = "undefined";
     Version mVersion = VERSION_1;
-    QString mVersionKey = "ToolSettings_Version";
+    QString mVersionKey = "ToolProperties_Version";
 };
 
-struct ToolSettingsBase {
+struct ToolPropertiesBase {
 
-    virtual ~ToolSettingsBase() {}
+    virtual ~ToolPropertiesBase() {}
 
-    virtual ToolSettings& general() = 0;
+    virtual ToolProperties& toolProperties() = 0;
     virtual PropertyInfo getInfo(int rawPropertyType) const = 0;
 };
 
-struct StrokeSettings: public ToolSettingsBase
+struct StrokeToolProperties: public ToolPropertiesBase
 {
 
     enum Type {
@@ -409,10 +409,10 @@ struct StrokeSettings: public ToolSettingsBase
         END                 = 199,
     };
 
-    StrokeSettings() {
-        mGeneralSettings.setRanges({ { START, END } });
+    StrokeToolProperties() {
+        mToolProperties.setRanges({ { START, END } });
 
-        mGeneralSettings.insertIdentifiers({
+        mToolProperties.insertIdentifiers({
             { WIDTH_VALUE,           "Width" },
             { FEATHER_VALUE,         "Feather" },
             { FEATHER_ENABLED,       "FeatherEnabled" },
@@ -424,14 +424,14 @@ struct StrokeSettings: public ToolSettingsBase
         });
     }
 
-    ToolSettings& general() override { return mGeneralSettings; }
+    ToolProperties& toolProperties() override { return mToolProperties; }
 
     void addRange(const QPair<int, int> range) {
-        mGeneralSettings.addRange(range);
+        mToolProperties.addRange(range);
     }
 
     PropertyInfo getInfo(int rawPropertyType) const override {
-        return mGeneralSettings.getInfo(rawPropertyType);
+        return mToolProperties.getInfo(rawPropertyType);
     }
 
     qreal width() const { return getInfo(WIDTH_VALUE).realValue(); }
@@ -444,13 +444,13 @@ struct StrokeSettings: public ToolSettingsBase
     bool fillContourEnabled() const { return getInfo(FILLCONTOUR_ENABLED).boolValue(); }
 
 private:
-    ToolSettings mGeneralSettings;
+    ToolProperties mToolProperties;
 };
 
 /// This struct is an example of how we can
-/// share settings among tools rather than duplicating logic, eg. polyline uses settings from StrokeSettings.
+/// share properties among tools rather than duplicating logic, eg. polyline uses properties from StrokeToolProperties.
 /// The same could be done for PencilTool, BrushTool, Eraser etc...
-struct PolylineSettings: public ToolSettingsBase
+struct PolylineToolProperties: public ToolPropertiesBase
 {
     enum Type {
         START               = 200,
@@ -461,32 +461,32 @@ struct PolylineSettings: public ToolSettingsBase
         END                 = 299,
     };
 
-    PolylineSettings() {
-        general().addRange({START, END});
+    PolylineToolProperties() {
+        toolProperties().addRange({START, END});
 
-        general().insertIdentifiers({
+        toolProperties().insertIdentifiers({
             { CLOSEDPATH_ENABLED, "ClosedPathEnabled"},
             { BEZIERPATH_ENABLED, "BezierPathEnabled" }
         });
     }
 
-    ToolSettings& general() override { return mStrokeSettings.general(); }
-    const StrokeSettings& strokeSettings() const { return mStrokeSettings; }
+    ToolProperties& toolProperties() override { return mStrokeToolProperties.toolProperties(); }
+    const StrokeToolProperties& strokeToolProperties() const { return mStrokeToolProperties; }
 
     PropertyInfo getInfo(int rawPropertyType) const override {
-        return mStrokeSettings.getInfo(rawPropertyType);
+        return mStrokeToolProperties.getInfo(rawPropertyType);
     }
 
-    qreal width() const { return getInfo(StrokeSettings::WIDTH_VALUE).realValue(); }
+    qreal width() const { return getInfo(StrokeToolProperties::WIDTH_VALUE).realValue(); }
     bool closedPathEnabled() const { return getInfo(CLOSEDPATH_ENABLED).boolValue(); }
     bool bezierPathEnabled() const { return getInfo(BEZIERPATH_ENABLED).boolValue(); }
-    bool AntiAliasingEnabled() const { return getInfo(StrokeSettings::ANTI_ALIASING_ENABLED).boolValue(); }
+    bool AntiAliasingEnabled() const { return getInfo(StrokeToolProperties::ANTI_ALIASING_ENABLED).boolValue(); }
 
 private:
-    StrokeSettings mStrokeSettings;
+    StrokeToolProperties mStrokeToolProperties;
 };
 
-struct BucketSettings: public ToolSettingsBase
+struct BucketToolProperties: public ToolPropertiesBase
 {
     enum Type {
         START                           = 300,
@@ -502,10 +502,10 @@ struct BucketSettings: public ToolSettingsBase
         END                             = 399,
     };
 
-    BucketSettings() {
-        mGeneralSettings.setRanges({ { START, END } });
+    BucketToolProperties() {
+        mToolProperties.setRanges({ { START, END } });
 
-        mGeneralSettings.insertIdentifiers({
+        mToolProperties.insertIdentifiers({
             { FILLTHICKNESS_VALUE,          "FillThickness"},
             { COLORTOLERANCE_VALUE,         "ColorTolerance"},
             { COLORTOLERANCE_ENABLED,       "ColorToleranceEnabled"},
@@ -517,10 +517,10 @@ struct BucketSettings: public ToolSettingsBase
         });
     }
 
-    ToolSettings& general() override { return mGeneralSettings; }
+    ToolProperties& toolProperties() override { return mToolProperties; }
 
     PropertyInfo getInfo(int rawPropertyType) const override {
-        return mGeneralSettings.getInfo(rawPropertyType);
+        return mToolProperties.getInfo(rawPropertyType);
     }
 
     qreal fillThickness() const { return getInfo(FILLTHICKNESS_VALUE).realValue(); }
@@ -532,10 +532,10 @@ struct BucketSettings: public ToolSettingsBase
     bool fillExpandEnabled() const { return getInfo(FILLEXPAND_ENABLED).boolValue(); }
 
 private:
-    ToolSettings mGeneralSettings;
+    ToolProperties mToolProperties;
 };
 
-struct CameraSettings: public ToolSettingsBase
+struct CameraToolProperties: public ToolPropertiesBase
 {
     enum Type {
         START               = 400,
@@ -546,30 +546,30 @@ struct CameraSettings: public ToolSettingsBase
         END                 = 499,
     };
 
-    CameraSettings() {
-        mGeneralSettings.setRanges({ { START, END }});
+    CameraToolProperties() {
+        mToolProperties.setRanges({ { START, END }});
 
-        mGeneralSettings.insertIdentifiers({
+        mToolProperties.insertIdentifiers({
             { SHOWPATH_ENABLED,     "ShowPathEnabled"},
             { PATH_DOTCOLOR_TYPE,   "PathDotColorType"},
         });
     }
 
-    ToolSettings& general() override { return mGeneralSettings; }
+    ToolProperties& toolProperties() override { return mToolProperties; }
 
     PropertyInfo getInfo(int rawPropertyType) const override {
-        return mGeneralSettings.getInfo(rawPropertyType);
+        return mToolProperties.getInfo(rawPropertyType);
     }
 
     bool showPathEnabled() const { return getInfo(SHOWPATH_ENABLED).boolValue(); }
     DotColorType dotColorType() const { return static_cast<DotColorType>(getInfo(PATH_DOTCOLOR_TYPE).intValue()); }
 
 private:
-    ToolSettings mGeneralSettings;
+    ToolProperties mToolProperties;
 };
 
 // Used by both select and move tool
-struct TransformSettings: public ToolSettingsBase
+struct TransformToolProperties: public ToolPropertiesBase
 {
     enum Type {
         START                        = 500,
@@ -578,26 +578,26 @@ struct TransformSettings: public ToolSettingsBase
         END                          = 599,
     };
 
-    TransformSettings() {
-        mGeneralSettings.setRanges({ { START, END } });
+    TransformToolProperties() {
+        mProperties.setRanges({ { START, END } });
 
-        mGeneralSettings.insertIdentifiers({
+        mProperties.insertIdentifiers({
             { SHOWSELECTIONINFO_ENABLED,    "ShowSelectionInfoEnabled" },
             { ANTI_ALIASING_ENABLED,        "AntiAliasingEnabled" }
         });
     }
 
-    ToolSettings& general() override { return mGeneralSettings; }
+    ToolProperties& toolProperties() override { return mProperties; }
 
     PropertyInfo getInfo(int rawPropertyType) const override {
-        return mGeneralSettings.getInfo(rawPropertyType);
+        return mProperties.getInfo(rawPropertyType);
     }
 
     bool showSelectionInfoEnabled() const { return getInfo(SHOWSELECTIONINFO_ENABLED).boolValue(); }
     bool antiAliasingEnabled() const { return getInfo(ANTI_ALIASING_ENABLED).boolValue(); }
 
 private:
-    ToolSettings mGeneralSettings;
+    ToolProperties mProperties;
 };
 
-#endif // TOOLSETTINGS_H
+#endif // TOOLPROPERTIES_H

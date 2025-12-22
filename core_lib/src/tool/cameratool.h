@@ -63,8 +63,8 @@ public:
 
     void paint(QPainter& painter, const QRect&) override;
 
-    ToolSettings& generalSettings() override { return mSettings.general(); }
-    const CameraSettings& settings() const { return mSettings; }
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const CameraToolProperties& settings() const { return mSettings; }
 
     void loadSettings() override;
 
@@ -129,7 +129,7 @@ private:
     QColor mHandleDisabledColor;
     QColor mHandleTextColor;
 
-    CameraSettings mSettings;
+    CameraToolProperties mSettings;
 };
 
 #endif // CAMERATOOL_H

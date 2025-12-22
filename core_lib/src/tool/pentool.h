@@ -30,8 +30,8 @@ public:
 
     ToolType type() const override { return PEN; }
 
-    ToolSettings& generalSettings() override { return mSettings.general(); }
-    const StrokeSettings& strokeSettings() const override { return mSettings; }
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const StrokeToolProperties& strokeToolProperties() const override { return mSettings; }
 
     void loadSettings() override;
     QCursor cursor() override;
@@ -48,7 +48,7 @@ private:
     QPointF mLastBrushPoint;
     QPointF mMouseDownPoint;
 
-    StrokeSettings mSettings;
+    StrokeToolProperties mSettings;
 };
 
 #endif // PENTOOL_H

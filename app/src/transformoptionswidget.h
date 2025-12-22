@@ -19,7 +19,7 @@ GNU General Public License for more details.
 
 #include "basewidget.h"
 
-#include "toolsettings.h"
+#include "toolproperties.h"
 
 class TransformTool;
 class Editor;

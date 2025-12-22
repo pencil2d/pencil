@@ -34,12 +34,12 @@ void StrokeOptionsWidget::initUI()
     StrokeTool* strokeTool = mEditor->tools()->currentStrokeTool();
     if (strokeTool == nullptr) { return; }
 
-    const StrokeSettings p = strokeTool->strokeSettings();
+    const StrokeToolProperties p = strokeTool->strokeToolProperties();
 
-    auto widthInfo = p.getInfo(StrokeSettings::WIDTH_VALUE);
+    auto widthInfo = p.getInfo(StrokeToolProperties::WIDTH_VALUE);
     ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.minReal(), widthInfo.maxReal());
 
-    auto featherInfo = p.getInfo(StrokeSettings::FEATHER_VALUE);
+    auto featherInfo = p.getInfo(StrokeToolProperties::FEATHER_VALUE);
     ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, featherInfo.minReal(), featherInfo.maxReal());
 
     mCurrentTool = strokeTool;
@@ -58,11 +58,11 @@ void StrokeOptionsWidget::updateUI()
 
     setVisibility(strokeTool);
 
-    const StrokeSettings& p = strokeTool->strokeSettings();
+    const StrokeToolProperties& p = strokeTool->strokeToolProperties();
 
-    if (strokeTool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE))
+    if (strokeTool->isPropertyEnabled(StrokeToolProperties::WIDTH_VALUE))
     {
-        PropertyInfo info = p.getInfo(StrokeSettings::WIDTH_VALUE);
+        PropertyInfo info = p.getInfo(StrokeToolProperties::WIDTH_VALUE);
         QSignalBlocker b(ui->sizeSlider);
         ui->sizeSlider->setRange(info.minReal(), info.maxReal());
         QSignalBlocker b2(ui->sizeSpinBox);
@@ -70,9 +70,9 @@ void StrokeOptionsWidget::updateUI()
 
         setWidthValue(info.realValue());
     }
-    if (strokeTool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE))
+    if (strokeTool->isPropertyEnabled(StrokeToolProperties::FEATHER_VALUE))
     {
-        auto info = p.getInfo(StrokeSettings::FEATHER_VALUE);
+        auto info = p.getInfo(StrokeToolProperties::FEATHER_VALUE);
         QSignalBlocker b3(ui->featherSlider);
         ui->featherSlider->setRange(info.minReal(), info.maxReal());
         QSignalBlocker b4(ui->featherSpinBox);
@@ -81,32 +81,32 @@ void StrokeOptionsWidget::updateUI()
         setFeatherValue(info.realValue());
     }
 
-    if (strokeTool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeToolProperties::FEATHER_ENABLED)) {
         setFeatherEnabled(p.featherEnabled());
     }
 
-    if (strokeTool->isPropertyEnabled(StrokeSettings::PRESSURE_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeToolProperties::PRESSURE_ENABLED)) {
         setPressureEnabled(p.pressureEnabled());
     }
 
-    if (strokeTool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeToolProperties::INVISIBILITY_ENABLED)) {
         setPenInvisibilityEnabled(p.invisibilityEnabled());
     }
 
-    if (strokeTool->isPropertyEnabled(StrokeSettings::ANTI_ALIASING_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeToolProperties::ANTI_ALIASING_ENABLED)) {
         setAntiAliasingEnabled(p.AntiAliasingEnabled());
     }
 
-    if (strokeTool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE)) {
+    if (strokeTool->isPropertyEnabled(StrokeToolProperties::STABILIZATION_VALUE)) {
         setStabilizerLevel(p.stabilizerLevel());
     }
 
-    if (strokeTool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ENABLED)) {
+    if (strokeTool->isPropertyEnabled(StrokeToolProperties::FILLCONTOUR_ENABLED)) {
         setFillContourEnabled(p.fillContourEnabled());
     }
 
     if (strokeTool->type() == POLYLINE) {
-        const PolylineSettings polyP = static_cast<const PolylineTool*>(strokeTool)->settings();
+        const PolylineToolProperties polyP = static_cast<const PolylineTool*>(strokeTool)->settings();
         setClosedPathEnabled(polyP.closedPathEnabled());
         setBezierPathEnabled(polyP.bezierPathEnabled());
     }
@@ -201,19 +201,19 @@ void StrokeOptionsWidget::makeConnectionFromUIToModel()
 
 void StrokeOptionsWidget::setVisibility(BaseTool* tool)
 {
-    ui->sizeSlider->setVisible(tool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE));
-    ui->sizeSpinBox->setVisible(tool->isPropertyEnabled(StrokeSettings::WIDTH_VALUE));
-    ui->featherSlider->setVisible(tool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE));
-    ui->featherSpinBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FEATHER_VALUE));
-    ui->useFeatherBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FEATHER_ENABLED));
-    ui->usePressureBox->setVisible(tool->isPropertyEnabled(StrokeSettings::PRESSURE_ENABLED));
-    ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(StrokeSettings::INVISIBILITY_ENABLED));
-    ui->useAABox->setVisible(tool->isPropertyEnabled(StrokeSettings::ANTI_ALIASING_ENABLED));
-    ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE));
-    ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(StrokeSettings::STABILIZATION_VALUE));
-    ui->fillContourBox->setVisible(tool->isPropertyEnabled(StrokeSettings::FILLCONTOUR_ENABLED));
-    ui->useBezierBox->setVisible(tool->isPropertyEnabled(PolylineSettings::BEZIERPATH_ENABLED));
-    ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(PolylineSettings::CLOSEDPATH_ENABLED));
+    ui->sizeSlider->setVisible(tool->isPropertyEnabled(StrokeToolProperties::WIDTH_VALUE));
+    ui->sizeSpinBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::WIDTH_VALUE));
+    ui->featherSlider->setVisible(tool->isPropertyEnabled(StrokeToolProperties::FEATHER_VALUE));
+    ui->featherSpinBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::FEATHER_VALUE));
+    ui->useFeatherBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::FEATHER_ENABLED));
+    ui->usePressureBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::PRESSURE_ENABLED));
+    ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::INVISIBILITY_ENABLED));
+    ui->useAABox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::ANTI_ALIASING_ENABLED));
+    ui->stabilizerLabel->setVisible(tool->isPropertyEnabled(StrokeToolProperties::STABILIZATION_VALUE));
+    ui->inpolLevelsCombo->setVisible(tool->isPropertyEnabled(StrokeToolProperties::STABILIZATION_VALUE));
+    ui->fillContourBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::FILLCONTOUR_ENABLED));
+    ui->useBezierBox->setVisible(tool->isPropertyEnabled(PolylineToolProperties::BEZIERPATH_ENABLED));
+    ui->useClosedPathBox->setVisible(tool->isPropertyEnabled(PolylineToolProperties::CLOSEDPATH_ENABLED));
 }
 
 void StrokeOptionsWidget::setWidthValue(qreal width)

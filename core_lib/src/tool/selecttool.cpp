@@ -36,14 +36,14 @@ void SelectTool::loadSettings()
 
     QHash<int, PropertyInfo> info;
 
-    mPropertyUsed[TransformSettings::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[TransformToolProperties::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
 
-    info[TransformSettings::SHOWSELECTIONINFO_ENABLED] = false;
-    generalSettings().insertProperties(info);
-    generalSettings().loadFrom(typeName(), pencilSettings);
+    info[TransformToolProperties::SHOWSELECTIONINFO_ENABLED] = false;
+    toolProperties().insertProperties(info);
+    toolProperties().loadFrom(typeName(), pencilSettings);
 
-    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        generalSettings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
+    if (toolProperties().requireMigration(pencilSettings, ToolProperties::VERSION_1)) {
+        toolProperties().setBaseValue(TransformToolProperties::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
     }
 }
 

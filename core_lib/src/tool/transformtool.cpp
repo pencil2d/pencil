@@ -29,7 +29,7 @@ TransformTool::~TransformTool()
 
 void TransformTool::setShowSelectionInfo(bool enabled)
 {
-    generalSettings().setBaseValue(TransformSettings::SHOWSELECTIONINFO_ENABLED, enabled);
+    toolProperties().setBaseValue(TransformToolProperties::SHOWSELECTIONINFO_ENABLED, enabled);
     emit showSelectionInfoChanged(enabled);
 
     mEditor->updateFrame();
@@ -37,6 +37,6 @@ void TransformTool::setShowSelectionInfo(bool enabled)
 
 void TransformTool::setAntiAliasingEnabled(bool enabled)
 {
-    generalSettings().setBaseValue(TransformSettings::ANTI_ALIASING_ENABLED, enabled);
+    toolProperties().setBaseValue(TransformToolProperties::ANTI_ALIASING_ENABLED, enabled);
     emit antiAliasingChanged(enabled);
 }

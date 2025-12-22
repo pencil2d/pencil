@@ -39,7 +39,7 @@ public:
     explicit StrokeTool(QObject* parent);
     ~StrokeTool();
 
-    virtual const StrokeSettings& strokeSettings() const = 0;
+    virtual const StrokeToolProperties& strokeToolProperties() const = 0;
 
     void startStroke(PointerEvent::InputType inputType);
     void drawStroke();
@@ -95,7 +95,7 @@ protected:
     QPointF getLastPixel() const;
     QPointF getLastPoint() const;
 
-    QRectF cursorRect(StrokeSettings::Type settingType, const QPointF& point);
+    QRectF cursorRect(StrokeToolProperties::Type settingType, const QPointF& point);
 
     static bool mQuickSizingEnabled;
 

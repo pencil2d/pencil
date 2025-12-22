@@ -35,8 +35,8 @@ public:
     QCursor cursor() override;
     ToolType type() const override { return BUCKET; }
 
-    ToolSettings& generalSettings() override { return mSettings.general(); }
-    const BucketSettings& settings() const { return mSettings; }
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const BucketToolProperties& settings() const { return mSettings; }
 
     void loadSettings() override;
 
@@ -76,7 +76,7 @@ private:
 
     bool mFilledOnMove = false;
 
-    BucketSettings mSettings;
+    BucketToolProperties mSettings;
     StrokeInterpolator mInterpolator;
     const UndoSaveState* mUndoSaveState = nullptr;
 };

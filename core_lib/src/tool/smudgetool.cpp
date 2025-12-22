@@ -48,25 +48,25 @@ void SmudgeTool::loadSettings()
 
     QHash<int, PropertyInfo> info;
     QSettings pencilSettings(PENCIL2D, PENCIL2D);
-    mPropertyUsed[StrokeSettings::WIDTH_VALUE] = { Layer::BITMAP };
-    mPropertyUsed[StrokeSettings::FEATHER_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[StrokeToolProperties::WIDTH_VALUE] = { Layer::BITMAP };
+    mPropertyUsed[StrokeToolProperties::FEATHER_VALUE] = { Layer::BITMAP };
 
-    info[StrokeSettings::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
-    info[StrokeSettings::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
+    info[StrokeToolProperties::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
+    info[StrokeToolProperties::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
 
-    generalSettings().insertProperties(info);
-    generalSettings().loadFrom(typeName(), pencilSettings);
+    toolProperties().insertProperties(info);
+    toolProperties().loadFrom(typeName(), pencilSettings);
 
-    if (generalSettings().requireMigration(pencilSettings, ToolSettings::VERSION_1)) {
-        generalSettings().setBaseValue(StrokeSettings::WIDTH_VALUE, pencilSettings.value("smudgeWidth", 24.0).toReal());
-        generalSettings().setBaseValue(StrokeSettings::FEATHER_VALUE, pencilSettings.value("smudgeFeather", 48.0).toReal());
+    if (toolProperties().requireMigration(pencilSettings, ToolProperties::VERSION_1)) {
+        toolProperties().setBaseValue(StrokeToolProperties::WIDTH_VALUE, pencilSettings.value("smudgeWidth", 24.0).toReal());
+        toolProperties().setBaseValue(StrokeToolProperties::FEATHER_VALUE, pencilSettings.value("smudgeFeather", 48.0).toReal());
 
         pencilSettings.remove("smudgeWidth");
         pencilSettings.remove("smudgeFeather");
     }
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeSettings::WIDTH_VALUE);
-    mQuickSizingProperties.insert(Qt::ControlModifier, StrokeSettings::FEATHER_VALUE);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeToolProperties::WIDTH_VALUE);
+    mQuickSizingProperties.insert(Qt::ControlModifier, StrokeToolProperties::FEATHER_VALUE);
 }
 
 bool SmudgeTool::emptyFrameActionEnabled()

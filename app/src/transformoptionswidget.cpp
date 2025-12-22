@@ -46,13 +46,13 @@ void TransformOptionsWidget::updateUI()
 
     updatePropertyVisibility();
     updateToolConnections(currentTool);
-    const TransformSettings selectP = currentTool->transformSettings();
+    const TransformToolProperties selectP = currentTool->transformSettings();
 
-    if (currentTool->isPropertyEnabled(TransformSettings::SHOWSELECTIONINFO_ENABLED)) {
+    if (currentTool->isPropertyEnabled(TransformToolProperties::SHOWSELECTIONINFO_ENABLED)) {
         setShowSelectionInfo(selectP.showSelectionInfoEnabled());
     }
 
-    if (currentTool->isPropertyEnabled(TransformSettings::ANTI_ALIASING_ENABLED)) {
+    if (currentTool->isPropertyEnabled(TransformToolProperties::ANTI_ALIASING_ENABLED)) {
         setAntiAliasingEnabled(selectP.antiAliasingEnabled());
     }
 }
@@ -62,7 +62,7 @@ void TransformOptionsWidget::updatePropertyVisibility()
     TransformTool* currentTool = mEditor->tools()->currentTransformTool();
     if (mEditor->tools()->currentTransformTool() == nullptr) { return; }
 
-    ui->antiAliasingCheckBox->setVisible(currentTool->isPropertyEnabled(TransformSettings::ANTI_ALIASING_ENABLED));
+    ui->antiAliasingCheckBox->setVisible(currentTool->isPropertyEnabled(TransformToolProperties::ANTI_ALIASING_ENABLED));
 }
 
 void TransformOptionsWidget::updateToolConnections(BaseTool* tool)

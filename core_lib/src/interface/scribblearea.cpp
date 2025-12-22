@@ -1338,7 +1338,7 @@ void ScribbleArea::applyTransformedSelection()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    bool useAA = mEditor->tools()->getTool(ToolType::MOVE)->generalSettings().getInfo(TransformSettings::ANTI_ALIASING_ENABLED).boolValue();
+    bool useAA = mEditor->tools()->getTool(ToolType::MOVE)->toolProperties().getInfo(TransformToolProperties::ANTI_ALIASING_ENABLED).boolValue();
 
     if (layer == nullptr) { return; }
 

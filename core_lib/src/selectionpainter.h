@@ -21,7 +21,7 @@ GNU General Public License for more details.
 #include <QPolygonF>
 #include <QTransform>
 
-#include "toolsettings.h"
+#include "toolproperties.h"
 
 class QPainter;
 class Object;
@@ -39,7 +39,7 @@ class SelectionPainter
 public:
     SelectionPainter();
 
-    void paint(QPainter& painter, const Object* object, int layerIndex, const TransformSettings& toolProperties, TransformParameters& transformParameters);
+    void paint(QPainter& painter, const Object* object, int layerIndex, const TransformToolProperties& toolProperties, TransformParameters& transformParameters);
 
 private:
     void paintSelectionInfo(QPainter& painter, const QTransform& mergedTransform, const QTransform& viewTransform, const QRectF& selectionRect, const QPolygonF& projectedPolygonF);

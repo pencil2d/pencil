@@ -90,7 +90,7 @@ HEADERS +=  \
     src/tool/smudgetool.h \
     src/tool/strokeinterpolator.h \
     src/tool/stroketool.h \
-    src/tool/toolsettings.h \
+    src/tool/toolproperties.h \
     src/tool/transformtool.h \
     src/util/blitrect.h \
     src/util/cameraeasingtype.h \

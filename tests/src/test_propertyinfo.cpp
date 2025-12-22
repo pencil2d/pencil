@@ -16,7 +16,7 @@ GNU General Public License for more details.
 */
 
 #include "catch.hpp"
-#include "toolsettings.h"
+#include "toolproperties.h"
 
 TEST_CASE("PropertyInfo behavior", "[PropertyInfo]") {
 

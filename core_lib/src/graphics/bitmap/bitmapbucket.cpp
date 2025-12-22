@@ -32,7 +32,7 @@ BitmapBucket::BitmapBucket(Editor* editor,
                            QColor color,
                            QRect maxFillRegion,
                            QPointF fillPoint,
-                           BucketSettings properties):
+                           BucketToolProperties properties):
     mEditor(editor),
     mMaxFillRegion(maxFillRegion),
     mProperties(properties)

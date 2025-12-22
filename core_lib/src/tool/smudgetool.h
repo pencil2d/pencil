@@ -28,8 +28,8 @@ public:
 
     ToolType type() const override;
 
-    ToolSettings& generalSettings() override { return mSettings.general(); }
-    const StrokeSettings& strokeSettings() const override { return mSettings; }
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const StrokeToolProperties& strokeToolProperties() const override { return mSettings; }
 
     uint toolMode;  // 0=normal/smooth 1=smudge - todo: move to basetool? could be useful
     void loadSettings() override;
@@ -52,7 +52,7 @@ private:
     QPointF offsetFromPressPos();
     QPointF mLastBrushPoint;
 
-    StrokeSettings mSettings;
+    StrokeToolProperties mSettings;
 };
 
 #endif // SMUDGETOOL_H

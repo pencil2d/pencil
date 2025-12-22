@@ -13,7 +13,7 @@
 
 #include "basetool.h"
 
-void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRect bounds, BucketSettings properties, int fillCountThreshold) {
+void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRect bounds, BucketToolProperties properties, int fillCountThreshold) {
     int moveX = 0;
 
     BitmapBucket bucket = BitmapBucket(editor, color, bounds, movePoint, properties);
@@ -65,18 +65,18 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     editor->setObject(obj);
     editor->init();
 
-    BucketSettings properties;
+    BucketToolProperties properties;
     QSettings settings;
 
     QHash<int, PropertyInfo> info;
 
-    info[BucketSettings::FILLLAYERREFERENCEMODE_VALUE] = 0;
-    info[BucketSettings::FILLEXPAND_ENABLED] = false;
-    info[BucketSettings::FILLMODE_VALUE] = 0;
-    info[BucketSettings::COLORTOLERANCE_VALUE] = 25;
-    info[BucketSettings::COLORTOLERANCE_ENABLED] = true;
-    properties.general().insertProperties(info);
-    properties.general().loadFrom("BucketTest", settings);
+    info[BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE] = 0;
+    info[BucketToolProperties::FILLEXPAND_ENABLED] = false;
+    info[BucketToolProperties::FILLMODE_VALUE] = 0;
+    info[BucketToolProperties::COLORTOLERANCE_VALUE] = 25;
+    info[BucketToolProperties::COLORTOLERANCE_ENABLED] = true;
+    properties.toolProperties().insertProperties(info);
+    properties.toolProperties().loadFrom("BucketTest", settings);
 
     QColor fillColor = QColor(255,255,0,100);
 
@@ -94,7 +94,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         Layer* strokeLayer = editor->layers()->currentLayer();
         SECTION("When reference is current layer, only transparent color is filled")
         {
-            properties.general().setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 0);
+            properties.toolProperties().setBaseValue(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE, 0);
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
@@ -104,7 +104,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
 
         SECTION("When reference is all layers, only transparent color is filled")
         {
-            properties.general().setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 1);
+            properties.toolProperties().setBaseValue(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE, 1);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
@@ -117,10 +117,10 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     SECTION("Filling on current layer - layer is pre-filled") {
 
         // Fill mode is set to `replace` because it makes it easier to compare colors...
-        properties.general().setBaseValue(BucketSettings::FILLMODE_VALUE, 1);
+        properties.toolProperties().setBaseValue(BucketToolProperties::FILLMODE_VALUE, 1);
         Layer* strokeLayer = editor->layers()->currentLayer();
         SECTION("When reference is current layer, only pixels matching the fill color are filled"){
-            properties.general().setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 0);
+            properties.toolProperties().setBaseValue(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE, 0);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
@@ -135,7 +135,7 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
 
         SECTION("When reference is all layers")
         {
-            properties.general().setBaseValue(BucketSettings::FILLLAYERREFERENCEMODE_VALUE, 1);
+            properties.toolProperties().setBaseValue(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE, 1);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);

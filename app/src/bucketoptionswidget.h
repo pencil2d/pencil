@@ -25,7 +25,7 @@ class Editor;
 class Layer;
 class BucketTool;
 
-#include "toolsettings.h"
+#include "toolproperties.h"
 
 namespace Ui {
 class BucketOptionsWidget;
@@ -57,7 +57,7 @@ private:
     void updatePropertyVisibility();
 
     BucketTool* mBucketTool = nullptr;
-    BucketSettings mSettings;
+    BucketToolProperties mSettings;
     Ui::BucketOptionsWidget *ui;
     Editor* mEditor = nullptr;
 };

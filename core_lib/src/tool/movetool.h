@@ -37,7 +37,7 @@ public:
     QCursor cursor(MoveMode mode) const;
     ToolType type() const override;
 
-    ToolSettings& generalSettings() override { return mSettings.general(); }
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
     void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;

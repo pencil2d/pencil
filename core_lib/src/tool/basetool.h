@@ -26,7 +26,7 @@ GNU General Public License for more details.
 #include <QSet>
 #include <QEvent>
 #include "pencildef.h"
-#include "toolsettings.h"
+#include "toolproperties.h"
 #include "layer.h"
 
 class QPixmap;
@@ -57,7 +57,7 @@ public:
 
     virtual ToolType type() const = 0;
 
-    virtual ToolSettings& generalSettings() = 0;
+    virtual ToolProperties& toolProperties() = 0;
     virtual void loadSettings() = 0;
     void saveSettings();
     void resetSettings();

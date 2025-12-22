@@ -50,9 +50,9 @@ void BucketOptionsWidget::initUI()
     mBucketTool = static_cast<BucketTool*>(mEditor->tools()->getTool(BUCKET));
     mSettings = mBucketTool->settings();
 
-    auto toleranceInfo = mSettings.getInfo(BucketSettings::COLORTOLERANCE_VALUE);
-    auto expandInfo = mSettings.getInfo(BucketSettings::FILLEXPAND_VALUE);
-    auto thicknessInfo = mSettings.getInfo(BucketSettings::FILLTHICKNESS_VALUE);
+    auto toleranceInfo = mSettings.getInfo(BucketToolProperties::COLORTOLERANCE_VALUE);
+    auto expandInfo = mSettings.getInfo(BucketToolProperties::FILLEXPAND_VALUE);
+    auto thicknessInfo = mSettings.getInfo(BucketToolProperties::FILLTHICKNESS_VALUE);
 
     ui->colorToleranceSlider->init(tr("Color tolerance"), SpinSlider::GROWTH_TYPE::LINEAR, toleranceInfo.minInt(), toleranceInfo.maxInt());
     ui->expandSlider->init(tr("Expand fill"), SpinSlider::GROWTH_TYPE::LINEAR, expandInfo.minInt(), expandInfo.maxInt());
@@ -85,31 +85,31 @@ void BucketOptionsWidget::updateUI()
 {
     updatePropertyVisibility();
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE)) {
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLTHICKNESS_VALUE)) {
         mBucketTool->setStrokeThickness(mSettings.fillThickness());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ENABLED)) {
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_ENABLED)) {
         mBucketTool->setFillExpandEnabled(mSettings.fillExpandEnabled());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE)) {
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_VALUE)) {
         mBucketTool->setFillExpand(mSettings.fillExpandAmount());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLLAYERREFERENCEMODE_VALUE)) {
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE)) {
         mBucketTool->setFillReferenceMode(mSettings.fillReferenceMode());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::FILLMODE_VALUE)) {
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLMODE_VALUE)) {
         mBucketTool->setFillMode(mSettings.fillMode());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE)) {
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_VALUE)) {
         mBucketTool->setColorTolerance(mSettings.tolerance());
     }
 
-    if (mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_ENABLED)) {
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_ENABLED)) {
         mBucketTool->setColorToleranceEnabled(mSettings.colorToleranceEnabled());
     }
 }
@@ -189,18 +189,18 @@ void BucketOptionsWidget::makeConnectionsFromUIToModel()
 
 void BucketOptionsWidget::updatePropertyVisibility()
 {
-    ui->strokeThicknessSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE));
-    ui->strokeThicknessSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLTHICKNESS_VALUE));
-    ui->colorToleranceCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_ENABLED));
-    ui->colorToleranceSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE));
-    ui->colorToleranceSpinbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::COLORTOLERANCE_VALUE));
-    ui->expandCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_ENABLED));
-    ui->expandSlider->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE));
-    ui->expandSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLEXPAND_VALUE));
-    ui->referenceLayerComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLLAYERREFERENCEMODE_VALUE));
-    ui->referenceLayerDescLabel->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLLAYERREFERENCEMODE_VALUE));
-    ui->blendModeComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLMODE_VALUE));
-    ui->blendModeLabel->setVisible(mBucketTool->isPropertyEnabled(BucketSettings::FILLMODE_VALUE));
+    ui->strokeThicknessSlider->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLTHICKNESS_VALUE));
+    ui->strokeThicknessSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLTHICKNESS_VALUE));
+    ui->colorToleranceCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_ENABLED));
+    ui->colorToleranceSlider->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_VALUE));
+    ui->colorToleranceSpinbox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_VALUE));
+    ui->expandCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_ENABLED));
+    ui->expandSlider->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_VALUE));
+    ui->expandSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_VALUE));
+    ui->referenceLayerComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE));
+    ui->referenceLayerDescLabel->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE));
+    ui->blendModeComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLMODE_VALUE));
+    ui->blendModeLabel->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLMODE_VALUE));
 }
 
 void BucketOptionsWidget::onLayerChanged(int)

@@ -32,8 +32,8 @@ public:
 
     ToolType type() const override;
 
-    ToolSettings& generalSettings() override { return mSettings.general(); }
-    const StrokeSettings& strokeSettings() const override { return mSettings; }
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const StrokeToolProperties& strokeToolProperties() const override { return mSettings; }
 
     void loadSettings() override;
     QCursor cursor() override;
@@ -53,7 +53,7 @@ protected:
     QColor mCurrentPressuredColor;
     qreal mOpacity = 1.0;
 
-    StrokeSettings mSettings;
+    StrokeToolProperties mSettings;
 };
 
 #endif // BRUSHTOOL_H

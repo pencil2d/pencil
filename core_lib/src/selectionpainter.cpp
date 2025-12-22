@@ -26,7 +26,7 @@ SelectionPainter::SelectionPainter()
 void SelectionPainter::paint(QPainter& painter,
                              const Object* object,
                              int layerIndex,
-                             const TransformSettings& toolProperties,
+                             const TransformToolProperties& toolProperties,
                              TransformParameters& tParams)
 {
     Layer* layer = object->getLayer(layerIndex);
