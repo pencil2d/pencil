@@ -20,11 +20,3 @@ GNU General Public License for more details.
 BaseWidget::BaseWidget(QWidget* parent) : QWidget(parent)
 {
 }
-
-void BaseWidget::initUI()
-{
-}
-
-void BaseWidget::updateUI()
-{
-}
