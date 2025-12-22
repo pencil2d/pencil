@@ -67,6 +67,8 @@ private:
     void setBezier(bool);
     void setClosedPath(bool);
     void setShowSelectionInfo(bool);
+    void setSnapAngleBox(bool);
+    void setSnapAngleDegrees(int);
 
     void disableAllOptions();
     void setVisibility(BaseTool*);
