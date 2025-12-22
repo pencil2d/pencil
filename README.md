@@ -52,7 +52,7 @@ Interested in contributing to Pencil2D? There are many ways to help. Take a look
 
 * [Issue Tracker](https://github.com/pencil2d/pencil/issues) - Report bugs or request features.
 * [Developer Guide](https://dev.pencil2d.org/) - Learn how to compile Pencil2D yourself.
-* [Transifex](https://www.transifex.com/pencil2d/) - You can help translate Pencil2D, too.
+* [Transifex](https://explore.transifex.com/pencil2d/pencil2d/) - You can help translate Pencil2D, too.
 * [Documentation contributions](https://www.pencil2d.org/doc/CONTRIBUTING) - Contributing to documentation.
 
 ## Source Code
