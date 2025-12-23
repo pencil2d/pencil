@@ -110,6 +110,9 @@
      <property name="bottomMargin">
       <number>3</number>
      </property>
+     <property name="horizontalSpacing">
+      <number>10</number>
+     </property>
      <property name="verticalSpacing">
       <number>6</number>
      </property>
