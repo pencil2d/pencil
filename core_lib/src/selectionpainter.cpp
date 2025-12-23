@@ -18,7 +18,6 @@ GNU General Public License for more details.
 
 #include "object.h"
 #include "qpainter.h"
-#include "basetool.h"
 
 SelectionPainter::SelectionPainter()
 {
@@ -27,7 +26,7 @@ SelectionPainter::SelectionPainter()
 void SelectionPainter::paint(QPainter& painter,
                              const Object* object,
                              int layerIndex,
-                             BaseTool* tool,
+                             const TransformToolProperties& toolProperties,
                              TransformParameters& tParams)
 {
     Layer* layer = object->getLayer(layerIndex);
@@ -53,34 +52,31 @@ void SelectionPainter::paint(QPainter& painter,
         painter.drawPolygon(projectedSelectionPolygon);
     }
 
-    if (tool->type() == SELECT || tool->type() == MOVE)
-    {
-        painter.setPen(Qt::SolidLine);
-        painter.setBrush(QBrush(Qt::gray));
-        int radius = HANDLE_WIDTH / 2;
+    painter.setPen(Qt::SolidLine);
+    painter.setBrush(QBrush(Qt::gray));
+    int radius = HANDLE_WIDTH / 2;
 
-        const QRectF topLeftCorner = QRectF(projectedSelectionPolygon[0].x() - radius,
-                                            projectedSelectionPolygon[0].y() - radius,
+    const QRectF topLeftCorner = QRectF(projectedSelectionPolygon[0].x() - radius,
+                                        projectedSelectionPolygon[0].y() - radius,
+                                        HANDLE_WIDTH, HANDLE_WIDTH);
+    painter.drawRect(topLeftCorner);
+
+    const QRectF topRightCorner = QRectF(projectedSelectionPolygon[1].x() - radius,
+                                         projectedSelectionPolygon[1].y() - radius,
+                                         HANDLE_WIDTH, HANDLE_WIDTH);
+    painter.drawRect(topRightCorner);
+
+    const QRectF bottomRightCorner = QRectF(projectedSelectionPolygon[2].x() - radius,
+                                            projectedSelectionPolygon[2].y() - radius,
                                             HANDLE_WIDTH, HANDLE_WIDTH);
-        painter.drawRect(topLeftCorner);
+    painter.drawRect(bottomRightCorner);
 
-        const QRectF topRightCorner = QRectF(projectedSelectionPolygon[1].x() - radius,
-                                             projectedSelectionPolygon[1].y() - radius,
-                                             HANDLE_WIDTH, HANDLE_WIDTH);
-        painter.drawRect(topRightCorner);
+    const QRectF bottomLeftCorner = QRectF(projectedSelectionPolygon[3].x() - radius,
+                                           projectedSelectionPolygon[3].y() - radius,
+                                           HANDLE_WIDTH, HANDLE_WIDTH);
+    painter.drawRect(bottomLeftCorner);
 
-        const QRectF bottomRightCorner = QRectF(projectedSelectionPolygon[2].x() - radius,
-                                                projectedSelectionPolygon[2].y() - radius,
-                                                HANDLE_WIDTH, HANDLE_WIDTH);
-        painter.drawRect(bottomRightCorner);
-
-        const QRectF bottomLeftCorner = QRectF(projectedSelectionPolygon[3].x() - radius,
-                                               projectedSelectionPolygon[3].y() - radius,
-                                               HANDLE_WIDTH, HANDLE_WIDTH);
-        painter.drawRect(bottomLeftCorner);
-    }
-
-    if (tool->properties.showSelectionInfo) {
+    if (toolProperties.showSelectionInfoEnabled()) {
         paintSelectionInfo(painter, transform, tParams.viewTransform, tParams.originalSelectionRectF, projectedSelectionPolygon);
     }
 }

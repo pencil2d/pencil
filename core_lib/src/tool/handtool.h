@@ -27,9 +27,10 @@ class HandTool : public BaseTool
     Q_OBJECT
 public:
     explicit HandTool( QObject* parent = 0 );
-    ToolType type() override { return HAND; }
+
+    ToolType type() const override { return HAND; }
+    ToolProperties& toolProperties() override { return mSettings; }
     void loadSettings() override;
-    void saveSettings() override;
     QCursor cursor() override;
 
     void pointerPressEvent(PointerEvent *) override;
@@ -45,6 +46,8 @@ private:
     QPointF mStartPoint;
     bool mIsHeld = false;
     int mDeltaFactor = 1;
+
+    ToolProperties mSettings;
 };
 
 #endif

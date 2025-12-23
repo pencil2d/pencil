@@ -23,6 +23,8 @@ GNU General Public License for more details.
 #include <QPixmapCache>
 #include <QTimer>
 
+#include "basetool.h"
+#include "transformtool.h"
 #include "pointerevent.h"
 #include "beziercurve.h"
 #include "object.h"
@@ -67,7 +69,6 @@ bool ScribbleArea::init()
     mMouseFilterTimer = new QTimer(this);
 
     connect(mPrefs, &PreferenceManager::optionChanged, this, &ScribbleArea::settingUpdated);
-    connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &ScribbleArea::onToolPropertyUpdated);
     connect(mEditor->tools(), &ToolManager::toolChanged, this, &ScribbleArea::onToolChanged);
 
     connect(mDoubleClickTimer, &QTimer::timeout, this, &ScribbleArea::handleDoubleClick);
@@ -285,18 +286,6 @@ void ScribbleArea::invalidatePainterCaches()
     mCameraPainter.resetCache();
     mCanvasPainter.resetLayerCache();
     updateFrame();
-}
-
-void ScribbleArea::onToolPropertyUpdated(ToolType, ToolPropertyType type)
-{
-    switch (type)
-    {
-    case ToolPropertyType::CAMERAPATH:
-        onFrameModified(mEditor->currentFrame());
-        break;
-    default:
-        break;
-    }
 }
 
 void ScribbleArea::onToolChanged(ToolType)
@@ -800,10 +789,6 @@ void ScribbleArea::paintBitmapBuffer()
         case BRUSH:
         case PEN:
         case PENCIL:
-            if (currentTool()->properties.preserveAlpha)
-            {
-                cm = QPainter::CompositionMode_SourceOver;
-            }
             break;
         default: //nothing
             break;
@@ -871,6 +856,7 @@ void ScribbleArea::handleDrawingOnEmptyFrame()
 
         // Refresh canvas
         drawCanvas(frameNumber, mCanvas.rect());
+        update();
         break;
     default:
         break;
@@ -1048,7 +1034,12 @@ void ScribbleArea::paintSelectionVisuals(QPainter &painter)
     if (currentSelectionRect.isEmpty()) { return; }
 
     TransformParameters params = { currentSelectionRect, editor()->view()->getView(), selectMan->selectionTransform() };
-    mSelectionPainter.paint(painter, object, mEditor->currentLayerIndex(), currentTool(), params);
+
+    mSelectionPainter.paint(painter,
+                            object,
+                            mEditor->currentLayerIndex(),
+                            static_cast<const TransformTool*>(editor()->tools()->getTool(SELECT))->transformSettings(),
+                            params);
     emit selectionUpdated();
 }
 
@@ -1347,7 +1338,7 @@ void ScribbleArea::applyTransformedSelection()
 
     Layer* layer = mEditor->layers()->currentLayer();
 
-    bool useAA = mEditor->tools()->currentTool()->properties.useAA;
+    bool useAA = mEditor->tools()->getTool(ToolType::MOVE)->toolProperties().getInfo(TransformToolProperties::ANTI_ALIASING_ENABLED).boolValue();
 
     if (layer == nullptr) { return; }
 

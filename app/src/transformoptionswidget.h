@@ -14,42 +14,47 @@ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 GNU General Public License for more details.
 
 */
-#ifndef CAMERAOPTIONSWIDGET_H
-#define CAMERAOPTIONSWIDGET_H
+#ifndef TRANSFORMOPTIONSWIDGET_H
+#define TRANSFORMOPTIONSWIDGET_H
 
 #include "basewidget.h"
 
-#include "pencildef.h"
-#include "camera.h"
+#include "toolproperties.h"
 
+class TransformTool;
 class Editor;
-class CameraTool;
+class BaseTool;
 
 namespace Ui {
-class CameraOptionsWidget;
+class TransformOptionsWidget;
 }
 
-class CameraOptionsWidget : public BaseWidget
+class TransformOptionsWidget : public BaseWidget
 {
     Q_OBJECT
+
 public:
-    explicit CameraOptionsWidget(Editor* editor, QWidget *parent = nullptr);
-    ~CameraOptionsWidget();
+    explicit TransformOptionsWidget(Editor* editor, QWidget *parent = nullptr);
+    ~TransformOptionsWidget();
 
     void initUI() override;
     void updateUI() override;
 
-    void setShowCameraPath(bool showCameraPath);
-    void setPathDotColorType(DotColorType index);
-
-    void makeConnectionsFromModelToUI();
     void makeConnectionsFromUIToModel();
+    void makeConnectionFromModelToUI(TransformTool* transformTool);
 
 private:
-    Ui::CameraOptionsWidget *ui;
-    Editor* mEditor = nullptr;
 
-    CameraTool* mCameraTool = nullptr;
+    void updatePropertyVisibility();
+
+    void updateToolConnections(BaseTool* tool);
+    void setShowSelectionInfo(bool enabled);
+    void setAntiAliasingEnabled(bool enabled);
+
+    Ui::TransformOptionsWidget *ui;
+
+    TransformTool* mTransformTool = nullptr;
+    Editor* mEditor = nullptr;
 };
 
-#endif // CAMERAOPTIONSWIDGET_H
+#endif // TRANSFORMOPTIONSWIDGET_H

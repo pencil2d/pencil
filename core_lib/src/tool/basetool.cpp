@@ -23,6 +23,7 @@ GNU General Public License for more details.
 #include "scribblearea.h"
 #include "strokeinterpolator.h"
 #include "pointerevent.h"
+#include "layermanager.h"
 
 QString BaseTool::TypeName(ToolType type)
 {
@@ -41,24 +42,45 @@ QString BaseTool::TypeName(ToolType type)
         map[BUCKET] = tr("Bucket");
         map[EYEDROPPER] = tr("Eyedropper");
         map[BRUSH] = tr("Brush");
+        map[CAMERA] = tr("Camera");
     }
     return map.at(type);
 }
 
 BaseTool::BaseTool(QObject* parent) : QObject(parent)
 {
-    mPropertyEnabled.insert(WIDTH, false);
-    mPropertyEnabled.insert(FEATHER, false);
-    mPropertyEnabled.insert(USEFEATHER, false);
-    mPropertyEnabled.insert(PRESSURE, false);
-    mPropertyEnabled.insert(INVISIBILITY, false);
-    mPropertyEnabled.insert(PRESERVEALPHA, false);
-    mPropertyEnabled.insert(BEZIER, false);
-    mPropertyEnabled.insert(CLOSEDPATH, false);
-    mPropertyEnabled.insert(ANTI_ALIASING, false);
-    mPropertyEnabled.insert(FILL_MODE, false);
-    mPropertyEnabled.insert(STABILIZATION, false);
-    mPropertyEnabled.insert(CAMERAPATH, false);
+}
+
+BaseTool::~BaseTool() {}
+
+void BaseTool::initialize(Editor* editor)
+{
+    Q_ASSERT(editor);
+    mEditor = editor;
+    mScribbleArea = editor->getScribbleArea();
+    Q_ASSERT(mScribbleArea);
+    loadSettings();
+}
+
+void BaseTool::saveSettings()
+{
+    QSettings storedSettings(PENCIL2D, PENCIL2D);
+    toolProperties().storeTo(storedSettings);
+}
+
+void BaseTool::resetSettings()
+{
+    toolProperties().restoreProperties();
+}
+
+bool BaseTool::isPropertyEnabled(int rawType)
+{
+    Layer* currentLayer = mEditor->layers()->currentLayer();
+    if (!currentLayer) {
+        return false;
+    }
+
+    return mPropertyUsed[rawType].contains(currentLayer->type());
 }
 
 QCursor BaseTool::cursor()
@@ -76,16 +98,6 @@ bool BaseTool::leavingThisTool()
    saveSettings();
 
    return true;
-}
-
-void BaseTool::initialize(Editor* editor)
-{
-    Q_ASSERT(editor);
-    mEditor = editor;
-    mScribbleArea = editor->getScribbleArea();
-    Q_ASSERT(mScribbleArea);
-
-    loadSettings();
 }
 
 void BaseTool::pointerPressEvent(PointerEvent* event)
@@ -125,113 +137,4 @@ bool BaseTool::isDrawingTool()
 bool BaseTool::isActive() const
 {
     return false;
-}
-
-void BaseTool::setWidth(const qreal width)
-{
-    properties.width = width;
-}
-
-void BaseTool::setFeather(const qreal feather)
-{
-    properties.feather = feather;
-}
-
-void BaseTool::setUseFeather(const bool usingFeather)
-{
-    properties.useFeather = usingFeather;
-}
-
-void BaseTool::setInvisibility(const bool invisibility)
-{
-    properties.invisibility = invisibility;
-}
-
-void BaseTool::setBezier(const bool _bezier_state)
-{
-    properties.bezier_state = _bezier_state;
-}
-
-void BaseTool::setClosedPath(const bool closed)
-{
-    properties.closedPolylinePath = closed;
-}
-
-void BaseTool::setPressure(const bool pressure)
-{
-    properties.pressure = pressure;
-}
-
-void BaseTool::setPreserveAlpha(const bool preserveAlpha)
-{
-    properties.preserveAlpha = preserveAlpha;
-}
-
-void BaseTool::setVectorMergeEnabled(const bool vectorMergeEnabled)
-{
-    properties.vectorMergeEnabled = vectorMergeEnabled;
-}
-
-void BaseTool::setAA(const int useAA)
-{
-    properties.useAA = useAA;
-}
-
-void BaseTool::setFillMode(const int mode)
-{
-    properties.fillMode = mode;
-}
-
-void BaseTool::setStabilizerLevel(const int level)
-{
-    properties.stabilizerLevel = level;
-}
-
-void BaseTool::setTolerance(const int tolerance)
-{
-    properties.tolerance = tolerance;
-}
-
-void BaseTool::setToleranceEnabled(const bool enabled)
-{
-    properties.toleranceEnabled = enabled;
-}
-
-void BaseTool::setFillExpand(const int fillExpandValue)
-{
-    properties.bucketFillExpand = fillExpandValue;
-}
-
-void BaseTool::setFillReferenceMode(int referenceMode)
-{
-    properties.bucketFillReferenceMode = referenceMode;
-}
-
-void BaseTool::setFillExpandEnabled(const bool enabled)
-{
-    properties.bucketFillExpandEnabled = enabled;
-}
-
-void BaseTool::setUseFillContour(const bool useFillContour)
-{
-    properties.useFillContour = useFillContour;
-}
-
-void BaseTool::setShowSelectionInfo(const bool b)
-{
-    properties.showSelectionInfo = b;
-}
-
-void BaseTool::setShowCameraPath(const bool showCameraPath)
-{
-    properties.cameraShowPath = showCameraPath;
-}
-
-void BaseTool::setPathDotColorType(const DotColorType dotColorType)
-{
-    properties.cameraPathDotColorType = dotColorType;
-}
-
-void BaseTool::resetCameraPath()
-{
 }

@@ -26,28 +26,25 @@ GNU General Public License for more details.
 #include "selectionmanager.h"
 #include "undoredomanager.h"
 
-SelectTool::SelectTool(QObject* parent) : BaseTool(parent)
+SelectTool::SelectTool(QObject* parent) : TransformTool(parent)
 {
 }
 
 void SelectTool::loadSettings()
 {
-    properties.width = -1;
-    properties.feather = -1;
-    properties.stabilizerLevel = -1;
-    properties.useAA = -1;
-    QSettings settings(PENCIL2D, PENCIL2D);
-    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
-    mPropertyEnabled[SHOWSELECTIONINFO] = true;
-}
+    QSettings pencilSettings(PENCIL2D, PENCIL2D);
 
-void SelectTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
+    QHash<int, PropertyInfo> info;
 
-    settings.setValue("ShowSelectionInfo", properties.showSelectionInfo);
+    mPropertyUsed[TransformToolProperties::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
 
-    settings.sync();
+    info[TransformToolProperties::SHOWSELECTIONINFO_ENABLED] = false;
+    toolProperties().insertProperties(info);
+    toolProperties().loadFrom(typeName(), pencilSettings);
+
+    if (toolProperties().requireMigration(pencilSettings, ToolProperties::VERSION_1)) {
+        toolProperties().setBaseValue(TransformToolProperties::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
+    }
 }
 
 QCursor SelectTool::cursor()
@@ -88,16 +85,6 @@ QCursor SelectTool::cursor()
         break;
     }
     return QCursor(mCursorPixmap);
-}
-
-void SelectTool::resetToDefault()
-{
-    setShowSelectionInfo(false);
-}
-
-void SelectTool::setShowSelectionInfo(const bool b)
-{
-    properties.showSelectionInfo = b;
 }
 
 void SelectTool::beginSelection(Layer* currentLayer, const QPointF& pos)
@@ -308,7 +295,7 @@ bool SelectTool::keyPressEvent(QKeyEvent* event)
     }
 
     // Follow the generic behavior anyway
-    return BaseTool::keyPressEvent(event);
+    return TransformTool::keyPressEvent(event);
 }
 
 QPointF SelectTool::offsetFromPressPos(const QPointF& pos)

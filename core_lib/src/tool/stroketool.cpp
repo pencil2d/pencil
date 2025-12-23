@@ -54,29 +54,47 @@ StrokeTool::StrokeTool(QObject* parent) : BaseTool(parent)
     detectWhichOSX();
 }
 
+StrokeTool::~StrokeTool()
+{
+}
+
 void StrokeTool::loadSettings()
 {
     mQuickSizingEnabled = mEditor->preference()->isOn(SETTING::QUICK_SIZING);
     mCanvasCursorEnabled = mEditor->preference()->isOn(SETTING::CANVAS_CURSOR);
+
+    QSettings pencilSettings(PENCIL2D, PENCIL2D);
+    QHash<int, PropertyInfo> info;
+    info[StrokeToolProperties::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 24.0 };
+    info[StrokeToolProperties::FEATHER_VALUE] = { FEATHER_MIN, FEATHER_MAX, 48.0 };
+    info[StrokeToolProperties::FEATHER_ENABLED] = false;
+    info[StrokeToolProperties::PRESSURE_ENABLED] = false;
+    info[StrokeToolProperties::INVISIBILITY_ENABLED] = false;
+    info[StrokeToolProperties::STABILIZATION_VALUE] = { StabilizationLevel::NONE, StabilizationLevel::STRONG, StabilizationLevel::STRONG };
+    info[StrokeToolProperties::ANTI_ALIASING_ENABLED] = false;
+    info[StrokeToolProperties::FILLCONTOUR_ENABLED] = false;
+
+    toolProperties().insertProperties(info);
+    toolProperties().loadFrom(typeName(), pencilSettings);
 
     /// Given the way that we update preferences currently, this connection should not be removed
     /// when the tool is not active.
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &StrokeTool::onPreferenceChanged);
 
     connect(&mWidthSizingTool, &RadialOffsetTool::offsetChanged, this, [=](qreal offset) {
-        mEditor->tools()->setWidth(qBound(WIDTH_MIN, offset * 2.0, WIDTH_MAX));
+        setWidth(offset * 2.0);
     });
 
     connect(&mFeatherSizingTool, &RadialOffsetTool::offsetChanged, this, [=](qreal offset){
         const qreal inputMin = FEATHER_MIN;
-        const qreal inputMax = properties.width * 0.5;
+        const qreal inputMax = strokeToolProperties().width() * 0.5;
         const qreal outputMax = FEATHER_MAX;
         const qreal outputMin = inputMin;
 
         // We map the feather value to a value between the min width and max width
         const qreal mappedValue = MathUtils::map(offset, inputMin, inputMax, outputMax, outputMin);
 
-        mEditor->tools()->setFeather(qBound(FEATHER_MIN, mappedValue, FEATHER_MAX));
+        setFeather(mappedValue);
     });
 }
 
@@ -225,19 +243,19 @@ bool StrokeTool::handleQuickSizing(PointerEvent* event)
         return false;
     }
 
-    ToolPropertyType setting = mQuickSizingProperties[event->modifiers()];
+    StrokeToolProperties::Type setting = static_cast<StrokeToolProperties::Type>(mQuickSizingProperties[event->modifiers()]);
     if (event->eventType() == PointerEvent::Press) {
         switch (setting) {
-            case WIDTH: {
-                mWidthSizingTool.setOffset(properties.width * 0.5);
+            case StrokeToolProperties::WIDTH_VALUE: {
+                mWidthSizingTool.setOffset(strokeToolProperties().width() * 0.5);
                 break;
             }
-            case FEATHER: {
+            case StrokeToolProperties::FEATHER_VALUE: {
                 const qreal factor = 0.5;
-                const qreal cursorRad = properties.width * factor;
+                const qreal cursorRad = strokeToolProperties().width() * factor;
 
                 // Pull feather handle closer to center as feather increases
-                const qreal featherWidthFactor = MathUtils::normalize(properties.feather, FEATHER_MIN, FEATHER_MAX);
+                const qreal featherWidthFactor = MathUtils::normalize(strokeToolProperties().feather(), FEATHER_MIN, FEATHER_MAX);
                 const qreal offset = (cursorRad * featherWidthFactor);
                 mFeatherSizingTool.setOffset(offset);
                 break;
@@ -247,11 +265,11 @@ bool StrokeTool::handleQuickSizing(PointerEvent* event)
     }
 
     switch (setting) {
-        case WIDTH: {
+        case StrokeToolProperties::WIDTH_VALUE: {
             mWidthSizingTool.pointerEvent(event);
             break;
         }
-        case FEATHER: {
+        case StrokeToolProperties::FEATHER_VALUE: {
             mFeatherSizingTool.pointerEvent(event);
             break;
         }
@@ -296,19 +314,19 @@ bool StrokeTool::leaveEvent(QEvent*)
 }
 
 
-QRectF StrokeTool::cursorRect(ToolPropertyType settingType, const QPointF& point)
+QRectF StrokeTool::cursorRect(StrokeToolProperties::Type settingType, const QPointF& point)
 {
-    const qreal brushWidth = properties.width;
-    const qreal brushFeather = properties.feather;
+    const qreal brushWidth = strokeToolProperties().width();
+    const qreal brushFeather = strokeToolProperties().feather();
 
     const QPointF& cursorPos = point;
     const qreal cursorRad = brushWidth * 0.5;
     const QPointF& widthCursorTopLeft = QPointF(cursorPos.x() - cursorRad, cursorPos.y() - cursorRad);
 
     const QRectF widthCircleRect = QRectF(widthCursorTopLeft, QSizeF(brushWidth, brushWidth));
-    if (settingType == WIDTH) {
+    if (settingType == StrokeToolProperties::WIDTH_VALUE) {
         return widthCircleRect;
-    } else if (settingType == FEATHER) {
+    } else if (settingType == StrokeToolProperties::FEATHER_VALUE) {
         const qreal featherWidthFactor =  MathUtils::normalize(brushFeather, FEATHER_MIN, FEATHER_MAX);
         QRectF featherRect = QRectF(widthCircleRect.center().x() - (cursorRad * featherWidthFactor),
                                      widthCircleRect.center().y() - (cursorRad * featherWidthFactor),
@@ -327,19 +345,19 @@ QRectF StrokeTool::cursorRect(ToolPropertyType settingType, const QPointF& point
 void StrokeTool::updateCanvasCursor()
 {
     CanvasCursorPainterOptions widthOptions;
-    widthOptions.circleRect = cursorRect(WIDTH, mWidthSizingTool.isAdjusting() ? mWidthSizingTool.offsetPoint() : getCurrentPoint());
+    widthOptions.circleRect = cursorRect(StrokeToolProperties::WIDTH_VALUE, mWidthSizingTool.isAdjusting() ? mWidthSizingTool.offsetPoint() : getCurrentPoint());
     widthOptions.showCursor = mCanvasCursorEnabled;
     widthOptions.showCross = true;
 
     CanvasCursorPainterOptions featherOptions;
-    featherOptions.circleRect = cursorRect(FEATHER, mFeatherSizingTool.isAdjusting() ? mFeatherSizingTool.offsetPoint() : getCurrentPoint());
+    featherOptions.circleRect = cursorRect(StrokeToolProperties::FEATHER_VALUE, mFeatherSizingTool.isAdjusting() ? mFeatherSizingTool.offsetPoint() : getCurrentPoint());
     featherOptions.showCursor = mCanvasCursorEnabled;
     featherOptions.showCross = false;
 
     if (mFeatherSizingTool.isAdjusting()) {
-        widthOptions.circleRect = cursorRect(WIDTH, mFeatherSizingTool.offsetPoint());
+        widthOptions.circleRect = cursorRect(StrokeToolProperties::WIDTH_VALUE, mFeatherSizingTool.offsetPoint());
     } else if (mWidthSizingTool.isAdjusting()) {
-        featherOptions.circleRect = cursorRect(FEATHER, mWidthSizingTool.offsetPoint());
+        featherOptions.circleRect = cursorRect(StrokeToolProperties::FEATHER_VALUE, mWidthSizingTool.offsetPoint());
     }
 
     mWidthCursorPainter.preparePainter(widthOptions);
@@ -361,11 +379,59 @@ void StrokeTool::paint(QPainter& painter, const QRect& blitRect)
     painter.save();
     painter.setTransform(mEditor->view()->getView());
 
-    if (properties.useFeather) {
+    if (strokeToolProperties().featherEnabled()) {
         mFeatherCursorPainter.paint(painter, blitRect);
     }
 
     mWidthCursorPainter.paint(painter, blitRect);
 
     painter.restore();
+}
+
+void StrokeTool::setStablizationLevel(int level)
+{
+    toolProperties().setBaseValue(StrokeToolProperties::STABILIZATION_VALUE, level);
+    emit stabilizationLevelChanged(level);
+}
+
+void StrokeTool::setFeatherEnabled(bool enabled)
+{
+    toolProperties().setBaseValue(StrokeToolProperties::FEATHER_ENABLED, enabled);
+    emit featherEnabledChanged(enabled);
+}
+
+void StrokeTool::setFeather(qreal feather)
+{
+    toolProperties().setBaseValue(StrokeToolProperties::FEATHER_VALUE, feather);
+    emit featherChanged(strokeToolProperties().feather());
+}
+
+void StrokeTool::setWidth(qreal width)
+{
+    toolProperties().setBaseValue(StrokeToolProperties::WIDTH_VALUE, width);
+    emit widthChanged(strokeToolProperties().width());
+}
+
+void StrokeTool::setPressureEnabled(bool enabled)
+{
+    toolProperties().setBaseValue(StrokeToolProperties::PRESSURE_ENABLED, enabled);
+    emit pressureEnabledChanged(enabled);
+}
+
+void StrokeTool::setFillContourEnabled(bool enabled)
+{
+    toolProperties().setBaseValue(StrokeToolProperties::FILLCONTOUR_ENABLED, enabled);
+    emit fillContourEnabledChanged(enabled);
+}
+
+void StrokeTool::setAntiAliasingEnabled(bool enabled)
+{
+    toolProperties().setBaseValue(StrokeToolProperties::ANTI_ALIASING_ENABLED, enabled);
+    emit antiAliasingEnabledChanged(enabled);
+}
+
+void StrokeTool::setStrokeInvisibleEnabled(bool enabled)
+{
+    toolProperties().setBaseValue(StrokeToolProperties::INVISIBILITY_ENABLED, enabled);
+    emit invisibleStrokeEnabledChanged(enabled);
 }

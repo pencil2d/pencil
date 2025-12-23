@@ -44,28 +44,46 @@ class Camera;
 class CameraTool : public BaseTool
 {
     Q_OBJECT
+
 public:
     explicit CameraTool(QObject* object);
     ~CameraTool() override;
 
+    enum ActionType {
+        RESET_PATH,
+        RESET_FIELD,
+        RESET_ROTATION,
+        RESET_TRANSLATION,
+        RESET_SCALING
+    };
+
     QCursor cursor() override;
-    ToolType type() override { return ToolType::CAMERA; }
+    ToolType type() const override { return ToolType::CAMERA; }
+    bool isActive() const override { return true; }
 
     void paint(QPainter& painter, const QRect&) override;
 
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const CameraToolProperties& settings() const { return mSettings; }
+
     void loadSettings() override;
-    void saveSettings() override;
 
     void pointerPressEvent(PointerEvent* event) override;
     void pointerReleaseEvent(PointerEvent* event) override;
     void pointerMoveEvent(PointerEvent* event) override;
 
-    void setShowCameraPath(const bool showCameraPath) override;
-    void resetCameraPath() override;
-    void setPathDotColorType(const DotColorType pathDotColor) override;
+    void setCameraPathEnabled(bool enabled);
+    void resetCameraPath();
+    void setPathDotColorType(DotColorType pathDotColor);
     void resetTransform(CameraFieldOption option);
 
     void transformView(LayerCamera* layerCamera, CameraMoveType mode, const QPointF& point, const QPointF& offset, qreal angle, int frameNumber) const;
+
+    void performAction(ActionType actionType);
+
+signals:
+    void pathColorChanged(DotColorType colorType);
+    void cameraPathEnabledChanged(bool enabled);
 
 private:
 
@@ -110,6 +128,8 @@ private:
     QColor mHandleColor;
     QColor mHandleDisabledColor;
     QColor mHandleTextColor;
+
+    CameraToolProperties mSettings;
 };
 
 #endif // CAMERATOOL_H
