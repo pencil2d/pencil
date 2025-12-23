@@ -20,7 +20,6 @@ GNU General Public License for more details.
 #include <QDebug>
 
 #include "spinslider.h"
-#include "pencilsettings.h"
 
 #include "layer.h"
 #include "editor.h"
@@ -28,26 +27,41 @@ GNU General Public License for more details.
 #include "toolmanager.h"
 #include "util.h"
 
+#include "stroketool.h"
+#include "buckettool.h"
+
 BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
-    QWidget(parent),
+    BaseWidget(parent),
     ui(new Ui::BucketOptionsWidget),
     mEditor(editor)
 {
     ui->setupUi(this);
 
-    ui->colorToleranceSlider->init(tr("Color tolerance"), SpinSlider::GROWTH_TYPE::LINEAR, SpinSlider::VALUE_TYPE::INTEGER, 0, MAX_COLOR_TOLERANCE);
-    ui->expandSlider->init(tr("Expand fill"), SpinSlider::GROWTH_TYPE::LINEAR, SpinSlider::VALUE_TYPE::INTEGER, 0, MAX_EXPAND);
-    ui->strokeThicknessSlider->init(tr("Stroke thickness"), SpinSlider::GROWTH_TYPE::LOG, SpinSlider::VALUE_TYPE::FLOAT, 1, MAX_STROKE_THICKNESS);
+    initUI();
+}
 
-    QSettings settings(PENCIL2D, PENCIL2D);
+BucketOptionsWidget::~BucketOptionsWidget()
+{
+    delete ui;
+}
 
-    ui->colorToleranceCheckbox->setChecked(settings.value(SETTING_BUCKET_TOLERANCE_ON, true).toBool());
-    ui->expandCheckbox->setChecked(settings.value(SETTING_BUCKET_FILL_EXPAND_ON, true).toBool());
+void BucketOptionsWidget::initUI()
+{
+    mBucketTool = static_cast<BucketTool*>(mEditor->tools()->getTool(BUCKET));
+    mSettings = mBucketTool->settings();
 
-    ui->expandSpinBox->setMaximum(MAX_EXPAND);
-    ui->strokeThicknessSpinBox->setMaximum(MAX_STROKE_THICKNESS);
-    ui->colorToleranceSpinbox->setMaximum(MAX_COLOR_TOLERANCE);
-    ui->strokeThicknessSpinBox->setMinimum(1);
+    auto toleranceInfo = mSettings.getInfo(BucketToolProperties::COLORTOLERANCE_VALUE);
+    auto expandInfo = mSettings.getInfo(BucketToolProperties::FILLEXPAND_VALUE);
+    auto thicknessInfo = mSettings.getInfo(BucketToolProperties::FILLTHICKNESS_VALUE);
+
+    ui->colorToleranceSlider->init(tr("Color tolerance"), SpinSlider::GROWTH_TYPE::LINEAR, toleranceInfo.minInt(), toleranceInfo.maxInt());
+    ui->expandSlider->init(tr("Expand fill"), SpinSlider::GROWTH_TYPE::LINEAR, expandInfo.minInt(), expandInfo.maxInt());
+    ui->strokeThicknessSlider->init(tr("Stroke thickness"), SpinSlider::GROWTH_TYPE::LOG, thicknessInfo.minReal(), thicknessInfo.maxReal());
+
+    ui->expandSpinBox->setMaximum(expandInfo.maxInt());
+    ui->strokeThicknessSpinBox->setMaximum(thicknessInfo.maxReal());
+    ui->strokeThicknessSpinBox->setMinimum(thicknessInfo.minReal());
+    ui->colorToleranceSpinbox->setMaximum(toleranceInfo.maxInt());
 
     ui->referenceLayerComboBox->addItem(tr("Current layer", "Reference Layer Options"), 0);
     ui->referenceLayerComboBox->addItem(tr("All layers", "Reference Layer Options"), 1);
@@ -58,29 +72,8 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     ui->blendModeComboBox->addItem(tr("Behind",  "Blend Mode dropdown option"), 2);
     ui->blendModeComboBox->setToolTip(tr("Defines how the fill will behave when the new color is not opaque"));
 
-    connect(ui->colorToleranceSlider, &SpinSlider::valueChanged, mEditor->tools(), &ToolManager::setTolerance);
-    connect(ui->colorToleranceSpinbox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), mEditor->tools(), &ToolManager::setTolerance);
-    connect(ui->colorToleranceCheckbox, &QCheckBox::toggled, mEditor->tools(), &ToolManager::setBucketColorToleranceEnabled);
-
-    connect(ui->expandSlider, &SpinSlider::valueChanged, mEditor->tools(), &ToolManager::setBucketFillExpand);
-    connect(ui->expandSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), mEditor->tools(), &ToolManager::setBucketFillExpand);
-    connect(ui->expandCheckbox, &QCheckBox::toggled, mEditor->tools(), &ToolManager::setBucketFillExpandEnabled);
-
-    connect(ui->strokeThicknessSlider, &SpinSlider::valueChanged, mEditor->tools(), &ToolManager::setWidth);
-    connect(ui->strokeThicknessSpinBox, static_cast<void (QDoubleSpinBox::*)(qreal)>(&QDoubleSpinBox::valueChanged), mEditor->tools(), &ToolManager::setWidth);
-
-    connect(mEditor->tools(), &ToolManager::toolPropertyChanged, this, &BucketOptionsWidget::onPropertyChanged);
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &BucketOptionsWidget::onLayerChanged);
-
-    connect(ui->referenceLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setBucketFillReferenceMode);
-    connect(ui->blendModeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), mEditor->tools(), &ToolManager::setFillMode);
-
-    ui->expandSlider->setValue(settings.value(SETTING_BUCKET_FILL_EXPAND, 2).toInt());
-    ui->expandSpinBox->setValue(settings.value(SETTING_BUCKET_FILL_EXPAND, 2).toInt());
-    ui->colorToleranceSlider->setValue(settings.value(SETTING_BUCKET_TOLERANCE, 50).toInt());
-    ui->colorToleranceSpinbox->setValue(settings.value(SETTING_BUCKET_TOLERANCE, 50).toInt());
-    ui->referenceLayerComboBox->setCurrentIndex(settings.value(SETTING_BUCKET_FILL_REFERENCE_MODE, 0).toInt());
-    ui->blendModeComboBox->setCurrentIndex(settings.value(SETTING_FILL_MODE, 0).toInt());
+    makeConnectionsFromUIToModel();
+    makeConnectionsFromModelToUI();
 
     clearFocusOnFinished(ui->colorToleranceSpinbox);
     clearFocusOnFinished(ui->expandSpinBox);
@@ -88,87 +81,126 @@ BucketOptionsWidget::BucketOptionsWidget(Editor* editor, QWidget* parent) :
     updatePropertyVisibility();
 }
 
-BucketOptionsWidget::~BucketOptionsWidget()
+void BucketOptionsWidget::updateUI()
 {
-    delete ui;
+    updatePropertyVisibility();
+
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLTHICKNESS_VALUE)) {
+        mBucketTool->setStrokeThickness(mSettings.fillThickness());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_ENABLED)) {
+        mBucketTool->setFillExpandEnabled(mSettings.fillExpandEnabled());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_VALUE)) {
+        mBucketTool->setFillExpand(mSettings.fillExpandAmount());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE)) {
+        mBucketTool->setFillReferenceMode(mSettings.fillReferenceMode());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLMODE_VALUE)) {
+        mBucketTool->setFillMode(mSettings.fillMode());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_VALUE)) {
+        mBucketTool->setColorTolerance(mSettings.tolerance());
+    }
+
+    if (mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_ENABLED)) {
+        mBucketTool->setColorToleranceEnabled(mSettings.colorToleranceEnabled());
+    }
+}
+
+void BucketOptionsWidget::makeConnectionsFromModelToUI()
+{
+    connect(mBucketTool, &BucketTool::toleranceChanged, this, [=](int value) {
+       setColorTolerance(value);
+    });
+
+    connect(mBucketTool, &BucketTool::toleranceEnabledChanged, this, [=](bool enabled) {
+       setColorToleranceEnabled(enabled);
+    });
+
+    connect(mBucketTool, &BucketTool::fillExpandChanged, this, [=](int value) {
+       setFillExpand(value);
+    });
+
+    connect(mBucketTool, &BucketTool::fillExpandEnabledChanged, this, [=](bool enabled) {
+       setFillExpandEnabled(enabled);
+    });
+
+    connect(mBucketTool, &BucketTool::fillReferenceModeChanged, this, [=](int value) {
+       setFillReferenceMode(value);
+    });
+
+    connect(mBucketTool, &BucketTool::fillModeChanged, this, [=](int value) {
+       setFillMode(value);
+    });
+
+    connect(mBucketTool, &BucketTool::strokeThicknessChanged, this, [=](qreal value) {
+       setStrokeWidth(value);
+    });
+}
+
+void BucketOptionsWidget::makeConnectionsFromUIToModel()
+{
+    connect(ui->colorToleranceSlider, &SpinSlider::valueChanged, [=](int value) {
+        mBucketTool->setColorTolerance(value);
+    });
+    connect(ui->colorToleranceSpinbox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [=](int value) {
+        mBucketTool->setColorTolerance(value);
+    });
+
+    connect(ui->colorToleranceCheckbox, &QCheckBox::toggled, [=](bool enabled) {
+        mBucketTool->setColorToleranceEnabled(enabled);
+    });
+
+    connect(ui->expandSlider, &SpinSlider::valueChanged, [=](int value) {
+        mBucketTool->setFillExpand(value);
+    });
+
+    connect(ui->expandSpinBox, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), [=](int value) {
+        mBucketTool->setFillExpand(value);
+    });
+
+    connect(ui->expandCheckbox, &QCheckBox::toggled, [=](bool enabled) {
+        mBucketTool->setFillExpandEnabled(enabled);
+    });
+
+    connect(ui->referenceLayerComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int value) {
+        mBucketTool->setFillReferenceMode(value);
+    });
+
+    connect(ui->blendModeComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int value) {
+        mBucketTool->setFillMode(value);
+    });
+
+    connect(ui->strokeThicknessSlider, &SpinSlider::valueChanged, [=](qreal value) {
+        mBucketTool->setStrokeThickness(value);
+    });
+
+    connect(ui->strokeThicknessSpinBox, static_cast<void (QDoubleSpinBox::*)(qreal)>(&QDoubleSpinBox::valueChanged), [=](qreal value) {
+        mBucketTool->setStrokeThickness(value);
+    });
 }
 
 void BucketOptionsWidget::updatePropertyVisibility()
 {
-    Layer* layer = mEditor->layers()->currentLayer();
-
-    Q_ASSERT(layer != nullptr);
-
-    switch (layer->type()) {
-    case Layer::VECTOR:
-        ui->strokeThicknessSlider->show();
-        ui->strokeThicknessSpinBox->show();
-
-        ui->colorToleranceCheckbox->hide();
-        ui->colorToleranceSlider->hide();
-        ui->colorToleranceSpinbox->hide();
-        ui->expandCheckbox->hide();
-        ui->expandSlider->hide();
-        ui->expandSpinBox->hide();
-        ui->referenceLayerComboBox->hide();
-        ui->referenceLayerDescLabel->hide();
-        ui->blendModeComboBox->hide();
-        ui->blendModeLabel->hide();
-        break;
-    case Layer::BITMAP: {
-        ui->strokeThicknessSlider->hide();
-        ui->strokeThicknessSpinBox->hide();
-
-        ui->referenceLayerComboBox->show();
-        ui->referenceLayerDescLabel->show();
-        ui->colorToleranceCheckbox->show();
-        ui->colorToleranceSlider->show();
-        ui->colorToleranceSpinbox->show();
-        ui->expandCheckbox->show();
-        ui->expandSlider->show();
-        ui->expandSpinBox->show();
-        ui->blendModeComboBox->show();
-        ui->blendModeLabel->show();
-        break;
-    }
-    default:
-        ui->strokeThicknessSlider->hide();
-        ui->strokeThicknessSpinBox->hide();
-        ui->colorToleranceCheckbox->hide();
-        ui->colorToleranceSlider->hide();
-        ui->colorToleranceSpinbox->hide();
-        ui->expandCheckbox->hide();
-        ui->expandSlider->hide();
-        ui->expandSpinBox->hide();
-        ui->referenceLayerComboBox->hide();
-        ui->referenceLayerDescLabel->hide();
-        ui->blendModeComboBox->hide();
-        ui->blendModeLabel->hide();
-    }
-}
-
-void BucketOptionsWidget::onPropertyChanged(ToolType, ToolPropertyType propertyType)
-{
-    const Properties& p = mEditor->tools()->currentTool()->properties;
-    switch (propertyType)
-    {
-    case ToolPropertyType::TOLERANCE:
-         setColorTolerance(static_cast<int>(p.tolerance)); break;
-    case ToolPropertyType::USETOLERANCE:
-         setColorToleranceEnabled(p.toleranceEnabled); break;
-    case ToolPropertyType::WIDTH:
-         setStrokeWidth(static_cast<int>(p.width)); break;
-    case ToolPropertyType::BUCKETFILLEXPAND:
-         setFillExpand(static_cast<int>(p.bucketFillExpand)); break;
-    case ToolPropertyType::USEBUCKETFILLEXPAND:
-        setFillExpandEnabled(p.bucketFillExpandEnabled); break;
-    case ToolPropertyType::BUCKETFILLLAYERREFERENCEMODE:
-        setFillReferenceMode(p.bucketFillReferenceMode); break;
-    case ToolPropertyType::FILL_MODE:
-        setFillMode(p.fillMode); break;
-    default:
-        break;
-    }
+    ui->strokeThicknessSlider->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLTHICKNESS_VALUE));
+    ui->strokeThicknessSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLTHICKNESS_VALUE));
+    ui->colorToleranceCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_ENABLED));
+    ui->colorToleranceSlider->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_VALUE));
+    ui->colorToleranceSpinbox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_VALUE));
+    ui->expandCheckbox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_ENABLED));
+    ui->expandSlider->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_VALUE));
+    ui->expandSpinBox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_VALUE));
+    ui->referenceLayerComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE));
+    ui->referenceLayerDescLabel->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE));
+    ui->blendModeComboBox->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLMODE_VALUE));
+    ui->blendModeLabel->setVisible(mBucketTool->isPropertyEnabled(BucketToolProperties::FILLMODE_VALUE));
 }
 
 void BucketOptionsWidget::onLayerChanged(int)

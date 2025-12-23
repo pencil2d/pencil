@@ -28,11 +28,14 @@ class PencilTool : public StrokeTool
     Q_OBJECT
 public:
     explicit PencilTool(QObject* parent);
-    ToolType type() override { return PENCIL; }
+
+    ToolType type() const override { return PENCIL; }
+
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const StrokeToolProperties& strokeToolProperties() const override { return mSettings; }
+
     void loadSettings() override;
-    void saveSettings() override;
     QCursor cursor() override;
-    void resetToDefault() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
@@ -42,18 +45,11 @@ public:
     void paintAt(QPointF point);
     void paintVectorStroke(Layer* layer);
 
-    void setWidth(const qreal width) override;
-    void setFeather(const qreal feather) override;
-    void setUseFeather(const bool useFeather) override;
-    void setInvisibility(const bool invisibility) override;
-    void setPressure(const bool pressure) override;
-    void setPreserveAlpha(const bool preserveAlpha) override;
-    void setStabilizerLevel(const int level) override;
-    void setUseFillContour(const bool useFillContour) override;
-
 private:
     QPointF mLastBrushPoint{ 0, 0 };
     QPointF mMouseDownPoint;
+
+    StrokeToolProperties mSettings;
 };
 
 #endif // PENCILTOOL_H

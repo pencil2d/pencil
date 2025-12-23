@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #ifndef MOVETOOL_H
 #define MOVETOOL_H
 
-#include "basetool.h"
+#include "transformtool.h"
 #include "movemode.h"
 #include "preferencemanager.h"
 #include "undoredomanager.h"
@@ -27,16 +27,18 @@ class Layer;
 class VectorImage;
 
 
-class MoveTool : public BaseTool
+class MoveTool : public TransformTool
 {
     Q_OBJECT
 public:
     explicit MoveTool(QObject* parent);
-    ToolType type() override;
-    void loadSettings() override;
-    void saveSettings() override;
     QCursor cursor() override;
+
     QCursor cursor(MoveMode mode) const;
+    ToolType type() const override;
+
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
@@ -44,9 +46,6 @@ public:
 
     bool leavingThisTool() override;
     bool isActive() const override;
-
-    void resetToDefault() override;
-    void setShowSelectionInfo(const bool b) override;
 
 private:
     void applyTransformation();

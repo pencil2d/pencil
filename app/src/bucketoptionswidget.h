@@ -17,23 +17,30 @@ GNU General Public License for more details.
 #ifndef BUCKETOPTIONSWIDGET_H
 #define BUCKETOPTIONSWIDGET_H
 
-#include <QWidget>
+
+#include "basewidget.h"
 #include "pencildef.h"
 
 class Editor;
 class Layer;
+class BucketTool;
+
+#include "toolproperties.h"
 
 namespace Ui {
 class BucketOptionsWidget;
 }
 
-class BucketOptionsWidget : public QWidget
+class BucketOptionsWidget : public BaseWidget
 {
     Q_OBJECT
 
 public:
     explicit BucketOptionsWidget(Editor* editor, QWidget* parent);
     ~BucketOptionsWidget();
+
+    void initUI() override;
+    void updateUI() override;
 
     void setStrokeWidth(qreal value);
     void setColorToleranceEnabled(bool enabled);
@@ -42,19 +49,17 @@ public:
     void setColorTolerance(int tolerance);
     void setFillReferenceMode(int referenceMode);
     void setFillMode(int mode);
-
-    void onPropertyChanged(ToolType, const ToolPropertyType propertyType);
     void onLayerChanged(int);
 
 private:
+    void makeConnectionsFromUIToModel();
+    void makeConnectionsFromModelToUI();
     void updatePropertyVisibility();
 
+    BucketTool* mBucketTool = nullptr;
+    BucketToolProperties mSettings;
     Ui::BucketOptionsWidget *ui;
     Editor* mEditor = nullptr;
-
-    const static int MAX_EXPAND = 25;
-    const static int MAX_COLOR_TOLERANCE = 100;
-    const static int MAX_STROKE_THICKNESS = 200;
 };
 
 #endif // BUCKETOPTIONSWIDGET_H
