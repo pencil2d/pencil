@@ -49,7 +49,6 @@ private:
 
     bool keyPressEvent(QKeyEvent* event) override;
 
-    void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint, Layer::LAYER_TYPE layerType);
     void controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint, Layer::LAYER_TYPE layerType);
 
     void beginSelection(Layer* currentLayer, const QPointF& pos);
