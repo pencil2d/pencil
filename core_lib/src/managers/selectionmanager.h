@@ -58,7 +58,7 @@ public:
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode(const MoveMode moveMode) { mMoveMode = moveMode; }
 
-    bool somethingSelected() const { return mOriginalRect.isValid(); }
+    bool somethingSelected() const { return mOriginalRect.isValid() || mMoveMode != MoveMode::NONE; }
 
     void adjustSelection(const QPointF& currentPoint, const QPointF& offset, qreal rotationOffset, int rotationIncrement = 0);
 
