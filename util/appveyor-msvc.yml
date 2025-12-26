@@ -2,10 +2,9 @@
 clone_depth: 1
 
 image:
-  - Visual Studio 2019
+  - Visual Studio 2022
 
 platform:
-  - x86
   - x64
 
 skip_commits:
@@ -15,6 +14,10 @@ skip_commits:
     - util/appveyor-mingw.yml
     - /.github/*
 
+install:
+  - call "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Auxiliary\Build\vcvars64.bat"
+  - set qt=6.5.3\msvc2019_64
+
 init:
   - ver
   - echo %PLATFORM%
@@ -22,28 +25,19 @@ init:
 before_build:
   - set QTDIR=C:\Qt\%qt%
   - set PATH=%PATH%;%QTDIR%\bin
-  - qmake --version
+  - cmake --version
 
 build_script:
   - cd
   - md build
   - cd build
-  - qmake "..\pencil2d.pro" CONFIG+=GIT CONFIG+=Release CONFIG+=PENCIL2D_NIGHTLY
-  - nmake
+  - cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=%QTDIR% -DPENCIL2D_NIGHTLY=ON -DAPP_VERSION=%APPVEYOR_BUILD_VERSION%
+  - cmake --build . --config Release --parallel --target pencil2d
+  - cmake --build . --config Release --parallel --target pencil2d_tests
 
 after_build:
-  - windeployqt "%APPVEYOR_BUILD_FOLDER%\build\app\release\pencil2d.exe"
+  - windeployqt "%APPVEYOR_BUILD_FOLDER%\build\Release\pencil2d.exe"
 
 test_script:
   - echo "Running tests"
-  - tests\release\tests.exe
-
-for:
-- matrix:
-    only:
-      - image: Visual Studio 2019
-  install:
-    - if %PLATFORM%==x86   call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars32.bat"
-    - if %PLATFORM%==x64   call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"
-    - if %PLATFORM%==x86   set qt=5.15\msvc2019
-    - if %PLATFORM%==x64   set qt=5.15\msvc2019_64
+  - ctest -C Release --output-on-failure
