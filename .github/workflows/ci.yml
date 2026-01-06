@@ -62,6 +62,7 @@ jobs:
 
     name: ${{matrix.name}}
     runs-on: ${{matrix.os}}
+    timeout-minutes: 20
     env: { CONTAINER: "${{matrix.container}}", BUILD_CMD: "" }
     steps:
       - name: Check out repository
