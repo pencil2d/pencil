@@ -185,7 +185,7 @@ create_package_windows() {
 
 echo "Version: ${VERSION_NUMBER}"
 
-filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%F)"
+filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%Y%m%d)"
 if [ "$IS_RELEASE" = "true" ]; then
   filename_suffix="${VERSION_NUMBER}"
 fi

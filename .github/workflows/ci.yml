@@ -94,8 +94,7 @@ jobs:
         run: >
           mkdir build; ${{runner.os == 'Linux' && '${BUILD_CMD}' || ''}}
           ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
-          -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
-          CONFIG+=PENCIL2D_${{ startsWith(github.ref, 'refs/heads/release/') && 'RELEASE' || 'NIGHTLY' }}
+          -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=GIT
           VERSION=${{ env.VERSION_NUMBER }}
           ${{runner.os == 'macOS' && matrix.qt == 6 && 'QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"' || ''}}
 
