@@ -87,11 +87,14 @@ CheckUpdatesDialog::~CheckUpdatesDialog()
 
 void CheckUpdatesDialog::startChecking()
 {
-#ifdef PENCIL2D_NIGHTLY_BUILD
-    nightlyBuildCheck();
-#else
-    regularBuildCheck();
-#endif
+    QString version(APP_VERSION);
+    if (version.startsWith("99.0.0")) {
+        nightlyBuildCheck();
+    } else if (version == "0.0.0.0") {
+        // Do nothing 
+    } else {
+        regularBuildCheck();
+    }
 }
 
 void CheckUpdatesDialog::regularBuildCheck()

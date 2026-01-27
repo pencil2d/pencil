@@ -21,4 +21,4 @@ runs:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
       INPUT_QT: ${{inputs.qt}}
-      IS_RELEASE: ${{ startsWith(github.ref, 'refs/heads/release/') }}
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}

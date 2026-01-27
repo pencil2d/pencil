@@ -1,11 +1,8 @@
 
-# Development branch build number is always 0.0.0.0
-# Nightly build version number is 0.0.0.BuildNumber
-# Release build version number is the git branch name plus the build number.
+# Development/Local build version is always 0.0.0.0
+# Nightly build version is 99.0.0.MasterBranchBuildNumber
 
-isEmpty(VERSION) {
-    VERSION = 0.0.0.0
-}
+isEmpty(VERSION): VERSION = 0.0.0.0
 
 message("App Version: $$VERSION")
 
@@ -13,13 +10,15 @@ DEFINES    += APP_VERSION=\\\"$$VERSION\\\"
 RC_DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 RC_DEFINES += APP_VERSION_RC=$$replace(VERSION, "\.", ",")
 
-PENCIL2D_NIGHTLY {
-    DEFINES += PENCIL2D_NIGHTLY_BUILD
-}
-
-PENCIL2D_RELEASE {
+# Auto-detect build type from version
+# 99.0.0.x and 0.0.0.0 are development/nightly builds
+contains(VERSION, ^99\.0\.0\..*) {
+    message("Build Type: Nightly")
+} else:equals(VERSION, "0.0.0.0") {
+    message("Build Type: Development")
+} else {
+    message("Build Type: Release")
     DEFINES += QT_NO_DEBUG_OUTPUT
-    DEFINES += PENCIL2D_RELEASE_BUILD
 }
 
 CONFIG += strict_c strict_c++
