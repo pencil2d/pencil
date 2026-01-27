@@ -1,15 +1,15 @@
-
-# Development build number is always 0.0.0.0
-# Nightly build version number is 99.0.0.BuildNumber
-# Release build version number is the git branch name plus the build number
+# Development/Local build version is always 0.0.0.0
+# Nightly build version is 99.0.0.GITHUB_RUN_NUMBER
 
 isEmpty(VERSION): VERSION = 0.0.0.0
+message("Version: $$VERSION")
 
-message("App Version: $$VERSION")
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
-DEFINES    += APP_VERSION=\\\"$$VERSION\\\"
-RC_DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-RC_DEFINES += APP_VERSION_RC=$$replace(VERSION, "\.", ",")
+win32 {
+    RC_DEFINES += RC_APP_VERSION_STR=\\\"$$VERSION\\\"
+    RC_DEFINES += RC_APP_VERSION=$$replace(VERSION, "\.", ",")
+}
 
 # Auto-detect build type from version
 # 99.0.0.x and 0.0.0.0 are development/nightly builds
