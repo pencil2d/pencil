@@ -99,7 +99,7 @@ namespace {
         } else if (version == "0.0.0.0") {
             return QString("[*]Pencil2D Development Build %1").arg(BUILD_DATE);
         } else {
-            return QString("[*]Pencil2D v%1").arg(APP_VERSION);
+            return QString("[*]Pencil2D %1").arg(APP_VERSION);
         }
     }
 }
