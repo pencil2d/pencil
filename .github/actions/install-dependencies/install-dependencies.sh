@@ -8,8 +8,7 @@ setup_linux() {
   echo "::endgroup::"
 
   echo "::group::Add APT sources"
-  for ppa in ppa:ubuntu-toolchain-r/test ppa:ubuntu-sdk-team/ppa \
-             ppa:git-core/ppa; do
+  for ppa in ppa:ubuntu-toolchain-r/test ppa:git-core/ppa; do
     ${BUILD_CMD} apt-add-repository -y "${ppa}"
   done
   if [ "${INPUT_QT}" -eq 5 ]; then
