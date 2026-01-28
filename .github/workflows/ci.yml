@@ -4,8 +4,6 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
-      - '**.sh'
-      - '**.py'
       - '**.ps1'
   pull_request:
     # Need to repeat these paths - YAML anchors aren’t supported on GHA atm
@@ -13,8 +11,6 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
-      - '**.sh'
-      - '**.py'
       - '**.ps1'
   workflow_dispatch:
 jobs:

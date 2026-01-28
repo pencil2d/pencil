@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 setup_linux() {
   # Because of how bare-bones our docker image is
@@ -52,7 +53,9 @@ setup_macos() {
 
 setup_windows() {
   pip install translate-toolkit[rc]
-  curl -fsSLO https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
+  echo "Downloading Okapi Framework..."
+  curl -fsSL -o okapi-apps_win32-x86_64_1.45.0.zip https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
+  ls -lh okapi-apps_win32-x86_64_1.45.0.zip
   mkdir okapi
   "${WINDIR}\\System32\\tar" xfC okapi-apps_win32-x86_64_1.45.0.zip okapi
   dotnet tool install -g wix --version 5.0.0
