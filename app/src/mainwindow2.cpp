@@ -35,6 +35,8 @@ GNU General Public License for more details.
 #include <QToolBar>
 #include <QToolButton>
 #include <QDebug>
+#include <QLineEdit>
+#include <QSpinBox>
 
 // core_lib headers
 #include "pencildef.h"
@@ -1429,6 +1431,7 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
     connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxDockWidget::setActiveTool);
     connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
 
+    connect(scribbleArea, &ScribbleArea::requestFocus, this, &MainWindow2::onFocusRequested);
 
     connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::onLayerChanged);
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::onLayerChanged);
@@ -1556,6 +1559,24 @@ bool MainWindow2::event(QEvent* event)
         emit windowActivated();
     }
     return QMainWindow::event(event);
+}
+
+void MainWindow2::onFocusRequested(QWidget *widget)
+{
+    ScribbleArea* scribbleArea = qobject_cast<ScribbleArea*>(widget);
+
+    QWidget* currentFocus = QApplication::focusWidget();
+
+    bool hasEditingFocus = false;
+
+    if (currentFocus) {
+        hasEditingFocus = qobject_cast<QLineEdit*>(currentFocus) ||
+                    qobject_cast<QAbstractSpinBox*>(currentFocus);
+    }
+
+    if (scribbleArea && !scribbleArea->hasFocus() && !hasEditingFocus) {
+        scribbleArea->setFocus();
+    }
 }
 
 void MainWindow2::displayMessageBox(const QString& title, const QString& body)

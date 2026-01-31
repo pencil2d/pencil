@@ -103,6 +103,8 @@ public:
     void displayMessageBox(const QString& title, const QString& body);
     void displayMessageBoxNoTitle(const QString& body);
 
+    void onFocusRequested(QWidget* widget);
+
 signals:
     /** Emitted when window regains focus */
     void windowActivated();
