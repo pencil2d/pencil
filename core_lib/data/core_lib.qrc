@@ -1,5 +1,17 @@
 <RCC>
     <qresource prefix="/">
         <file>resources/kb.ini</file>
+        <file>theme_palettes/darker.conf</file>
+        <file>theme_palettes/ia-ora.conf</file>
+        <file>theme_palettes/waves.conf</file>
+        <file>theme_palettes/rose-pine.conf</file>
+        <file>theme_palettes/arc-dark.conf</file>
+        <file>theme_palettes/arc-light.conf</file>
+        <file>theme_palettes/frappe.conf</file>
+        <file>theme_palettes/gruvbox-dark.conf</file>
+        <file>theme_palettes/gruvbox-light.conf</file>
+        <file>theme_palettes/latte.conf</file>
+        <file>theme_palettes/macchiato.conf</file>
+        <file>theme_palettes/mocha.conf</file>
     </qresource>
 </RCC>
