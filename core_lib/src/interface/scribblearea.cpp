@@ -593,6 +593,11 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     if (event.eventType() == PointerEvent::Press)
     {
         event.accept();
+
+        if (!hasFocus()) {
+            setFocus();
+        }
+
         if (mIsFirstClick)
         {
             mIsFirstClick = false;
