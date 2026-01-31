@@ -54,7 +54,7 @@ private:
 
     void drawWheelImage(const QSize& newSize);
     void drawSquareImage(const int& hue);
-    void composeWheel(QPixmap& pixmap);
+    void composeWheel(QPixmap& pixmap, QRect blitRect);
 
 private:
     QSize mInitSize{ 20, 20 };
