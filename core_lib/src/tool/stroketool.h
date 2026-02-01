@@ -122,7 +122,7 @@ protected:
 
     StrokeInterpolator mInterpolator;
 
-    const UndoSaveState* mUndoSaveState = nullptr;
+    UndoSaveState* mUndoSaveState = nullptr;
 
     static const qreal FEATHER_MIN;
     static const qreal FEATHER_MAX;
@@ -135,6 +135,7 @@ private:
 
     RadialOffsetTool mWidthSizingTool;
     RadialOffsetTool mFeatherSizingTool;
+    SAVESTATE_ID mUndoSaveStateId = 0;
 };
 
 #endif // STROKETOOL_H
