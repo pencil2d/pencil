@@ -19,6 +19,7 @@ GNU General Public License for more details.
 #include <QSettings>
 #include <QPixmap>
 #include <QPainter>
+#include <QLineF>
 
 #include "editor.h"
 #include "blitrect.h"
@@ -100,6 +101,8 @@ void EraserTool::pointerPressEvent(PointerEvent *event)
     startStroke(event->inputType());
     mLastBrushPoint = getCurrentPoint();
     mMouseDownPoint = getCurrentPoint();
+    mStrokePoints.clear(); // Clear previous stroke points
+    mStrokePoints.append(getCurrentPoint()); // Add the starting point
 
     StrokeTool::pointerPressEvent(event);
 }
@@ -114,6 +117,7 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
     if (event->buttons() & Qt::LeftButton && event->inputType() == mCurrentInputType)
     {
         mCurrentPressure = mInterpolator.getPressure();
+        mStrokePoints.append(getCurrentPoint()); // Track the stroke path
         updateStrokes();
         if (mSettings.stabilizerLevel() != mInterpolator.getStabilizerLevel())
         {
@@ -147,6 +151,7 @@ void EraserTool::pointerReleaseEvent(PointerEvent *event)
 
     removeVectorPaint();
     endStroke();
+    mStrokePoints.clear(); // Clear stroke points after finishing
 
     StrokeTool::pointerReleaseEvent(event);
 }
@@ -246,8 +251,7 @@ void EraserTool::removeVectorPaint()
         mScribbleArea->clearDrawingBuffer();
         VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
         if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
-        // Clear the area containing the last point
-        //vectorImage->removeArea(lastPoint);
+
         // Clear the temporary pixel path
         vectorImage->deleteSelectedPoints();
 
@@ -268,10 +272,42 @@ void EraserTool::updateStrokes()
         qreal radius = mSettings.width() / 2;
 
         VectorImage* currKey = static_cast<VectorImage*>(layer->getLastKeyFrameAtPosition(mEditor->currentFrame()));
-        QList<VertexRef> nearbyVertices = currKey->getVerticesCloseTo(getCurrentPoint(), radius);
-        for (auto nearbyVertice : nearbyVertices)
-        {
-            currKey->setSelected(nearbyVertice, true);
+        if (currKey == nullptr) return;
+
+        // Clear selections at the very start of a new stroke
+        if (mStrokePoints.size() <= 2) {
+            currKey->deselectAll();
+        }
+
+        // Only process if we have at least 2 points to form a segment
+        if (mStrokePoints.size() >= 2) {
+            // Get the last segment of the stroke
+            QPointF startPoint = mStrokePoints.at(mStrokePoints.size() - 2);
+            QPointF endPoint = mStrokePoints.last();
+
+            // Check vertices along the line segment
+            QLineF segment(startPoint, endPoint);
+            qreal segmentLength = segment.length();
+
+            if (segmentLength > 0) {
+                // Sample points along the segment
+                int numSamples = qMax(2, static_cast<int>(segmentLength / (radius * 0.5)));
+                for (int i = 0; i <= numSamples; i++) {
+                    qreal t = static_cast<qreal>(i) / numSamples;
+                    QPointF samplePoint = startPoint + t * (endPoint - startPoint);
+
+                    QList<VertexRef> nearbyVertices = currKey->getVerticesCloseTo(samplePoint, radius);
+                    for (auto vertex : nearbyVertices) {
+                        currKey->setSelected(vertex, true);
+                    }
+                }
+            } else {
+                // Handle single point (click or very short stroke)
+                QList<VertexRef> nearbyVertices = currKey->getVerticesCloseTo(endPoint, radius);
+                for (auto vertex : nearbyVertices) {
+                    currKey->setSelected(vertex, true);
+                }
+            }
         }
     }
 }
