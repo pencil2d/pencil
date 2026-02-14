@@ -128,6 +128,8 @@ signals:
     void multiLayerOnionSkinChanged(bool);
     void selectionUpdated();
 
+    void requestFocus(QWidget* widget);
+
 public slots:
     void clearImage();
     void setCurveSmoothing(int);
@@ -238,6 +240,7 @@ private:
     QPointF mTabletPressPos;
     int mTabletReleaseMillisAgo;
     const int MOUSE_FILTER_THRESHOLD = 200;
+    bool mTabletHasEntered = false;
 
     QTimer* mMouseFilterTimer = nullptr;
 
