@@ -388,6 +388,8 @@ bool ScribbleArea::event(QEvent *event)
         processed = true;
     } else if (event->type() == QEvent::Enter)
     {
+        emit requestFocus(this);
+
         processed = currentTool()->enterEvent(static_cast<QEnterEvent*>(event)) || processed;
     } else if (event->type() == QEvent::Leave)
     {
@@ -593,6 +595,11 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     if (event.eventType() == PointerEvent::Press)
     {
         event.accept();
+
+        if (!hasFocus()) {
+            setFocus();
+        }
+
         if (mIsFirstClick)
         {
             mIsFirstClick = false;
@@ -617,6 +624,10 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
     }
     else if (event.eventType() == PointerEvent::Move)
     {
+        if (!mTabletHasEntered && !hasFocus()) {
+            emit requestFocus(this);
+            mTabletHasEntered = true;
+        }
         if (!(event.buttons() & (Qt::LeftButton | Qt::RightButton)) || mTabletInUse)
         {
             pointerMoveEvent(&event);
@@ -631,6 +642,7 @@ void ScribbleArea::tabletEvent(QTabletEvent *e)
             pointerReleaseEvent(&event);
             mTabletInUse = false;
         }
+        mTabletHasEntered = false;
     }
 
 #if defined Q_OS_LINUX
