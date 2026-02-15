@@ -1,4 +1,6 @@
 name: Build & Tests
+permissions:
+  contents: read
 on:
   push:
     paths-ignore:
