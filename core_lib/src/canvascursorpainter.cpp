@@ -54,10 +54,11 @@ void CanvasCursorPainter::paintWidthCursor(QPainter& painter, const QRect& blitR
     painter.setCompositionMode(QPainter::RasterOp_SourceXorDestination);
 
     // Only draw the cross when the width is bigger than the cross itself
-    if (widthCircleBounds.width() > 8 && mOptions.showCross) {
+    QRectF mappedRect = painter.transform().mapRect(widthCircleBounds);
+    if (mappedRect.width() > 8 && mOptions.showCross) {
         painter.save();
 
-        const QPointF& pos = painter.transform().mapRect(widthCircleBounds).center();
+        const QPointF& pos = mappedRect.center();
         painter.resetTransform();
         painter.drawLine(QPointF(pos.x() - 2, pos.y()), QPointF(pos.x() + 2, pos.y()));
         painter.drawLine(QPointF(pos.x(), pos.y() - 2), QPointF(pos.x(), pos.y() + 2));
