@@ -51,7 +51,7 @@ BitmapReplaceCommand::BitmapReplaceCommand(const BitmapImage* undoBitmap,
     Layer* layer = editor->layers()->currentLayer();
     redoLayerId = layer->id();
     redoBitmap = *static_cast<LayerBitmap*>(layer)->
-            getBitmapImageAtFrame(editor->currentFrame());
+            getLastBitmapImageAtFrame(editor->currentFrame());
 
     setText(description);
 }
@@ -91,7 +91,7 @@ VectorReplaceCommand::VectorReplaceCommand(const VectorImage* undoVector,
     Layer* layer = editor->layers()->currentLayer();
     redoLayerId = layer->id();
     redoVector = *static_cast<LayerVector*>(layer)->
-            getVectorImageAtFrame(editor->currentFrame());
+            getLastVectorImageAtFrame(editor->currentFrame());
 
     setText(description);
 }
