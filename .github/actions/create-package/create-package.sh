@@ -93,8 +93,8 @@ create_package_macos() {
 
   echo "::group::Copy FFmpeg plugin"
   mkdir Pencil2D.app/Contents/MacOS/plugins
-  curl -fsSLo ffmpeg.7z https://evermeet.cx/ffmpeg/getrelease/7z
-  curl -fsSLo ffmpeg.7z.sig https://evermeet.cx/ffmpeg/getrelease/7z/sig
+  curl -fsSLo ffmpeg.7z https://evermeet.cx/ffmpeg/ffmpeg-8.0.1.7z
+  curl -fsSLo ffmpeg.7z.sig https://evermeet.cx/ffmpeg/ffmpeg-8.0.1.7z.sig
   mkdir -m700 ~/.gnupg
   echo "trusted-key 0x476C4B611A660874" > ~/.gnupg/gpg.conf
   curl -fsSL https://evermeet.cx/ffmpeg/0x1A660874.asc | gpg --import
