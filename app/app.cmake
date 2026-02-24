@@ -197,26 +197,10 @@ set(APP_TRANSLATIONS
     ${CMAKE_CURRENT_SOURCE_DIR}/translations/pencil_zh_TW.ts
 )
 
-# Qt translation support
-qt_add_translation(QM_FILES ${APP_TRANSLATIONS})
-
-# Mirror qmake's embedded translations by generating a qrc that points
-# at the compiled .qm files and adding it to the resource list.
-set(TRANSLATIONS_QRC "${CMAKE_CURRENT_BINARY_DIR}/generated_translations.qrc")
-get_filename_component(TRANSLATIONS_QRC_DIR "${TRANSLATIONS_QRC}" DIRECTORY)
-file(MAKE_DIRECTORY "${TRANSLATIONS_QRC_DIR}")
-
-set(TRANSLATIONS_QRC_CONTENT "<RCC>\n    <qresource prefix=\"/i18n\">\n")
-foreach(QM_FILE ${QM_FILES})
-    cmake_path(CONVERT "${QM_FILE}" TO_CMAKE_PATH_LIST QM_FILE_CMAKE)
-    get_filename_component(QM_FILE_NAME "${QM_FILE}" NAME)
-    string(APPEND TRANSLATIONS_QRC_CONTENT "        <file alias=\"${QM_FILE_NAME}\">${QM_FILE_CMAKE}</file>\n")
-endforeach()
-string(APPEND TRANSLATIONS_QRC_CONTENT "    </qresource>\n</RCC>\n")
-
-file(WRITE "${TRANSLATIONS_QRC}" "${TRANSLATIONS_QRC_CONTENT}")
-set_source_files_properties(${TRANSLATIONS_QRC} PROPERTIES GENERATED TRUE)
-list(APPEND APP_RESOURCES ${TRANSLATIONS_QRC})
+# Qt translation support - use qt_add_translations which handles
+# compiling .ts -> .qm and embedding into resources automatically.
+# Note: The actual qt_add_translations call is done after the target
+# is created below (it requires the target to exist).
 
 
 # Platform-specific source files and configuration
@@ -250,7 +234,6 @@ add_executable(pencil2d
     ${APP_SOURCES}
     ${APP_FORMS}
     ${APP_RESOURCES}
-    ${QM_FILES}
     ${PLATFORM_SOURCES}
 )
 
@@ -267,6 +250,14 @@ elseif(WIN32)
         WIN32_EXECUTABLE TRUE
     )
 endif()
+
+# Add translations - must be after target creation.
+# This compiles .ts -> .qm and embeds them into resources automatically.
+qt_add_translations(pencil2d
+    TS_FILES ${APP_TRANSLATIONS}
+    QM_FILES_OUTPUT_VARIABLE QM_FILES
+    RESOURCE_PREFIX "/i18n"
+)
 
 # Include directories - combine both core_lib and app
 target_include_directories(pencil2d PRIVATE
