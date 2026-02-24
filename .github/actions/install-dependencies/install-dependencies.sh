@@ -54,7 +54,7 @@ setup_macos() {
 setup_windows() {
   pip install translate-toolkit[rc]
   echo "Downloading Okapi Framework..."
-  curl -fsSL -o okapi-apps_win32-x86_64_1.45.0.zip https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
+  curl -fsSL -o okapi-apps_win32-x86_64_1.45.0.zip https://github.com/pencil2d/pencil2d-deps/releases/download/okapi-v1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
   ls -lh okapi-apps_win32-x86_64_1.45.0.zip
   mkdir okapi
   "${WINDIR}\\System32\\tar" xfC okapi-apps_win32-x86_64_1.45.0.zip okapi
