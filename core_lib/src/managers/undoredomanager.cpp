@@ -146,8 +146,12 @@ void UndoRedoManager::clearState(UndoSaveState*& state)
 
 void UndoRedoManager::clearSaveStates()
 {
-    if (mSaveStates.isEmpty()) { return; }
-
+    for (UndoSaveState* saveState : mSaveStates) {
+        if (saveState) {
+            delete saveState;
+            saveState = nullptr;
+        }
+    }
     mSaveStates.clear();
 }
 
