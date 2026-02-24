@@ -122,8 +122,6 @@ protected:
 
     StrokeInterpolator mInterpolator;
 
-    UndoSaveState* mUndoSaveState = nullptr;
-
     static const qreal FEATHER_MIN;
     static const qreal FEATHER_MAX;
     static const qreal WIDTH_MIN;
