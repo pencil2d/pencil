@@ -1,5 +1,5 @@
-IS_RELEASE: ${{ startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}
-      name: Create Package
+name: Create Package
+description: Create a release package for the target platform
 inputs:
   arch:
     description: Architecture
@@ -27,5 +27,3 @@ runs:
       INPUT_QT: ${{inputs.qt}}
       INPUT_BUNDLER: ${{inputs.bundler}}
       IS_RELEASE: ${{ startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}
-      
-
