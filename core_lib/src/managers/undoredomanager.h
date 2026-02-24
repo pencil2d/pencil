@@ -39,7 +39,7 @@ class KeyFrame;
 class LegacyBackupElement;
 class UndoRedoCommand;
 
-typedef int SAVESTATE_ID;
+using SAVESTATE_ID = int;
 
 /// The undo/redo type which correspond to what is being recorded
 enum class UndoRedoRecordType {
