@@ -1,13 +1,13 @@
 # Development/Local build version is always 0.0.0.0
 # Nightly build version is 99.0.0.GITHUB_RUN_NUMBER
 
-VERSION = 0.7.1.2
+isEmpty(VERSION): VERSION = 0.0.0.0
 message("Version: $$VERSION")
 
-DEFINES += APP_VERSION=\\\"v0.7.1-rc2\\\"
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
 
 win32 {
-    RC_DEFINES += RC_APP_VERSION_STR=\\\"v0.7.1-rc2\\\"
+    RC_DEFINES += RC_APP_VERSION_STR=\\\"$$VERSION\\\"
     RC_DEFINES += RC_APP_VERSION=$$replace(VERSION, "\.", ",")
 }
 
