@@ -159,7 +159,7 @@ create_package_windows() {
     sed "s/Culture=\"en\"/Culture=\"${culture}\"/;s/Language=\"9\"/Language=\"${lcid}\"/" ../util/installer/pencil2d.wxl > "../util/installer/pencil2d_${locale}.wxl"
     tikal.bat -m -fc ../util/installer/okf_xml_wxl -ie utf-8 -oe utf-8 -sd ../util/installer -od ../util/installer "${i}"
   done
-  local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%F)"
+  local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%Y%m%d)"
   if [ "$IS_RELEASE" = "true" ]; then
     versiondefines="-d Edition=Release -d Version=$2"
   fi
