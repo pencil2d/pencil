@@ -11,7 +11,7 @@
     <name>The Pencil2D Team</name>
   </developer>
   <metadata_license>CC0-1.0</metadata_license>
-  <project_license>GPL-2.0</project_license>
+  <project_license>GPL-2.0-only</project_license>
   <summary>Create 2D animations with ease</summary>
   <description>
     <p>
@@ -23,7 +23,7 @@
   <url type="bugtracker">https://github.com/pencil2d/pencil/issues</url>
   <url type="faq">https://www.pencil2d.org/doc/faq.html</url>
   <url type="help">https://www.pencil2d.org/doc/</url>
-  <url type="translate">https://www.transifex.com/pencil2d/pencil2d/</url>
+  <url type="translate">https://explore.transifex.com/pencil2d/pencil2d/</url>
   <url type="contact">https://www.pencil2d.org/community/</url>
   <screenshots>
     <screenshot environment="plasma" type="default">
@@ -33,6 +33,12 @@
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
+    <release version="0.7.1" date="2025-XX-XX">
+      <description>
+        <p>This release removes the recently added functionality to add frames by double-click, which proved too easy to trigger unintentionally, and brings improvements to the resizing behaviour of the toolbox. We also fixed some bugs in the timeline, on-canvas resize handles and image import, as well as a potential data loss after using the copy selected frames feature.</p>
+      </description>
+      <url type="details">https://www.pencil2d.org/2025/XX/pencil2d-0.7.1-release.html</url>
+    </release>
     <release version="0.7.0" date="2024-07-12">
       <description>
         <p>This release of Pencil2D brings more than three years worth of exciting new features, enhancements and bug fixes. We have made it easier to manage keyframes, allowing you to copy, paste or delete several of them at once, or to reposition their contents or adjust their exposure in bulk. Entire layers can now be easily duplicated. On top of that, dragging keyframes across the timeline will no longer cause any changes until the moment you drop them at their new position, and the opacity of keyframes and whole layers is now adjustable as well.</p>
