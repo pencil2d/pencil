@@ -170,14 +170,14 @@ void ColorWheel::mouseReleaseEvent(QMouseEvent *)
 void ColorWheel::resizeEvent(QResizeEvent* event)
 {
     mWheelPixmap = QPixmap(event->size());
-    mWheelPixmap.fill(palette().window().color());
+    mWheelPixmap.fill(Qt::transparent);
     drawWheelImage(event->size());
     drawSquareImage(mCurrentColor.hue());
 
     update();
 }
 
-void ColorWheel::paintEvent(QPaintEvent*)
+void ColorWheel::paintEvent(QPaintEvent* event)
 {
     QPainter painter;
 
@@ -185,7 +185,7 @@ void ColorWheel::paintEvent(QPaintEvent*)
     QStyleOption opt;
     opt.initFrom(this);
 
-    composeWheel(mWheelPixmap);
+    composeWheel(mWheelPixmap, event->rect());
     painter.translate(width() / 2, height() / 2);
     painter.translate(-mWheelPixmap.width() / 2, -mWheelPixmap.height() / 2);
     painter.drawPixmap(0, 0, mWheelPixmap);
@@ -203,11 +203,10 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     QBrush backgroundBrush = option.palette.window();
 
     mWheelImage = QImage(newSize, QImage::Format_ARGB32_Premultiplied);
+    mWheelImage.fill(Qt::transparent);
 
     QPainter painter(&mWheelImage);
     painter.setRenderHint(QPainter::Antialiasing);
-
-    painter.fillRect(mWheelImage.rect(), backgroundBrush);
 
     QConicalGradient conicalGradient(0, 0, 0);
 
@@ -224,10 +223,11 @@ void ColorWheel::drawWheelImage(const QSize &newSize)
     QBrush brush(conicalGradient);
     painter.setPen(Qt::NoPen);
     painter.setBrush(brush);
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
     painter.drawEllipse(QPoint(0, 0), r / 2, r / 2);
 
     /* inner circle */
-    painter.setBrush(backgroundBrush);
+    painter.setCompositionMode(QPainter::CompositionMode_DestinationOut);
     painter.drawEllipse(QPoint(0, 0), r / 2 - mWheelThickness, r / 2 - mWheelThickness);
 
     // Center of wheel
@@ -332,9 +332,13 @@ void ColorWheel::drawPicker(const QColor& color)
     painter.drawEllipse(static_cast<int>(S), static_cast<int>(V), ellipseSize, ellipseSize);
 }
 
-void ColorWheel::composeWheel(QPixmap& pixmap)
+void ColorWheel::composeWheel(QPixmap& pixmap, QRect blitRect)
 {
     QPainter composePainter(&pixmap);
+    composePainter.setCompositionMode(QPainter::CompositionMode_Clear);
+    composePainter.setClipRect(blitRect);
+    composePainter.fillRect(blitRect, Qt::transparent);
+    composePainter.setCompositionMode(QPainter::CompositionMode_SourceOver);
     composePainter.drawImage(0, 0, mWheelImage);
     composePainter.drawImage(mSquareRect, mSquareImage);
     composePainter.end();

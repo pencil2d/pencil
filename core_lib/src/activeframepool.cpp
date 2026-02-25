@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include "activeframepool.h"
 #include "keyframe.h"
-#include "pencildef.h"
 
 
 ActiveFramePool::ActiveFramePool()

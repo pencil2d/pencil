@@ -25,8 +25,6 @@ GNU General Public License for more details.
 #include "layervector.h"
 #include "layercamera.h"
 
-#include <QDebug>
-
 LayerManager::LayerManager(Editor* editor) : BaseManager(editor, __FUNCTION__)
 {
 }

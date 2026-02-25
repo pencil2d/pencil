@@ -30,192 +30,192 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="123"/>
+        <location filename="../app/src/actioncommands.cpp" line="124"/>
         <source>Importing movie...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="89"/>
-        <location filename="../app/src/actioncommands.cpp" line="123"/>
-        <location filename="../app/src/actioncommands.cpp" line="246"/>
-        <location filename="../app/src/actioncommands.cpp" line="473"/>
+        <location filename="../app/src/actioncommands.cpp" line="90"/>
+        <location filename="../app/src/actioncommands.cpp" line="124"/>
+        <location filename="../app/src/actioncommands.cpp" line="247"/>
+        <location filename="../app/src/actioncommands.cpp" line="474"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="89"/>
+        <location filename="../app/src/actioncommands.cpp" line="90"/>
         <source>Importing Animated Image...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="131"/>
+        <location filename="../app/src/actioncommands.cpp" line="132"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="179"/>
+        <location filename="../app/src/actioncommands.cpp" line="180"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="180"/>
+        <location filename="../app/src/actioncommands.cpp" line="181"/>
         <source>Create sound layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="181"/>
+        <location filename="../app/src/actioncommands.cpp" line="182"/>
         <source>Don&apos;t create layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="191"/>
+        <location filename="../app/src/actioncommands.cpp" line="192"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="192"/>
-        <location filename="../app/src/actioncommands.cpp" line="838"/>
-        <location filename="../app/src/actioncommands.cpp" line="851"/>
-        <location filename="../app/src/actioncommands.cpp" line="864"/>
-        <location filename="../app/src/actioncommands.cpp" line="877"/>
+        <location filename="../app/src/actioncommands.cpp" line="193"/>
+        <location filename="../app/src/actioncommands.cpp" line="872"/>
+        <location filename="../app/src/actioncommands.cpp" line="885"/>
+        <location filename="../app/src/actioncommands.cpp" line="898"/>
+        <location filename="../app/src/actioncommands.cpp" line="911"/>
         <source>Layer name:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="193"/>
+        <location filename="../app/src/actioncommands.cpp" line="194"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="246"/>
+        <location filename="../app/src/actioncommands.cpp" line="247"/>
         <source>Importing sound...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="287"/>
+        <location filename="../app/src/actioncommands.cpp" line="288"/>
         <source>Something went wrong</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="287"/>
-        <location filename="../app/src/actioncommands.cpp" line="1015"/>
+        <location filename="../app/src/actioncommands.cpp" line="288"/>
+        <location filename="../app/src/actioncommands.cpp" line="1055"/>
         <source>You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="345"/>
+        <location filename="../app/src/actioncommands.cpp" line="346"/>
         <source>Exporting movie</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="389"/>
+        <location filename="../app/src/actioncommands.cpp" line="390"/>
         <source>Finished. Open file location?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="399"/>
+        <location filename="../app/src/actioncommands.cpp" line="400"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="407"/>
+        <location filename="../app/src/actioncommands.cpp" line="408"/>
         <source>Unknown export error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="407"/>
+        <location filename="../app/src/actioncommands.cpp" line="408"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="473"/>
+        <location filename="../app/src/actioncommands.cpp" line="474"/>
         <source>Exporting image sequence...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="555"/>
-        <location filename="../app/src/actioncommands.cpp" line="996"/>
-        <location filename="../app/src/actioncommands.cpp" line="1015"/>
+        <location filename="../app/src/actioncommands.cpp" line="589"/>
+        <location filename="../app/src/actioncommands.cpp" line="1036"/>
+        <location filename="../app/src/actioncommands.cpp" line="1055"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="556"/>
+        <location filename="../app/src/actioncommands.cpp" line="590"/>
         <source>Unable to export image.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="712"/>
+        <location filename="../app/src/actioncommands.cpp" line="746"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="713"/>
+        <location filename="../app/src/actioncommands.cpp" line="747"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="753"/>
+        <location filename="../app/src/actioncommands.cpp" line="787"/>
         <source>%1 (copy)</source>
         <comment>Default duplicate layer name</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="837"/>
-        <location filename="../app/src/actioncommands.cpp" line="850"/>
-        <location filename="../app/src/actioncommands.cpp" line="876"/>
+        <location filename="../app/src/actioncommands.cpp" line="871"/>
+        <location filename="../app/src/actioncommands.cpp" line="884"/>
+        <location filename="../app/src/actioncommands.cpp" line="910"/>
         <source>Layer Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="839"/>
+        <location filename="../app/src/actioncommands.cpp" line="873"/>
         <source>Bitmap Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="852"/>
+        <location filename="../app/src/actioncommands.cpp" line="886"/>
         <source>Vector Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="863"/>
+        <location filename="../app/src/actioncommands.cpp" line="897"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="865"/>
+        <location filename="../app/src/actioncommands.cpp" line="899"/>
         <source>Camera Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="878"/>
+        <location filename="../app/src/actioncommands.cpp" line="912"/>
         <source>Sound Layer</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="897"/>
+        <location filename="../app/src/actioncommands.cpp" line="931"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="898"/>
+        <location filename="../app/src/actioncommands.cpp" line="932"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="907"/>
+        <location filename="../app/src/actioncommands.cpp" line="941"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="996"/>
+        <location filename="../app/src/actioncommands.cpp" line="1036"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2665,118 +2665,118 @@
 <context>
     <name>Editor</name>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="202"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="203"/>
         <source>Copy</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="247"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="261"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="248"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="262"/>
         <source>Paste from Previous Keyframe</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="359"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="362"/>
         <source>Paste</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="381"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="384"/>
         <source>Flip selection vertically</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="383"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="386"/>
         <source>Flip selection horizontally</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="399"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="402"/>
         <source>Reposition frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="481"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="490"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="499"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="531"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="484"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="493"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="502"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="534"/>
         <source>Could not open file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="482"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="485"/>
         <source>The file you have selected is a directory, so we are unable to open it. If you are are trying to open a project that uses the old structure, please open the file ending with .pcl, not the data folder.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="491"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="494"/>
         <source>The file you have selected does not exist, so we are unable to open it. Please make sure that you&apos;ve entered the correct path and that the file is accessible and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="500"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="503"/>
         <source>This program does not have permission to read the file you have selected. Please check that you have read permissions for this file and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="532"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="535"/>
         <source>An unknown error occurred while trying to load the file and we are not able to load your file.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="614"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="744"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="617"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="767"/>
         <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="617"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="747"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="620"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="770"/>
         <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
 %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="621"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="751"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="624"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="774"/>
         <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="624"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="754"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="627"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="678"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="728"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="743"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="750"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="777"/>
         <source>Import failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="642"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="672"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="773"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="645"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="796"/>
         <source>Import Image</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="675"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="678"/>
         <source>You cannot import images into a vector layer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="705"/>
-        <location filename="../core_lib/src/interface/editor.cpp" line="720"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="728"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="743"/>
         <source>You can only import images to a bitmap layer.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="727"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="750"/>
         <source>The selected image has a format that does not support animation.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/editor.cpp" line="938"/>
+        <location filename="../core_lib/src/interface/editor.cpp" line="961"/>
         <source>Remove frame</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3099,12 +3099,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="273"/>
+        <location filename="../app/src/filedialog.cpp" line="275"/>
         <source>untitled</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/filedialog.cpp" line="280"/>
+        <location filename="../app/src/filedialog.cpp" line="282"/>
         <source>MyAnimation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3173,103 +3173,103 @@
 <context>
     <name>FileManager</name>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="249"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="264"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="272"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="279"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="250"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="265"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="273"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="280"/>
         <source>Invalid Save Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="250"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="251"/>
         <source>The path is empty.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="265"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="266"/>
         <source>The path (&quot;%1&quot;) points to a directory.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="273"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="274"/>
         <source>The directory (&quot;%1&quot;) does not exist.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="280"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="281"/>
         <source>The path (&quot;%1&quot;) is not writable.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="318"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="327"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="319"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="328"/>
         <source>Cannot Create Data Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="319"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="320"/>
         <source>Failed to create directory &quot;%1&quot;. Please make sure you have sufficient permissions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="328"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="329"/>
         <source>&quot;%1&quot; is a file. Please delete the file and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="357"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="358"/>
         <source>An internal error occurred. The project could not be saved.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="367"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="368"/>
         <source>Miniz Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="356"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="384"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="357"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="385"/>
         <source>Internal Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="368"/>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="385"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="369"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="386"/>
         <source>An internal error occurred. The project may not have been saved successfully.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="553"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="554"/>
         <source>Could not open file</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="563"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="564"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="568"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="569"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="574"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="575"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="1074"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1075"/>
         <source>Bitmap Layer %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="1076"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1077"/>
         <source>Vector Layer %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/filemanager.cpp" line="1078"/>
+        <location filename="../core_lib/src/structure/filemanager.cpp" line="1079"/>
         <source>Sound Layer %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3888,22 +3888,22 @@ Read the instructions and try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="31"/>
         <source>Center of current view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="35"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="32"/>
         <source>Center of canvas (0,0)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="36"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="33"/>
         <source>Center of camera, current frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/importpositiondialog.cpp" line="37"/>
+        <location filename="../app/src/importpositiondialog.cpp" line="34"/>
         <source>Center of camera, follow camera</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4417,7 +4417,7 @@ Read the instructions and try again</source>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="621"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1555"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1570"/>
         <source>Play</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4770,150 +4770,150 @@ Read the instructions and try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="155"/>
+        <location filename="../app/src/mainwindow2.cpp" line="156"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="159"/>
+        <location filename="../app/src/mainwindow2.cpp" line="160"/>
         <source>Color inspector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="460"/>
+        <location filename="../app/src/mainwindow2.cpp" line="479"/>
         <source>Open Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="501"/>
-        <location filename="../app/src/mainwindow2.cpp" line="525"/>
+        <location filename="../app/src/mainwindow2.cpp" line="520"/>
+        <location filename="../app/src/mainwindow2.cpp" line="544"/>
         <source>Dialog is already open!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="575"/>
+        <location filename="../app/src/mainwindow2.cpp" line="594"/>
         <source>Please select at least 2 frames!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="703"/>
+        <location filename="../app/src/mainwindow2.cpp" line="722"/>
         <source>Opening document...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="703"/>
-        <location filename="../app/src/mainwindow2.cpp" line="760"/>
+        <location filename="../app/src/mainwindow2.cpp" line="722"/>
+        <location filename="../app/src/mainwindow2.cpp" line="779"/>
         <source>Abort</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="748"/>
-        <location filename="../app/src/mainwindow2.cpp" line="849"/>
+        <location filename="../app/src/mainwindow2.cpp" line="767"/>
+        <location filename="../app/src/mainwindow2.cpp" line="868"/>
         <source>Warning</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="749"/>
+        <location filename="../app/src/mainwindow2.cpp" line="768"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="760"/>
+        <location filename="../app/src/mainwindow2.cpp" line="779"/>
         <source>Saving document...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="850"/>
+        <location filename="../app/src/mainwindow2.cpp" line="869"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="873"/>
+        <location filename="../app/src/mainwindow2.cpp" line="892"/>
         <source>AutoSave Reminder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="874"/>
+        <location filename="../app/src/mainwindow2.cpp" line="893"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="875"/>
+        <location filename="../app/src/mainwindow2.cpp" line="894"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="803"/>
+        <location filename="../app/src/mainwindow2.cpp" line="822"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.
 If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1395"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1410"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1397"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1412"/>
         <source>Open Palette</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1550"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1565"/>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1599"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1627"/>
         <source>Restore Project?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1600"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1628"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1605"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1632"/>
         <source>Restore project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1639"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1665"/>
         <source>Recovery Failed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1640"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1666"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1650"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1676"/>
         <source>Recovery Succeeded!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1651"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1677"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1657"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1685"/>
         <source>Main Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1671"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1699"/>
         <source>View Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1683"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1711"/>
         <source>Overlay Toolbar</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5026,42 +5026,42 @@ Color(s) in strokes will be altered by this action!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="312"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="301"/>
         <source>Failed import</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="313"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="302"/>
         <source>Was unable to find internal files, import unsuccessful.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="328"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="317"/>
         <source>Sound only</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="329"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="318"/>
         <source>You need to be on a sound layer to import the audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="341"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="330"/>
         <source>Move to an empty frame</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="342"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="331"/>
         <source>A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="384"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="373"/>
         <source>FFmpeg Not Found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieimporter.cpp" line="385"/>
+        <location filename="../core_lib/src/movieimporter.cpp" line="374"/>
         <source>Please place the ffmpeg binary in plugins directory and try again</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5528,14 +5528,14 @@ or cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1461"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1464"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1487"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1499"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1490"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1502"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation type="unfinished"></translation>
@@ -6603,12 +6603,12 @@ or cancel</source>
 <context>
     <name>TimeLineCells</name>
     <message>
-        <location filename="../app/src/timelinecells.cpp" line="1192"/>
+        <location filename="../app/src/timelinecells.cpp" line="1190"/>
         <source>Layer Properties</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/timelinecells.cpp" line="1193"/>
+        <location filename="../app/src/timelinecells.cpp" line="1191"/>
         <source>Layer name:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6733,6 +6733,15 @@ or cancel</source>
     </message>
 </context>
 <context>
+    <name>ToolBoxDockWidget</name>
+    <message>
+        <location filename="../app/src/toolbox.cpp" line="42"/>
+        <source>Tools</source>
+        <comment>Window title of Tools</comment>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>ToolBoxWidget</name>
     <message>
         <location filename="../app/ui/toolboxwidget.ui" line="20"/>
@@ -6741,117 +6750,117 @@ or cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/ui/toolboxwidget.ui" line="416"/>
+        <location filename="../app/ui/toolboxwidget.ui" line="415"/>
         <source>Smudge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="78"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="72"/>
         <source>Pencil Tool (%1): Sketch with pencil</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="80"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="74"/>
         <source>Select Tool (%1): Select an object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="82"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="76"/>
         <source>Move Tool (%1): Move an object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="84"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="78"/>
         <source>Hand Tool (%1): Move the canvas</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="86"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="80"/>
         <source>Pen Tool (%1): Sketch with pen</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="88"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="82"/>
         <source>Eraser Tool (%1): Erase</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="90"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="84"/>
         <source>Polyline Tool (%1): Create line/curves</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="92"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="86"/>
         <source>Paint Bucket Tool (%1): Fill selected area with a color</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="94"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="88"/>
         <source>Brush Tool (%1): Paint smooth stroke with a brush</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="96"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="90"/>
         <source>Eyedropper Tool (%1): Set color from the stage&lt;br&gt;[ALT] for instant access</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="99"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="93"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="103"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="97"/>
         <source>Pencil Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="105"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="99"/>
         <source>Select Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="107"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="101"/>
         <source>Move Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="109"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="103"/>
         <source>Hand Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="111"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="105"/>
         <source>Pen Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="113"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="107"/>
         <source>Eraser Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="115"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="109"/>
         <source>Polyline Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="117"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="111"/>
         <source>Paint Bucket Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="119"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="113"/>
         <source>Brush Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="121"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="115"/>
         <source>Eyedropper Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="123"/>
+        <location filename="../app/src/toolboxwidget.cpp" line="117"/>
         <source>Smudge Tool (%1)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6865,13 +6874,13 @@ or cancel</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="57"/>
-        <location filename="../app/src/tooloptionwidget.cpp" line="223"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="60"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="226"/>
         <source>Width</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="61"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="64"/>
         <source>Feather</source>
         <translation type="unfinished"></translation>
     </message>

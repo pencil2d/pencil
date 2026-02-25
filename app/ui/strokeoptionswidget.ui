@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>StrokeOptionsWidget</class>
+ <widget class="QWidget" name="StrokeOptionsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>264</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="sizeConstraint">
+    <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
+   </property>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="SpinSlider" name="sizeSlider" native="true">
+       <property name="toolTip">
+        <string>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="sizeSpinBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="minimum">
+        <double>0.500000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>200.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>1.500000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="SpinSlider" name="featherSlider" native="true">
+       <property name="toolTip">
+        <string>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="featherSpinBox">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>60</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="minimum">
+        <double>0.100000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>99.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>5.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_4" stretch="0,1">
+     <item>
+      <widget class="QLabel" name="stabilizerLabel">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string>Stabilizer</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QComboBox" name="inpolLevelsCombo">
+       <property name="toolTip">
+        <string>Use stabilizer to interpolate strokes</string>
+       </property>
+       <property name="currentText">
+        <string comment="Stablizer level">None</string>
+       </property>
+       <item>
+        <property name="text">
+         <string comment="Stabilizer option">None</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string comment="Stabilizer option">Simple</string>
+        </property>
+       </item>
+       <item>
+        <property name="text">
+         <string comment="Stabilizer option">Strong</string>
+        </property>
+       </item>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout_2">
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QCheckBox" name="useFeatherBox">
+       <property name="toolTip">
+        <string>Enable or disable feathering</string>
+       </property>
+       <property name="text">
+        <string>Use Feather</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="fillContourBox">
+       <property name="toolTip">
+        <string>Contour will be filled</string>
+       </property>
+       <property name="text">
+        <string>Fill Contour</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="useClosedPathBox">
+       <property name="toolTip">
+        <string>Close Polyline path (hold Ctrl to temporarily invert)</string>
+       </property>
+       <property name="text">
+        <string>Closed Path</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="useBezierBox">
+       <property name="toolTip">
+        <string>Use Bézier curves to create curved lines</string>
+       </property>
+       <property name="text">
+        <string comment="Tool options">Bézier</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="usePressureBox">
+       <property name="toolTip">
+        <string>Vary strokes based on pressure when drawing on a tablet</string>
+       </property>
+       <property name="text">
+        <string comment="Tool options">Pressure</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="useAABox">
+       <property name="toolTip">
+        <string>Use anti-aliasing to create smooth edges</string>
+       </property>
+       <property name="text">
+        <string comment="Brush AA">Anti-Aliasing</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="makeInvisibleBox">
+       <property name="toolTip">
+        <string>Make invisible</string>
+       </property>
+       <property name="text">
+        <string comment="Tool options">Invisible</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>SpinSlider</class>
+   <extends>QWidget</extends>
+   <header>spinslider.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

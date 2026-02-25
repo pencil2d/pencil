@@ -90,13 +90,18 @@ GNU General Public License for more details.
 #define BUILD_DATE __DATE__
 #endif
 
-#if defined(PENCIL2D_RELEASE_BUILD)
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
-#elif defined(PENCIL2D_NIGHTLY_BUILD)
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Nightly Build %1").arg(BUILD_DATE)
-#else
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Development Build %1").arg(BUILD_DATE)
-#endif
+namespace {
+    QString getWindowTitle() {
+        QString version(APP_VERSION);
+        if (version.startsWith("99.0.0")) {
+            return QString("[*]Pencil2D Nightly Build %1").arg(BUILD_DATE);
+        } else if (version == "0.0.0.0") {
+            return QString("[*]Pencil2D Development Build %1").arg(BUILD_DATE);
+        } else {
+            return QString("[*]Pencil2D %1").arg(APP_VERSION);
+        }
+    }
+}
 
 
 
@@ -139,9 +144,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
 
-    setWindowTitle(PENCIL_WINDOW_TITLE);
-
-    setFocusPolicy(Qt::StrongFocus);
+    setWindowTitle(getWindowTitle());
 }
 
 MainWindow2::~MainWindow2()
@@ -698,7 +701,7 @@ bool MainWindow2::saveAsNewDocument()
 
 void MainWindow2::openStartupFile(const QString& filename)
 {
-    if (tryRecoverUnsavedProject())
+    if (checkForRecoverableProjects())
     {
         return;
     }
@@ -914,7 +917,7 @@ void MainWindow2::emptyDocumentWhenErrorOccurred()
 {
     newObject();
 
-    setWindowTitle(PENCIL_WINDOW_TITLE);
+    setWindowTitle(getWindowTitle());
     updateSaveState();
 }
 
@@ -1104,8 +1107,7 @@ void MainWindow2::newObject()
 
     closeDialogs();
 
-    setWindowTitle(PENCIL_WINDOW_TITLE);
-
+    setWindowTitle(getWindowTitle());
     updateBackupActionState();
 }
 
@@ -1129,7 +1131,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     mEditor->setObject(object);
     object->setFilePath(QString());
 
-    setWindowTitle(PENCIL_WINDOW_TITLE);
+    setWindowTitle(getWindowTitle());
     updateSaveState();
     updateBackupActionState();
 
@@ -1462,8 +1464,6 @@ void MainWindow2::makeConnections(Editor* editor, ScribbleArea* scribbleArea)
 {
     connect(editor->tools(), &ToolManager::toolChanged, scribbleArea, &ScribbleArea::updateToolCursor);
     connect(editor->tools(), &ToolManager::toolChanged, mToolBox, &ToolBoxDockWidget::setActiveTool);
-    connect(editor->tools(), &ToolManager::toolPropertyChanged, scribbleArea, &ScribbleArea::updateToolCursor);
-
 
     connect(editor->layers(), &LayerManager::currentLayerChanged, scribbleArea, &ScribbleArea::onLayerChanged);
     connect(editor->layers(), &LayerManager::layerDeleted, scribbleArea, &ScribbleArea::onLayerChanged);
@@ -1512,7 +1512,6 @@ void MainWindow2::makeConnections(Editor* pEditor, TimeLine* pTimeline)
     connect(pEditor, &Editor::updateTimeLineCached, pTimeline, &TimeLine::updateUICached);
 
     connect(pEditor->layers(), &LayerManager::currentLayerChanged, this, &MainWindow2::updateLayerMenu);
-    connect(pEditor->layers(), &LayerManager::currentLayerChanged, mToolOptions, &ToolOptionWidget::updateUI);
 }
 
 void MainWindow2::makeConnections(Editor*, OnionSkinWidget*)
@@ -1603,7 +1602,7 @@ void MainWindow2::displayMessageBoxNoTitle(const QString& body)
     QMessageBox::information(this, nullptr, tr(qPrintable(body)), QMessageBox::Ok);
 }
 
-bool MainWindow2::tryRecoverUnsavedProject()
+bool MainWindow2::checkForRecoverableProjects()
 {
     FileManager fm;
     QStringList recoverables = fm.searchForUnsavedProjects();
@@ -1613,41 +1612,52 @@ bool MainWindow2::tryRecoverUnsavedProject()
         return false;
     }
 
+    foreach (const QString path, recoverables)
+    {
+        if (tryRecoverProject(path))
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+bool MainWindow2::tryRecoverProject(const QString recoverPath)
+{
     QString caption = tr("Restore Project?");
     QString text = tr("Pencil2D didn't close correctly. Would you like to restore the project?");
 
-    QString recoverPath = recoverables[0];
+    QMessageBox msgBox(this);
+    hideQuestionMark(msgBox); // Must be before setDefaultButton
+    msgBox.setWindowTitle(tr("Restore project"));
+    msgBox.setWindowModality(Qt::ApplicationModal);
+    msgBox.setIconPixmap(QPixmap(":/icons/logo.png"));
+    msgBox.setText(QString("<h4>%1</h4>%2").arg(caption, text));
+    msgBox.setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
+    msgBox.setStandardButtons(QMessageBox::Open | QMessageBox::Discard | QMessageBox::Cancel);
+    msgBox.setDefaultButton(QMessageBox::Cancel);
 
-    QMessageBox* msgBox = new QMessageBox(this);
-    msgBox->setWindowTitle(tr("Restore project"));
-    msgBox->setWindowModality(Qt::ApplicationModal);
-    msgBox->setAttribute(Qt::WA_DeleteOnClose);
-    msgBox->setIconPixmap(QPixmap(":/icons/logo.png"));
-    msgBox->setText(QString("<h4>%1</h4>%2").arg(caption, text));
-    msgBox->setInformativeText(QString("<b>%1</b>").arg(retrieveProjectNameFromTempPath(recoverPath)));
-    msgBox->setStandardButtons(QMessageBox::Open | QMessageBox::Discard);
-    msgBox->setProperty("RecoverPath", recoverPath);
-    hideQuestionMark(*msgBox);
+    int result = msgBox.exec();
 
-    connect(msgBox, &QMessageBox::finished, this, &MainWindow2::startProjectRecovery);
-    msgBox->open();
-    return true;
+    switch (result)
+    {
+    case QMessageBox::Discard:
+        QDir(recoverPath).removeRecursively();
+        return false;
+    case QMessageBox::Cancel:
+        return false;
+    case QMessageBox::Open:
+        return startProjectRecovery(recoverPath);
+    default:
+        Q_ASSERT(false);
+    }
+
+    return false;
 }
 
-void MainWindow2::startProjectRecovery(int result)
+bool MainWindow2::startProjectRecovery(const QString recoverPath)
 {
-    const QMessageBox* msgBox = dynamic_cast<QMessageBox*>(QObject::sender());
-    const QString recoverPath = msgBox->property("RecoverPath").toString();
-
-    if (result == QMessageBox::Discard)
-    {
-        // The user presses discard
-        QDir(recoverPath).removeRecursively();
-        tryLoadPreset();
-        return;
-    }
-    Q_ASSERT(result == QMessageBox::Open);
-
     FileManager fm;
     Object* o = fm.recoverUnsavedProject(recoverPath);
     if (!fm.error().ok())
@@ -1656,7 +1666,7 @@ void MainWindow2::startProjectRecovery(int result)
         const QString title = tr("Recovery Failed.");
         const QString text = tr("Sorry! Pencil2D is unable to restore your project");
         QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
-        return;
+        return false;
     }
 
     Q_ASSERT(o);
@@ -1667,6 +1677,8 @@ void MainWindow2::startProjectRecovery(int result)
     const QString title = tr("Recovery Succeeded!");
     const QString text = tr("Please save your work immediately to prevent loss of data");
     QMessageBox::information(this, title, QString("<h4>%1</h4>%2").arg(title, text));
+
+    return true;
 }
 
 void MainWindow2::createToolbars()

@@ -16,6 +16,7 @@ GNU General Public License for more details.
 #include "catch.hpp"
 
 #include "layervector.h"
+#include "util.h"
 #include "vectorimage.h"
 
 
@@ -71,7 +72,7 @@ TEST_CASE("Load vector layer from XML")
         REQUIRE(vectorLayer->keyFrameCount() == 1);
         VectorImage* frame = static_cast<VectorImage*>(vectorLayer->getKeyFrameAt(1));
         REQUIRE(frame != nullptr);
-        REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath("001.001.vec")));
+        REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath("001.001.vec")));
     }
 
     SECTION("Multiple frames")
@@ -86,7 +87,7 @@ TEST_CASE("Load vector layer from XML")
         {
             VectorImage* frame = static_cast<VectorImage*>(vectorLayer->getKeyFrameAt(i));
             REQUIRE(frame != nullptr);
-            REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath(QString("001.%1.vec").arg(QString::number(i), 3, QChar('0')))));
+            REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath(QString("001.%1.vec").arg(QString::number(i), 3, QChar('0')))));
         }
     }
 
@@ -119,6 +120,6 @@ TEST_CASE("Load vector layer from XML")
         REQUIRE(vectorLayer->keyFrameCount() == 1);
         VectorImage* frame = static_cast<VectorImage*>(vectorLayer->getKeyFrameAt(1));
         REQUIRE(frame != nullptr);
-        REQUIRE(QDir(frame->fileName()) == QDir(dataDir.filePath("subdir/001.001.vec")));
+        REQUIRE(closestCanonicalPath(frame->fileName()) == closestCanonicalPath(dataDir.filePath("subdir/001.001.vec")));
     }
 }

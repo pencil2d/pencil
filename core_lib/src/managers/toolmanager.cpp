@@ -18,6 +18,8 @@ GNU General Public License for more details.
 
 #include <cmath>
 #include <QDebug>
+
+#include "stroketool.h"
 #include "pentool.h"
 #include "penciltool.h"
 #include "brushtool.h"
@@ -94,6 +96,26 @@ BaseTool* ToolManager::currentTool() const
     return mCurrentTool;
 }
 
+StrokeTool* ToolManager::currentStrokeTool() const
+{
+    return dynamic_cast<StrokeTool*>(mCurrentTool);
+}
+
+bool ToolManager::isStrokeTool(const BaseTool *baseTool) const
+{
+    return dynamic_cast<const StrokeTool*>(baseTool) != nullptr;
+}
+
+bool ToolManager::isTransformTool(const BaseTool *baseTool) const
+{
+    return dynamic_cast<const TransformTool*>(baseTool) != nullptr;
+}
+
+TransformTool* ToolManager::currentTransformTool() const
+{
+    return dynamic_cast<TransformTool*>(mCurrentTool);
+}
+
 BaseTool* ToolManager::getTool(ToolType eToolType)
 {
     return mToolSetHash[eToolType];
@@ -149,191 +171,10 @@ void ToolManager::resetAllTools()
 
     foreach(BaseTool* tool, mToolSetHash)
     {
-        tool->resetToDefault();
+        tool->resetSettings();
     }
+    emit toolsReset();
     qDebug("tools restored to default settings");
-}
-
-void ToolManager::setWidth(float newWidth)
-{
-    if (std::isnan(newWidth) || newWidth < 0)
-    {
-        newWidth = 1.f;
-    }
-
-    currentTool()->setWidth(static_cast<qreal>(newWidth));
-    emit toolPropertyChanged(currentTool()->type(), WIDTH);
-}
-
-void ToolManager::setFeather(float newFeather)
-{
-    if (std::isnan(newFeather) || newFeather < 0)
-    {
-        newFeather = 0.f;
-    }
-
-    currentTool()->setFeather(static_cast<qreal>(newFeather));
-    emit toolPropertyChanged(currentTool()->type(), FEATHER);
-}
-
-void ToolManager::setUseFeather(bool usingFeather)
-{
-    int usingAA = currentTool()->properties.useAA;
-    int value = propertySwitch(usingFeather, usingAA);
-
-    currentTool()->setAA(value);
-    currentTool()->setUseFeather(usingFeather);
-    emit toolPropertyChanged(currentTool()->type(), USEFEATHER);
-    emit toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
-}
-
-void ToolManager::setInvisibility(bool isInvisible)
-{
-    currentTool()->setInvisibility(isInvisible);
-    emit toolPropertyChanged(currentTool()->type(), INVISIBILITY);
-}
-
-void ToolManager::setPreserveAlpha(bool isPreserveAlpha)
-{
-    currentTool()->setPreserveAlpha(isPreserveAlpha);
-    emit toolPropertyChanged(currentTool()->type(), PRESERVEALPHA);
-}
-
-void ToolManager::setVectorMergeEnabled(bool isVectorMergeEnabled)
-{
-    currentTool()->setVectorMergeEnabled(isVectorMergeEnabled);
-    emit toolPropertyChanged(currentTool()->type(), VECTORMERGE);
-}
-
-void ToolManager::setBezier(bool isBezierOn)
-{
-    currentTool()->setBezier(isBezierOn);
-    emit toolPropertyChanged(currentTool()->type(), BEZIER);
-}
-
-void ToolManager::setClosedPath(bool isPathClosed)
-{
-    currentTool()->setClosedPath(isPathClosed);
-    emit toolPropertyChanged(currentTool()->type(), CLOSEDPATH);
-}
-
-void ToolManager::setPressure(bool isPressureOn)
-{
-    currentTool()->setPressure(isPressureOn);
-    emit toolPropertyChanged(currentTool()->type(), PRESSURE);
-}
-
-void ToolManager::setAA(int usingAA)
-{
-    currentTool()->setAA(usingAA);
-    emit toolPropertyChanged(currentTool()->type(), ANTI_ALIASING);
-}
-
-void ToolManager::setFillMode(int mode)
-{
-    currentTool()->setFillMode(mode);
-    emit toolPropertyChanged(currentTool()->type(), FILL_MODE);
-}
-
-void ToolManager::setStabilizerLevel(int level)
-{
-    currentTool()->setStabilizerLevel(level);
-    emit toolPropertyChanged(currentTool()->type(), STABILIZATION);
-}
-
-void ToolManager::setTolerance(int newTolerance)
-{
-    newTolerance = qMax(0, newTolerance);
-
-    currentTool()->setTolerance(newTolerance);
-    emit toolPropertyChanged(currentTool()->type(), TOLERANCE);
-}
-
-void ToolManager::setBucketColorToleranceEnabled(bool enabled)
-{
-    currentTool()->setToleranceEnabled(enabled);
-    emit toolPropertyChanged(currentTool()->type(), USETOLERANCE);
-}
-
-void ToolManager::setBucketFillExpandEnabled(bool expandValue)
-{
-    currentTool()->setFillExpandEnabled(expandValue);
-    emit toolPropertyChanged(currentTool()->type(), USEBUCKETFILLEXPAND);
-}
-
-void ToolManager::setBucketFillExpand(int expandValue)
-{
-    currentTool()->setFillExpand(expandValue);
-    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLEXPAND);
-}
-
-void ToolManager::setBucketFillReferenceMode(int referenceMode)
-{
-    currentTool()->setFillReferenceMode(referenceMode);
-    emit toolPropertyChanged(currentTool()->type(), BUCKETFILLLAYERREFERENCEMODE);
-}
-
-void ToolManager::setUseFillContour(bool useFillContour)
-{
-    currentTool()->setUseFillContour(useFillContour);
-    emit toolPropertyChanged(currentTool()->type(), FILLCONTOUR);
-}
-
-void ToolManager::setShowSelectionInfo(bool b)
-{
-    currentTool()->setShowSelectionInfo(b);
-}
-
-void ToolManager::setShowCameraPath(bool enabled)
-{
-    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
-    cameraTool->setShowCameraPath(enabled);
-    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
-}
-
-void ToolManager::resetCameraPath()
-{
-    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
-    cameraTool->resetCameraPath();
-    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
-}
-
-void ToolManager::resetCameraTransform(CameraFieldOption option)
-{
-    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
-    cameraTool->resetTransform(option);
-}
-
-void ToolManager::setCameraPathDotColor(int dotColorNum)
-{
-    CameraTool* cameraTool = static_cast<CameraTool*>(getTool(CAMERA));
-    cameraTool->setPathDotColorType(static_cast<DotColorType>(dotColorNum));
-    emit toolPropertyChanged(cameraTool->type(), CAMERAPATH);
-}
-
-bool ToolManager::bucketReferenceModeIsCurrentLayer(int referenceMode) const
-{
-    return referenceMode == 0;
-}
-
-// Switches on/off two actions
-// eg. if x = true, then y = false
-int ToolManager::propertySwitch(bool condition, int tool)
-{
-    int value = 0;
-    int newValue = 0;
-
-    if (condition == true)
-    {
-        value = -1;
-        newValue = mOldValue;
-        mOldValue = tool;
-    }
-    else if (condition == false)
-    {
-        value = (newValue == 1) ? 1 : mOldValue;
-    }
-    return value;
 }
 
 void ToolManager::tabletSwitchToEraser()

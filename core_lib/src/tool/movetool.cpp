@@ -35,40 +35,36 @@ GNU General Public License for more details.
 #include "mathutils.h"
 #include "vectorimage.h"
 
-MoveTool::MoveTool(QObject* parent) : BaseTool(parent)
+MoveTool::MoveTool(QObject* parent) : TransformTool(parent)
 {
 }
 
-ToolType MoveTool::type()
+ToolType MoveTool::type() const
 {
     return MOVE;
 }
 
 void MoveTool::loadSettings()
 {
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    properties.width = -1;
-    properties.feather = -1;
-    properties.useFeather = false;
-    properties.stabilizerLevel = -1;
-    properties.useAA = settings.value("moveAA").toBool();
     mRotationIncrement = mEditor->preference()->getInt(SETTING::ROTATION_INCREMENT);
-    properties.showSelectionInfo = settings.value("ShowSelectionInfo").toBool();
-    mPropertyEnabled[SHOWSELECTIONINFO] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
+    QSettings pencilSettings(PENCIL2D, PENCIL2D);
+
+    mPropertyUsed[TransformToolProperties::SHOWSELECTIONINFO_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[TransformToolProperties::ANTI_ALIASING_ENABLED] = { Layer::BITMAP };
+    QHash<int, PropertyInfo> info;
+
+    info[TransformToolProperties::SHOWSELECTIONINFO_ENABLED] = false;
+    info[TransformToolProperties::ANTI_ALIASING_ENABLED] = true;
+
+    toolProperties().insertProperties(info);
+    toolProperties().loadFrom(typeName(), pencilSettings);
+
+    if (toolProperties().requireMigration(pencilSettings, ToolProperties::VERSION_1)) {
+        toolProperties().setBaseValue(TransformToolProperties::SHOWSELECTIONINFO_ENABLED, pencilSettings.value("ShowSelectionInfo", false).toBool());
+        toolProperties().setBaseValue(TransformToolProperties::ANTI_ALIASING_ENABLED, pencilSettings.value("moveAA", true).toBool());
+    }
 
     connect(mEditor->preference(), &PreferenceManager::optionChanged, this, &MoveTool::updateSettings);
-}
-
-void MoveTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-
-    settings.setValue("ShowSelectionInfo", properties.showSelectionInfo);
-    settings.setValue("moveAA", properties.useAA);
-
-    settings.sync();
 }
 
 QCursor MoveTool::cursor()
@@ -335,14 +331,12 @@ void MoveTool::applyTransformation()
 
 bool MoveTool::leavingThisTool()
 {
-    BaseTool::leavingThisTool();
+    TransformTool::leavingThisTool();
 
     if (currentPaintableLayer())
     {
         applyTransformation();
     }
-
-    saveSettings();
 
     return true;
 }
@@ -350,21 +344,6 @@ bool MoveTool::leavingThisTool()
 bool MoveTool::isActive() const {
     return mScribbleArea->isPointerInUse() &&
            (mEditor->select()->somethingSelected() || mEditor->overlays()->getMoveMode() != MoveMode::NONE);
-}
-
-void MoveTool::resetToDefault()
-{
-    setShowSelectionInfo(false);
-    setAA(true);
-}
-
-void MoveTool::setShowSelectionInfo(const bool b)
-{
-    properties.showSelectionInfo = b;
-
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue("ShowSelectionInfo", b);
-
 }
 
 Layer* MoveTool::currentPaintableLayer()

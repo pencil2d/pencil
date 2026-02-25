@@ -18,28 +18,28 @@ GNU General Public License for more details.
 #ifndef SELECTTOOL_H
 #define SELECTTOOL_H
 
-#include "basetool.h"
+#include "transformtool.h"
 #include "movemode.h"
 #include "undoredomanager.h"
+
+#include "layer.h"
 
 #include <QRectF>
 
 class Layer;
 class SelectionManager;
 
-class SelectTool : public BaseTool
+class SelectTool : public TransformTool
 {
     Q_OBJECT
 
 public:
     explicit SelectTool(QObject* parent = nullptr);
-    ToolType type() override { return SELECT; }
-    void loadSettings() override;
-    void saveSettings() override;
-    QCursor cursor() override;
 
-    void resetToDefault() override;
-    void setShowSelectionInfo(const bool b) override;
+    ToolType type() const override { return SELECT; }
+
+    void loadSettings() override;
+    QCursor cursor() override;
 
 private:
 
@@ -49,8 +49,7 @@ private:
 
     bool keyPressEvent(QKeyEvent* event) override;
 
-    void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
-    void controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint);
+    void controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint, Layer::LAYER_TYPE layerType);
 
     void beginSelection(Layer* currentLayer, const QPointF& pos);
     void keepSelection(Layer* currentLayer);

@@ -4,8 +4,6 @@
 #include "filemanager.h"
 #include "scribblearea.h"
 
-#include <QDir>
-
 #include "layerbitmap.h"
 
 #include "object.h"
@@ -15,7 +13,7 @@
 
 #include "basetool.h"
 
-void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRect bounds, Properties properties, int fillCountThreshold) {
+void dragAndFill(QPointF movePoint, Editor* editor, QColor color, QRect bounds, BucketToolProperties properties, int fillCountThreshold) {
     int moveX = 0;
 
     BitmapBucket bucket = BitmapBucket(editor, color, bounds, movePoint, properties);
@@ -67,16 +65,18 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     editor->setObject(obj);
     editor->init();
 
-    Properties properties;
+    BucketToolProperties properties;
+    QSettings settings;
 
-    QDir dir;
-    QString resultsPath = dir.currentPath() + "/fill-drag-test/";
+    QHash<int, PropertyInfo> info;
 
-    dir.mkpath(resultsPath);
-
-    properties.bucketFillReferenceMode = 0;
-    properties.bucketFillExpandEnabled = false;
-    properties.fillMode = 0;
+    info[BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE] = 0;
+    info[BucketToolProperties::FILLEXPAND_ENABLED] = false;
+    info[BucketToolProperties::FILLMODE_VALUE] = 0;
+    info[BucketToolProperties::COLORTOLERANCE_VALUE] = 25;
+    info[BucketToolProperties::COLORTOLERANCE_ENABLED] = true;
+    properties.toolProperties().insertProperties(info);
+    properties.toolProperties().loadFrom("BucketTest", settings);
 
     QColor fillColor = QColor(255,255,0,100);
 
@@ -94,25 +94,21 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
         Layer* strokeLayer = editor->layers()->currentLayer();
         SECTION("When reference is current layer, only transparent color is filled")
         {
-            properties.bucketFillReferenceMode = 0;
+            properties.toolProperties().setBaseValue(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE, 0);
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
-
-            image->writeFile(resultsPath + "test1a.png");
 
             verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, qPremultiply(fillColor.rgba()));
         }
 
         SECTION("When reference is all layers, only transparent color is filled")
         {
-            properties.bucketFillReferenceMode = 1;
+            properties.toolProperties().setBaseValue(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE, 1);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
-
-            image->writeFile(resultsPath + "test1b.png");
 
             verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, qPremultiply(fillColor.rgba()));
         }
@@ -121,39 +117,38 @@ TEST_CASE("BitmapBucket - Fill drag behaviour across four segments")
     SECTION("Filling on current layer - layer is pre-filled") {
 
         // Fill mode is set to `replace` because it makes it easier to compare colors...
-        properties.fillMode = 1;
+        properties.toolProperties().setBaseValue(BucketToolProperties::FILLMODE_VALUE, 1);
         Layer* strokeLayer = editor->layers()->currentLayer();
         SECTION("When reference is current layer, only pixels matching the fill color are filled"){
-            properties.bucketFillReferenceMode = 0;
+            properties.toolProperties().setBaseValue(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE, 0);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
-            image->writeFile(resultsPath + "test2a-first.png");
 
             fillColor = QColor(0,255,0,255);
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
             image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
-            image->writeFile(resultsPath + "test2a-second.png");
 
             verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, fillColor.rgba());
         }
 
         SECTION("When reference is all layers")
         {
-            properties.bucketFillReferenceMode = 1;
+            properties.toolProperties().setBaseValue(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE, 1);
 
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
             BitmapImage* image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
-            image->writeFile(resultsPath + "test3a-first.png");
 
             fillColor = QColor(0,255,0,255);
             dragAndFill(pressPoint, editor, fillColor, beforeFill.bounds(), properties, 4);
 
             image = static_cast<LayerBitmap*>(strokeLayer)->getLastBitmapImageAtFrame(1);
-            image->writeFile(resultsPath + "test3a-second.png");
 
             verifyOnlyPixelsInsideSegmentsAreFilled(pressPoint, image, fillColor.rgba());
         }
     }
+
+    delete scribbleArea;
+    delete editor;
 }

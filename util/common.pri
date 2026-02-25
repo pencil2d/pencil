@@ -1,25 +1,25 @@
+# Development/Local build version is always 0.0.0.0
+# Nightly build version is 99.0.0.GITHUB_RUN_NUMBER
 
-# Development branch build number is always 0.0.0.0
-# Nightly build version number is 99.0.0.BuildNumber
-# Release build version number is the git branch name plus the build number.
+isEmpty(VERSION): VERSION = 0.0.0.0
+message("Version: $$VERSION")
 
-isEmpty(VERSION) {
-    VERSION = 0.0.0.0
+DEFINES += APP_VERSION=\\\"$$VERSION\\\"
+
+win32 {
+    RC_DEFINES += RC_APP_VERSION_STR=\\\"$$VERSION\\\"
+    RC_DEFINES += RC_APP_VERSION=$$replace(VERSION, "\.", ",")
 }
 
-message("App Version: $$VERSION")
-
-DEFINES    += APP_VERSION=\\\"$$VERSION\\\"
-RC_DEFINES += APP_VERSION=\\\"$$VERSION\\\"
-RC_DEFINES += APP_VERSION_RC=$$replace(VERSION, "\.", ",")
-
-PENCIL2D_NIGHTLY {
-    DEFINES += PENCIL2D_NIGHTLY_BUILD
-}
-
-PENCIL2D_RELEASE {
+# Auto-detect build type from version
+# 99.0.0.x and 0.0.0.0 are development/nightly builds
+contains(VERSION, ^99\.0\.0\..*) {
+    message("Build Type: Nightly")
+} else:equals(VERSION, "0.0.0.0") {
+    message("Build Type: Development")
+} else {
+    message("Build Type: Release")
     DEFINES += QT_NO_DEBUG_OUTPUT
-    DEFINES += PENCIL2D_RELEASE_BUILD
 }
 
 CONFIG += strict_c strict_c++
@@ -40,7 +40,7 @@ WIN_LEGACY {
     DEFINES += _WIN32_WINNT=0x0501
 }
 
-macx: LIBS += -lobjc -framework Carbon -framework AppKit
+macx: LIBS += -lobjc -framework AppKit
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings

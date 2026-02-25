@@ -35,7 +35,7 @@ PolylineTool::PolylineTool(QObject* parent) : StrokeTool(parent)
 {
 }
 
-ToolType PolylineTool::type()
+ToolType PolylineTool::type() const
 {
     return POLYLINE;
 }
@@ -44,64 +44,34 @@ void PolylineTool::loadSettings()
 {
     StrokeTool::loadSettings();
 
-    mPropertyEnabled[WIDTH] = true;
-    mPropertyEnabled[BEZIER] = true;
-    mPropertyEnabled[CLOSEDPATH] = true;
-    mPropertyEnabled[ANTI_ALIASING] = true;
+    mPropertyUsed[StrokeToolProperties::WIDTH_VALUE] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[PolylineToolProperties::CLOSEDPATH_ENABLED] = { Layer::BITMAP, Layer::VECTOR };
+    mPropertyUsed[PolylineToolProperties::BEZIERPATH_ENABLED] = { Layer::BITMAP };
+    mPropertyUsed[StrokeToolProperties::ANTI_ALIASING_ENABLED] = { Layer::BITMAP };
 
-    QSettings settings(PENCIL2D, PENCIL2D);
+    QSettings pencilSettings(PENCIL2D, PENCIL2D);
 
-    properties.width = settings.value("polyLineWidth", 8.0).toDouble();
-    properties.feather = -1;
-    properties.pressure = false;
-    properties.invisibility = OFF;
-    properties.preserveAlpha = OFF;
-    properties.closedPolylinePath = settings.value("closedPolylinePath").toBool();
-    properties.useAA = settings.value("brushAA").toBool();
-    properties.stabilizerLevel = -1;
+    QHash<int, PropertyInfo> info;
 
-    mQuickSizingProperties.insert(Qt::ShiftModifier, WIDTH);
-}
+    info[StrokeToolProperties::WIDTH_VALUE] = { WIDTH_MIN, WIDTH_MAX, 8.0 };
+    info[PolylineToolProperties::CLOSEDPATH_ENABLED] = false;
+    info[PolylineToolProperties::BEZIERPATH_ENABLED] = false;
+    info[StrokeToolProperties::ANTI_ALIASING_ENABLED] = true;
 
-void PolylineTool::saveSettings()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
+    toolProperties().insertProperties(info);
+    toolProperties().loadFrom(typeName(), pencilSettings);
 
-    settings.setValue("polyLineWidth", properties.width);
-    settings.setValue("brushAA", properties.useAA);
-    settings.setValue("closedPolylinePath", properties.closedPolylinePath);
+    if (toolProperties().requireMigration(pencilSettings, ToolProperties::VERSION_1)) {
+        toolProperties().setBaseValue(StrokeToolProperties::WIDTH_VALUE, pencilSettings.value("polylineWidth", 8.0).toReal());
+        toolProperties().setBaseValue(StrokeToolProperties::ANTI_ALIASING_ENABLED, pencilSettings.value("brushAA", true).toBool());
+        toolProperties().setBaseValue(PolylineToolProperties::CLOSEDPATH_ENABLED, pencilSettings.value("closedPolylinePath", false).toBool());
 
-    settings.sync();
-}
+        pencilSettings.remove("polylineWidth");
+        pencilSettings.remove("brushAA");
+        pencilSettings.remove("closedPolylinePath");
+    }
 
-void PolylineTool::resetToDefault()
-{
-    setWidth(8.0);
-    setBezier(false);
-    setClosedPath(false);
-}
-
-void PolylineTool::setWidth(const qreal width)
-{
-    // Set current property
-    properties.width = width;
-}
-
-void PolylineTool::setFeather(const qreal feather)
-{
-    Q_UNUSED(feather);
-    properties.feather = -1;
-}
-
-void PolylineTool::setAA(const int AA)
-{
-    // Set current property
-    properties.useAA = AA;
-}
-
-void PolylineTool::setClosedPath(const bool closed)
-{
-    BaseTool::setClosedPath(closed);
+    mQuickSizingProperties.insert(Qt::ShiftModifier, StrokeToolProperties::WIDTH_VALUE);
 }
 
 bool PolylineTool::leavingThisTool()
@@ -286,7 +256,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
     if (points.size() > 0)
     {
         QPen pen(mEditor->color()->frontColor(),
-                 properties.width,
+                 mSettings.width(),
                  Qt::SolidLine,
                  Qt::RoundCap,
                  Qt::RoundJoin);
@@ -294,7 +264,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
 
         // Bitmap by default
         QPainterPath tempPath;
-        if (properties.bezier_state)
+        if (mSettings.bezierPathEnabled())
         {
             tempPath = BezierCurve(points).getSimplePath();
         }
@@ -305,7 +275,7 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
         tempPath.lineTo(endPoint);
 
         // Ctrl key inverts closed behavior while held (XOR)
-        if ((properties.closedPolylinePath == !mClosedPathOverrideEnabled) && points.size() > 1)
+        if ((mSettings.closedPathEnabled() == !mClosedPathOverrideEnabled) && points.size() > 1)
         {
             tempPath.closeSubpath();
         }
@@ -322,12 +292,12 @@ void PolylineTool::drawPolyline(QList<QPointF> points, QPointF endPoint)
                 }
                 else
                 {
-                    pen.setWidth(properties.width);
+                    pen.setWidth(mSettings.width());
                 }
             }
         }
 
-        mScribbleArea->drawPolyline(tempPath, pen, properties.useAA);
+        mScribbleArea->drawPolyline(tempPath, pen, mSettings.AntiAliasingEnabled());
     }
 }
 
@@ -343,14 +313,14 @@ void PolylineTool::endPolyline(QList<QPointF> points)
 
     if (layer->type() == Layer::VECTOR)
     {
-        BezierCurve curve = BezierCurve(points, properties.bezier_state);
+        BezierCurve curve = BezierCurve(points, mSettings.bezierPathEnabled());
         if (mScribbleArea->makeInvisible() == true)
         {
             curve.setWidth(0);
         }
         else
         {
-            curve.setWidth(properties.width);
+            curve.setWidth(mSettings.width());
         }
         curve.setColorNumber(mEditor->color()->frontColorNumber());
         curve.setVariableWidth(false);
@@ -369,4 +339,16 @@ void PolylineTool::endPolyline(QList<QPointF> points)
     mEditor->setModified(mEditor->layers()->currentLayerIndex(), mEditor->currentFrame());
 
     clearToolData();
+}
+
+void PolylineTool::setUseBezier(bool useBezier)
+{
+    toolProperties().setBaseValue(PolylineToolProperties::BEZIERPATH_ENABLED, useBezier);
+    emit bezierPathEnabledChanged(useBezier);
+}
+
+void PolylineTool::setClosePath(bool closePath)
+{
+    toolProperties().setBaseValue(PolylineToolProperties::CLOSEDPATH_ENABLED, closePath);
+    emit closePathChanged(closePath);
 }

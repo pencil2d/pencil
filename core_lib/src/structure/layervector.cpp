@@ -93,8 +93,8 @@ Status LayerVector::saveKeyFrameFile(KeyFrame* keyFrame, QString path)
 
         DebugDetails dd;
         dd << "LayerVector::saveKeyFrameFile";
-        dd << QString("  KeyFrame.pos() = %1").arg(keyFrame->pos());
-        dd << QString("  strFilePath = ").append(strFilePath);
+        dd << QString("&nbsp;&nbsp;KeyFrame.pos() = %1").arg(keyFrame->pos());
+        dd << QString("&nbsp;&nbsp;strFilePath = ").append(strFilePath);
         dd << "Error: Failed to save VectorImage";
         dd.collect(st.details());
         return Status(Status::FAIL, dd);

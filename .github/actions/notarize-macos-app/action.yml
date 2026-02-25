@@ -1,0 +1,130 @@
+name: 'Notarize macOS App'
+description: 'Complete macOS app code signing and notarization with certificate setup'
+inputs:
+  app_path:
+    description: 'The app bundle ZIP file path'
+    required: true
+  p12_base64:
+    description: 'Base64 encoded P12 certificate file'
+    required: true
+  p12_password:
+    description: 'Password for the P12 certificate'
+    required: true
+  apple_id:
+    description: 'Apple ID for notarization'
+    required: true
+  apple_id_password:
+    description: 'App-specific password for Apple ID'
+    required: true
+  team_id:
+    description: 'Apple Developer Team ID'
+    required: true
+  certificate_identity:
+    description: 'Code signing certificate identity'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Check Prerequisites
+      shell: bash
+      run: |
+        echo "Checking if Apple Developer credentials are available..."
+        
+        if [ -z "${{ inputs.apple_id }}" ]; then
+          echo "No Apple ID provided - skipping code signing and notarization."
+          echo "The app build will continue without notarization."
+          echo "SKIP_NOTARIZATION=true" >> $GITHUB_ENV
+        else
+          echo "Apple ID found - proceeding with code signing and notarization."
+          echo "SKIP_NOTARIZATION=false" >> $GITHUB_ENV
+        fi
+
+    - name: Setup Code Signing Certificate
+      if: env.SKIP_NOTARIZATION != 'true'
+      shell: bash
+      run: |
+        echo "Create temporary keychain"
+        security create-keychain -p temp_password build.keychain
+        security default-keychain -s build.keychain
+        security unlock-keychain -p temp_password build.keychain
+        
+        echo "Import certificate"
+        echo "${{ inputs.p12_base64 }}" | base64 --decode > certificate.p12
+        security import certificate.p12 -k build.keychain -P "${{ inputs.p12_password }}" -A
+        rm certificate.p12
+
+        echo "Set keychain settings"
+        security set-key-partition-list -S apple-tool:,apple: -s -k temp_password build.keychain
+        
+        echo "Available signing identities:"
+        security find-identity -v -p codesigning build.keychain
+
+    - name: Code Sign App and Create DMG
+      if: env.SKIP_NOTARIZATION != 'true'
+      shell: bash
+      run: |
+        echo "Extracting app bundle from ZIP..."
+        ditto -x -k "${{ inputs.app_path }}" ./app_notarization
+
+        echo "Code signing app..."
+        codesign --force --deep --options runtime --sign "${{ inputs.certificate_identity }}" "./app_notarization/Pencil2D.app"
+
+        echo "Verifying code signature..."
+        codesign --verify --verbose=4 "./app_notarization/Pencil2D.app"
+        echo "Code signature verification successful!"
+
+        echo "Creating DMG with app and Applications symlink..."
+        mkdir -p ./dmg_contents
+        mv "./app_notarization/Pencil2D.app" ./dmg_contents/
+        ln -s /Applications ./dmg_contents/Applications
+
+        # Get base name without extension
+        base_path="${{ inputs.app_path }}"
+        base_name="${base_path%.zip}"
+
+        echo "Creating read-write DMG..."
+        hdiutil create -volname "Pencil2D" -srcfolder ./dmg_contents -ov -format UDRW -fs HFS+ "${base_name}-temp.dmg"
+
+        echo "Converting to compressed read-only DMG for notarization..."
+        hdiutil convert "${base_name}-temp.dmg" -format ULFO -o "${base_name}.dmg"
+        rm "${base_name}-temp.dmg"
+
+        echo "Removing extended attributes from DMG..."
+        xattr -cr "${base_name}.dmg"
+
+        echo "Code signing DMG..."
+        codesign --force --sign "${{ inputs.certificate_identity }}" "${base_name}.dmg"
+
+        echo "Verifying DMG signature..."
+        codesign --verify --verbose=4 "${base_name}.dmg"
+        echo "DMG created and signed successfully!"
+
+    - name: Submit DMG for Notarization
+      if: env.SKIP_NOTARIZATION != 'true'
+      shell: bash
+      run: |
+        base_path="${{ inputs.app_path }}"
+        base_name="${base_path%.zip}"
+
+        echo "Submitting DMG to Apple for notarization..."
+        xcrun notarytool submit "${base_name}.dmg" \
+          --apple-id "${{ inputs.apple_id }}" \
+          --password "${{ inputs.apple_id_password }}" \
+          --team-id "${{ inputs.team_id }}" \
+          --wait \
+          --timeout 15m
+
+    - name: Staple & Verify Notarization
+      if: env.SKIP_NOTARIZATION != 'true'
+      shell: bash
+      run: |
+        base_path="${{ inputs.app_path }}"
+        base_name="${base_path%.zip}"
+
+        echo "Stapling notarization ticket to DMG..."
+        xcrun stapler staple "${base_name}.dmg"
+
+        echo "Verifying DMG notarization..."
+        spctl -a -t open --context context:primary-signature -v "${base_name}.dmg"
+        echo "DMG is properly notarized and ready for distribution! Final DMG: ${base_name}.dmg"

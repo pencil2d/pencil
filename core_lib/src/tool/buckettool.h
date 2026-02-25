@@ -26,34 +26,48 @@ GNU General Public License for more details.
 class Layer;
 class VectorImage;
 
-class BucketTool : public StrokeTool
+class BucketTool : public BaseTool
 {
     Q_OBJECT
 public:
     explicit BucketTool(QObject* parent = nullptr);
-    ToolType type() override;
-    void loadSettings() override;
-    void saveSettings() override;
-    void resetToDefault() override;
+
     QCursor cursor() override;
+    ToolType type() const override { return BUCKET; }
+
+    ToolProperties& toolProperties() override { return mSettings.toolProperties(); }
+    const BucketToolProperties& settings() const { return mSettings; }
+
+    void loadSettings() override;
 
     void pointerPressEvent(PointerEvent*) override;
     void pointerMoveEvent(PointerEvent*) override;
     void pointerReleaseEvent(PointerEvent*) override;
 
-    void setTolerance(const int tolerance) override;
-    void setToleranceEnabled(const bool enabled) override;
-    void setWidth(const qreal width) override;
-    void setFillExpand(const int fillExpandValue) override;
-    void setFillExpandEnabled(const bool enabled) override;
-    void setFillReferenceMode(int referenceMode) override;
-    void setFillMode(int mode) override;
-
     void paintBitmap();
     void paintVector(Layer* layer);
-    void drawStroke();
 
     void applyChanges();
+
+    void setStrokeThickness(qreal width);
+    void setColorTolerance(int tolerance);
+    void setColorToleranceEnabled(bool enabled);
+    void setFillExpand(int fillExpandValue);
+    void setFillExpandEnabled(bool enabled);
+    void setFillReferenceMode(int referenceMode);
+    void setFillMode(int mode);
+
+    QPointF getCurrentPoint() const;
+    QPointF getCurrentPixel() const;
+
+signals:
+    void fillModeChanged(int mode);
+    void fillReferenceModeChanged(int referenceMode);
+    void fillExpandEnabledChanged(bool isON);
+    void fillExpandChanged(int fillExpandValue);
+    void toleranceEnabledChanged(bool isON);
+    void toleranceChanged(int width);
+    void strokeThicknessChanged(qreal width);
 
 private:
 
@@ -61,6 +75,10 @@ private:
     VectorImage* vectorImage = nullptr;
 
     bool mFilledOnMove = false;
+
+    BucketToolProperties mSettings;
+    StrokeInterpolator mInterpolator;
+    const UndoSaveState* mUndoSaveState = nullptr;
 };
 
 #endif // BUCKETTOOL_H

@@ -17,7 +17,7 @@ GNU General Public License for more details.
 #ifndef CAMERAOPTIONSWIDGET_H
 #define CAMERAOPTIONSWIDGET_H
 
-#include <QWidget>
+#include "basewidget.h"
 
 #include "pencildef.h"
 #include "camera.h"
@@ -29,18 +29,21 @@ namespace Ui {
 class CameraOptionsWidget;
 }
 
-class CameraOptionsWidget : public QWidget
+class CameraOptionsWidget : public BaseWidget
 {
     Q_OBJECT
 public:
     explicit CameraOptionsWidget(Editor* editor, QWidget *parent = nullptr);
     ~CameraOptionsWidget();
 
-    void updateUI();
+    void initUI() override;
+    void updateUI() override;
 
     void setShowCameraPath(bool showCameraPath);
     void setPathDotColorType(DotColorType index);
-    void onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType);
+
+    void makeConnectionsFromModelToUI();
+    void makeConnectionsFromUIToModel();
 
 private:
     Ui::CameraOptionsWidget *ui;
