@@ -40,7 +40,7 @@ class UndoRedoCommand : public QUndoCommand
 {
 public:
     explicit UndoRedoCommand(Editor* editor, QUndoCommand* parent = nullptr);
-    ~UndoRedoCommand() override;
+    ~UndoRedoCommand() = default;
 
 protected:
     Editor* editor() const { return mEditor; }
@@ -62,7 +62,7 @@ public:
                         Editor* editor,
                         QUndoCommand* parent = nullptr
                                                );
-    ~KeyFrameRemoveCommand();
+    ~KeyFrameRemoveCommand() override;
 
     void undo() override;
     void redo() override;
@@ -84,7 +84,7 @@ public:
                         const QString& description,
                         Editor* editor,
                         QUndoCommand* parent = nullptr);
-    ~KeyFrameAddCommand();
+    ~KeyFrameAddCommand() = default;
 
     void undo() override;
     void redo() override;
