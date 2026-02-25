@@ -370,7 +370,7 @@ void StrokeTool::updateCanvasCursor()
     const QRect& updateRect = widthOptions.circleRect.toAlignedRect();
 
     // Adjusted to account for some pixel bleeding outside the update rect
-    mScribbleArea->update(mEditor->view()->getView().mapRect(updateRect.united(dirtyRect).adjusted(-2, -2, 2, 2)));
+    mScribbleArea->update(mEditor->view()->getView().mapRect(updateRect.united(dirtyRect).adjusted(-2, -2, 2, 2)).adjusted(-2, -2, 2, 2));
     mWidthCursorPainter.clearDirty();
 }
 
