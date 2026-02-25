@@ -54,7 +54,7 @@ enum class UndoRedoRecordType {
 
 struct SelectionSaveState {
 
-    SelectionSaveState() { }
+    SelectionSaveState() = default;
     SelectionSaveState(const QRectF& rect,
                        const qreal rotationAngle,
                        const qreal scaleX,
@@ -80,7 +80,7 @@ struct SelectionSaveState {
 
 struct MoveFramesSaveState {
 
-    MoveFramesSaveState() { }
+    MoveFramesSaveState() = default;
     MoveFramesSaveState(int offset,
                         const QList<int>& positions)
     {
@@ -104,14 +104,6 @@ struct UserSaveState {
 /// This is the main undo/redo state structure which is meant to populate
 /// whatever states that needs to be stored temporarily.
 struct UndoSaveState {
-
-    ~UndoSaveState()
-    {
-        if (recordType != UndoRedoRecordType::INVALID) {
-            keyframe.reset();
-        }
-    }
-
     // Common data
     UndoRedoRecordType recordType = UndoRedoRecordType::INVALID;
     int layerId = 0;
