@@ -35,10 +35,6 @@ UndoRedoCommand::UndoRedoCommand(Editor* editor, QUndoCommand* parent) : QUndoCo
     mEditor = editor;
 }
 
-UndoRedoCommand::~UndoRedoCommand()
-{
-}
-
 KeyFrameRemoveCommand::KeyFrameRemoveCommand(const KeyFrame* undoKeyFrame,
                                          int undoLayerId,
                                          const QString &description,
@@ -111,10 +107,6 @@ KeyFrameAddCommand::KeyFrameAddCommand(int undoPosition,
     this->redoPosition = editor->currentFrame();
 
     setText(description);
-}
-
-KeyFrameAddCommand::~KeyFrameAddCommand()
-{
 }
 
 void KeyFrameAddCommand::undo()
