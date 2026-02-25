@@ -197,11 +197,6 @@ set(APP_TRANSLATIONS
     ${CMAKE_CURRENT_SOURCE_DIR}/translations/pencil_zh_TW.ts
 )
 
-# Qt translation support - use qt_add_translations which handles
-# compiling .ts -> .qm and embedding into resources automatically.
-# Note: The actual qt_add_translations call is done after the target
-# is created below (it requires the target to exist).
-
 
 # Platform-specific source files and configuration
 if(APPLE)
@@ -214,12 +209,12 @@ if(APPLE)
     set(PLATFORM_SOURCES ${CORE_LIB_OBJCXX_SOURCES} ${APP_ICON_MACOSX})
 elseif(WIN32)
     # Windows resource file - convert version "0.0.0.0" to "0,0,0,0" format
-    string(REPLACE "." "," APP_VERSION_RC "${APP_VERSION}")
+    string(REPLACE "." "," RC_APP_VERSION "${APP_VERSION}")
 
     set(PLATFORM_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/app/data/version.rc)
     set_source_files_properties(
         ${CMAKE_CURRENT_SOURCE_DIR}/app/data/version.rc
-        PROPERTIES COMPILE_DEFINITIONS "APP_VERSION_RC=${APP_VERSION_RC}"
+        PROPERTIES COMPILE_DEFINITIONS "RC_APP_VERSION=${RC_APP_VERSION};RC_APP_VERSION_STR=\"${APP_VERSION}\""
     )
 else()
     set(PLATFORM_SOURCES "")
@@ -255,7 +250,6 @@ endif()
 # This compiles .ts -> .qm and embeds them into resources automatically.
 qt_add_translations(pencil2d
     TS_FILES ${APP_TRANSLATIONS}
-    QM_FILES_OUTPUT_VARIABLE QM_FILES
     RESOURCE_PREFIX "/i18n"
 )
 

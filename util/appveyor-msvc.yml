@@ -31,7 +31,7 @@ build_script:
   - cd
   - md build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=%QTDIR% -DPENCIL2D_NIGHTLY=ON -DAPP_VERSION=%APPVEYOR_BUILD_VERSION%
+  - cmake .. -DCMAKE_PREFIX_PATH=%QTDIR%-DAPP_VERSION=%APPVEYOR_BUILD_VERSION%
   - cmake --build . --config Release --parallel --target pencil2d
   - cmake --build . --config Release --parallel --target pencil2d_tests
 

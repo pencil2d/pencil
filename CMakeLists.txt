@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.21)
+cmake_minimum_required(VERSION 3.21...3.31)
 set(CMAKE_OSX_ARCHITECTURES x86_64;arm64)
 
 # Set project name and version
@@ -18,10 +18,6 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
-
-# Options
-option(PENCIL2D_NIGHTLY "Nightly build" OFF)
-option(PENCIL2D_RELEASE "Release build" OFF)
 
 # Set version
 if(NOT DEFINED APP_VERSION)
@@ -43,28 +39,12 @@ find_package(Qt6 REQUIRED COMPONENTS
     LinguistTools
 )
 
-if(WIN32)
-    # 0x0601 corresponds to Windows 7
-    add_compile_definitions(_WIN32_WINNT=0x0601)
-endif()
-
 # Global definitions
 add_compile_definitions(
     APP_VERSION="${APP_VERSION}"
     QT_DEPRECATED_WARNINGS
     QT_DISABLE_DEPRECATED_UP_TO=0x050F00
 )
-
-if(PENCIL2D_NIGHTLY)
-    add_compile_definitions(PENCIL2D_NIGHTLY_BUILD)
-endif()
-
-if(PENCIL2D_RELEASE)
-    add_compile_definitions(
-        QT_NO_DEBUG_OUTPUT
-        PENCIL2D_RELEASE_BUILD
-    )
-endif()
 
 # MSVC specific flags
 if(MSVC)
