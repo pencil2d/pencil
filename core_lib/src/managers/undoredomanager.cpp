@@ -100,8 +100,9 @@ void UndoRedoManager::record(SAVESTATE_ID saveStateId, const QString& descriptio
     }
 
     UndoSaveState* saveState = mSaveStates.take(saveStateId);
+    if (!saveState) { return; }
 
-    if (!mNewBackupSystemEnabled && saveState) {
+    if (!mNewBackupSystemEnabled) {
         clearState(saveState);
         return;
     }
