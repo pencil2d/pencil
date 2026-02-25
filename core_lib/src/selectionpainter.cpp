@@ -43,7 +43,6 @@ void SelectionPainter::paint(QPainter& painter,
 
         // Draw current selection
         painter.drawPolygon(projectedSelectionPolygon.toPolygon());
-
     }
     if (layer->type() == Layer::VECTOR)
     {

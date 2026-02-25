@@ -10,7 +10,7 @@ runs:
   using: composite
   steps:
   - if: runner.os == 'Windows'
-    uses: jurplel/install-qt-action@v3
+    uses: jurplel/install-qt-action@v4
     with:
       arch: ${{inputs.arch}}
       version: ${{matrix.qt == 6 && '6.5.3' || '5.15.2'}}

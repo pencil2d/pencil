@@ -27,7 +27,7 @@ Makefile*
 .moc
 moc_predefs.h
 *-pch.h.cpp
-
+app/.qm/*.qm
 Makefile
 Makefile.Debug
 Makefile.Release
@@ -80,6 +80,13 @@ ipch
 .vscode
 
 # Build directory
-build
+build/
+build-*/
 .qtc_clangd
 app/resources.pri
+
+# CMake
+CMakeCache.txt
+compile_commands.json
+cmake-build-*/
+

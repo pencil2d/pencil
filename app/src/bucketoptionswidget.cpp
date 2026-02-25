@@ -49,11 +49,12 @@ BucketOptionsWidget::~BucketOptionsWidget()
 void BucketOptionsWidget::initUI()
 {
     mBucketTool = static_cast<BucketTool*>(mEditor->tools()->getTool(BUCKET));
-    mSettings = mBucketTool->settings();
 
-    auto toleranceInfo = mSettings.getInfo(BucketToolProperties::COLORTOLERANCE_VALUE);
-    auto expandInfo = mSettings.getInfo(BucketToolProperties::FILLEXPAND_VALUE);
-    auto thicknessInfo = mSettings.getInfo(BucketToolProperties::FILLTHICKNESS_VALUE);
+    BucketToolProperties properties = mBucketTool->settings();
+
+    auto toleranceInfo = properties.getInfo(BucketToolProperties::COLORTOLERANCE_VALUE);
+    auto expandInfo = properties.getInfo(BucketToolProperties::FILLEXPAND_VALUE);
+    auto thicknessInfo = properties.getInfo(BucketToolProperties::FILLTHICKNESS_VALUE);
 
     ui->colorToleranceSlider->init(tr("Color tolerance"), toleranceInfo.minInt(), toleranceInfo.maxInt(), SliderStartPosType::LEFT);
     ui->colorToleranceSlider->showDecimals(false);
@@ -81,32 +82,34 @@ void BucketOptionsWidget::updateUI()
 {
     updatePropertyVisibility();
 
+    BucketToolProperties properties = mBucketTool->settings();
+
     if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLTHICKNESS_VALUE)) {
-        mBucketTool->setStrokeThickness(mSettings.fillThickness());
+        mBucketTool->setStrokeThickness(properties.fillThickness());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_ENABLED)) {
-        mBucketTool->setFillExpandEnabled(mSettings.fillExpandEnabled());
+        mBucketTool->setFillExpandEnabled(properties.fillExpandEnabled());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLEXPAND_VALUE)) {
-        mBucketTool->setFillExpand(mSettings.fillExpandAmount());
+        mBucketTool->setFillExpand(properties.fillExpandAmount());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLLAYERREFERENCEMODE_VALUE)) {
-        mBucketTool->setFillReferenceMode(mSettings.fillReferenceMode());
+        mBucketTool->setFillReferenceMode(properties.fillReferenceMode());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketToolProperties::FILLMODE_VALUE)) {
-        mBucketTool->setFillMode(mSettings.fillMode());
+        mBucketTool->setFillMode(properties.fillMode());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_VALUE)) {
-        mBucketTool->setColorTolerance(mSettings.tolerance());
+        mBucketTool->setColorTolerance(properties.tolerance());
     }
 
     if (mBucketTool->isPropertyEnabled(BucketToolProperties::COLORTOLERANCE_ENABLED)) {
-        mBucketTool->setColorToleranceEnabled(mSettings.colorToleranceEnabled());
+        mBucketTool->setColorToleranceEnabled(properties.colorToleranceEnabled());
     }
 }
 

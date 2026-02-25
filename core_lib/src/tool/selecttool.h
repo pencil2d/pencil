@@ -22,6 +22,8 @@ GNU General Public License for more details.
 #include "movemode.h"
 #include "undoredomanager.h"
 
+#include "layer.h"
+
 #include <QRectF>
 
 class Layer;
@@ -47,8 +49,7 @@ private:
 
     bool keyPressEvent(QKeyEvent* event) override;
 
-    void manageSelectionOrigin(QPointF currentPoint, QPointF originPoint);
-    void controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint);
+    void controlOffsetOrigin(QPointF currentPoint, QPointF anchorPoint, Layer::LAYER_TYPE layerType);
 
     void beginSelection(Layer* currentLayer, const QPointF& pos);
     void keepSelection(Layer* currentLayer);

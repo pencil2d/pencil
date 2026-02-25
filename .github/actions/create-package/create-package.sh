@@ -93,8 +93,8 @@ create_package_macos() {
 
   echo "::group::Copy FFmpeg plugin"
   mkdir Pencil2D.app/Contents/MacOS/plugins
-  curl -fsSLo ffmpeg.7z https://evermeet.cx/ffmpeg/getrelease/7z
-  curl -fsSLo ffmpeg.7z.sig https://evermeet.cx/ffmpeg/getrelease/7z/sig
+  curl -fsSLo ffmpeg.7z https://evermeet.cx/ffmpeg/ffmpeg-8.0.1.7z
+  curl -fsSLo ffmpeg.7z.sig https://evermeet.cx/ffmpeg/ffmpeg-8.0.1.7z.sig
   mkdir -m700 ~/.gnupg
   echo "trusted-key 0x476C4B611A660874" > ~/.gnupg/gpg.conf
   curl -fsSL https://evermeet.cx/ffmpeg/0x1A660874.asc | gpg --import
@@ -159,7 +159,7 @@ create_package_windows() {
     sed "s/Culture=\"en\"/Culture=\"${culture}\"/;s/Language=\"9\"/Language=\"${lcid}\"/" ../util/installer/pencil2d.wxl > "../util/installer/pencil2d_${locale}.wxl"
     tikal.bat -m -fc ../util/installer/okf_xml_wxl -ie utf-8 -oe utf-8 -sd ../util/installer -od ../util/installer "${i}"
   done
-  local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%F)"
+  local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%Y%m%d)"
   if [ "$IS_RELEASE" = "true" ]; then
     versiondefines="-d Edition=Release -d Version=$2"
   fi
@@ -185,7 +185,7 @@ create_package_windows() {
 
 echo "Version: ${VERSION_NUMBER}"
 
-filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%F)"
+filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%Y%m%d)"
 if [ "$IS_RELEASE" = "true" ]; then
   filename_suffix="${VERSION_NUMBER}"
 fi

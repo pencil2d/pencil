@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 setup_linux() {
   # Because of how bare-bones our docker image is
@@ -8,8 +9,7 @@ setup_linux() {
   echo "::endgroup::"
 
   echo "::group::Add APT sources"
-  for ppa in ppa:ubuntu-toolchain-r/test ppa:ubuntu-sdk-team/ppa \
-             ppa:git-core/ppa; do
+  for ppa in ppa:ubuntu-toolchain-r/test ppa:git-core/ppa; do
     ${BUILD_CMD} apt-add-repository -y "${ppa}"
   done
   if [ "${INPUT_QT}" -eq 5 ]; then
@@ -58,7 +58,9 @@ setup_macos() {
 
 setup_windows() {
   pip install translate-toolkit[rc]
-  curl -fsSLO https://okapiframework.org/binaries/main/1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
+  echo "Downloading Okapi Framework..."
+  curl -fsSL -o okapi-apps_win32-x86_64_1.45.0.zip https://github.com/pencil2d/pencil2d-deps/releases/download/okapi-v1.45.0/okapi-apps_win32-x86_64_1.45.0.zip
+  ls -lh okapi-apps_win32-x86_64_1.45.0.zip
   mkdir okapi
   "${WINDIR}\\System32\\tar" xfC okapi-apps_win32-x86_64_1.45.0.zip okapi
   dotnet tool install -g wix --version 6.0.2

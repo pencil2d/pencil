@@ -1,10 +1,11 @@
 name: Build & Tests
+permissions:
+  contents: read
 on:
   push:
     paths-ignore:
       - 'docs/**'
       - '**.md'
-      - '**.py'
       - '**.ps1'
   pull_request:
     # Need to repeat these paths - YAML anchors aren’t supported on GHA atm
@@ -12,7 +13,6 @@ on:
     paths-ignore:
       - 'docs/**'
       - '**.md'
-      - '**.py'
       - '**.ps1'
   workflow_dispatch:
 jobs:
@@ -62,6 +62,7 @@ jobs:
 
     name: ${{matrix.name}}
     runs-on: ${{matrix.os}}
+    timeout-minutes: 20
     env: { CONTAINER: "${{matrix.container}}", BUILD_CMD: "" }
     steps:
       - name: Check out repository
@@ -93,8 +94,7 @@ jobs:
         run: >
           mkdir build; ${{runner.os == 'Linux' && '${BUILD_CMD}' || ''}}
           ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
-          -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=release CONFIG+=GIT
-          CONFIG+=PENCIL2D_${{ startsWith(github.ref, 'refs/heads/release/') && 'RELEASE' || 'NIGHTLY' }}
+          -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=GIT
           VERSION=${{ env.VERSION_NUMBER }}
           ${{runner.os == 'macOS' && matrix.qt == 6 && 'QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"' || ''}}
 
