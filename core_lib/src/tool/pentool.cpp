@@ -98,7 +98,15 @@ void PenTool::pointerPressEvent(PointerEvent *event)
 
 void PenTool::pointerMoveEvent(PointerEvent* event)
 {
-    mInterpolator.pointerMoveEvent(event);
+    if(mXYSnappingMode && event->buttons() & Qt::LeftButton)
+    {
+        mInterpolator.snappingPointerMoveEvent(event, mEditor->view()->mapCanvasToScreen(mMouseDownPoint));
+    }
+    
+    else{
+        mInterpolator.pointerMoveEvent(event);
+    }
+    
     if (handleQuickSizing(event)) {
         return;
     }
@@ -118,7 +126,14 @@ void PenTool::pointerMoveEvent(PointerEvent* event)
 
 void PenTool::pointerReleaseEvent(PointerEvent *event)
 {
-    mInterpolator.pointerReleaseEvent(event);
+    if(mXYSnappingMode)
+    {
+        mInterpolator.snappingPointerReleaseEvent(event, mEditor->view()->mapCanvasToScreen(mMouseDownPoint));
+    }
+    else
+    {
+        mInterpolator.pointerReleaseEvent(event);
+    }
     if (handleQuickSizing(event)) {
         return;
     }
@@ -184,6 +199,22 @@ void PenTool::drawStroke()
 
         QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
+        
+        if(mXYSnappingMode)
+        {
+           // If snapping to another axis or reducing line length
+           if((a.x() != b.x() && a.y() != b.y()) || QLineF(mMouseDownPoint, a).length() > QLineF(mMouseDownPoint, b).length())
+           {
+               mLastBrushPoint = mMouseDownPoint;
+               
+               mScribbleArea->snappingDrawPen(mLastBrushPoint, getCurrentPoint(), brushStep,
+                                              brushWidth,
+                                              mEditor->color()->frontColor(),
+                                              properties.useAA);
+               mLastBrushPoint = getCurrentPoint();
+               return;
+           }
+        }
 
         qreal distance = 4 * QLineF(b, a).length();
         int steps = qRound(distance / brushStep);
