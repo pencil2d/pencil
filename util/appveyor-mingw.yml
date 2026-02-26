@@ -1,12 +1,9 @@
 
 clone_depth: 1
 
-image:
-  - Visual Studio 2019
+image: Visual Studio 2022
 
-platform:
-  - x86
-  - x64
+platform: x64
 
 skip_commits:
   files:
@@ -15,13 +12,18 @@ skip_commits:
     - util/appveyor-msvc.yml
     - /.github/*
 
+environment:
+  QTDIR: C:\Qt\6.5.3\mingw_64
+  MINGWDIR: C:\Qt\mingw_64\Tools\mingw1120_64
+
 init:
   - ver
-  - echo %PLATFORM%
+  - dir C:\Qt
+  - dir C:\Qt\6.5.3
+  - dir C:\Qt\mingw_64\Tools
 
-before_build:
-  - set QTDIR=C:\Qt\%qt%
-  - set PATH=%QTDIR%\bin;C:\Qt\Tools\%mingw%\bin;%PATH%;
+install:
+  - set PATH=%QTDIR%\bin;%MINGWDIR%\bin;%PATH%
   - qmake --version
 
 build_script:
@@ -38,13 +40,3 @@ test_script:
   - echo "Running tests"
   - cd "%APPVEYOR_BUILD_FOLDER%\build\tests\release"
   - tests.exe
-
-for:
-- matrix:
-    only:
-      - image: Visual Studio 2019
-  install:
-    - if %PLATFORM%==x86   set qt=5.15\mingw81_32
-    - if %PLATFORM%==x64   set qt=5.15\mingw81_64
-    - if %PLATFORM%==x86   set mingw=mingw810_32
-    - if %PLATFORM%==x64   set mingw=mingw810_64
