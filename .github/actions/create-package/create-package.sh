@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 trap 'echo "::error::Command failed"' ERR
-set -ex
+set -eE
 
 harvest_files() {
   echo "<?xml version='1.0' encoding='utf-8'?>"
