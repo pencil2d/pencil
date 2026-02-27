@@ -37,7 +37,7 @@ public:
     void loadDomElement(const QDomElement& element, QString dataDirPath, ProgressCallback progressStep) override;
 
     VectorImage* getVectorImageAtFrame(int frameNumber) const;
-    VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment) const;
+    VectorImage* getLastVectorImageAtFrame(int frameNumber, int increment = 0) const;
     void replaceKeyFrame(const KeyFrame* vectorImage) override;
 
     bool usesColor(int index);

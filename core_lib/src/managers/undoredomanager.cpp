@@ -234,9 +234,10 @@ const UndoSaveState* UndoRedoManager::savedKeyFrameState() const
     }
 
     const int frameIndex = editor()->currentFrame();
-    if (layer->keyExists(frameIndex))
+    KeyFrame* frame = layer->getLastKeyFrameAtPosition(frameIndex);
+    if (frame)
     {
-        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(layer->getLastKeyFrameAtPosition(frameIndex)->clone());
+        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(frame->clone());
     }
     else if (layer->getKeyFrameWhichCovers(frameIndex) != nullptr)
     {
