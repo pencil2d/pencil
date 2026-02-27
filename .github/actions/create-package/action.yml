@@ -1,4 +1,5 @@
 name: Create Package
+description: Create a release package for the target platform
 inputs:
   arch:
     description: Architecture
@@ -6,6 +7,9 @@ inputs:
   qt:
     description: Qt Version
     required: true
+  bundler:
+    description: Bundler (Linux)
+    required: false
 outputs:
   output-basename:
     description: Output basename
@@ -21,4 +25,5 @@ runs:
       RUNNER_OS: ${{runner.os}}
       INPUT_ARCH: ${{inputs.arch}}
       INPUT_QT: ${{inputs.qt}}
-      IS_RELEASE: ${{ startsWith(github.ref, 'refs/heads/release/') }}
+      INPUT_BUNDLER: ${{inputs.bundler}}
+      IS_RELEASE: ${{ startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/tags/') }}

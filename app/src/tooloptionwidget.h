@@ -24,18 +24,14 @@ namespace Ui
 {
     class ToolOptions;
 }
-class QToolButton;
-class SpinSlider;
-class QCheckBox;
-class QComboBox;
-class QSpinBox;
-class QDoubleSpinBox;
-class QGroupBox;
+
+class BaseWidget;
 class Editor;
 class BaseTool;
 class BucketOptionsWidget;
 class CameraOptionsWidget;
-
+class StrokeOptionsWidget;
+class TransformOptionsWidget;
 
 class ToolOptionWidget : public BaseDockWidget
 {
@@ -50,33 +46,21 @@ public:
     void makeConnectionToEditor(Editor* editor);
 
 public slots:
-    void onToolPropertyChanged(ToolType, ToolPropertyType);
+    void onToolsReset();
     void onToolChanged(ToolType);
+    void onLayerChanged(int index);
 
 private:
-    void setPenWidth(qreal);
-    void setPenFeather(qreal);
-    void setUseFeather(bool);
-    void setPenInvisibility(int);
-    void setPressure(int);
-    void setPreserveAlpha(int);
-    void setVectorMergeEnabled(int);
-    void setAA(int);
-    void setStabilizerLevel(int);
-    void setFillContour(int);
-    void setBezier(bool);
-    void setClosedPath(bool);
-    void setShowSelectionInfo(bool);
-
-    void disableAllOptions();
-    void setVisibility(BaseTool*);
-    void createUI();
+    void setWidgetVisibility(BaseWidget* widget, bool visible);
+    void updateUIForTool(BaseTool* tool);
 
 private:
     Ui::ToolOptions* ui = nullptr;
 
     BucketOptionsWidget* mBucketOptionsWidget = nullptr;
     CameraOptionsWidget* mCameraOptionsWidget = nullptr;
+    StrokeOptionsWidget* mStrokeOptionsWidget = nullptr;
+    TransformOptionsWidget* mTransformOptionsWidget = nullptr;
 };
 
 #endif // TOOLOPTIONDOCKWIDGET_H

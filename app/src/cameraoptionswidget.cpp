@@ -24,35 +24,12 @@ GNU General Public License for more details.
 #include "cameratool.h"
 
 CameraOptionsWidget::CameraOptionsWidget(Editor* editor, QWidget *parent) :
-    QWidget(parent),
+    BaseWidget(parent),
     ui(new Ui::CameraOptionsWidget), mEditor(editor)
 {
     ui->setupUi(this);
 
-    auto toolMan = mEditor->tools();
-    connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, toolMan, &ToolManager::setShowCameraPath);
-    connect(ui->pathColorComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), toolMan, &ToolManager::setCameraPathDotColor);
-    connect(ui->btnResetPath, &QPushButton::clicked, toolMan, &ToolManager::resetCameraPath);
-
-    connect(ui->resetAllButton, &QPushButton::clicked, toolMan, [=] {
-        toolMan->resetCameraTransform(CameraFieldOption::RESET_FIELD);
-    });
-    connect(ui->resetTranslationButton, &QPushButton::clicked, toolMan, [=] {
-        toolMan->resetCameraTransform(CameraFieldOption::RESET_TRANSLATION);
-    });
-    connect(ui->resetRotationButton, &QPushButton::clicked, toolMan, [=] {
-        toolMan->resetCameraTransform(CameraFieldOption::RESET_ROTATION);
-    });
-    connect(ui->resetScaleButton, &QPushButton::clicked, toolMan, [=] {
-        toolMan->resetCameraTransform(CameraFieldOption::RESET_SCALING);
-    });
-
-    connect(toolMan, &ToolManager::toolPropertyChanged, this, &CameraOptionsWidget::onToolPropertyChanged);
-
-    connect(mEditor->layers(), &LayerManager::currentLayerChanged, this, &CameraOptionsWidget::updateUI);
-    connect(mEditor->tools(), &ToolManager::toolChanged, this, &CameraOptionsWidget::updateUI);
-
-    mCameraTool = static_cast<CameraTool*>(mEditor->tools()->getTool(CAMERA));
+    initUI();
 }
 
 CameraOptionsWidget::~CameraOptionsWidget()
@@ -60,27 +37,62 @@ CameraOptionsWidget::~CameraOptionsWidget()
     delete ui;
 }
 
-void CameraOptionsWidget::updateUI()
+void CameraOptionsWidget::initUI()
 {
+    auto toolMan = mEditor->tools();
+    mCameraTool = static_cast<CameraTool*>(toolMan->getTool(CAMERA));
 
-    Q_ASSERT(mCameraTool->type() == CAMERA);
-
-    Properties p = mCameraTool->properties;
-
-    setShowCameraPath(p.cameraShowPath);
-    setPathDotColorType(p.cameraPathDotColorType);
+    makeConnectionsFromUIToModel();
+    makeConnectionsFromModelToUI();
 }
 
-void CameraOptionsWidget::onToolPropertyChanged(ToolType, ToolPropertyType ePropertyType)
+void CameraOptionsWidget::updateUI()
 {
-    const Properties& p = mCameraTool->properties;
+    Q_ASSERT(mCameraTool->type() == CAMERA);
 
-    switch (ePropertyType)
-    {
-    case CAMERAPATH: { setShowCameraPath(p.cameraShowPath); break; }
-    default:
-        break;
-    }
+    const CameraToolProperties p = mCameraTool->settings();
+
+    setShowCameraPath(p.showPathEnabled());
+    setPathDotColorType(p.dotColorType());
+}
+
+void CameraOptionsWidget::makeConnectionsFromModelToUI()
+{
+    connect(mCameraTool, &CameraTool::cameraPathEnabledChanged, this, [=](bool enabled) {
+       setShowCameraPath(enabled);
+    });
+
+    connect(mCameraTool, &CameraTool::pathColorChanged, this, [=](DotColorType type) {
+       setPathDotColorType(type);
+    });
+}
+
+void CameraOptionsWidget::makeConnectionsFromUIToModel()
+{
+    connect(ui->showCameraPathCheckBox, &QCheckBox::clicked, [=](bool enabled) {
+        mCameraTool->setCameraPathEnabled(enabled);
+    });
+
+    connect(ui->pathColorComboBox, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged), [=](int value) {
+        mCameraTool->setPathDotColorType(static_cast<DotColorType>(value));
+    });
+
+    connect(ui->btnResetPath, &QPushButton::clicked, [=]() {
+        mCameraTool->performAction(CameraTool::RESET_PATH);
+    });
+
+    connect(ui->resetAllButton, &QPushButton::clicked, [=] {
+        mCameraTool->performAction(CameraTool::RESET_FIELD);
+    });
+    connect(ui->resetTranslationButton, &QPushButton::clicked, [=] {
+        mCameraTool->performAction(CameraTool::RESET_TRANSLATION);
+    });
+    connect(ui->resetRotationButton, &QPushButton::clicked, [=] {
+        mCameraTool->performAction(CameraTool::RESET_ROTATION);
+    });
+    connect(ui->resetScaleButton, &QPushButton::clicked, [=] {
+        mCameraTool->performAction(CameraTool::RESET_SCALING);
+    });
 }
 
 void CameraOptionsWidget::setShowCameraPath(bool showCameraPath)

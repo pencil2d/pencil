@@ -21,8 +21,10 @@
 
 ## Pencil2D v0.7.1
 
-## Improvements 
+## Improvements
 - #1916 Improved toolbox layout. Tools now intelligently arrange in rows with consistent spacing and can shrink to single column.
+- #1944 Project recovery dialog improvements [#1944](https://github.com/pencil2d/pencil/pull/1944)
+- #1966 Improve error handling when saving images [#1966](https://github.com/pencil2d/pencil/pull/1966)
 
 ## Fixes
 - #1873 Fixed frame not being drawn on the timeline 
@@ -33,6 +35,12 @@
 - #1896 Fixed frame filename exceeding path length limit
 - #1897 Fixed view rotation affecting various view handles
 - #1918 Fixed SoundManager calculating frame length incorrectly
+- #1954 Fixed timeline not updated when pasting frames [#1954](https://github.com/pencil2d/pencil/issues/1954)
+- #1939 Fix keyframe opacity being adjusted globally in canvas rendering [#1939](https://github.com/pencil2d/pencil/pull/1939)
+- #1936 Apply transformation before changing keyframe or layer [#1936](https://github.com/pencil2d/pencil/pull/1936)
+- #1971 Fix selection bound increasing due to precision loss [#1971](https://github.com/pencil2d/pencil/issues/1971)
+- #1981 Fix: Canvas not setting focus on tablet event [#1981](https://github.com/pencil2d/pencil/pull/1981)
+- #1943 Fix some file extension issues with image and image sequence export [#1943](https://github.com/pencil2d/pencil/pull/1943)
 
 ## Changes
 - #1907 Disabled Timeline double-click keyframe creation to prevent accidental keyframes
@@ -43,7 +51,7 @@
 - #1912 Ensured QDebug is included for all qDebug uses
 - Fixed insufficient quoting when embedding AppImage update information [42d52f10](https://github.com/pencil2d/pencil/commit/42d52f105b2bc227e0ef434be6113b12739202ba)
 - Bump Qt6 macOS runner to Sonoma [6b8e1aa](https://github.com/pencil2d/pencil/commit/6b8e1aa19744edd0247b808baeea2f210cd31638)
-
+- #1980 Show correct version for release builds from tarball [#1980](https://github.com/pencil2d/pencil/issues/1980)
 
 ## Pencil2D v0.7.0 - 12 July 2024
 
@@ -164,7 +172,7 @@ Here is a non-exhaustive list of bugs that we are already aware of, but were una
 + Using the bucket tool to fill vector a vector stroke requires the stroke to be selected
 
 
-## Pencil2D v0.6.6 - 17 Feb 2021 
+## Pencil2D v0.6.6 - 17 Feb 2021
 
 ### Features
 

@@ -16,6 +16,8 @@ GNU General Public License for more details.
 #include "catch.hpp"
 
 #include "bitmapimage.h"
+#include <QElapsedTimer>
+#include <QDebug>
 
 TEST_CASE("BitmapImage constructors")
 {
@@ -362,5 +364,76 @@ TEST_CASE("BitmapImage autoCrop")
         REQUIRE(b->height() == 60);
         REQUIRE(b->left() == 50);
         REQUIRE(b->top() == 20);
+    }
+}
+
+TEST_CASE("BitmapImage autoCrop performance")
+{
+    SECTION("Profile autoCrop on large image (4000x4000)")
+    {
+        auto b = std::make_shared<BitmapImage>(QRect(0, 0, 4000, 4000), Qt::transparent);
+        
+        // Draw some content in center
+        for (int y = 800; y < 1200; ++y) {
+            for (int x = 800; x < 1200; ++x) {
+                b->setPixel(x, y, qRgba(255, 0, 0, 255));
+            }
+        }
+        
+        b->enableAutoCrop(true);
+        
+        QElapsedTimer timer;
+        timer.start();
+        b->autoCrop();
+        qint64 elapsed = timer.nsecsElapsed();
+        
+        qDebug() << "Large image (4000x4000) autoCrop took:" << elapsed / 1000.0 << "microseconds";
+        
+        REQUIRE(b->width() == 400);
+        REQUIRE(b->height() == 400);
+    }
+    
+    SECTION("Profile autoCrop worst case - single pixel at corner")
+    {
+        auto b = std::make_shared<BitmapImage>(QRect(0, 0, 1000, 1000), Qt::transparent);
+        
+        // Single pixel at far corner
+        b->setPixel(999, 999, qRgba(255, 0, 0, 255));
+        
+        b->enableAutoCrop(true);
+        
+        QElapsedTimer timer;
+        timer.start();
+        b->autoCrop();
+        qint64 elapsed = timer.nsecsElapsed();
+        
+        qDebug() << "Worst case (single pixel at 999,999) autoCrop took:" << elapsed / 1000.0 << "microseconds";
+        
+        REQUIRE(b->width() == 1);
+        REQUIRE(b->height() == 1);
+        REQUIRE(b->left() == 999);
+        REQUIRE(b->top() == 999);
+    }
+    
+    SECTION("Profile autoCrop with sparse content")
+    {
+        auto b = std::make_shared<BitmapImage>(QRect(0, 0, 1000, 1000), Qt::transparent);
+        
+        // Draw sparse pixels across image
+        for (int i = 0; i < 1000; i += 100) {
+            b->setPixel(i, i, qRgba(255, 0, 0, 255));
+        }
+        
+        b->enableAutoCrop(true);
+        
+        QElapsedTimer timer;
+        timer.start();
+        b->autoCrop();
+        qint64 elapsed = timer.nsecsElapsed();
+        
+        qDebug() << "Sparse content autoCrop took:" << elapsed / 1000.0 << "microseconds";
+        
+        REQUIRE(b->width() == 901);
+        REQUIRE(b->height() == 901);
     }
 }

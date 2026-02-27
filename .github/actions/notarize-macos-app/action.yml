@@ -2,7 +2,7 @@ name: 'Notarize macOS App'
 description: 'Complete macOS app code signing and notarization with certificate setup'
 inputs:
   app_path:
-    description: 'The app bundle zip file path'
+    description: 'The app bundle ZIP file path'
     required: true
   p12_base64:
     description: 'Base64 encoded P12 certificate file'
@@ -60,50 +60,71 @@ runs:
         echo "Available signing identities:"
         security find-identity -v -p codesigning build.keychain
 
-    - name: Code Sign App
+    - name: Code Sign App and Create DMG
       if: env.SKIP_NOTARIZATION != 'true'
       shell: bash
       run: |
-        echo "Extracting and debugging app bundle..."
-        ditto -x -k ${{ inputs.app_path }} ./app_notarization
-              
+        echo "Extracting app bundle from ZIP..."
+        ditto -x -k "${{ inputs.app_path }}" ./app_notarization
+
         echo "Code signing app..."
         codesign --force --deep --options runtime --sign "${{ inputs.certificate_identity }}" "./app_notarization/Pencil2D.app"
-        
-        echo "Verifying code signature"
+
+        echo "Verifying code signature..."
         codesign --verify --verbose=4 "./app_notarization/Pencil2D.app"
         echo "Code signature verification successful!"
 
-        ditto -c -k --rsrc --keepParent "./app_notarization/Pencil2D.app" "./app_notarization.zip"
+        echo "Creating DMG with app and Applications symlink..."
+        mkdir -p ./dmg_contents
+        mv "./app_notarization/Pencil2D.app" ./dmg_contents/
+        ln -s /Applications ./dmg_contents/Applications
 
-    - name: Submit for Notarization
+        # Get base name without extension
+        base_path="${{ inputs.app_path }}"
+        base_name="${base_path%.zip}"
+
+        echo "Creating read-write DMG..."
+        hdiutil create -volname "Pencil2D" -srcfolder ./dmg_contents -ov -format UDRW -fs HFS+ "${base_name}-temp.dmg"
+
+        echo "Converting to compressed read-only DMG for notarization..."
+        hdiutil convert "${base_name}-temp.dmg" -format ULFO -o "${base_name}.dmg"
+        rm "${base_name}-temp.dmg"
+
+        echo "Removing extended attributes from DMG..."
+        xattr -cr "${base_name}.dmg"
+
+        echo "Code signing DMG..."
+        codesign --force --sign "${{ inputs.certificate_identity }}" "${base_name}.dmg"
+
+        echo "Verifying DMG signature..."
+        codesign --verify --verbose=4 "${base_name}.dmg"
+        echo "DMG created and signed successfully!"
+
+    - name: Submit DMG for Notarization
       if: env.SKIP_NOTARIZATION != 'true'
       shell: bash
       run: |
-        echo "Submitting to Apple for notarization..."
-        xcrun notarytool submit "./app_notarization.zip" \
+        base_path="${{ inputs.app_path }}"
+        base_name="${base_path%.zip}"
+
+        echo "Submitting DMG to Apple for notarization..."
+        xcrun notarytool submit "${base_name}.dmg" \
           --apple-id "${{ inputs.apple_id }}" \
           --password "${{ inputs.apple_id_password }}" \
           --team-id "${{ inputs.team_id }}" \
           --wait \
           --timeout 15m
-          
+
     - name: Staple & Verify Notarization
       if: env.SKIP_NOTARIZATION != 'true'
       shell: bash
       run: |
-        echo "Stapling notarization ticket to app..."
-        xcrun stapler staple "./app_notarization/Pencil2D.app"
+        base_path="${{ inputs.app_path }}"
+        base_name="${base_path%.zip}"
 
-        echo "Verifying notarization..."
-        spctl -a -v "./app_notarization/Pencil2D.app"
-        echo "App is properly notarized and ready for distribution!"
+        echo "Stapling notarization ticket to DMG..."
+        xcrun stapler staple "${base_name}.dmg"
 
-    - name: Finalize
-      if: env.SKIP_NOTARIZATION != 'true'
-      shell: bash
-      run: |
-        echo "Replacing the original app bundle with notarized app bundle"
-        rm -rf "${{ inputs.app_path }}"
-        ditto -c -k --rsrc --keepParent "./app_notarization/Pencil2D.app" "${{ inputs.app_path }}"
-        echo "Notarized app bundle is now at ${{ inputs.app_path }}"
+        echo "Verifying DMG notarization..."
+        spctl -a -t open --context context:primary-signature -v "${base_name}.dmg"
+        echo "DMG is properly notarized and ready for distribution! Final DMG: ${base_name}.dmg"

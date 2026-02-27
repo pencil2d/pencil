@@ -34,7 +34,6 @@ GNU General Public License for more details.
 #include "soundmanager.h"
 #include "playbackmanager.h"
 #include "colormanager.h"
-#include "preferencemanager.h"
 #include "selectionmanager.h"
 #include "util.h"
 #include "app_util.h"
@@ -42,7 +41,6 @@ GNU General Public License for more details.
 #include "layercamera.h"
 #include "layersound.h"
 #include "layerbitmap.h"
-#include "layervector.h"
 #include "bitmapimage.h"
 #include "vectorimage.h"
 #include "soundclip.h"
@@ -463,7 +461,7 @@ Status ActionCommands::exportImageSequence()
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
     bool exportKeyframesOnly = dialog->getExportKeyframesOnly();
-    bool useTranparency = dialog->getTransparency();
+    bool useTransparency = dialog->getTransparency();
     int startFrame = dialog->getStartFrame();
     int endFrame  = dialog->getEndFrame();
 
@@ -476,17 +474,24 @@ Status ActionCommands::exportImageSequence()
     progress.setWindowModality(Qt::WindowModal);
     progress.show();
 
-    mEditor->object()->exportFrames(startFrame, endFrame,
+    Status st = mEditor->object()->exportFrames(startFrame, endFrame,
                                     cameraLayer,
                                     exportSize,
                                     strFilePath,
                                     exportFormat,
-                                    useTranparency,
+                                    useTransparency,
                                     exportKeyframesOnly,
                                     mEditor->layers()->currentLayer()->name(),
                                     true,
                                     &progress,
                                     100);
+
+    if (!st.ok())
+    {
+        ErrorDialog errorDialog(tr("Something went wrong"), tr("Unable to export one or more images in the image sequence."), st.details().html(), mParent);
+        errorDialog.exec();
+        return st;
+    }
 
     progress.close();
 
@@ -533,7 +538,7 @@ Status ActionCommands::exportImage()
     QString filePath = dialog->getFilePath();
     QSize exportSize = dialog->getExportSize();
     QString exportFormat = dialog->getExportFormat();
-    bool useTranparency = dialog->getTransparency();
+    bool useTransparency = dialog->getTransparency();
 
     QString extension = "";
     QString formatStr = exportFormat;
@@ -546,7 +551,7 @@ Status ActionCommands::exportImage()
     {
         exportFormat = "JPG";
         extension = ".jpg";
-        useTranparency = false; // JPG doesn't support transparency, so we have to include the background
+        useTransparency = false; // JPG doesn't support transparency, so we have to include the background
     }
     if (formatStr == "TIFF" || formatStr == "tiff" || formatStr == "TIF" || formatStr == "tif")
     {
@@ -557,7 +562,7 @@ Status ActionCommands::exportImage()
     {
         exportFormat = "BMP";
         extension = ".bmp";
-        useTranparency = false;
+        useTransparency = false;
     }
     if (formatStr == "WEBP" || formatStr == "webp") {
         exportFormat = "WEBP";
@@ -574,22 +579,20 @@ Status ActionCommands::exportImage()
 
     QTransform view = cameraLayer->getViewAtFrame(mEditor->currentFrame());
 
-    bool bOK = mEditor->object()->exportIm(mEditor->currentFrame(),
+    Status st = mEditor->object()->exportIm(mEditor->currentFrame(),
                                            view,
                                            cameraLayer->getViewSize(),
                                            exportSize,
                                            filePath,
                                            exportFormat,
                                            true,
-                                           useTranparency);
+                                           useTransparency);
 
-    if (!bOK)
+    if (!st.ok())
     {
-        QMessageBox::warning(mParent,
-                             tr("Warning"),
-                             tr("Unable to export image."),
-                             QMessageBox::Ok);
-        return Status::FAIL;
+        ErrorDialog errorDialog(tr("Something went wrong"), tr("Unable to export image."), st.details().html(), mParent);
+        errorDialog.exec();
+        return st;
     }
     return Status::OK;
 }

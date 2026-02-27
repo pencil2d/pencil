@@ -32,13 +32,14 @@ namespace PlatformHandler
     void initialise()
     {
 #if _WIN32_WINNT >= _WIN32_WINNT_WIN7
-#if defined(PENCIL2D_RELEASE_BUILD)
-        SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D.Release");
-#elif defined(PENCIL2D_NIGHTLY_BUILD)
-        SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D.Nightly");
-#else
-        SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D");
-#endif
+        QString version(APP_VERSION);
+        if (version.startsWith("99.0.0")) {
+            SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D.Nightly");
+        } else if (version == "0.0.0.0") {
+            SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D.Development");
+        } else {
+            SetCurrentProcessExplicitAppUserModelID(L"Pencil2D.Pencil2D.Release");
+        }
 #endif // _WIN32_WINNT >= _WIN32_WINNT_WIN7
 
 #if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
