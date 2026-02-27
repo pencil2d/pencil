@@ -580,8 +580,6 @@ void Editor::updateObject()
     {
         mObject->setActiveFramePoolSize(mPreferenceManager->getInt(SETTING::FRAME_POOL_SIZE));
     }
-
-    emit updateLayerCount();
 }
 
 Status Editor::importBitmapImage(const QString& filePath, const QTransform& importTransform)
@@ -992,28 +990,6 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
     mScribbleArea->onLayerChanged();
 
     emit updateTimeLine();
-}
-
-void Editor::swapLayers(int i, int j)
-{
-    bool didSwapLayer = mObject->swapLayers(i, j);
-    if (!didSwapLayer) { return; }
-
-    if (j < i)
-    {
-        layers()->setCurrentLayer(j + 1);
-    }
-    else
-    {
-        layers()->setCurrentLayer(j - 1);
-    }
-    emit updateTimeLine();
-    mScribbleArea->onLayerChanged();
-}
-
-bool Editor::canSwapLayers(int layerIndexLeft, int layerIndexRight) const
-{
-    return mObject->canSwapLayers(layerIndexLeft, layerIndexRight);
 }
 
 void Editor::prepareSave()
