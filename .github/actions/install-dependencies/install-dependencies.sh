@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -ex
+set -e
 
 setup_linux() {
   # Because of how bare-bones our docker image is
