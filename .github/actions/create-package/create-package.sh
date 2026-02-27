@@ -47,13 +47,13 @@ create_package_linux() {
 }
 
 bundle_package_linux_linuxdeployqt() {
-  ${BUILD_CMD} install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
+  ${BUILD_CMD} install -Dm755 "/usr/libexec/gstreamer-1.0/gst-plugin-scanner" \
     "Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
-  local gst_executables="-executable=Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
+  local gst_executables="-executable=Pencil2D/usr/libexec/gstreamer-1.0/gst-plugin-scanner"
   for plugin in adpcmdec alsa app audioconvert audioparsers audioresample \
-      autodetect coreelements gsm id3demux jack mpg123 mulaw playback \
-      pulse typefindfunctions wavparse apetag; do
-    ${BUILD_CMD} install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgst${plugin}.so" \
+      autodetect coreelements gsm id3demux mpg123 mulaw playback \
+      pulseaudio typefindfunctions wavparse apetag; do
+    ${BUILD_CMD} install -Dm755 "/usr/lib64/gstreamer-1.0/libgst${plugin}.so" \
       "Pencil2D/usr/lib/gstreamer-1.0/libgst${plugin}.so"
     gst_executables="${gst_executables} -executable=Pencil2D/usr/lib/gstreamer-1.0/libgst${plugin}.so"
   done
@@ -80,7 +80,7 @@ bundle_package_linux_linuxdeploy() {
   ${BUILD_CMD} curl -fsSL https://raw.githubusercontent.com/linuxdeploy/linuxdeploy-plugin-gstreamer/refs/heads/master/linuxdeploy-plugin-gstreamer.sh -o /usr/local/bin/linuxdeploy-plugin-gstreamer
   ${BUILD_CMD} chmod 755 /usr/local/bin/linuxdeploy /usr/local/bin/linuxdeploy-plugin-qt /usr/local/bin/linuxdeploy-plugin-appimage /usr/local/bin/linuxdeploy-plugin-gstreamer
   export QMAKE=/usr/bin/qmake6
-  ${BUILD_CMD} linuxdeploy --appdir Pencil2D --plugin qt --plugin gstreamer --output appimage
+  ${BUILD_CMD} env GSTREAMER_PLUGINS_DIR=/usr/lib64/gstreamer-1.0 GSTREAMER_HELPERS_DIR=/usr/libexec/gstreamer-1.0 linuxdeploy --appdir Pencil2D --plugin qt --plugin gstreamer --output appimage
 }
 
 create_package_macos() {

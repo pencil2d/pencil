@@ -23,7 +23,7 @@ jobs:
         include:
           - name: Qt 5 / Linux x86_64
             os: ubuntu-latest
-            container: "ubuntu:16.04"
+            container: "rockylinux/rockylinux:8"
             qt: 5
             bundler: linuxdeployqt
           - name: Qt 5 / macOS x86_64
@@ -45,7 +45,7 @@ jobs:
             qt: 5
           - name: Qt 6 / Linux x86_64
             os: ubuntu-latest
-            container: "ubuntu:22.04"
+            container: "rockylinux/rockylinux:9"
             qt: 6
             bundler: linuxdeploy
           - name: Qt 6 / macOS Universal
@@ -93,7 +93,7 @@ jobs:
       - name: Configure build
         run: >
           mkdir build; ${{runner.os == 'Linux' && '${BUILD_CMD}' || ''}}
-          ${{runner.os == 'Linux' && matrix.qt == 6 && 'qmake6' || 'qmake'}}
+          ${{runner.os == 'Linux' && matrix.qt == 5 && 'qmake-qt5' || 'qmake'}}
           -o build PREFIX=/usr CONFIG-=debug_and_release CONFIG+=GIT
           VERSION=${{ env.VERSION_NUMBER }}
           ${{runner.os == 'macOS' && matrix.qt == 6 && 'QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64"' || ''}}
