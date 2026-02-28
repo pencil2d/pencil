@@ -78,7 +78,7 @@ private:
 
     BucketToolProperties mSettings;
     StrokeInterpolator mInterpolator;
-    const UndoSaveState* mUndoSaveState = nullptr;
+    SAVESTATE_ID mUndoSaveState = -1;
 };
 
 #endif // BUCKETTOOL_H

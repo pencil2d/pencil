@@ -26,6 +26,7 @@ GNU General Public License for more details.
 
 #include <QUndoStack>
 #include <QRectF>
+#include <QMap>
 
 class QAction;
 class QUndoCommand;
@@ -38,13 +39,14 @@ class KeyFrame;
 class LegacyBackupElement;
 class UndoRedoCommand;
 
+using SAVESTATE_ID = int;
+
 /// The undo/redo type which correspond to what is being recorded
 enum class UndoRedoRecordType {
     KEYFRAME_MODIFY, // Any modification that involve a keyframe
-
-    // Possible future actions
-    // KEYFRAME_REMOVE, // Removing a keyframe
-    // KEYFRAME_ADD, // Adding a keyframe
+    KEYFRAME_REMOVE, // Removing a keyframe
+    KEYFRAME_ADD, // Adding a keyframe
+    KEYFRAME_MOVE,
     // SCRUB_LAYER, // Scrubbing layer
     // SCRUB_KEYFRAME, // Scrubbing keyframe
     INVALID
@@ -52,6 +54,7 @@ enum class UndoRedoRecordType {
 
 struct SelectionSaveState {
 
+    SelectionSaveState() = default;
     SelectionSaveState(const QRectF& rect,
                        const qreal rotationAngle,
                        const qreal scaleX,
@@ -75,16 +78,41 @@ struct SelectionSaveState {
     QPointF anchor;
 };
 
+struct MoveFramesSaveState {
+
+    MoveFramesSaveState() = default;
+    MoveFramesSaveState(int offset,
+                        const QList<int>& positions)
+    {
+        this->offset = offset;
+        this->positions = positions;
+    }
+
+    int offset = 0;
+    QList<int> positions;
+};
+
+/// Use this struct to store user related data that will later be added to the backup
+/// This struct is meant to be safely shared and stored temporarily,
+/// as such don't store ptrs here...
+/// All data stored in here should be based on ZII (zero is initialization) principle
+/// Only store what you need.
+struct UserSaveState {
+    MoveFramesSaveState moveFramesState = {};
+};
+
 /// This is the main undo/redo state structure which is meant to populate
 /// whatever states that needs to be stored temporarily.
 struct UndoSaveState {
-    int layerId = 0;
-    Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
-
-    std::unique_ptr<KeyFrame> keyframe = nullptr;
-    std::unique_ptr<SelectionSaveState> selectionState = nullptr;
-
+    // Common data
     UndoRedoRecordType recordType = UndoRedoRecordType::INVALID;
+    int layerId = 0;
+    int currentFrameIndex = 0;
+    Layer::LAYER_TYPE layerType = Layer::UNDEFINED;
+    std::unique_ptr<KeyFrame> keyframe;
+    SelectionSaveState selectionState = {};
+
+    UserSaveState userState = {};
 };
 
 class UndoRedoManager : public BaseManager
@@ -101,19 +129,26 @@ public:
 
     /** Records the given save state.
      *  The input save state is cleaned up and set to nullptr after use.
-    * @param undoState The state to record.
+    * @param SaveStateId The state that will be fetched and recorded based on the input SaveStateId.
     * @param description The description that will bound to the undo/redo action.
     */
-    void record(const UndoSaveState*& undoState, const QString& description);
+    void record(SAVESTATE_ID SaveStateId, const QString& description);
 
 
     /** Checks whether there are unsaved changes.
      *  @return true if there are unsaved changes, otherwise false */
     bool hasUnsavedChanges() const;
 
-    /** Prepares and returns a save state with the given scope.
-     * @return A struct with state of the given record type */
-    const UndoSaveState* state(UndoRedoRecordType recordType) const;
+    /** Prepares and returns an save state with common data
+     * @return A UndoSaveState struct with common keyframe data */
+    SAVESTATE_ID createState(UndoRedoRecordType recordType);
+
+    /** Adds userState to the saveState found at SaveStateId
+     *  If no record is found matching the id, nothing happens.
+     *  @param SaveStateId The id used to fetch the saveState
+     *  @param userState The data to be inserted onto on the saveState
+     */
+    void addUserState(SAVESTATE_ID SaveStateId, const UserSaveState& userState);
 
     QAction* createUndoAction(QObject* parent, const QIcon& icon);
     QAction* createRedoAction(QObject* parent, const QIcon& icon);
@@ -156,14 +191,23 @@ private:
     void replaceBitmap(const UndoSaveState& undoState, const QString& description);
     void replaceVector(const UndoSaveState& undoState, const QString& description);
 
-    const UndoSaveState* savedKeyFrameState() const;
+    void addKeyFrame(const UndoSaveState& undoState, const QString& description);
+    void removeKeyFrame(const UndoSaveState& undoState, const QString& description);
+    void moveKeyFrames(const UndoSaveState& undoState, const QString& description);
+
+    void initCommonKeyFrameState(UndoSaveState* undoSaveState) const;
 
     void pushCommand(QUndoCommand* command);
+
+    void clearState(UndoSaveState*& state);
+    void clearSaveStates();
 
     void legacyUndo();
     void legacyRedo();
 
     QUndoStack mUndoStack;
+
+    QMap<SAVESTATE_ID, UndoSaveState*> mSaveStates;
 
     // Legacy system
     int mLegacyBackupIndex = -1;
@@ -172,6 +216,8 @@ private:
 
     int mLegacyLastModifiedLayer = -1;
     int mLegacyLastModifiedFrame = -1;
+
+    SAVESTATE_ID mSaveStateId = 1;
 
     bool mNewBackupSystemEnabled = false;
 };

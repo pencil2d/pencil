@@ -24,13 +24,15 @@ GNU General Public License for more details.
 
 #include "bitmapimage.h"
 #include "vectorimage.h"
+#include "soundclip.h"
+#include "camera.h"
+#include "layer.h"
 
 class Editor;
 class UndoRedoManager;
 class PreferenceManager;
 class SoundClip;
 class Camera;
-class Layer;
 class KeyFrame;
 class TransformCommand;
 
@@ -38,10 +40,10 @@ class UndoRedoCommand : public QUndoCommand
 {
 public:
     explicit UndoRedoCommand(Editor* editor, QUndoCommand* parent = nullptr);
-    ~UndoRedoCommand() override;
+    ~UndoRedoCommand() = default;
 
 protected:
-    Editor* editor() { return mEditor; }
+    Editor* editor() const { return mEditor; }
 
     bool isFirstRedo() const { return mIsFirstRedo; }
     void setFirstRedo(const bool state) { mIsFirstRedo = state; }
@@ -49,6 +51,72 @@ protected:
 private:
     Editor* mEditor = nullptr;
     bool mIsFirstRedo = true;
+};
+
+class KeyFrameRemoveCommand : public UndoRedoCommand
+{
+public:
+    KeyFrameRemoveCommand(const KeyFrame* undoKeyFrame,
+                        int undoLayerId,
+                        const QString& description,
+                        Editor* editor,
+                        QUndoCommand* parent = nullptr
+                                               );
+    ~KeyFrameRemoveCommand() override;
+
+    void undo() override;
+    void redo() override;
+
+private:
+
+    int undoLayerId = 0;
+    int redoLayerId = 0;
+
+    KeyFrame* undoKeyFrame = nullptr;
+    int redoPosition = 0;
+};
+
+class KeyFrameAddCommand : public UndoRedoCommand
+{
+public:
+    KeyFrameAddCommand(int undoPosition,
+                        int undoLayerId,
+                        const QString& description,
+                        Editor* editor,
+                        QUndoCommand* parent = nullptr);
+    ~KeyFrameAddCommand() = default;
+
+    void undo() override;
+    void redo() override;
+
+private:
+
+    int undoLayerId = 0;
+    int redoLayerId = 0;
+
+    int undoPosition = 0;
+    int redoPosition = 0;
+};
+
+class MoveKeyFramesCommand : public UndoRedoCommand
+{
+public:
+    MoveKeyFramesCommand(int offset,
+                         QList<int> listOfPositions,
+                         int undoLayerId,
+                         const QString& description,
+                         Editor* editor,
+                         QUndoCommand* parent = nullptr);
+
+    void undo() override;
+    void redo() override;
+
+private:
+    int undoLayerId = 0;
+    int redoLayerId = 0;
+
+    int frameOffset = 0;
+    QList<int> positions;
 };
 
 class BitmapReplaceCommand : public UndoRedoCommand
