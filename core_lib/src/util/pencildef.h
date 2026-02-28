@@ -261,6 +261,8 @@ const static int MaxFramesBound = 9999;
 #define SETTING_ANTIALIAS        "Antialiasing"
 #define SETTING_SHOW_GRID        "ShowGrid"
 #define SETTING_COUNT            "Count"
+#define SETTING_STYLE_ID         "StyleId"
+#define SETTING_PALETTE_ID       "PaletteId"
 #define SETTING_SHADOW           "Shadow"
 #define SETTING_PREV_ONION       "PrevOnion"
 #define SETTING_NEXT_ONION       "NextOnion"

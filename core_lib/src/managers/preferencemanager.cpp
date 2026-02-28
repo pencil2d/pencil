@@ -75,6 +75,8 @@ void PreferenceManager::loadPrefs()
     set(SETTING::TOOL_CURSOR,              settings.value(SETTING_TOOL_CURSOR,            true).toBool());
     set(SETTING::CANVAS_CURSOR,            settings.value(SETTING_CANVAS_CURSOR,          true).toBool());
     set(SETTING::HIGH_RESOLUTION,          settings.value(SETTING_HIGH_RESOLUTION,        true).toBool());
+    set(SETTING::STYLE_ID,                 settings.value(SETTING_STYLE_ID,               "").toString());
+    set(SETTING::PALETTE_ID,               settings.value(SETTING_PALETTE_ID,             "").toString());
     set(SETTING::SHADOW,                   settings.value(SETTING_SHADOW,                 false).toBool());
     set(SETTING::QUICK_SIZING,             settings.value(SETTING_QUICK_SIZING,           true).toBool());
     set(SETTING::SHOW_SELECTION_INFO,      settings.value(SETTING_SHOW_SELECTION_INFO,    false).toBool());
@@ -197,6 +199,12 @@ void PreferenceManager::set(SETTING option, QString value)
     QSettings settings(PENCIL2D, PENCIL2D);
     switch (option)
     {
+    case SETTING::STYLE_ID:
+        settings.setValue(SETTING_STYLE_ID, value);
+        break;
+    case SETTING::PALETTE_ID:
+        settings.setValue(SETTING_PALETTE_ID, value);
+        break;
     case SETTING::BACKGROUND_STYLE:
         settings.setValue(SETTING_BACKGROUND_STYLE, value);
         break;
