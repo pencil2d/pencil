@@ -37,10 +37,10 @@ void StrokeOptionsWidget::initUI()
     const StrokeToolProperties p = strokeTool->strokeToolProperties();
 
     auto widthInfo = p.getInfo(StrokeToolProperties::WIDTH_VALUE);
-    ui->sizeSlider->init(tr("Width"), SpinSlider::EXPONENT, widthInfo.minReal(), widthInfo.maxReal());
+    ui->sizeSlider->init(tr("Width"), widthInfo.minReal(), widthInfo.maxReal(), SliderStartPosType::LEFT);
 
     auto featherInfo = p.getInfo(StrokeToolProperties::FEATHER_VALUE);
-    ui->featherSlider->init(tr("Feather"), SpinSlider::LOG, featherInfo.minReal(), featherInfo.maxReal());
+    ui->featherSlider->init(tr("Feather"), featherInfo.minReal(), featherInfo.maxReal(), SliderStartPosType::LEFT);
 
     mCurrentTool = strokeTool;
 
@@ -65,8 +65,6 @@ void StrokeOptionsWidget::updateUI()
         PropertyInfo info = p.getInfo(StrokeToolProperties::WIDTH_VALUE);
         QSignalBlocker b(ui->sizeSlider);
         ui->sizeSlider->setRange(info.minReal(), info.maxReal());
-        QSignalBlocker b2(ui->sizeSpinBox);
-        ui->sizeSpinBox->setRange(info.minReal(), info.maxReal());
 
         setWidthValue(info.realValue());
     }
@@ -75,8 +73,6 @@ void StrokeOptionsWidget::updateUI()
         auto info = p.getInfo(StrokeToolProperties::FEATHER_VALUE);
         QSignalBlocker b3(ui->featherSlider);
         ui->featherSlider->setRange(info.minReal(), info.maxReal());
-        QSignalBlocker b4(ui->featherSpinBox);
-        ui->featherSpinBox->setRange(info.minReal(), info.maxReal());
 
         setFeatherValue(info.realValue());
     }
@@ -144,8 +140,6 @@ void StrokeOptionsWidget::makeConnectionFromModelToUI(StrokeTool* strokeTool)
 
 void StrokeOptionsWidget::makeConnectionFromUIToModel()
 {
-    auto spinboxValueChanged = static_cast<void (QDoubleSpinBox::*)(double)>(&QDoubleSpinBox::valueChanged);
-
     connect(ui->useBezierBox, &QCheckBox::clicked, [=](bool enabled) {
         PolylineTool* tool = static_cast<PolylineTool*>(mCurrentTool);
         tool->setUseBezier(enabled);
@@ -175,24 +169,13 @@ void StrokeOptionsWidget::makeConnectionFromUIToModel()
         mCurrentTool->setFillContourEnabled(enabled);
     });
 
-    connect(ui->sizeSlider, &SpinSlider::valueChanged, [=](qreal value) {
+    connect(ui->sizeSlider, &InlineSlider::valueChanged, [=](qreal value) {
         mCurrentTool->setWidth(value);
     });
 
-    connect(ui->sizeSpinBox, spinboxValueChanged, [=](qreal value) {
-        mCurrentTool->setWidth(value);
-    });
-
-    connect(ui->featherSlider, &SpinSlider::valueChanged, [=](qreal value) {
+    connect(ui->featherSlider, &InlineSlider::valueChanged, [=](qreal value) {
         mCurrentTool->setFeather(value);
     });
-
-    connect(ui->featherSpinBox, spinboxValueChanged, [=](qreal value) {
-        mCurrentTool->setFeather(value);
-    });
-
-    clearFocusOnFinished(ui->sizeSpinBox);
-    clearFocusOnFinished(ui->featherSpinBox);
 
     connect(ui->inpolLevelsCombo, static_cast<void (QComboBox::*)(int)>(&QComboBox::activated), [=](int value) {
         mCurrentTool->setStablizationLevel(value);
@@ -202,9 +185,7 @@ void StrokeOptionsWidget::makeConnectionFromUIToModel()
 void StrokeOptionsWidget::setVisibility(BaseTool* tool)
 {
     ui->sizeSlider->setVisible(tool->isPropertyEnabled(StrokeToolProperties::WIDTH_VALUE));
-    ui->sizeSpinBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::WIDTH_VALUE));
     ui->featherSlider->setVisible(tool->isPropertyEnabled(StrokeToolProperties::FEATHER_VALUE));
-    ui->featherSpinBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::FEATHER_VALUE));
     ui->useFeatherBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::FEATHER_ENABLED));
     ui->usePressureBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::PRESSURE_ENABLED));
     ui->makeInvisibleBox->setVisible(tool->isPropertyEnabled(StrokeToolProperties::INVISIBILITY_ENABLED));
@@ -220,18 +201,12 @@ void StrokeOptionsWidget::setWidthValue(qreal width)
 {
     QSignalBlocker b(ui->sizeSlider);
     ui->sizeSlider->setValue(width);
-
-    QSignalBlocker b2(ui->sizeSpinBox);
-    ui->sizeSpinBox->setValue(width);
 }
 
 void StrokeOptionsWidget::setFeatherValue(qreal featherValue)
 {
     QSignalBlocker b(ui->featherSlider);
     ui->featherSlider->setValue(featherValue);
-
-    QSignalBlocker b2(ui->featherSpinBox);
-    ui->featherSpinBox->setValue(featherValue);
 }
 
 void StrokeOptionsWidget::setFeatherEnabled(bool enabled)
