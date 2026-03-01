@@ -216,6 +216,7 @@ bool SelectTool::maybeDeselect(const QPointF& pos)
  */
 void SelectTool::keepSelection(Layer* currentLayer)
 {
+    
     if (currentLayer->type() == Layer::VECTOR)
     {
         VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
