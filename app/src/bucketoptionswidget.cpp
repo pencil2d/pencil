@@ -56,11 +56,11 @@ void BucketOptionsWidget::initUI()
     auto expandInfo = properties.getInfo(BucketToolProperties::FILLEXPAND_VALUE);
     auto thicknessInfo = properties.getInfo(BucketToolProperties::FILLTHICKNESS_VALUE);
 
-    ui->colorToleranceSlider->init(tr("Color tolerance"), toleranceInfo.minInt(), toleranceInfo.maxInt(), SliderStartPosType::LEFT);
+    ui->colorToleranceSlider->init(tr("Color tolerance"), toleranceInfo.minInt(), toleranceInfo.maxInt());
     ui->colorToleranceSlider->showDecimals(false);
-    ui->expandSlider->init(tr("Expand fill"), expandInfo.minInt(), expandInfo.maxInt(), SliderStartPosType::LEFT);
+    ui->expandSlider->init(tr("Expand fill"), expandInfo.minInt(), expandInfo.maxInt());
     ui->expandSlider->showDecimals(false);
-    ui->strokeThicknessSlider->init(tr("Stroke thickness"), thicknessInfo.minReal(), thicknessInfo.maxReal(), SliderStartPosType::LEFT);
+    ui->strokeThicknessSlider->init(tr("Stroke thickness"), thicknessInfo.minReal(), thicknessInfo.maxReal());
     ui->strokeThicknessSlider->showDecimals(false);
 
     ui->referenceLayerComboBox->addItem(tr("Current layer", "Reference Layer Options"), 0);

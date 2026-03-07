@@ -24,21 +24,24 @@ GNU General Public License for more details.
 
 class LineEditNumberWidget;
 
-enum class SliderStartPosType {
-    LEFT,
-    MIDDLE
-};
-
 class InlineSlider : public QWidget
 {
-
     Q_OBJECT
 public:
 
-    explicit InlineSlider(QWidget* parent);
-    ~InlineSlider() override;
+    enum CaretOriginType {
+        LEADING,
+        MIDDLE
+    };
 
-    void init(QString label, qreal min, qreal max, SliderStartPosType type);
+    enum ScaleType {
+        LINEAR,
+        LOG
+    };
+
+    explicit InlineSlider(QWidget* parent);
+
+    void init(const QString& label, qreal min, qreal max);
 
     void setRange(qreal min, qreal max) { mMin = min; mMax = max; }
     void setMin(qreal min) { mMin = min; }
@@ -46,10 +49,14 @@ public:
 
     void setValue(qreal value);
     void showDecimals(bool show);
+    void setScaleType(const ScaleType& type) { mScaleType = type; }
+    void setCaretOrigin(const CaretOriginType& origin) { mSliderOrigin = origin; }
+    void setValuePostFix(QString postfix);
 
 protected:
     void paintEvent(QPaintEvent* event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
+    void mouseReleaseEvent(QMouseEvent* event) override;
     void resizeEvent(QResizeEvent* event) override;
 
     bool event(QEvent *event) override;
@@ -58,24 +65,36 @@ signals:
     void valueChanged(qreal value);
 
 private:
+    void setupPixmap(const QSize& size);
 
     void onLineEditChanged();
     void onScreenChanged(qreal devicePixelRatio);
-    void setupPixmap(const QSize& size);
 
-    qreal valueFromMappedRange(qreal value, qreal min, qreal max, qreal oldMin, qreal oldMax) const;
+    /**
+     * Calculates how much space there is for the left label vs the line edit text
+     * and creates an elided version of the label.
+     *
+     * @return: A potentially elided label
+     */
+    QString calculatedDescriptionLabel(const QFontMetrics& metrics);
+
+    /**
+     * Calculates the carets pixel position based on the input slider value
+     * @param sliderValue
+     * @return the pixel position of the caret
+     */
+    qreal calculatedPixelPos(qreal sliderValue) const;
+    QRectF calculatedContentsRect() const;
+
     void setSliderPixelPos(qreal pos);
     void setSliderValueFromPos(qreal pos);
-
     void setCornerRadius(qreal percentage);
 
-    void drawSlider();
-    void drawLabels(QPainter& painter, const QRectF& borderRect, const QColor& textColor);
+    void drawSlider(const QRect& blitRect);
+    void drawLeadingLabel(QPainter& painter, const QRectF& borderRect, const QColor& textColor);
     void drawCaret(QPainter& painter, const QRectF& borderRect, const QColor& caretColor);
 
     void updateLineEditStylesheet();
-
-    QRectF borderRect() const;
 
     QString mLabel;
     QPixmap mPixmap;
@@ -95,7 +114,11 @@ private:
     qreal mCaretWidth = 1.0;
     qreal mTextPadding = 6;
 
-    SliderStartPosType mSliderOrigin = SliderStartPosType::MIDDLE;
+    qreal mCachedElidedLabelWidth = 0.0;
+    QString mCachedElidedDescriptionLabel = "";
+
+    ScaleType mScaleType = ScaleType::LINEAR;
+    CaretOriginType mSliderOrigin = CaretOriginType::LEADING;
 
     LineEditNumberWidget* mValueLineEditWidget = nullptr;
 };

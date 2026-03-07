@@ -37,10 +37,12 @@ void StrokeOptionsWidget::initUI()
     const StrokeToolProperties p = strokeTool->strokeToolProperties();
 
     auto widthInfo = p.getInfo(StrokeToolProperties::WIDTH_VALUE);
-    ui->sizeSlider->init(tr("Width"), widthInfo.minReal(), widthInfo.maxReal(), SliderStartPosType::LEFT);
+    ui->sizeSlider->init(tr("Width"), widthInfo.minReal(), widthInfo.maxReal());
+    ui->sizeSlider->setScaleType(InlineSlider::ScaleType::LOG);
+    ui->sizeSlider->setValuePostFix("px");
 
     auto featherInfo = p.getInfo(StrokeToolProperties::FEATHER_VALUE);
-    ui->featherSlider->init(tr("Feather"), featherInfo.minReal(), featherInfo.maxReal(), SliderStartPosType::LEFT);
+    ui->featherSlider->init(tr("Feather"), featherInfo.minReal(), featherInfo.maxReal());
 
     mCurrentTool = strokeTool;
 

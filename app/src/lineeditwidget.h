@@ -44,6 +44,7 @@ public:
     qreal value() const;
 
     void showDecimals(bool show);
+    void setPostFix(QString postfix);
 
     void deselect();
 
@@ -55,6 +56,7 @@ private:
     static constexpr const char* mValueKey = "value";
 
     bool mShowDecimals = true;
+    QString mPostFix = "";
 
 };
 

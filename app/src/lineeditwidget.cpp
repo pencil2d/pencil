@@ -107,11 +107,17 @@ void LineEditNumberWidget::setValue(qreal value)
 {
     setProperty(mValueKey, value);
 
+    QString postfix = mPostFix.isEmpty() ? "" : " " + mPostFix;
     if (mShowDecimals) {
-        setText(QString::number(value, 'f', 2));
+        setText(QString::number(value, 'f', 2) + postfix);
     } else {
-        setText(QString::number(static_cast<int>(value)));
+        setText(QString::number(static_cast<int>(value)) + postfix);
     }
+}
+
+void LineEditNumberWidget::setPostFix(QString postfix)
+{
+    mPostFix = postfix;
 }
 
 void LineEditNumberWidget::showDecimals(bool show)
