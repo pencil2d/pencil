@@ -28,10 +28,12 @@ runs:
   steps:
     - name: Check Prerequisites
       shell: bash
+      env:
+        APPLE_ID: ${{ inputs.apple_id }}
       run: |
         echo "Checking if Apple Developer credentials are available..."
         
-        if [ -z "${{ inputs.apple_id }}" ]; then
+        if [ -z "$APPLE_ID" ]; then
           echo "No Apple ID provided - skipping code signing and notarization."
           echo "The app build will continue without notarization."
           echo "SKIP_NOTARIZATION=true" >> $GITHUB_ENV
@@ -43,6 +45,9 @@ runs:
     - name: Setup Code Signing Certificate
       if: env.SKIP_NOTARIZATION != 'true'
       shell: bash
+      env:
+        CERT_BASE64: ${{ inputs.p12_base64 }}
+        CERT_PASSWORD: ${{ inputs.p12_password }}
       run: |
         echo "Create temporary keychain"
         security create-keychain -p temp_password build.keychain
@@ -50,8 +55,8 @@ runs:
         security unlock-keychain -p temp_password build.keychain
         
         echo "Import certificate"
-        echo "${{ inputs.p12_base64 }}" | base64 --decode > certificate.p12
-        security import certificate.p12 -k build.keychain -P "${{ inputs.p12_password }}" -A
+        echo "$CERT_BASE64" | base64 --decode > certificate.p12
+        security import certificate.p12 -k build.keychain -P "$CERT_PASSWORD" -A
         rm certificate.p12
 
         echo "Set keychain settings"
@@ -63,12 +68,15 @@ runs:
     - name: Code Sign App and Create DMG
       if: env.SKIP_NOTARIZATION != 'true'
       shell: bash
+      env:
+        CERT_IDENTITY: ${{ inputs.certificate_identity }}
+        APP_PATH: ${{ inputs.app_path }}
       run: |
         echo "Extracting app bundle from ZIP..."
-        ditto -x -k "${{ inputs.app_path }}" ./app_notarization
+        ditto -x -k "$APP_PATH" ./app_notarization
 
         echo "Code signing app..."
-        codesign --force --deep --options runtime --sign "${{ inputs.certificate_identity }}" "./app_notarization/Pencil2D.app"
+        codesign --force --deep --options runtime --sign "$CERT_IDENTITY" "./app_notarization/Pencil2D.app"
 
         echo "Verifying code signature..."
         codesign --verify --verbose=4 "./app_notarization/Pencil2D.app"
@@ -80,7 +88,7 @@ runs:
         ln -s /Applications ./dmg_contents/Applications
 
         # Get base name without extension
-        base_path="${{ inputs.app_path }}"
+        base_path="$APP_PATH"
         base_name="${base_path%.zip}"
 
         echo "Creating read-write DMG..."
@@ -94,7 +102,7 @@ runs:
         xattr -cr "${base_name}.dmg"
 
         echo "Code signing DMG..."
-        codesign --force --sign "${{ inputs.certificate_identity }}" "${base_name}.dmg"
+        codesign --force --sign "$CERT_IDENTITY" "${base_name}.dmg"
 
         echo "Verifying DMG signature..."
         codesign --verify --verbose=4 "${base_name}.dmg"
@@ -103,23 +111,30 @@ runs:
     - name: Submit DMG for Notarization
       if: env.SKIP_NOTARIZATION != 'true'
       shell: bash
+      env:
+        APPLE_ID: ${{ inputs.apple_id }}
+        APPLE_ID_PASSWORD: ${{ inputs.apple_id_password }}
+        APPLE_TEAM_ID: ${{ inputs.team_id }}
+        APP_PATH: ${{ inputs.app_path }}
       run: |
-        base_path="${{ inputs.app_path }}"
+        base_path="$APP_PATH"
         base_name="${base_path%.zip}"
 
         echo "Submitting DMG to Apple for notarization..."
         xcrun notarytool submit "${base_name}.dmg" \
-          --apple-id "${{ inputs.apple_id }}" \
-          --password "${{ inputs.apple_id_password }}" \
-          --team-id "${{ inputs.team_id }}" \
+          --apple-id "$APPLE_ID" \
+          --password "$APPLE_ID_PASSWORD" \
+          --team-id "$APPLE_TEAM_ID" \
           --wait \
           --timeout 15m
 
     - name: Staple & Verify Notarization
       if: env.SKIP_NOTARIZATION != 'true'
       shell: bash
+      env:
+        APP_PATH: ${{ inputs.app_path }}
       run: |
-        base_path="${{ inputs.app_path }}"
+        base_path="$APP_PATH"
         base_name="${base_path%.zip}"
 
         echo "Stapling notarization ticket to DMG..."
