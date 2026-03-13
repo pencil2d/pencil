@@ -1474,6 +1474,12 @@ void ScribbleArea::clearImage()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr) { return; }
 
+    // Clearing an invisible layer is likely a mistake, so show a warning and prevent the action
+    if (!layer->visible()) {
+        showLayerNotVisibleWarning();
+        return;
+    }
+
     if (layer->type() == Layer::VECTOR)
     {
         mEditor->backup(tr("Clear Image", "Undo step text"));

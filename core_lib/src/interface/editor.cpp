@@ -243,6 +243,12 @@ void Editor::pasteFromPreviousFrame()
         return;
     }
 
+    // Prevents pasting on an invisible layer, as this is likely a mistake and can be confusing for users, so show a warning and prevent the action
+    if (!currentLayer->visible()) {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return;
+    }
+
     if (currentLayer->type() == Layer::BITMAP)
     {
         backup(tr("Paste from Previous Keyframe"));
@@ -356,6 +362,12 @@ void Editor::paste()
     Q_ASSERT(currentLayer != nullptr);
 
     if (!canPaste()) { return; }
+
+    // Prevents pasting on an invisible layer, as this is likely a mistake and can be confusing for users, so show a warning and prevent the action
+    if (!currentLayer->visible()) {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return;
+    }
 
     if (clipboards()->framesIsEmpty()) {
 
@@ -806,6 +818,13 @@ void Editor::selectAll() const
     Layer* layer = layers()->currentLayer();
 
     QRectF rect;
+    
+    // Prevents Selection of an invisible layer, as this is likely a mistake and can be confusing for users, so show a warning and prevent the action
+    if (!layer->visible()) {
+        mScribbleArea->showLayerNotVisibleWarning();
+        return;
+    }
+
     if (layer->type() == Layer::BITMAP)
     {
         // Selects the drawn area (bigger or smaller than the screen). It may be more accurate to select all this way
@@ -989,6 +1008,10 @@ void Editor::switchVisibilityOfLayer(int layerNumber)
 {
     Layer* layer = mObject->getLayer(layerNumber);
     if (layer != nullptr) layer->switchVisibility();
+
+    // Deselect all to prevent confusion, as the user might have selected something on a layer that is now invisible, and this could lead to confusion
+    deselectAll();
+
     mScribbleArea->onLayerChanged();
 
     emit updateTimeLine();
