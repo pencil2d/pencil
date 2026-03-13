@@ -46,6 +46,7 @@ public:
 protected:
     QPointF mLastBrushPoint;
     QPointF mMouseDownPoint;
+    QList<QPointF> mStrokePoints; // Track the stroke path for vector layer erasing
 
     StrokeToolProperties mSettings;
 };
