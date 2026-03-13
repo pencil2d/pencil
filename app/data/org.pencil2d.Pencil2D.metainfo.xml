@@ -33,11 +33,17 @@
   </screenshots>
   <content_rating type="oars-1.1"/>
   <releases>
-    <release version="0.7.1" date="2025-XX-XX">
+    <release version="0.7.2" date="2025-03-13">
+      <description>
+        <p>Fixes the Linux metadata in the previous 0.7.1 release.</p>
+      </description>
+      <url type="details">https://www.pencil2d.org/2025/03/pencil2d-0.7.2-release.html</url>
+    </release>
+    <release version="0.7.1" date="2025-03-07">
       <description>
         <p>This release removes the recently added functionality to add frames by double-click, which proved too easy to trigger unintentionally, and brings improvements to the resizing behaviour of the toolbox. We also fixed some bugs in the timeline, on-canvas resize handles and image import, as well as a potential data loss after using the copy selected frames feature.</p>
       </description>
-      <url type="details">https://www.pencil2d.org/2025/XX/pencil2d-0.7.1-release.html</url>
+      <url type="details">https://www.pencil2d.org/2025/03/pencil2d-0.7.1-release.html</url>
     </release>
     <release version="0.7.0" date="2024-07-12">
       <description>
