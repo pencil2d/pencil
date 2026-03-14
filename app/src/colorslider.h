@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <QWidget>
 
 #include "drawsliderstyle.h"
+#include "slidergeometry.h"
 
 class ColorSlider : public QWidget
 {

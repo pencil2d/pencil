@@ -44,7 +44,7 @@ void ColorSlider::init(ColorSpecType specType, ColorType type, const QColor &col
 
 void ColorSlider::setupPicker()
 {
-    QRectF sliderRect = calculatedContentsRect(contentsRect(), this->devicePixelRatioF(), mSliderStyle.borderWidth);
+    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), this->devicePixelRatioF(), mSliderStyle.borderWidth);
     mPickerSize = QSizeF(10, sliderRect.bottom() - sliderRect.top() - mSliderStyle.borderWidth);
 }
 
@@ -202,7 +202,7 @@ void ColorSlider::drawColorBox(const QColor &color, QSize size)
     if (mPixmapCacheInvalid) {
         setupPicker();
 
-        QRectF sliderRect = calculatedContentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
+        QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
         mBoxPixmapSource = QPixmap(size * devicePixelRatio());
         mBoxPixmapSource.setDevicePixelRatio(devicePixelRatioF());
         mBoxPixmapSource.fill(Qt::transparent);
@@ -214,11 +214,11 @@ void ColorSlider::drawColorBox(const QColor &color, QSize size)
         QPainter painter(&mBoxPixmapSource);
 
         mSliderStyle.customFill = QBrush(mCheckerboardPixmap);
-        drawSliderStyle(painter, sliderRect, mSliderStyle, option.palette);
+        SliderPainter::drawSliderStyle(painter, sliderRect, mSliderStyle, option.palette);
 
         QBrush brush(mGradient);
         mSliderStyle.customFill = brush;
-        drawSliderStyle(painter, sliderRect, mSliderStyle, option.palette);
+        SliderPainter::drawSliderStyle(painter, sliderRect, mSliderStyle, option.palette);
     }
 }
 
@@ -242,7 +242,7 @@ void ColorSlider::drawPicker(const QColor &color)
     QPainter painter(this);
     qreal val = 0;
 
-    QRectF sliderRect = calculatedContentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
+    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
 
     qreal padding = (mSliderStyle.borderWidth * 2);
     qreal pickerDiff = sliderRect.width() - padding - mPickerSize.width();
@@ -318,14 +318,14 @@ void ColorSlider::drawPicker(const QColor &color)
                                 mSliderStyle.borderWidth,
                                 -mSliderStyle.borderWidth,
                                 -mSliderStyle.borderWidth),
-                            innerCornerRadius(mSliderStyle.cachedCornerRadiusX, mSliderStyle.borderWidth),
-                            innerCornerRadius(mSliderStyle.cachedCornerRadiusY, mSliderStyle.borderWidth),
+                            SliderGeometry::innerCornerRadius(mSliderStyle.cachedCornerRadiusX, mSliderStyle.borderWidth),
+                            SliderGeometry::innerCornerRadius(mSliderStyle.cachedCornerRadiusY, mSliderStyle.borderWidth),
                             Qt::AbsoluteSize);
 }
 
 void ColorSlider::colorPicked(QPoint point)
 {
-    QRectF sliderRect = calculatedContentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
+    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
     QColor colorPicked = mColor;
     int colorMax = static_cast<int>(mMax);
 
