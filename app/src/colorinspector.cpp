@@ -200,7 +200,9 @@ void ColorInspector::onColorSpecChanged()
     }
     else
     {
-        mCurrentColor = mCurrentColor.toHsv();
+        if (mCurrentColor.hue() != -1) {
+            mCurrentColor = mCurrentColor.toHsv();
+        }
     }
 
     updateControls();
