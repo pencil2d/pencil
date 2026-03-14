@@ -19,6 +19,7 @@ GNU General Public License for more details.
 
 #include <QWidget>
 
+#include "drawsliderstyle.h"
 
 class ColorSlider : public QWidget
 {
@@ -50,17 +51,9 @@ public:
 
     QColor color() { return mColor; }
 
-    void setHsv(const QColor& hsv) { mColor.setHsv(hsv.hsvHue(),
-                                                  hsv.hsvSaturation(),
-                                                  hsv.value(),
-                                                  hsv.alpha());
-                                   }
+    void setHsv(const QColor& hsv);
 
-    void setRgb(const QColor& rgb) { mColor.setRgb(rgb.red(),
-                                                  rgb.green(),
-                                                  rgb.blue(),
-                                                  rgb.alpha());
-                                   }
+    void setRgb(const QColor& rgb);
 
     void setColorSpecType(ColorSpecType newType) { this->mSpecType = newType; }
     void setColorType(ColorType newType) { this->mColorType = newType; }
@@ -72,6 +65,7 @@ public:
 
 protected:
     void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent *event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
 
@@ -80,6 +74,7 @@ signals:
 
 private:
 
+    void setupPicker();
     void drawColorBox(const QColor &color, QSize size);
     void drawPicker(const QColor &color);
     QLinearGradient hsvGradient(const QColor &color);
@@ -87,16 +82,27 @@ private:
 
     void colorPicked(QPoint point);
 
+    bool mPixmapCacheInvalid = true;
     QPixmap mBoxPixmapSource;
 
     QColor mColor;
     qreal mMin = 0.0;
     qreal mMax = 0.0;
 
+    QSizeF mPickerSize = QSize(-1, -1);
+
     ColorType mColorType = ColorType::HUE;
     ColorSpecType mSpecType = ColorSpecType::RGB;
 
     QLinearGradient mGradient;
+
+    SliderPainterStyle mSliderStyle {
+        .hasCustomFill = true,
+        .customFill = QBrush(QPixmap(":icons/general/checkerboard_smaller.png")),
+        .strokeRole = QPalette::Dark,
+    };
+
+    QPixmap mCheckerboardPixmap = QPixmap(":icons/general/checkerboard_smaller.png");
 };
 
 #endif // COLORSLIDER_H

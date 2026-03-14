@@ -21,7 +21,6 @@ GNU General Public License for more details.
 #include <QStyleOption>
 #include <QPainter>
 
-
 ColorSlider::ColorSlider(QWidget* parent) : QWidget(parent)
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -43,7 +42,13 @@ void ColorSlider::init(ColorSpecType specType, ColorType type, const QColor &col
     update();
 }
 
-void ColorSlider::paintEvent(QPaintEvent *)
+void ColorSlider::setupPicker()
+{
+    QRectF sliderRect = calculatedContentsRect(contentsRect(), this->devicePixelRatioF(), mSliderStyle.borderWidth);
+    mPickerSize = QSizeF(10, sliderRect.bottom() - sliderRect.top() - mSliderStyle.borderWidth);
+}
+
+void ColorSlider::paintEvent(QPaintEvent*)
 {
     drawColorBox(mColor, size());
 
@@ -73,36 +78,36 @@ QLinearGradient ColorSlider::rgbGradient(const QColor &color)
     switch (mColorType)
     {
     case RED:
-        for (; val < mMax; val += 1)
+        for (; val <= mMax; val += 1)
         {
-            mGradient.setColorAt(val / mMax, QColor::fromRgb(val,
+            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromRgb(val,
                                                              255,
                                                              255,
                                                              color.alpha()));
         }
         break;
     case GREEN:
-        for (; val < mMax; val += 1)
+        for (; val <= mMax; val += 1)
         {
-            mGradient.setColorAt(val / mMax, QColor::fromRgb(color.red(),
+            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromRgb(color.red(),
                                                              val,
                                                              color.blue(),
                                                              color.alpha()));
         }
         break;
     case BLUE:
-        for (; val < mMax; val += 1)
+        for (; val <= mMax; val += 1)
         {
-            mGradient.setColorAt(val / mMax, QColor::fromRgb(color.red(),
+            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromRgb(color.red(),
                                                              color.green(),
                                                              val,
                                                              color.alpha()));
         }
         break;
     case ALPHA:
-        for (; val < mMax; val += 1)
+        for (; val <= mMax; val += 1)
         {
-            mGradient.setColorAt(val / mMax, QColor::fromRgb(0,
+            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromRgb(0,
                                                              0,
                                                              0,
                                                              val));
@@ -120,36 +125,36 @@ QLinearGradient ColorSlider::hsvGradient(const QColor &color)
     switch (mColorType)
     {
     case HUE:
-        for (; val < mMax; val += 1)
+        for (; val <= mMax; val += 1)
         {
-            mGradient.setColorAt(val / mMax, QColor::fromHsv(val,
+            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromHsv(val,
                                                              255,
                                                              255,
                                                              color.alpha()));
         }
         break;
     case SAT:
-        for (; val < mMax; val += 1)
+        for (; val <= mMax; val += 1)
         {
-            mGradient.setColorAt(val / mMax, QColor::fromHsv(color.hsvHue(),
+            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromHsv(color.hsvHue(),
                                                              val,
                                                              color.value(),
                                                              color.alpha()));
         }
         break;
     case VAL:
-        for (; val < mMax; val += 1)
+        for (; val <= mMax; val += 1)
         {
-            mGradient.setColorAt(val / mMax, QColor::fromHsv(color.hsvHue(),
+            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromHsv(color.hsvHue(),
                                                              color.hsvSaturation(),
                                                              val,
                                                              color.alpha()));
         }
         break;
     case ALPHA:
-        for (; val < mMax; val += 1)
+        for (; val <= mMax; val += 1)
         {
-            mGradient.setColorAt(val / mMax, QColor::fromHsv(0,
+            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromHsv(0,
                                                              0,
                                                              0,
                                                              val));
@@ -161,6 +166,32 @@ QLinearGradient ColorSlider::hsvGradient(const QColor &color)
     return mGradient;
 }
 
+void ColorSlider::setRgb(const QColor &rgb)
+{
+    mColor.setRgb(rgb.red(),
+                  rgb.green(),
+                  rgb.blue(),
+                  rgb.alpha());
+
+    mPixmapCacheInvalid = true;
+}
+
+void ColorSlider::setHsv(const QColor &hsv)
+{
+    mColor.setHsv(hsv.hsvHue(),
+                  hsv.hsvSaturation(),
+                  hsv.value(),
+                  hsv.alpha());
+
+    mPixmapCacheInvalid = true;
+}
+
+void ColorSlider::resizeEvent(QResizeEvent*)
+{
+    mPixmapCacheInvalid = true;
+    update();
+}
+
 void ColorSlider::drawColorBox(const QColor &color, QSize size)
 {
     QStyleOption option;
@@ -168,58 +199,27 @@ void ColorSlider::drawColorBox(const QColor &color, QSize size)
 
     QBrush backgroundBrush = option.palette.window();
 
-    mBoxPixmapSource = QPixmap(size);
+    if (mPixmapCacheInvalid) {
+        setupPicker();
 
-    QPainter painter(&mBoxPixmapSource);
-    painter.setRenderHint(QPainter::Antialiasing);
+        QRectF sliderRect = calculatedContentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
+        mBoxPixmapSource = QPixmap(size * devicePixelRatio());
+        mBoxPixmapSource.setDevicePixelRatio(devicePixelRatioF());
+        mBoxPixmapSource.fill(Qt::transparent);
+        mPixmapCacheInvalid = false;
 
-    painter.fillRect(mBoxPixmapSource.rect(), backgroundBrush);
+        mGradient = QLinearGradient(0,0,sliderRect.width(),0);
+        mGradient = setColorSpec(color);
 
-    mGradient = QLinearGradient(0,0,mBoxPixmapSource.width(),0);
-    mGradient = setColorSpec(color);
+        QPainter painter(&mBoxPixmapSource);
 
-    painter.end();
+        mSliderStyle.customFill = QBrush(mCheckerboardPixmap);
+        drawSliderStyle(painter, sliderRect, mSliderStyle, option.palette);
 
-    // draw checkerboard background
-    painter.begin(&mBoxPixmapSource);
-    QBrush brush2(QBrush(QPixmap(":icons/general/checkerboard_smaller.png")));
-
-    painter.setBrush(brush2);
-    QPen pen2;
-    pen2.setWidthF(0);
-    pen2.setColor(Qt::gray);
-    pen2.setCosmetic(false);
-    painter.setPen(pen2);
-    painter.drawRoundedRect(0,
-                            0,
-                            mBoxPixmapSource.width(),
-                            mBoxPixmapSource.height(),
-                            4,
-                            mBoxPixmapSource.width(),
-                            Qt::SizeMode::AbsoluteSize);
-
-    painter.end();
-
-    painter.begin(&mBoxPixmapSource);
-    painter.setRenderHint(QPainter::Antialiasing);
-
-    QBrush brush(mGradient);
-    QPen pen;
-    pen.setWidthF(0);
-    pen.setColor(Qt::gray);
-    pen.setCosmetic(false);
-    painter.setPen(pen);
-
-    painter.setBrush(brush);
-
-    painter.drawRoundedRect(0,
-                            0,
-                            mBoxPixmapSource.width(),
-                            mBoxPixmapSource.height(),
-                            4,
-                            mBoxPixmapSource.width(),
-                            Qt::SizeMode::AbsoluteSize);
-    painter.end();
+        QBrush brush(mGradient);
+        mSliderStyle.customFill = brush;
+        drawSliderStyle(painter, sliderRect, mSliderStyle, option.palette);
+    }
 }
 
 QSize ColorSlider::sizeHint() const
@@ -241,11 +241,11 @@ void ColorSlider::drawPicker(const QColor &color)
 {
     QPainter painter(this);
     qreal val = 0;
-    QSize mPickerSize = QSize(10, this->height() - 1);
 
-    QPen pen;
-    pen.setWidth(0);
-    pen.setColor(QColor(0, 0, 0, 255));
+    QRectF sliderRect = calculatedContentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
+
+    qreal padding = (mSliderStyle.borderWidth * 2);
+    qreal pickerDiff = sliderRect.width() - padding - mPickerSize.width();
 
     switch (mSpecType)
     {
@@ -253,21 +253,13 @@ void ColorSlider::drawPicker(const QColor &color)
         switch (mColorType)
         {
         case HUE:
-            val = color.hsvHueF() * (mBoxPixmapSource.width() - mPickerSize.width());
+            val = color.hsvHueF();
             break;
         case SAT:
-            if ((color.hsvSaturation() > 127 || color.value() < 127) && color.alpha() > 127)
-            {
-                pen.setColor(Qt::white);
-            }
-            val = color.hsvSaturationF() * (mBoxPixmapSource.width() - mPickerSize.width());
+            val = color.hsvSaturationF();
             break;
         case VAL:
-            if (color.value() < 127 && color.alpha() > 127)
-            {
-                pen.setColor(Qt::white);
-            }
-            val = color.valueF() * (mBoxPixmapSource.width() - mPickerSize.width());
+            val = color.valueF();
             break;
         case ALPHA:
             break;
@@ -279,21 +271,13 @@ void ColorSlider::drawPicker(const QColor &color)
         switch (mColorType)
         {
         case RED:
-            val = color.redF() * (mBoxPixmapSource.width() - mPickerSize.width());
+            val = color.redF();
             break;
         case GREEN:
-            if (color.alpha() > 127)
-            {
-                pen.setColor(Qt::white);
-            }
-            val = color.greenF() * (mBoxPixmapSource.width() - mPickerSize.width());
+            val = color.greenF();
             break;
         case BLUE:
-            if (color.alpha() > 127)
-            {
-                pen.setColor(Qt::white);
-            }
-            val = color.blueF() * (mBoxPixmapSource.width() - mPickerSize.width());
+            val = color.blueF();
             break;
         case ALPHA:
             break;
@@ -306,24 +290,46 @@ void ColorSlider::drawPicker(const QColor &color)
     }
     if (mColorType == ALPHA)
     {
-        if (color.alpha() > 127)
-        {
-            pen.setColor(Qt::white);
-        }
-        val = color.alphaF() * (mBoxPixmapSource.width() - mPickerSize.width());
+        val = color.alphaF();
     }
 
+    val = static_cast<int>(sliderRect.left() + mSliderStyle.borderWidth + qMax(mMin, (val * pickerDiff)));
+
+    QPen pen;
+    pen.setJoinStyle(Qt::MiterJoin);
+    pen.setWidthF(mSliderStyle.borderWidth);
+    pen.setColor(QColor(0, 0, 0, 255));
+
+    painter.setRenderHint(QPainter::Antialiasing);
     painter.setPen(pen);
-    painter.drawRect(static_cast<int>(val), 0, mPickerSize.width(), mPickerSize.height());
-    painter.end();
+
+    QRectF outerRect = QRectF(val,
+                              sliderRect.top() + mSliderStyle.borderWidth,
+                              mPickerSize.width(),
+                              mPickerSize.height() - mSliderStyle.borderWidth);
+    painter.drawRoundedRect(outerRect,
+                            mSliderStyle.cachedCornerRadiusX,
+                            mSliderStyle.cachedCornerRadiusY,
+                            Qt::AbsoluteSize);
+
+    painter.setPen(palette().dark().color());
+    painter.drawRoundedRect(outerRect.adjusted(
+                                mSliderStyle.borderWidth,
+                                mSliderStyle.borderWidth,
+                                -mSliderStyle.borderWidth,
+                                -mSliderStyle.borderWidth),
+                            innerCornerRadius(mSliderStyle.cachedCornerRadiusX, mSliderStyle.borderWidth),
+                            innerCornerRadius(mSliderStyle.cachedCornerRadiusY, mSliderStyle.borderWidth),
+                            Qt::AbsoluteSize);
 }
 
 void ColorSlider::colorPicked(QPoint point)
 {
+    QRectF sliderRect = calculatedContentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
     QColor colorPicked = mColor;
     int colorMax = static_cast<int>(mMax);
 
-    int colorVal = point.x() * colorMax / mBoxPixmapSource.width();
+    int colorVal = (point.x() - (mPickerSize.width() * 0.5)) * colorMax / (sliderRect.right() - (mPickerSize.width()));
 
     colorVal = (colorVal > colorMax) ? colorMax : colorVal;
     colorVal = (colorVal < 0) ? 0 : colorVal;
@@ -415,6 +421,9 @@ void ColorSlider::colorPicked(QPoint point)
     default:
         Q_UNREACHABLE();
     }
+
     mColor = colorPicked;
+    mPixmapCacheInvalid = true;
+
     emit valueChanged(mColor);
 }
