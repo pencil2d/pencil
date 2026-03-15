@@ -96,11 +96,11 @@ private:
 
     QLinearGradient mGradient;
 
-    SliderPainterStyle mSliderStyle {
-        .strokeRole = QPalette::Dark,
-        .hasCustomFill = true,
-        .customFill = QBrush(QPixmap(":icons/general/checkerboard_smaller.png")),
-    };
+    SliderPainterStyle mSliderStyle = SliderPainterStyle(
+        QPalette::Dark,
+        true,
+        QBrush(QPixmap(":icons/general/checkerboard_smaller.png"))
+    );
 
     QPixmap mCheckerboardPixmap = QPixmap(":icons/general/checkerboard_smaller.png");
 };

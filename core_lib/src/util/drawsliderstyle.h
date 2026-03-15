@@ -22,6 +22,31 @@ GNU General Public License for more details.
 
 struct SliderPainterStyle {
 
+    SliderPainterStyle(QPalette::ColorRole fillRole,
+                       QPalette::ColorRole strokeRole,
+                       bool hasCustomFill,
+                       QBrush customFill,
+                       float borderWidth,
+                       float cornerRadiusRatio)
+    {
+        this->fillRole = fillRole;
+        this->strokeRole = strokeRole;
+        this->hasCustomFill = hasCustomFill;
+        this->customFill = customFill;
+        this->borderWidth = borderWidth;
+        this->cornerRadiusRatio = cornerRadiusRatio;
+    }
+
+    SliderPainterStyle(QPalette::ColorRole strokeRole,
+                       bool hasCustomFill,
+                       QBrush customFill)
+    {
+        this->strokeRole = strokeRole;
+        this->hasCustomFill = hasCustomFill;
+        this->customFill = customFill;
+    }
+
+
     // The filled part of the slider
     QPalette::ColorRole fillRole     = QPalette::Window;
 
