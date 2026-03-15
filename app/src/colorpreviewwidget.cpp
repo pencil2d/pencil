@@ -23,7 +23,7 @@ ColorPreviewWidget::ColorPreviewWidget(QWidget*)
 
 }
 
-void ColorPreviewWidget::setColor(QColor &color)
+void ColorPreviewWidget::setColor(const QColor& color)
 {
     if (color == mColor) { return; }
 

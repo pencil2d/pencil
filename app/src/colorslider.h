@@ -97,9 +97,9 @@ private:
     QLinearGradient mGradient;
 
     SliderPainterStyle mSliderStyle {
+        .strokeRole = QPalette::Dark,
         .hasCustomFill = true,
         .customFill = QBrush(QPixmap(":icons/general/checkerboard_smaller.png")),
-        .strokeRole = QPalette::Dark,
     };
 
     QPixmap mCheckerboardPixmap = QPixmap(":icons/general/checkerboard_smaller.png");

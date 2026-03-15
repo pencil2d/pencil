@@ -23,9 +23,9 @@ class ColorPreviewWidget: public QWidget
 {
     Q_OBJECT
 public:
-    ColorPreviewWidget(QWidget* = nullptr);
+    explicit ColorPreviewWidget(QWidget* = nullptr);
 
-    void setColor(QColor& color);
+    void setColor(const QColor& color);
 
 protected:
      void paintEvent(QPaintEvent* event) override;
