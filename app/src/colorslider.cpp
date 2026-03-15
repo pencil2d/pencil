@@ -31,10 +31,8 @@ ColorSlider::~ColorSlider()
 
 }
 
-void ColorSlider::init(ColorSpecType specType, ColorType type, const QColor &color, qreal min, qreal max)
+void ColorSlider::init(ColorSpecType specType, ColorType type, const QColor &color)
 {
-    mMin = min;
-    mMax = max;
     mColor = color;
     mColorType = type;
     mSpecType = specType;
@@ -48,15 +46,35 @@ void ColorSlider::setupPicker()
     mPickerSize = QSizeF(10, sliderRect.bottom() - sliderRect.top() - mSliderStyle.borderWidth);
 }
 
-void ColorSlider::paintEvent(QPaintEvent*)
+void ColorSlider::paintEvent(QPaintEvent* event)
 {
-    drawColorBox(mColor, size());
+    drawColorBox(mColor, event->rect().size());
 
     QPainter painter(this);
     painter.drawPixmap(0, 0, mBoxPixmapSource);
     painter.end();
 
     drawPicker(mColor);
+}
+
+int ColorSlider::colorTypeMax() const
+{
+    switch (mColorType)
+    {
+        case HUE: return 359;
+        case RED:
+        case GREEN:
+        case BLUE:
+        case SAT:
+        case VAL:
+        case ALPHA: return 255;
+        default: Q_UNREACHABLE();
+    }
+}
+
+int ColorSlider::colorSteps() const
+{
+    return colorTypeMax() + 1;
 }
 
 QLinearGradient ColorSlider::setColorSpec(const QColor &color)
@@ -75,39 +93,40 @@ QLinearGradient ColorSlider::setColorSpec(const QColor &color)
 QLinearGradient ColorSlider::rgbGradient(const QColor &color)
 {
     int val = 0;
+    int max = colorSteps();
     switch (mColorType)
     {
     case RED:
-        for (; val <= mMax; val += 1)
+        for (; val < max; val += 1)
         {
-            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromRgb(val,
+            mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromRgb(val,
                                                              255,
                                                              255,
                                                              color.alpha()));
         }
         break;
     case GREEN:
-        for (; val <= mMax; val += 1)
+        for (; val < max; val += 1)
         {
-            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromRgb(color.red(),
+            mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromRgb(color.red(),
                                                              val,
                                                              color.blue(),
                                                              color.alpha()));
         }
         break;
     case BLUE:
-        for (; val <= mMax; val += 1)
+        for (; val < max; val += 1)
         {
-            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromRgb(color.red(),
+            mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromRgb(color.red(),
                                                              color.green(),
                                                              val,
                                                              color.alpha()));
         }
         break;
     case ALPHA:
-        for (; val <= mMax; val += 1)
+        for (; val < max; val += 1)
         {
-            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromRgb(0,
+            mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromRgb(0,
                                                              0,
                                                              0,
                                                              val));
@@ -122,39 +141,40 @@ QLinearGradient ColorSlider::rgbGradient(const QColor &color)
 QLinearGradient ColorSlider::hsvGradient(const QColor &color)
 {
     int val = 0;
+    int max = colorSteps();
     switch (mColorType)
     {
     case HUE:
-        for (; val <= mMax; val += 1)
+        for (; val < max; val += 1)
         {
-            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromHsv(val,
+            mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromHsv(val,
                                                              255,
                                                              255,
                                                              color.alpha()));
         }
         break;
     case SAT:
-        for (; val <= mMax; val += 1)
+        for (; val < max; val += 1)
         {
-            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromHsv(color.hsvHue(),
+            mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromHsv(color.hsvHue(),
                                                              val,
                                                              color.value(),
                                                              color.alpha()));
         }
         break;
     case VAL:
-        for (; val <= mMax; val += 1)
+        for (; val < max; val += 1)
         {
-            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromHsv(color.hsvHue(),
+            mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromHsv(color.hsvHue(),
                                                              color.hsvSaturation(),
                                                              val,
                                                              color.alpha()));
         }
         break;
     case ALPHA:
-        for (; val <= mMax; val += 1)
+        for (; val < max; val += 1)
         {
-            mGradient.setColorAt(static_cast<qreal>(val) / mMax, QColor::fromHsv(0,
+            mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromHsv(0,
                                                              0,
                                                              0,
                                                              val));
@@ -293,8 +313,8 @@ void ColorSlider::drawPicker(const QColor &color)
         val = color.alphaF();
     }
 
-    const qreal pickerMaxXPos = innerSliderRect.width() - mPickerSize.width();
-    val = static_cast<int>(innerSliderRect.left() + qMax(mMin, (val * pickerMaxXPos))) + inset;
+    const qreal maxDistance = SliderGeometry::pickerMaxDistance(innerSliderRect.width(), mPickerSize.width());
+    val = static_cast<int>(innerSliderRect.left() + qMax(static_cast<qreal>(mMin), (val * maxDistance))) + inset;
 
     QPen ounterPen;
     ounterPen.setJoinStyle(Qt::MiterJoin);
@@ -333,14 +353,18 @@ void ColorSlider::drawPicker(const QColor &color)
 
 void ColorSlider::colorPicked(QPoint point)
 {
-    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), mSliderStyle.borderWidth);
+    qreal borderWidth = mSliderStyle.borderWidth;
+    QRectF innerSliderRect = SliderGeometry::contentsRect(contentsRect(), borderWidth)
+                        .adjusted(borderWidth,
+                                  borderWidth,
+                                  -borderWidth,
+                                  -borderWidth);
     QColor colorPicked = mColor;
-    int colorMax = static_cast<int>(mMax);
+    int colorMax = colorTypeMax();
 
-    int colorVal = (point.x() - (mPickerSize.width() * 0.5)) * colorMax / (sliderRect.right() - (mPickerSize.width()));
-
-    colorVal = (colorVal > colorMax) ? colorMax : colorVal;
-    colorVal = (colorVal < 0) ? 0 : colorVal;
+    qreal pickerCenter = mPickerSize.width() * 0.5;
+    int colorVal = (point.x() - pickerCenter) * colorSteps() / SliderGeometry::pickerMaxDistance(innerSliderRect.width(), mPickerSize.width());
+    colorVal = qBound(mMin, colorVal, colorMax);
 
     switch (mSpecType)
     {

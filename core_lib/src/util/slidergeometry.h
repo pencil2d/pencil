@@ -23,6 +23,7 @@ namespace SliderGeometry {
     QRectF contentsRect(const QRectF& rect, qreal borderWidth);
     qreal penStrokeInset(qreal borderWidth);
     qreal innerCornerRadius(qreal outerRadius, qreal borderWidth);
+    qreal pickerMaxDistance(qreal sliderWidth, qreal pickerWidth);
 }
 
 #endif // SLIDERGEOMETRY_H

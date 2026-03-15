@@ -36,3 +36,8 @@ qreal SliderGeometry::penStrokeInset(qreal borderWidth)
 {
     return borderWidth * 0.5;
 }
+
+qreal SliderGeometry::pickerMaxDistance(qreal sliderWidth, qreal pickerWidth)
+{
+    return sliderWidth - pickerWidth;
+}

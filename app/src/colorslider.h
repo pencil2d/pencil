@@ -46,7 +46,7 @@ public:
     explicit ColorSlider(QWidget* parent);
     ~ColorSlider() override;
 
-    void init(ColorSpecType specType, ColorType type, const QColor &color, qreal min, qreal max);
+    void init(ColorSpecType specType, ColorType type, const QColor &color);
 
     QLinearGradient setColorSpec(const QColor &color);
 
@@ -58,9 +58,6 @@ public:
 
     void setColorSpecType(ColorSpecType newType) { this->mSpecType = newType; }
     void setColorType(ColorType newType) { this->mColorType = newType; }
-
-    void setMin(qreal min) { mMin = min; }
-    void setMax(qreal max) { mMax = max; }
 
     QSize sizeHint() const override;
 
@@ -75,6 +72,9 @@ signals:
 
 private:
 
+    int colorSteps() const;
+    int colorTypeMax() const;
+
     void setupPicker();
     void drawColorBox(const QColor &color, QSize size);
     void drawPicker(const QColor &color);
@@ -87,8 +87,7 @@ private:
     QPixmap mBoxPixmapSource;
 
     QColor mColor;
-    qreal mMin = 0.0;
-    qreal mMax = 0.0;
+    int mMin = 0;
 
     QSizeF mPickerSize = QSize(-1, -1);
 
