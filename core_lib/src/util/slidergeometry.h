@@ -20,8 +20,8 @@ GNU General Public License for more details.
 #include <QRectF>
 
 namespace SliderGeometry {
-    QRectF contentsRect(const QRectF& contentRect, qreal devicePixelRatio, qreal borderWidth);
-    QRectF subPixelAdjustedRectF(const QRectF& rect, qreal devicePixelRatio, qreal borderWidth);
+    QRectF contentsRect(const QRectF& rect, qreal borderWidth);
+    qreal penStrokeInset(qreal borderWidth);
     qreal innerCornerRadius(qreal outerRadius, qreal borderWidth);
 }
 

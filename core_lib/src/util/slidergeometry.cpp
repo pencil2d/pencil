@@ -16,13 +16,15 @@ GNU General Public License for more details.
 */
 #include "slidergeometry.h"
 
-QRectF SliderGeometry::contentsRect(const QRectF& contentRect, qreal devicePixelRatio, qreal borderWidth)
+QRectF SliderGeometry::contentsRect(const QRectF& rect, qreal borderWidth)
 {
-    // For non high DPI scaling,
-    // we have to move the coordinate 0.5 pixel to account for anti-aliasing
-    // Otherwise certain lines will look blurry
+    qreal inset = SliderGeometry::penStrokeInset(borderWidth);
 
-    return SliderGeometry::subPixelAdjustedRectF(contentRect, devicePixelRatio, borderWidth);
+    return QRectF(rect.left()       + inset,
+                      rect.top()    + inset,
+                      rect.width()  - borderWidth,
+                      rect.height() - borderWidth
+                );
 }
 
 qreal SliderGeometry::innerCornerRadius(qreal outerRadius, qreal borderWidth)
@@ -30,14 +32,7 @@ qreal SliderGeometry::innerCornerRadius(qreal outerRadius, qreal borderWidth)
     return outerRadius - borderWidth;
 }
 
-QRectF SliderGeometry::subPixelAdjustedRectF(const QRectF& rect, qreal devicePixelRatio, qreal borderWidth)
+qreal SliderGeometry::penStrokeInset(qreal borderWidth)
 {
-    qreal topLeftRatio = devicePixelRatio > 1 ? 0.0 : 0.5;
-    qreal bottomRightRatio = devicePixelRatio > 1 ? 0.5 : 0.0;
-
-    return QRectF(rect.left() + borderWidth + topLeftRatio,
-                      rect.top() + borderWidth + topLeftRatio,
-                      rect.right() - borderWidth - bottomRightRatio,
-                      rect.bottom() - borderWidth - bottomRightRatio
-                );
+    return borderWidth * 0.5;
 }

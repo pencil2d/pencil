@@ -44,7 +44,7 @@ void ColorSlider::init(ColorSpecType specType, ColorType type, const QColor &col
 
 void ColorSlider::setupPicker()
 {
-    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), this->devicePixelRatioF(), mSliderStyle.borderWidth);
+    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), mSliderStyle.borderWidth);
     mPickerSize = QSizeF(10, sliderRect.bottom() - sliderRect.top() - mSliderStyle.borderWidth);
 }
 
@@ -202,7 +202,7 @@ void ColorSlider::drawColorBox(const QColor &color, QSize size)
     if (mPixmapCacheInvalid) {
         setupPicker();
 
-        QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
+        QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), mSliderStyle.borderWidth);
         mBoxPixmapSource = QPixmap(size * devicePixelRatio());
         mBoxPixmapSource.setDevicePixelRatio(devicePixelRatioF());
         mBoxPixmapSource.fill(Qt::transparent);
@@ -242,10 +242,10 @@ void ColorSlider::drawPicker(const QColor &color)
     QPainter painter(this);
     qreal val = 0;
 
-    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
-
-    qreal padding = (mSliderStyle.borderWidth * 2);
-    qreal pickerDiff = sliderRect.width() - padding - mPickerSize.width();
+    const qreal borderWidth = mSliderStyle.borderWidth;
+    const qreal inset = SliderGeometry::penStrokeInset(borderWidth);
+    const QRectF innerSliderRect = SliderGeometry::contentsRect(contentsRect(), borderWidth)
+                             .adjusted(borderWidth, borderWidth, -borderWidth, -borderWidth);
 
     switch (mSpecType)
     {
@@ -293,27 +293,35 @@ void ColorSlider::drawPicker(const QColor &color)
         val = color.alphaF();
     }
 
-    val = static_cast<int>(sliderRect.left() + mSliderStyle.borderWidth + qMax(mMin, (val * pickerDiff)));
+    const qreal pickerMaxXPos = innerSliderRect.width() - mPickerSize.width();
+    val = static_cast<int>(innerSliderRect.left() + qMax(mMin, (val * pickerMaxXPos))) + inset;
 
-    QPen pen;
-    pen.setJoinStyle(Qt::MiterJoin);
-    pen.setWidthF(mSliderStyle.borderWidth);
-    pen.setColor(QColor(0, 0, 0, 255));
+    QPen ounterPen;
+    ounterPen.setJoinStyle(Qt::MiterJoin);
+    ounterPen.setWidthF(mSliderStyle.borderWidth);
+    ounterPen.setColor(QColor(0, 0, 0, 255));
 
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(pen);
+    painter.setPen(ounterPen);
 
-    QRectF outerRect = QRectF(val,
-                              sliderRect.top() + mSliderStyle.borderWidth,
+    QRectF pickerOuterRect = QRectF(val,
+                              innerSliderRect.top(),
                               mPickerSize.width(),
-                              mPickerSize.height() - mSliderStyle.borderWidth);
-    painter.drawRoundedRect(outerRect,
+                              innerSliderRect.height());
+
+    painter.drawRoundedRect(pickerOuterRect,
                             mSliderStyle.cachedCornerRadiusX,
                             mSliderStyle.cachedCornerRadiusY,
                             Qt::AbsoluteSize);
 
-    painter.setPen(palette().dark().color());
-    painter.drawRoundedRect(outerRect.adjusted(
+    QPen innerPen;
+    innerPen.setJoinStyle(Qt::MiterJoin);
+    innerPen.setWidthF(mSliderStyle.borderWidth);
+    innerPen.setColor(palette().dark().color());
+    painter.setPen(innerPen);
+
+    // Draw inner picker
+    painter.drawRoundedRect(pickerOuterRect.adjusted(
                                 mSliderStyle.borderWidth,
                                 mSliderStyle.borderWidth,
                                 -mSliderStyle.borderWidth,
@@ -325,7 +333,7 @@ void ColorSlider::drawPicker(const QColor &color)
 
 void ColorSlider::colorPicked(QPoint point)
 {
-    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), devicePixelRatioF(), mSliderStyle.borderWidth);
+    QRectF sliderRect = SliderGeometry::contentsRect(contentsRect(), mSliderStyle.borderWidth);
     QColor colorPicked = mColor;
     int colorMax = static_cast<int>(mMax);
 
