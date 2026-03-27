@@ -88,7 +88,7 @@ QString uniqueString(int len);
  * @param path The path to convert to canonical form.
  * @return A canonical path, or as close to one as possible.
  */
-QString closestCanonicalPath(QString path);
+QString closestCanonicalPath(const QString& path);
 /**
  * Performs safety checks for paths to data directory assets.
  *
@@ -110,6 +110,6 @@ QString closestCanonicalPath(QString path);
  * @param dataDir The path to the data directory.
  * @return The closest canonical resolved path, or empty if the path did not pass validation or contains dangling symbolic links.
  */
-QString validateDataPath(QString filePath, QString dataDirPath);
+QString validateDataPath(const QString& filePath, const QString& dataDirPath);
 
 #endif // UTIL_H
