@@ -24,7 +24,7 @@ jobs:
             container: "ubuntu:16.04"
             qt: 5
           - name: Qt 5 / macOS x86_64
-            os: macos-14
+            os: macos-15-intel
             arch: x86_64
             container:
             qt: 5
@@ -49,7 +49,7 @@ jobs:
             container: "ubuntu:22.04"
             qt: 6
           - name: Qt 6 / macOS x86_64
-            os: macos-14
+            os: macos-15-intel
             arch: x86_64
             container:
             qt: 6
