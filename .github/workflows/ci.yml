@@ -24,7 +24,7 @@ jobs:
             container: "ubuntu:16.04"
             qt: 5
           - name: Qt 5 / macOS x86_64
-            os: macos-14
+            os: macos-15-intel
             arch: x86_64
             container:
             qt: 5
@@ -49,7 +49,7 @@ jobs:
             container: "ubuntu:22.04"
             qt: 6
           - name: Qt 6 / macOS x86_64
-            os: macos-14
+            os: macos-15-intel
             arch: x86_64
             container:
             qt: 6
@@ -126,12 +126,40 @@ jobs:
           team_id: ${{ secrets.APPLE_TEAM_ID }}
           certificate_identity: ${{ secrets.CODESIGN_CERT_IDENTITY }}
 
+      - name: Resolve path
+        id: resolve
+        if: runner.os != 'Linux' || matrix.qt == 5
+        shell: bash
+        env:
+          BASENAME: ${{ steps.package.outputs.output-basename }}
+        run: |
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            if [ -f "build/${BASENAME}.dmg" ]; then
+              echo "package_path=build/${BASENAME}.dmg" >> $GITHUB_OUTPUT
+            elif [ -f "build/${BASENAME}.zip" ]; then
+              echo "package_path=build/${BASENAME}.zip" >> $GITHUB_OUTPUT
+            else
+              echo "ERROR: No macOS package found"
+              exit 1
+            fi
+          else
+            if [ -f "build/${BASENAME}.zip" ]; then
+              echo "package_path=build/${BASENAME}.zip" >> $GITHUB_OUTPUT
+            elif find build -maxdepth 1 -name "${BASENAME}*" | grep -q .; then
+              FILE=$(ls build/${BASENAME}* | head -n 1)
+              echo "package_path=$FILE" >> $GITHUB_OUTPUT
+            else
+              echo "ERROR: No package found"
+              exit 1
+            fi
+          fi
+
       - name: Upload package
         if: runner.os != 'Linux' || matrix.qt == 5
         uses: actions/upload-artifact@v4
         with:
           name: ${{steps.package.outputs.output-basename}}
-          path: ${{ runner.os == 'macOS' && format('build/{0}.dmg', steps.package.outputs.output-basename) || format('build/{0}*', steps.package.outputs.output-basename) }}
+          path: ${{steps.resolve.outputs.package_path}}
       - name: Generate summary
         shell: bash
         run: >
