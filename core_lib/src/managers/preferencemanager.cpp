@@ -103,6 +103,8 @@ void PreferenceManager::loadPrefs()
     // Files
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              false).toBool());
     set(SETTING::AUTO_SAVE_NUMBER,         settings.value(SETTING_AUTO_SAVE_NUMBER,       256).toInt());
+    set(SETTING::AUTO_SAVE_BY_TIME,        settings.value(SETTING_AUTO_SAVE_BY_TIME,      false).toBool());
+    set(SETTING::AUTO_SAVE_BY_TIME_TIMER,  settings.value(SETTING_AUTO_SAVE_BY_TIME_TIMER,15).toInt());
     set(SETTING::ASK_FOR_PRESET,           settings.value(SETTING_ASK_FOR_PRESET,         false).toBool());
     set(SETTING::LOAD_MOST_RECENT,         settings.value(SETTING_LOAD_MOST_RECENT,       false).toBool());
     set(SETTING::LOAD_DEFAULT_PRESET,      settings.value(SETTING_LOAD_DEFAULT_PRESET,    true).toBool());
@@ -254,6 +256,9 @@ void PreferenceManager::set(SETTING option, int value)
         break;
     case SETTING::AUTO_SAVE_NUMBER:
         settings.setValue(SETTING_AUTO_SAVE_NUMBER, value);
+        break;
+    case SETTING::AUTO_SAVE_BY_TIME_TIMER:
+        settings.setValue(SETTING_AUTO_SAVE_BY_TIME_TIMER, value);
         break;
     case SETTING::FRAME_SIZE:
         if (value < 4) { value = 4; }
@@ -434,6 +439,9 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::AUTO_SAVE:
         settings.setValue(SETTING_AUTO_SAVE, value);
+        break;
+    case SETTING::AUTO_SAVE_BY_TIME:
+        settings.setValue(SETTING_AUTO_SAVE_BY_TIME, value);
         break;
     case SETTING::SHORT_SCRUB:
         settings.setValue(SETTING_SHORT_SCRUB, value);

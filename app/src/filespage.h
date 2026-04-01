@@ -50,6 +50,8 @@ public slots:
     void loadDefaultPreset(int b);
     void autoSaveChange(int b);
     void autoSaveNumberChange(int number);
+    void autoSaveByTimeChange(int b);
+    void autoSaveByTimeTimerChange(int number);
 
 signals:
     void clearRecentList();
