@@ -82,6 +82,7 @@ GNU General Public License for more details.
 #include "app_util.h"
 #include "presetdialog.h"
 #include "pegbaralignmentdialog.h"
+#include "autosaverbytime.h"
 
 
 #ifdef GIT_TIMESTAMP
@@ -140,6 +141,9 @@ MainWindow2::MainWindow2(QWidget* parent) :
     currentLayerChanged();
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
+
+    mAutoSaver = new autosaverbytime(mEditor->preference());
+    connect(mAutoSaver->autoSaveTimer, &QTimer::timeout, this, &MainWindow2::autoSave);
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
@@ -708,7 +712,7 @@ void MainWindow2::openStartupFile(const QString& filename)
 
     if (!filename.isEmpty() && openObject(filename))
     {
-        return;
+            return;
     }
 
     loadMostRecent() || tryLoadPreset();
@@ -1606,11 +1610,6 @@ bool MainWindow2::checkForRecoverableProjects()
 {
     FileManager fm;
     QStringList recoverables = fm.searchForUnsavedProjects();
-
-    if (recoverables.empty())
-    {
-        return false;
-    }
 
     foreach (const QString path, recoverables)
     {
