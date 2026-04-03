@@ -47,13 +47,13 @@ create_package_linux() {
 }
 
 bundle_package_linux_linuxdeployqt() {
-  ${BUILD_CMD} install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner" \
+  ${BUILD_CMD} install -Dm755 "/usr/libexec/gstreamer-1.0/gst-plugin-scanner" \
     "Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
-  local gst_executables="-executable=Pencil2D/usr/lib/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner"
+  local gst_executables="-executable=Pencil2D/usr/libexec/gstreamer-1.0/gst-plugin-scanner"
   for plugin in adpcmdec alsa app audioconvert audioparsers audioresample \
-      autodetect coreelements gsm id3demux jack mpg123 mulaw playback \
-      pulse typefindfunctions wavparse apetag; do
-    ${BUILD_CMD} install -Dm755 "/usr/lib/x86_64-linux-gnu/gstreamer-1.0/libgst${plugin}.so" \
+      autodetect coreelements gsm id3demux mpg123 mulaw playback \
+      pulseaudio typefindfunctions wavparse apetag; do
+    ${BUILD_CMD} install -Dm755 "/usr/lib64/gstreamer-1.0/libgst${plugin}.so" \
       "Pencil2D/usr/lib/gstreamer-1.0/libgst${plugin}.so"
     gst_executables="${gst_executables} -executable=Pencil2D/usr/lib/gstreamer-1.0/libgst${plugin}.so"
   done
@@ -80,7 +80,7 @@ bundle_package_linux_linuxdeploy() {
   ${BUILD_CMD} curl -fsSL https://raw.githubusercontent.com/linuxdeploy/linuxdeploy-plugin-gstreamer/refs/heads/master/linuxdeploy-plugin-gstreamer.sh -o /usr/local/bin/linuxdeploy-plugin-gstreamer
   ${BUILD_CMD} chmod 755 /usr/local/bin/linuxdeploy /usr/local/bin/linuxdeploy-plugin-qt /usr/local/bin/linuxdeploy-plugin-appimage /usr/local/bin/linuxdeploy-plugin-gstreamer
   export QMAKE=/usr/bin/qmake6
-  ${BUILD_CMD} linuxdeploy --appdir Pencil2D --plugin qt --plugin gstreamer --output appimage
+  ${BUILD_CMD} env GSTREAMER_PLUGINS_DIR=/usr/lib64/gstreamer-1.0 GSTREAMER_HELPERS_DIR=/usr/libexec/gstreamer-1.0 linuxdeploy --appdir Pencil2D --plugin qt --plugin gstreamer --output appimage
 }
 
 create_package_macos() {
@@ -93,8 +93,8 @@ create_package_macos() {
 
   echo "::group::Copy FFmpeg plugin"
   mkdir Pencil2D.app/Contents/MacOS/plugins
-  curl -fsSLo ffmpeg.7z https://evermeet.cx/ffmpeg/getrelease/7z
-  curl -fsSLo ffmpeg.7z.sig https://evermeet.cx/ffmpeg/getrelease/7z/sig
+  curl -fsSLo ffmpeg.7z https://evermeet.cx/ffmpeg/ffmpeg-8.0.1.7z
+  curl -fsSLo ffmpeg.7z.sig https://evermeet.cx/ffmpeg/ffmpeg-8.0.1.7z.sig
   mkdir -m700 ~/.gnupg
   echo "trusted-key 0x476C4B611A660874" > ~/.gnupg/gpg.conf
   curl -fsSL https://evermeet.cx/ffmpeg/0x1A660874.asc | gpg --import
@@ -159,7 +159,7 @@ create_package_windows() {
     sed "s/Culture=\"en\"/Culture=\"${culture}\"/;s/Language=\"9\"/Language=\"${lcid}\"/" ../util/installer/pencil2d.wxl > "../util/installer/pencil2d_${locale}.wxl"
     tikal.bat -m -fc ../util/installer/okf_xml_wxl -ie utf-8 -oe utf-8 -sd ../util/installer -od ../util/installer "${i}"
   done
-  local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%F)"
+  local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%Y%m%d)"
   if [ "$IS_RELEASE" = "true" ]; then
     versiondefines="-d Edition=Release -d Version=$2"
   fi
@@ -185,7 +185,7 @@ create_package_windows() {
 
 echo "Version: ${VERSION_NUMBER}"
 
-filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%F)"
+filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%Y%m%d)"
 if [ "$IS_RELEASE" = "true" ]; then
   filename_suffix="${VERSION_NUMBER}"
 fi

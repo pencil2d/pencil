@@ -55,15 +55,15 @@ void DebugDetails::appendSystemInfo()
     if (mDetails.empty() || mDetails.last() == "end")
         return;
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 4, 0)
     mDetails << "\n[System Info]\n";
-#if defined(PENCIL2D_RELEASE_BUILD)
-    mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (stable)";
-#elif defined(PENCIL2D_NIGHTLY_BUILD)
-    mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (nightly)";
-#else
-    mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (dev)";
-#endif
+    QString version(APP_VERSION);
+    if (version.startsWith("99.0.0")) {
+        mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (nightly)";
+    } else if (version == "0.0.0.0") {
+        mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (dev)";
+    } else {
+        mDetails << "&nbsp;&nbsp;Pencil2D version: " APP_VERSION " (stable)";
+    }
 
 #if defined(GIT_EXISTS)
     mDetails << "&nbsp;&nbsp;Commit: " S__GIT_COMMIT_HASH;
@@ -72,7 +72,6 @@ void DebugDetails::appendSystemInfo()
     mDetails << "&nbsp;&nbsp;Kernel: " + QSysInfo::kernelType() + ", " + QSysInfo::kernelVersion();
     mDetails << "&nbsp;&nbsp;Operating System: " + QSysInfo::prettyProductName();
     mDetails << "&nbsp;&nbsp;Language: " + QLocale::system().name();
-#endif
 }
 
 Status::Status(ErrorCode code)

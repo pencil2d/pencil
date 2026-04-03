@@ -26,8 +26,8 @@
 IDI_ICON1 ICON "pencil2d.ico"
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION APP_VERSION_RC
-PRODUCTVERSION APP_VERSION_RC
+FILEVERSION RC_APP_VERSION
+PRODUCTVERSION RC_APP_VERSION
 FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
 FILEFLAGS DEBUG_FILEFLAG|BUILD_FILEFLAG
 FILEOS VOS_NT_WINDOWS32
@@ -39,17 +39,17 @@ FILETYPE VFT_APP
         {
             VALUE "ProductName", "Pencil2D"
 #ifdef __GNUC__
-            VALUE "ProductVersion", STRINGIFY(APP_VERSION)
+            VALUE "ProductVersion", STRINGIFY(RC_APP_VERSION_STR)
 #else
-            VALUE "ProductVersion", APP_VERSION
+            VALUE "ProductVersion", RC_APP_VERSION_STR
 #endif
             VALUE "CompanyName", "The Pencil2D Team"
             VALUE "LegalCopyright", "\xA9 The Pencil2D Team"
             VALUE "FileDescription", "Pencil2D"
 #ifdef __GNUC__
-            VALUE "FileVersion", STRINGIFY(APP_VERSION)
+            VALUE "FileVersion", STRINGIFY(RC_APP_VERSION_STR)
 #else
-            VALUE "FileVersion", APP_VERSION
+            VALUE "FileVersion", RC_APP_VERSION_STR
 #endif
             VALUE "InternalName", "pencil2d"
             VALUE "OriginalFilename", "pencil2d.exe"

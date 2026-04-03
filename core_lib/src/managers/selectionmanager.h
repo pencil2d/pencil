@@ -29,6 +29,24 @@ GNU General Public License for more details.
 
 class Editor;
 
+/**
+ * @brief The SelectionManager class acts as the "Brain" of the selection system.
+ * 
+ * It is responsible for:
+ * 1. Storing the "Truth" of the selection:
+ *    - The original shape (mOriginalRect)
+ *    - The current transformation state (mSelectionTransform) including position, rotation, and scale.
+ * 
+ * 2. Performing the Math:
+ *    - Calculates new transformations based on user input from the SelectTool.
+ *    - Handles complex matrix operations for rotation and scaling.
+ * 
+ * 3. Coordinate Space Management:
+ *    - Converts points between "Screen Space" (mouse coordinates) and "Selection Space" (drawing coordinates).
+ *    - Maps operations from the UI (SelectTool) to the underlying data.
+ * 
+ * The SelectTool (the "Hand") delegates all state tracking and heavy calculation to this manager.
+ */
 class SelectionManager : public BaseManager
 {
     Q_OBJECT
@@ -43,6 +61,8 @@ public:
 
     void flipSelection(bool flipVertical);
 
+    /** @brief Defines the selection area. 
+     *  @param roundPixels Set to true for Bitmap layers to ensure integer coordinates. */
     void setSelection(QRectF rect, bool roundPixels=false);
 
     void translate(QPointF point);
@@ -54,12 +74,15 @@ public:
      *  @param state */
     void alignPositionToAxis(bool state) { mLockAxis = state; }
 
+    /** @brief Checks if the point is over a handle (corner) or body and sets the MoveMode accordingly. */
     void setMoveModeForAnchorInRange(const QPointF& point);
     MoveMode getMoveMode() const { return mMoveMode; }
     void setMoveMode(const MoveMode moveMode) { mMoveMode = moveMode; }
 
-    bool somethingSelected() const { return mOriginalRect.isValid(); }
+    bool somethingSelected() const { return mOriginalRect.isValid() || mMoveMode != MoveMode::NONE; }
 
+    /** @brief Updates the selection transform (move, scale, rotate) based on input delta.
+     *  This is the core logic for interactive manipulation. */
     void adjustSelection(const QPointF& currentPoint, const QPointF& offset, qreal rotationOffset, int rotationIncrement = 0);
 
     QTransform selectionTransform() const { return mSelectionTransform; }
@@ -99,8 +122,16 @@ public:
 
     qreal angleFromPoint(const QPointF& point, const QPointF& anchorPoint) const;
 
+    // Coordinate Space Conversions
+    // "Local Space" = The Layer/Canvas coordinate system.
+    // "Selection Space" = The local coordinate system of the selection itself (0,0 is usually top-left of un-transformed rect).
+    
+    /** @brief Maps a point from Canvas/Layer space INTO the Selection's transformed space. */
     QPointF mapToSelection(const QPointF& point) const { return mSelectionTransform.map(point); };
+    
+    /** @brief Maps a point FROM the Selection's transformed space BACK to Canvas/Layer space. */
     QPointF mapFromLocalSpace(const QPointF& point) const { return mSelectionTransform.inverted().map(point); }
+    
     QPolygonF mapToSelection(const QPolygonF& polygon) const { return mSelectionTransform.map(polygon); }
     QPolygonF mapFromLocalSpace(const QPolygonF& polygon) const { return mSelectionTransform.inverted().map(polygon); }
 

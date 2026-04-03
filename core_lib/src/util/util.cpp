@@ -16,6 +16,7 @@ GNU General Public License for more details.
 */
 #include "util.h"
 #include <QAbstractSpinBox>
+#include <QDebug>
 #include <QApplication>
 #include <QDir>
 #include <QFileInfo>
@@ -129,7 +130,7 @@ QString uniqueString(int len)
     return QString::fromUtf8(s);
 }
 
-QString closestCanonicalPath(QString path)
+QString closestCanonicalPath(const QString& path)
 {
     QString origPath = QDir(path).absolutePath();
 
@@ -156,7 +157,7 @@ QString closestCanonicalPath(QString path)
     return QDir(finalPath).absolutePath();
 }
 
-QString validateDataPath(QString filePath, QString dataDirPath)
+QString validateDataPath(const QString& filePath, const QString& dataDirPath)
 {
     // Make sure src path is relative
     if (!QFileInfo(filePath).isRelative()) return QString();
@@ -165,14 +166,32 @@ QString validateDataPath(QString filePath, QString dataDirPath)
     QString canonicalDataDirPath = closestCanonicalPath(dataDirPath);
     QString canonicalFilePath = closestCanonicalPath(QDir(dataDirPath).filePath(filePath));
 
-    if (canonicalFilePath.startsWith(canonicalDataDirPath))
+    // Bail out if either canonical path could not be resolved (e.g. dangling symlinks)
+    if (canonicalDataDirPath.isEmpty() || canonicalFilePath.isEmpty())
+    {
+        qWarning() << "validateDataPath: failed to resolve canonical path for:" << filePath;
+        return QString();
+    }
+
+    // Ensure the data dir path ends with a separator so that a prefix match
+    // cannot falsely succeed against a sibling directory with a similar name
+    // (e.g. /tmp/data matching /tmp/dataevil/...)
+    if (!canonicalDataDirPath.endsWith('/'))
+        canonicalDataDirPath.append('/');
+
+    // Use case-insensitive comparison on filesystems that are case-insensitive
+#if defined(Q_OS_WIN) || defined(Q_OS_MAC)
+    const Qt::CaseSensitivity cs = Qt::CaseInsensitive;
+#else
+    const Qt::CaseSensitivity cs = Qt::CaseSensitive;
+#endif
+    if (canonicalFilePath.startsWith(canonicalDataDirPath, cs))
     {
         return canonicalFilePath;
     }
-    else
-    {
-        // If canonicalFilePath does not start with the canonicalDataDirPath, then symlinks or '..' have made
-        // the file resolve outside of the data directory and the file should not be loaded.
-        return QString();
-    }
+
+    // If canonicalFilePath does not start with the canonicalDataDirPath, then symlinks or '..' have made
+    // the file resolve outside of the data directory and the file should not be loaded.
+    qWarning() << "validateDataPath: rejected path outside data directory:" << filePath;
+    return QString();
 }

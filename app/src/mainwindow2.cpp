@@ -91,13 +91,18 @@ GNU General Public License for more details.
 #define BUILD_DATE __DATE__
 #endif
 
-#if defined(PENCIL2D_RELEASE_BUILD)
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D v%1").arg(APP_VERSION)
-#elif defined(PENCIL2D_NIGHTLY_BUILD)
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Nightly Build %1").arg(BUILD_DATE)
-#else
-#define PENCIL_WINDOW_TITLE QString("[*]Pencil2D Development Build %1").arg(BUILD_DATE)
-#endif
+namespace {
+    QString getWindowTitle() {
+        QString version(APP_VERSION);
+        if (version.startsWith("99.0.0")) {
+            return QString("[*]Pencil2D Nightly Build %1").arg(BUILD_DATE);
+        } else if (version == "0.0.0.0") {
+            return QString("[*]Pencil2D Development Build %1").arg(BUILD_DATE);
+        } else {
+            return QString("[*]Pencil2D %1").arg(APP_VERSION);
+        }
+    }
+}
 
 
 
@@ -143,7 +148,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
 
-    setWindowTitle(PENCIL_WINDOW_TITLE);
+    setWindowTitle(getWindowTitle());
 }
 
 void MainWindow2::autoSaveTimeout(){
@@ -921,7 +926,7 @@ void MainWindow2::emptyDocumentWhenErrorOccurred()
 {
     newObject();
 
-    setWindowTitle(PENCIL_WINDOW_TITLE);
+    setWindowTitle(getWindowTitle());
     updateSaveState();
 }
 
@@ -1111,8 +1116,7 @@ void MainWindow2::newObject()
 
     closeDialogs();
 
-    setWindowTitle(PENCIL_WINDOW_TITLE);
-
+    setWindowTitle(getWindowTitle());
     updateBackupActionState();
 }
 
@@ -1136,7 +1140,7 @@ bool MainWindow2::newObjectFromPresets(int presetIndex)
     mEditor->setObject(object);
     object->setFilePath(QString());
 
-    setWindowTitle(PENCIL_WINDOW_TITLE);
+    setWindowTitle(getWindowTitle());
     updateSaveState();
     updateBackupActionState();
 

@@ -42,14 +42,16 @@ void AboutDialog::init()
 {
     QStringList devText;
 
-#if defined(PENCIL2D_RELEASE_BUILD)
-    devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
-#elif defined(PENCIL2D_NIGHTLY_BUILD)
-    devText << "Nightly Build " __DATE__;
-#else
-    devText << "Development Build " __DATE__;
-#endif
-
+    QString version(APP_VERSION);
+    if (version == "0.0.0.0") {
+        devText << "Development Build ";
+        devText << "Build date: " __DATE__;
+    } else if (version.startsWith("99.0.0")) {
+        devText << QString("Nightly Build (%1)").arg(APP_VERSION);
+        devText << "Build date: " __DATE__;
+    } else {
+        devText << tr("Version: %1", "Version Number in About Dialog").arg(APP_VERSION);
+    }
     devText << ""; // An empty line
 
 #if defined(GIT_EXISTS)
