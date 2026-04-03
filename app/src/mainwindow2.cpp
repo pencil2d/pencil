@@ -143,12 +143,17 @@ MainWindow2::MainWindow2(QWidget* parent) :
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
 
     mAutoSaver = new autosaverbytime(mEditor->preference());
-    connect(mAutoSaver->autoSaveTimer, &QTimer::timeout, this, &MainWindow2::autoSave);
+    connect(mAutoSaver, &autosaverbytime::timeout, this, &MainWindow2::autoSaveTimeout);
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
 
     setWindowTitle(getWindowTitle());
+}
+
+void MainWindow2::autoSaveTimeout(){
+    FileManager fm;
+    fm.writeToWorkingFolder(mEditor->object());
 }
 
 MainWindow2::~MainWindow2()

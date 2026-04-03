@@ -4,13 +4,13 @@ autosaverbytime::autosaverbytime(PreferenceManager* manager)
     : pref(manager)
 {
     autoSaveTimer = new QTimer();
-    autoSaveTimer->setTimerType(Qt::CoarseTimer);
-    // Interval in minutes
-    autoSaveTimer->setInterval(pref->getInt(SETTING::AUTO_SAVE_BY_TIME_TIMER) * 1000 * 60);
+    autoSaveTimer->setSingleShot(false);
+    resetTimer();
     if(pref->isOn(SETTING::AUTO_SAVE_BY_TIME))
         autoSaveTimer->start();
 
     connect(pref, &PreferenceManager::optionChanged, this, &autosaverbytime::config_changed);
+    connect(autoSaveTimer, &QTimer::timeout, this, &autosaverbytime::timer_timeout);
 }
 
 void autosaverbytime::config_changed(SETTING param){
@@ -23,7 +23,7 @@ void autosaverbytime::config_changed(SETTING param){
 
         case SETTING::AUTO_SAVE_BY_TIME_TIMER:
             autoSaveTimer->stop();
-            autoSaveTimer->setInterval(pref->getInt(SETTING::AUTO_SAVE_BY_TIME_TIMER) * 1000 * 60);
+            resetTimer();
             if(pref->isOn(SETTING::AUTO_SAVE_BY_TIME))
                 autoSaveTimer->start();
 
@@ -32,4 +32,19 @@ void autosaverbytime::config_changed(SETTING param){
         default:
             break;
     }
+}
+
+void autosaverbytime::timer_timeout(){
+    if(QGuiApplication::mouseButtons() == Qt::NoButton &&
+       QGuiApplication::keyboardModifiers() == Qt::NoModifier){
+        emit timeout();
+        resetTimer();
+    }
+    else{
+        autoSaveTimer->setInterval(1000);
+    }
+}
+
+void autosaverbytime::resetTimer(){
+    autoSaveTimer->setInterval(pref->getInt(SETTING::AUTO_SAVE_BY_TIME_TIMER) * 1000 * 60); // Interval in minutes
 }
