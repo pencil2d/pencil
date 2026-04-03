@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QTimer>
+#include <QGuiApplication>
 
 #include "preferencemanager.h"
 
@@ -12,6 +13,7 @@ class autosaverbytime : public QObject
 
 protected:
     PreferenceManager* pref;
+    void resetTimer();
 
 public:
     QTimer* autoSaveTimer;
@@ -20,6 +22,10 @@ public:
 
 public slots:
     void config_changed(SETTING);
+    void timer_timeout();
+
+signals:
+    void timeout();
 };
 
 #endif // AUTOSAVERBYTIME_H
