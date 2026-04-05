@@ -7,22 +7,22 @@
 
 #include "preferencemanager.h"
 
-class autosaverbytime : public QObject
+class AutosaverByTime : public QObject
 {
     Q_OBJECT
 
-protected:
+public:
+    AutosaverByTime(PreferenceManager*);
+
+private:
     PreferenceManager* pref;
+    QTimer autoSaveTimer;
+
     void resetTimer();
 
-public:
-    QTimer* autoSaveTimer;
-
-    autosaverbytime(PreferenceManager*);
-
 public slots:
-    void config_changed(SETTING);
-    void timer_timeout();
+    void configChanged(SETTING);
+    void timerTimeout();
 
 signals:
     void timeout();

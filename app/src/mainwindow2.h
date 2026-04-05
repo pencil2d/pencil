@@ -45,7 +45,7 @@ class PegBarAlignmentDialog;
 class AddTransparencyToPaperDialog;
 class RepositionFramesDialog;
 class StatusBar;
-class autosaverbytime;
+class AutosaverByTime;
 enum class SETTING;
 
 
@@ -177,7 +177,7 @@ private:
     AddTransparencyToPaperDialog* mAddTranspToPaper = nullptr;
 
     // Autosave handler
-    autosaverbytime* mAutoSaver;
+    AutosaverByTime* mAutoSaver;
 
     void createToolbars();
 private:
