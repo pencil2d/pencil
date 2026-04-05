@@ -142,8 +142,8 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
 
-    mAutoSaver = new autosaverbytime(mEditor->preference());
-    connect(mAutoSaver, &autosaverbytime::timeout, this, &MainWindow2::autoSaveTimeout);
+    mAutoSaver = new AutosaverByTime(mEditor->preference());
+    connect(mAutoSaver, &AutosaverByTime::timeout, this, &MainWindow2::autoSaveTimeout);
 
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
@@ -717,7 +717,7 @@ void MainWindow2::openStartupFile(const QString& filename)
 
     if (!filename.isEmpty() && openObject(filename))
     {
-            return;
+        return;
     }
 
     loadMostRecent() || tryLoadPreset();

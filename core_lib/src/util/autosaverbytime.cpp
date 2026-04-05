@@ -1,31 +1,30 @@
 #include "autosaverbytime.h"
 
-autosaverbytime::autosaverbytime(PreferenceManager* manager)
+AutosaverByTime::AutosaverByTime(PreferenceManager* manager)
     : pref(manager)
 {
-    autoSaveTimer = new QTimer();
-    autoSaveTimer->setSingleShot(false);
+    autoSaveTimer.setSingleShot(false);
     resetTimer();
     if(pref->isOn(SETTING::AUTO_SAVE_BY_TIME))
-        autoSaveTimer->start();
+        autoSaveTimer.start();
 
-    connect(pref, &PreferenceManager::optionChanged, this, &autosaverbytime::config_changed);
-    connect(autoSaveTimer, &QTimer::timeout, this, &autosaverbytime::timer_timeout);
+    connect(pref, &PreferenceManager::optionChanged, this, &AutosaverByTime::configChanged);
+    connect(&autoSaveTimer, &QTimer::timeout, this, &AutosaverByTime::timerTimeout);
 }
 
-void autosaverbytime::config_changed(SETTING param){
+void AutosaverByTime::configChanged(SETTING param){
     switch(param){
 
         case SETTING::AUTO_SAVE_BY_TIME:
-            if(pref->isOn(SETTING::AUTO_SAVE_BY_TIME)) autoSaveTimer->start();
-            else autoSaveTimer->stop();
+            if(pref->isOn(SETTING::AUTO_SAVE_BY_TIME)) autoSaveTimer.start();
+            else autoSaveTimer.stop();
             break;
 
         case SETTING::AUTO_SAVE_BY_TIME_TIMER:
-            autoSaveTimer->stop();
+            autoSaveTimer.stop();
             resetTimer();
             if(pref->isOn(SETTING::AUTO_SAVE_BY_TIME))
-                autoSaveTimer->start();
+                autoSaveTimer.start();
 
             break;
 
@@ -34,17 +33,17 @@ void autosaverbytime::config_changed(SETTING param){
     }
 }
 
-void autosaverbytime::timer_timeout(){
+void AutosaverByTime::timerTimeout(){
     if(QGuiApplication::mouseButtons() == Qt::NoButton &&
        QGuiApplication::keyboardModifiers() == Qt::NoModifier){
         emit timeout();
         resetTimer();
     }
     else{
-        autoSaveTimer->setInterval(1000);
+        autoSaveTimer.setInterval(1000);
     }
 }
 
-void autosaverbytime::resetTimer(){
-    autoSaveTimer->setInterval(pref->getInt(SETTING::AUTO_SAVE_BY_TIME_TIMER) * 1000 * 60); // Interval in minutes
+void AutosaverByTime::resetTimer(){
+    autoSaveTimer.setInterval(pref->getInt(SETTING::AUTO_SAVE_BY_TIME_TIMER) * 1000 * 60); // Interval in minutes
 }
