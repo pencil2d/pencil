@@ -151,7 +151,8 @@ MainWindow2::MainWindow2(QWidget* parent) :
     setWindowTitle(getWindowTitle());
 }
 
-void MainWindow2::autoSaveTimeout(){
+void MainWindow2::autoSaveTimeout()
+{
     FileManager fm;
     fm.writeToWorkingFolder(mEditor->object());
 }

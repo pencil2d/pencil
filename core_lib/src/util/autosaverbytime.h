@@ -14,18 +14,19 @@ class AutosaverByTime : public QObject
 public:
     AutosaverByTime(PreferenceManager*);
 
-private:
-    PreferenceManager* pref;
-    QTimer autoSaveTimer;
-
-    void resetTimer();
-
 public slots:
     void configChanged(SETTING);
     void timerTimeout();
 
 signals:
     void timeout();
+
+private:
+    void resetTimer();
+    
+    PreferenceManager* mPref = nullptr;
+    QTimer mAutoSaveTimer;
+
 };
 
 #endif // AUTOSAVERBYTIME_H
