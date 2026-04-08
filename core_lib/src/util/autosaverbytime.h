@@ -12,7 +12,7 @@ class AutosaverByTime : public QObject
     Q_OBJECT
 
 public:
-    AutosaverByTime(PreferenceManager*);
+    explicit AutosaverByTime(PreferenceManager*);
 
 public slots:
     void configChanged(SETTING);
