@@ -177,7 +177,7 @@ private:
     AddTransparencyToPaperDialog* mAddTranspToPaper = nullptr;
 
     // Autosave handler
-    AutosaverByTime* mAutoSaver;
+    AutosaverByTime* mAutoSaver = nullptr;
 
     void createToolbars();
 private:
