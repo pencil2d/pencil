@@ -174,8 +174,9 @@ void MoveKeyFramesCommand::undo()
     UndoRedoCommand::undo();
 
     for (int position : qAsConst(positions)) {
-        undoLayer->moveKeyFrame(position + frameOffset, -frameOffset);
+        undoLayer->setFrameSelected(position, true);
     }
+    undoLayer->moveSelectedFrames(-frameOffset);
 
     emit editor()->framesModified();
 }
@@ -193,9 +194,14 @@ void MoveKeyFramesCommand::redo()
     // Ignore automatic redo when added to undo stack
     if (isFirstRedo()) { setFirstRedo(false); return; }
 
-    for (int position : qAsConst(positions)) {
-        redoLayer->moveKeyFrame(position, frameOffset);
+    QList<int> newPositions = positions;
+
+
+    for (int position : qAsConst(newPositions)) {
+        redoLayer->setFrameSelected(position, true);
     }
+
+    redoLayer->moveSelectedFrames(frameOffset);
 
     emit editor()->framesModified();
 }
