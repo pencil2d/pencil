@@ -16,8 +16,6 @@ _User Showcase Reel 2022_
 
 ## Download
 
-### Pencil2D 0.7.0 (12 Jul 2024)
-
 Download Pencil2D from the [Official Website][p2d-download] or [Github releases][gh-release].
 
 [p2d-download]: https://www.pencil2d.org/download/
@@ -25,13 +23,13 @@ Download Pencil2D from the [Official Website][p2d-download] or [Github releases]
 
 ### Nightly Builds
 
-Nightly builds are the bleeding edge versions of Pencil2D, which contains the most recent fixes and features. They are not as stable as the official releases, but they are a great way to test the latest features and help us find bugs.
+Nightly builds are bleeding-edge versions of Pencil2D that include the most recent fixes and features. They are not as stable as the official releases, but they are a great way to test the latest features and help us find bugs.
 
 [Download Nightly Buildls](https://www.pencil2d.org/download/nightly/)
 
 ## Using Pencil2D
 
-Pencil2D comes with a Quick Reference that you can use to familiarize yourself with the tools and functions at your disposal. You can access it through the main menu: Help > Quick Reference Guide.
+Pencil2D includes a Quick Reference to help you familiarise yourself with the tools and functions available. You can access it through the main menu: Help > Quick Reference Guide.
 
 We encourage you to visit our [User Manual][user-man] for a quick guide for novice users, then play around with the program – it's fun!
 

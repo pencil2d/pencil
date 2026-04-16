@@ -29,6 +29,7 @@ GNU General Public License for more details.
 #include "editor.h"
 #include "keyframe.h"
 #include "layermanager.h"
+#include "undoredomanager.h"
 #include "viewmanager.h"
 #include "object.h"
 #include "playbackmanager.h"
@@ -730,7 +731,15 @@ void TimeLineTrackList::mouseReleaseEvent(QMouseEvent* event)
             int posUnderCursor = getFrameNumber(mMousePressX);
             int offset = frameNumber - posUnderCursor;
 
-            currentLayer->moveSelectedFrames(offset);
+            if (currentLayer->canMoveSelectedFramesToOffset(offset)) {
+                SAVESTATE_ID saveStateId = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MOVE);
+                UserSaveState userState;
+                userState.moveFramesState = MoveFramesSaveState(offset, currentLayer->selectedKeyFramesPositions());
+                mEditor->undoRedo()->addUserState(saveStateId, userState);
+
+                currentLayer->moveSelectedFrames(offset);
+                mEditor->undoRedo()->record(saveStateId, tr("Move Frames"));
+            }
 
             mEditor->layers()->notifyAnimationLengthChanged();
             emit mEditor->framesModified();
