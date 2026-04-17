@@ -107,8 +107,6 @@ private:
 
     LayerManager* mLayerManager = nullptr;
 
-    QTimer* mScrollingStoppedTimer = nullptr;
-
     QToolButton* mLayerDeleteButton = nullptr;
     int mLastUpdatedFrame = 0;
 };

@@ -215,9 +215,6 @@ void TimeLine::initUI()
     timeLineContent->setLayout(lay);
     setWidget(timeLineContent);
 
-    mScrollingStoppedTimer = new QTimer();
-    mScrollingStoppedTimer->setSingleShot(true);
-
     mLayerManager = editor()->layers();
 
     setWindowFlags(Qt::WindowStaysOnTopHint);
@@ -323,8 +320,6 @@ void TimeLine::wheelEvent(QWheelEvent* event)
 
 void TimeLine::onScrollbarValueChanged(int value)
 {
-    // After the scrollbar has been updated, prepare to trigger stopped event
-    mScrollingStoppedTimer->start(150);
     mLayerScrollArea->verticalScrollBar()->setValue(value);
     mTrackScrollArea->verticalScrollBar()->setValue(value);
 }
