@@ -27,7 +27,6 @@ GNU General Public License for more details.
 #include "playbackmanager.h"
 
 #include <QMouseEvent>
-#include <QApplication>
 #include <QDebug>
 
 TimeLineTrackHeaderWidget::TimeLineTrackHeaderWidget(TimeLine* timeLine, Editor* editor)
@@ -46,7 +45,7 @@ void TimeLineTrackHeaderWidget::paintEvent(QPaintEvent*)
 {
     QPainter painter(this);
 
-    const QPalette palette = QApplication::palette();
+    const QPalette palette = this->palette();
     paintBackground(painter, palette);
     if (!mEditor->playback()->isPlaying()) {
         paintOnionSkin(painter);
