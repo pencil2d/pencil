@@ -92,44 +92,36 @@ int TimeLineLayerList::getLayerCellY(int layerNumber) const
 
 void TimeLineLayerList::updateContent()
 {
-    mRedrawContent = true;
+    mPixmapCacheInvalid = true;
     update();
 }
 
-void TimeLineLayerList::drawContent()
-{
-    QPainter painter(&mPixmapCache);
-
-    // grey background of the view
-    const QPalette palette = QApplication::palette();
-    painter.setPen(Qt::NoPen);
-    painter.setBrush(palette.color(QPalette::Base));
-    painter.drawRect(QRect(0, 0, width(), height()));
-
-    mRedrawContent = false;
-}
-
-void TimeLineLayerList::paintEvent(QPaintEvent*)
+void TimeLineLayerList::paintEvent(QPaintEvent* event)
 {
     QPainter painter(this);
 
-    if (mPixmapCache.isNull() || mRedrawContent)
+    if (mPixmapCacheInvalid)
     {
-        drawContent();
+        mPixmapCache = QPixmap(event->rect().size() * devicePixelRatioF());
+        mPixmapCache.fill(Qt::transparent);
+        mPixmapCache.setDevicePixelRatio(this->devicePixelRatioF());
+
+        QPainter painter(&mPixmapCache);
+
+        // grey background of the view
+        const QPalette palette = QApplication::palette();
+        painter.setPen(Qt::NoPen);
+        painter.setBrush(palette.color(QPalette::Base));
+        painter.drawRect(QRect(0, 0, width(), height()));
+
+        mPixmapCacheInvalid = false;
     }
-    if (!mPixmapCache.isNull())
-    {
-        painter.drawPixmap(QPoint(0, 0), mPixmapCache);
-    }
+
+    painter.drawPixmap(QPoint(0, 0), mPixmapCache);
 }
 
 void TimeLineLayerList::resizeEvent(QResizeEvent* event)
 {
-    if (event->size() != mPixmapCache.size()) {
-        mPixmapCache = QPixmap(event->size() * devicePixelRatioF());
-        mPixmapCache.fill(Qt::transparent);
-        mPixmapCache.setDevicePixelRatio(this->devicePixelRatioF());
-    }
     setMinimumHeight(mEditor->layers()->count() * mLayerHeight);;
 
     const QList<TimeLineLayerCell*> layerCells = mLayerCells;

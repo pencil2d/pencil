@@ -79,8 +79,6 @@ private:
 
     int getDragToLayerNumber(int y, int gutterPositionY) const;
 
-    void drawContent();
-
     TimeLine* mTimeLine = nullptr;
     Editor* mEditor = nullptr; // the editor for which this timeLine operates
     PreferenceManager* mPrefs = nullptr;
@@ -90,7 +88,7 @@ private:
     int mGutterPositionY = -1;
     int mFromLayer = 0;
 
-    bool mRedrawContent = false;
+    bool mPixmapCacheInvalid = true;
     int mLayerHeight = 20;
 
     QList<TimeLineLayerCell*> mLayerCells;
