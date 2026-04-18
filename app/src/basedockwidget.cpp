@@ -17,6 +17,7 @@ GNU General Public License for more details.
 
 #include <QLayout>
 #include <QResizeEvent>
+#include <QToolBar>
 
 #include "basedockwidget.h"
 #include "platformhandler.h"
@@ -63,9 +64,14 @@ void BaseDockWidget::lock(bool locked)
     // nullptr means removing the custom title bar and restoring the default one
 
     if (locked) {
-        setTitleBarWidget(mNoTitleBarWidget);
+        if (mTitleBarWidget->hasChildWidget()) {
+            mTitleBarWidget->lock(locked);
+        } else {
+            setTitleBarWidget(mNoTitleBarWidget);
+        }
     } else {
         setTitleBarWidget(mTitleBarWidget);
+        mTitleBarWidget->lock(locked);
     }
 
     mLocked = locked;
@@ -75,6 +81,21 @@ void BaseDockWidget::setTitle(const QString& title)
 {
     if (!mTitleBarWidget) { return; }
     mTitleBarWidget->setTitle(title);
+}
+
+void BaseDockWidget::setWidgetInTitleBarArea(QWidget* toolbar)
+{
+    if (mTitleBarWidget) {
+        mTitleBarWidget->setChildWidget(toolbar);
+    }
+}
+
+QWidget* BaseDockWidget::titleBarWidget() const
+{
+    if (mTitleBarWidget) {
+        return mTitleBarWidget;
+    }
+    return nullptr;
 }
 
 void BaseDockWidget::resizeEvent(QResizeEvent *event)
