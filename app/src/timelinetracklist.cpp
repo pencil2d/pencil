@@ -314,7 +314,7 @@ void TimeLineTrackList::paintFrames(QPainter& painter, QColor trackCol, const La
 {
     painter.setPen(QPen(QBrush(QColor(40, 40, 40)), 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
 
-    int recTop = y + 1;
+    int recTop = y + 2;
     int standardWidth = frameSize - 2;
 
     int recHeight = height - 4;
@@ -397,7 +397,7 @@ void TimeLineTrackList::paintSelectedFrames(QPainter& painter, const Layer* laye
     int standardWidth = mFrameSize - 2;
     int recWidth = standardWidth;
     int recHeight = mLayerHeight - 4;
-    int recTop = getCellY(layerIndex) + 1;
+    int recTop = getCellY(layerIndex) + 2;
 
     painter.save();
     for (int framePos : layer->getSelectedFramesByPos()) {
@@ -460,15 +460,16 @@ void TimeLineTrackList::paintEvent(QPaintEvent*)
     KeyFrame* keyFrame = currentLayer->getKeyFrameWhichCovers(currentFrame);
     if (keyFrame != nullptr)
     {
+        int recTop = getCellY(mEditor->currentLayerIndex()) + 2;
         int recWidth = keyFrame->length() == 1 ? mFrameSize - 2 : mFrameSize * keyFrame->length();
         int recLeft = getFrameX(keyFrame->pos()) - (mFrameSize - 2);
-        paintCurrentFrameBorder(painter, recLeft, getCellY(mEditor->currentLayerIndex()) + 1, recWidth, mLayerHeight - 4);
+        paintCurrentFrameBorder(painter, recLeft, recTop, recWidth, mLayerHeight - 4);
     }
 
     if (!mMovingFrames && mLayerPosMoveY != -1 && mLayerPosMoveY == mEditor->currentLayerIndex())
     {
         // This is terrible but well...
-        int recTop = getCellY(mLayerPosMoveY) + 1;
+        int recTop = getCellY(mLayerPosMoveY) + 2;
         int standardWidth = mFrameSize - 2;
         int recHeight = mLayerHeight - 4;
 
