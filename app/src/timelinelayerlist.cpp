@@ -18,9 +18,6 @@ GNU General Public License for more details.
 
 #include "timelinelayerlist.h"
 
-#include <QApplication>
-#include <QDebug>
-
 #include "editor.h"
 #include "layermanager.h"
 #include "preferencemanager.h"
@@ -109,7 +106,7 @@ void TimeLineLayerList::paintEvent(QPaintEvent* event)
         QPainter painter(&mPixmapCache);
 
         // grey background of the view
-        const QPalette palette = QApplication::palette();
+        const QPalette palette = this->palette();
         painter.setPen(Qt::NoPen);
         painter.setBrush(palette.color(QPalette::Base));
         painter.drawRect(QRect(0, 0, width(), height()));
