@@ -51,8 +51,6 @@ void TimeLineTrackHeaderWidget::paintEvent(QPaintEvent*)
         paintOnionSkin(painter);
     }
     paintTicks(painter, palette);
-    paintSplitter(painter, palette);
-
     paintScrubber(painter, palette);
 }
 
@@ -77,16 +75,6 @@ void TimeLineTrackHeaderWidget::paintBackground(QPainter& painter, const QPalett
     painter.setPen(Qt::NoPen);
     painter.setBrush(palette.color(QPalette::Base));
     painter.drawRect(QRect(0, 0, width() - 1, 0));
-}
-
-void TimeLineTrackHeaderWidget::paintSplitter(QPainter& painter, const QPalette& palette) const
-{
-    // --- draw bottom line splitter for track bar
-    QPen pen;
-    pen.setBrush(palette.color(QPalette::Mid));
-    pen.setWidthF(1);
-    painter.setPen(pen);
-    painter.drawLine(0, rect().bottom(), width() - 1, rect().bottom());
 }
 
 void TimeLineTrackHeaderWidget::paintOnionSkin(QPainter& painter) const

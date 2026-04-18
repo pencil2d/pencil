@@ -47,7 +47,6 @@ private:
     void paintBackground(QPainter& painter, const QPalette& palette) const;
     void paintTicks(QPainter& painter, const QPalette& palette) const;
     void paintScrubber(QPainter& painter, const QPalette& palette) const;
-    void paintSplitter(QPainter& painter, const QPalette& palette) const;
 
     int getFrameNumber(int x) const;
     int getFrameX(int frameNumber) const;
