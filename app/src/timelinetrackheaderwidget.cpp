@@ -178,16 +178,17 @@ void TimeLineTrackHeaderWidget::paintTicks(QPainter& painter, const QPalette& pa
     painter.setPen(palette.color(QPalette::Text));
     painter.setBrush(palette.brush(QPalette::Text));
     int fps = mEditor->playback()->fps();
-    for (int i = mScrollOffsetX; i < mScrollOffsetX + (width()) / mFrameSize; i++)
+
+    // Start drawing at frame 1
+    for (int i = mScrollOffsetX + 1; i < mScrollOffsetX + (width()) / mFrameSize; i += 1)
     {
-        // line x pos + some offset
-        const int lineX = getFrameX(i + 1);
-        if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
+        const int lineX = getFrameX(i);
+        if (i >= mTimeLine->getRangeLower() && i <= mTimeLine->getRangeUpper())
         {
             painter.setPen(Qt::NoPen);
             painter.setBrush(palette.color(QPalette::Highlight));
 
-            painter.drawRect(lineX, 1, mFrameSize + 1, 2);
+            painter.drawRect(lineX, 1, mFrameSize, 2);
 
             painter.setPen(palette.color(QPalette::Text));
             painter.setBrush(palette.brush(QPalette::Text));
@@ -202,10 +203,10 @@ void TimeLineTrackHeaderWidget::paintTicks(QPainter& painter, const QPalette& pa
         {
             painter.drawLine(lineX, 1, lineX, 3);
         }
-        if (i == 0 || i % fps == fps - 1)
+        if (i == 0 || i % fps == 0)
         {
             int incr = (i < 9) ? 4 : 0; // poor man’s text centering
-            painter.drawText(QPoint(lineX + incr, 15), QString::number(i + 1));
+            painter.drawText(QPoint(lineX + incr, 15), QString::number(i));
         }
     }
 }
