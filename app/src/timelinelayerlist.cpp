@@ -36,7 +36,7 @@ TimeLineLayerList::TimeLineLayerList(TimeLine* parent, Editor* editor) : QWidget
     mEditor = editor;
     mPrefs = editor->preference();
 
-    setMinimumSize(500, 4 * mLayerHeight);
+    setMinimumSize(500, mLayerHeight);
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
     setAttribute(Qt::WA_OpaquePaintEvent, false);
     setMouseTracking(true);
