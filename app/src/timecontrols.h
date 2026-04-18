@@ -29,7 +29,7 @@ class Editor;
 class PreferenceManager;
 class TimeLine;
 
-class TimeControls : public QToolBar
+class TimeControls : public QWidget
 {
     Q_OBJECT
 
@@ -77,12 +77,12 @@ private:
     void smpteText();
 
 private:
-    QPushButton* mPlayButton = nullptr;
-    QPushButton* mJumpToEndButton = nullptr;
-    QPushButton* mJumpToStartButton = nullptr;
-    QPushButton* mLoopButton = nullptr;
-    QPushButton* mSoundButton = nullptr;
-    QPushButton* mSoundScrubButton = nullptr;
+    QToolButton* mPlayButton = nullptr;
+    QToolButton* mJumpToEndButton = nullptr;
+    QToolButton* mJumpToStartButton = nullptr;
+    QToolButton* mLoopButton = nullptr;
+    QToolButton* mSoundButton = nullptr;
+    QToolButton* mSoundScrubButton = nullptr;
     QSpinBox*    mFpsBox = nullptr;
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
@@ -93,7 +93,6 @@ private:
     QAction*     mOnlyFramesAction = nullptr;
     QAction*     mSmpteAction = nullptr;
     QAction*     mSffAction = nullptr;
-    QAction*     mTimecodeLabelAction = nullptr;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
