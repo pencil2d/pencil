@@ -50,7 +50,7 @@ TimeLineLayerList::~TimeLineLayerList()
 {
 }
 
-void TimeLineLayerList::loadSetting(SETTING setting)
+void TimeLineLayerList::loadSetting(SETTING)
 {
     updateContent();
 }
