@@ -126,30 +126,27 @@ jobs:
 
       - name: Resolve path
         id: resolve
-        if: runner.os != 'Linux' || matrix.qt == 5
         shell: bash
         env:
           BASENAME: ${{ steps.package.outputs.output-basename }}
         run: |
           if [ "$RUNNER_OS" = "macOS" ]; then
-            if [ -f "build/${BASENAME}.dmg" ]; then
-              echo "package_path=build/${BASENAME}.dmg" >> $GITHUB_OUTPUT
-            elif [ -f "build/${BASENAME}.zip" ]; then
-              echo "package_path=build/${BASENAME}.zip" >> $GITHUB_OUTPUT
-            else
-              echo "ERROR: No macOS package found"
-              exit 1
-            fi
+            for ext in dmg zip; do
+              if [ -f "build/${BASENAME}.${ext}" ]; then
+                echo "package_path=build/${BASENAME}.${ext}" >> $GITHUB_OUTPUT
+                exit 0
+              fi
+            done
+            
+            echo "ERROR: No macOS package found"
+            exit 1
           else
-            if [ -f "build/${BASENAME}.zip" ]; then
-              echo "package_path=build/${BASENAME}.zip" >> $GITHUB_OUTPUT
-            elif find build -maxdepth 1 -name "${BASENAME}*" | grep -q .; then
-              FILE=$(ls build/${BASENAME}* | head -n 1)
-              echo "package_path=$FILE" >> $GITHUB_OUTPUT
-            else
+            files=(build/${BASENAME}*)
+            if [ ! -e "${files[0]}" ]; then
               echo "ERROR: No package found"
               exit 1
             fi
+            echo "package_path=build/${BASENAME}*" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload package
