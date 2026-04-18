@@ -114,7 +114,7 @@ void TimeLine::initUI()
     addLayerButton->setMenu(layerMenu);
     addLayerButton->setPopupMode(QToolButton::InstantPopup);
 
-    mLayerScrollArea = new QScrollArea();
+    mLayerScrollArea = new QScrollArea(this);
     mLayerScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mLayerScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mLayerScrollArea->setWidgetResizable(true);
@@ -122,7 +122,8 @@ void TimeLine::initUI()
     mLayerScrollArea->setFocusPolicy(Qt::FocusPolicy::NoFocus);
     mLayerScrollArea->horizontalScrollBar()->setEnabled(false);
 
-    mTrackScrollArea = new QScrollArea();
+
+    mTrackScrollArea = new QScrollArea(this);
     mTrackScrollArea->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
     mTrackScrollArea->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     mTrackScrollArea->setWidgetResizable(true);
@@ -338,7 +339,8 @@ void TimeLine::updateFrame(int frameNumber)
 
 void TimeLine::updateVerticalScrollbarPageCount(int numberOfLayers)
 {
-    int pageDisplay = mLayerScrollArea->height() / mLayerList->getLayerHeight();
+    Q_ASSERT(mLayerScrollArea->height() == mTrackScrollArea->height());
+    int pageDisplay = mTrackScrollArea->height() / mLayerList->getLayerHeight();
 
     QScrollBar* layerScrollBar = mLayerScrollArea->verticalScrollBar();
     QScrollBar* trackScrollBar = mTrackScrollArea->verticalScrollBar();

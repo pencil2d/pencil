@@ -49,7 +49,7 @@ TimeLineTrackList::TimeLineTrackList(TimeLine* parent, Editor* editor) : QWidget
     mbShortScrub = mPrefs->isOn(SETTING::SHORT_SCRUB);
     mDrawFrameNumber = mPrefs->isOn(SETTING::DRAW_LABEL);
 
-    setMinimumSize(500, 4 * mLayerHeight);
+    setMinimumSize(500, mLayerHeight);
     setSizePolicy(QSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding));
     setAttribute(Qt::WA_OpaquePaintEvent, false);
     setMouseTracking(true);
