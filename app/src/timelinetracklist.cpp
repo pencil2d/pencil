@@ -664,6 +664,7 @@ void TimeLineTrackList::mouseMoveEvent(QMouseEvent* event)
 {
     mMouseMoveX = event->pos().x();
     mFramePosMoveX = getFrameNumber(mMouseMoveX);
+    mLayerPosMoveY = getCellNumber(event->pos().y());
 
     if (primaryButton == Qt::MiddleButton)
     {
