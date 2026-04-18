@@ -181,7 +181,7 @@ void TimeLineTrackHeaderWidget::paintTicks(QPainter& painter, const QPalette& pa
     for (int i = mScrollOffsetX; i < mScrollOffsetX + (width()) / mFrameSize; i++)
     {
         // line x pos + some offset
-        const int lineX = getFrameX(i) + 1;
+        const int lineX = getFrameX(i + 1);
         if (i + 1 >= mTimeLine->getRangeLower() && i < mTimeLine->getRangeUpper())
         {
             painter.setPen(Qt::NoPen);
