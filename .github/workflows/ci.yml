@@ -126,7 +126,6 @@ jobs:
 
       - name: Resolve path
         id: resolve
-        if: runner.os != 'Linux' || matrix.qt == 5
         shell: bash
         env:
           BASENAME: ${{ steps.package.outputs.output-basename }}
@@ -141,15 +140,11 @@ jobs:
               exit 1
             fi
           else
-            if [ -f "build/${BASENAME}.zip" ]; then
-              echo "package_path=build/${BASENAME}.zip" >> $GITHUB_OUTPUT
-            elif find build -maxdepth 1 -name "${BASENAME}*" | grep -q .; then
-              FILE=$(ls build/${BASENAME}* | head -n 1)
-              echo "package_path=$FILE" >> $GITHUB_OUTPUT
-            else
+            if !find build -maxdepth 1 -name "${BASENAME}*" | grep -q .; then
               echo "ERROR: No package found"
               exit 1
             fi
+            echo "package_path=build/${BASENAME}*" >> $GITHUB_OUTPUT
           fi
 
       - name: Upload package
