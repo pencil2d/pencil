@@ -76,7 +76,8 @@ TimeCodeControlWidget::TimeCodeControlWidget(TimeCodeControls* controls, QWidget
         showFrames(toggled);
     });
 
-    connect(timecodeComboBox, &QComboBox::currentIndexChanged, this, [this, controls](int index) {
+    auto comboBoxValueChanged = static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged);
+    connect(timecodeComboBox, comboBoxValueChanged, this, [this, controls](int index) {
         auto timecodeKind = controls->timecodeKindFromInt(index);
 
         setTimecodeTimerKind(timecodeKind);
