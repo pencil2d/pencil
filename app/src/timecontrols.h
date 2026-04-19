@@ -66,7 +66,6 @@ public slots:
 private:
     void showTimecodePanel();
     void updateTimecode();
-    void updateTimecodeToolTip(TimecodeKind kind);
 
     void showFramesInTimecode(bool shown);
     void showTimecode(bool shown);

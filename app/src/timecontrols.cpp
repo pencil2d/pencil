@@ -70,6 +70,7 @@ void TimeControls::initUI()
     mTimecodeLabel->setContentsMargins(2, 0, 0, 0);
     mTimecodeLabel->setAlignment(Qt::AlignTrailing | Qt::AlignVCenter);
     mTimecodeLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    mTimecodeLabel->setToolTip(tr("Shows the current time code"));
 
     mTimecodeControls.enabled = mEditor->preference()->isOn(SETTING::TIMECODE_ON);
     mTimecodeControls.kind = mTimecodeControls.timecodeKindFromInt(mEditor->preference()->getInt(SETTING::TIMECODE_KIND));
@@ -156,7 +157,6 @@ void TimeControls::initUI()
 void TimeControls::updateTimecode()
 {
     updateTimecodeLabel(mEditor->currentFrame());
-    updateTimecodeToolTip(mTimecodeControls.kind);
 }
 
 void TimeControls::updateUI()
@@ -184,21 +184,6 @@ void TimeControls::setEditor(Editor* editor)
 {
     Q_ASSERT(editor != nullptr);
     mEditor = editor;
-}
-
-void TimeControls::updateTimecodeToolTip(TimecodeKind kind)
-{
-    switch (kind)
-    {
-    case TimecodeKind::SMPTE:
-        mTimecodeLabel->setToolTip(tr("Timecode format MM:SS:FF"));
-        break;
-    case TimecodeKind::SFF:
-        mTimecodeLabel->setToolTip(tr("Timecode format S:FF"));
-        break;
-    default:
-        mTimecodeLabel->setToolTip("");
-    }
 }
 
 void TimeControls::updateTimecodeLabel(int frame)

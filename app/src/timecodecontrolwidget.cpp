@@ -53,6 +53,7 @@ TimeCodeControlWidget::TimeCodeControlWidget(TimeCodeControls* controls, QWidget
     QComboBox* timecodeComboBox = new QComboBox(this);
 
     QVBoxLayout* groupBoxVBoxLayout = new QVBoxLayout();
+    groupBoxVBoxLayout->setContentsMargins(4,4,4,4);
     optionsGroupBox->setLayout(groupBoxVBoxLayout);
 
     groupBoxVBoxLayout->addWidget(showFramesCheckBox);
