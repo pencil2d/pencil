@@ -276,9 +276,8 @@ void TimeControls::showTimecodePanel()
 {
     mTimeCodeWidget = new TimeCodeControlWidget(&mTimecodeControls, this);
     mTimeCodeWidget->setAttribute(Qt::WA_DeleteOnClose);
-    mTimeCodeWidget->setPalette(palette());
     mTimeCodeWidget->show();
-    mTimeCodeWidget->move(mapToGlobal(pos()));
+    mTimeCodeWidget->move(QCursor::pos());
 
     connect(mTimeCodeWidget, &TimeCodeControlWidget::timecodeUpdated, this, [this] {
         updateTimecode();
