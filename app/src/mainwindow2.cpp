@@ -231,8 +231,10 @@ void MainWindow2::createDockWidgets()
 
     for (BaseDockWidget* w : mDockWidgets)
     {
-        w->setFloating(false);
-        w->show();
+        if (w->isFloating()) {
+            w->show();
+            w->raise();
+        }
         w->updateUI();
     }
 }
