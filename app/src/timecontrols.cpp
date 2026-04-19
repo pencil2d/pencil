@@ -22,6 +22,7 @@ GNU General Public License for more details.
 #include <QMenu>
 #include <QDebug>
 #include <QSpacerItem>
+#include <QFontDatabase>
 #include "editor.h"
 #include "playbackmanager.h"
 #include "layermanager.h"
@@ -181,6 +182,10 @@ void TimeControls::setupTimeCodeMenu()
     mTimeCode.timecodeButton->setStyleSheet("::menu-indicator{ image: none; }");
     mTimeCode.timecodeKind = timecodeKindFromPreference();
     mTimeCode.timecodeLabel = new QLabel(this);
+    QFont font = QFontDatabase::systemFont(QFontDatabase::FixedFont);
+    // The default mono font is smaller, so we restore the font here
+    font.setPointSize(mTimeCode.timecodeLabel->font().pointSize());
+    mTimeCode.timecodeLabel->setFont(font);
     mTimeCode.timecodeLabel->setContentsMargins(2, 0, 0, 0);
     mTimeCode.timecodeLabel->setAlignment(Qt::AlignTrailing | Qt::AlignVCenter);
     mTimeCode.timecodeLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
