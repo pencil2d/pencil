@@ -22,7 +22,6 @@ GNU General Public License for more details.
 
 class Editor;
 class TitleBarWidget;
-class QToolBar;
 
 class BaseDockWidget : public QDockWidget
 {
@@ -45,9 +44,7 @@ public:
 
     /// Sets a widget in addition to the normal titlebar buttons.
     /// If the titlebar already has one widget, the previous one will be deleted.
-    void setWidgetInTitleBarArea(QWidget* toolbar);
-
-    QWidget* titleBarWidget() const;
+    void setWidgetInTitleBarArea(QWidget* widget);
 
 protected:
     void resizeEvent(QResizeEvent* event) override;

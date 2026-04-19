@@ -17,7 +17,6 @@ GNU General Public License for more details.
 
 #include <QLayout>
 #include <QResizeEvent>
-#include <QToolBar>
 
 #include "basedockwidget.h"
 #include "platformhandler.h"
@@ -83,19 +82,11 @@ void BaseDockWidget::setTitle(const QString& title)
     mTitleBarWidget->setTitle(title);
 }
 
-void BaseDockWidget::setWidgetInTitleBarArea(QWidget* toolbar)
+void BaseDockWidget::setWidgetInTitleBarArea(QWidget* widget)
 {
     if (mTitleBarWidget) {
-        mTitleBarWidget->setChildWidget(toolbar);
+        mTitleBarWidget->setChildWidget(widget);
     }
-}
-
-QWidget* BaseDockWidget::titleBarWidget() const
-{
-    if (mTitleBarWidget) {
-        return mTitleBarWidget;
-    }
-    return nullptr;
 }
 
 void BaseDockWidget::resizeEvent(QResizeEvent *event)
