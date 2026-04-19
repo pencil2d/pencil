@@ -47,7 +47,7 @@ class TimeCodeControlWidget : public QWidget
     Q_OBJECT
 
 public:
-    TimeCodeControlWidget(TimeCodeControls* controls, QWidget* parent = nullptr);
+    explicit TimeCodeControlWidget(TimeCodeControls* controls, QWidget* parent = nullptr);
 
 signals:
     void timecodeUpdated();

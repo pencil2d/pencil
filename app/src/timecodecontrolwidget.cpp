@@ -30,29 +30,29 @@ GNU General Public License for more details.
 TimeCodeControlWidget::TimeCodeControlWidget(TimeCodeControls* controls, QWidget* parent)
     : QWidget(parent, Qt::Popup), mControls(controls)
 {
-    QVBoxLayout* vboxLayout = new QVBoxLayout();
+    auto vboxLayout = new QVBoxLayout();
     vboxLayout->setContentsMargins(4,4,4,4);
     setLayout(vboxLayout);
 
-    QLabel* titlelabel = new QLabel(tr("Timecode controls"));
+    auto titlelabel = new QLabel(tr("Timecode controls"));
 
     vboxLayout->addWidget(titlelabel);
 
-    QCheckBox* showTimeCodeCheckBox = new QCheckBox(this);
+    auto showTimeCodeCheckBox = new QCheckBox(this);
     showTimeCodeCheckBox->setText(tr("Show"));
     showTimeCodeCheckBox->setChecked(controls->enabled);
 
-    QGroupBox* optionsGroupBox = new QGroupBox(this);
+    auto optionsGroupBox = new QGroupBox(this);
     optionsGroupBox->setTitle(tr("Options"));
     optionsGroupBox->setEnabled(controls->enabled);
 
-    QCheckBox* showFramesCheckBox = new QCheckBox(this);
+    auto showFramesCheckBox = new QCheckBox(this);
     showFramesCheckBox->setText(tr("Frames"));
     showFramesCheckBox->setChecked(controls->showFrames);
 
-    QComboBox* timecodeComboBox = new QComboBox(this);
+    auto timecodeComboBox = new QComboBox(this);
 
-    QVBoxLayout* groupBoxVBoxLayout = new QVBoxLayout();
+    auto groupBoxVBoxLayout = new QVBoxLayout();
     groupBoxVBoxLayout->setContentsMargins(4,4,4,4);
     optionsGroupBox->setLayout(groupBoxVBoxLayout);
 
