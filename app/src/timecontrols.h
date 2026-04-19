@@ -25,6 +25,8 @@ GNU General Public License for more details.
 #include <QCheckBox>
 #include <QLabel>
 
+#include "pencildef.h"
+
 class Editor;
 class PreferenceManager;
 class TimeLine;
@@ -32,6 +34,17 @@ class TimeLine;
 class TimeControls : public QWidget
 {
     Q_OBJECT
+
+    struct TimeCode {
+        QToolButton* timecodeButton = nullptr;
+        QLabel*      timecodeLabel = nullptr;
+        QAction*     hideAction = nullptr;
+        QAction*     framesAction = nullptr;
+        QAction*     smpteAction = nullptr;
+        QAction*     sffAction = nullptr;
+
+        TimecodeKind timecodeKind = TimecodeKind::NOTEXT;
+    };
 
 public:
     TimeControls(TimeLine* parent = nullptr);
@@ -62,6 +75,7 @@ public slots:
 private:
     void makeConnections();
 
+    void setupTimeCodeMenu();
     void playButtonClicked();
     void jumpToStartButtonClicked();
     void jumpToEndButtonClicked();
@@ -71,6 +85,10 @@ private:
     void loopEndValueChanged(int);
     void updateSoundScrubIcon(bool soundScrubEnabled);
 
+    void setTimecode(TimecodeKind kind);
+    int timecodeKindToInt(TimecodeKind kind) const;
+    TimecodeKind timecodeKindFromPreference() const;
+    void updateTimecodeToolTip(TimecodeKind kind);
     void noTimecodeText();
     void onlyFramesText();
     void sffText();
@@ -87,12 +105,8 @@ private:
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
     QSpinBox*    mLoopEndSpinBox = nullptr;
-    QToolButton* mTimecodeSelect = nullptr;
-    QLabel*      mTimecodeLabel = nullptr;
-    QAction*     mNoTimecodeAction = nullptr;
-    QAction*     mOnlyFramesAction = nullptr;
-    QAction*     mSmpteAction = nullptr;
-    QAction*     mSffAction = nullptr;
+
+    TimeCode mTimeCode;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
@@ -105,7 +119,6 @@ private:
     TimeLine* mTimeline = nullptr;
     Editor* mEditor = nullptr;
     int mFps = 12;
-    int mTimecodeLabelEnum;
 };
 
 #endif

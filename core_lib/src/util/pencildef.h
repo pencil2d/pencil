@@ -72,7 +72,7 @@ enum StabilizationLevel
     STRONG
 };
 
-enum TimecodeTextLevel
+enum class TimecodeKind
 {
     NOTEXT,
     FRAMES, // FF

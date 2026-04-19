@@ -57,45 +57,7 @@ void TimeControls::initUI()
 
     mFps = mFpsBox->value();
 
-    QMenu* timeSelectMenu = new QMenu(tr("Display timecode", "Timeline menu for choose a timecode"), this);
-
-    mTimecodeSelect = new QToolButton(this);
-    mTimecodeSelect->setIconSize(QSize(22,22));
-    mTimecodeSelect->setIcon(QIcon(":/icons/themes/playful/controls/control-timecode.svg"));
-
-    timeSelectMenu->addAction(mNoTimecodeAction = new QAction(tr("No text"), this));
-    timeSelectMenu->addAction(mOnlyFramesAction = new QAction(tr("Frames"), this));
-    timeSelectMenu->addAction(mSmpteAction = new QAction(tr("SMPTE Timecode"), this));
-    timeSelectMenu->addAction(mSffAction = new QAction(tr("SFF Timecode"), this));
-    mTimecodeSelect->setMenu(timeSelectMenu);
-    mTimecodeSelect->setPopupMode(QToolButton::InstantPopup);
-    mTimecodeSelect->setStyleSheet("::menu-indicator{ image: none; }");
-    mTimecodeLabelEnum = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
-    mTimecodeLabel = new QLabel(this);
-    mTimecodeLabel->setContentsMargins(2, 0, 0, 0);
-    mTimecodeLabel->setAlignment(Qt::AlignTrailing | Qt::AlignVCenter);
-
-    updateTimecodeLabel(mEditor->currentFrame());
-
-    mTimecodeLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
-
-    switch (mTimecodeLabelEnum)
-    {
-    case NOTEXT:
-        mTimecodeLabel->setToolTip("");
-        break;
-    case FRAMES:
-        mTimecodeLabel->setToolTip(tr("Actual frame number"));
-        break;
-    case SMPTE:
-        mTimecodeLabel->setToolTip(tr("Timecode format MM:SS:FF"));
-        break;
-    case SFF:
-        mTimecodeLabel->setToolTip(tr("Timecode format S:FF"));
-        break;
-    default:
-        mTimecodeLabel->setToolTip("");
-    }
+    setupTimeCodeMenu();
 
     mLoopStartSpinBox = new QSpinBox(this);
     mLoopStartSpinBox->setValue(settings.value("loopStart").toInt());
@@ -155,8 +117,8 @@ void TimeControls::initUI()
     mSoundScrubButton->setChecked(mEditor->preference()->isOn(SETTING::SOUND_SCRUB_ACTIVE));
 
     layout()->addItem(new QSpacerItem(1,1, QSizePolicy::Expanding));
-    layout()->addWidget(mTimecodeLabel);
-    layout()->addWidget(mTimecodeSelect);
+    layout()->addWidget(mTimeCode.timecodeLabel);
+    layout()->addWidget(mTimeCode.timecodeButton);
     layout()->addWidget(mJumpToStartButton);
     layout()->addWidget(mPlayButton);
     layout()->addWidget(mJumpToEndButton);
@@ -198,6 +160,78 @@ void TimeControls::setEditor(Editor* editor)
 {
     Q_ASSERT(editor != nullptr);
     mEditor = editor;
+}
+
+void TimeControls::setupTimeCodeMenu()
+{
+    QMenu* timeSelectMenu = new QMenu(tr("Display timecode", "Timeline menu for choose a timecode"), this);
+
+    mTimeCode.timecodeButton = new QToolButton(this);
+    mTimeCode.timecodeButton->setIconSize(QSize(22,22));
+    mTimeCode.timecodeButton->setIcon(QIcon(":/icons/themes/playful/controls/control-timecode.svg"));
+
+    timeSelectMenu->addAction(mTimeCode.hideAction = new QAction(tr("Hide"), this));
+    timeSelectMenu->addSeparator();
+    timeSelectMenu->addAction(mTimeCode.framesAction = new QAction(tr("Frames"), this));
+    timeSelectMenu->addSeparator();
+    timeSelectMenu->addAction(mTimeCode.smpteAction = new QAction(tr("SMPTE Timecode"), this));
+    timeSelectMenu->addAction(mTimeCode.sffAction = new QAction(tr("SFF Timecode"), this));
+    mTimeCode.timecodeButton->setMenu(timeSelectMenu);
+    mTimeCode.timecodeButton->setPopupMode(QToolButton::InstantPopup);
+    mTimeCode.timecodeButton->setStyleSheet("::menu-indicator{ image: none; }");
+    mTimeCode.timecodeKind = timecodeKindFromPreference();
+    mTimeCode.timecodeLabel = new QLabel(this);
+    mTimeCode.timecodeLabel->setContentsMargins(2, 0, 0, 0);
+    mTimeCode.timecodeLabel->setAlignment(Qt::AlignTrailing | Qt::AlignVCenter);
+    mTimeCode.timecodeLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+
+    updateTimecodeLabel(mEditor->currentFrame());
+    updateTimecodeToolTip(mTimeCode.timecodeKind);
+}
+
+void TimeControls::updateTimecodeToolTip(TimecodeKind kind)
+{
+    switch (kind)
+    {
+    case TimecodeKind::NOTEXT:
+        mTimeCode.timecodeLabel->setToolTip("");
+        break;
+    case TimecodeKind::FRAMES:
+        mTimeCode.timecodeLabel->setToolTip(tr("Actual frame number"));
+        break;
+    case TimecodeKind::SMPTE:
+        mTimeCode.timecodeLabel->setToolTip(tr("Timecode format MM:SS:FF"));
+        break;
+    case TimecodeKind::SFF:
+        mTimeCode.timecodeLabel->setToolTip(tr("Timecode format S:FF"));
+        break;
+    default:
+        mTimeCode.timecodeLabel->setToolTip("");
+    }
+}
+
+TimecodeKind TimeControls::timecodeKindFromPreference() const
+{
+    int timecodePreference = mEditor->preference()->getInt(SETTING::TIMECODE_TEXT);
+
+    switch (timecodePreference)
+    {
+        case 0:
+            return TimecodeKind::NOTEXT;
+        case 1:
+            return TimecodeKind::FRAMES;
+        case 2:
+            return TimecodeKind::SMPTE;
+        case 3:
+            return TimecodeKind::SFF;
+        default:
+            return TimecodeKind::NOTEXT;
+    }
+}
+
+int TimeControls::timecodeKindToInt(TimecodeKind kind) const
+{
+    return static_cast<int>(kind);
 }
 
 void TimeControls::setFps(int value)
@@ -246,10 +280,18 @@ void TimeControls::makeConnections()
 
     connect(mFpsBox, spinBoxValueChanged, this, &TimeControls::setFps);
     connect(mEditor, &Editor::fpsChanged, this, &TimeControls::setFps);
-    connect(mNoTimecodeAction, &QAction::triggered, this, &TimeControls::noTimecodeText);
-    connect(mOnlyFramesAction, &QAction::triggered, this, &TimeControls::onlyFramesText);
-    connect(mSmpteAction, &QAction::triggered, this, &TimeControls::smpteText);
-    connect(mSffAction, &QAction::triggered, this, &TimeControls::sffText);
+    connect(mTimeCode.hideAction, &QAction::triggered, this, [this]() {
+        setTimecode(TimecodeKind::NOTEXT);
+    });
+    connect(mTimeCode.framesAction, &QAction::triggered, this, [this]() {
+        setTimecode(TimecodeKind::FRAMES);
+    });
+    connect(mTimeCode.smpteAction, &QAction::triggered, this, [this]() {
+        setTimecode(TimecodeKind::SMPTE);
+    });
+    connect(mTimeCode.sffAction, &QAction::triggered, this, [this]() {
+        setTimecode(TimecodeKind::SFF);
+    });
 }
 
 void TimeControls::playButtonClicked()
@@ -331,40 +373,13 @@ void TimeControls::updateSoundScrubIcon(bool soundScrubEnabled)
     mEditor->preference()->set(SETTING::SOUND_SCRUB_ACTIVE, soundScrubEnabled);
 }
 
-void TimeControls::noTimecodeText()
+void TimeControls::setTimecode(TimecodeKind kind)
 {
     QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_TIMECODE_TEXT, NOTEXT);
-    mTimecodeLabelEnum = NOTEXT;
-    mTimecodeLabel->setToolTip(tr(""));
+    settings.setValue(SETTING_TIMECODE_TEXT, timecodeKindToInt(kind));
+    mTimeCode.timecodeKind = kind;
     updateTimecodeLabel(mEditor->currentFrame());
-}
-
-void TimeControls::onlyFramesText()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_TIMECODE_TEXT, FRAMES);
-    mTimecodeLabelEnum = FRAMES;
-    mTimecodeLabel->setToolTip(tr("Actual frame number"));
-    updateTimecodeLabel(mEditor->currentFrame());
-}
-
-void TimeControls::sffText()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_TIMECODE_TEXT, SFF);
-    mTimecodeLabelEnum = SFF;
-    mTimecodeLabel->setToolTip(tr("Timecode format S:FF"));
-    updateTimecodeLabel(mEditor->currentFrame());
-}
-
-void TimeControls::smpteText()
-{
-    QSettings settings(PENCIL2D, PENCIL2D);
-    settings.setValue(SETTING_TIMECODE_TEXT, SMPTE);
-    mTimecodeLabelEnum = SMPTE;
-    mTimecodeLabel->setToolTip(tr("Timecode format MM:SS:FF"));
-    updateTimecodeLabel(mEditor->currentFrame());
+    updateTimecodeToolTip(kind);
 }
 
 void TimeControls::onFpsEditingFinished()
@@ -376,30 +391,29 @@ void TimeControls::onFpsEditingFinished()
 
 void TimeControls::updateTimecodeLabel(int frame)
 {
-    mTimecodeLabel->setVisible(true);
+    mTimeCode.timecodeLabel->setVisible(true);
 
-    switch (mTimecodeLabelEnum)
+    switch (mTimeCode.timecodeKind)
     {
-    case TimecodeTextLevel::SMPTE:
-        mTimecodeLabel->setText(QString("%1:%2:%3")
+    case TimecodeKind::SMPTE:
+        mTimeCode.timecodeLabel->setText(QString("%1:%2:%3")
                                 .arg(frame / (60 * mFps) % 60, 2, 10, QLatin1Char('0'))
                                 .arg(frame / mFps % 60, 2, 10, QLatin1Char('0'))
                                 .arg(frame % mFps, 2, 10, QLatin1Char('0')));
         break;
-    case TimecodeTextLevel::SFF:
-        mTimecodeLabel->setText(QString("%1:%2")
+    case TimecodeKind::SFF:
+        mTimeCode.timecodeLabel->setText(QString("%1:%2")
                                 .arg(frame / mFps)
                                 .arg(frame % mFps, 2, 10, QLatin1Char('0')));
         break;
-    case TimecodeTextLevel::FRAMES:
-        mTimecodeLabel->setText(QString::number(frame).rightJustified(4, '0'));
+    case TimecodeKind::FRAMES:
+        mTimeCode.timecodeLabel->setText(QString::number(frame).rightJustified(4, '0'));
         break;
-    case TimecodeTextLevel::NOTEXT:
+    case TimecodeKind::NOTEXT:
     default:
-        mTimecodeLabel->setVisible(false);
+        mTimeCode.timecodeLabel->setVisible(false);
         break;
     }
-
 }
 
 void TimeControls::updateLength(int frameLength)
