@@ -27,6 +27,8 @@ GNU General Public License for more details.
 
 #include "pencildef.h"
 
+#include "timecodecontrolwidget.h"
+
 class Editor;
 class PreferenceManager;
 class TimeLine;
@@ -34,17 +36,6 @@ class TimeLine;
 class TimeControls : public QWidget
 {
     Q_OBJECT
-
-    struct TimeCode {
-        QToolButton* timecodeButton = nullptr;
-        QLabel*      timecodeLabel = nullptr;
-        QAction*     hideAction = nullptr;
-        QAction*     framesAction = nullptr;
-        QAction*     smpteAction = nullptr;
-        QAction*     sffAction = nullptr;
-
-        TimecodeKind timecodeKind = TimecodeKind::NOTEXT;
-    };
 
 public:
     TimeControls(TimeLine* parent = nullptr);
@@ -73,6 +64,12 @@ public slots:
     void updateTimecodeLabel(int frame);
 
 private:
+    void showTimecodePanel();
+    void updateTimecode();
+    void updateTimecodeToolTip(TimecodeKind kind);
+
+    void showFramesInTimecode(bool shown);
+    void showTimecode(bool shown);
     void makeConnections();
 
     void setupTimeCodeMenu();
@@ -84,15 +81,6 @@ private:
     void loopStartValueChanged(int);
     void loopEndValueChanged(int);
     void updateSoundScrubIcon(bool soundScrubEnabled);
-
-    void setTimecode(TimecodeKind kind);
-    int timecodeKindToInt(TimecodeKind kind) const;
-    TimecodeKind timecodeKindFromPreference() const;
-    void updateTimecodeToolTip(TimecodeKind kind);
-    void noTimecodeText();
-    void onlyFramesText();
-    void sffText();
-    void smpteText();
 
 private:
     QToolButton* mPlayButton = nullptr;
@@ -106,7 +94,11 @@ private:
     QSpinBox*    mLoopStartSpinBox = nullptr;
     QSpinBox*    mLoopEndSpinBox = nullptr;
 
-    TimeCode mTimeCode;
+    QToolButton* mTimecodeButton = nullptr;
+    QLabel*      mTimecodeLabel = nullptr;
+
+    TimeCodeControls mTimecodeControls;
+    TimeCodeControlWidget* mTimeCodeWidget = nullptr;
 
     QIcon mStartIcon;
     QIcon mStopIcon;

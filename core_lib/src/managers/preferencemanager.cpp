@@ -98,7 +98,9 @@ void PreferenceManager::loadPrefs()
     set(SETTING::FPS,                      settings.value(SETTING_FPS,                    12).toInt());
     set(SETTING::FIELD_W,                  settings.value(SETTING_FIELD_W,                800).toInt());
     set(SETTING::FIELD_H,                  settings.value(SETTING_FIELD_H,                600).toInt());
-    set(SETTING::TIMECODE_TEXT,            settings.value(SETTING_TIMECODE_TEXT,          1).toInt());
+    set(SETTING::TIMECODE_ON,              settings.value(SETTING_TIMECODE_ON,            true).toBool());
+    set(SETTING::TIMECODE_FRAMES_ON,       settings.value(SETTING_TIMECODE_FRAMES_ON,     true).toBool());
+    set(SETTING::TIMECODE_KIND,            settings.value(SETTING_TIMECODE_KIND,          static_cast<int>(TimecodeKind::SMPTE)).toInt());
 
     // Files
     set(SETTING::AUTO_SAVE,                settings.value(SETTING_AUTO_SAVE,              false).toBool());
@@ -298,8 +300,8 @@ void PreferenceManager::set(SETTING option, int value)
     case SETTING::GRID_SIZE_W:
         settings.setValue(SETTING_GRID_SIZE_W, value);
         break;
-    case SETTING::TIMECODE_TEXT:
-        settings.setValue(SETTING_TIMECODE_TEXT, value);
+    case SETTING::TIMECODE_KIND:
+        settings.setValue(SETTING_TIMECODE_KIND, value);
         break;
     case SETTING::GRID_SIZE_H:
         settings.setValue(SETTING_GRID_SIZE_H, value);
@@ -470,6 +472,12 @@ void PreferenceManager::set(SETTING option, bool value)
         break;
     case SETTING::NEW_UNDO_REDO_SYSTEM_ON:
         settings.setValue(SETTING_NEW_UNDO_REDO_ON, value);
+        break;
+    case SETTING::TIMECODE_ON:
+        settings.setValue(SETTING_TIMECODE_ON, value);
+        break;
+    case SETTING::TIMECODE_FRAMES_ON:
+        settings.setValue(SETTING_TIMECODE_FRAMES_ON, value);
         break;
     default:
         Q_ASSERT(false);
