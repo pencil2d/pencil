@@ -1,7 +1,8 @@
 #include "autosaverbytime.h"
 
-AutosaverByTime::AutosaverByTime(PreferenceManager* manager)
-    : mPref(manager)
+AutosaverByTime::AutosaverByTime(PreferenceManager* manager, QObject* parent)
+	: QObject(parent)
+    , mPref(manager)
 {
     mAutoSaveTimer.setSingleShot(false);
     resetTimer();

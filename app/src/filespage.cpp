@@ -45,7 +45,7 @@ FilesPage::FilesPage()
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->autosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autoSaveChange);
     connect(ui->autosaveNumberBox, spinBoxValueChange, this, &FilesPage::autoSaveNumberChange);
-    connect(ui->autosaveByTimeCheckBox, &QCheckBox::checkStateChanged, this, &FilesPage::autoSaveByTimeChange);
+    connect(ui->autosaveByTimeCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autoSaveByTimeChange);
     connect(ui->autosaveByTimeNumberBox, spinBoxValueChange, this, &FilesPage::autoSaveByTimeTimerChange);
 }
 

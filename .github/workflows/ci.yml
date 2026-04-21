@@ -27,7 +27,7 @@ jobs:
             qt: 5
             bundler: linuxdeployqt
           - name: Qt 5 / macOS x86_64
-            os: macos-14
+            os: macos-15-intel
             arch: x86_64
             container:
             qt: 5
@@ -124,11 +124,36 @@ jobs:
           team_id: ${{ secrets.APPLE_TEAM_ID }}
           certificate_identity: ${{ secrets.CODESIGN_CERT_IDENTITY }}
 
+      - name: Resolve path
+        id: resolve
+        shell: bash
+        env:
+          BASENAME: ${{ steps.package.outputs.output-basename }}
+        run: |
+          if [ "$RUNNER_OS" = "macOS" ]; then
+            for ext in dmg zip; do
+              if [ -f "build/${BASENAME}.${ext}" ]; then
+                echo "package_path=build/${BASENAME}.${ext}" >> $GITHUB_OUTPUT
+                exit 0
+              fi
+            done
+            
+            echo "ERROR: No macOS package found"
+            exit 1
+          else
+            files=(build/${BASENAME}*)
+            if [ ! -e "${files[0]}" ]; then
+              echo "ERROR: No package found"
+              exit 1
+            fi
+            echo "package_path=build/${BASENAME}*" >> $GITHUB_OUTPUT
+          fi
+
       - name: Upload package
         uses: actions/upload-artifact@v4
         with:
           name: ${{steps.package.outputs.output-basename}}
-          path: ${{ runner.os == 'macOS' && format('build/{0}.dmg', steps.package.outputs.output-basename) || format('build/{0}*', steps.package.outputs.output-basename) }}
+          path: ${{steps.resolve.outputs.package_path}}
       - name: Generate summary
         shell: bash
         run: >
