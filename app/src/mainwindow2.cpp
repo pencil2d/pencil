@@ -142,7 +142,7 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
 
-    mAutoSaver = new AutosaverByTime(mEditor->preference());
+    mAutoSaver = new AutosaverByTime(mEditor->preference(), this);
     connect(mAutoSaver, &AutosaverByTime::timeout, this, &MainWindow2::autoSaveTimeout);
 
     mEditor->tools()->setDefaultTool();
