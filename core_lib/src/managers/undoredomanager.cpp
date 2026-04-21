@@ -296,14 +296,14 @@ void UndoRedoManager::initCommonKeyFrameState(UndoSaveState* undoSaveState) cons
     }
 
     const int frameIndex = editor()->currentFrame();
-    KeyFrame* frame = layer->getLastKeyFrameAtPosition(frameIndex);
-    if (frame)
+    auto keyframe = layer->getKeyFrameWhichCovers(frameIndex);
+    if (keyframe == nullptr)
     {
-        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(frame->clone());
+        keyframe = layer->getLastKeyFrameAtPosition(frameIndex);
     }
-    else if (layer->getKeyFrameWhichCovers(frameIndex) != nullptr)
-    {
-        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(layer->getKeyFrameWhichCovers(frameIndex)->clone());
+
+    if (keyframe != nullptr) {
+        undoSaveState->keyframe = std::unique_ptr<KeyFrame>(keyframe->clone());
     }
 }
 
