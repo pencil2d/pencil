@@ -36,8 +36,10 @@ void AutosaverByTime::configChanged(SETTING setting){
 
 void AutosaverByTime::timerTimeout()
 {
-    if(QGuiApplication::mouseButtons() == Qt::NoButton &&
-       QGuiApplication::keyboardModifiers() == Qt::NoModifier)
+    const bool userIsIdle = QGuiApplication::mouseButtons() == Qt::NoButton &&
+                            QGuiApplication::keyboardModifiers() == Qt::NoModifier;
+
+    if(userIsIdle)
     {
         emit timeout();
         resetTimer();
