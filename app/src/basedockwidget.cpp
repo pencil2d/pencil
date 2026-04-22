@@ -63,9 +63,14 @@ void BaseDockWidget::lock(bool locked)
     // nullptr means removing the custom title bar and restoring the default one
 
     if (locked) {
-        setTitleBarWidget(mNoTitleBarWidget);
+        if (mTitleBarWidget->hasChildWidget()) {
+            mTitleBarWidget->lock(locked);
+        } else {
+            setTitleBarWidget(mNoTitleBarWidget);
+        }
     } else {
         setTitleBarWidget(mTitleBarWidget);
+        mTitleBarWidget->lock(locked);
     }
 
     mLocked = locked;
@@ -75,6 +80,13 @@ void BaseDockWidget::setTitle(const QString& title)
 {
     if (!mTitleBarWidget) { return; }
     mTitleBarWidget->setTitle(title);
+}
+
+void BaseDockWidget::setWidgetInTitleBarArea(QWidget* widget)
+{
+    if (mTitleBarWidget) {
+        mTitleBarWidget->setChildWidget(widget);
+    }
 }
 
 void BaseDockWidget::resizeEvent(QResizeEvent *event)

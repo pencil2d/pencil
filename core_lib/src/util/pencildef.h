@@ -72,10 +72,9 @@ enum StabilizationLevel
     STRONG
 };
 
-enum TimecodeTextLevel
+enum class TimecodeKind
 {
-    NOTEXT,
-    FRAMES, // FF
+    NONE,
     SMPTE,  // HH:MM:SS:FF
     SFF     // S:FF
 };
@@ -290,7 +289,12 @@ const static int MaxFramesBound = 9999;
 #define SETTING_ACTION_SAFE_ON   "ActionSafeOn"
 #define SETTING_ACTION_SAFE      "ActionSafe"
 #define SETTING_OVERLAY_SAFE_HELPER_TEXT_ON "OverlaySafeHelperTextOn"
-#define SETTING_TIMECODE_TEXT    "TimecodeText"
+
+#define SETTING_TIMECODE_TEXT              "TimecodeText"
+
+#define SETTING_TIMECODE_ON           "TimecodeEnabled"
+#define SETTING_TIMECODE_KIND         "TimecodeKind"
+#define SETTING_TIMECODE_FRAMES_ON    "TimecodeFramesEnabled"
 
 #define SETTING_ONION_MAX_OPACITY       "OnionMaxOpacity"
 #define SETTING_ONION_MIN_OPACITY       "OnionMinOpacity"
