@@ -217,8 +217,6 @@ void ColorSlider::drawColorBox(const QColor &color, QSize size)
     QStyleOption option;
     option.initFrom(this);
 
-    QBrush backgroundBrush = option.palette.window();
-
     if (mPixmapCacheInvalid) {
         setupPicker();
 
@@ -316,13 +314,13 @@ void ColorSlider::drawPicker(const QColor &color)
     const qreal maxDistance = SliderGeometry::pickerMaxDistance(innerSliderRect.width(), mPickerSize.width());
     val = static_cast<int>(innerSliderRect.left() + qMax(static_cast<qreal>(mMin), (val * maxDistance))) + inset;
 
-    QPen ounterPen;
-    ounterPen.setJoinStyle(Qt::MiterJoin);
-    ounterPen.setWidthF(mSliderStyle.borderWidth);
-    ounterPen.setColor(QColor(0, 0, 0, 255));
+    QPen outerPen;
+    outerPen.setJoinStyle(Qt::MiterJoin);
+    outerPen.setWidthF(mSliderStyle.borderWidth);
+    outerPen.setColor(QColor(0, 0, 0, 255));
 
     painter.setRenderHint(QPainter::Antialiasing);
-    painter.setPen(ounterPen);
+    painter.setPen(outerPen);
 
     QRectF pickerOuterRect = QRectF(val,
                               innerSliderRect.top(),
