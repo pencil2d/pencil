@@ -18,7 +18,7 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPaintEvent>
 
-ColorPreviewWidget::ColorPreviewWidget(QWidget*)
+ColorPreviewWidget::ColorPreviewWidget(QWidget* parent) : QWidget(parent)
 {
 
 }

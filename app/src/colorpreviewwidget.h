@@ -23,7 +23,7 @@ class ColorPreviewWidget: public QWidget
 {
     Q_OBJECT
 public:
-    explicit ColorPreviewWidget(QWidget* = nullptr);
+    explicit ColorPreviewWidget(QWidget* parent = nullptr);
 
     void setColor(const QColor& color);
 
@@ -31,8 +31,6 @@ protected:
      void paintEvent(QPaintEvent* event) override;
 
 private:
-
-     QPixmap mColorPreviewPixmap;
      QPixmap mCheckerboard = QPixmap(":/background/checkerboard.png");
 
      QColor mColor;
