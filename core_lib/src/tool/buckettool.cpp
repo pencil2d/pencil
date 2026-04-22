@@ -173,7 +173,7 @@ void BucketTool::paintVector(Layer* layer)
 {
     mScribbleArea->clearDrawingBuffer();
 
-    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame());
     if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
 
     if (!vectorImage->isPathFilled())

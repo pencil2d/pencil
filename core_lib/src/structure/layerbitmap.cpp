@@ -38,10 +38,10 @@ BitmapImage* LayerBitmap::getBitmapImageAtFrame(int frameNumber)
     return static_cast<BitmapImage*>(getKeyFrameAt(frameNumber));
 }
 
-BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber, int increment)
+BitmapImage* LayerBitmap::getLastBitmapImageAtFrame(int frameNumber)
 {
     Q_ASSERT(frameNumber >= 1);
-    return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+    return static_cast<BitmapImage*>(getLastKeyFrameAtPosition(frameNumber));
 }
 
 void LayerBitmap::replaceKeyFrame(const KeyFrame* bitmapImage)

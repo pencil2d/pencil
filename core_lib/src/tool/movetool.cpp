@@ -264,7 +264,7 @@ void MoveTool::createVectorSelection(const QPointF& pos, Qt::KeyboardModifiers k
 {
     assert(layer->type() == Layer::VECTOR);
     LayerVector* vecLayer = static_cast<LayerVector*>(layer);
-    VectorImage* vectorImage = vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    VectorImage* vectorImage = vecLayer->getLastVectorImageAtFrame(mEditor->currentFrame());
     if (vectorImage == nullptr) { return; }
 
     if (!mEditor->select()->closestCurves().empty()) // the user clicks near a curve
@@ -313,7 +313,7 @@ void MoveTool::storeClosestVectorCurve(const QPointF& pos, Layer* layer)
 {
     auto selectMan = mEditor->select();
     auto layerVector = static_cast<LayerVector*>(layer);
-    VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    VectorImage* pVecImg = layerVector->getLastVectorImageAtFrame(mEditor->currentFrame());
     if (pVecImg == nullptr) { return; }
     selectMan->setCurves(pVecImg->getCurvesCloseTo(pos, selectMan->selectionTolerance()));
 }

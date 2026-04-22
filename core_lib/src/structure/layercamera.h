@@ -43,7 +43,7 @@ public:
     void replaceKeyFrame(const KeyFrame* camera) override;
 
     Camera* getCameraAtFrame(int frameNumber) const;
-    Camera* getLastCameraAtFrame(int frameNumber, int increment) const;
+    Camera* getLastCameraAtFrame(int frameNumber) const;
     QTransform getViewAtFrame(int frameNumber) const;
 
     QRect getViewRect() const;

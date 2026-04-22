@@ -750,7 +750,7 @@ void Object::paintImage(QPainter& painter,int frameNumber,
         if (layer->type() == Layer::VECTOR)
         {
             LayerVector* layerVector = static_cast<LayerVector*>(layer);
-            VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber, 0);
+            VectorImage* vec = layerVector->getLastVectorImageAtFrame(frameNumber);
             if (vec)
             {
                 painter.setOpacity(vec->getOpacity());

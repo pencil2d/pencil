@@ -130,7 +130,7 @@ void SmudgeTool::pointerPressEvent(PointerEvent* event)
         {
             const int currentFrame = mEditor->currentFrame();
             const float distanceFrom = selectMan->selectionTolerance();
-            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame, 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(currentFrame);
             if (vectorImage == nullptr) { return; }
             selectMan->setCurves(vectorImage->getCurvesCloseTo(getCurrentPoint(), distanceFrom));
             selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), distanceFrom));
@@ -194,7 +194,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
             {
                 if (event->modifiers() != Qt::ShiftModifier)    // (and the user doesn't press shift)
                 {
-                    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+                    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame());
                     if (vectorImage == nullptr) { return; }
                     // transforms the selection
 
@@ -216,7 +216,7 @@ void SmudgeTool::pointerMoveEvent(PointerEvent* event)
         {
             if (layer->type() == Layer::VECTOR)
             {
-                VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+                VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame());
                 if (vectorImage == nullptr) { return; }
 
                 selectMan->setVertices(vectorImage->getVerticesCloseTo(getCurrentPoint(), selectMan->selectionTolerance()));
@@ -253,7 +253,7 @@ void SmudgeTool::pointerReleaseEvent(PointerEvent* event)
         }
         else if (layer->type() == Layer::VECTOR)
         {
-            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage *vectorImage = ((LayerVector *)layer)->getLastVectorImageAtFrame(mEditor->currentFrame());
             if (vectorImage == nullptr) { return; }
             vectorImage->applySelectionTransformation();
 
@@ -276,7 +276,7 @@ void SmudgeTool::drawStroke()
     Layer* layer = mEditor->layers()->currentLayer();
     if (layer == nullptr || !layer->isPaintable()) { return; }
 
-    BitmapImage *sourceImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+    BitmapImage *sourceImage = static_cast<LayerBitmap*>(layer)->getLastBitmapImageAtFrame(mEditor->currentFrame());
     if (sourceImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     BitmapImage targetImage = sourceImage->copy();
     StrokeTool::drawStroke();

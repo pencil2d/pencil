@@ -95,7 +95,7 @@ void SelectTool::beginSelection(Layer* currentLayer, const QPointF& pos)
     {
         if (currentLayer->type() == Layer::VECTOR)
         {
-            VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame());
             if (vectorImage != nullptr) {
                 vectorImage->deselectAll();
             }
@@ -157,7 +157,7 @@ void SelectTool::pointerMoveEvent(PointerEvent* event)
 
         if (currentLayer->type() == Layer::VECTOR)
         {
-            VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+            VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame());
             if (vectorImage != nullptr) {
                 vectorImage->select(selectMan->mapToSelection(QPolygonF(selectMan->mySelectionRect())).boundingRect());
             }
@@ -218,7 +218,7 @@ void SelectTool::keepSelection(Layer* currentLayer)
 {
     if (currentLayer->type() == Layer::VECTOR)
     {
-        VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage* vectorImage = static_cast<LayerVector*>(currentLayer)->getLastVectorImageAtFrame(mEditor->currentFrame());
         if (vectorImage == nullptr) { return; }
         auto selectMan = mEditor->select();
         selectMan->setSelection(vectorImage->getSelectionRect(), false);

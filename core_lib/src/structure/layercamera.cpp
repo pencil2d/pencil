@@ -66,9 +66,9 @@ Camera* LayerCamera::getCameraAtFrame(int frameNumber) const
     return static_cast<Camera*>(getKeyFrameAt(frameNumber));
 }
 
-Camera* LayerCamera::getLastCameraAtFrame(int frameNumber, int increment) const
+Camera* LayerCamera::getLastCameraAtFrame(int frameNumber) const
 {
-    return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber + increment));
+    return static_cast<Camera*>(getLastKeyFrameAtPosition(frameNumber));
 }
 
 QTransform LayerCamera::getViewAtFrame(int frameNumber) const
@@ -264,7 +264,7 @@ void LayerCamera::splitControlPointIfNeeded(int frame) const
     // if inbetween frames
     if (frame > prev && (frame > 1) && frame < next)
     {
-        Camera* camFrame = getLastCameraAtFrame(frame, 0);
+        Camera* camFrame = getLastCameraAtFrame(frame);
         Camera* camPrev = getCameraAtFrame(prev);
         Camera* camNext = getCameraAtFrame(next);
         Q_ASSERT(camPrev && camFrame && camNext);
@@ -298,7 +298,7 @@ void LayerCamera::mergeControlPointIfNeeded(int frame) const
     if (frame > prev && (frame > 1) && frame < next)
     {
         Camera* camPrev = getCameraAtFrame(prev);
-        Camera* camFrame = getLastCameraAtFrame(frame, 0);
+        Camera* camFrame = getLastCameraAtFrame(frame);
         Camera* camNext = getCameraAtFrame(next);
         Q_ASSERT(camPrev && camFrame && camNext);
 
@@ -346,7 +346,7 @@ void LayerCamera::setViewRect(QRect newViewRect)
 
 void LayerCamera::setCameraEasingAtFrame(CameraEasingType type, int frame) const
 {
-    Camera* camera = getLastCameraAtFrame(frame, 0);
+    Camera* camera = getLastCameraAtFrame(frame);
     camera->setEasingType(type);
     camera->updateViewTransform();
 }
@@ -357,7 +357,7 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
     if (!keyExists(frame)) {
         frameToModify = getPreviousKeyFramePosition(frame);
     }
-    Camera* camera = getLastCameraAtFrame(frameToModify, 0);
+    Camera* camera = getLastCameraAtFrame(frameToModify);
 
     switch (type)
     {
@@ -395,7 +395,7 @@ void LayerCamera::resetCameraAtFrame(CameraFieldOption type, int frame) const
         qreal rotation = camera->rotation();
         qreal scaling = camera->scaling();
         camera->setPathControlPointMoved(false);
-        Camera* nextCamera = getLastCameraAtFrame(getNextKeyFramePosition(frame), 0);
+        Camera* nextCamera = getLastCameraAtFrame(getNextKeyFramePosition(frame));
         nextCamera->translate(translation);
         nextCamera->scale(scaling);
         nextCamera->rotate(rotation);
@@ -439,7 +439,7 @@ void LayerCamera::updateDotColor(DotColorType color)
 
 QString LayerCamera::getInterpolationTextAtFrame(int frame) const
 {
-    Camera* camera = getLastCameraAtFrame(frame, 0);
+    Camera* camera = getLastCameraAtFrame(frame);
     return getInterpolationText(camera->getEasingType());
 }
 
@@ -508,7 +508,7 @@ QPointF LayerCamera::getCenteredPathPoint(int frame) const
 
 void LayerCamera::setPathMovedAtFrame(int frame, bool moved) const
 {
-    Camera* cam = getLastCameraAtFrame(frame, 0);
+    Camera* cam = getLastCameraAtFrame(frame);
     Q_ASSERT(cam);
 
     cam->setPathControlPointMoved(moved);
@@ -516,7 +516,7 @@ void LayerCamera::setPathMovedAtFrame(int frame, bool moved) const
 
 void LayerCamera::updatePathControlPointAtFrame(const QPointF& point, int frame) const
 {
-    Camera* camera = getLastCameraAtFrame(frame, 0);
+    Camera* camera = getLastCameraAtFrame(frame);
     Q_ASSERT(camera);
 
     camera->setPathControlPoint(point);

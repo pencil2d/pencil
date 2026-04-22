@@ -35,7 +35,7 @@ public:
     Status presave(const QString& sDataFolder) override;
 
     BitmapImage* getBitmapImageAtFrame(int frameNumber);
-    BitmapImage* getLastBitmapImageAtFrame(int frameNumber, int increment = 0);
+    BitmapImage* getLastBitmapImageAtFrame(int frameNumber);
     void replaceKeyFrame(const KeyFrame*) override;
 
     void repositionFrame(QPoint point, int frame);

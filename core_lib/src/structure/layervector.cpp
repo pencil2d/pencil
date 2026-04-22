@@ -190,9 +190,9 @@ VectorImage* LayerVector::getVectorImageAtFrame(int frameNumber) const
     return static_cast<VectorImage*>(getKeyFrameAt(frameNumber));
 }
 
-VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber, int increment) const
+VectorImage* LayerVector::getLastVectorImageAtFrame(int frameNumber) const
 {
-    return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber + increment));
+    return static_cast<VectorImage*>(getLastKeyFrameAtPosition(frameNumber));
 }
 
 void LayerVector::replaceKeyFrame(const KeyFrame* vectorImage)

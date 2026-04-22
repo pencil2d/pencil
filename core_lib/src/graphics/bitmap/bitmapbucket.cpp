@@ -115,7 +115,7 @@ void BitmapBucket::paint(const QPointF& updatedPoint, std::function<void(BucketS
 {
     const int currentFrameIndex = mEditor->currentFrame();
 
-    BitmapImage* targetImage = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(currentFrameIndex, 0);
+    BitmapImage* targetImage = static_cast<LayerBitmap*>(mTargetFillToLayer)->getLastBitmapImageAtFrame(currentFrameIndex);
     if (targetImage == nullptr || !targetImage->isLoaded()) { return; } // Can happen if the first frame is deleted while drawing
 
     QPoint point = QPoint(qFloor(updatedPoint.x()), qFloor(updatedPoint.y()));

@@ -143,7 +143,7 @@ void EyedropperTool::updateFrontColor(const QPointF& pos)
 
 QColor EyedropperTool::getBitmapColor(LayerBitmap* layer, const QPointF& pos)
 {
-    BitmapImage* targetImage = layer->getLastBitmapImageAtFrame(mEditor->currentFrame(), 0);
+    BitmapImage* targetImage = layer->getLastBitmapImageAtFrame(mEditor->currentFrame());
     if (targetImage == nullptr || !targetImage->contains(pos)) return QColor();
 
     QColor pickedColour;

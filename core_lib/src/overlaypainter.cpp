@@ -42,7 +42,7 @@ void OverlayPainter::paint(QPainter &painter, const QRect& viewport)
 
     QTransform camTransform = mCameraLayer->getViewAtFrame(mOptions.nFrameIndex);
     QRect cameraRect = mCameraLayer->getViewRect();
-    Camera* camera = mCameraLayer->getLastCameraAtFrame(mOptions.nFrameIndex, 0);
+    Camera* camera = mCameraLayer->getLastCameraAtFrame(mOptions.nFrameIndex);
 
     if (camera == nullptr) { return; }
 
