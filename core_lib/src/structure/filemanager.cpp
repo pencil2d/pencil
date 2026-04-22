@@ -842,13 +842,14 @@ QList<ColorRef> FileManager::loadPaletteFile(QString strFilename)
 
 Status FileManager::verifyObject(Object* obj)
 {
-    // check current layer.
-    int curLayer = obj->data()->getCurrentLayer();
-    int maxLayer = obj->getLayerCount();
-    if (curLayer >= maxLayer)
-    {
-        obj->data()->setCurrentLayer(maxLayer - 1);
+    if (obj->getLayerCount() == 0) {
+		obj->addNewBitmapLayer(); // Must have at least 1 layer
     }
+    
+    // Current layer index
+    int curLayer = obj->data()->getCurrentLayer();
+	curLayer = std::max(std::min(curLayer, obj->getLayerCount() - 1), 0); // clamp to valid range
+    obj->data()->setCurrentLayer(curLayer);
 
     // Must have at least 1 camera layer
     std::vector<LayerCamera*> camLayers = obj->getLayersByType<LayerCamera>();

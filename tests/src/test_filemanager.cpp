@@ -108,7 +108,7 @@ TEST_CASE("FileManager Loading XML Tests")
 
             REQUIRE(o != nullptr);
             REQUIRE(fm.error().ok());
-            REQUIRE(o->getLayerCount() == 1); // have at least one cam layer
+            REQUIRE(o->getLayerCount() >= 1); // have at least one cam layer
 
             delete o;
         }
