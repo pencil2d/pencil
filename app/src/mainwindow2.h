@@ -45,6 +45,7 @@ class PegBarAlignmentDialog;
 class AddTransparencyToPaperDialog;
 class RepositionFramesDialog;
 class StatusBar;
+class AutosaverByTime;
 enum class SETTING;
 
 
@@ -115,6 +116,7 @@ protected:
 private slots:
     void updateCopyCutPasteEnabled();
     void updateLayerMenu();
+    void autoSaveTimeout();
 private:
     void newObject();
     bool newObjectFromPresets(int presetIndex);
@@ -173,6 +175,9 @@ private:
     RepositionFramesDialog* mReposDialog = nullptr;
     LayerOpacityDialog* mLayerOpacityDialog = nullptr;
     AddTransparencyToPaperDialog* mAddTranspToPaper = nullptr;
+
+    // Autosave handler
+    AutosaverByTime* mAutoSaver = nullptr;
 
     void createToolbars();
 private:

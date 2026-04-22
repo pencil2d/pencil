@@ -78,6 +78,7 @@ set(CORE_LIB_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/tool/stroketool.h
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/tool/toolproperties.h
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/tool/transformtool.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/autosaverbytime.h
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/blitrect.h
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/cameraeasingtype.h
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/camerafieldoption.h
@@ -172,6 +173,7 @@ set(CORE_LIB_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/tool/strokeinterpolator.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/tool/stroketool.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/tool/transformtool.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/autosaverbytime.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/blitrect.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/cameraeasingtype.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/fileformat.cpp

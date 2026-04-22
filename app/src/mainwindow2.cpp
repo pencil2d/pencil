@@ -82,6 +82,7 @@ GNU General Public License for more details.
 #include "app_util.h"
 #include "presetdialog.h"
 #include "pegbaralignmentdialog.h"
+#include "autosaverbytime.h"
 
 
 #ifdef GIT_TIMESTAMP
@@ -141,10 +142,19 @@ MainWindow2::MainWindow2(QWidget* parent) :
 
     connect(mEditor, &Editor::needSave, this, &MainWindow2::autoSave);
 
+    mAutoSaver = new AutosaverByTime(mEditor->preference(), this);
+    connect(mAutoSaver, &AutosaverByTime::timeout, this, &MainWindow2::autoSaveTimeout);
+
     mEditor->tools()->setDefaultTool();
     ui->background->init(mEditor->preference());
 
     setWindowTitle(getWindowTitle());
+}
+
+void MainWindow2::autoSaveTimeout()
+{
+    FileManager fm;
+    fm.writeToWorkingFolder(mEditor->object());
 }
 
 MainWindow2::~MainWindow2()
@@ -1608,11 +1618,6 @@ bool MainWindow2::checkForRecoverableProjects()
 {
     FileManager fm;
     QStringList recoverables = fm.searchForUnsavedProjects();
-
-    if (recoverables.empty())
-    {
-        return false;
-    }
 
     foreach (const QString path, recoverables)
     {

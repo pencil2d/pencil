@@ -45,6 +45,8 @@ FilesPage::FilesPage()
     auto spinBoxValueChange = static_cast<void(QSpinBox::*)(int)>(&QSpinBox::valueChanged);
     connect(ui->autosaveCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autoSaveChange);
     connect(ui->autosaveNumberBox, spinBoxValueChange, this, &FilesPage::autoSaveNumberChange);
+    connect(ui->autosaveByTimeCheckBox, &QCheckBox::stateChanged, this, &FilesPage::autoSaveByTimeChange);
+    connect(ui->autosaveByTimeNumberBox, spinBoxValueChange, this, &FilesPage::autoSaveByTimeTimerChange);
 }
 
 FilesPage::~FilesPage()
@@ -209,6 +211,8 @@ void FilesPage::updateValues()
     }
     ui->autosaveCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE));
     ui->autosaveNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_NUMBER));
+    ui->autosaveByTimeCheckBox->setChecked(mManager->isOn(SETTING::AUTO_SAVE_BY_TIME));
+    ui->autosaveByTimeNumberBox->setValue(mManager->getInt(SETTING::AUTO_SAVE_BY_TIME_TIMER));
     ui->askPresetRbtn->setChecked(mManager->isOn(SETTING::ASK_FOR_PRESET));
     ui->loadDefaultPresetRbtn->setChecked(mManager->isOn(SETTING::LOAD_DEFAULT_PRESET));
     ui->loadLastActiveRbtn->setChecked(mManager->isOn(SETTING::LOAD_MOST_RECENT));
@@ -237,4 +241,14 @@ void FilesPage::autoSaveChange(int b)
 void FilesPage::autoSaveNumberChange(int number)
 {
     mManager->set(SETTING::AUTO_SAVE_NUMBER, number);
+}
+
+void FilesPage::autoSaveByTimeChange(int b)
+{
+    mManager->set(SETTING::AUTO_SAVE_BY_TIME, b != Qt::Unchecked);
+}
+
+void FilesPage::autoSaveByTimeTimerChange(int number)
+{
+    mManager->set(SETTING::AUTO_SAVE_BY_TIME_TIMER, number);
 }
