@@ -1052,7 +1052,7 @@ VectorImage* ScribbleArea::currentVectorImage(Layer* layer) const
 {
     Q_ASSERT(layer->type() == Layer::VECTOR);
     auto vectorLayer = static_cast<LayerVector*>(layer);
-    return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    return vectorLayer->getLastVectorImageAtFrame(mEditor->currentFrame());
 }
 
 void ScribbleArea::prepCameraPainter(int frame)

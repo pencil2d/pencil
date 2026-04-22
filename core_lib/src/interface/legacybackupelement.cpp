@@ -47,7 +47,7 @@ void BackupLegacyBitmapElement::restore(Editor* editor)
             if (layer->type() == Layer::BITMAP)
             {
                 auto bitmapLayer = static_cast<LayerBitmap*>(layer);
-                *bitmapLayer->getLastBitmapImageAtFrame(this->frame, 0) = bitmapImage;  // restore the image
+                *bitmapLayer->getLastBitmapImageAtFrame(this->frame) = bitmapImage;  // restore the image
             }
         }
     }
@@ -97,7 +97,7 @@ void BackupLegacyVectorElement::restore(Editor* editor)
             if (layer->type() == Layer::VECTOR)
             {
                 auto pVectorImage = static_cast<LayerVector*>(layer);
-                *pVectorImage->getLastVectorImageAtFrame(this->frame, 0) = this->vectorImage;  // restore the image
+                *pVectorImage->getLastVectorImageAtFrame(this->frame) = this->vectorImage;  // restore the image
             }
         }
     }

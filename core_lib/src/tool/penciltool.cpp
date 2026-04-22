@@ -251,7 +251,7 @@ void PencilTool::paintVectorStroke(Layer* layer)
     curve.setInvisibility(true);
     curve.setVariableWidth(false);
     curve.setColorNumber(mEditor->color()->frontColorNumber());
-    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+    VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame());
     if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
     vectorImage->addCurve(curve, qAbs(mEditor->view()->scaling()), false);
 

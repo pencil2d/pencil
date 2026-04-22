@@ -125,7 +125,7 @@ void PolylineTool::pointerPressEvent(PointerEvent* event)
 
             if (layer->type() == Layer::VECTOR)
             {
-                VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+                VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame());
                 Q_CHECK_PTR(vectorImage);
                 vectorImage->deselectAll();
                 if (mScribbleArea->makeInvisible() && !mEditor->preference()->isOn(SETTING::INVISIBLE_LINES))
@@ -326,7 +326,7 @@ void PolylineTool::endPolyline(QList<QPointF> points)
         curve.setVariableWidth(false);
         curve.setInvisibility(mScribbleArea->makeInvisible());
 
-        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame(), 0);
+        VectorImage* vectorImage = static_cast<LayerVector*>(layer)->getLastVectorImageAtFrame(mEditor->currentFrame());
         if (vectorImage == nullptr) { return; } // Can happen if the first frame is deleted while drawing
         vectorImage->addCurve(curve, mEditor->view()->scaling());
     }

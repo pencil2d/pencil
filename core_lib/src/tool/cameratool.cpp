@@ -92,7 +92,7 @@ void CameraTool::updateUIAssists(const Layer* layer)
     mCameraRect = Transform::mapFromLocalRect(localCamT, cameraRect);
     mCameraPolygon = Transform::mapFromLocalPolygon(localCamT, cameraRect);
 
-    Camera* cam = camLayer->getLastCameraAtFrame(mEditor->currentFrame(), 0);
+    Camera* cam = camLayer->getLastCameraAtFrame(mEditor->currentFrame());
     if (cam) {
         mRotationHandlePoint = localRotationHandlePoint(cameraRect.topLeft(), localCamT, cam->scaling(), mEditor->view()->getScaleInversed());
     }
@@ -415,7 +415,7 @@ CameraMoveType CameraTool::getPathMoveMode(const LayerCamera* layerCamera, int f
     if (layerCamera->hasSameTranslation(prev, next))
         return CameraMoveType::NONE;
 
-    Camera* camera = layerCamera->getLastCameraAtFrame(frameNumber, 0);
+    Camera* camera = layerCamera->getLastCameraAtFrame(frameNumber);
 
     if (camera == nullptr) { return CameraMoveType::NONE; }
 
@@ -500,7 +500,7 @@ void CameraTool::paint(QPainter& painter, const QRect&)
     // Show handles while we're on a camera layer and not doing playback
     if (!isPlaying) {
         int frame = cameraLayerBelow->getPreviousKeyFramePosition(frameIndex);
-        Camera* cam = cameraLayerBelow->getLastCameraAtFrame(qMax(frame, frameIndex), 0);
+        Camera* cam = cameraLayerBelow->getLastCameraAtFrame(qMax(frame, frameIndex));
         Q_ASSERT(cam);
         qreal scale = cam->scaling();
         qreal rotation = cam->rotation();

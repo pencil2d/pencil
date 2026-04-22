@@ -334,7 +334,7 @@ void CanvasPainter::paintCurrentBitmapFrame(QPainter& painter, const QRect& blit
 void CanvasPainter::paintCurrentVectorFrame(QPainter& painter, const QRect& blitRect, Layer* layer, bool isCurrentLayer)
 {
     LayerVector* vectorLayer = static_cast<LayerVector*>(layer);
-    VectorImage* vectorImage = vectorLayer->getLastVectorImageAtFrame(mFrameNumber, 0);
+    VectorImage* vectorImage = vectorLayer->getLastVectorImageAtFrame(mFrameNumber);
     if (vectorImage == nullptr)
     {
         return;

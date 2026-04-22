@@ -266,7 +266,7 @@ VectorReplaceCommand::VectorReplaceCommand(const VectorImage* undoVector,
     Layer* layer = editor->layers()->currentLayer();
     redoLayerId = layer->id();
     redoVector = *static_cast<LayerVector*>(layer)->
-            getLastVectorImageAtFrame(editor->currentFrame(), 0);
+            getLastVectorImageAtFrame(editor->currentFrame());
 
     setText(description);
 }
