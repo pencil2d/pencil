@@ -160,6 +160,10 @@ public:
     void drawPolyline(QPainterPath path, QPen pen, bool useAA);
     void drawPath(QPainterPath path, QPen pen, QBrush brush, QPainter::CompositionMode cm);
     void drawPen(QPointF thePoint, qreal brushWidth, QColor fillColor, bool useAA = true);
+    void snappingDrawPen(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth, QColor fillColor, bool useAA = true);
+    void snappingDrawEraser(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth, qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather = true, bool useAA = false);
+    void snappingDrawPencil(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
+    void snappingDrawBrush(QPointF origin, QPointF currentPoint, qreal brushStep, qreal brushWidth,  qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather = true);
     void drawPencil(QPointF thePoint, qreal brushWidth, qreal fixedBrushFeather, QColor fillColor, qreal opacity);
     void drawBrush(QPointF thePoint, qreal brushWidth, qreal offset, QColor fillColor, QPainter::CompositionMode compMode, qreal opacity, bool usingFeather = true, bool useAA = false);
     void blurBrush(BitmapImage *bmiSource_, QPointF srcPoint_, QPointF thePoint_, qreal brushWidth_, qreal offset_, qreal opacity_);
