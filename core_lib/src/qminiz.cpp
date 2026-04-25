@@ -112,10 +112,12 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
     }
 
     //qDebug() << "SrcFolder=" << srcFolderPath;
+    QString canonicalFolder = QFileInfo(srcFolderPath).canonicalFilePath();
+    QDir baseDir(canonicalFolder);
     for (const QString& filePath : fileList)
     {
-        QString sRelativePath = filePath;
-        sRelativePath.remove(srcFolderPath);
+        QString canonicalFilePath = QFileInfo(filePath).canonicalFilePath();
+        QString sRelativePath = baseDir.relativeFilePath(canonicalFilePath);
         if (sRelativePath == "mimetype") continue;
 
         dd << QString("Add file to zip: ").append(sRelativePath);
