@@ -26,6 +26,7 @@ TEST_CASE("QMiniZ::CompressFolder")
     SECTION("Verify robustness against paths with different roots")
     {
         QTemporaryDir tempDir;
+        REQUIRE(tempDir.isValid());
 
         QString subFolder = tempDir.path() + "/bar/";
         QDir().mkpath(subFolder);
