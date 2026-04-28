@@ -16,6 +16,8 @@ GNU General Public License for more details.
 */
 #include "slidergeometry.h"
 
+#include <QtMath>
+
 QRectF SliderGeometry::contentsRect(const QRectF& rect, qreal borderWidth)
 {
     qreal inset = SliderGeometry::penStrokeInset(borderWidth);
@@ -37,7 +39,12 @@ qreal SliderGeometry::penStrokeInset(qreal borderWidth)
     return borderWidth * 0.5;
 }
 
-qreal SliderGeometry::pickerMaxDistance(qreal sliderWidth, qreal pickerWidth)
+/**
+ *  The max travel distance the picker can be moved compared to the slider width
+ *
+ *  @return How far the picker can be moved compared to the slider trailing bound
+ */
+qreal SliderGeometry::pickerUpperBound(qreal sliderWidth, qreal pickerWidth)
 {
-    return sliderWidth - pickerWidth;
+    return qMax(1.0, sliderWidth - pickerWidth);
 }

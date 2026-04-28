@@ -311,7 +311,7 @@ void ColorSlider::drawPicker(const QColor &color)
         val = color.alphaF();
     }
 
-    const qreal maxDistance = SliderGeometry::pickerMaxDistance(innerSliderRect.width(), mPickerSize.width());
+    const qreal maxDistance = SliderGeometry::pickerUpperBound(innerSliderRect.width(), mPickerSize.width());
     val = static_cast<int>(innerSliderRect.left() + qMax(static_cast<qreal>(mMin), (val * maxDistance))) + inset;
 
     QPen outerPen;
@@ -361,7 +361,7 @@ void ColorSlider::colorPicked(QPoint point)
     int colorMax = colorTypeMax();
 
     qreal pickerCenter = mPickerSize.width() * 0.5;
-    int colorVal = (point.x() - pickerCenter) * colorSteps() / SliderGeometry::pickerMaxDistance(innerSliderRect.width(), mPickerSize.width());
+    int colorVal = (point.x() - pickerCenter) * colorSteps() / SliderGeometry::pickerUpperBound(innerSliderRect.width(), mPickerSize.width());
     colorVal = qBound(mMin, colorVal, colorMax);
 
     switch (mSpecType)
