@@ -50,7 +50,7 @@ void SliderPainter::drawSliderStyle(QPainter& painter, const QRectF& rect, Slide
     painter.drawRoundedRect(rect,
                             style.cachedCornerRadiusX,
                             style.cachedCornerRadiusY,
-                            Qt::SizeMode::AbsoluteSize);
+                            Qt::AbsoluteSize);
 
     painter.restore();
 }

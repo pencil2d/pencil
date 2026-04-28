@@ -20,7 +20,8 @@ GNU General Public License for more details.
 #include <QPainter>
 #include <QPalette>
 
-struct SliderPainterStyle {
+struct SliderPainterStyle
+{
 
     SliderPainterStyle(QPalette::ColorRole fillRole,
                        QPalette::ColorRole strokeRole,
@@ -65,7 +66,8 @@ struct SliderPainterStyle {
     float cachedCornerRadiusY = 0;
 };
 
-namespace SliderPainter {
+namespace SliderPainter
+{
     void drawSliderStyle(QPainter& painter, const QRectF& rect, SliderPainterStyle& style, const QPalette& palette);
     void updateSliderStyleCache(SliderPainterStyle& style, const QSizeF& newSize);
 }
