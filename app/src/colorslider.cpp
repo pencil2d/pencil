@@ -93,11 +93,11 @@ QLinearGradient ColorSlider::setColorSpec(const QColor &color)
 QLinearGradient ColorSlider::rgbGradient(const QColor &color)
 {
     int val = 0;
-    int max = colorSteps();
+    int max = colorTypeMax();
     switch (mColorType)
     {
     case RED:
-        for (; val < max; val += 1)
+        for (; val <= max; val += 1)
         {
             mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromRgb(val,
                                                              255,
@@ -106,7 +106,7 @@ QLinearGradient ColorSlider::rgbGradient(const QColor &color)
         }
         break;
     case GREEN:
-        for (; val < max; val += 1)
+        for (; val <= max; val += 1)
         {
             mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromRgb(color.red(),
                                                              val,
@@ -115,7 +115,7 @@ QLinearGradient ColorSlider::rgbGradient(const QColor &color)
         }
         break;
     case BLUE:
-        for (; val < max; val += 1)
+        for (; val <= max; val += 1)
         {
             mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromRgb(color.red(),
                                                              color.green(),
@@ -124,7 +124,7 @@ QLinearGradient ColorSlider::rgbGradient(const QColor &color)
         }
         break;
     case ALPHA:
-        for (; val < max; val += 1)
+        for (; val <= max; val += 1)
         {
             mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromRgb(0,
                                                              0,
@@ -141,11 +141,11 @@ QLinearGradient ColorSlider::rgbGradient(const QColor &color)
 QLinearGradient ColorSlider::hsvGradient(const QColor &color)
 {
     int val = 0;
-    int max = colorSteps();
+    int max = colorTypeMax();
     switch (mColorType)
     {
     case HUE:
-        for (; val < max; val += 1)
+        for (; val <= max; val += 1)
         {
             mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromHsv(val,
                                                              255,
@@ -154,7 +154,7 @@ QLinearGradient ColorSlider::hsvGradient(const QColor &color)
         }
         break;
     case SAT:
-        for (; val < max; val += 1)
+        for (; val <= max; val += 1)
         {
             mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromHsv(color.hsvHue(),
                                                              val,
@@ -163,7 +163,7 @@ QLinearGradient ColorSlider::hsvGradient(const QColor &color)
         }
         break;
     case VAL:
-        for (; val < max; val += 1)
+        for (; val <= max; val += 1)
         {
             mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromHsv(color.hsvHue(),
                                                              color.hsvSaturation(),
@@ -172,7 +172,7 @@ QLinearGradient ColorSlider::hsvGradient(const QColor &color)
         }
         break;
     case ALPHA:
-        for (; val < max; val += 1)
+        for (; val <= max; val += 1)
         {
             mGradient.setColorAt(static_cast<qreal>(val) / max, QColor::fromHsv(0,
                                                              0,
