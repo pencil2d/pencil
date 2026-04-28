@@ -18,6 +18,8 @@ GNU General Public License for more details.
 
 #include <QObject>
 #include <QWidget>
+#include <QColor>
+#include <QPixmap>
 
 class ColorPreviewWidget: public QWidget
 {
