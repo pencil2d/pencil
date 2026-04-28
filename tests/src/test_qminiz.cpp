@@ -18,6 +18,10 @@ GNU General Public License for more details.
 #include "catch.hpp"
 #include "qminiz.h"
 
+#include <cstring>
+#include <QDir>
+#include <QFile>
+#include <QFileInfo>
 #include <QTemporaryDir>
 
 // https://github.com/pencil2d/pencil/issues/2009

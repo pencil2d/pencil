@@ -111,13 +111,27 @@ Status MiniZ::compressFolder(QString zipFilePath, QString srcFolderPath, const Q
         }
     }
 
-    //qDebug() << "SrcFolder=" << srcFolderPath;
     QString canonicalFolder = QFileInfo(srcFolderPath).canonicalFilePath();
+    if (canonicalFolder.isEmpty())
+    {
+        dd << QString("Error: Source folder does not exist: %1").arg(srcFolderPath);
+        return Status(Status::FAIL, dd);
+    }
     QDir baseDir(canonicalFolder);
     for (const QString& filePath : fileList)
     {
         QString canonicalFilePath = QFileInfo(filePath).canonicalFilePath();
+        if (canonicalFilePath.isEmpty())
+        {
+            dd << QString("Error: File does not exist: %1").arg(filePath);
+            return Status(Status::FAIL, dd);
+        }
         QString sRelativePath = baseDir.relativeFilePath(canonicalFilePath);
+        if (sRelativePath.startsWith("../") || sRelativePath == "..")
+        {
+            dd << QString("Error: File is outside the base folder: %1").arg(filePath);
+            return Status(Status::FAIL, dd);
+        }
         if (sRelativePath == "mimetype") continue;
 
         dd << QString("Add file to zip: ").append(sRelativePath);
