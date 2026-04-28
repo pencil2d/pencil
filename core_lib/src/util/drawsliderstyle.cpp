@@ -43,7 +43,7 @@ void SliderPainter::drawSliderStyle(QPainter& painter, const QRectF& rect, Slide
     painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
 
     QPen pen = resolveColorRole(palette, style.strokeRole);
-    pen.setWidth(style.borderWidth);
+    pen.setWidthF(style.borderWidth);
     painter.setPen(pen);
 
     painter.setBrush(resolveFill(style, palette));
