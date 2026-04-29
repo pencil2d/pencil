@@ -42,6 +42,7 @@ SOURCES += \
     src/test_filemanager.cpp \
     src/test_bitmapimage.cpp \
     src/test_bitmapbucket.cpp \
+    src/test_qminiz.cpp \
     src/test_vectorimage.cpp \
     src/test_viewmanager.cpp
 
