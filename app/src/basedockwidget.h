@@ -42,6 +42,10 @@ public:
     Editor* editor() const { return mEditor; }
     void setEditor( Editor* e ) { mEditor = e; }
 
+    /// Sets a widget in addition to the normal titlebar buttons.
+    /// If the titlebar already has one widget, the previous one will be deleted.
+    void setWidgetInTitleBarArea(QWidget* widget);
+
 protected:
     void resizeEvent(QResizeEvent* event) override;
 
