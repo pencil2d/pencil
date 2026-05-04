@@ -128,8 +128,11 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
 
     QFileInfo info(key->fileName());
     QString sDestFileLocation = QDir(path).filePath(info.fileName());
+    QFileInfo projectFileLocation(sDestFileLocation);
 
-    if (sDestFileLocation != key->fileName())
+    // Note(MrStevns): When using PCL format, the file has to be moved from the temporary
+    // folder and into its actual project folder.
+    if (info.canonicalFilePath() != projectFileLocation.canonicalFilePath())
     {
         if (QFile::exists(sDestFileLocation))
             QFile::remove(sDestFileLocation);
