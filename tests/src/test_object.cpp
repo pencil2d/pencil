@@ -18,7 +18,10 @@ GNU General Public License for more details.
 #include <memory>
 #include <QDomDocument>
 #include <QDomElement>
+#include <QFile>
+#include <QFileInfo>
 #include <QTemporaryDir>
+#include "filemanager.h"
 #include "object.h"
 #include "layerbitmap.h"
 #include "layervector.h"
@@ -116,6 +119,84 @@ TEST_CASE("Object::getUniqueLayerID()")
         Layer* vectorLayer = obj->addNewVectorLayer();
         REQUIRE(vectorLayer->id() == 2);
         REQUIRE(obj->getUniqueLayerID() == 3);
+    }
+}
+
+TEST_CASE("Object: sound key survives save-load after modification")
+{
+    FileManager fm;
+
+    QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
+    REQUIRE(testDir.isValid());
+
+    const QString sourceAudioPath = testDir.filePath("input_sound.wav");
+    {
+        QFile sourceAudio(sourceAudioPath);
+        REQUIRE(sourceAudio.open(QIODevice::WriteOnly));
+        // LayerSound only requires a file to exist, so fixture bytes can be minimal.
+        REQUIRE(sourceAudio.write("PENCIL_TEST_AUDIO") > 0);
+    }
+
+    const QString animationPath = testDir.filePath("sound-modified-roundtrip.pclx");
+
+    {
+        std::unique_ptr<Object> objectToCreate(new Object);
+        objectToCreate->init();
+
+        LayerSound* soundLayer = objectToCreate->addNewSoundLayer();
+        REQUIRE(soundLayer != nullptr);
+        REQUIRE(soundLayer->loadSoundClipAtFrame("test-clip", sourceAudioPath, 2).ok());
+
+        REQUIRE(fm.save(objectToCreate.get(), animationPath).ok());
+    }
+
+    {
+        std::unique_ptr<Object> loadedObject(fm.load(animationPath));
+        REQUIRE(loadedObject != nullptr);
+        REQUIRE(fm.error().ok());
+
+        LayerSound* loadedSoundLayer = nullptr;
+        for (int i = 0; i < loadedObject->getLayerCount(); ++i)
+        {
+            if (loadedObject->getLayer(i)->type() == Layer::SOUND)
+            {
+                loadedSoundLayer = static_cast<LayerSound*>(loadedObject->getLayer(i));
+                break;
+            }
+        }
+
+        REQUIRE(loadedSoundLayer != nullptr);
+
+        KeyFrame* soundKey = loadedSoundLayer->getKeyFrameAt(2);
+        REQUIRE(soundKey != nullptr);
+
+        // Simulate editing workflow where sound key gets marked modified before saving again.
+        soundKey->modification();
+
+        REQUIRE(fm.save(loadedObject.get(), animationPath).ok());
+    }
+
+    {
+        std::unique_ptr<Object> reloadedObject(fm.load(animationPath));
+        REQUIRE(reloadedObject != nullptr);
+        REQUIRE(fm.error().ok());
+
+        LayerSound* reloadedSoundLayer = nullptr;
+        for (int i = 0; i < reloadedObject->getLayerCount(); ++i)
+        {
+            if (reloadedObject->getLayer(i)->type() == Layer::SOUND)
+            {
+                reloadedSoundLayer = static_cast<LayerSound*>(reloadedObject->getLayer(i));
+                break;
+            }
+        }
+
+        REQUIRE(reloadedSoundLayer != nullptr);
+
+        KeyFrame* reloadedSoundKey = reloadedSoundLayer->getKeyFrameAt(2);
+        REQUIRE(reloadedSoundKey != nullptr);
+        REQUIRE_FALSE(reloadedSoundKey->fileName().isEmpty());
+        REQUIRE(QFileInfo::exists(reloadedSoundKey->fileName()));
     }
 }
 
