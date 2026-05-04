@@ -155,8 +155,8 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
             dd << QString("Error: Failed to save SoundClip");
             return Status(Status::FAIL, dd);
         }
-        key->setFileName(sDestFileLocation);
     }
+    key->setFileName(sDestFileLocation);
     return Status::OK;
 }
 
