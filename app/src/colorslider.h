@@ -19,6 +19,8 @@ GNU General Public License for more details.
 
 #include <QWidget>
 
+#include "drawsliderstyle.h"
+#include "slidergeometry.h"
 
 class ColorSlider : public QWidget
 {
@@ -44,34 +46,24 @@ public:
     explicit ColorSlider(QWidget* parent);
     ~ColorSlider() override;
 
-    void init(ColorSpecType specType, ColorType type, const QColor &color, qreal min, qreal max);
+    void init(ColorSpecType specType, ColorType type, const QColor &color);
 
     QLinearGradient setColorSpec(const QColor &color);
 
     QColor color() { return mColor; }
 
-    void setHsv(const QColor& hsv) { mColor.setHsv(hsv.hsvHue(),
-                                                  hsv.hsvSaturation(),
-                                                  hsv.value(),
-                                                  hsv.alpha());
-                                   }
+    void setHsv(const QColor& hsv);
 
-    void setRgb(const QColor& rgb) { mColor.setRgb(rgb.red(),
-                                                  rgb.green(),
-                                                  rgb.blue(),
-                                                  rgb.alpha());
-                                   }
+    void setRgb(const QColor& rgb);
 
     void setColorSpecType(ColorSpecType newType) { this->mSpecType = newType; }
     void setColorType(ColorType newType) { this->mColorType = newType; }
-
-    void setMin(qreal min) { mMin = min; }
-    void setMax(qreal max) { mMax = max; }
 
     QSize sizeHint() const override;
 
 protected:
     void paintEvent(QPaintEvent* event) override;
+    void resizeEvent(QResizeEvent *event) override;
     void mouseMoveEvent(QMouseEvent* event) override;
     void mousePressEvent(QMouseEvent* event) override;
 
@@ -80,6 +72,10 @@ signals:
 
 private:
 
+    int colorSteps() const;
+    int colorTypeMax() const;
+
+    void setupPicker();
     void drawColorBox(const QColor &color, QSize size);
     void drawPicker(const QColor &color);
     QLinearGradient hsvGradient(const QColor &color);
@@ -87,16 +83,26 @@ private:
 
     void colorPicked(QPoint point);
 
+    bool mPixmapCacheInvalid = true;
     QPixmap mBoxPixmapSource;
 
     QColor mColor;
-    qreal mMin = 0.0;
-    qreal mMax = 0.0;
+    int mMin = 0;
+
+    QSizeF mPickerSize = QSize(-1, -1);
 
     ColorType mColorType = ColorType::HUE;
     ColorSpecType mSpecType = ColorSpecType::RGB;
 
     QLinearGradient mGradient;
+
+    SliderPainterStyle mSliderStyle = SliderPainterStyle(
+        QPalette::Dark,
+        true,
+        QBrush(QPixmap(":icons/general/checkerboard_smaller.png"))
+    );
+
+    QPixmap mCheckerboardPixmap = QPixmap(":icons/general/checkerboard_smaller.png");
 };
 
 #endif // COLORSLIDER_H
