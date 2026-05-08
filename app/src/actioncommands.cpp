@@ -844,12 +844,17 @@ void ActionCommands::duplicateKey()
 void ActionCommands::moveFrameForward()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer)
+    if (layer == nullptr) { return; }
+
+    // Prevent moving keyframe if the layer is not visible, as it can cause confusion to users when they don't see their keyframe move.
+    if (!layer->visible()) {
+        mEditor->getScribbleArea()->showLayerNotVisibleWarning();
+        return;
+    }
+
+    if (layer->moveKeyFrame(mEditor->currentFrame(), 1))
     {
-        if (layer->moveKeyFrame(mEditor->currentFrame(), 1))
-        {
-            mEditor->scrubForward();
-        }
+        mEditor->scrubForward();
     }
     mEditor->layers()->notifyAnimationLengthChanged();
     emit mEditor->framesModified();
@@ -858,12 +863,17 @@ void ActionCommands::moveFrameForward()
 void ActionCommands::moveFrameBackward()
 {
     Layer* layer = mEditor->layers()->currentLayer();
-    if (layer)
+    if (layer == nullptr) { return; }
+
+    // Moving keyframes on hidden layers is not allowed, as it can cause confusion. We show a warning to the user to let them know they need to unhide the layer first.
+    if (!layer->visible()) {
+        mEditor->getScribbleArea()->showLayerNotVisibleWarning();
+        return;
+    }
+
+    if (layer->moveKeyFrame(mEditor->currentFrame(), -1))
     {
-        if (layer->moveKeyFrame(mEditor->currentFrame(), -1))
-        {
-            mEditor->scrubBackward();
-        }
+        mEditor->scrubBackward();
     }
     emit mEditor->framesModified();
 }
