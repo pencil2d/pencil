@@ -33,12 +33,15 @@ TitleBarWidget::TitleBarWidget(QWidget* parent)
     : QWidget(parent)
 {
 
-    QVBoxLayout* vLayout = new QVBoxLayout();
+    QHBoxLayout* vLayout = new QHBoxLayout();
 
-    vLayout->setContentsMargins(3,4,3,4);
+    vLayout->setContentsMargins(2,0,2,0);
     vLayout->setSpacing(0);
 
-    vLayout->addWidget(createCustomTitleBarWidget(this));
+    QWidget* contentWidget = createCustomTitleBarWidget(this);
+    vLayout->addWidget(contentWidget);
+
+    contentWidget->setMinimumHeight(28);
 
     setLayout(vLayout);
 }
@@ -52,7 +55,7 @@ QWidget* TitleBarWidget::createCustomTitleBarWidget(QWidget* parent)
     bool isDarkmode = PlatformHandler::isDarkMode();
     QWidget* containerWidget = new QWidget(parent);
 
-    QHBoxLayout* containerLayout = new QHBoxLayout(parent);
+    mContainerLayout = new QHBoxLayout(parent);
 
     mCloseButton = new QToolButton(parent);
 
@@ -104,23 +107,32 @@ QWidget* TitleBarWidget::createCustomTitleBarWidget(QWidget* parent)
     mTitleLabel->setAlignment(Qt::AlignVCenter);
 
 #ifdef __APPLE__
-    containerLayout->addWidget(mCloseButton);
-    containerLayout->addWidget(mDockButton);
-    containerLayout->addWidget(mTitleLabel);
+    mContainerLayout->addWidget(mCloseButton);
+    mContainerLayout->addWidget(mDockButton);
+    mContainerLayout->addWidget(mTitleLabel);
 #else
-    containerLayout->addWidget(mTitleLabel);
-    containerLayout->addWidget(mDockButton);
-    containerLayout->addWidget(mCloseButton);
+    mContainerLayout->addWidget(mTitleLabel);
+    mContainerLayout->addWidget(mDockButton);
+    mContainerLayout->addWidget(mCloseButton);
 #endif
 
-    containerLayout->setSpacing(3);
-    containerLayout->setContentsMargins(0,0,0,0);
+    mContainerLayout->setSpacing(3);
+    mContainerLayout->setContentsMargins(0,0,0,0);
 
-    containerWidget->setLayout(containerLayout);
+    containerWidget->setLayout(mContainerLayout);
     containerWidget->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     containerWidget->setMinimumSize(QSize(1,1));
 
     return containerWidget;
+}
+
+void TitleBarWidget::setChildWidget(QWidget* widget)
+{
+    if (mHasChildWidget) {
+        mContainerLayout->removeWidget(widget);
+    }
+    mContainerLayout->addWidget(widget);
+    mHasChildWidget = true;
 }
 
 QString TitleBarWidget::flatButtonStylesheet() const
@@ -131,6 +143,16 @@ QString TitleBarWidget::flatButtonStylesheet() const
 void TitleBarWidget::setTitle(const QString &title)
 {
     mTitleLabel->setText(title);
+}
+
+void TitleBarWidget::lock(bool locked)
+{
+    if (locked) {
+        hideButtons(true);
+    } else {
+        hideButtonsIfNeeded(this->width());
+    }
+    mIsLocked = locked;
 }
 
 void TitleBarWidget::hideButtons(bool hide)
@@ -150,7 +172,7 @@ void TitleBarWidget::hideButtonsIfNeeded(int width)
 {
     if (width <= mWidthOfFullLayout) {
         hideButtons(true);
-    } else {
+    } else if (!mIsLocked) {
         hideButtons(false);
     }
 }
