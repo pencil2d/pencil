@@ -24,6 +24,7 @@ GNU General Public License for more details.
 #include <QIcon>
 #include <QLibraryInfo>
 #include <QSettings>
+#include <QStyle>
 #include <QTranslator>
 #include <QLockFile>
 #include <QStandardPaths>
@@ -32,9 +33,11 @@ GNU General Public License for more details.
 
 #include "commandlineexporter.h"
 #include "commandlineparser.h"
+#include "editor.h"
 #include "mainwindow2.h"
 #include "pencildef.h"
 #include "platformhandler.h"
+#include "theming.h"
 
 
 #if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
@@ -42,7 +45,8 @@ GNU General Public License for more details.
 #endif
 
 Pencil2D::Pencil2D(int& argc, char** argv) :
-    QApplication(argc, argv)
+    QApplication(argc, argv),
+    DEFAULT_STYLE(style()->objectName())
 {
     // Set organization and application name
     setOrganizationName("Pencil2D");
@@ -134,6 +138,32 @@ bool Pencil2D::event(QEvent* event)
     return QApplication::event(event);
 }
 
+void Pencil2D::setTheme(const QString styleId, const QString paletteId)
+{
+    QStyle* newStyle = Theming::getStyle(styleId);
+    if (newStyle != nullptr)
+    {
+        setStyle(newStyle);
+    }
+    else
+    {
+        newStyle = setStyle(DEFAULT_STYLE);
+    }
+
+    // Palette should be set after style is set
+    ThemeColorPalette palette(Theming::getPalette(paletteId));
+    if (palette.isValid())
+    {
+        setPalette(palette.palette());
+    }
+    else
+    {
+        setPalette(newStyle->standardPalette());
+    }
+
+    mainWindow->update();
+}
+
 void Pencil2D::installTranslators()
 {
     QSettings setting(PENCIL2D, PENCIL2D);
@@ -171,7 +201,21 @@ void Pencil2D::prepareGuiStartup(const QString& inputPath)
     PlatformHandler::configurePlatformSpecificSettings();
 
     mainWindow.reset(new MainWindow2);
+    PreferenceManager* prefs = mainWindow->mEditor->preference();
+    setTheme(prefs->getString(SETTING::STYLE_ID), prefs->getString(SETTING::PALETTE_ID));
+
     connect(this, &Pencil2D::openFileRequested, mainWindow.get(), &MainWindow2::openFile);
+    connect(prefs, &PreferenceManager::optionChanged, [=](SETTING setting) {
+        switch (setting)
+        {
+        case SETTING::STYLE_ID:
+        case SETTING::PALETTE_ID:
+            setTheme(prefs->getString(SETTING::STYLE_ID), prefs->getString(SETTING::PALETTE_ID));
+            break;
+        default:
+            break;
+        }
+    });
     mainWindow->show();
 
     mainWindow->openStartupFile(inputPath);
