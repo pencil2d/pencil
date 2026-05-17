@@ -870,54 +870,25 @@ void ActionCommands::moveFrameBackward()
 
 Status ActionCommands::addNewBitmapLayer()
 {
-    bool ok;
-    QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
-                                         tr("Layer name:"), QLineEdit::Normal,
-                                         mEditor->layers()->nameSuggestLayer(tr("Bitmap Layer")), &ok);
-    if (ok && !text.isEmpty())
-    {
-        mEditor->layers()->createBitmapLayer(text);
-    }
+    mEditor->layers()->createBitmapLayer(mEditor->layers()->nameSuggestLayer(tr("Bitmap Layer")));
     return Status::OK;
 }
 
 Status ActionCommands::addNewVectorLayer()
 {
-    bool ok;
-    QString text = QInputDialog::getText(nullptr, tr("Layer Properties"),
-                                         tr("Layer name:"), QLineEdit::Normal,
-                                         mEditor->layers()->nameSuggestLayer(tr("Vector Layer")), &ok);
-    if (ok && !text.isEmpty())
-    {
-        mEditor->layers()->createVectorLayer(text);
-    }
+    mEditor->layers()->createVectorLayer(mEditor->layers()->nameSuggestLayer(tr("Vector Layer")));
     return Status::OK;
 }
 
 Status ActionCommands::addNewCameraLayer()
 {
-    bool ok;
-    QString text = QInputDialog::getText(nullptr, tr("Layer Properties", "A popup when creating a new layer"),
-                                         tr("Layer name:"), QLineEdit::Normal,
-                                         mEditor->layers()->nameSuggestLayer(tr("Camera Layer")), &ok);
-    if (ok && !text.isEmpty())
-    {
-        mEditor->layers()->createCameraLayer(text);
-    }
+    mEditor->layers()->createCameraLayer(mEditor->layers()->nameSuggestLayer(tr("Camera Layer")));
     return Status::OK;
 }
 
 Status ActionCommands::addNewSoundLayer()
 {
-    bool ok = false;
-    QString strLayerName = QInputDialog::getText(nullptr, tr("Layer Properties"),
-                                                 tr("Layer name:"), QLineEdit::Normal,
-                                                 mEditor->layers()->nameSuggestLayer(tr("Sound Layer")), &ok);
-    if (ok && !strLayerName.isEmpty())
-    {
-        Layer* layer = mEditor->layers()->createSoundLayer(strLayerName);
-        mEditor->layers()->setCurrentLayer(layer);
-   }
+    mEditor->layers()->createSoundLayer(mEditor->layers()->nameSuggestLayer(tr("Sound Layer")));
     return Status::OK;
 }
 
