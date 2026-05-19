@@ -52,9 +52,16 @@ public:
     void removeEventListner(KeyFrameEventListener*);
 
     virtual KeyFrame* clone() const { return nullptr; }
+    /** Loads the backing file into memory if it exists, otherwise it does nothing */
     virtual void loadFile() {}
+
+    /** Unloads the data from memory in order to save memory. This will only work if a backing file exists
+     *  and the latest keyframe data has been saved to disk, eg. `isModified` is false */
     virtual void unloadFile() {}
-    virtual bool isLoaded() const { return true; }
+
+    /** A check to ensure that the keyframe holds valid data.
+     *  @return `true` if the keyframe holds valid data, otherwise false. */
+    virtual bool isLoaded() const { return false; }
 
     virtual quint64 memoryUsage() { return 0; }
 
