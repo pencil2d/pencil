@@ -43,8 +43,18 @@ public:
     BitmapImage& operator=(const BitmapImage& a);
 
     BitmapImage* clone() const override;
+
+    /** Loads the backing image data from disk and into memory if it exists but hasn't been loaded yet */
     void loadFile() override;
+
+    /** Unloads the image data from memory if there's valid backing data on disk and the latest state has been stored */
     void unloadFile() override;
+
+    /** Checks whether the keyframe holds valid image data.
+     *
+     *  @note This does not verify that the data is loaded from a backing file.
+     *  @return `true` if the keyframe holds a valid image, otherwise returns `false`
+    */
     bool isLoaded() const override;
     quint64 memoryUsage() override;
 
