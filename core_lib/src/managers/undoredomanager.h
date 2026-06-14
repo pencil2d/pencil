@@ -138,6 +138,7 @@ public:
     /** Checks whether there are unsaved changes.
      *  @return true if there are unsaved changes, otherwise false */
     bool hasUnsavedChanges() const;
+    bool isFirstRedoInProgress() const { return mFirstUndoInProgress; }
 
     /** Prepares and returns an save state with common data
      * @return A UndoSaveState struct with common keyframe data */
@@ -220,6 +221,7 @@ private:
     SAVESTATE_ID mSaveStateId = 1;
 
     bool mNewBackupSystemEnabled = false;
+    bool mFirstUndoInProgress = false;
 };
 
 #endif // UNDOREDOMANAGER_H
