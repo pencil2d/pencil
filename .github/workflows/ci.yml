@@ -66,7 +66,7 @@ jobs:
     env: { CONTAINER: "${{matrix.container}}", BUILD_CMD: "" }
     steps:
       - name: Check out repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v7
 
       - name: Set up container (Linux)
         if: runner.os == 'Linux'
@@ -133,11 +133,11 @@ jobs:
           if [ "$RUNNER_OS" = "macOS" ]; then
             for ext in dmg zip; do
               if [ -f "build/${BASENAME}.${ext}" ]; then
-                echo "package_path=build/${BASENAME}.${ext}" >> $GITHUB_OUTPUT
+                echo "package1=build/${BASENAME}.${ext}" >> $GITHUB_OUTPUT
                 exit 0
               fi
             done
-            
+
             echo "ERROR: No macOS package found"
             exit 1
           else
@@ -146,14 +146,32 @@ jobs:
               echo "ERROR: No package found"
               exit 1
             fi
-            echo "package_path=build/${BASENAME}*" >> $GITHUB_OUTPUT
+            if [ "${#files[@]}" -gt 3 ]; then
+              echo "ERROR: More than three packages found"
+              exit 1
+            fi
+            echo "package1=${files[0]}" >> $GITHUB_OUTPUT
+            echo "package2=${files[1]}" >> $GITHUB_OUTPUT
+            echo "package3=${files[2]}" >> $GITHUB_OUTPUT
           fi
 
-      - name: Upload package
-        uses: actions/upload-artifact@v4
+      - name: Upload package one
+        uses: actions/upload-artifact@v7
         with:
-          name: ${{steps.package.outputs.output-basename}}
-          path: ${{steps.resolve.outputs.package_path}}
+          path: ${{steps.resolve.outputs.package1}}
+          archive: false
+      - name: Upload package two
+        if: steps.resolve.outputs.package2
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{steps.resolve.outputs.package2}}
+          archive: false
+      - name: Upload package three
+        if: steps.resolve.outputs.package3
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{steps.resolve.outputs.package3}}
+          archive: false
       - name: Generate summary
         shell: bash
         run: >
