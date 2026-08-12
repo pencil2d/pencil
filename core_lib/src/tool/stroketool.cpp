@@ -193,8 +193,26 @@ bool StrokeTool::keyPressEvent(QKeyEvent *event)
             return true;
         }
         break;
+        case Qt::Key_Minus:
+            if(!isActive()){
+                mXYSnappingMode = true;
+            }
+            break;
     }
     return BaseTool::keyPressEvent(event);
+}
+
+bool StrokeTool::keyReleaseEvent(QKeyEvent *event)
+{
+    switch (event->key()) {
+    case Qt::Key_Minus:
+        if(!isActive()){
+            mXYSnappingMode = false;
+            return true;
+        }
+        break;
+    }
+    return BaseTool::keyReleaseEvent(event);
 }
 
 bool StrokeTool::emptyFrameActionEnabled()
@@ -211,6 +229,7 @@ void StrokeTool::endStroke()
 
     enableCoalescing();
 
+    mXYSnappingMode = false;
     mEditor->setModified(mEditor->currentLayerIndex(), mEditor->currentFrame());
     mScribbleArea->endStroke();
 
