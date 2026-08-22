@@ -93,6 +93,7 @@ HEADERS += \
     src/generalpage.h \
     src/shortcutspage.h \
     src/strokeoptionswidget.h \
+    src/timecodecontrolwidget.h \
     src/timelinepage.h \
     src/toolboxwidget.h \
     src/toolspage.h \
@@ -151,6 +152,7 @@ SOURCES += \
     src/generalpage.cpp \
     src/shortcutspage.cpp \
     src/strokeoptionswidget.cpp \
+    src/timecodecontrolwidget.cpp \
     src/timelinepage.cpp \
     src/toolboxwidget.cpp \
     src/toolspage.cpp \
