@@ -31,6 +31,11 @@ namespace MathUtils
         return outputMin + slope * (x - inputMin);
     }
 
+    inline qreal lerp(qreal t, qreal newMin, qreal newMax)
+    {
+        return newMin + t * (newMax - newMin);
+    }
+
     /** Normalize x to a value between 0 and 1;
     *  \param x The input value
     *  \param min The input min value
@@ -39,7 +44,7 @@ namespace MathUtils
     */
     inline qreal normalize(qreal x, qreal min, qreal max)
     {
-        return qAbs((x - max) / (min - max));
+        return (x - min) / (max - min);
     }
 }
 
