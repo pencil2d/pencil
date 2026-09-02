@@ -82,6 +82,8 @@ HEADERS += \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/layeropacitydialog.h \
+    src/layervisibilitybutton.h \
+    src/lineeditwidget.h \
     src/mainwindow2.h \
     src/onionskinwidget.h \
     src/predefinedsetmodel.h \
@@ -93,7 +95,15 @@ HEADERS += \
     src/generalpage.h \
     src/shortcutspage.h \
     src/strokeoptionswidget.h \
+    src/timelinebasecell.h \
+    src/timelinelayercell.h \
+    src/timelinelayercelleditorwidget.h \
+    src/timelinelayercellgutterwidget.h \
+    src/timelinelayerheaderwidget.h \
+    src/timelinelayerlist.h \
     src/timelinepage.h \
+    src/timelinetrackheaderwidget.h \
+    src/timelinetracklist.h \
     src/toolboxwidget.h \
     src/toolspage.h \
     src/titlebarwidget.h \
@@ -103,7 +113,6 @@ HEADERS += \
     src/colorpalettewidget.h \
     src/colorwheel.h \
     src/timeline.h \
-    src/timelinecells.h \
     src/timecontrols.h \
     src/cameracontextmenu.h \
     src/camerapropertiesdialog.h \
@@ -139,6 +148,8 @@ SOURCES += \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/layeropacitydialog.cpp \
+    src/layervisibilitybutton.cpp \
+    src/lineeditwidget.cpp \
     src/main.cpp \
     src/mainwindow2.cpp \
     src/onionskinwidget.cpp \
@@ -151,7 +162,15 @@ SOURCES += \
     src/generalpage.cpp \
     src/shortcutspage.cpp \
     src/strokeoptionswidget.cpp \
+    src/timelinebasecell.cpp \
+    src/timelinelayercell.cpp \
+    src/timelinelayercelleditorwidget.cpp \
+    src/timelinelayercellgutterwidget.cpp \
+    src/timelinelayerheaderwidget.cpp \
+    src/timelinelayerlist.cpp \
     src/timelinepage.cpp \
+    src/timelinetrackheaderwidget.cpp \
+    src/timelinetracklist.cpp \
     src/toolboxwidget.cpp \
     src/toolspage.cpp \
     src/titlebarwidget.cpp \
@@ -161,7 +180,6 @@ SOURCES += \
     src/colorpalettewidget.cpp \
     src/colorwheel.cpp \
     src/timeline.cpp \
-    src/timelinecells.cpp \
     src/timecontrols.cpp \
     src/cameracontextmenu.cpp \
     src/camerapropertiesdialog.cpp \
