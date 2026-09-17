@@ -10,7 +10,8 @@ enum class FileType
     ANIMATED_IMAGE,
     MOVIE,
     SOUND,
-    PALETTE
+    PALETTE,
+    THEME_PALETTE,
 };
 
 #endif // FILETYPE_H
