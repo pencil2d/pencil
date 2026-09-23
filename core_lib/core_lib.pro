@@ -97,6 +97,7 @@ HEADERS +=  \
     src/util/cameraeasingtype.h \
     src/util/camerafieldoption.h \
     src/util/colordictionary.h \
+    src/util/drawsliderstyle.h \
     src/util/fileformat.h \
     src/util/filetype.h \
     src/util/importimageconfig.h \
@@ -108,6 +109,7 @@ HEADERS +=  \
     src/util/pencilerror.h \
     src/util/pencilsettings.h \
     src/util/preferencesdef.h \
+    src/util/slidergeometry.h \
     src/util/transform.h \
     src/util/util.h \
     src/util/log.h \
@@ -187,10 +189,12 @@ SOURCES +=  src/graphics/bitmap/bitmapimage.cpp \
     src/util/autosaverbytime.cpp \
     src/util/blitrect.cpp \
     src/util/cameraeasingtype.cpp \
+    src/util/drawsliderstyle.cpp \
     src/util/fileformat.cpp \
     src/util/pencilerror.cpp \
     src/util/pencilsettings.cpp \
     src/util/log.cpp \
+    src/util/slidergeometry.cpp \
     src/util/transform.cpp \
     src/util/util.cpp \
     src/util/pointerevent.cpp \

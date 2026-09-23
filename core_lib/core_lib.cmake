@@ -99,6 +99,8 @@ set(CORE_LIB_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/preferencesdef.h
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/transform.h
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/util.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/slidergeometry.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/drawsliderstyle.h
 )
 
 set(CORE_LIB_SOURCES
@@ -183,6 +185,8 @@ set(CORE_LIB_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/pointerevent.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/transform.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/util.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/slidergeometry.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/core_lib/src/util/drawsliderstyle.cpp
 )
 
 # Platform-specific sources

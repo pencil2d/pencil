@@ -21,6 +21,7 @@ set(APP_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorbox.h
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorinspector.h
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorpalettewidget.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorpreviewwidget.h
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorslider.h
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorwheel.h
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/commandlineexporter.h
@@ -79,6 +80,7 @@ set(APP_SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorbox.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorinspector.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorpalettewidget.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorpreviewwidget.h
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorslider.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/colorwheel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/app/src/commandlineexporter.cpp
