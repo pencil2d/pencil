@@ -1,0 +1,78 @@
+name: Translations
+on:
+  schedule:
+    # Every Monday and Thursday at 03:00 UTC
+    - cron: '0 3 * * 1,4'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    # Scheduled runs only on the main repository, not on forks
+    if: github.repository == 'pencil2d/pencil' || github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install lupdate
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -yq --no-install-recommends qt6-l10n-tools
+          echo "/usr/lib/qt6/bin" >> "${GITHUB_PATH}"
+
+      - name: Pull translations from Transifex
+        env:
+          TRANSIFEX_TOKEN: ${{ secrets.TRANSIFEX_TOKEN }}
+        run: |
+          if [ -z "${TRANSIFEX_TOKEN}" ]; then
+            echo "::warning::TRANSIFEX_TOKEN is not set, only updating the source strings"
+            exit 0
+          fi
+          pip install --quiet requests
+          python3 util/transifex_pull.py | tee pull.log
+          
+          if grep -Eq "ERROR|TIMEOUT" pull.log; then
+            echo "::error::Some translations failed to download"
+            exit 1
+          fi
+          rm pull.log
+          
+          # A language newly added on Transifex also needs registering in
+          # app/app.pro, app/app.cmake and generalpage.cpp, so leave that to
+          # a human and only mention it in the pull request.
+          new_files=$(git ls-files --others --exclude-standard translations/)
+          if [ -n "${new_files}" ]; then
+            rm ${new_files}
+            {
+              echo 'NEW_LANGUAGES<<EOF'
+              echo "New languages on Transifex, not added: $(basename -a ${new_files} | paste -sd' ')"
+              echo 'EOF'
+            } >> "${GITHUB_ENV}"
+          fi
+
+      - name: Update source strings
+        run: lupdate app core_lib -ts translations/pencil.ts
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          # Pull requests opened with the default GITHUB_TOKEN do not trigger
+          # the CI workflow. A personal access token in this secret avoids that.
+          token: ${{ secrets.TRANSLATIONS_PR_TOKEN || github.token }}
+          branch: ci/translations
+          delete-branch: true
+          add-paths: translations/*.ts
+          commit-message: Update translations
+          title: Update translations
+          body: |
+            Automated translation sync (Mondays and Thursdays):
+            - `translations/pencil.ts` regenerated with `lupdate` from the current code.
+              Transifex picks up new source strings from master once this is merged.
+            - `translations/pencil_*.ts` pulled from Transifex.
+
+            ${{ env.NEW_LANGUAGES }}
+
+            Created by the [Translations workflow](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).
