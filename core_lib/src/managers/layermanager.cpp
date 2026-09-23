@@ -141,9 +141,7 @@ void LayerManager::gotoNextLayer()
 {
     if (editor()->currentLayerIndex() < object()->getLayerCount() - 1)
     {
-        currentLayer()->deselectAll();
-        editor()->setCurrentLayerIndex(editor()->currentLayerIndex() + 1);
-        emit currentLayerChanged(editor()->currentLayerIndex());
+        setCurrentLayer(editor()->currentLayerIndex() + 1);
     }
 }
 
@@ -151,9 +149,7 @@ void LayerManager::gotoPreviouslayer()
 {
     if (editor()->currentLayerIndex() > 0)
     {
-        currentLayer()->deselectAll();
-        editor()->setCurrentLayerIndex(editor()->currentLayerIndex() - 1);
-        emit currentLayerChanged(editor()->currentLayerIndex());
+        setCurrentLayer(editor()->currentLayerIndex() - 1);
     }
 }
 
@@ -306,6 +302,25 @@ int LayerManager::lastKeyFrameIndex()
         }
     }
     return maxPosition;
+}
+
+bool LayerManager::swapLayers(int i, int j)
+{
+    bool didSwapLayer = object()->swapLayers(i, j);
+    if (!didSwapLayer) { return false; }
+
+    if (j < i)
+    {
+        setCurrentLayer(j + 1);
+    }
+    else
+    {
+        setCurrentLayer(j - 1);
+    }
+
+    emit layerOrderChanged();
+
+    return true;
 }
 
 int LayerManager::count()

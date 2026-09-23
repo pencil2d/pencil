@@ -15,12 +15,12 @@ GNU General Public License for more details.
 
 */
 
-#ifndef TIMELINECELLS_H
-#define TIMELINECELLS_H
+#ifndef TIMELINETRACKLIST_H
+#define TIMELINETRACKLIST_H
 
-#include <QString>
 #include <QWidget>
-#include "layercamera.h"
+
+#include "pencildef.h"
 
 class Layer;
 enum class LayerVisibility;
@@ -34,22 +34,14 @@ class QMenu;
 class QAction;
 enum class SETTING;
 
-enum class TIMELINE_CELL_TYPE
-{
-    Layers,
-    Tracks
-};
-
-class TimeLineCells : public QWidget
+class TimeLineTrackList : public QWidget
 {
     Q_OBJECT
 
 public:
-    TimeLineCells( TimeLine* parent, Editor* editor, TIMELINE_CELL_TYPE );
-    ~TimeLineCells() override;
+    TimeLineTrackList( TimeLine* parent, Editor* editor);
+    ~TimeLineTrackList() override;
 
-    static int getOffsetX() { return mOffsetX; }
-    static int getOffsetY() { return mOffsetY; }
     int getLayerHeight() const { return mLayerHeight; }
 
     int getFrameLength() const { return mFrameLength; }
@@ -58,8 +50,6 @@ public:
     void setFrameLength(int n) { mFrameLength = n; }
     void setFrameSize(int size);
     void clearCache() { delete mCache; mCache = nullptr; }
-
-    bool didDetachLayer() const;
 
     void showCameraMenu(QPoint pos);
 
@@ -71,12 +61,12 @@ signals:
     void insertNewKeyFrame();
 
 public slots:
+    void onLayerCountChanged(int count);
     void updateContent();
     void updateFrame(int frameNumber);
     void hScrollChange(int);
     void vScrollChange(int);
-    void onScrollingVerticallyStopped();
-    void setMouseMoveY(int x);
+    void setCellDragY(const DragEvent& event, int y);
 
 protected:
     bool event(QEvent *event) override;
@@ -91,9 +81,8 @@ private slots:
     void loadSetting(SETTING setting);
 
 private:
-    int getLayerNumber(int y) const;
-    int getInbetweenLayerNumber(int y) const;
-    int getLayerY(int layerNumber) const;
+    int getCellNumber(int y) const;
+    int getCellY(int layerNumber) const;
     int getFrameX(int frameNumber) const;
     int getFrameNumber(int x) const;
 
@@ -101,27 +90,17 @@ private:
 
     bool trackScrubber();
     void drawContent();
-    void paintTicks(QPainter& painter, const QPalette& palette) const;
-    void paintOnionSkin(QPainter& painter) const;
-    void paintLayerGutter(QPainter& painter) const;
     void paintTrack(QPainter& painter, const Layer* layer, int x, int y, int width, int height, bool selected, int frameSize) const;
     void paintFrames(QPainter& painter, QColor trackCol, const Layer* layer, int y, int height, bool selected, int frameSize) const;
     void paintCurrentFrameBorder(QPainter& painter, int recLeft, int recTop, int recWidth, int recHeight) const;
     void paintFrameCursorOnCurrentLayer(QPainter& painter, int recTop, int recWidth, int recHeight) const;
     void paintSelectedFrames(QPainter& painter, const Layer* layer, const int layerIndex) const;
-    void paintLabel(QPainter& painter, const Layer* layer, int x, int y, int height, int width, bool selected, LayerVisibility layerVisibility) const;
     void paintSelection(QPainter& painter, int x, int y, int width, int height) const;
     void paintHighlightedFrame(QPainter& painter, int framePos, int recTop, int recWidth, int recHeight) const;
-
-    void editLayerProperties(Layer* layer) const;
-    void editLayerProperties(LayerCamera *layer) const;
-    void editLayerName(Layer* layer) const;
 
     TimeLine* mTimeLine;
     Editor* mEditor; // the editor for which this timeLine operates
     PreferenceManager* mPrefs;
-
-    TIMELINE_CELL_TYPE mType;
 
     QPixmap* mCache = nullptr;
     bool mRedrawContent = false;
@@ -129,31 +108,23 @@ private:
     bool mbShortScrub = false;
     int mFrameLength = 1;
     int mFrameSize = 0;
-    int mFontSize = 10;
     bool mScrubbing = false;
     bool mHighlightFrameEnabled = false;
     int mHighlightedFrame = -1;
     int mLayerHeight = 20;
-    int mStartY = 0;
-    int mEndY   = 0;
+
+    DragEvent mDragEvent = DragEvent::ENDED;
 
     int mCurrentLayerNumber = 0;
     int mLastScrubFrame = 0;
 
-    int mFromLayer = 0;
-    int mToLayer   = 1;
-    int mStartLayerNumber = -1;
     int mStartFrameNumber = 0;
     int mLastFrameNumber = -1;
 
-    // is used to move layers, don't use this to get mousePos;
-    int mMouseMoveY = 0;
+    int mCellDragY = 0;
     int mPrevFrame = 0;
     int mFrameOffset = 0;
-    int mLayerOffset = 0;
     Qt::MouseButton primaryButton = Qt::NoButton;
-
-    bool mScrollingVertically = false;
 
     bool mCanMoveFrame   = false;
     bool mMovingFrames   = false;
@@ -168,11 +139,6 @@ private:
 
     int mMouseMoveX = 0;
     int mMousePressX = 0;
-
-    const static int mOffsetX = 0;
-    const static int mOffsetY = 20;
-    const static int mLayerDetachThreshold = 5;
-
 };
 
-#endif // TIMELINECELLS_H
+#endif // TIMELINETRACKLIST_H
