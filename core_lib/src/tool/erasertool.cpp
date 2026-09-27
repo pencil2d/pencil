@@ -106,7 +106,15 @@ void EraserTool::pointerPressEvent(PointerEvent *event)
 
 void EraserTool::pointerMoveEvent(PointerEvent* event)
 {
-    mInterpolator.pointerMoveEvent(event);
+    if(mXYSnappingMode)
+    {
+        mInterpolator.snappingPointerMoveEvent(event, mEditor->view()->mapCanvasToScreen(mMouseDownPoint));
+    }
+    else
+    {
+        mInterpolator.pointerMoveEvent(event);
+    }
+    
     if (handleQuickSizing(event)) {
         return;
     }
@@ -126,7 +134,14 @@ void EraserTool::pointerMoveEvent(PointerEvent* event)
 
 void EraserTool::pointerReleaseEvent(PointerEvent *event)
 {
-    mInterpolator.pointerReleaseEvent(event);
+    if(mXYSnappingMode)
+    {
+        mInterpolator.snappingPointerReleaseEvent(event, mEditor->view()->mapCanvasToScreen(mMouseDownPoint));
+    }
+    else
+    {
+        mInterpolator.pointerReleaseEvent(event);
+    }
     if (handleQuickSizing(event)) {
         return;
     }
@@ -195,6 +210,27 @@ void EraserTool::drawStroke()
         QPointF a = mLastBrushPoint;
         QPointF b = getCurrentPoint();
 
+        
+        if(mXYSnappingMode)
+        {
+           // If snapping to another axis or reducing line length
+           if((a.x() != b.x() && a.y() != b.y()) || QLineF(mMouseDownPoint, a).length() > QLineF(mMouseDownPoint, b).length())
+           {
+               mLastBrushPoint = mMouseDownPoint;
+
+               mScribbleArea->snappingDrawEraser(mLastBrushPoint, getCurrentPoint(), brushStep,
+                                                 brushWidth,
+                                                 properties.feather,
+                                                 Qt::white,
+                                                 QPainter::CompositionMode_SourceOver,
+                                                 opacity,
+                                                 properties.useFeather,
+                                                 properties.useAA == ON);
+               mLastBrushPoint = getCurrentPoint();
+               return;
+           }
+        }
+        
         qreal distance = 4 * QLineF(b, a).length();
         int steps = qRound(distance / brushStep);
 
