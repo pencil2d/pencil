@@ -238,6 +238,10 @@ void Layer::removeFromSelectionList(int position)
 
 bool Layer::moveKeyFrame(int position, int offset)
 {
+    if (!visible()) {
+        return false;
+    }
+
     int newPos = position + offset;
     if (newPos < 1) { return false; }
 
