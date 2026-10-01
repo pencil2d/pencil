@@ -13,13 +13,13 @@
         <translation>Resmi site: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Geliştiriciler: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Qt Framework&apos;a Teşekkürler &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt; &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU Genel Kamu Lisansı, sürüm 2&lt;/a&gt; altında dağıtılmıştır</translation>
     </message>
     <message>
-        <location filename="../app/src/aboutdialog.cpp" line="46"/>
+        <location filename="../app/src/aboutdialog.cpp" line="53"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
         <translation>Sürüm: %1</translation>
     </message>
     <message>
-        <location filename="../app/src/aboutdialog.cpp" line="74"/>
+        <location filename="../app/src/aboutdialog.cpp" line="76"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
         <translation>Panoya kopyala</translation>
@@ -28,192 +28,198 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="124"/>
+        <location filename="../app/src/actioncommands.cpp" line="122"/>
         <source>Importing movie...</source>
         <translation>Film içe aktarılıyor...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="90"/>
-        <location filename="../app/src/actioncommands.cpp" line="124"/>
-        <location filename="../app/src/actioncommands.cpp" line="247"/>
-        <location filename="../app/src/actioncommands.cpp" line="474"/>
+        <location filename="../app/src/actioncommands.cpp" line="88"/>
+        <location filename="../app/src/actioncommands.cpp" line="122"/>
+        <location filename="../app/src/actioncommands.cpp" line="245"/>
+        <location filename="../app/src/actioncommands.cpp" line="472"/>
         <source>Abort</source>
         <translation>İptal et</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="90"/>
+        <location filename="../app/src/actioncommands.cpp" line="88"/>
         <source>Importing Animated Image...</source>
         <translation>Animasyonlu Resim İçe Aktarılıyor...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="132"/>
+        <location filename="../app/src/actioncommands.cpp" line="130"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
         <translation>Çok sayıda kare içe aktarıyorsunuz, bunun biraz zaman alabileceğini unutmayın. Devam etmek istediğinizden emin misiniz?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="180"/>
+        <location filename="../app/src/actioncommands.cpp" line="178"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>İçe aktarma işleminiz için hedef olarak ses katmanı yok. Yeni bir ses katmanı oluşturulsun mu?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="181"/>
+        <location filename="../app/src/actioncommands.cpp" line="179"/>
         <source>Create sound layer</source>
         <translation>Ses katmanı oluştur</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="182"/>
+        <location filename="../app/src/actioncommands.cpp" line="180"/>
         <source>Don&apos;t create layer</source>
         <translation>Ses katmanı oluşturma</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="192"/>
+        <location filename="../app/src/actioncommands.cpp" line="190"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>Katman Özellikleri</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="193"/>
-        <location filename="../app/src/actioncommands.cpp" line="872"/>
-        <location filename="../app/src/actioncommands.cpp" line="885"/>
-        <location filename="../app/src/actioncommands.cpp" line="898"/>
-        <location filename="../app/src/actioncommands.cpp" line="911"/>
+        <location filename="../app/src/actioncommands.cpp" line="191"/>
+        <location filename="../app/src/actioncommands.cpp" line="875"/>
+        <location filename="../app/src/actioncommands.cpp" line="888"/>
+        <location filename="../app/src/actioncommands.cpp" line="901"/>
+        <location filename="../app/src/actioncommands.cpp" line="914"/>
         <source>Layer name:</source>
         <translation>Katman adı:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="194"/>
+        <location filename="../app/src/actioncommands.cpp" line="192"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>Ses Katmanı</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="247"/>
+        <location filename="../app/src/actioncommands.cpp" line="245"/>
         <source>Importing sound...</source>
         <translation>Ses içe aktarılıyor...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="288"/>
+        <location filename="../app/src/actioncommands.cpp" line="286"/>
+        <location filename="../app/src/actioncommands.cpp" line="491"/>
+        <location filename="../app/src/actioncommands.cpp" line="593"/>
         <source>Something went wrong</source>
         <translation>Bir şeyler yanlış gitti</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="288"/>
-        <location filename="../app/src/actioncommands.cpp" line="1055"/>
+        <location filename="../app/src/actioncommands.cpp" line="286"/>
+        <location filename="../app/src/actioncommands.cpp" line="1058"/>
         <source>You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.</source>
         <translation>Şu anda toplam %1 ses klibiniz var. Mevcut sınırlamalar nedeniyle, %2 ses klibini aşan herhangi bir animasyonu dışa aktaramayacaksınız. Bu sınır içinde kalmak için daha büyük projeleri birden çok küçük projeye bölmenizi öneririz.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="346"/>
+        <location filename="../app/src/actioncommands.cpp" line="344"/>
         <source>Exporting movie</source>
         <translation>Filmin dışa aktarılması</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="390"/>
+        <location filename="../app/src/actioncommands.cpp" line="388"/>
         <source>Finished. Open file location?</source>
         <translation>Bitti. Dosya konumu açılsın mı?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="400"/>
+        <location filename="../app/src/actioncommands.cpp" line="398"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>Bitti. Film şimdi açılsın mı?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="408"/>
+        <location filename="../app/src/actioncommands.cpp" line="406"/>
         <source>Unknown export error</source>
         <translation>Bilinmeyen dışa aktarma hatası</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="408"/>
+        <location filename="../app/src/actioncommands.cpp" line="406"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
         <translation>Dışa aktarma herhangi bir hata üretmedi, ancak çıktı dosyasını bulamıyoruz. Dışa aktarma işleminiz başarıyla tamamlanmamış olabilir.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="474"/>
+        <location filename="../app/src/actioncommands.cpp" line="472"/>
         <source>Exporting image sequence...</source>
         <translation>Resim dizisi dışa aktarılıyor...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="589"/>
-        <location filename="../app/src/actioncommands.cpp" line="1036"/>
-        <location filename="../app/src/actioncommands.cpp" line="1055"/>
+        <location filename="../app/src/actioncommands.cpp" line="491"/>
+        <source>Unable to export one or more images in the image sequence.</source>
+        <translation>Resim dizisindeki bir veya birden fazla resmin dışa aktarılması başarısız oldu.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="1039"/>
+        <location filename="../app/src/actioncommands.cpp" line="1058"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="590"/>
+        <location filename="../app/src/actioncommands.cpp" line="593"/>
         <source>Unable to export image.</source>
         <translation>Resim dışa aktarılamıyor.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="746"/>
+        <location filename="../app/src/actioncommands.cpp" line="749"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
         <translation>Seçili kareleri kaldır</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="747"/>
+        <location filename="../app/src/actioncommands.cpp" line="750"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
         <translation>Seçili kareleri kaldırmak istediğinizden emin misiniz? Bu eylem şu anda geri alınamaz!</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="787"/>
+        <location filename="../app/src/actioncommands.cpp" line="790"/>
         <source>%1 (copy)</source>
         <comment>Default duplicate layer name</comment>
         <translation>%1 (kopya)</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="871"/>
-        <location filename="../app/src/actioncommands.cpp" line="884"/>
-        <location filename="../app/src/actioncommands.cpp" line="910"/>
+        <location filename="../app/src/actioncommands.cpp" line="874"/>
+        <location filename="../app/src/actioncommands.cpp" line="887"/>
+        <location filename="../app/src/actioncommands.cpp" line="913"/>
         <source>Layer Properties</source>
         <translation>Katman Özellikleri</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="873"/>
+        <location filename="../app/src/actioncommands.cpp" line="876"/>
         <source>Bitmap Layer</source>
         <translation>Bitmap Katmanı</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="886"/>
+        <location filename="../app/src/actioncommands.cpp" line="889"/>
         <source>Vector Layer</source>
         <translation>Vektör Katmanı</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="897"/>
+        <location filename="../app/src/actioncommands.cpp" line="900"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
         <translation>Katman Özellikleri</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="899"/>
+        <location filename="../app/src/actioncommands.cpp" line="902"/>
         <source>Camera Layer</source>
         <translation>Kamera Katmanı</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="912"/>
+        <location filename="../app/src/actioncommands.cpp" line="915"/>
         <source>Sound Layer</source>
         <translation>Ses Katmanı</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="931"/>
+        <location filename="../app/src/actioncommands.cpp" line="934"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Katmanı Sil</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="932"/>
+        <location filename="../app/src/actioncommands.cpp" line="935"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
         <translation>%1 katmanını silmek istediğinizden emin misiniz? Bu geri alınamaz.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="941"/>
+        <location filename="../app/src/actioncommands.cpp" line="944"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Lütfen projede en az bir kamera katmanı bulundurun</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="1036"/>
+        <location filename="../app/src/actioncommands.cpp" line="1039"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
         <translation>Geçici dizin yalnızca Pencil2D tarafından kullanılmak üzere tasarlanmıştır. Ne yaptığınızı bilmiyorsanız değiştirmeyin.</translation>
     </message>
@@ -278,7 +284,7 @@
     <message>
         <location filename="../app/src/addtransparencytopaperdialog.cpp" line="153"/>
         <source>Previewing Frame %1</source>
-        <translation>Önizleme Çerçevesi %1</translation>
+        <translation>Önizleme Karesi %1</translation>
     </message>
     <message>
         <location filename="../app/src/addtransparencytopaperdialog.cpp" line="234"/>
@@ -294,59 +300,64 @@
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="33"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="34"/>
         <source>Pencil</source>
         <translation>Kalem</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="34"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="35"/>
         <source>Eraser</source>
         <translation>Silgi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="35"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="36"/>
         <source>Select</source>
         <translation>Seç</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="36"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="37"/>
         <source>Move</source>
         <translation>Taşı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="37"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="38"/>
         <source>Hand</source>
         <translation>El</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="38"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="39"/>
         <source>Smudge</source>
         <translation>Leke</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="39"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
         <source>Pen</source>
         <translation>Dolma Kalem</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Polyline</source>
         <translation>Çoklu çizgi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Bucket</source>
         <translation>Kova</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Eyedropper</source>
         <translation>Damlalık</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Brush</source>
         <translation>Fırça</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <source>Camera</source>
+        <translation>Kamera</translation>
     </message>
 </context>
 <context>
@@ -367,57 +378,57 @@
         <translation>Karışım modu</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="38"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
         <source>Color tolerance</source>
         <translation>Renk toleransı</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="39"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="59"/>
         <source>Expand fill</source>
         <translation>Dolguyu genişlet</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="40"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="60"/>
         <source>Stroke thickness</source>
         <translation>Vuruş kalınlığı</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="52"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="67"/>
         <source>Current layer</source>
         <comment>Reference Layer Options</comment>
         <translation>Geçerli katman</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="53"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="68"/>
         <source>All layers</source>
         <comment>Reference Layer Options</comment>
         <translation>Tüm katmanlar</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="54"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="69"/>
         <source>Refers to the layer that used to flood fill from</source>
         <translation>Dolguyu taşmak için kullanılan katmanı ifade eder</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="71"/>
         <source>Overlay</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Kaplama</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="72"/>
         <source>Replace</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Yerine koy</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="73"/>
         <source>Behind</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Arka</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="59"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="74"/>
         <source>Defines how the fill will behave when the new color is not opaque</source>
         <translation>Yeni renk opak olmadığında dolgunun nasıl davranacağını tanımlar</translation>
     </message>
@@ -467,7 +478,7 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="48"/>
         <source>Moderate</source>
-        <translation>Orta derecede</translation>
+        <translation>Orta</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="49"/>
@@ -537,12 +548,12 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="106"/>
         <source>Align horizontally to frame %1</source>
-        <translation>%1 çerçevesine yatay olarak hizalayın</translation>
+        <translation>%1 karesine yatay olarak hizalayın</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="107"/>
         <source>Align vertically to frame %1</source>
-        <translation>%1 çerçevesine dikey olarak hizalayın</translation>
+        <translation>%1 karesine dikey olarak hizalayın</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="109"/>
@@ -879,58 +890,58 @@
         <translation>Kapat</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="112"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="115"/>
         <source>&lt;b&gt;You are using a Pencil2D nightly build&lt;/b&gt;</source>
-        <translation>&lt;b&gt;Bir Pencil2D gecelik yapı kullanıyorsunuz&lt;/b&gt;</translation>
+        <translation>&lt;b&gt;Bir Pencil2D gecelik yapım kullanıyorsunuz&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="113"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="116"/>
         <source>Please go %1 here %2 to check new nightly builds.</source>
         <translation>Yeni gecelik yapıları kontrol etmek için lütfen %1 buraya %2 gidin.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="123"/>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="126"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="135"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="144"/>
         <source>&lt;b&gt;An error occurred while checking for updates&lt;/b&gt;</source>
         <comment>error msg of check-for-update</comment>
         <translation>&lt;b&gt;Güncellemeler kontrol edilirken bir hata oluştu&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="124"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="127"/>
         <source>Please check your internet connection and try again later.</source>
         <comment>error msg of check-for-update</comment>
         <translation>Lütfen internet bağlantınızı kontrol edin ve daha sonra tekrar deneyin.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="136"/>
         <source>Network response is empty</source>
         <comment>error msg of check-for-update</comment>
         <translation>Ağ yanıtı boş</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="145"/>
         <source>Couldn&apos;t retrieve the version information</source>
         <comment>error msg of check-for-update</comment>
         <translation>Sürüm bilgisi alınamadı</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="178"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="181"/>
         <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
         <translation>&lt;b&gt;Pencil2D&apos;nin yeni bir sürümü mevcut!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="179"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="182"/>
         <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
         <translation>Pencil2D %1 artık kullanılabilir -- siz %2 kullanıyorsunuz. İndirmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="186"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="189"/>
         <source>&lt;b&gt;Pencil2D is up to date&lt;/b&gt;</source>
         <translation>&lt;b&gt;Pencil2D güncel&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="187"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="190"/>
         <source>Version %1</source>
         <translation>Sürüm %1</translation>
     </message>
@@ -1126,7 +1137,7 @@
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="644"/>
         <source>The color(s) you are about to delete are currently being used by one or multiple strokes.</source>
-        <translation>Silmek üzere olduğunuz renk(ler) bir veya daha fazla vuruş tarafından kullanılıyor.</translation>
+        <translation>Silmek üzere olduğunuz renk(ler) bir veya daha fazla fırça darbesi tarafından kullanılıyor.</translation>
     </message>
     <message>
         <location filename="../app/src/colorpalettewidget.cpp" line="645"/>
@@ -2582,7 +2593,7 @@
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="56"/>
         <source>Width of the output frames</source>
-        <translation>Çıktı çerçevelerinin genişliği</translation>
+        <translation>Çıktı karelerinin genişliği</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="57"/>
@@ -2593,7 +2604,7 @@
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="61"/>
         <source>Height of the output frames</source>
-        <translation>Çıktı çerçevelerinin yüksekliği</translation>
+        <translation>Çıktı karelerinin yüksekliği</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="66"/>
@@ -2604,7 +2615,7 @@
         <location filename="../app/src/commandlineparser.cpp" line="67"/>
         <location filename="../app/src/commandlineparser.cpp" line="74"/>
         <source>frame</source>
-        <translation>çerçeve</translation>
+        <translation>kare</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="71"/>
@@ -2691,7 +2702,7 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="402"/>
         <source>Reposition frame</source>
-        <translation>Çerçeveyi yeniden konumlandır</translation>
+        <translation>Kareyi yeniden konumlandır</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="484"/>
@@ -2777,7 +2788,7 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="961"/>
         <source>Remove frame</source>
-        <translation>Çerçeveyi kaldır</translation>
+        <translation>Kareyi kaldır</translation>
     </message>
 </context>
 <context>
@@ -2800,7 +2811,7 @@
     <message>
         <location filename="../app/ui/errordialog.ui" line="88"/>
         <source>This report contains vital information. Copy all of it when submitting a bug.</source>
-        <translation>Bu rapor hayati bilgiler içeriyor. Bir hata gönderirken hepsini kopyalayın.</translation>
+        <translation>Bu rapor hayati bilgiler içeriyor. Bir hata rapor ederken hepsini kopyalayın.</translation>
     </message>
     <message>
         <location filename="../app/src/errordialog.cpp" line="41"/>
@@ -3908,7 +3919,7 @@ Talimatları okuyun ve yeniden deneyin</translation>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="33"/>
         <source>Center of camera, current frame</source>
-        <translation>Kameranın merkezi, geçerli çerçeve</translation>
+        <translation>Kameranın merkezi, geçerli kare</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="34"/>
@@ -4351,7 +4362,7 @@ Talimatları okuyun ve yeniden deneyin</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="496"/>
         <source>Clear Frame</source>
-        <translation>Çerçeveyi Temizle</translation>
+        <translation>Kareyi Temizle</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="501"/>
@@ -4425,7 +4436,7 @@ Talimatları okuyun ve yeniden deneyin</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="621"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1570"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1571"/>
         <source>Play</source>
         <translation>Oynat</translation>
     </message>
@@ -4437,27 +4448,27 @@ Talimatları okuyun ve yeniden deneyin</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="638"/>
         <source>Next Frame</source>
-        <translation>Sonraki Çerçeve</translation>
+        <translation>Sonraki Kare</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="643"/>
         <source>Previous Frame</source>
-        <translation>Önceki Çerçeve</translation>
+        <translation>Önceki Kare</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="652"/>
         <source>Add Frame</source>
-        <translation>Çerçeve Ekle</translation>
+        <translation>Kare Ekle</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="661"/>
         <source>Duplicate Frame</source>
-        <translation>Çerçeveyi Çoğalt</translation>
+        <translation>Kareyi Çoğalt</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="670"/>
         <source>Remove Frame</source>
-        <translation>Çerçeveyi Kaldır</translation>
+        <translation>Kareyi Kaldır</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="679"/>
@@ -4570,22 +4581,22 @@ Talimatları okuyun ve yeniden deneyin</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="874"/>
         <source>Flip X</source>
-        <translation>X Çevir</translation>
+        <translation>X&apos;i Çevir</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="879"/>
         <source>Flip Y</source>
-        <translation>Y Çevir</translation>
+        <translation>Y&apos;yi Çevir</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="884"/>
         <source>Move Frame Forward</source>
-        <translation>Çerçeveyi İleri Taşı</translation>
+        <translation>Kareyi İleri Taşı</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="889"/>
         <source>Move Frame Backward</source>
-        <translation>Çerçeveyi Geri Taşı</translation>
+        <translation>Kareyi Geri Taşı</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="894"/>
@@ -4675,7 +4686,7 @@ Talimatları okuyun ve yeniden deneyin</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="977"/>
         <source>Flip Rolling</source>
-        <translation>Flip Rolling</translation>
+        <translation>Rulodaki Kareleri Oynat</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="982"/>
@@ -4730,7 +4741,7 @@ Talimatları okuyun ve yeniden deneyin</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1041"/>
         <source>Reposition Selected Frames</source>
-        <translation>Seçilen Çerçeveleri Yeniden Konumlandır</translation>
+        <translation>Seçilen Kareleri Yeniden Konumlandır</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1046"/>
@@ -4765,12 +4776,12 @@ Talimatları okuyun ve yeniden deneyin</translation>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1089"/>
         <source>Reverse Frames Order</source>
-        <translation>Ters Çerçeve Sırası</translation>
+        <translation>Karelerin Sırasını Tersine Çevir</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1094"/>
         <source>Remove Frames</source>
-        <translation>Çerçeveleri Kaldır</translation>
+        <translation>Kareleri Kaldır</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1105"/>
@@ -4778,154 +4789,154 @@ Talimatları okuyun ve yeniden deneyin</translation>
         <translation>Durum Çubuğu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="156"/>
+        <location filename="../app/src/mainwindow2.cpp" line="161"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>renk paleti:&lt;br&gt; imleçte geçiş yapmak için &lt;b&gt; (C) &lt;/b&gt; &lt;br&gt; kullanın</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="160"/>
+        <location filename="../app/src/mainwindow2.cpp" line="165"/>
         <source>Color inspector</source>
         <translation>Renk denetçisi</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="479"/>
+        <location filename="../app/src/mainwindow2.cpp" line="484"/>
         <source>Open Recent</source>
         <translation>Son Kullanılanı Aç</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="520"/>
-        <location filename="../app/src/mainwindow2.cpp" line="544"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
+        <location filename="../app/src/mainwindow2.cpp" line="549"/>
         <source>Dialog is already open!</source>
         <translation>İletişim kutusu zaten açık!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="594"/>
+        <location filename="../app/src/mainwindow2.cpp" line="599"/>
         <source>Please select at least 2 frames!</source>
         <translation>Lütfen en az 2 kare seçin!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="722"/>
+        <location filename="../app/src/mainwindow2.cpp" line="727"/>
         <source>Opening document...</source>
         <translation>Belge açılıyor...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="722"/>
-        <location filename="../app/src/mainwindow2.cpp" line="779"/>
+        <location filename="../app/src/mainwindow2.cpp" line="727"/>
+        <location filename="../app/src/mainwindow2.cpp" line="784"/>
         <source>Abort</source>
         <translation>İptal et</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="767"/>
-        <location filename="../app/src/mainwindow2.cpp" line="868"/>
+        <location filename="../app/src/mainwindow2.cpp" line="772"/>
+        <location filename="../app/src/mainwindow2.cpp" line="873"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="768"/>
+        <location filename="../app/src/mainwindow2.cpp" line="773"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Bu programın şu anda seçtiğiniz dosyaya yazma izni yok. Lütfen kaydetmeye çalışmadan önce bu dosya için yazma iznine sahip olduğunuzdan emin olun. Alternatif olarak, yazılabilir bir konuma kaydetmek için Farklı Kaydet... menü seçeneğini kullanabilirsiniz.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="779"/>
+        <location filename="../app/src/mainwindow2.cpp" line="784"/>
         <source>Saving document...</source>
         <translation>Belge kaydediliyor...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="869"/>
+        <location filename="../app/src/mainwindow2.cpp" line="874"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
-        <translation>Bu animasyon değiştirildi.
+        <translation>Bu animasyonda değişim yapıldı.
  Değişikliklerinizi kaydetmek istiyor musunuz?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="892"/>
+        <location filename="../app/src/mainwindow2.cpp" line="897"/>
         <source>AutoSave Reminder</source>
         <translation>Otomatik Kaydetme Hatırlatıcısı</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="893"/>
+        <location filename="../app/src/mainwindow2.cpp" line="898"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Animasyon henüz kaydedilmedi.
  Şimdi kaydetmek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="894"/>
+        <location filename="../app/src/mainwindow2.cpp" line="899"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
-        <translation>Asla tekrar sorma</translation>
+        <translation>Bir daha sorma</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="822"/>
+        <location filename="../app/src/mainwindow2.cpp" line="827"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.
 If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
         <translation>&lt;br&gt;&lt;br&gt;Bir hata oluştu ve dosyanız başarıyla kaydedilememiş olabilir.
 Bu hatanın Pencil2D ile ilgili bir sorun olduğunu düşünüyorsanız lütfen şu adreste yeni bir sorun oluşturun::&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Lütfen sorununuza aşağıdaki bilgileri eklemeyi unutmayın:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1410"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1414"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
         <translation>Bir palet açmak eski paletin yerini alacaktır.
 Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1412"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1416"/>
         <source>Open Palette</source>
         <translation>Palet Aç</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1565"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1566"/>
         <source>Stop</source>
         <translation>Dur</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1627"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1628"/>
         <source>Restore Project?</source>
         <translation>Proje Geri Yüklensin mi?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1628"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1629"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
         <translation>Pencil2D doğru şekilde kapanmadı. Projeyi geri yüklemek ister misiniz?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1632"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
         <source>Restore project</source>
         <translation>Projeyi geri yükle</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1665"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1666"/>
         <source>Recovery Failed.</source>
         <translation>Kurtarma Başarısız.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1666"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1667"/>
         <source>Sorry! Pencil2D is unable to restore your project</source>
         <translation>Afedersiniz! Pencil2D, projenizi geri yükleyemiyor</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1676"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1677"/>
         <source>Recovery Succeeded!</source>
         <translation>Kurtarma Başarılı!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1677"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1678"/>
         <source>Please save your work immediately to prevent loss of data</source>
         <translation>Veri kaybını önlemek için lütfen çalışmanızı hemen kaydedin</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1685"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1686"/>
         <source>Main Toolbar</source>
         <translation>Ana Araç Çubuğu</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1699"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1700"/>
         <source>View Toolbar</source>
         <translation>Araç Çubuğunu Görüntüle</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1711"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1712"/>
         <source>Overlay Toolbar</source>
         <translation>Bindirme Araç Çubuğu</translation>
     </message>
@@ -4984,7 +4995,7 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
         <location filename="../core_lib/src/movieimporter.cpp" line="54"/>
         <location filename="../core_lib/src/movieimporter.cpp" line="248"/>
         <source>Bitmap only</source>
-        <translation>Yalnızca bit eşlem</translation>
+        <translation>Yalnızca bitmap</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="55"/>
@@ -5035,7 +5046,7 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="265"/>
         <source>Video processed, adding frames...</source>
-        <translation>Video işleme koyuldu, çerçeveler ekleniyor...</translation>
+        <translation>Video işleme koyuldu, kareler ekleniyor...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="301"/>
@@ -5060,7 +5071,7 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="330"/>
         <source>Move to an empty frame</source>
-        <translation>Boş bir çerçeveye git</translation>
+        <translation>Boş bir kareye git</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="331"/>
@@ -5081,127 +5092,127 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="388"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="389"/>
         <source>error</source>
         <translation>hata</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="681"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="682"/>
         <source>Black</source>
         <translation>Siyah</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="682"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
         <source>Red</source>
         <translation>Kırmızı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
         <source>Dark Red</source>
         <translation>Koyu Kırmızı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
         <source>Orange</source>
         <translation>Turuncu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
         <source>Dark Orange</source>
         <translation>Koyu Turuncu</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
         <source>Yellow</source>
         <translation>Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
         <source>Dark Yellow</source>
         <translation>Koyu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
         <source>Green</source>
         <translation>Yeşil</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
         <source>Dark Green</source>
         <translation>Koyu Yeşil</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
         <source>Cyan</source>
         <translation>Cam göbeği</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
         <source>Dark Cyan</source>
         <translation>Koyu Cam göbeği</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
         <source>Blue</source>
         <translation>Mavi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
         <source>Dark Blue</source>
         <translation>Koyu Mavi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
         <source>White</source>
         <translation>Beyaz</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
         <source>Very Light Grey</source>
         <translation>Çok Açık Gri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
         <source>Light Grey</source>
         <translation>Açık Gri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
         <source>Grey</source>
         <translation>Gri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
         <source>Dark Grey</source>
         <translation>Koyu Gri</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
         <source>Pale Orange Yellow</source>
         <translation>Soluk Turuncu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
         <source>Pale Grayish Orange Yellow</source>
         <translation>Soluk Grimsi Turuncu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="701"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
         <source>Orange Yellow </source>
         <translation>Turuncu Sarı </translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="702"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
         <source>Grayish Orange Yellow</source>
         <translation>Grimsi Turuncu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="703"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
         <source>Light Orange Yellow</source>
         <translation>Açık Turuncu Sarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="705"/>
         <source>Light Grayish Orange Yellow</source>
         <translation>Açık Grimsi Turuncu Sarı</translation>
     </message>
@@ -5217,7 +5228,7 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
     <message>
         <location filename="../app/ui/onionskin.ui" line="111"/>
         <source>Previous Frames</source>
-        <translation>Önceki Çerçeveler</translation>
+        <translation>Önceki Kareler</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="169"/>
@@ -5234,7 +5245,7 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
     <message>
         <location filename="../app/ui/onionskin.ui" line="195"/>
         <source>Next Frames</source>
-        <translation>Sonraki Çerçeveler</translation>
+        <translation>Sonraki Kareler</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="256"/>
@@ -5250,7 +5261,7 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
     <message>
         <location filename="../app/ui/onionskin.ui" line="401"/>
         <source>Min</source>
-        <translation>Asg</translation>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="361"/>
@@ -5261,7 +5272,7 @@ Konturlardaki renk(ler) bu işlemle değiştirilecektir!</translation>
     <message>
         <location filename="../app/ui/onionskin.ui" line="336"/>
         <source>Max</source>
-        <translation>Azm</translation>
+        <translation>Maks</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="450"/>
@@ -5328,7 +5339,7 @@ Seçimi kontrol edin ve lütfen tekrar deneyin.</translation>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="59"/>
         <source>2) The selection be large enough to contain the center pegs of all frames</source>
-        <translation>2) Seçim, tüm çerçevelerin merkez mandallarını içerecek kadar büyük olmalıdır</translation>
+        <translation>2) Seçim, tüm karelerin merkez mandallarını içerecek kadar büyük olmalıdır</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="75"/>
@@ -5348,7 +5359,7 @@ Seçimi kontrol edin ve lütfen tekrar deneyin.</translation>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="130"/>
         <source>TextLabel</source>
-        <translation>MetinEtiketi</translation>
+        <translation>Metin</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="170"/>
@@ -5474,7 +5485,7 @@ Seçimi kontrol edin ve lütfen tekrar deneyin.</translation>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="14"/>
         <source>Reposition Frames</source>
-        <translation>Çerçeveleri Yeniden Konumlandır</translation>
+        <translation>Kareleri Yeniden Konumlandır</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="30"/>
@@ -5532,24 +5543,24 @@ ya da iptal edin</translation>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="769"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="758"/>
         <source>Warning</source>
         <translation>Uyarı</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="770"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="759"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Gizli bir katmanı değiştirmeye çalışıyorsunuz! Lütfen başka bir katman seçin (veya geçerli katmanı görünür yapın).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1464"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1453"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Seçimi Sil</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1490"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1502"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1479"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1491"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Resmi Temizle</translation>
@@ -5612,7 +5623,7 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="104"/>
         <source>Shortcut Conflict!</source>
-        <translation>Kısayol Çakışması!</translation>
+        <translation>Kısayollar Çakıştı!</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="105"/>
@@ -5644,13 +5655,13 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="301"/>
         <source>Add Frame</source>
         <comment>Shortcut</comment>
-        <translation>Çerçeve Ekle</translation>
+        <translation>Kare Ekle</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="302"/>
         <source>Clear Frame</source>
         <comment>Shortcut</comment>
-        <translation>Çerçeveyi Temizle</translation>
+        <translation>Kareyi Temizle</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="303"/>
@@ -5686,7 +5697,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="308"/>
         <source>Duplicate Frame</source>
         <comment>Shortcut</comment>
-        <translation>Çerçeveyi Çoğalt</translation>
+        <translation>Kareyi Çoğalt</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="309"/>
@@ -5722,13 +5733,13 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="317"/>
         <source>Flip In-Between</source>
         <comment>Shortcut</comment>
-        <translation>Arasında Geç</translation>
+        <translation>Aralarındakini Oynat</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="318"/>
         <source>Flip Rolling</source>
         <comment>Shortcut</comment>
-        <translation>Flip Rolling</translation>
+        <translation>Rulodaki Kareleri Oynat</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="315"/>
@@ -5752,7 +5763,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="319"/>
         <source>Next Frame</source>
         <comment>Shortcut</comment>
-        <translation>Sonraki Çerçeve</translation>
+        <translation>Sonraki Kare</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="320"/>
@@ -5764,7 +5775,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="321"/>
         <source>Previous Frame</source>
         <comment>Shortcut</comment>
-        <translation>Önceki Çerçeve</translation>
+        <translation>Önceki Kare</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="322"/>
@@ -5788,7 +5799,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="325"/>
         <source>Selection: Reposition Frames</source>
         <comment>Shortcut</comment>
-        <translation>Seçim: Çerçeveleri Yeniden Konumlandır</translation>
+        <translation>Seçim: Kareleri Yeniden Konumlandır</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="326"/>
@@ -5956,13 +5967,13 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="353"/>
         <source>Move Frame Backward</source>
         <comment>Shortcut</comment>
-        <translation>Çerçeveyi Geri Taşı</translation>
+        <translation>Kareyi Geri Taşı</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="354"/>
         <source>Move Frame Forward</source>
         <comment>Shortcut</comment>
-        <translation>Çerçeveyi İleri Taşı</translation>
+        <translation>Kareyi İleri Taşı</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="355"/>
@@ -6046,7 +6057,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/shortcutspage.cpp" line="368"/>
         <source>Remove Frame</source>
         <comment>Shortcut</comment>
-        <translation>Çerçeveyi Kaldır</translation>
+        <translation>Kareyi Kaldır</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="369"/>
@@ -6310,32 +6321,32 @@ ya da iptal edin</translation>
 <context>
     <name>Status</name>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="108"/>
         <source>Everything ok.</source>
         <translation>Her şey yolunda.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
         <source>Ooops, Something went wrong.</source>
         <translation>Hata! Bir şeyler ters gitti.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
         <source>File doesn&apos;t exist.</source>
         <translation>Dosya mevcut değil.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
         <source>Cannot open file.</source>
         <translation>Dosya açılamıyor.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
         <source>The file is not a valid xml document.</source>
         <translation>Dosya geçerli bir xml belgesi değil.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="114"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
         <source>The file is not valid pencil document.</source>
         <translation>Dosya geçerli bir kalem belge değil.</translation>
     </message>
@@ -6366,7 +6377,7 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/src/statusbar.cpp" line="110"/>
         <source>Click and drag to move the camera. While on in-between frames, drag handle to change interpolation.</source>
-        <translation>Kamerayı hareket ettirmek için tıklayın ve sürükleyin. Çerçeveler arasındayken eklemeyi değiştirmek için tutamacı sürükleyin.</translation>
+        <translation>Kamerayı hareket ettirmek için tıklayın ve sürükleyin. Kareler arasındayken eklemeyi değiştirmek için tutamacı sürükleyin.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="113"/>
@@ -6415,6 +6426,142 @@ ya da iptal edin</translation>
     </message>
 </context>
 <context>
+    <name>StrokeOptionsWidget</name>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="37"/>
+        <source>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Kontur Genişliğini Ayarlayın &lt;br&gt;&lt;b&gt;[SHIFT]+hızlı ayarlama için sürükleyin &lt;/b&gt;&lt;br&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="73"/>
+        <source>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Kontur Geçişini Ayarla&lt;br&gt;&lt;b&gt;[CTRL]+hızlı ayarlama için sürükleyin&lt;/b&gt;&lt;br&gt;</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="115"/>
+        <source>Stabilizer</source>
+        <translation>Dengeleyici</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="122"/>
+        <source>Use stabilizer to interpolate strokes</source>
+        <translation>Konturları enterpolasyon yapmak için sabitleyici kullanın</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="125"/>
+        <source>None</source>
+        <comment>Stablizer level</comment>
+        <translation>Yok</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="129"/>
+        <source>None</source>
+        <comment>Stabilizer option</comment>
+        <translation>Yok</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="134"/>
+        <source>Simple</source>
+        <comment>Stabilizer option</comment>
+        <translation>Basit</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="139"/>
+        <source>Strong</source>
+        <comment>Stabilizer option</comment>
+        <translation>Güçlü</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="154"/>
+        <source>Enable or disable feathering</source>
+        <translation>Yumuşatma özelliğini etkinleştir veya devre dışı bırak</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="157"/>
+        <source>Use Feather</source>
+        <translation>Yumuşatma Kullan</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="164"/>
+        <source>Contour will be filled</source>
+        <translation>Kontur doldurulacak</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="167"/>
+        <source>Fill Contour</source>
+        <translation>Konturu Doldur</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="174"/>
+        <source>Close Polyline path (hold Ctrl to temporarily invert)</source>
+        <translation>Polyline yolunu kapatın (geçici olarak ters çevirmek için Ctrl tuşunu basılı tutun)</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="177"/>
+        <source>Closed Path</source>
+        <translation>Kapalı Yol</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="184"/>
+        <source>Use Bézier curves to create curved lines</source>
+        <translation>Eğri çizgiler oluşturmak için Bézier eğrilerini kullanın</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="187"/>
+        <source>Bézier</source>
+        <comment>Tool options</comment>
+        <translation>Bézier</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="194"/>
+        <source>Vary strokes based on pressure when drawing on a tablet</source>
+        <translation>Tablette çizim yaparken basınca göre değişen vuruşlar</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="197"/>
+        <source>Pressure</source>
+        <comment>Tool options</comment>
+        <translation>Basınç</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="204"/>
+        <source>Use anti-aliasing to create smooth edges</source>
+        <translation>Düzgün kenarlar oluşturmak için kenar yumuşatma kullanın</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="207"/>
+        <source>Anti-Aliasing</source>
+        <comment>Brush AA</comment>
+        <translation>Kenar-Yumuşatma</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="214"/>
+        <source>Make invisible</source>
+        <translation>Görünmez yap</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="217"/>
+        <source>Invisible</source>
+        <comment>Tool options</comment>
+        <translation>Görünmez</translation>
+    </message>
+    <message>
+        <location filename="../app/src/strokeoptionswidget.cpp" line="40"/>
+        <source>Width</source>
+        <translation>Genişlik</translation>
+    </message>
+    <message>
+        <location filename="../app/src/strokeoptionswidget.cpp" line="43"/>
+        <source>Feather</source>
+        <translation>Yumuşatma</translation>
+    </message>
+</context>
+<context>
     <name>TimeControls</name>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="47"/>
@@ -6440,7 +6587,7 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="58"/>
         <source>Frames</source>
-        <translation>Çerçeveler</translation>
+        <translation>Kareler</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="59"/>
@@ -6456,7 +6603,7 @@ ya da iptal edin</translation>
         <location filename="../app/src/timecontrols.cpp" line="75"/>
         <location filename="../app/src/timecontrols.cpp" line="336"/>
         <source>Actual frame number</source>
-        <translation>Gerçek çerçeve numarası</translation>
+        <translation>Gerçek kare numarası</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="78"/>
@@ -6591,17 +6738,17 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/src/timeline.cpp" line="127"/>
         <source>Add Frame</source>
-        <translation>Çerçeve Ekle</translation>
+        <translation>Kare Ekle</translation>
     </message>
     <message>
         <location filename="../app/src/timeline.cpp" line="131"/>
         <source>Remove Frame</source>
-        <translation>Çerçeveyi Kaldır</translation>
+        <translation>Kareyi Kaldır</translation>
     </message>
     <message>
         <location filename="../app/src/timeline.cpp" line="135"/>
         <source>Duplicate Frame</source>
-        <translation>Çerçeveyi Çoğalt</translation>
+        <translation>Kareyi Çoğalt</translation>
     </message>
     <message>
         <location filename="../app/src/timeline.cpp" line="137"/>
@@ -6611,7 +6758,7 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/src/timeline.cpp" line="144"/>
         <source>Adjust frame width</source>
-        <translation>Çerçeve genişliğini ayarla</translation>
+        <translation>Kare genişliğini ayarla</translation>
     </message>
 </context>
 <context>
@@ -6653,7 +6800,7 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="93"/>
         <source>When drawing on an empty frame:</source>
-        <translation>Boş bir çerçeveye çizim yaparken:</translation>
+        <translation>Boş bir kareye çizim yaparken:</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="100"/>
@@ -6703,7 +6850,7 @@ ya da iptal edin</translation>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="252"/>
         <source>Msecs per drawing in flip roll</source>
-        <translation>Rulo çevirde çizim başına Milisaniye</translation>
+        <translation>Rulo çevirde çizim başına milisaniye</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="264"/>
@@ -6749,7 +6896,7 @@ ya da iptal edin</translation>
 <context>
     <name>ToolBoxDockWidget</name>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="42"/>
+        <location filename="../app/src/toolbox.cpp" line="43"/>
         <source>Tools</source>
         <comment>Window title of Tools</comment>
         <translation>Araçlar</translation>
@@ -6882,21 +7029,10 @@ ya da iptal edin</translation>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="35"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="39"/>
         <source>Options</source>
         <comment>Window title of tool option panel like pen width, feather etc..</comment>
         <translation>Seçenekler</translation>
-    </message>
-    <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="60"/>
-        <location filename="../app/src/tooloptionwidget.cpp" line="226"/>
-        <source>Width</source>
-        <translation>Genişlik</translation>
-    </message>
-    <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="64"/>
-        <source>Feather</source>
-        <translation>Yumuşatma</translation>
     </message>
 </context>
 <context>
@@ -6905,151 +7041,6 @@ ya da iptal edin</translation>
         <location filename="../app/ui/tooloptions.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="76"/>
-        <source>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation>Kontur Genişliğini Ayarlayın &lt;br&gt;&lt;b&gt;[SHIFT]+hızlı ayarlama için sürükleyin &lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="112"/>
-        <source>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation>Kontur Geçişini Ayarla&lt;br&gt;&lt;b&gt;[CTRL]+hızlı ayarlama için sürükleyin&lt;/b&gt;&lt;br&gt;</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="151"/>
-        <source>Enable or disable feathering</source>
-        <translation>Yumuşatma özelliğini etkinleştir veya devre dışı bırak</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="154"/>
-        <source>Use Feather</source>
-        <translation>Yumuşatma Kullan</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="161"/>
-        <source>Show Size and Diff.</source>
-        <translation>Boyut ve Farkı Göster.</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="171"/>
-        <source>Contour will be filled</source>
-        <translation>Kontur doldurulacak</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="174"/>
-        <source>Fill Contour</source>
-        <translation>Konturu Doldur</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="181"/>
-        <source>Close Polyline path (hold Ctrl to temporarily invert)</source>
-        <translation>Polyline yolunu kapatın (geçici olarak ters çevirmek için Ctrl tuşunu basılı tutun)</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="184"/>
-        <source>Closed Path</source>
-        <translation>Kapalı Yol</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="191"/>
-        <source>Use Bézier curves to create curved lines</source>
-        <translation>Eğri çizgiler oluşturmak için Bézier eğrilerini kullanın</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="194"/>
-        <source>Bézier</source>
-        <comment>Tool options</comment>
-        <translation>Bézier</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="201"/>
-        <source>Vary strokes based on pressure when drawing on a tablet</source>
-        <translation>Tablette çizim yaparken basınca göre değişen vuruşlar</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="204"/>
-        <source>Pressure</source>
-        <comment>Tool options</comment>
-        <translation>Basınç</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="211"/>
-        <source>Use anti-aliasing to create smooth edges</source>
-        <translation>Düzgün kenarlar oluşturmak için kenar yumuşatma kullanın</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="214"/>
-        <source>Anti-Aliasing</source>
-        <comment>Brush AA</comment>
-        <translation>Kenar-Yumuşatma</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="221"/>
-        <source>Make invisible</source>
-        <translation>Görünmez yap</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="224"/>
-        <source>Invisible</source>
-        <comment>Tool options</comment>
-        <translation>Görünmez</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="231"/>
-        <source>Preserve Alpha</source>
-        <translation>Alfayı Koru</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="234"/>
-        <source>Alpha</source>
-        <comment>Tool options</comment>
-        <translation>Alfa</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="241"/>
-        <source>Merge vector lines when they are close together</source>
-        <translation>Vektör çizgilerini birbirine yakın olduklarında birleştir</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="244"/>
-        <source>Merge</source>
-        <comment>Vector line merge (Tool options)</comment>
-        <translation>Birleştir</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="274"/>
-        <source>Stabilizer</source>
-        <translation>Dengeleyici</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="281"/>
-        <source>Use stabilizer to interpolate strokes</source>
-        <translation>Konturları enterpolasyon yapmak için sabitleyici kullanın</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="284"/>
-        <source>None</source>
-        <comment>Stablizer level</comment>
-        <translation>Yok</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="288"/>
-        <source>None</source>
-        <comment>Stabilizer option</comment>
-        <translation>Yok</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="293"/>
-        <source>Simple</source>
-        <comment>Stabilizer option</comment>
-        <translation>Basit</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="298"/>
-        <source>Strong</source>
-        <comment>Stabilizer option</comment>
-        <translation>Güçlü</translation>
     </message>
 </context>
 <context>
@@ -7098,6 +7089,29 @@ ya da iptal edin</translation>
         <location filename="../app/src/toolspage.cpp" line="71"/>
         <source>%1 degrees</source>
         <translation>%1 derece</translation>
+    </message>
+</context>
+<context>
+    <name>TransformOptionsWidget</name>
+    <message>
+        <location filename="../app/ui/transformoptionswidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/transformoptionswidget.ui" line="37"/>
+        <source>Enable or disable feathering</source>
+        <translation>Yumuşatma özelliğini etkinleştir veya devre dışı bırak</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/transformoptionswidget.ui" line="40"/>
+        <source>Show Size and Diff.</source>
+        <translation>Boyut ve Farkı Göster.</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/transformoptionswidget.ui" line="47"/>
+        <source>Anti-Aliasing</source>
+        <translation>Kenar-Yumuşatma</translation>
     </message>
 </context>
 <context>

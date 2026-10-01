@@ -13,13 +13,13 @@
         <translation>Officiell webbplats: &lt;a href=&quot;https://www.pencil2d.org&quot;&gt;pencil2d.org&lt;/a&gt;&lt;br&gt;Utvecklad av: &lt;b&gt;Pascal Naidon, Patrick Corrieri, Matt Chang&lt;/b&gt;&lt;br&gt;Tack till Qt Framework &lt;a href=&quot;https://www.qt.io/download&quot;&gt;https://www.qt.io/&lt;/a&gt;&lt;br&gt;miniz: &lt;a href=&quot;https://github.com/richgel999/miniz&quot;&gt;https://github.com/richgel999/miniz&lt;/a&gt;&lt;br&gt;Distribuerad under &lt;a href=&quot;http://www.gnu.org/licenses/gpl-2.0.html&quot;&gt;GNU General Public License, version 2&lt;/a&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/aboutdialog.cpp" line="46"/>
+        <location filename="../app/src/aboutdialog.cpp" line="53"/>
         <source>Version: %1</source>
         <comment>Version Number in About Dialog</comment>
         <translation>Version: %1</translation>
     </message>
     <message>
-        <location filename="../app/src/aboutdialog.cpp" line="74"/>
+        <location filename="../app/src/aboutdialog.cpp" line="76"/>
         <source>Copy to clipboard</source>
         <comment>Copy system info from About Dialog</comment>
         <translation>Kopiera till urklipp</translation>
@@ -28,192 +28,198 @@
 <context>
     <name>ActionCommands</name>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="124"/>
+        <location filename="../app/src/actioncommands.cpp" line="122"/>
         <source>Importing movie...</source>
         <translation>Importerar film...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="90"/>
-        <location filename="../app/src/actioncommands.cpp" line="124"/>
-        <location filename="../app/src/actioncommands.cpp" line="247"/>
-        <location filename="../app/src/actioncommands.cpp" line="474"/>
+        <location filename="../app/src/actioncommands.cpp" line="88"/>
+        <location filename="../app/src/actioncommands.cpp" line="122"/>
+        <location filename="../app/src/actioncommands.cpp" line="245"/>
+        <location filename="../app/src/actioncommands.cpp" line="472"/>
         <source>Abort</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="90"/>
+        <location filename="../app/src/actioncommands.cpp" line="88"/>
         <source>Importing Animated Image...</source>
-        <translation type="unfinished"/>
+        <translation>Importerar animerad bild...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="132"/>
+        <location filename="../app/src/actioncommands.cpp" line="130"/>
         <source>You are importing a lot of frames, beware this could take some time. Are you sure you want to proceed?</source>
         <translation>Du importerar många bildrutor, det kan ta lång tid. Vill du verkligen fortsätta?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="180"/>
+        <location filename="../app/src/actioncommands.cpp" line="178"/>
         <source>No sound layer exists as a destination for your import. Create a new sound layer?</source>
         <translation>Set finns inget ljudlager, som destination för din import. Vill du skapa ett nytt ljudlager?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="181"/>
+        <location filename="../app/src/actioncommands.cpp" line="179"/>
         <source>Create sound layer</source>
         <translation>Skapa ljudlager</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="182"/>
+        <location filename="../app/src/actioncommands.cpp" line="180"/>
         <source>Don&apos;t create layer</source>
         <translation>Skapa inget ljudlager</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="192"/>
+        <location filename="../app/src/actioncommands.cpp" line="190"/>
         <source>Layer Properties</source>
         <comment>Dialog title on creating a sound layer</comment>
         <translation>Lageregenskaper</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="193"/>
-        <location filename="../app/src/actioncommands.cpp" line="872"/>
-        <location filename="../app/src/actioncommands.cpp" line="885"/>
-        <location filename="../app/src/actioncommands.cpp" line="898"/>
-        <location filename="../app/src/actioncommands.cpp" line="911"/>
+        <location filename="../app/src/actioncommands.cpp" line="191"/>
+        <location filename="../app/src/actioncommands.cpp" line="875"/>
+        <location filename="../app/src/actioncommands.cpp" line="888"/>
+        <location filename="../app/src/actioncommands.cpp" line="901"/>
+        <location filename="../app/src/actioncommands.cpp" line="914"/>
         <source>Layer name:</source>
         <translation>Lagernamn:</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="194"/>
+        <location filename="../app/src/actioncommands.cpp" line="192"/>
         <source>Sound Layer</source>
         <comment>Default name on creating a sound layer</comment>
         <translation>Ljudlager</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="247"/>
+        <location filename="../app/src/actioncommands.cpp" line="245"/>
         <source>Importing sound...</source>
         <translation>Importerar ljud...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="288"/>
+        <location filename="../app/src/actioncommands.cpp" line="286"/>
+        <location filename="../app/src/actioncommands.cpp" line="491"/>
+        <location filename="../app/src/actioncommands.cpp" line="593"/>
         <source>Something went wrong</source>
-        <translation type="unfinished"/>
+        <translation>Något gick fel</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="288"/>
-        <location filename="../app/src/actioncommands.cpp" line="1055"/>
+        <location filename="../app/src/actioncommands.cpp" line="286"/>
+        <location filename="../app/src/actioncommands.cpp" line="1058"/>
         <source>You currently have a total of %1 sound clips. Due to current limitations, you will be unable to export any animation exceeding %2 sound clips. We recommend splitting up larger projects into multiple smaller project to stay within this limit.</source>
-        <translation type="unfinished"/>
+        <translation>Du har för närvarande sammanlagt %1 ljudklipp. På grund av nuvarande begränsningar kan du inte exportera en animation med fler än %2 ljudklipp. Vi rekommenderar att du delar upp större projekt i flera mindre projekt för att hålla dig inom denna gräns.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="346"/>
+        <location filename="../app/src/actioncommands.cpp" line="344"/>
         <source>Exporting movie</source>
         <translation>Exporterar film</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="390"/>
+        <location filename="../app/src/actioncommands.cpp" line="388"/>
         <source>Finished. Open file location?</source>
         <translation>Klart. Vill du öppna filplatsen?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="400"/>
+        <location filename="../app/src/actioncommands.cpp" line="398"/>
         <source>Finished. Open movie now?</source>
         <comment>When movie export done.</comment>
         <translation>Klart. Vill du öppna filmen nu?</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="408"/>
+        <location filename="../app/src/actioncommands.cpp" line="406"/>
         <source>Unknown export error</source>
         <translation>Okänt exportfel</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="408"/>
+        <location filename="../app/src/actioncommands.cpp" line="406"/>
         <source>The export did not produce any errors, however we can&apos;t find the output file. Your export may not have completed successfully.</source>
         <translation>Exporten producerade inga felmeddelande, men vi kan inte hitta utdatafilen. Exporten kanske inte slutfördes korrekt.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="474"/>
+        <location filename="../app/src/actioncommands.cpp" line="472"/>
         <source>Exporting image sequence...</source>
         <translation>Exporterar bildsekvens...</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="589"/>
-        <location filename="../app/src/actioncommands.cpp" line="1036"/>
-        <location filename="../app/src/actioncommands.cpp" line="1055"/>
+        <location filename="../app/src/actioncommands.cpp" line="491"/>
+        <source>Unable to export one or more images in the image sequence.</source>
+        <translation>Det gick inte att exportera en eller flera bilder i bildsekvensen.</translation>
+    </message>
+    <message>
+        <location filename="../app/src/actioncommands.cpp" line="1039"/>
+        <location filename="../app/src/actioncommands.cpp" line="1058"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="590"/>
+        <location filename="../app/src/actioncommands.cpp" line="593"/>
         <source>Unable to export image.</source>
         <translation>Kunde inte exportera bild.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="746"/>
+        <location filename="../app/src/actioncommands.cpp" line="749"/>
         <source>Remove selected frames</source>
         <comment>Windows title of remove selected frames pop-up.</comment>
-        <translation type="unfinished"/>
+        <translation>Ta bort markerade bildrutor</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="747"/>
+        <location filename="../app/src/actioncommands.cpp" line="750"/>
         <source>Are you sure you want to remove the selected frames? This action is irreversible currently!</source>
-        <translation type="unfinished"/>
+        <translation>Är du säker på att du vill ta bort de markerade bildrutorna? Åtgärden kan för närvarande inte ångras!</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="787"/>
+        <location filename="../app/src/actioncommands.cpp" line="790"/>
         <source>%1 (copy)</source>
         <comment>Default duplicate layer name</comment>
-        <translation type="unfinished"/>
+        <translation>%1 (kopia)</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="871"/>
-        <location filename="../app/src/actioncommands.cpp" line="884"/>
-        <location filename="../app/src/actioncommands.cpp" line="910"/>
+        <location filename="../app/src/actioncommands.cpp" line="874"/>
+        <location filename="../app/src/actioncommands.cpp" line="887"/>
+        <location filename="../app/src/actioncommands.cpp" line="913"/>
         <source>Layer Properties</source>
         <translation>Lageregenskaper</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="873"/>
+        <location filename="../app/src/actioncommands.cpp" line="876"/>
         <source>Bitmap Layer</source>
         <translation>Bitmaplager</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="886"/>
+        <location filename="../app/src/actioncommands.cpp" line="889"/>
         <source>Vector Layer</source>
         <translation>Vektorlager</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="897"/>
+        <location filename="../app/src/actioncommands.cpp" line="900"/>
         <source>Layer Properties</source>
         <comment>A popup when creating a new layer</comment>
         <translation>Lageregenskaper</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="899"/>
+        <location filename="../app/src/actioncommands.cpp" line="902"/>
         <source>Camera Layer</source>
         <translation>Kameralager</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="912"/>
+        <location filename="../app/src/actioncommands.cpp" line="915"/>
         <source>Sound Layer</source>
         <translation>Ljudlager</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="931"/>
+        <location filename="../app/src/actioncommands.cpp" line="934"/>
         <source>Delete Layer</source>
         <comment>Windows title of Delete current layer pop-up.</comment>
         <translation>Ta bort lager</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="932"/>
+        <location filename="../app/src/actioncommands.cpp" line="935"/>
         <source>Are you sure you want to delete layer: %1? This cannot be undone.</source>
-        <translation type="unfinished"/>
+        <translation>Är du säker på att du vill ta bort lagret: %1? Detta kan inte ångras.</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="941"/>
+        <location filename="../app/src/actioncommands.cpp" line="944"/>
         <source>Please keep at least one camera layer in project</source>
         <comment>text when failed to delete camera layer</comment>
         <translation>Behåll åtminstone ett kameralager i projektet</translation>
     </message>
     <message>
-        <location filename="../app/src/actioncommands.cpp" line="1036"/>
+        <location filename="../app/src/actioncommands.cpp" line="1039"/>
         <source>The temporary directory is meant to be used only by Pencil2D. Do not modify it unless you know what you are doing.</source>
         <translation>Den temporära mappen är avsedd att användas endast av Pencil2D. Ändra den inte, om du inte vet vad du gör.</translation>
     </message>
@@ -223,47 +229,47 @@
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="14"/>
         <source>Replace Paper with Transparency</source>
-        <translation type="unfinished"/>
+        <translation>Ersätt papper med transparens</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="24"/>
         <source>Threshold</source>
-        <translation type="unfinished"/>
+        <translation>Tröskelvärde</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="61"/>
         <source>Color values above this threshold will be made transparent</source>
-        <translation type="unfinished"/>
+        <translation>Färgvärden över detta tröskelvärde görs transparenta</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="81"/>
         <source>Trace Red</source>
-        <translation type="unfinished"/>
+        <translation>Spåra rött</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="109"/>
         <source>Trace Green</source>
-        <translation type="unfinished"/>
+        <translation>Spåra grönt</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="137"/>
         <source>Trace Blue</source>
-        <translation type="unfinished"/>
+        <translation>Spåra blått</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="170"/>
         <source>Apply to:</source>
-        <translation type="unfinished"/>
+        <translation>Använd på:</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="176"/>
         <source>Current Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="183"/>
         <source>All Keyframes on Layer</source>
-        <translation type="unfinished"/>
+        <translation>Alla nyckelbildrutor på lagret</translation>
     </message>
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="245"/>
@@ -273,17 +279,17 @@
     <message>
         <location filename="../app/ui/addtransparencytopaperdialog.ui" line="265"/>
         <source>Test Transparency</source>
-        <translation type="unfinished"/>
+        <translation>Testa transparens</translation>
     </message>
     <message>
         <location filename="../app/src/addtransparencytopaperdialog.cpp" line="153"/>
         <source>Previewing Frame %1</source>
-        <translation type="unfinished"/>
+        <translation>Förhandsvisar bildruta %1</translation>
     </message>
     <message>
         <location filename="../app/src/addtransparencytopaperdialog.cpp" line="234"/>
         <source>Tracing scanned drawings...</source>
-        <translation type="unfinished"/>
+        <translation>Spårar skannade teckningar...</translation>
     </message>
     <message>
         <location filename="../app/src/addtransparencytopaperdialog.cpp" line="234"/>
@@ -294,59 +300,64 @@
 <context>
     <name>BaseTool</name>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="33"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="34"/>
         <source>Pencil</source>
         <translation>Penna</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="34"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="35"/>
         <source>Eraser</source>
         <translation>Suddgummi</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="35"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="36"/>
         <source>Select</source>
         <translation>Markera</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="36"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="37"/>
         <source>Move</source>
         <translation>Flytta</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="37"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="38"/>
         <source>Hand</source>
         <translation>Hand</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="38"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="39"/>
         <source>Smudge</source>
         <translation>Smeta ut</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="39"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
         <source>Pen</source>
         <translation>Bläckpenna</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="40"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
         <source>Polyline</source>
         <translation>Polylinje</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="41"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
         <source>Bucket</source>
         <translation>Hink</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="42"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
         <source>Eyedropper</source>
         <translation>Pipett</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/tool/basetool.cpp" line="43"/>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="44"/>
         <source>Brush</source>
         <translation>Pensel</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/tool/basetool.cpp" line="45"/>
+        <source>Camera</source>
+        <translation>Kamera</translation>
     </message>
 </context>
 <context>
@@ -359,67 +370,67 @@
     <message>
         <location filename="../app/ui/bucketoptionswidget.ui" line="54"/>
         <source>Reference</source>
-        <translation type="unfinished"/>
+        <translation>Referens</translation>
     </message>
     <message>
         <location filename="../app/ui/bucketoptionswidget.ui" line="78"/>
         <source>Blend mode</source>
-        <translation type="unfinished"/>
+        <translation>Blandningsläge</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="38"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
         <source>Color tolerance</source>
-        <translation type="unfinished"/>
+        <translation>Färgtolerans</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="39"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="59"/>
         <source>Expand fill</source>
-        <translation type="unfinished"/>
+        <translation>Utöka fyllning</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="40"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="60"/>
         <source>Stroke thickness</source>
-        <translation type="unfinished"/>
+        <translation>Linjetjocklek</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="52"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="67"/>
         <source>Current layer</source>
         <comment>Reference Layer Options</comment>
-        <translation type="unfinished"/>
+        <translation>Aktuellt lager</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="53"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="68"/>
         <source>All layers</source>
         <comment>Reference Layer Options</comment>
-        <translation type="unfinished"/>
+        <translation>Alla lager</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="54"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="69"/>
         <source>Refers to the layer that used to flood fill from</source>
-        <translation type="unfinished"/>
+        <translation>Avser lagret som används för översvämningsfyllning</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="56"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="71"/>
         <source>Overlay</source>
         <comment>Blend Mode dropdown option</comment>
-        <translation type="unfinished"/>
+        <translation>Överlägg</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="57"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="72"/>
         <source>Replace</source>
         <comment>Blend Mode dropdown option</comment>
         <translation>Ersätt</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="58"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="73"/>
         <source>Behind</source>
         <comment>Blend Mode dropdown option</comment>
-        <translation type="unfinished"/>
+        <translation>Bakom</translation>
     </message>
     <message>
-        <location filename="../app/src/bucketoptionswidget.cpp" line="59"/>
+        <location filename="../app/src/bucketoptionswidget.cpp" line="74"/>
         <source>Defines how the fill will behave when the new color is not opaque</source>
-        <translation type="unfinished"/>
+        <translation>Anger hur fyllningen beter sig när den nya färgen inte är ogenomskinlig</translation>
     </message>
 </context>
 <context>
@@ -427,127 +438,127 @@
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="30"/>
         <source>Easing: frame %1 to %2</source>
-        <translation type="unfinished"/>
+        <translation>Mjuk övergång: bildruta %1 till %2</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="36"/>
         <source>Selected: </source>
-        <translation type="unfinished"/>
+        <translation>Markerad: </translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="40"/>
         <source>Linear</source>
-        <translation type="unfinished"/>
+        <translation>Linjär</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="42"/>
         <source>In</source>
-        <translation type="unfinished"/>
+        <translation>In</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="43"/>
         <source>Out</source>
-        <translation type="unfinished"/>
+        <translation>Ut</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="44"/>
         <source>In-Out</source>
-        <translation type="unfinished"/>
+        <translation>In–ut</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="45"/>
         <source>Out-In</source>
-        <translation type="unfinished"/>
+        <translation>Ut–in</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="47"/>
         <source>Slow</source>
-        <translation type="unfinished"/>
+        <translation>Långsam</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="48"/>
         <source>Moderate</source>
-        <translation type="unfinished"/>
+        <translation>Medel</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="49"/>
         <source>Quick</source>
-        <translation type="unfinished"/>
+        <translation>Snabb</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="50"/>
         <source>Fast</source>
-        <translation type="unfinished"/>
+        <translation>Snabb</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="51"/>
         <source>Faster</source>
-        <translation type="unfinished"/>
+        <translation>Snabbare</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="52"/>
         <source>Fastest</source>
-        <translation type="unfinished"/>
+        <translation>Snabbast</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="53"/>
         <source>Circle-based</source>
-        <translation type="unfinished"/>
+        <translation>Cirkelbaserad</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="54"/>
         <source>Overshoot</source>
-        <translation type="unfinished"/>
+        <translation>Överdrivning</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="55"/>
         <source>Elastic</source>
-        <translation type="unfinished"/>
+        <translation>Elastisk</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="56"/>
         <source>Bounce</source>
-        <translation type="unfinished"/>
+        <translation>Studs</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="99"/>
         <source>Transform</source>
-        <translation type="unfinished"/>
+        <translation>Transformera</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="100"/>
         <source>Reset all</source>
-        <translation type="unfinished"/>
+        <translation>Återställ allt</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="102"/>
         <source>Reset position</source>
-        <translation type="unfinished"/>
+        <translation>Återställ position</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="103"/>
         <source>Reset scale</source>
-        <translation type="unfinished"/>
+        <translation>Återställ skala</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="104"/>
         <source>Reset rotation</source>
-        <translation type="unfinished"/>
+        <translation>Återställ rotation</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="106"/>
         <source>Align horizontally to frame %1</source>
-        <translation type="unfinished"/>
+        <translation>Justera horisontellt mot bildruta %1</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="107"/>
         <source>Align vertically to frame %1</source>
-        <translation type="unfinished"/>
+        <translation>Justera vertikalt mot bildruta %1</translation>
     </message>
     <message>
         <location filename="../app/src/cameracontextmenu.cpp" line="109"/>
         <source>Hold to keyframe %1</source>
-        <translation type="unfinished"/>
+        <translation>Håll till nyckelbildruta %1</translation>
     </message>
 </context>
 <context>
@@ -555,207 +566,207 @@
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="24"/>
         <source>Linear</source>
-        <translation type="unfinished"/>
+        <translation>Linjär</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="25"/>
         <source>Moderate Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Måttlig mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="26"/>
         <source>Moderate Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Måttlig mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="27"/>
         <source>Moderate Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Måttlig mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="28"/>
         <source>Moderate Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Måttlig mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="29"/>
         <source>Quick Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Snabb mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="30"/>
         <source>Quick Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Snabb mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="31"/>
         <source>Quick Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Snabb mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="32"/>
         <source>Quick Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Snabb mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="33"/>
         <source>Fast Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Hastig mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="34"/>
         <source>Fast Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Hastig mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="35"/>
         <source>Fast Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Hastig mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="36"/>
         <source>Fast Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Hastig mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="37"/>
         <source>Faster Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Snabbare mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="38"/>
         <source>Faster Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Snabbare mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="39"/>
         <source>Faster Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Snabbare mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="40"/>
         <source>Faster Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Snabbare mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="41"/>
         <source>Slow Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Långsam mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="42"/>
         <source>Slow Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Långsam mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="43"/>
         <source>Slow Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Långsam mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="44"/>
         <source>Slow Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Långsam mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="45"/>
         <source>Fastest Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Snabbast mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="46"/>
         <source>Fastest Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Snabbast mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="47"/>
         <source>Fastest Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Snabbast mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="48"/>
         <source>Fastest Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Snabbast mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="49"/>
         <source>Circle-based Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Cirkelbaserad mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="50"/>
         <source>Circle-based Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Cirkelbaserad mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="51"/>
         <source>Circle-based Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Cirkelbaserad mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="52"/>
         <source>Circle-based Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Cirkelbaserad mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="53"/>
         <source>Elastic Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Elastisk mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="54"/>
         <source>Elastic Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Elastisk mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="55"/>
         <source>Elastic Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Elastisk mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="56"/>
         <source>Elastic Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Elastisk mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="57"/>
         <source>Overshoot Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Överdriven mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="58"/>
         <source>Overshoot Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Överdriven mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="59"/>
         <source>Overshoot Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Överdriven mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="60"/>
         <source>Overshoot Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Överdriven mjuk avslutning – mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="61"/>
         <source>Bounce Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Studsande mjuk start</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="62"/>
         <source>Bounce Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Studsande mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="63"/>
         <source>Bounce Ease-in - Ease-out</source>
-        <translation type="unfinished"/>
+        <translation>Studsande mjuk start – mjuk avslutning</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/cameraeasingtype.cpp" line="64"/>
         <source>Bounce Ease-out - Ease-in</source>
-        <translation type="unfinished"/>
+        <translation>Studsande mjuk avslutning – mjuk start</translation>
     </message>
 </context>
 <context>
@@ -763,52 +774,52 @@
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="35"/>
         <source>Transform</source>
-        <translation type="unfinished"/>
+        <translation>Transformera</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="56"/>
         <source>Reset scaling</source>
-        <translation type="unfinished"/>
+        <translation>Återställ skalning</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="73"/>
         <source>Reset rotation</source>
-        <translation type="unfinished"/>
+        <translation>Återställ rotation</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="90"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Återställ</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="97"/>
         <source>Reset translation</source>
-        <translation type="unfinished"/>
+        <translation>Återställ förflyttning</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="114"/>
         <source>Reset all transforms</source>
-        <translation type="unfinished"/>
+        <translation>Återställ alla transformeringar</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="117"/>
         <source>Reset all</source>
-        <translation type="unfinished"/>
+        <translation>Återställ allt</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="127"/>
         <source>Camera path</source>
-        <translation type="unfinished"/>
+        <translation>Kamerabana</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="150"/>
         <source>Show interpolation path</source>
-        <translation type="unfinished"/>
+        <translation>Visa interpoleringsbana</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="153"/>
         <source>Show path</source>
-        <translation type="unfinished"/>
+        <translation>Visa bana</translation>
     </message>
     <message>
         <location filename="../app/ui/cameraoptionswidget.ui" line="161"/>
@@ -839,7 +850,7 @@
         <location filename="../app/ui/cameraoptionswidget.ui" line="206"/>
         <location filename="../app/ui/cameraoptionswidget.ui" line="209"/>
         <source>Reset path</source>
-        <translation type="unfinished"/>
+        <translation>Återställ bana</translation>
     </message>
 </context>
 <context>
@@ -879,58 +890,58 @@
         <translation>Stäng</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="112"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="115"/>
         <source>&lt;b&gt;You are using a Pencil2D nightly build&lt;/b&gt;</source>
         <translation>&lt;b&gt;Du använder en Pencil2D nightly build&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="113"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="116"/>
         <source>Please go %1 here %2 to check new nightly builds.</source>
         <translation>Gå %1 hit %2 för att kolla nya nightly-byggen.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="123"/>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="132"/>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="141"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="126"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="135"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="144"/>
         <source>&lt;b&gt;An error occurred while checking for updates&lt;/b&gt;</source>
         <comment>error msg of check-for-update</comment>
         <translation>&lt;b&gt;Ett fel inträffade vid sökning efter uppdateringar&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="124"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="127"/>
         <source>Please check your internet connection and try again later.</source>
         <comment>error msg of check-for-update</comment>
         <translation>Kontrollera din internetuppkoppling och försök igen senare.</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="133"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="136"/>
         <source>Network response is empty</source>
         <comment>error msg of check-for-update</comment>
-        <translation type="unfinished"/>
+        <translation>Nätverkssvaret är tomt</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="142"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="145"/>
         <source>Couldn&apos;t retrieve the version information</source>
         <comment>error msg of check-for-update</comment>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att hämta versionsinformationen</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="178"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="181"/>
         <source>&lt;b&gt;A new version of Pencil2D is available!&lt;/b&gt;</source>
         <translation>&lt;b&gt;En ny version av Pencil2D finns tillgänglig!&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="179"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="182"/>
         <source>Pencil2D %1 is now available -- you have %2. Would you like to download it?</source>
         <translation>Pencil2D %1 finns nu tillgänglig. -- Du har %2. Vill du ladda ner den nya versionen?</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="186"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="189"/>
         <source>&lt;b&gt;Pencil2D is up to date&lt;/b&gt;</source>
         <translation>&lt;b&gt;Pencil2D är uppdaterad&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../app/src/checkupdatesdialog.cpp" line="187"/>
+        <location filename="../app/src/checkupdatesdialog.cpp" line="190"/>
         <source>Version %1</source>
         <translation>Version %1</translation>
     </message>
@@ -954,17 +965,17 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="70"/>
         <source>H</source>
-        <translation type="unfinished"/>
+        <translation>H</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="77"/>
         <source>S</source>
-        <translation type="unfinished"/>
+        <translation>S</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="84"/>
         <source>V</source>
-        <translation type="unfinished"/>
+        <translation>V</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="91"/>
@@ -975,14 +986,14 @@
     <message>
         <location filename="../app/ui/colorinspector.ui" line="138"/>
         <source>°</source>
-        <translation type="unfinished"/>
+        <translation>°</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="148"/>
         <location filename="../app/ui/colorinspector.ui" line="158"/>
         <location filename="../app/ui/colorinspector.ui" line="168"/>
         <source>%</source>
-        <translation type="unfinished"/>
+        <translation>%</translation>
     </message>
     <message>
         <location filename="../app/ui/colorinspector.ui" line="179"/>
@@ -2506,24 +2517,24 @@
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="59"/>
         <source>Error: No input file specified. An input project file argument is required when output path(s) are specified.</source>
-        <translation type="unfinished"/>
+        <translation>Fel: Ingen indatafil har angetts. Ett projektfilsargument krävs när utdatasökvägar anges.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="78"/>
         <source>Warning: the specified camera layer %1 was not found, ignoring.</source>
-        <translation>Varning! Det specificerade kameralagret %1 kan inte hittas och ignoreras därför.</translation>
+        <translation>Varning: Det specificerade kameralagret %1 kan inte hittas och ignoreras därför.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="110"/>
         <source>Warning: Output format is not specified or unsupported. Using PNG.</source>
         <comment>Command line warning</comment>
-        <translation>Varning! Utdataformatet är inte specificerat eller stöds inte. Använder PNG.</translation>
+        <translation>Varning: Utdataformatet är inte specificerat eller stöds inte. Använder PNG.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="135"/>
         <source>Warning: Transparency is not currently supported in movie files</source>
         <comment>Command line warning</comment>
-        <translation>Varning! Transparens stöds för närvarande inte i filmfiler</translation>
+        <translation>Varning: Transparens stöds för närvarande inte i filmfiler</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineexporter.cpp" line="138"/>
@@ -2567,7 +2578,7 @@
         <location filename="../app/src/commandlineparser.cpp" line="38"/>
         <location filename="../app/src/commandlineparser.cpp" line="44"/>
         <source>output_path</source>
-        <translation>utdatasökväg</translation>
+        <translation>utdata_sökväg</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="51"/>
@@ -2577,7 +2588,7 @@
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="52"/>
         <source>layer_name</source>
-        <translation>lagernamn</translation>
+        <translation>lager_namn</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="56"/>
@@ -2619,32 +2630,32 @@
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="105"/>
         <source>Warning: width value %1 is not an integer, ignoring.</source>
-        <translation>Varning! Breddvärdet %1 är inget heltal och ignoreras därför.</translation>
+        <translation>Varning: Breddvärdet %1 är inget heltal och ignoreras därför.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="116"/>
         <source>Warning: height value %1 is not an integer, ignoring.</source>
-        <translation>Varning! Höjdvärdet %1 är inget heltal och ignoreras därför.</translation>
+        <translation>Varning: Höjdvärdet %1 är inget heltal och ignoreras därför.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="127"/>
         <source>Warning: start value %1 is not an integer, ignoring.</source>
-        <translation>Varning! Startvärdet %1 är inget heltal och ignoreras därför.</translation>
+        <translation>Varning: Startvärdet %1 är inget heltal och ignoreras därför.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="132"/>
         <source>Warning: start value must be at least 1, ignoring.</source>
-        <translation>Varning! Startvärdet måste vara minst 1 och ignoreras därför.</translation>
+        <translation>Varning: Startvärdet måste vara minst 1 och ignoreras därför.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="153"/>
         <source>Warning: end value %1 is not an integer, last or last-sound, ignoring.</source>
-        <translation>Varning! Slutvärdet %1 är inget heltal, sista rutan eller sista ljud och ignoreras därför.</translation>
+        <translation>Varning: Slutvärdet %1 är inget heltal, sista rutan eller sista ljud och ignoreras därför.</translation>
     </message>
     <message>
         <location filename="../app/src/commandlineparser.cpp" line="159"/>
         <source>Warning: end value %1 is smaller than start value %2, ignoring.</source>
-        <translation>Varning! Slutvärdet %1 är mindre än startvärdet %2 och ignoreras därför.</translation>
+        <translation>Varning: Slutvärdet %1 är mindre än startvärdet %2 och ignoreras därför.</translation>
     </message>
 </context>
 <context>
@@ -2671,7 +2682,7 @@
         <location filename="../core_lib/src/interface/editor.cpp" line="248"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="262"/>
         <source>Paste from Previous Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Klistra in från föregående nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="362"/>
@@ -2681,17 +2692,17 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="384"/>
         <source>Flip selection vertically</source>
-        <translation type="unfinished"/>
+        <translation>Vänd markeringen lodrätt</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="386"/>
         <source>Flip selection horizontally</source>
-        <translation type="unfinished"/>
+        <translation>Vänd markeringen vågrätt</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="402"/>
         <source>Reposition frame</source>
-        <translation type="unfinished"/>
+        <translation>Flytta bildruta</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="484"/>
@@ -2725,20 +2736,21 @@
         <location filename="../core_lib/src/interface/editor.cpp" line="617"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="767"/>
         <source>File not found at path &quot;%1&quot;. Please check the image is present at the specified location and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Filen hittades inte på sökvägen ”%1”. Kontrollera att bilden finns på den angivna platsen och försök igen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="620"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="770"/>
         <source>Image format is not supported. Please convert the image file to one of the following formats and try again:
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Bildformatet stöds inte. Konvertera bildfilen till något av följande format och försök igen:
+%1</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="624"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="774"/>
         <source>An error has occurred while reading the image. Please check that the file is a valid image and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Ett fel uppstod när bilden lästes. Kontrollera att filen är en giltig bild och försök igen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="627"/>
@@ -2748,7 +2760,7 @@
         <location filename="../core_lib/src/interface/editor.cpp" line="750"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="777"/>
         <source>Import failed</source>
-        <translation type="unfinished"/>
+        <translation>Importen misslyckades</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="645"/>
@@ -2760,18 +2772,18 @@
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="678"/>
         <source>You cannot import images into a vector layer.</source>
-        <translation type="unfinished"/>
+        <translation>Du kan inte importera bilder till ett vektorlager.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="728"/>
         <location filename="../core_lib/src/interface/editor.cpp" line="743"/>
         <source>You can only import images to a bitmap layer.</source>
-        <translation type="unfinished"/>
+        <translation>Du kan endast importera bilder till ett bitmappslager.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="750"/>
         <source>The selected image has a format that does not support animation.</source>
-        <translation type="unfinished"/>
+        <translation>Den valda bilden har ett format som inte stöder animering.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/editor.cpp" line="961"/>
@@ -2799,12 +2811,12 @@
     <message>
         <location filename="../app/ui/errordialog.ui" line="88"/>
         <source>This report contains vital information. Copy all of it when submitting a bug.</source>
-        <translation type="unfinished"/>
+        <translation>Den här rapporten innehåller viktig information. Kopiera allt när du skickar in en felrapport.</translation>
     </message>
     <message>
         <location filename="../app/src/errordialog.cpp" line="41"/>
         <source>Copy to Clipboard</source>
-        <translation type="unfinished"/>
+        <translation>Kopiera till urklipp</translation>
     </message>
 </context>
 <context>
@@ -2860,7 +2872,7 @@
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="103"/>
         <source>WEBP</source>
-        <translation type="unfinished"/>
+        <translation>WEBP</translation>
     </message>
     <message>
         <location filename="../app/ui/exportimageoptions.ui" line="111"/>
@@ -2941,7 +2953,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="66"/>
         <source>The MP4 format does not support odd width. Please specify an even width or use a different file format.</source>
-        <translation type="unfinished"/>
+        <translation>MP4-formatet stöder inte udda bredd. Ange en jämn bredd eller använd ett annat filformat.</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="98"/>
@@ -2951,7 +2963,7 @@
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="105"/>
         <source>The MP4 format does not support odd height. Please specify an even height or use a different file format.</source>
-        <translation type="unfinished"/>
+        <translation>MP4-formatet stöder inte udda höjd. Ange en jämn höjd eller använd ett annat filformat.</translation>
     </message>
     <message>
         <location filename="../app/ui/exportmovieoptions.ui" line="128"/>
@@ -3039,7 +3051,7 @@
     <message>
         <location filename="../app/src/filedialog.cpp" line="171"/>
         <source>Import animated image</source>
-        <translation type="unfinished"/>
+        <translation>Importera animerad bild</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="172"/>
@@ -3054,7 +3066,7 @@
     <message>
         <location filename="../app/src/filedialog.cpp" line="174"/>
         <source>Open palette</source>
-        <translation type="unfinished"/>
+        <translation>Öppna palett</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="183"/>
@@ -3079,7 +3091,7 @@
     <message>
         <location filename="../app/src/filedialog.cpp" line="187"/>
         <source>Export animated image</source>
-        <translation type="unfinished"/>
+        <translation>Exportera animerad bild</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="188"/>
@@ -3094,17 +3106,17 @@
     <message>
         <location filename="../app/src/filedialog.cpp" line="218"/>
         <source>Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Animerad GIF</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="275"/>
         <source>untitled</source>
-        <translation type="unfinished"/>
+        <translation>namnlös</translation>
     </message>
     <message>
         <location filename="../app/src/filedialog.cpp" line="282"/>
         <source>MyAnimation</source>
-        <translation type="unfinished"/>
+        <translation>MinAnimation</translation>
     </message>
 </context>
 <context>
@@ -3112,60 +3124,60 @@
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="32"/>
         <source>Pencil2D formats</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D-format</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="32"/>
         <location filename="../core_lib/src/util/fileformat.h" line="35"/>
         <source>Pencil2D Project</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D-projekt</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="32"/>
         <location filename="../core_lib/src/util/fileformat.h" line="35"/>
         <source>Legacy Pencil2D Project</source>
-        <translation type="unfinished"/>
+        <translation>Äldre Pencil2D-projekt</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="38"/>
         <source>Movie formats</source>
-        <translation type="unfinished"/>
+        <translation>Filmformat</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="43"/>
         <location filename="../core_lib/src/util/fileformat.h" line="46"/>
         <source>Image formats</source>
-        <translation type="unfinished"/>
+        <translation>Bildformat</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>Palette formats</source>
-        <translation type="unfinished"/>
+        <translation>Palettformat</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>Pencil2D Palette</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D-palett</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="49"/>
         <source>GIMP Palette</source>
-        <translation type="unfinished"/>
+        <translation>GIMP-palett</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="52"/>
         <source>Animated GIF</source>
-        <translation type="unfinished"/>
+        <translation>Animerad GIF</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="55"/>
         <source>Animated image formats</source>
-        <translation type="unfinished"/>
+        <translation>Format för animerade bilder</translation>
     </message>
     <message>
         <location filename="../core_lib/src/util/fileformat.h" line="58"/>
         <source>Sound formats</source>
-        <translation type="unfinished"/>
+        <translation>Ljudformat</translation>
     </message>
 </context>
 <context>
@@ -3181,7 +3193,7 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="251"/>
         <source>The path is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Sökvägen är tom.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="266"/>
@@ -3217,7 +3229,7 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="358"/>
         <source>An internal error occurred. The project could not be saved.</source>
-        <translation type="unfinished"/>
+        <translation>Ett internt fel uppstod. Projektet kunde inte sparas.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="368"/>
@@ -3234,7 +3246,7 @@
         <location filename="../core_lib/src/structure/filemanager.cpp" line="369"/>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="386"/>
         <source>An internal error occurred. The project may not have been saved successfully.</source>
-        <translation type="unfinished"/>
+        <translation>Ett internt fel uppstod. Projektet kanske inte har sparats korrekt.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="554"/>
@@ -3244,32 +3256,32 @@
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="564"/>
         <source>The file does not exist, so we are unable to open it.Please check to make sure the path is correct and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Filen finns inte och kan därför inte öppnas. Kontrollera att sökvägen är korrekt och försök igen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="569"/>
         <source>No permission to read the file. Please check you have read permissions for this file and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Du har inte behörighet att läsa filen. Kontrollera att du har läsbehörighet för filen och försök igen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="575"/>
         <source>There was an error processing your file. This usually means that your project has been at least partially corrupted. Try again with a newer version of Pencil2D, or try to use a backup file if you have one. If you contact us through one of our official channels we may be able to help you.For reporting issues, the best places to reach us are:</source>
-        <translation type="unfinished"/>
+        <translation>Ett fel uppstod när filen bearbetades. Det betyder vanligen att projektet är åtminstone delvis skadat. Försök igen med en nyare version av Pencil2D eller använd en säkerhetskopia om du har en. Om du kontaktar oss via någon av våra officiella kanaler kan vi kanske hjälpa till. För felrapportering når du oss bäst här:</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="1075"/>
         <source>Bitmap Layer %1</source>
-        <translation type="unfinished"/>
+        <translation>Bitmappslager %1</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="1077"/>
         <source>Vector Layer %1</source>
-        <translation type="unfinished"/>
+        <translation>Vektorlager %1</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/filemanager.cpp" line="1079"/>
         <source>Sound Layer %1</source>
-        <translation type="unfinished"/>
+        <translation>Ljudlager %1</translation>
     </message>
 </context>
 <context>
@@ -3277,43 +3289,43 @@
     <message>
         <location filename="../app/ui/filespage.ui" line="17"/>
         <source>Startup Settings</source>
-        <translation type="unfinished"/>
+        <translation>Startinställningar</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="25"/>
         <location filename="../app/ui/filespage.ui" line="28"/>
         <source>Saving the current project as a preset</source>
-        <translation type="unfinished"/>
+        <translation>Sparar det aktuella projektet som en förinställning</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="31"/>
         <source>+</source>
-        <translation type="unfinished"/>
+        <translation>+</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="38"/>
         <source>-</source>
-        <translation type="unfinished"/>
+        <translation>-</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="45"/>
         <source>Make Default</source>
-        <translation type="unfinished"/>
+        <translation>Ange som standard</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="61"/>
         <source>Ask on startup</source>
-        <translation type="unfinished"/>
+        <translation>Fråga vid start</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="74"/>
         <source>Load default preset</source>
-        <translation type="unfinished"/>
+        <translation>Läs in standardförinställning</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="87"/>
         <source>Load last active file</source>
-        <translation type="unfinished"/>
+        <translation>Läs in senast aktiva fil</translation>
     </message>
     <message>
         <location filename="../app/ui/filespage.ui" line="100"/>
@@ -3336,7 +3348,7 @@
     <message>
         <location filename="../app/src/filespage.cpp" line="96"/>
         <source>&lt;br&gt;&lt;br&gt;Error: your preset may not have saved successfully. If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please include the following details in your issue:</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;&lt;br&gt;Fel: förinställningen kanske inte har sparats korrekt. Om du tror att felet beror på Pencil2D kan du skapa ett nytt ärende på:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Inkludera följande uppgifter i ärendet:</translation>
     </message>
 </context>
 <context>
@@ -3384,7 +3396,7 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="108"/>
         <source>Canvas Cursor</source>
-        <translation type="unfinished"/>
+        <translation>Ritytemarkör</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="118"/>
@@ -3443,32 +3455,32 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="295"/>
         <source>Overlays</source>
-        <translation type="unfinished"/>
+        <translation>Överlägg</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="311"/>
         <source>Enable Action Safe area (%)</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera åtgärdssäkert område (%)</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="354"/>
         <source>Enable Title Safe area (%)</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera titelsäkert område (%)</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="394"/>
         <source>Show Safe area labels</source>
-        <translation type="unfinished"/>
+        <translation>Visa etiketter för säkra områden</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="404"/>
         <source>Scroll Wheel Zoom</source>
-        <translation type="unfinished"/>
+        <translation>Zooma med mushjulet</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="422"/>
         <source>Invert Scroll Direction</source>
-        <translation type="unfinished"/>
+        <translation>Invertera rullningsriktning</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="432"/>
@@ -3479,37 +3491,37 @@
     <message>
         <location filename="../app/ui/generalpage.ui" line="449"/>
         <source>Memory Cache Budget</source>
-        <translation type="unfinished"/>
+        <translation>Gräns för minnescache</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="480"/>
         <source>MB</source>
-        <translation type="unfinished"/>
+        <translation>MB</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="501"/>
         <source>Undo/Redo</source>
-        <translation type="unfinished"/>
+        <translation>Ångra/Gör om</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="507"/>
         <source>Enable New System (Experimental)</source>
-        <translation type="unfinished"/>
+        <translation>Aktivera nytt system (experimentellt)</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="519"/>
         <source>How many steps you&apos;re allowed to undo/redo</source>
-        <translation type="unfinished"/>
+        <translation>Antal steg som kan ångras eller göras om</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="522"/>
         <source>Maximum Number of Undo/Redo Steps</source>
-        <translation type="unfinished"/>
+        <translation>Högsta antal steg för Ångra/Gör om</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="555"/>
         <source>Apply</source>
-        <translation type="unfinished"/>
+        <translation>Verkställ</translation>
     </message>
     <message>
         <location filename="../app/ui/generalpage.ui" line="562"/>
@@ -3519,17 +3531,17 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="39"/>
         <source>Arabic</source>
-        <translation type="unfinished"/>
+        <translation>Arabiska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="40"/>
         <source>Bulgarian</source>
-        <translation type="unfinished"/>
+        <translation>Bulgariska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="41"/>
         <source>Catalan</source>
-        <translation type="unfinished"/>
+        <translation>Katalanska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="42"/>
@@ -3569,7 +3581,7 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="49"/>
         <source>Persian</source>
-        <translation type="unfinished"/>
+        <translation>Persiska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="50"/>
@@ -3609,17 +3621,17 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="57"/>
         <source>Korean</source>
-        <translation type="unfinished"/>
+        <translation>Koreanska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="58"/>
         <source>Norwegian Bokmål</source>
-        <translation type="unfinished"/>
+        <translation>Norskt bokmål</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="59"/>
         <source>Dutch – Netherlands</source>
-        <translation type="unfinished"/>
+        <translation>Nederländska – Nederländerna</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="60"/>
@@ -3629,12 +3641,12 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="61"/>
         <source>Portuguese – Portugal</source>
-        <translation type="unfinished"/>
+        <translation>Portugisiska – Portugal</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="62"/>
         <source>Portuguese – Brazil</source>
-        <translation type="unfinished"/>
+        <translation>Portugisiska – Brasilien</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="63"/>
@@ -3644,17 +3656,17 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="64"/>
         <source>Slovene</source>
-        <translation type="unfinished"/>
+        <translation>Slovenska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="65"/>
         <source>Swedish</source>
-        <translation type="unfinished"/>
+        <translation>Svenska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="66"/>
         <source>Turkish</source>
-        <translation type="unfinished"/>
+        <translation>Turkiska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="67"/>
@@ -3664,17 +3676,17 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="68"/>
         <source>Cantonese</source>
-        <translation type="unfinished"/>
+        <translation>Kantonesiska</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="69"/>
         <source>Chinese – China</source>
-        <translation type="unfinished"/>
+        <translation>Kinesiska – Kina</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="70"/>
         <source>Chinese – Taiwan</source>
-        <translation type="unfinished"/>
+        <translation>Kinesiska – Taiwan</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="225"/>
@@ -3689,31 +3701,35 @@
     <message>
         <location filename="../app/src/generalpage.cpp" line="365"/>
         <source>Resets your current undo history</source>
-        <translation type="unfinished"/>
+        <translation>Återställer din aktuella ångringshistorik</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="366"/>
         <source>Changing the maximum number of undo/redo steps resets your current undo/redo history. 
 
 Are you sure you want to proceed?</source>
-        <translation type="unfinished"/>
+        <translation>Om du ändrar högsta antal steg för Ångra/Gör om återställs den aktuella ångringshistoriken.
+
+Är du säker på att du vill fortsätta?</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="381"/>
         <source>Experimental feature!</source>
-        <translation type="unfinished"/>
+        <translation>Experimentell funktion!</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="382"/>
         <source>This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. 
 
 Do you still want to try?</source>
-        <translation type="unfinished"/>
+        <translation>Den här funktionen är under utveckling och erbjuder kanske ännu inte samma funktioner som det nuvarande systemet för Ångra/Gör om. När funktionen har aktiverats måste du starta om programmet för att börja använda den.
+
+Vill du ändå prova?</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="394"/>
         <source>The undo/redo system will be changed on the next launch of the application</source>
-        <translation type="unfinished"/>
+        <translation>Systemet för Ångra/Gör om ändras nästa gång programmet startas</translation>
     </message>
 </context>
 <context>
@@ -3721,7 +3737,7 @@ Do you still want to try?</source>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="38"/>
         <source>Instructions</source>
-        <translation type="unfinished"/>
+        <translation>Instruktioner</translation>
     </message>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="48"/>
@@ -3741,7 +3757,7 @@ Do you still want to try?</source>
     <message>
         <location filename="../app/ui/importexportdialog.ui" line="96"/>
         <source>Imports</source>
-        <translation type="unfinished"/>
+        <translation>Importer</translation>
     </message>
 </context>
 <context>
@@ -3759,18 +3775,19 @@ Do you still want to try?</source>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="70"/>
         <source>Import animated image</source>
-        <translation type="unfinished"/>
+        <translation>Importera animerad bild</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="79"/>
         <source>Import predefined keyframe set</source>
-        <translation type="unfinished"/>
+        <translation>Importera fördefinierad uppsättning nyckelbildrutor</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="80"/>
         <source>Select an image that matches the criteria: MyFile000.png, eg. Joe001.png 
 The importer will search and find images matching the same criteria. You can see the result in the preview box below.</source>
-        <translation type="unfinished"/>
+        <translation>Välj en bild som uppfyller kriterierna: MinFil000.png, t.ex. Kalle001.png
+Importverktyget söker efter och hittar bilder som uppfyller samma kriterier. Du kan se resultatet i förhandsgranskningsrutan nedan.</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="179"/>
@@ -3786,13 +3803,13 @@ The importer will search and find images matching the same criteria. You can see
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="293"/>
         <source>Importing images...</source>
-        <translation type="unfinished"/>
+        <translation>Importerar bilder...</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="352"/>
         <location filename="../app/src/importimageseqdialog.cpp" line="377"/>
         <source>Invalid path</source>
-        <translation type="unfinished"/>
+        <translation>Ogiltig sökväg</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="353"/>
@@ -3800,13 +3817,17 @@ The importer will search and find images matching the same criteria. You can see
 %1 
 
 Read the instructions and try again</source>
-        <translation type="unfinished"/>
+        <translation>Följande fil uppfyllde inte kriterierna:
+%1
+
+Läs instruktionerna och försök igen</translation>
     </message>
     <message>
         <location filename="../app/src/importimageseqdialog.cpp" line="378"/>
         <source>The following file(-s) did not meet the criteria: 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Följande fil(er) uppfyllde inte kriterierna:
+%1</translation>
     </message>
 </context>
 <context>
@@ -3822,7 +3843,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importimageseqpreview.ui" line="14"/>
         <source>GroupBox</source>
-        <translation type="unfinished"/>
+        <translation>Grupp</translation>
     </message>
 </context>
 <context>
@@ -3830,22 +3851,22 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="14"/>
         <source>Import Layers from other *.pclx files</source>
-        <translation type="unfinished"/>
+        <translation>Importera lager från andra *.pclx-filer</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="22"/>
         <source>1. Select Project file:</source>
-        <translation type="unfinished"/>
+        <translation>1. Välj projektfil:</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="42"/>
         <source>Select File</source>
-        <translation type="unfinished"/>
+        <translation>Välj fil</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="51"/>
         <source>2. Select layers from file:</source>
-        <translation type="unfinished"/>
+        <translation>2. Välj lager från filen:</translation>
     </message>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="76"/>
@@ -3855,12 +3876,12 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importlayersdialog.ui" line="83"/>
         <source>Import layers</source>
-        <translation type="unfinished"/>
+        <translation>Importera lager</translation>
     </message>
     <message>
         <location filename="../app/src/importlayersdialog.cpp" line="63"/>
         <source>Choose file</source>
-        <translation type="unfinished"/>
+        <translation>Välj fil</translation>
     </message>
     <message>
         <location filename="../app/src/importlayersdialog.cpp" line="140"/>
@@ -3878,32 +3899,32 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/importpositiondialog.ui" line="14"/>
         <source>Import position</source>
-        <translation type="unfinished"/>
+        <translation>Importposition</translation>
     </message>
     <message>
         <location filename="../app/ui/importpositiondialog.ui" line="22"/>
         <source>Import image/s relative to:</source>
-        <translation type="unfinished"/>
+        <translation>Importera bilder i förhållande till:</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="31"/>
         <source>Center of current view</source>
-        <translation type="unfinished"/>
+        <translation>Mitten av aktuell vy</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="32"/>
         <source>Center of canvas (0,0)</source>
-        <translation type="unfinished"/>
+        <translation>Mitten av ritytan (0,0)</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="33"/>
         <source>Center of camera, current frame</source>
-        <translation type="unfinished"/>
+        <translation>Kamerans mitt, aktuell bildruta</translation>
     </message>
     <message>
         <location filename="../app/src/importpositiondialog.cpp" line="34"/>
         <source>Center of camera, follow camera</source>
-        <translation type="unfinished"/>
+        <translation>Kamerans mitt, följ kameran</translation>
     </message>
 </context>
 <context>
@@ -3935,38 +3956,38 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="14"/>
         <source>Layer / Keyframe Opacity</source>
-        <translation type="unfinished"/>
+        <translation>Opacitet för lager/nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="22"/>
         <source>Layer: </source>
-        <translation type="unfinished"/>
+        <translation>Lager: </translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="46"/>
         <location filename="../app/ui/layeropacitydialog.ui" line="65"/>
         <source>% transparency</source>
-        <translation type="unfinished"/>
+        <translation>% transparens</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="68"/>
         <source> %</source>
-        <translation type="unfinished"/>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="83"/>
         <source>Set opacity for:</source>
-        <translation type="unfinished"/>
+        <translation>Ange opacitet för:</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="89"/>
         <source>Active keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Aktiv nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="99"/>
         <source>Selected keyframe(s)</source>
-        <translation type="unfinished"/>
+        <translation>Markerade nyckelbildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="106"/>
@@ -3976,27 +3997,27 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="116"/>
         <source>Fade in / Fade out</source>
-        <translation type="unfinished"/>
+        <translation>Tona in/Tona ut</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="122"/>
         <source>Fade in over selcted keyframes</source>
-        <translation type="unfinished"/>
+        <translation>Tona in över markerade nyckelbildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="125"/>
         <source>Fade in</source>
-        <translation type="unfinished"/>
+        <translation>Tona in</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="135"/>
         <source>Fade out over selected keyframes</source>
-        <translation type="unfinished"/>
+        <translation>Tona ut över markerade nyckelbildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="138"/>
         <source>Fade out</source>
-        <translation type="unfinished"/>
+        <translation>Tona ut</translation>
     </message>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="166"/>
@@ -4006,12 +4027,12 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/layeropacitydialog.ui" line="178"/>
         <source>Be aware that opacity changes are made in the rendering, and will not change your artwork.</source>
-        <translation type="unfinished"/>
+        <translation>Observera att opacitetsändringar görs vid rendering och inte ändrar ditt originalarbete.</translation>
     </message>
     <message>
         <location filename="../app/src/layeropacitydialog.cpp" line="61"/>
         <source>Layer: %1</source>
-        <translation type="unfinished"/>
+        <translation>Lager: %1</translation>
     </message>
 </context>
 <context>
@@ -4080,17 +4101,17 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="161"/>
         <source>Layer Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Lagrets synlighet</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="169"/>
         <source>Overlays</source>
-        <translation type="unfinished"/>
+        <translation>Överlagringar</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="173"/>
         <source>Perspective Lines Angle</source>
-        <translation type="unfinished"/>
+        <translation>Vinkel för perspektivlinjer</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="222"/>
@@ -4100,7 +4121,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="226"/>
         <source>Timeline Selection</source>
-        <translation type="unfinished"/>
+        <translation>Tidslinjeurval</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="258"/>
@@ -4115,7 +4136,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="280"/>
         <source>Change line color</source>
-        <translation type="unfinished"/>
+        <translation>Ändra linjefärg</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="298"/>
@@ -4131,7 +4152,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="319"/>
         <source>Toolbars</source>
-        <translation type="unfinished"/>
+        <translation>Verktygsfält</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="343"/>
@@ -4178,12 +4199,12 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="398"/>
         <source>Palette</source>
-        <translation type="unfinished"/>
+        <translation>Palett</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="413"/>
         <source>Movie Video...</source>
-        <translation type="unfinished"/>
+        <translation>Filmvideo...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="418"/>
@@ -4193,7 +4214,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="423"/>
         <source>Image Predefined set...</source>
-        <translation type="unfinished"/>
+        <translation>Bildfördefinierad uppsättning...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="432"/>
@@ -4224,104 +4245,104 @@ Read the instructions and try again</source>
         <location filename="../app/ui/mainwindow2.ui" line="1064"/>
         <source>Center</source>
         <comment>To move sth. to the center</comment>
-        <translation type="unfinished"/>
+        <translation>Centrera</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1074"/>
         <source>Replace Paper with Transparency</source>
-        <translation type="unfinished"/>
+        <translation>Ersätt papper med transparens</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1110"/>
         <location filename="../app/ui/mainwindow2.ui" line="1113"/>
         <source>Paste from Previous Keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Klistra in från föregående nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1125"/>
         <source>Show Invisible Lines</source>
-        <translation type="unfinished"/>
+        <translation>Visa osynliga linjer</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1137"/>
         <source>Show Outlines Only</source>
-        <translation type="unfinished"/>
+        <translation>Visa endast konturer</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1149"/>
         <source>Center</source>
         <comment>The middle point of an area</comment>
-        <translation type="unfinished"/>
+        <translation>Centrum</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1161"/>
         <source>Thirds</source>
-        <translation type="unfinished"/>
+        <translation>Tredjedelar</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1173"/>
         <source>Golden Ratio</source>
-        <translation type="unfinished"/>
+        <translation>Gyllene snittet</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1185"/>
         <source>Safe Areas</source>
-        <translation type="unfinished"/>
+        <translation>Säkra områden</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1197"/>
         <source>One Point Perspective</source>
-        <translation type="unfinished"/>
+        <translation>Enpunktsperspektiv</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1209"/>
         <source>Two Point Perspective</source>
-        <translation type="unfinished"/>
+        <translation>Tvåpunktsperspektiv</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1221"/>
         <source>Three Point Perspective</source>
-        <translation type="unfinished"/>
+        <translation>Trepunksperspektiv</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1229"/>
         <source>2°</source>
-        <translation type="unfinished"/>
+        <translation>2°</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1237"/>
         <source>3°</source>
-        <translation type="unfinished"/>
+        <translation>3°</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1245"/>
         <source>5°</source>
-        <translation type="unfinished"/>
+        <translation>5°</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1253"/>
         <source>7.5°</source>
-        <translation type="unfinished"/>
+        <translation>7,5°</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1261"/>
         <source>10°</source>
-        <translation type="unfinished"/>
+        <translation>10°</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1269"/>
         <source>15°</source>
-        <translation type="unfinished"/>
+        <translation>15°</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1277"/>
         <source>20°</source>
-        <translation type="unfinished"/>
+        <translation>20°</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1285"/>
         <source>30°</source>
-        <translation type="unfinished"/>
+        <translation>30°</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="482"/>
@@ -4331,7 +4352,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="109"/>
         <source>Prepare Scanned Drawings</source>
-        <translation type="unfinished"/>
+        <translation>Förbered skannade teckningar</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="487"/>
@@ -4376,7 +4397,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="546"/>
         <source>Reset</source>
-        <translation type="unfinished"/>
+        <translation>Återställ</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="558"/>
@@ -4415,7 +4436,7 @@ Read the instructions and try again</source>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="621"/>
-        <location filename="../app/src/mainwindow2.cpp" line="1570"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1571"/>
         <source>Play</source>
         <translation>Spela</translation>
     </message>
@@ -4600,7 +4621,7 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="912"/>
         <source>Animated Image...</source>
-        <translation type="unfinished"/>
+        <translation>Animerad bild...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="917"/>
@@ -4670,67 +4691,67 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="982"/>
         <source>Peg Bar Alignment</source>
-        <translation type="unfinished"/>
+        <translation>Justering av pegbar</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1020"/>
         <source>Current layer only</source>
-        <translation type="unfinished"/>
+        <translation>Endast aktuellt lager</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1028"/>
         <source>Relative</source>
-        <translation type="unfinished"/>
+        <translation>Relativ</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="987"/>
         <source>Movie Audio...</source>
-        <translation type="unfinished"/>
+        <translation>Filmljud...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="992"/>
         <source>Append to Palette...</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till i palett...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="997"/>
         <source>Replace Palette...</source>
-        <translation type="unfinished"/>
+        <translation>Ersätt palett...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1002"/>
         <source>Current keyframe</source>
-        <translation type="unfinished"/>
+        <translation>Aktuell nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1007"/>
         <source>All keyframes on layer</source>
-        <translation type="unfinished"/>
+        <translation>Alla nyckelbildrutor på lagret</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1012"/>
         <source>Layers from Project file...</source>
-        <translation type="unfinished"/>
+        <translation>Lager från projektfil...</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1036"/>
         <source>All layers</source>
-        <translation type="unfinished"/>
+        <translation>Alla lager</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1041"/>
         <source>Reposition Selected Frames</source>
-        <translation type="unfinished"/>
+        <translation>Flytta markerade bildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1046"/>
         <source>Layer / Keyframe opacity</source>
-        <translation type="unfinished"/>
+        <translation>Opacitet för lager/nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1051"/>
         <source>Open Temporary Directory</source>
-        <translation type="unfinished"/>
+        <translation>Öppna tillfällig katalog</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1059"/>
@@ -4740,182 +4761,184 @@ Read the instructions and try again</source>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1069"/>
         <source>Reset Rotation</source>
-        <translation type="unfinished"/>
+        <translation>Återställ rotation</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1079"/>
         <source>Add Exposure</source>
-        <translation type="unfinished"/>
+        <translation>Lägg till exponering</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1084"/>
         <source>Subtract Exposure</source>
-        <translation type="unfinished"/>
+        <translation>Minska exponering</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1089"/>
         <source>Reverse Frames Order</source>
-        <translation type="unfinished"/>
+        <translation>Vänd bildruteordningen</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1094"/>
         <source>Remove Frames</source>
-        <translation type="unfinished"/>
+        <translation>Ta bort bildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/mainwindow2.ui" line="1105"/>
         <source>Status Bar</source>
-        <translation type="unfinished"/>
+        <translation>Statusrad</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="156"/>
+        <location filename="../app/src/mainwindow2.cpp" line="161"/>
         <source>color palette:&lt;br&gt;use &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;toggle at cursor</source>
         <translation>färgpalett:&lt;br&gt;Använd &lt;b&gt;(C)&lt;/b&gt;&lt;br&gt;växla vid markör</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="160"/>
+        <location filename="../app/src/mainwindow2.cpp" line="165"/>
         <source>Color inspector</source>
         <translation>Färginspektör</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="479"/>
+        <location filename="../app/src/mainwindow2.cpp" line="484"/>
         <source>Open Recent</source>
         <translation>Öppna tidigare</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="520"/>
-        <location filename="../app/src/mainwindow2.cpp" line="544"/>
+        <location filename="../app/src/mainwindow2.cpp" line="525"/>
+        <location filename="../app/src/mainwindow2.cpp" line="549"/>
         <source>Dialog is already open!</source>
-        <translation type="unfinished"/>
+        <translation>Dialogrutan är redan öppen!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="594"/>
+        <location filename="../app/src/mainwindow2.cpp" line="599"/>
         <source>Please select at least 2 frames!</source>
-        <translation type="unfinished"/>
+        <translation>Välj minst två bildrutor!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="722"/>
+        <location filename="../app/src/mainwindow2.cpp" line="727"/>
         <source>Opening document...</source>
         <translation>Öppnar dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="722"/>
-        <location filename="../app/src/mainwindow2.cpp" line="779"/>
+        <location filename="../app/src/mainwindow2.cpp" line="727"/>
+        <location filename="../app/src/mainwindow2.cpp" line="784"/>
         <source>Abort</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="767"/>
-        <location filename="../app/src/mainwindow2.cpp" line="868"/>
+        <location filename="../app/src/mainwindow2.cpp" line="772"/>
+        <location filename="../app/src/mainwindow2.cpp" line="873"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="768"/>
+        <location filename="../app/src/mainwindow2.cpp" line="773"/>
         <source>This program does not currently have permission to write to the file you have selected. Please make sure you have write permission for this file before attempting to save it. Alternatively, you can use the Save As... menu option to save to a writable location.</source>
         <translation>Detta program har inte behörighet att läsa den valda filen. Tillse att du har skrivbehörighet för filen innan du försöker spara den. Alternativt kan du använda &quot;Spara som...&quot; för att spara på en skrivbar plats.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="779"/>
+        <location filename="../app/src/mainwindow2.cpp" line="784"/>
         <source>Saving document...</source>
         <translation>Sparar dokument...</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="869"/>
+        <location filename="../app/src/mainwindow2.cpp" line="874"/>
         <source>This animation has been modified.
  Do you want to save your changes?</source>
         <translation>Denna animation har ändrats.
 Vill du spara dina ändringar?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="892"/>
+        <location filename="../app/src/mainwindow2.cpp" line="897"/>
         <source>AutoSave Reminder</source>
-        <translation type="unfinished"/>
+        <translation>Påminnelse om automatiskt sparande</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="893"/>
+        <location filename="../app/src/mainwindow2.cpp" line="898"/>
         <source>The animation is not saved yet.
  Do you want to save now?</source>
         <translation>Denna animation har inte sparats än.
 Vill du spara den nu?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="894"/>
+        <location filename="../app/src/mainwindow2.cpp" line="899"/>
         <source>Never ask again</source>
         <comment>AutoSave reminder button</comment>
         <translation>Fråga inte igen</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="822"/>
+        <location filename="../app/src/mainwindow2.cpp" line="827"/>
         <source>&lt;br&gt;&lt;br&gt;An error has occurred and your file may not have saved successfully.
 If you believe that this error is an issue with Pencil2D, please create a new issue at:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Please be sure to include the following details in your issue:</source>
-        <translation type="unfinished"/>
+        <translation>&lt;br&gt;&lt;br&gt;Ett fel har uppstått och filen kanske inte har sparats korrekt.
+Om du tror att felet beror på Pencil2D kan du skapa ett nytt ärende på:&lt;br&gt;&lt;a href=&apos;https://github.com/pencil2d/pencil/issues&apos;&gt;https://github.com/pencil2d/pencil/issues&lt;/a&gt;&lt;br&gt;Se till att inkludera följande uppgifter i ärendet:</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1410"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1414"/>
         <source>Opening a palette will replace the old palette.
 Color(s) in strokes will be altered by this action!</source>
-        <translation type="unfinished"/>
+        <translation>Om du öppnar en palett ersätts den gamla paletten.
+Färger i streck ändras av den här åtgärden!</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1412"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1416"/>
         <source>Open Palette</source>
-        <translation type="unfinished"/>
+        <translation>Öppna palett</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1565"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1566"/>
         <source>Stop</source>
         <translation>Stopp</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1627"/>
-        <source>Restore Project?</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../app/src/mainwindow2.cpp" line="1628"/>
+        <source>Restore Project?</source>
+        <translation>Återställ projekt?</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1629"/>
         <source>Pencil2D didn&apos;t close correctly. Would you like to restore the project?</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D avslutades inte korrekt. Vill du återställa projektet?</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1632"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1633"/>
         <source>Restore project</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1665"/>
-        <source>Recovery Failed.</source>
-        <translation type="unfinished"/>
+        <translation>Återställ projekt</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1666"/>
-        <source>Sorry! Pencil2D is unable to restore your project</source>
-        <translation type="unfinished"/>
+        <source>Recovery Failed.</source>
+        <translation>Återställningen misslyckades.</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1676"/>
-        <source>Recovery Succeeded!</source>
-        <translation type="unfinished"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1667"/>
+        <source>Sorry! Pencil2D is unable to restore your project</source>
+        <translation>Pencil2D kan tyvärr inte återställa projektet</translation>
     </message>
     <message>
         <location filename="../app/src/mainwindow2.cpp" line="1677"/>
+        <source>Recovery Succeeded!</source>
+        <translation>Återställningen lyckades!</translation>
+    </message>
+    <message>
+        <location filename="../app/src/mainwindow2.cpp" line="1678"/>
         <source>Please save your work immediately to prevent loss of data</source>
-        <translation type="unfinished"/>
+        <translation>Spara ditt arbete genast för att förhindra dataförlust</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1685"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1686"/>
         <source>Main Toolbar</source>
-        <translation type="unfinished"/>
+        <translation>Huvudverktygsfält</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1699"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1700"/>
         <source>View Toolbar</source>
-        <translation type="unfinished"/>
+        <translation>Visningsverktygsfält</translation>
     </message>
     <message>
-        <location filename="../app/src/mainwindow2.cpp" line="1711"/>
+        <location filename="../app/src/mainwindow2.cpp" line="1712"/>
         <source>Overlay Toolbar</source>
-        <translation type="unfinished"/>
+        <translation>Verktygsfält för överlagringar</translation>
     </message>
 </context>
 <context>
@@ -4928,17 +4951,17 @@ Color(s) in strokes will be altered by this action!</source>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
         <source>Generating GIF...</source>
-        <translation type="unfinished"/>
+        <translation>Skapar GIF...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="127"/>
         <source>Assembling audio...</source>
-        <translation type="unfinished"/>
+        <translation>Sammanställer ljud...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="132"/>
         <source>Generating movie...</source>
-        <translation type="unfinished"/>
+        <translation>Skapar film...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="137"/>
@@ -4951,19 +4974,19 @@ Color(s) in strokes will be altered by this action!</source>
         <location filename="../core_lib/src/movieexporter.cpp" line="732"/>
         <location filename="../core_lib/src/movieexporter.cpp" line="744"/>
         <source>Something went wrong</source>
-        <translation type="unfinished"/>
+        <translation>Något gick fel</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="596"/>
         <location filename="../core_lib/src/movieexporter.cpp" line="733"/>
         <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
-        <translation type="unfinished"/>
+        <translation>Videobakänden avslutades tydligen inte normalt. Filmen kanske inte exporterades korrekt. Försök igen och rapportera problemet om det kvarstår.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="608"/>
         <location filename="../core_lib/src/movieexporter.cpp" line="745"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att starta videobakänden. Försök igen.</translation>
     </message>
 </context>
 <context>
@@ -4972,226 +4995,226 @@ Color(s) in strokes will be altered by this action!</source>
         <location filename="../core_lib/src/movieimporter.cpp" line="54"/>
         <location filename="../core_lib/src/movieimporter.cpp" line="248"/>
         <source>Bitmap only</source>
-        <translation type="unfinished"/>
+        <translation>Endast bitmap</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="55"/>
         <location filename="../core_lib/src/movieimporter.cpp" line="249"/>
         <source>You need to be on the bitmap layer to import a movie clip</source>
-        <translation type="unfinished"/>
+        <translation>Du måste vara på bitmaplagret för att importera ett filmklipp</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="155"/>
         <source>Loading video failed</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att läsa in videon</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="156"/>
         <source>Could not get duration from the specified video. Are you sure you are importing a valid video file?</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att hämta längden från den angivna videon. Är du säker på att du importerar en giltig videofil?</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="181"/>
         <source>Error creating folder</source>
-        <translation type="unfinished"/>
+        <translation>Fel när mapp skapades</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="182"/>
         <source>Unable to create a temporary folder, cannot import video.</source>
-        <translation type="unfinished"/>
+        <translation>Det går inte att skapa en tillfällig mapp, så videon kan inte importeras.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="196"/>
         <source>Imported movie too big!</source>
-        <translation type="unfinished"/>
+        <translation>Den importerade filmen är för stor!</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="197"/>
         <source>The movie clip is too long. Pencil2D can only hold %1 frames, but this movie would go up to about frame %2. Please make your video shorter and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Filmklippet är för långt. Pencil2D kan bara hantera %1 bildrutor, men den här filmen skulle gå till ungefär bildruta %2. Gör videon kortare och försök igen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="232"/>
         <source>Unknown error</source>
-        <translation type="unfinished"/>
+        <translation>Okänt fel</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="233"/>
         <source>This should not happen...</source>
-        <translation type="unfinished"/>
+        <translation>Det här borde inte hända...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="265"/>
         <source>Video processed, adding frames...</source>
-        <translation type="unfinished"/>
+        <translation>Videon har bearbetats, lägger till bildrutor...</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="301"/>
         <source>Failed import</source>
-        <translation type="unfinished"/>
+        <translation>Importen misslyckades</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="302"/>
         <source>Was unable to find internal files, import unsuccessful.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att hitta interna filer. Importen misslyckades.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="317"/>
         <source>Sound only</source>
-        <translation type="unfinished"/>
+        <translation>Endast ljud</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="318"/>
         <source>You need to be on a sound layer to import the audio</source>
-        <translation type="unfinished"/>
+        <translation>Du måste vara på ett ljudlager för att importera ljudet</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="330"/>
         <source>Move to an empty frame</source>
-        <translation type="unfinished"/>
+        <translation>Flytta till en tom bildruta</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="331"/>
         <source>A frame already exists on frame: %1 Move the scrubber to a empty position on the timeline and try again</source>
-        <translation type="unfinished"/>
+        <translation>Det finns redan en bildruta på bildruta: %1. Flytta tidslinjemarkören till en tom plats på tidslinjen och försök igen</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="373"/>
         <source>FFmpeg Not Found</source>
-        <translation type="unfinished"/>
+        <translation>FFmpeg hittades inte</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieimporter.cpp" line="374"/>
         <source>Please place the ffmpeg binary in plugins directory and try again</source>
-        <translation type="unfinished"/>
+        <translation>Placera den körbara filen för FFmpeg i katalogen för insticksmoduler och försök igen</translation>
     </message>
 </context>
 <context>
     <name>Object</name>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="388"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="389"/>
         <source>error</source>
-        <translation type="unfinished"/>
+        <translation>fel</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="681"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="682"/>
         <source>Black</source>
         <translation>Svart</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="682"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
         <source>Red</source>
         <translation>Röd</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="683"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
         <source>Dark Red</source>
         <translation>Mörkröd</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="684"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
         <source>Orange</source>
         <translation>Orange</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="685"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
         <source>Dark Orange</source>
         <translation>Mörk orange</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="686"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
         <source>Yellow</source>
         <translation>Gul</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="687"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
         <source>Dark Yellow</source>
         <translation>Mörkgul</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="688"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
         <source>Green</source>
         <translation>Grön</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="689"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
         <source>Dark Green</source>
         <translation>Mörkgrön</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="690"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
         <source>Cyan</source>
         <translation>Cyan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="691"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
         <source>Dark Cyan</source>
         <translation>Mörk cyan</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="692"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
         <source>Blue</source>
         <translation>Blå</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="693"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
         <source>Dark Blue</source>
         <translation>Mörkblå</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="694"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
         <source>White</source>
         <translation>Vit</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="695"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
         <source>Very Light Grey</source>
         <translation>Mycket ljust grå</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="696"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
         <source>Light Grey</source>
         <translation>Ljusgrå</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="697"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
         <source>Grey</source>
         <translation>Grå</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="698"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
         <source>Dark Grey</source>
         <translation>Mörkgrå</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="699"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
         <source>Pale Orange Yellow</source>
         <translation>Blek orangegul</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="700"/>
-        <source>Pale Grayish Orange Yellow</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
         <location filename="../core_lib/src/structure/object.cpp" line="701"/>
-        <source>Orange Yellow </source>
-        <translation type="unfinished"/>
+        <source>Pale Grayish Orange Yellow</source>
+        <translation>Blek gråaktig orangegul</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="702"/>
-        <source>Grayish Orange Yellow</source>
-        <translation type="unfinished"/>
+        <source>Orange Yellow </source>
+        <translation>Orangegul </translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/object.cpp" line="703"/>
+        <source>Grayish Orange Yellow</source>
+        <translation>Gråaktig orangegul</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
         <source>Light Orange Yellow</source>
         <translation>Ljus orangegul</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/structure/object.cpp" line="704"/>
+        <location filename="../core_lib/src/structure/object.cpp" line="705"/>
         <source>Light Grayish Orange Yellow</source>
-        <translation type="unfinished"/>
+        <translation>Ljus gråaktig orangegul</translation>
     </message>
 </context>
 <context>
@@ -5200,12 +5223,12 @@ Color(s) in strokes will be altered by this action!</source>
         <location filename="../app/ui/onionskin.ui" line="23"/>
         <source>Onion Skins</source>
         <comment>Window title of display options like .</comment>
-        <translation type="unfinished"/>
+        <translation>Lökskal</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="111"/>
         <source>Previous Frames</source>
-        <translation type="unfinished"/>
+        <translation>Föregående bildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="169"/>
@@ -5222,7 +5245,7 @@ Color(s) in strokes will be altered by this action!</source>
     <message>
         <location filename="../app/ui/onionskin.ui" line="195"/>
         <source>Next Frames</source>
-        <translation type="unfinished"/>
+        <translation>Nästa bildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="256"/>
@@ -5233,38 +5256,38 @@ Color(s) in strokes will be altered by this action!</source>
     <message>
         <location filename="../app/ui/onionskin.ui" line="291"/>
         <source>Distributed Opacity</source>
-        <translation type="unfinished"/>
+        <translation>Fördelad opacitet</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="401"/>
         <source>Min</source>
-        <translation type="unfinished"/>
+        <translation>Min</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="361"/>
         <location filename="../app/ui/onionskin.ui" line="426"/>
         <source> %</source>
-        <translation type="unfinished"/>
+        <translation> %</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="336"/>
         <source>Max</source>
-        <translation type="unfinished"/>
+        <translation>Max</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="450"/>
         <source>Show On All Layers</source>
-        <translation type="unfinished"/>
+        <translation>Visa på alla lager</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="464"/>
         <source>Show Keyframes Only</source>
-        <translation type="unfinished"/>
+        <translation>Visa endast nyckelbildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/onionskin.ui" line="471"/>
         <source>Show During Playback</source>
-        <translation type="unfinished"/>
+        <translation>Visa under uppspelning</translation>
     </message>
 </context>
 <context>
@@ -5287,12 +5310,13 @@ Color(s) in strokes will be altered by this action!</source>
         <source>Peg hole not found!
 Check selection, and please try again.</source>
         <comment>PegBar error message</comment>
-        <translation type="unfinished"/>
+        <translation>Hål för pegbar hittades inte!
+Kontrollera markeringen och försök igen.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/structure/pegbaraligner.cpp" line="65"/>
         <source>Peg bar not found at %2, %1</source>
-        <translation type="unfinished"/>
+        <translation>Pegbar hittades inte vid %2, %1</translation>
     </message>
 </context>
 <context>
@@ -5300,42 +5324,42 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="14"/>
         <source>Peg bar Alignment</source>
-        <translation type="unfinished"/>
+        <translation>Justering av pegbar</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="36"/>
         <source>Prerequisites</source>
-        <translation type="unfinished"/>
+        <translation>Förutsättningar</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="43"/>
         <source>1) A selection should exist</source>
-        <translation type="unfinished"/>
+        <translation>1) Det måste finnas en markering</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="59"/>
         <source>2) The selection be large enough to contain the center pegs of all frames</source>
-        <translation type="unfinished"/>
+        <translation>2) Markeringen måste vara tillräckligt stor för att rymma de centrala peggarna i alla bildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="75"/>
         <source>3) At least one layer should be selected (Bitmaps only!)</source>
-        <translation type="unfinished"/>
+        <translation>3) Minst ett lager måste vara markerat (endast bitmappar!)</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="87"/>
         <source>Layer selection</source>
-        <translation type="unfinished"/>
+        <translation>Lagermarkering</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="123"/>
         <source>Reference key:</source>
-        <translation type="unfinished"/>
+        <translation>Referensnyckel:</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="130"/>
         <source>TextLabel</source>
-        <translation type="unfinished"/>
+        <translation>Textetikett</translation>
     </message>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="170"/>
@@ -5345,13 +5369,13 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/pegbaralignmentdialog.ui" line="180"/>
         <source>Align</source>
-        <translation type="unfinished"/>
+        <translation>Justera</translation>
     </message>
     <message>
         <location filename="../app/src/pegbaralignmentdialog.cpp" line="163"/>
         <source>No layers selected!</source>
         <comment>PegBar Dialog error message</comment>
-        <translation type="unfinished"/>
+        <translation>Inga lager markerade!</translation>
     </message>
 </context>
 <context>
@@ -5364,7 +5388,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/src/pencil2d.cpp" line="116"/>
         <source>An instance of Pencil2D is already open. Running multiple instances of Pencil2D simultaneously is not recommended and could potentially result in data loss and other unexpected behavior.</source>
-        <translation type="unfinished"/>
+        <translation>En instans av Pencil2D är redan öppen. Att köra flera instanser av Pencil2D samtidigt rekommenderas inte och kan leda till dataförlust och andra oväntade beteenden.</translation>
     </message>
 </context>
 <context>
@@ -5377,7 +5401,7 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/src/predefinedsetmodel.h" line="67"/>
         <source>KeyFrame Pos</source>
-        <translation type="unfinished"/>
+        <translation>Nyckelbildrutans position</translation>
     </message>
 </context>
 <context>
@@ -5418,22 +5442,22 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/presetdialog.ui" line="14"/>
         <source>Choose a Preset for your Project</source>
-        <translation type="unfinished"/>
+        <translation>Välj en förinställning för projektet</translation>
     </message>
     <message>
         <location filename="../app/ui/presetdialog.ui" line="20"/>
         <source>&lt;h1&gt;Welcome to Pencil2D!&lt;/h1&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;h1&gt;Välkommen till Pencil2D!&lt;/h1&gt;</translation>
     </message>
     <message>
         <location filename="../app/ui/presetdialog.ui" line="27"/>
         <source>Choose a preset to get started:</source>
-        <translation type="unfinished"/>
+        <translation>Välj en förinställning för att komma igång:</translation>
     </message>
     <message>
         <location filename="../app/ui/presetdialog.ui" line="37"/>
         <source>Always use this preset</source>
-        <translation type="unfinished"/>
+        <translation>Använd alltid den här förinställningen</translation>
     </message>
 </context>
 <context>
@@ -5448,7 +5472,7 @@ Check selection, and please try again.</source>
         <location filename="../core_lib/src/interface/recentfilemenu.cpp" line="32"/>
         <source>Empty</source>
         <comment>Showing when Recent File Menu is empty</comment>
-        <translation type="unfinished"/>
+        <translation>Tom</translation>
     </message>
     <message>
         <location filename="../core_lib/src/interface/recentfilemenu.h" line="34"/>
@@ -5461,32 +5485,32 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="14"/>
         <source>Reposition Frames</source>
-        <translation type="unfinished"/>
+        <translation>Flytta om bildrutor</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="30"/>
         <source>(Please move selection to desired destination.)</source>
-        <translation type="unfinished"/>
+        <translation>(Flytta markeringen till önskad plats.)</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="43"/>
         <source>Reposition (x,y): </source>
-        <translation type="unfinished"/>
+        <translation>Flytta om (x,y): </translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="50"/>
         <source>Reposition on other layers?</source>
-        <translation type="unfinished"/>
+        <translation>Flytta om på andra lager?</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="57"/>
         <source>Same keyframes as selected</source>
-        <translation type="unfinished"/>
+        <translation>Samma nyckelbildrutor som är markerade</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="64"/>
         <source>All keyframes on layer</source>
-        <translation type="unfinished"/>
+        <translation>Alla nyckelbildrutor på lagret</translation>
     </message>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="93"/>
@@ -5496,46 +5520,47 @@ Check selection, and please try again.</source>
     <message>
         <location filename="../app/ui/repositionframesdialog.ui" line="100"/>
         <source>Reposition</source>
-        <translation type="unfinished"/>
+        <translation>Flytta om</translation>
     </message>
     <message>
         <location filename="../app/src/repositionframesdialog.cpp" line="72"/>
         <source>Repositioned: ( %1, %2 )</source>
-        <translation type="unfinished"/>
+        <translation>Omflyttad: ( %1, %2 )</translation>
     </message>
     <message>
         <location filename="../app/src/repositionframesdialog.cpp" line="78"/>
         <source>Selected on Layer: %1</source>
-        <translation type="unfinished"/>
+        <translation>Markerat på lager: %1</translation>
     </message>
     <message>
         <location filename="../app/src/repositionframesdialog.cpp" line="91"/>
         <source>Please move selection to desired destination
 or cancel</source>
-        <translation type="unfinished"/>
+        <translation>Flytta markeringen till önskad plats
+eller avbryt</translation>
     </message>
 </context>
 <context>
     <name>ScribbleArea</name>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="769"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="758"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="770"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="759"/>
         <source>You are trying to modify a hidden layer! Please select another layer (or make the current layer visible).</source>
         <translation>Du försöker ändra ett dolt lager! Välj ett annat lager (eller gör det aktuella lagret synligt).</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1464"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1453"/>
         <source>Delete Selection</source>
         <comment>Undo Step: clear the selection area.</comment>
         <translation>Ta bort markerat</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1490"/>
-        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1502"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1479"/>
+        <location filename="../core_lib/src/interface/scribblearea.cpp" line="1491"/>
         <source>Clear Image</source>
         <comment>Undo step text</comment>
         <translation>Rensa bilden</translation>
@@ -5576,7 +5601,7 @@ or cancel</source>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="94"/>
         <source>Load</source>
-        <translation type="unfinished"/>
+        <translation>Läs in</translation>
     </message>
     <message>
         <location filename="../app/ui/shortcutspage.ui" line="114"/>
@@ -5587,13 +5612,13 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="43"/>
         <source>Action</source>
         <comment>Shortcut table header</comment>
-        <translation type="unfinished"/>
+        <translation>Åtgärd</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="43"/>
         <source>Shortcut</source>
         <comment>Shortcut table header</comment>
-        <translation type="unfinished"/>
+        <translation>Genväg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="104"/>
@@ -5608,23 +5633,23 @@ or cancel</source>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="139"/>
         <source>Save Pencil2D Shortcut file</source>
-        <translation type="unfinished"/>
+        <translation>Spara Pencil2D-genvägsfil</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="140"/>
         <source>untitled.pcls</source>
-        <translation type="unfinished"/>
+        <translation>namnlös.pcls</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="141"/>
         <location filename="../app/src/shortcutspage.cpp" line="167"/>
         <source>Pencil2D Shortcut File(*.pcls)</source>
-        <translation type="unfinished"/>
+        <translation>Pencil2D-genvägsfil (*.pcls)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="165"/>
         <source>Open Pencil2D Shortcut file</source>
-        <translation type="unfinished"/>
+        <translation>Öppna Pencil2D-genvägsfil</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="301"/>
@@ -5648,7 +5673,7 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="304"/>
         <source>Paste from Previous Keyframe</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Klistra in från föregående nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="305"/>
@@ -5684,13 +5709,13 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="310"/>
         <source>Export Image</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Exportera bild</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="311"/>
         <source>Export Image Sequence</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Exportera bildsekvens</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="312"/>
@@ -5702,7 +5727,7 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="314"/>
         <source>Export Palette</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Exportera palett</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="317"/>
@@ -5720,7 +5745,7 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="315"/>
         <source>View: Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Visa: Vänd horisontellt</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="313"/>
@@ -5732,7 +5757,7 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="316"/>
         <source>View: Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Visa: Vänd vertikalt</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="319"/>
@@ -5756,97 +5781,97 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="322"/>
         <source>Selection: Horizontal Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Markering: Vänd horisontellt</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="323"/>
         <source>Selection: Vertical Flip</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Markering: Vänd vertikalt</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="324"/>
         <source>Previous Keyframe</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Föregående nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="325"/>
         <source>Selection: Reposition Frames</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Markering: Flytta om bildrutor</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="326"/>
         <source>Selection: Add Frame Exposure</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Markering: Lägg till exponering för bildruta</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="327"/>
         <source>Selection: Subtract Frame Exposure</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Markering: Minska exponering för bildruta</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="328"/>
         <source>Selection: Reverse Keyframes</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Markering: Vänd ordningen på nyckelbildrutor</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="329"/>
         <source>Selection: Remove Keyframes</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Markering: Ta bort nyckelbildrutor</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="330"/>
         <source>Toggle Grid</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla rutnät</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="331"/>
         <source>Toggle Center Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla mittöverlägg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="332"/>
         <source>Toggle Thirds Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla tredjedelsöverlagring</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="333"/>
         <source>Toggle Golden Ratio Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla överlagring för gyllene snittet</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="334"/>
         <source>Toggle Safe Areas Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla överlagring för säkra områden</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="335"/>
         <source>Toggle One Point Perspective Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla överlagring för enpunktsperspektiv</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="336"/>
         <source>Toggle Two Point Perspective Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla överlagring för tvåpunktsperspektiv</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="337"/>
         <source>Toggle Three Point Perspective Overlay</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla överlagring för trepunktsperspektiv</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="338"/>
@@ -5858,85 +5883,85 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="339"/>
         <source>Import Image Sequence</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera bildsekvens</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="340"/>
         <source>Import Image Predefined Set</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera fördefinierad bilduppsättning</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="341"/>
         <source>Import Movie Video</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera filmvideo</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="342"/>
         <source>Import Movie Audio</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera filmljud</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="343"/>
         <source>Import Animated Image</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera animerad bild</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="344"/>
         <source>Import Layers from project file</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera lager från projektfil</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="345"/>
         <source>Import Palette (Append)</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera palett (lägg till)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="346"/>
         <source>Import Palette (Replace)</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera palett (ersätt)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="347"/>
         <source>Import Sound</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Importera ljud</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="348"/>
         <source>Show All Layers</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Visa alla lager</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="349"/>
         <source>Show Current Layer Only</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Visa endast aktuellt lager</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="350"/>
         <source>Show Layers Relative to Current Layer</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Visa lager relativt till aktuellt lager</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="351"/>
         <source>Toggle Loop</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla loopning</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="352"/>
         <source>Toggle Range Playback</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla intervalluppspelning</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="353"/>
@@ -5966,7 +5991,7 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="357"/>
         <source>New File</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ny fil</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="358"/>
@@ -5984,19 +6009,19 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="360"/>
         <source>Toggle Next Onion Skin</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla nästa lökskal</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="361"/>
         <source>Toggle Previous Onion Skin</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla föregående lökskal</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="362"/>
         <source>Open File</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Öppna fil</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="363"/>
@@ -6008,13 +6033,13 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="364"/>
         <source>Play/Stop</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Spela upp/stoppa</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="365"/>
         <source>Peg bar Alignment</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Justering av pegbar</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="366"/>
@@ -6050,13 +6075,13 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="371"/>
         <source>Reset View</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Återställ vy</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="372"/>
         <source>Center View</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Centrera vy</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="373"/>
@@ -6074,19 +6099,19 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="375"/>
         <source>Reset Rotation</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Återställ rotation</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="376"/>
         <source>Save File As</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Spara fil som</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="377"/>
         <source>Save File</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Spara fil</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="378"/>
@@ -6098,139 +6123,139 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="379"/>
         <source>Toggle Status Bar Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla statusradens synlighet</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="380"/>
         <source>Toggle Color Inspector Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla synlighet för färginspektörens fönster</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="381"/>
         <source>Toggle Color Palette Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla synlighet för färgpalettens fönster</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="382"/>
         <source>Toggle Color Box Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla synlighet för färgrutans fönster</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="383"/>
         <source>Toggle Onion Skins Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla synlighet för lökskalsfönstret</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="384"/>
         <source>Toggle Timeline Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla synlighet för tidslinjefönstret</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="385"/>
         <source>Toggle Tools Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla synlighet för verktygsfönstret</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="386"/>
         <source>Toggle Options Window Visibility</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Växla synlighet för alternativfönstret</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="387"/>
         <source>Brush Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Penselverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="388"/>
         <source>Bucket Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Hinkverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="389"/>
         <source>Eraser Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Suddgummiverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="390"/>
         <source>Eyedropper Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Pipettverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="391"/>
         <source>Hand Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Handverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="392"/>
         <source>Move Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Flyttverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="393"/>
         <source>Pen Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Pennverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="394"/>
         <source>Pencil Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Blyertspennverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="395"/>
         <source>Polyline Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Polylinjeverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="396"/>
         <source>Select Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Markeringsverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="397"/>
         <source>Smudge Tool</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Utsmetningsverktyg</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="398"/>
         <source>Reset all tools to default</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Återställ alla verktyg till standard</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="399"/>
         <source>Change Line Color (Current keyframe)</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ändra linjefärg (aktuell nyckelbildruta)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="400"/>
         <source>Change Line Color (All keyframes on layer)</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ändra linjefärg (alla nyckelbildrutor på lagret)</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="401"/>
         <source>Change Layer / Keyframe Opacity</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ändra opacitet för lager/nyckelbildruta</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="402"/>
@@ -6242,43 +6267,43 @@ or cancel</source>
         <location filename="../app/src/shortcutspage.cpp" line="403"/>
         <source>Set Zoom to 100%</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ställ in zoom på 100 %</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="404"/>
         <source>Set Zoom to 200%</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ställ in zoom på 200 %</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="405"/>
         <source>Set Zoom to 25%</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ställ in zoom på 25 %</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="406"/>
         <source>Set Zoom to 300%</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ställ in zoom på 300 %</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="407"/>
         <source>Set Zoom to 33%</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ställ in zoom på 33 %</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="408"/>
         <source>Set Zoom to 400%</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ställ in zoom på 400 %</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="409"/>
         <source>Set Zoom to 50%</source>
         <comment>Shortcut</comment>
-        <translation type="unfinished"/>
+        <translation>Ställ in zoom på 50 %</translation>
     </message>
     <message>
         <location filename="../app/src/shortcutspage.cpp" line="410"/>
@@ -6296,32 +6321,32 @@ or cancel</source>
 <context>
     <name>Status</name>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="108"/>
         <source>Everything ok.</source>
         <translation>Allt OK.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="109"/>
         <source>Ooops, Something went wrong.</source>
         <translation>Hoppsan, något gick fel.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="110"/>
         <source>File doesn&apos;t exist.</source>
         <translation>Filen finns inte.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="111"/>
         <source>Cannot open file.</source>
         <translation>Kan inte öppna filen.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="112"/>
         <source>The file is not a valid xml document.</source>
         <translation>Filen är inget giltigt XML-dokument.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/pencilerror.cpp" line="114"/>
+        <location filename="../core_lib/src/util/pencilerror.cpp" line="113"/>
         <source>The file is not valid pencil document.</source>
         <translation>Filen är inget giltigt Pencil-dokument.</translation>
     </message>
@@ -6332,72 +6357,208 @@ or cancel</source>
         <location filename="../app/src/statusbar.cpp" line="98"/>
         <location filename="../app/src/statusbar.cpp" line="119"/>
         <source>Click to draw. Hold Ctrl and Shift to erase or Alt to select a color from the canvas.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att rita. Håll ned Ctrl och Skift för att sudda eller Alt för att välja en färg från arbetsytan.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="101"/>
         <source>Click to erase.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att sudda.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="104"/>
         <source>Click and drag to create or modify a selection. Hold Alt to modify its contents or press Backspace to clear them.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka och dra för att skapa eller ändra en markering. Håll ned Alt för att ändra dess innehåll eller tryck på Backsteg för att rensa det.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="107"/>
         <source>Click and drag to move an object. Hold Ctrl to rotate.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka och dra för att flytta ett objekt. Håll ned Ctrl för att rotera.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="110"/>
         <source>Click and drag to move the camera. While on in-between frames, drag handle to change interpolation.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka och dra för att flytta kameran. Dra i handtaget på mellanliggande bildrutor för att ändra interpoleringen.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="113"/>
         <source>Click and drag to pan. Hold Ctrl to zoom or Alt to rotate.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka och dra för att panorera. Håll ned Ctrl för att zooma eller Alt för att rotera.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="116"/>
         <source>Click to liquefy pixels or modify a vector line. Hold Alt to smooth.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att förvränga pixlar eller ändra en vektorlinje. Håll ned Alt för att jämna ut.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="124"/>
         <source>Click to continue the polyline. Double-click or press enter to complete the line or press Escape to discard it.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att fortsätta polylinjen. Dubbelklicka eller tryck på Retur för att avsluta linjen, eller tryck på Esc för att kasta bort den.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="128"/>
         <source>Click to create a new polyline. Hold Ctrl and Shift to erase.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att skapa en ny polylinje. Håll ned Ctrl och Skift för att sudda.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="132"/>
         <source>Click to fill an area with the current color. Hold Alt to select a color from the canvas.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att fylla ett område med den aktuella färgen. Håll ned Alt för att välja en färg från arbetsytan.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="135"/>
         <source>Click to select a color from the canvas.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att välja en färg från arbetsytan.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="138"/>
         <source>Click to paint. Hold Ctrl and Shift to erase or Alt to select a color from the canvas.</source>
-        <translation type="unfinished"/>
+        <translation>Klicka för att måla. Håll ned Ctrl och Skift för att sudda eller Alt för att välja en färg från arbetsytan.</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="167"/>
         <source>This file has unsaved changes</source>
-        <translation type="unfinished"/>
+        <translation>Filen har osparade ändringar</translation>
     </message>
     <message>
         <location filename="../app/src/statusbar.cpp" line="171"/>
         <source>This file has no unsaved changes</source>
-        <translation type="unfinished"/>
+        <translation>Filen har inga osparade ändringar</translation>
+    </message>
+</context>
+<context>
+    <name>StrokeOptionsWidget</name>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="37"/>
+        <source>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Ange streckbredd &lt;br&gt;&lt;b&gt;[SKIFT]+dra&lt;/b&gt;&lt;br&gt;för snabb justering</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="73"/>
+        <source>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
+        <translation>Ange streckets mjukhet &lt;br&gt;&lt;b&gt;[CTRL]+dra&lt;/b&gt;&lt;br&gt;för snabb justering</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="115"/>
+        <source>Stabilizer</source>
+        <translation>Stabilisator</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="122"/>
+        <source>Use stabilizer to interpolate strokes</source>
+        <translation>Använd stabilisatorn för att interpolera streck</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="125"/>
+        <source>None</source>
+        <comment>Stablizer level</comment>
+        <translation>Ingen</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="129"/>
+        <source>None</source>
+        <comment>Stabilizer option</comment>
+        <translation>Ingen</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="134"/>
+        <source>Simple</source>
+        <comment>Stabilizer option</comment>
+        <translation>Enkel</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="139"/>
+        <source>Strong</source>
+        <comment>Stabilizer option</comment>
+        <translation>Stark</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="154"/>
+        <source>Enable or disable feathering</source>
+        <translation>Aktivera eller inaktivera ludd</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="157"/>
+        <source>Use Feather</source>
+        <translation>Använd ludd</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="164"/>
+        <source>Contour will be filled</source>
+        <translation>Konturen fylls</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="167"/>
+        <source>Fill Contour</source>
+        <translation>Fyll kontur</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="174"/>
+        <source>Close Polyline path (hold Ctrl to temporarily invert)</source>
+        <translation>Stäng polylinjesökväg (håll ned Ctrl för att tillfälligt invertera)</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="177"/>
+        <source>Closed Path</source>
+        <translation>Stängd sökväg</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="184"/>
+        <source>Use Bézier curves to create curved lines</source>
+        <translation>Använd Bézierkurvor för att skapa böjda linjer</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="187"/>
+        <source>Bézier</source>
+        <comment>Tool options</comment>
+        <translation>Bézier</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="194"/>
+        <source>Vary strokes based on pressure when drawing on a tablet</source>
+        <translation>Variera strecken efter trycket när du ritar på en ritplatta</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="197"/>
+        <source>Pressure</source>
+        <comment>Tool options</comment>
+        <translation>Tryck</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="204"/>
+        <source>Use anti-aliasing to create smooth edges</source>
+        <translation>Använd kantutjämning för att skapa jämna kanter</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="207"/>
+        <source>Anti-Aliasing</source>
+        <comment>Brush AA</comment>
+        <translation>Kantutjämning</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="214"/>
+        <source>Make invisible</source>
+        <translation>Gör osynlig</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/strokeoptionswidget.ui" line="217"/>
+        <source>Invisible</source>
+        <comment>Tool options</comment>
+        <translation>Osynlig</translation>
+    </message>
+    <message>
+        <location filename="../app/src/strokeoptionswidget.cpp" line="40"/>
+        <source>Width</source>
+        <translation>Bredd</translation>
+    </message>
+    <message>
+        <location filename="../app/src/strokeoptionswidget.cpp" line="43"/>
+        <source>Feather</source>
+        <translation>Fjäder</translation>
     </message>
 </context>
 <context>
@@ -6405,7 +6566,7 @@ or cancel</source>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="47"/>
         <source> fps</source>
-        <translation type="unfinished"/>
+        <translation> bps</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="48"/>
@@ -6416,45 +6577,45 @@ or cancel</source>
         <location filename="../app/src/timecontrols.cpp" line="54"/>
         <source>Display timecode</source>
         <comment>Timeline menu for choose a timecode</comment>
-        <translation type="unfinished"/>
+        <translation>Visa tidskod</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="57"/>
         <source>No text</source>
-        <translation type="unfinished"/>
+        <translation>Ingen text</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="58"/>
         <source>Frames</source>
-        <translation type="unfinished"/>
+        <translation>Bildrutor</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="59"/>
         <source>SMPTE Timecode</source>
-        <translation type="unfinished"/>
+        <translation>SMPTE-tidskod</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="60"/>
         <source>SFF Timecode</source>
-        <translation type="unfinished"/>
+        <translation>SFF-tidskod</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="75"/>
         <location filename="../app/src/timecontrols.cpp" line="336"/>
         <source>Actual frame number</source>
-        <translation type="unfinished"/>
+        <translation>Faktiskt bildrutenummer</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="78"/>
         <location filename="../app/src/timecontrols.cpp" line="354"/>
         <source>Timecode format MM:SS:FF</source>
-        <translation type="unfinished"/>
+        <translation>Tidskodsformat MM:SS:BB</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="81"/>
         <location filename="../app/src/timecontrols.cpp" line="345"/>
         <source>Timecode format S:FF</source>
-        <translation type="unfinished"/>
+        <translation>Tidskodsformat S:BB</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="92"/>
@@ -6495,19 +6656,19 @@ or cancel</source>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="137"/>
         <source>Sound scrub on/off</source>
-        <translation type="unfinished"/>
+        <translation>Ljudskanning på/av</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="138"/>
         <source>Jump to the End</source>
         <comment>Tooltip of the jump to end button</comment>
-        <translation type="unfinished"/>
+        <translation>Hoppa till slutet</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="139"/>
         <source>Jump to the Start</source>
         <comment>Tooltip of the jump to start button</comment>
-        <translation type="unfinished"/>
+        <translation>Hoppa till början</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="253"/>
@@ -6541,7 +6702,7 @@ or cancel</source>
     <message>
         <location filename="../app/src/timeline.cpp" line="85"/>
         <source>Duplicate Layer</source>
-        <translation type="unfinished"/>
+        <translation>Duplicera lager</translation>
     </message>
     <message>
         <location filename="../app/src/timeline.cpp" line="98"/>
@@ -6694,48 +6855,48 @@ or cancel</source>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="264"/>
         <source>Sound scrub</source>
-        <translation type="unfinished"/>
+        <translation>Ljudskanning</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="297"/>
         <source> ms</source>
-        <translation type="unfinished"/>
+        <translation> ms</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="321"/>
         <source>Layer Visibility</source>
-        <translation type="unfinished"/>
+        <translation>Lagrets synlighet</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="327"/>
         <source>Startup option</source>
-        <translation type="unfinished"/>
+        <translation>Startalternativ</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="335"/>
         <source>Current layer only</source>
-        <translation type="unfinished"/>
+        <translation>Endast aktuellt lager</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="340"/>
         <source>Relative</source>
-        <translation type="unfinished"/>
+        <translation>Relativ</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="345"/>
         <source>All Layers</source>
-        <translation type="unfinished"/>
+        <translation>Alla lager</translation>
     </message>
     <message>
         <location filename="../app/ui/timelinepage.ui" line="353"/>
         <source>When layer visibility is relative (gray dot)</source>
-        <translation type="unfinished"/>
+        <translation>När lagrets synlighet är relativ (grå punkt)</translation>
     </message>
 </context>
 <context>
     <name>ToolBoxDockWidget</name>
     <message>
-        <location filename="../app/src/toolbox.cpp" line="42"/>
+        <location filename="../app/src/toolbox.cpp" line="43"/>
         <source>Tools</source>
         <comment>Window title of Tools</comment>
         <translation>Verktyg</translation>
@@ -6807,7 +6968,7 @@ or cancel</source>
     <message>
         <location filename="../app/src/toolboxwidget.cpp" line="93"/>
         <source>Smudge Tool (%1):&lt;br&gt;Edit polyline/curves&lt;br&gt;Liquify bitmap pixels&lt;br&gt; (%1)+[Alt]: Smooth</source>
-        <translation>Smetningsverktyg (%1): Redigera polylinjer/kurvor&lt;br&gt;Smält bitmappspixlar&lt;br&gt;(%1)+[Alt]: Mjuk</translation>
+        <translation>Smetningsverktyg (%1):&lt;br&gt;Redigera polylinjer/kurvor&lt;br&gt;Smält bitmappspixlar&lt;br&gt;(%1)+[Alt]: Mjuk</translation>
     </message>
     <message>
         <location filename="../app/src/toolboxwidget.cpp" line="97"/>
@@ -6868,21 +7029,10 @@ or cancel</source>
 <context>
     <name>ToolOptionWidget</name>
     <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="35"/>
+        <location filename="../app/src/tooloptionwidget.cpp" line="39"/>
         <source>Options</source>
         <comment>Window title of tool option panel like pen width, feather etc..</comment>
         <translation>Alternativ</translation>
-    </message>
-    <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="60"/>
-        <location filename="../app/src/tooloptionwidget.cpp" line="226"/>
-        <source>Width</source>
-        <translation>Bredd</translation>
-    </message>
-    <message>
-        <location filename="../app/src/tooloptionwidget.cpp" line="64"/>
-        <source>Feather</source>
-        <translation>Fjäder</translation>
     </message>
 </context>
 <context>
@@ -6891,151 +7041,6 @@ or cancel</source>
         <location filename="../app/ui/tooloptions.ui" line="20"/>
         <source>Form</source>
         <translation>Form</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="76"/>
-        <source>Set Stroke Width &lt;br&gt;&lt;b&gt;[SHIFT]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="112"/>
-        <source>Set Stroke Feather &lt;br&gt;&lt;b&gt;[CTRL]+drag&lt;/b&gt;&lt;br&gt;for quick adjustment</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="151"/>
-        <source>Enable or disable feathering</source>
-        <translation>Aktivera eller inaktivera ludd</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="154"/>
-        <source>Use Feather</source>
-        <translation>Använd ludd</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="161"/>
-        <source>Show Size and Diff.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="171"/>
-        <source>Contour will be filled</source>
-        <translation>Konturen fylls</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="174"/>
-        <source>Fill Contour</source>
-        <translation>Fyll kontur</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="181"/>
-        <source>Close Polyline path (hold Ctrl to temporarily invert)</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="184"/>
-        <source>Closed Path</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="191"/>
-        <source>Use Bézier curves to create curved lines</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="194"/>
-        <source>Bézier</source>
-        <comment>Tool options</comment>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="201"/>
-        <source>Vary strokes based on pressure when drawing on a tablet</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="204"/>
-        <source>Pressure</source>
-        <comment>Tool options</comment>
-        <translation>Tryck</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="211"/>
-        <source>Use anti-aliasing to create smooth edges</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="214"/>
-        <source>Anti-Aliasing</source>
-        <comment>Brush AA</comment>
-        <translation>Kantutjämning</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="221"/>
-        <source>Make invisible</source>
-        <translation>Gör osynlig</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="224"/>
-        <source>Invisible</source>
-        <comment>Tool options</comment>
-        <translation>Osynlig</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="231"/>
-        <source>Preserve Alpha</source>
-        <translation>Bevara alfa</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="234"/>
-        <source>Alpha</source>
-        <comment>Tool options</comment>
-        <translation>Alfa</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="241"/>
-        <source>Merge vector lines when they are close together</source>
-        <translation>Sammanfoga vektorlinjer när de är nära varandra</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="244"/>
-        <source>Merge</source>
-        <comment>Vector line merge (Tool options)</comment>
-        <translation>Sammanfoga</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="274"/>
-        <source>Stabilizer</source>
-        <translation>Stabilisator</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="281"/>
-        <source>Use stabilizer to interpolate strokes</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="284"/>
-        <source>None</source>
-        <comment>Stablizer level</comment>
-        <translation>Ingen</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="288"/>
-        <source>None</source>
-        <comment>Stabilizer option</comment>
-        <translation>Ingen</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="293"/>
-        <source>Simple</source>
-        <comment>Stabilizer option</comment>
-        <translation>Enkel</translation>
-    </message>
-    <message>
-        <location filename="../app/ui/tooloptions.ui" line="298"/>
-        <source>Strong</source>
-        <comment>Stabilizer option</comment>
-        <translation>Stark</translation>
     </message>
 </context>
 <context>
@@ -7053,37 +7058,60 @@ or cancel</source>
     <message>
         <location filename="../app/ui/toolspage.ui" line="60"/>
         <source>Move Tool</source>
-        <translation type="unfinished"/>
+        <translation>Flyttverktyg</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="66"/>
         <source>Rotation snap increment</source>
-        <translation type="unfinished"/>
+        <translation>Steg för rotationssnäppning</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="89"/>
         <source>15 degrees</source>
-        <translation type="unfinished"/>
+        <translation>15 grader</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="99"/>
         <source>Hand Tool</source>
-        <translation type="unfinished"/>
+        <translation>Handverktyg</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="117"/>
         <source>Zoom in by dragging the cursor up instead of down</source>
-        <translation type="unfinished"/>
+        <translation>Zooma in genom att dra pekaren uppåt i stället för nedåt</translation>
     </message>
     <message>
         <location filename="../app/ui/toolspage.ui" line="120"/>
         <source>Invert Zoom Direction</source>
-        <translation type="unfinished"/>
+        <translation>Invertera zoomriktning</translation>
     </message>
     <message>
         <location filename="../app/src/toolspage.cpp" line="71"/>
         <source>%1 degrees</source>
-        <translation type="unfinished"/>
+        <translation>%1 grader</translation>
+    </message>
+</context>
+<context>
+    <name>TransformOptionsWidget</name>
+    <message>
+        <location filename="../app/ui/transformoptionswidget.ui" line="14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/transformoptionswidget.ui" line="37"/>
+        <source>Enable or disable feathering</source>
+        <translation>Aktivera eller inaktivera ludd</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/transformoptionswidget.ui" line="40"/>
+        <source>Show Size and Diff.</source>
+        <translation>Visa storlek och skillnad.</translation>
+    </message>
+    <message>
+        <location filename="../app/ui/transformoptionswidget.ui" line="47"/>
+        <source>Anti-Aliasing</source>
+        <translation>Kantutjämning</translation>
     </message>
 </context>
 <context>
