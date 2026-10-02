@@ -18,10 +18,15 @@ GNU General Public License for more details.
 #include "catch.hpp"
 
 #include <QApplication>
+#include <QStandardPaths>
 
 int main(int argc, char* argv[])
 {
     QApplication a(argc, argv);
+
+    // Keep everything written via QStandardPaths (e.g. working directories)
+    // out of the real user profile.
+    QStandardPaths::setTestModeEnabled(true);
 
     int result = Catch::Session().run(argc, argv);
 

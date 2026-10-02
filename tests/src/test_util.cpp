@@ -41,8 +41,10 @@ TEST_CASE("closestCanonicalPath")
     {
         QString filePath = dir.filePath("nonexistent.txt");
         QString result = closestCanonicalPath(filePath);
-        // The existing parent (dir) should have been canonicalized
+        // The existing parent (dir) should have been canonicalized.
+        // Append '/' to avoid false prefix matches against sibling directories.
         QString canonicalDir = QFileInfo(dir.path()).canonicalFilePath();
+        if (!canonicalDir.endsWith('/')) canonicalDir += '/';
         REQUIRE(result.startsWith(canonicalDir));
         REQUIRE(result.endsWith("nonexistent.txt"));
     }
