@@ -26,9 +26,9 @@
       <property name="geometry">
        <rect>
         <x>0</x>
-        <y>-407</y>
-        <width>314</width>
-        <height>932</height>
+        <y>0</y>
+        <width>363</width>
+        <height>1195</height>
        </rect>
       </property>
       <layout class="QVBoxLayout" name="lay">
@@ -54,40 +54,121 @@
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="windowOpacityBox">
-         <property name="title">
-          <string comment="GroupBox title in Preference">Window opacity</string>
-         </property>
-         <layout class="QGridLayout" name="windowOpacityLayout">
-          <item row="0" column="0">
-           <widget class="QLabel" name="windowOpacityLabel">
-            <property name="text">
-             <string>Opacity</string>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="1">
-           <widget class="QSlider" name="windowOpacityLevel">
-            <property name="minimum">
-             <number>30</number>
-            </property>
-            <property name="maximum">
-             <number>100</number>
-            </property>
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item>
         <widget class="QGroupBox" name="appearanceBox">
          <property name="title">
           <string comment="GroupBox title in Preference">Appearance</string>
          </property>
          <layout class="QVBoxLayout" name="appearanceLayout">
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_6">
+            <item>
+             <widget class="QLabel" name="windowOpacityLabel">
+              <property name="text">
+               <string>Window opacity</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QSlider" name="windowOpacityLevel">
+              <property name="minimum">
+               <number>30</number>
+              </property>
+              <property name="maximum">
+               <number>100</number>
+              </property>
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="styleLabel">
+              <property name="text">
+               <string>Window style</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="styleCombo"/>
+            </item>
+            <item>
+             <spacer name="styleSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
+          <item>
+           <layout class="QHBoxLayout" name="horizontalLayout_5">
+            <item>
+             <widget class="QLabel" name="paletteLabel">
+              <property name="text">
+               <string>Color palette</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="paletteCombo"/>
+            </item>
+            <item>
+             <widget class="QLabel" name="paletteWarningLabel">
+              <property name="toolTip">
+               <string>Palette is missing or could not be loaded</string>
+              </property>
+              <property name="text">
+               <string/>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="addPaletteButton">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../data/app.qrc">
+                <normaloff>:/icons/themes/playful/misc/add-color.svg</normaloff>:/icons/themes/playful/misc/add-color.svg</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QPushButton" name="removePaletteButton">
+              <property name="text">
+               <string/>
+              </property>
+              <property name="icon">
+               <iconset resource="../data/app.qrc">
+                <normaloff>:/icons/themes/playful/misc/remove-color.svg</normaloff>:/icons/themes/playful/misc/remove-color.svg</iconset>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <spacer name="paletteSpacer">
+              <property name="orientation">
+               <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>40</width>
+                <height>20</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+           </layout>
+          </item>
           <item>
            <widget class="QCheckBox" name="shadowsBox">
             <property name="text">
@@ -434,7 +515,7 @@
          <property name="alignment">
           <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
          </property>
-         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0,0">
+         <layout class="QVBoxLayout" name="verticalLayout_4" stretch="0">
           <property name="leftMargin">
            <number>6</number>
           </property>
@@ -578,6 +659,10 @@
   <tabstop>scrollArea</tabstop>
   <tabstop>languageCombo</tabstop>
   <tabstop>windowOpacityLevel</tabstop>
+  <tabstop>styleCombo</tabstop>
+  <tabstop>paletteCombo</tabstop>
+  <tabstop>addPaletteButton</tabstop>
+  <tabstop>removePaletteButton</tabstop>
   <tabstop>shadowsBox</tabstop>
   <tabstop>toolCursorsBox</tabstop>
   <tabstop>canvasCursorBox</tabstop>
@@ -592,8 +677,21 @@
   <tabstop>gridCheckBox</tabstop>
   <tabstop>gridSizeInputW</tabstop>
   <tabstop>gridSizeInputH</tabstop>
+  <tabstop>actionSafeCheckBox</tabstop>
+  <tabstop>actionSafeInput</tabstop>
+  <tabstop>titleSafeCheckBox</tabstop>
+  <tabstop>titleSafeInput</tabstop>
+  <tabstop>safeHelperTextCheckbox</tabstop>
+  <tabstop>invertScrollDirectionBox</tabstop>
+  <tabstop>framePoolSizeSpin</tabstop>
+  <tabstop>newUndoRedoCheckBox</tabstop>
+  <tabstop>undoStepsBox</tabstop>
+  <tabstop>undoRedoGroupApplyButton</tabstop>
+  <tabstop>undoRedoGroupCancelButton</tabstop>
  </tabstops>
- <resources/>
+ <resources>
+  <include location="../data/app.qrc"/>
+ </resources>
  <connections/>
  <buttongroups>
   <buttongroup name="backgroundButtons"/>
