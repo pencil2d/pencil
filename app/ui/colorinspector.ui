@@ -8,7 +8,7 @@
     <x>0</x>
     <y>0</y>
     <width>120</width>
-    <height>263</height>
+    <height>220</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -24,6 +24,9 @@
    </size>
   </property>
   <layout class="QVBoxLayout">
+   <property name="spacing">
+    <number>3</number>
+   </property>
    <property name="leftMargin">
     <number>3</number>
    </property>
@@ -45,7 +48,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <widget class="QWidget" name="hsvTab">
       <attribute name="title">
@@ -64,36 +67,8 @@
        <property name="bottomMargin">
         <number>3</number>
        </property>
-       <item row="0" column="0">
-        <widget class="QLabel" name="hueLabel">
-         <property name="text">
-          <string>H</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="saturationLabel">
-         <property name="text">
-          <string>S</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="valueLabel">
-         <property name="text">
-          <string>V</string>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="hsvAlphaLabel">
-         <property name="text">
-          <string>A</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="ColorSlider" name="saturationSlider" native="true">
+       <item row="0" column="1">
+        <widget class="ColorSlider" name="hueSlider" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -102,13 +77,13 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="ColorSlider" name="hsvAlphaSlider" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="valueSpinBox">
+         <property name="suffix">
+          <string>%</string>
+         </property>
+         <property name="maximum">
+          <number>100</number>
          </property>
         </widget>
        </item>
@@ -122,8 +97,32 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="ColorSlider" name="hueSlider" native="true">
+       <item row="2" column="0">
+        <widget class="QLabel" name="valueLabel">
+         <property name="text">
+          <string>V</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="saturationSpinBox">
+         <property name="suffix">
+          <string>%</string>
+         </property>
+         <property name="maximum">
+          <number>100</number>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="hueLabel">
+         <property name="text">
+          <string>H</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="ColorSlider" name="hsvAlphaSlider" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -142,26 +141,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QSpinBox" name="saturationSpinBox">
-         <property name="suffix">
-          <string>%</string>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QSpinBox" name="valueSpinBox">
-         <property name="suffix">
-          <string>%</string>
-         </property>
-         <property name="maximum">
-          <number>100</number>
-         </property>
-        </widget>
-       </item>
        <item row="3" column="2">
         <widget class="QSpinBox" name="hsvAlphaSpinBox">
          <property name="suffix">
@@ -171,6 +150,46 @@
           <number>100</number>
          </property>
         </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="ColorSlider" name="saturationSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="saturationLabel">
+         <property name="text">
+          <string>S</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="hsvAlphaLabel">
+         <property name="text">
+          <string>A</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="2">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Policy::MinimumExpanding</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -191,10 +210,34 @@
        <property name="bottomMargin">
         <number>3</number>
        </property>
-       <item row="3" column="0">
-        <widget class="QLabel" name="rgbAlphaLabel">
+       <item row="2" column="0">
+        <widget class="QLabel" name="blueLabel">
          <property name="text">
-          <string>A</string>
+          <string>B</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QSpinBox" name="redSpinBox">
+         <property name="maximum">
+          <number>255</number>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="ColorSlider" name="blueSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QSpinBox" name="blueSpinBox">
+         <property name="maximum">
+          <number>255</number>
          </property>
         </widget>
        </item>
@@ -205,30 +248,24 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
-        <widget class="ColorSlider" name="rgbAlphaSlider" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+       <item row="3" column="2">
+        <widget class="QSpinBox" name="rgbAlphaSpinBox">
+         <property name="maximum">
+          <number>255</number>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="ColorSlider" name="redSlider" native="true">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="blueLabel">
+       <item row="3" column="0">
+        <widget class="QLabel" name="rgbAlphaLabel">
          <property name="text">
-          <string>B</string>
+          <string>A</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="2">
+        <widget class="QSpinBox" name="greenSpinBox">
+         <property name="maximum">
+          <number>255</number>
          </property>
         </widget>
        </item>
@@ -242,8 +279,8 @@
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
-        <widget class="ColorSlider" name="blueSlider" native="true">
+       <item row="3" column="1">
+        <widget class="ColorSlider" name="rgbAlphaSlider" native="true">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
            <horstretch>0</horstretch>
@@ -259,33 +296,31 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
-        <widget class="QSpinBox" name="redSpinBox">
-         <property name="maximum">
-          <number>255</number>
+       <item row="0" column="1">
+        <widget class="ColorSlider" name="redSlider" native="true">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QSpinBox" name="greenSpinBox">
-         <property name="maximum">
-          <number>255</number>
+       <item row="4" column="2">
+        <spacer name="verticalSpacer_2">
+         <property name="orientation">
+          <enum>Qt::Orientation::Vertical</enum>
          </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <widget class="QSpinBox" name="blueSpinBox">
-         <property name="maximum">
-          <number>255</number>
+         <property name="sizeType">
+          <enum>QSizePolicy::Policy::MinimumExpanding</enum>
          </property>
-        </widget>
-       </item>
-       <item row="3" column="2">
-        <widget class="QSpinBox" name="rgbAlphaSpinBox">
-         <property name="maximum">
-          <number>255</number>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
          </property>
-        </widget>
+        </spacer>
        </item>
       </layout>
      </widget>
@@ -297,10 +332,10 @@
       <bool>true</bool>
      </property>
      <property name="frameShape">
-      <enum>QFrame::StyledPanel</enum>
+      <enum>QFrame::Shape::StyledPanel</enum>
      </property>
      <property name="frameShadow">
-      <enum>QFrame::Raised</enum>
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="leftMargin">
@@ -316,15 +351,18 @@
        <number>0</number>
       </property>
       <item>
-       <widget class="QLabel" name="color">
-        <property name="autoFillBackground">
-         <bool>true</bool>
+       <widget class="ColorPreviewWidget" name="colorPreview" native="true">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Preferred" vsizetype="MinimumExpanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
         </property>
-        <property name="frameShape">
-         <enum>QFrame::Box</enum>
-        </property>
-        <property name="frameShadow">
-         <enum>QFrame::Raised</enum>
+        <property name="minimumSize">
+         <size>
+          <width>50</width>
+          <height>50</height>
+         </size>
         </property>
        </widget>
       </item>
@@ -338,6 +376,12 @@
    <class>ColorSlider</class>
    <extends>QWidget</extends>
    <header>colorslider.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>ColorPreviewWidget</class>
+   <extends>QWidget</extends>
+   <header>colorpreviewwidget.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>

@@ -56,23 +56,15 @@ void ColorInspector::initUI()
     }
     onColorSpecChanged();
 
-    ui->redSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::RED, mCurrentColor, 0.0, 255.0);
-    ui->greenSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::GREEN, mCurrentColor, 0.0, 255.0);
-    ui->blueSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::BLUE, mCurrentColor, 0.0, 255.0);
-    ui->rgbAlphaSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
+    ui->redSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::RED, mCurrentColor);
+    ui->greenSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::GREEN, mCurrentColor);
+    ui->blueSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::BLUE, mCurrentColor);
+    ui->rgbAlphaSlider->init(ColorSlider::ColorSpecType::RGB, ColorSlider::ColorType::ALPHA, mCurrentColor);
 
-    ui->hueSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::HUE, mCurrentColor, 0.0, 359.0);
-    ui->saturationSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::SAT, mCurrentColor, 0.0, 255.0);
-    ui->valueSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::VAL, mCurrentColor, 0.0, 255.0);
-    ui->hsvAlphaSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::ALPHA, mCurrentColor, 0.0, 255.0);
-
-    QPalette p1 = ui->colorWrapper->palette();
-    p1.setBrush(QPalette::Window, QBrush(QImage(":/background/checkerboard.png")));
-    ui->colorWrapper->setPalette(p1);
-
-    QPalette p2 = ui->color->palette();
-    p2.setColor(QPalette::Window, mCurrentColor);
-    ui->color->setPalette(p2);
+    ui->hueSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::HUE, mCurrentColor);
+    ui->saturationSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::SAT, mCurrentColor);
+    ui->valueSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::VAL, mCurrentColor);
+    ui->hsvAlphaSlider->init(ColorSlider::ColorSpecType::HSV, ColorSlider::ColorType::ALPHA, mCurrentColor);
 
     connect(ui->colorSpecTabWidget, &QTabWidget::currentChanged, this, &ColorInspector::onColorSpecChanged);
 
@@ -179,9 +171,8 @@ void ColorInspector::updateControls()
     ui->valueSpinBox->setValue(qRound(mCurrentColor.value() / 2.55));
     ui->hsvAlphaSpinBox->setValue(qRound(mCurrentColor.alpha() / 2.55));
 
-    QPalette p = ui->color->palette();
-    p.setColor(QPalette::Window, mCurrentColor);
-    ui->color->setPalette(p);
+
+    ui->colorPreview->setColor(mCurrentColor);
 
     update();
 }
@@ -200,7 +191,9 @@ void ColorInspector::onColorSpecChanged()
     }
     else
     {
-        mCurrentColor = mCurrentColor.toHsv();
+        if (mCurrentColor.hue() != -1) {
+            mCurrentColor = mCurrentColor.toHsv();
+        }
     }
 
     updateControls();
