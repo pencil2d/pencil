@@ -22,11 +22,6 @@ GNU General Public License for more details.
 
 //Pencil2D File Format
 //PFF - acronym for "Pencil2D File Format"
-#define PFF_OLD_EXTENSION				".pcl"
-#define PFF_OLD_BIG_LETTER_EXTENSION	"PCL"
-#define PFF_EXTENSION				    ".pclx"
-#define PFF_BIG_LETTER_EXTENSION	    "PCLX"
-#define PFF_BACKUP_IDENTIFIER           "backup"
 
 #define PFF_OPEN_PROJECT_EXT_FILTER \
     QCoreApplication::translate("FileFormat", "Pencil2D formats") + " (*.pclx *.pcl);;" + QCoreApplication::translate("FileFormat", "Pencil2D Project") + " (*.pclx);;" + QCoreApplication::translate("FileFormat", "Legacy Pencil2D Project") + " (*.pcl)"
@@ -79,10 +74,13 @@ GNU General Public License for more details.
 #define PFF_DEFAULT_SOUND_EXT \
     QString(".wav")
 
-#define PFF_OLD_DATA_DIR 		"data"
+#define PFF_OLD_EXTENSION       "pcl"
+#define PFF_EXTENSION           "pclx"
+#define PFF_BACKUP_IDENTIFIER   "backup"
+#define PFF_OLD_DATA_DIR        "data"
 #define PFF_DATA_DIR            "data"
-#define PFF_XML_FILE_NAME 		"main.xml"
-#define PFF_TMP_DECOMPRESS_EXT 	"Y2xD"
+#define PFF_XML_FILE_NAME       "main.xml"
+#define PFF_TMP_DECOMPRESS_EXT  "Y2xD"
 #define PFF_PALETTE_FILE        "palette.xml"
 
 bool removePFFTmpDirectory(const QString& dirName);
