@@ -3128,60 +3128,60 @@
 <context>
     <name>FileFormat</name>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
         <source>Pencil2D formats</source>
         <translation>Pencil2D-format</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Pencil2D Project</source>
         <translation>Pencil2D-projekt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Legacy Pencil2D Project</source>
         <translation>Äldre Pencil2D-projekt</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="33"/>
         <source>Movie formats</source>
         <translation>Filmformat</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="43"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="46"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="41"/>
         <source>Image formats</source>
         <translation>Bildformat</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>Palette formats</source>
         <translation>Palettformat</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>Pencil2D Palette</source>
         <translation>Pencil2D-palett</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>GIMP Palette</source>
         <translation>GIMP-palett</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="52"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="47"/>
         <source>Animated GIF</source>
         <translation>Animerad GIF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="55"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="50"/>
         <source>Animated image formats</source>
         <translation>Format för animerade bilder</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="58"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="53"/>
         <source>Sound formats</source>
         <translation>Ljudformat</translation>
     </message>
@@ -3705,22 +3705,22 @@
         <translation>Kinesiska – Taiwan</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="225"/>
+        <location filename="../app/src/generalpage.cpp" line="230"/>
         <source>Restart Required</source>
         <translation>Omstart krävs</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="226"/>
+        <location filename="../app/src/generalpage.cpp" line="231"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>Språkändringen kommer att tillämpas efter omstart av Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="365"/>
+        <location filename="../app/src/generalpage.cpp" line="369"/>
         <source>Resets your current undo history</source>
         <translation>Återställer din aktuella ångringshistorik</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="366"/>
+        <location filename="../app/src/generalpage.cpp" line="370"/>
         <source>Changing the maximum number of undo/redo steps resets your current undo/redo history. 
 
 Are you sure you want to proceed?</source>
@@ -3729,12 +3729,12 @@ Are you sure you want to proceed?</source>
 Är du säker på att du vill fortsätta?</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="381"/>
+        <location filename="../app/src/generalpage.cpp" line="385"/>
         <source>Experimental feature!</source>
         <translation>Experimentell funktion!</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="382"/>
+        <location filename="../app/src/generalpage.cpp" line="386"/>
         <source>This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. 
 
 Do you still want to try?</source>
@@ -3743,7 +3743,7 @@ Do you still want to try?</source>
 Vill du ändå prova?</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="394"/>
+        <location filename="../app/src/generalpage.cpp" line="398"/>
         <source>The undo/redo system will be changed on the next launch of the application</source>
         <translation>Systemet för Ångra/Gör om ändras nästa gång programmet startas</translation>
     </message>
@@ -4965,42 +4965,52 @@ Färger i streck ändras av den här åtgärden!</translation>
         <translation>Kontrollerar miljön...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="111"/>
+        <source>Error creating folder</source>
+        <translation>Fel när mapp skapades</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="112"/>
+        <source>Unable to create a temporary folder, cannot export animation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="126"/>
         <source>Generating GIF...</source>
         <translation>Skapar GIF...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="127"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="133"/>
         <source>Assembling audio...</source>
         <translation>Sammanställer ljud...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="132"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="138"/>
         <source>Generating movie...</source>
         <translation>Skapar film...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="137"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="143"/>
         <source>Done</source>
         <translation>Klar</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="595"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="607"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="732"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="744"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="601"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="613"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="738"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="750"/>
         <source>Something went wrong</source>
         <translation>Något gick fel</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="596"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="733"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="602"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="739"/>
         <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
         <translation>Videobakänden avslutades tydligen inte normalt. Filmen kanske inte exporterades korrekt. Försök igen och rapportera problemet om det kvarstår.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="608"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="745"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="614"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="751"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
         <translation>Det gick inte att starta videobakänden. Försök igen.</translation>
     </message>

@@ -3129,60 +3129,60 @@ Esta ação não poderá ser desfeita!!</translation>
 <context>
     <name>FileFormat</name>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
         <source>Pencil2D formats</source>
         <translation>Formatos Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Pencil2D Project</source>
         <translation>Projeto Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Legacy Pencil2D Project</source>
         <translation>Antigo Projeto Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="33"/>
         <source>Movie formats</source>
         <translation>Formatos de vídeo</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="43"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="46"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="41"/>
         <source>Image formats</source>
         <translation>Formatos de imagem</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>Palette formats</source>
         <translation>Formatos de Paleta</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>Pencil2D Palette</source>
         <translation>Paleta Pencil2D</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>GIMP Palette</source>
         <translation>Paleta GIMP</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="52"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="47"/>
         <source>Animated GIF</source>
         <translation>GIF Animado</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="55"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="50"/>
         <source>Animated image formats</source>
         <translation>Formatos de imagem animada</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="58"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="53"/>
         <source>Sound formats</source>
         <translation>Formatos de som</translation>
     </message>
@@ -3707,22 +3707,22 @@ Por favor verifique se o caminho está correto e tente novamente!</translation>
         <translation>Chinês-Taiwan</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="225"/>
+        <location filename="../app/src/generalpage.cpp" line="230"/>
         <source>Restart Required</source>
         <translation>Reinício requerido</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="226"/>
+        <location filename="../app/src/generalpage.cpp" line="231"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>A mudança de idioma tomará efeito depois de reiniciar Pencil2D</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="365"/>
+        <location filename="../app/src/generalpage.cpp" line="369"/>
         <source>Resets your current undo history</source>
         <translation>Resetar histórico de desfazer</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="366"/>
+        <location filename="../app/src/generalpage.cpp" line="370"/>
         <source>Changing the maximum number of undo/redo steps resets your current undo/redo history. 
 
 Are you sure you want to proceed?</source>
@@ -3731,12 +3731,12 @@ Are you sure you want to proceed?</source>
 Tem certeza de que quer continuar?</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="381"/>
+        <location filename="../app/src/generalpage.cpp" line="385"/>
         <source>Experimental feature!</source>
         <translation>Função experimental!</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="382"/>
+        <location filename="../app/src/generalpage.cpp" line="386"/>
         <source>This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. 
 
 Do you still want to try?</source>
@@ -3745,7 +3745,7 @@ Do you still want to try?</source>
 Você ainda quer continuar?</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="394"/>
+        <location filename="../app/src/generalpage.cpp" line="398"/>
         <source>The undo/redo system will be changed on the next launch of the application</source>
         <translation>O sistema de desfazer/refazer será substituído na próxima inicialização da aplicação.</translation>
     </message>
@@ -4968,42 +4968,52 @@ A(s) cor(es) dos traços serão alteradas por consequência!</translation>
         <translation>Checando ambiente...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="111"/>
+        <source>Error creating folder</source>
+        <translation>Erro ao criar pasta</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="112"/>
+        <source>Unable to create a temporary folder, cannot export animation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="126"/>
         <source>Generating GIF...</source>
         <translation>Gerando GIF...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="127"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="133"/>
         <source>Assembling audio...</source>
         <translation>Montando áudio</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="132"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="138"/>
         <source>Generating movie...</source>
         <translation>Gerando vídeo...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="137"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="143"/>
         <source>Done</source>
         <translation>Concluído</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="595"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="607"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="732"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="744"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="601"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="613"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="738"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="750"/>
         <source>Something went wrong</source>
         <translation>Opa! Alguma coisa não correu bem.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="596"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="733"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="602"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="739"/>
         <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
         <translation>Ao parecer o processo interno do vídeo não foi concluído normalmente. O vídeo poderá não ter sido exportado corretamente. Por favor tente outra vez e reporte-o se o defeito persistir.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="608"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="745"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="614"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="751"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
         <translation>Não foi possível inicializar internamente o vídeo, por favor tente novamente.</translation>
     </message>
