@@ -3128,60 +3128,60 @@
 <context>
     <name>FileFormat</name>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
         <source>Pencil2D formats</source>
         <translation>Pencil2D 형식</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Pencil2D Project</source>
         <translation>Pencil2D 프로젝트</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="32"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="35"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="27"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="30"/>
         <source>Legacy Pencil2D Project</source>
         <translation>남겨진 Pencil2D 프로젝트</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="33"/>
         <source>Movie formats</source>
         <translation>영상 형식</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="43"/>
-        <location filename="../core_lib/src/util/fileformat.h" line="46"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="38"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="41"/>
         <source>Image formats</source>
         <translation>이미지 형식</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>Palette formats</source>
         <translation>팔레트 형식</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>Pencil2D Palette</source>
         <translation>Pencil2D 팔레트</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="49"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="44"/>
         <source>GIMP Palette</source>
         <translation>GIMP 팔레트</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="52"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="47"/>
         <source>Animated GIF</source>
         <translation>움직이는 GIF</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="55"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="50"/>
         <source>Animated image formats</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../core_lib/src/util/fileformat.h" line="58"/>
+        <location filename="../core_lib/src/util/fileformat.h" line="53"/>
         <source>Sound formats</source>
         <translation>사운드 형식</translation>
     </message>
@@ -3705,41 +3705,41 @@
         <translation>중국어 - 대만</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="225"/>
+        <location filename="../app/src/generalpage.cpp" line="230"/>
         <source>Restart Required</source>
         <translation>재시작 해야합니다</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="226"/>
+        <location filename="../app/src/generalpage.cpp" line="231"/>
         <source>The language change will take effect after a restart of Pencil2D</source>
         <translation>언어 변경은 Pencil2D 재시작 후에 적용됩니다.</translation>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="365"/>
+        <location filename="../app/src/generalpage.cpp" line="369"/>
         <source>Resets your current undo history</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="366"/>
+        <location filename="../app/src/generalpage.cpp" line="370"/>
         <source>Changing the maximum number of undo/redo steps resets your current undo/redo history. 
 
 Are you sure you want to proceed?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="381"/>
+        <location filename="../app/src/generalpage.cpp" line="385"/>
         <source>Experimental feature!</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="382"/>
+        <location filename="../app/src/generalpage.cpp" line="386"/>
         <source>This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. 
 
 Do you still want to try?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../app/src/generalpage.cpp" line="394"/>
+        <location filename="../app/src/generalpage.cpp" line="398"/>
         <source>The undo/redo system will be changed on the next launch of the application</source>
         <translation type="unfinished"/>
     </message>
@@ -4960,42 +4960,52 @@ Color(s) in strokes will be altered by this action!</source>
         <translation>환경 확인 중...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="120"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="111"/>
+        <source>Error creating folder</source>
+        <translation>폴더 생성 중 에러</translation>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="112"/>
+        <source>Unable to create a temporary folder, cannot export animation.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../core_lib/src/movieexporter.cpp" line="126"/>
         <source>Generating GIF...</source>
         <translation>GIF 생성 중...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="127"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="133"/>
         <source>Assembling audio...</source>
         <translation>오디오를 합치는 중...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="132"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="138"/>
         <source>Generating movie...</source>
         <translation>영상 제작 중...</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="137"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="143"/>
         <source>Done</source>
         <translation>완료</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="595"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="607"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="732"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="744"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="601"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="613"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="738"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="750"/>
         <source>Something went wrong</source>
         <translation>무엇인가 잘못되었습니다.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="596"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="733"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="602"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="739"/>
         <source>Looks like our video backend did not exit normally. Your movie may not have exported correctly. Please try again and report this if it persists.</source>
         <translation>비디오 뒷부분이 정상적으로 종료된 것 같지 않습니다. 영상이 제대로 내보내지지 않았을 수 있습니다. 다시 시도해주시고 계속되면 알려주세요.</translation>
     </message>
     <message>
-        <location filename="../core_lib/src/movieexporter.cpp" line="608"/>
-        <location filename="../core_lib/src/movieexporter.cpp" line="745"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="614"/>
+        <location filename="../core_lib/src/movieexporter.cpp" line="751"/>
         <source>Couldn&apos;t start the video backend, please try again.</source>
         <translation>비디오 뒷부분을 시작할 수 없습니다. 다시 시도해주세요.</translation>
     </message>
