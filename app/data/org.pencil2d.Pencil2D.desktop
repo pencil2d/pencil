@@ -11,18 +11,9 @@ Categories=Graphics;2DGraphics;VectorGraphics;RasterGraphics;Qt;
 Keywords=picture;drawing;vector;bitmap;cartoon;animation;
 
 # Translations
-
-
-# Translations
-
-
-# Translations
-
-
-# Translations
 Name[ar]=بنسل2دي
 GenericName[ar]=برنامج رسوم متحركة
-Comment[ar]=إنشاء رسوم متحركة كلاسيكية باستخدام الصور النقطية والمتجهة
+Comment[ar]=إنشاء رسوم متحركة تقليدية باستخدام الصور النقطية والمتجهة
 Icon[ar]=org.pencil2d.Pencil2D
 Name[bg]=Pencil2D
 GenericName[bg]=Софтуер за анимация
@@ -81,6 +72,7 @@ Name[ko]=Pencil2D
 GenericName[ko]=애니메이션 소프트웨어
 Comment[ko]=전통적 손그림 애니메이션을 비트맵과 벡터, 모두 사용하여 만드세요.
 Icon[ko]=org.pencil2d.Pencil2D
+Icon[ku]=org.pencil2d.Pencil2D
 Name[yue]=Pencil2D
 GenericName[yue]=动画软件
 Comment[yue]=以點陣圖跟向量圖兩種方式創作傳統手繪動畫
@@ -130,6 +122,7 @@ Name[sl]=Svinčnik2D
 GenericName[sl]=Program za animacijo
 Comment[sl]=Ustvarite tradicionalno ročno risano animacijo s pomočjo bitne in vektorske grafike
 Icon[sl]=org.pencil2d.Pencil2D
+Icon[fi_FI]=org.pencil2d.Pencil2D
 Name[sv]=Pencil2D
 GenericName[sv]=Animeringsprogram
 Comment[sv]=Skapa traditionellt handritade animationer, med både bitmap- och vektorgrafik

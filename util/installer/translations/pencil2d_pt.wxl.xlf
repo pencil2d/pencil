@@ -1,106 +1,114 @@
 <?xml version="1.0" ?><xliff xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:okp="okapi-framework:xliff-extensions" xmlns:its="http://www.w3.org/2005/11/its" xmlns:itsxlf="http://www.w3.org/ns/its-xliff/" version="1.2" its:version="2.0">
-<file original="pencil2d.wxl" source-language="en" target-language="yue" datatype="xml" okp:inputEncoding="UTF-8" okp:configId="okf_xml_wxl.fprm">
+<file original="pencil2d.wxl" source-language="en" target-language="pt" datatype="xml" okp:inputEncoding="UTF-8" okp:configId="okf_xml_wxl.fprm">
 <body>
 <trans-unit id="1" resname="ConfirmCancelMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Are you sure you want to cancel?</source>
-<target xml:lang="yue">確定要取消？</target>
+<target xml:lang="pt">Tem certeza de que quer cancelar?</target>
 
 </trans-unit>
 <trans-unit id="2" resname="FilesInUseTitle" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Files In Use</source>
-<target xml:lang="yue">檔案正在使用</target>
+<target xml:lang="pt">Arquivos em uso</target>
 
 </trans-unit>
 <trans-unit id="3" resname="FilesInUseLabel" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">The following applications are using files that need to be updated:</source>
+<target xml:lang="pt">Os aplicativos a seguir estão usando arquivos que precisam ser atualizados:</target>
 
 </trans-unit>
 <trans-unit id="4" resname="FilesInUseCloseRadioButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Close the &amp;applications and attempt to restart them.</source>
-<target xml:lang="yue">關閉程式並重新啟動</target>
+<target xml:lang="pt">Feche os aplicativos e tente reiniciá-los.</target>
 
 </trans-unit>
 <trans-unit id="5" resname="FilesInUseDontCloseRadioButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Do not close applications. A reboot will be required.</source>
+<target xml:lang="pt">Não feche os aplicativos. Uma reinicialização será necessária.</target>
 
 </trans-unit>
 <trans-unit id="6" resname="FilesInUseRetryButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Retry</source>
-<target xml:lang="yue">重試
-</target>
+<target xml:lang="pt">Tentar novamente</target>
 
 </trans-unit>
 <trans-unit id="7" resname="FilesInUseIgnoreButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Ignore</source>
-<target xml:lang="yue">忽略</target>
+<target xml:lang="pt">Ignorar</target>
 
 </trans-unit>
 <trans-unit id="8" resname="FilesInUseExitButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">E&amp;xit</source>
-<target xml:lang="yue">離開</target>
+<target xml:lang="pt">Fechar</target>
 
 </trans-unit>
 <trans-unit id="9" resname="FilesInUseNetfxCloseRadioButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Close the &amp;applications.</source>
-<target xml:lang="yue">關閉程式</target>
+<target xml:lang="pt">Fechar os aplicativos.</target>
 
 </trans-unit>
 <trans-unit id="10" resname="CacheMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Preparing files</source>
-<target xml:lang="yue">準備檔案中...</target>
+<target xml:lang="pt">Preparando arquivos</target>
 
 </trans-unit>
 <trans-unit id="11" resname="PauseAutomaticUpdatesMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Pausing Windows automatic updates</source>
-<target xml:lang="yue">暫停Windows自動更新中...</target>
+<target xml:lang="pt">Colocando as atualizações automáticas do Windows em pausa</target>
 
 </trans-unit>
 <trans-unit id="12" resname="SystemRestorePointMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Creating system restore point</source>
-<target xml:lang="yue">建立系統還原點...</target>
+<target xml:lang="pt">Criando ponto de restauração</target>
 
 </trans-unit>
 <trans-unit id="13" resname="ExecuteUninstallPackagesMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Uninstalling packages</source>
-<target xml:lang="yue">反安裝套件中</target>
+<target xml:lang="pt">Desinstalando pacotes</target>
 
 </trans-unit>
 <trans-unit id="14" resname="ExecuteInstallPackagesMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Installing packages</source>
-<target xml:lang="yue">安裝套件</target>
+<target xml:lang="pt">Instalando pacotes</target>
 
 </trans-unit>
 <trans-unit id="15" resname="ExecuteModifyPackagesMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Modifying packages</source>
-<target xml:lang="yue">修改套件</target>
+<target xml:lang="pt">Modificando pacotes</target>
 
 </trans-unit>
 <trans-unit id="16" resname="ExecuteRepairPackagesMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Repairing packages</source>
+<target xml:lang="pt">Reparando pacotes</target>
 
 </trans-unit>
 <trans-unit id="17" resname="ExecuteUpgradePackagesMessage" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Upgrading packages</source>
+<target xml:lang="pt">Atualizando pacotes</target>
 
 </trans-unit>
 <trans-unit id="18" resname="Caption" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] Setup</source>
+<target xml:lang="pt">[WixBundleName] Instalação</target>
 
 </trans-unit>
 <trans-unit id="19" resname="Version" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Version [WixBundleVersion]</source>
+<target xml:lang="pt">Versão [WixBundleVersion]</target>
 
 </trans-unit>
 <trans-unit id="20" resname="VersionNightly" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</source>
+<target xml:lang="pt">Build [NightlyBuildNumber] ([NightlyBuildTimestamp])</target>
 
 </trans-unit>
 <trans-unit id="21" resname="CheckingForUpdatesLabel" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Checking for updates</source>
+<target xml:lang="pt">Procurando atualizações</target>
 
 </trans-unit>
 <trans-unit id="22" resname="UpdateButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Update to version [WixStdBAUpdateAvailable]</source>
+<target xml:lang="pt">Atualizar para versão [WixStdBAUpdateAvailable]</target>
 
 </trans-unit>
 <trans-unit id="23" resname="HelpText" restype="x-Value" xml:space="preserve">
@@ -111,173 +119,208 @@
 /log [logfile] – log to a custom file. By default a log file is created in %TEMP%.
 
 InstallFolder=[directory] | DesktopShortcut=[0|1] – Overwrite installation options.</source>
+<target xml:lang="pt">/install | /repair | /uninstall | /layout [diretório] – instalar, reparar, desinstalar ou criar uma cópia local completa do pacote no diretório.
+
+/passive | /quiet – suprimir apenas janelas ou ambas Interface de Usuário e janelas.
+/norestart – suprimir quaisquer tentativas de reinicialização. Por padrão você receberá a opção de reiniciar.
+/log [arquivo de registro] – registre em um arquivo personalizado. Por padrão o arquivo de registro será criado em %TEMP%.
+
+InstallFolder=[diretório] | DesktopShortcut=[0|1] – Sobrepor opções de instalação.</target>
 
 </trans-unit>
 <trans-unit id="24" resname="InstallAcceptCheckbox" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">I &amp;accept the terms and conditions of the GNU General Public License, version 2</source>
+<target xml:lang="pt">Eu aceito os termos e condições da Licença Pública Geral GNU, versão 2</target>
 
 </trans-unit>
 <trans-unit id="25" resname="InstallLicenseLinkText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">View license terms</source>
-<target xml:lang="yue">查看授權條文</target>
+<target xml:lang="pt">Visualizar termos da licença</target>
 
 </trans-unit>
 <trans-unit id="26" resname="InstallInstallButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Install [WixBundleName]</source>
+<target xml:lang="pt">Instalar [WixBundleName]</target>
 
 </trans-unit>
 <trans-unit id="27" resname="InstallUpgradeButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Upgrade [WixBundleName]</source>
+<target xml:lang="pt">Atualizar [WixBundleName]</target>
 
 </trans-unit>
 <trans-unit id="28" resname="InstallOptionsButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Options</source>
-<target xml:lang="yue">选项</target>
+<target xml:lang="pt">Opções</target>
 
 </trans-unit>
 <trans-unit id="29" resname="OptionsLocationLabel" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Install location:</source>
-<target xml:lang="yue">安裝位置</target>
+<target xml:lang="pt">Local da instalação:</target>
 
 </trans-unit>
 <trans-unit id="30" resname="OptionsBrowseButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Browse</source>
-<target xml:lang="yue">瀏覽</target>
+<target xml:lang="pt">Navegar</target>
 
 </trans-unit>
 <trans-unit id="31" resname="OptionsDesktopShortcutCheckbox" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Create &amp;desktop shortcut</source>
-<target xml:lang="yue">建立桌面捷徑</target>
+<target xml:lang="pt">Criar atalho na área de trabalho</target>
 
 </trans-unit>
 <trans-unit id="32" resname="OptionsOkButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;OK</source>
-<target xml:lang="yue">OK</target>
+<target xml:lang="pt">&amp;OK</target>
 
 </trans-unit>
 <trans-unit id="33" resname="OptionsCancelButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Cancel</source>
-<target xml:lang="yue">取消</target>
+<target xml:lang="pt">Cancelar</target>
 
 </trans-unit>
 <trans-unit id="34" resname="ProgressLabel" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Status:</source>
+<target xml:lang="pt">Estado:</target>
 
 </trans-unit>
 <trans-unit id="35" resname="ProgressActionText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Initializing</source>
+<target xml:lang="pt">Inicializar</target>
 
 </trans-unit>
 <trans-unit id="36" resname="ProgressCancelButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Cancel</source>
-<target xml:lang="yue">取消</target>
+<target xml:lang="pt">Cancelar</target>
 
 </trans-unit>
 <trans-unit id="37" resname="ModifyRepairButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Repair</source>
+<target xml:lang="pt">Reparar</target>
 
 </trans-unit>
 <trans-unit id="38" resname="ModifyUninstallButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Uninstall</source>
+<target xml:lang="pt">Desinstalar</target>
 
 </trans-unit>
 <trans-unit id="39" resname="SuccessText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully set up.</source>
-<target xml:lang="yue">成功設置[WixBundleName]</target>
+<target xml:lang="pt">[WixBundleName] configurado com sucesso.</target>
 
 </trans-unit>
 <trans-unit id="40" resname="SuccessLayoutText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully layouted.</source>
+<target xml:lang="pt">[WixBundleName] organizado com sucesso.</target>
 
 </trans-unit>
 <trans-unit id="41" resname="SuccessUninstallText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully uninstalled.</source>
+<target xml:lang="pt">[WixBundleName] desinstalado com sucesso.</target>
 
 </trans-unit>
 <trans-unit id="42" resname="SuccessCacheText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully cached.</source>
+<target xml:lang="pt">[WixBundleName] armazenado com sucesso.</target>
 
 </trans-unit>
 <trans-unit id="43" resname="SuccessInstallText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully installed.</source>
+<target xml:lang="pt">[WixBundleName] instalado com sucesso.</target>
 
 </trans-unit>
 <trans-unit id="44" resname="SuccessUpgradeText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully upgraded.</source>
+<target xml:lang="pt">[WixBundleName] atualizado com sucesso.</target>
 
 </trans-unit>
 <trans-unit id="45" resname="SuccessModifyText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully modified.</source>
+<target xml:lang="pt">[WixBundleName] modificado com sucesso.</target>
 
 </trans-unit>
 <trans-unit id="46" resname="SuccessRepairText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">[WixBundleName] was successfully repaired.</source>
+<target xml:lang="pt">[WixBundleName] reparado com sucesso.</target>
 
 </trans-unit>
 <trans-unit id="47" resname="SuccessRestartText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">To start using [WixBundleName], please restart your computer.</source>
+<target xml:lang="pt">Para começar a usar o [WixBundleName], por favor reinicie seu computador.</target>
 
 </trans-unit>
 <trans-unit id="48" resname="SuccessUninstallRestartText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">To complete the removal of [WixBundleName], please restart your computer.</source>
+<target xml:lang="pt">Para completar a remoção do [WixBundleName], por favor reinicie seu computador.</target>
 
 </trans-unit>
 <trans-unit id="49" resname="SuccessLaunchButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Launch [WixBundleName]</source>
+<target xml:lang="pt">&amp;Iniciar [WixBundleName]</target>
 
 </trans-unit>
 <trans-unit id="50" resname="SuccessRestartButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Restart computer</source>
+<target xml:lang="pt">&amp;Reiniciar computador</target>
 
 </trans-unit>
 <trans-unit id="51" resname="FailureText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to set up [WixBundleName].</source>
+<target xml:lang="pt">Falha ao configurar o [WixBundleName].</target>
 
 </trans-unit>
 <trans-unit id="52" resname="FailureLayoutText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to layout [WixBundleName].</source>
+<target xml:lang="pt">Falha ao organizar o [WixBundleName].</target>
 
 </trans-unit>
 <trans-unit id="53" resname="FailureUninstallText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to uninstall [WixBundleName].</source>
+<target xml:lang="pt">Falha ao desinstalar o [WixBundleName].</target>
 
 </trans-unit>
 <trans-unit id="54" resname="FailureCacheText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to cache [WixBundleName].</source>
+<target xml:lang="pt">Falha ao armazenar o [WixBundleName].</target>
 
 </trans-unit>
 <trans-unit id="55" resname="FailureInstallText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to install [WixBundleName].</source>
+<target xml:lang="pt">Falha ao instalar o [WixBundleName].</target>
 
 </trans-unit>
 <trans-unit id="56" resname="FailureUpgradeText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to upgrade [WixBundleName].</source>
+<target xml:lang="pt">Falha ao atualizar o [WixBundleName].</target>
 
 </trans-unit>
 <trans-unit id="57" resname="FailureModifyText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to modify [WixBundleName].</source>
+<target xml:lang="pt">Falha ao modificar o [WixBundleName].</target>
 
 </trans-unit>
 <trans-unit id="58" resname="FailureRepairText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">Failed to repair [WixBundleName].</source>
+<target xml:lang="pt">Falha ao reparar o [WixBundleName].</target>
 
 </trans-unit>
 <trans-unit id="59" resname="FailureHyperlinkLogText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">One or more issues caused the operation to fail. Please fix the issues and then retry. For more information see the &lt;a href=&quot;#&quot;&gt;log file&lt;/a&gt;.</source>
+<target xml:lang="pt">Um ou mais problemas causaram falha na operação. Por favor resolva-os antes de tentar novamente. Para mais informações leia o &lt;a href=&quot;#&quot;&gt;arquivo de registro&lt;/a&gt;.</target>
 
 </trans-unit>
 <trans-unit id="60" resname="FailureRestartText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">To complete the rollback of [WixBundleName], please restart your computer.</source>
+<target xml:lang="pt">Para completar a restauração do [WixBundleName], por favor reinicie seu computador.</target>
 
 </trans-unit>
 <trans-unit id="61" resname="FailureRestartButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Restart</source>
-<target xml:lang="yue">重啟</target>
+<target xml:lang="pt">&amp;Reiniciar</target>
 
 </trans-unit>
 <trans-unit id="62" resname="FailureCloseButton" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">&amp;Close</source>
-<target xml:lang="yue">關閉</target>
+<target xml:lang="pt">&amp;Fechar</target>
 
 </trans-unit>
 </body>

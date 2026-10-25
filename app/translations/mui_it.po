@@ -1,4 +1,3 @@
-# 
 # Translators:
 # Mattia Rizzolo <mattia@mapreri.org>, 2024
 # albanobattistella <albanobattistella@gmail.com>, 2024
