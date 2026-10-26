@@ -4972,7 +4972,7 @@ Färger i streck ändras av den här åtgärden!</translation>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="112"/>
         <source>Unable to create a temporary folder, cannot export animation.</source>
-        <translation type="unfinished"/>
+        <translation>Det gick inte att skapa en temporär mapp. Animationen kan inte exporteras.</translation>
     </message>
     <message>
         <location filename="../core_lib/src/movieexporter.cpp" line="126"/>

@@ -3738,7 +3738,9 @@ Sind Sie sicher, dass Sie fortfahren möchten?</translation>
         <source>This feature is work in progress and may not currently allow for the same features as the current undo/redo system. Once enabled, you'll need to restart the application to start using it. 
 
 Do you still want to try?</source>
-        <translation>Diese Funktion befindet sich noch in Arbeit und bietet derzeit möglicherweise nicht denselben Funktionsumfang wie das aktuelle Rückgängig/Wiederholen-System. Nach der Aktivierung müssen Sie die Anwendung neu starten, um sie zu nutzen.Möchten Sie sie dennoch testen?</translation>
+        <translation>Diese Funktion befindet sich noch in Arbeit und bietet derzeit möglicherweise nicht denselben Funktionsumfang wie das aktuelle Rückgängig/Wiederholen-System. Nach der Aktivierung müssen Sie die Anwendung neu starten, um sie zu nutzen.
+
+Möchten Sie sie dennoch testen?</translation>
     </message>
     <message>
         <location filename="../app/src/generalpage.cpp" line="398"/>
