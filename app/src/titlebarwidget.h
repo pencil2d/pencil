@@ -23,6 +23,8 @@ GNU General Public License for more details.
 
 class QLabel;
 class QToolButton;
+class QToolBar;
+class QHBoxLayout;
 
 class TitleBarWidget : public QWidget
 {
@@ -37,14 +39,23 @@ public:
 
     void setIsFloating(bool floating) { mIsFloating = floating; }
 
+    /// Add a child widget next to the bar buttons
+    void setChildWidget(QWidget* widget);
+
+    /// Locking the title area hides the title bar buttons
+    void lock(bool locked);
+
+    /// Returns true if a custom child widget has been added, otherwise false
+    bool hasChildWidget() const { return mHasChildWidget; }
+
 signals:
     void closeButtonPressed();
     void undockButtonPressed();
 
 private:
+    void hideButtons(bool hide);
     QString flatButtonStylesheet() const;
     void showEvent(QShowEvent* event) override;
-    void hideButtons(bool hide);
     void hideButtonsIfNeeded(int width);
 
     QWidget* createCustomTitleBarWidget(QWidget* parent);
@@ -53,7 +64,11 @@ private:
     QToolButton* mCloseButton = nullptr;
     QToolButton* mDockButton = nullptr;
 
+    QHBoxLayout* mContainerLayout = nullptr;
+
+    bool mIsLocked = false;
     bool mIsFloating = false;
+    bool mHasChildWidget = false;
 
     int mWidthOfFullLayout = 0;
 };

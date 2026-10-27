@@ -156,15 +156,17 @@ void TimeLine::initUI()
 
     // --------- Time controls ---------
     mTimeControls = new TimeControls(this);
-    mTimeControls->setIconSize(QSize(22,22));
+    // Needs to be slightly larger than the titlebar to prevent the icons from becoming smaller.
+    mTimeControls->setFixedHeight(this->titleBarWidget()->height() + 1);
     mTimeControls->setEditor(editor());
     mTimeControls->initUI();
     updateLength();
 
+    this->setWidgetInTitleBarArea(mTimeControls);
+
     QHBoxLayout* rightToolBarLayout = new QHBoxLayout();
     rightToolBarLayout->addWidget(timelineButtons);
     rightToolBarLayout->setAlignment(Qt::AlignLeft);
-    rightToolBarLayout->addWidget(mTimeControls);
     rightToolBarLayout->setContentsMargins(0, 0, 0, 0);
     rightToolBarLayout->setSpacing(0);
     rightToolBar->setLayout(rightToolBarLayout);
