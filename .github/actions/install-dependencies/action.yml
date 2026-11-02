@@ -1,4 +1,5 @@
 name: Install dependencies
+description: Install compiler, Qt, and packaging dependencies for the target platform
 inputs:
   arch:
     description: Architecture
