@@ -45,6 +45,7 @@ SOURCES += \
     src/test_propertyinfo.cpp \
     src/test_qminiz.cpp \
     src/test_toolsettings.cpp \
+    src/test_strokescrubbing.cpp \
     src/test_vectorimage.cpp \
     src/test_viewmanager.cpp \
     src/test_util.cpp

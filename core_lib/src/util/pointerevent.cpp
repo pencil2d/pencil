@@ -16,6 +16,29 @@ PointerEvent::~PointerEvent()
 {
 }
 
+PointerEvent::PointerEvent(const PointerEvent& event, Type type)
+    : mType(type), mCanvasPos(event.mCanvasPos)
+{
+    if (event.mMouseEvent)
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        mOwnedMouseEvent.reset(event.mMouseEvent->clone());
+#else
+        mOwnedMouseEvent.reset(new QMouseEvent(*event.mMouseEvent));
+#endif
+        mMouseEvent = mOwnedMouseEvent.get();
+    }
+    else if (event.mTabletEvent)
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        mOwnedTabletEvent.reset(event.mTabletEvent->clone());
+#else
+        mOwnedTabletEvent.reset(new QTabletEvent(*event.mTabletEvent));
+#endif
+        mTabletEvent = mOwnedTabletEvent.get();
+    }
+}
+
 QPointF PointerEvent::canvasPos() const
 {
     return mCanvasPos;
@@ -37,6 +60,7 @@ QPointF PointerEvent::viewportPos() const
 
 Qt::MouseButton PointerEvent::button() const
 {
+    if (mType == Press || mType == Release) { return Qt::LeftButton; }
     if (mMouseEvent)
     {
         return mMouseEvent->button();
@@ -53,6 +77,8 @@ Qt::MouseButton PointerEvent::button() const
 
 Qt::MouseButtons PointerEvent::buttons() const
 {
+    if (mType == Press) { return Qt::LeftButton; }
+    if (mType == Release) { return Qt::NoButton; }
     if (mMouseEvent)
     {
         return mMouseEvent->buttons();
@@ -204,6 +230,7 @@ bool PointerEvent::isAccepted()
 
 PointerEvent::Type PointerEvent::eventType() const
 {
+    if (mType != Unmapped) { return mType; }
     if (mMouseEvent)
     {
         switch (mMouseEvent->type())

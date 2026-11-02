@@ -174,6 +174,7 @@ void StrokeTool::startStroke(PointerEvent::InputType inputType)
 
     mCurrentInputType = inputType;
     mUndoSaveStateId = mEditor->undoRedo()->createState(UndoRedoRecordType::KEYFRAME_MODIFY);
+    mStrokeInProgress = true;
 
     disableCoalescing();
 }
@@ -204,6 +205,7 @@ bool StrokeTool::emptyFrameActionEnabled()
 
 void StrokeTool::endStroke()
 {
+    mStrokeInProgress = false;
     mInterpolator.interpolateEnd();
     mStrokePressures << mInterpolator.getPressure();
     mStrokePoints.clear();
