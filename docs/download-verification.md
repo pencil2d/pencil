@@ -61,10 +61,9 @@ GitHub run. Binding the expected commit prevents accepting a different valid
 build. Use a published `refs/heads/release/...` ref when verifying a release
 branch build.
 
-For a Stanlee fork build, explicitly use `--repo splitintech/pencil` and
-`--signer-workflow splitintech/pencil/.github/workflows/ci.yml`, together with
-its expected ref and commit. A fork attestation identifies the fork; it does
-not establish endorsement by Pencil2D.
+For a third-party fork, use that fork's repository and signer-workflow identity,
+together with its expected ref and commit. A fork attestation identifies the
+fork; it does not establish endorsement by Pencil2D.
 
 For verification using a downloaded bundle, add:
 
