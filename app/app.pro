@@ -98,6 +98,7 @@ HEADERS += \
     src/basewidget.h \
     src/appearance.h \
     src/buttonappearancewatcher.h \
+    src/colorpreviewwidget.h \
     src/importlayersdialog.h \
     src/importpositiondialog.h \
     src/layeropacitydialog.h \
@@ -155,6 +156,7 @@ SOURCES += \
     src/addtransparencytopaperdialog.cpp \
     src/basewidget.cpp \
     src/buttonappearancewatcher.cpp \
+    src/colorpreviewwidget.cpp \
     src/importlayersdialog.cpp \
     src/importpositiondialog.cpp \
     src/layeropacitydialog.cpp \
