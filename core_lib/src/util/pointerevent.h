@@ -3,6 +3,7 @@
 
 #include <QTabletEvent>
 #include <QMouseEvent>
+#include <memory>
 
 class PointerEvent
 {
@@ -23,6 +24,8 @@ public:
 
     PointerEvent(QMouseEvent* event, const QPointF& canvasPos);
     PointerEvent(QTabletEvent* event, const QPointF& canvasPos);
+    /// Own a snapshot of a pointer event, optionally changing its logical type.
+    PointerEvent(const PointerEvent& event, Type type);
     ~PointerEvent();
 
     /**
@@ -90,6 +93,9 @@ public:
 #endif
 
 private:
+    std::unique_ptr<QMouseEvent> mOwnedMouseEvent;
+    std::unique_ptr<QTabletEvent> mOwnedTabletEvent;
+    Type mType = Unmapped;
     QTabletEvent* mTabletEvent = nullptr;
     QMouseEvent* mMouseEvent = nullptr;
     QPointF mCanvasPos;

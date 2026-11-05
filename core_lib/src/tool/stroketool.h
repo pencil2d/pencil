@@ -52,6 +52,7 @@ public:
 
     void loadSettings() override;
     bool isActive() const override { return mInterpolator.isActive(); }
+    bool isStrokeInProgress() const { return mStrokeInProgress; }
 
     bool keyPressEvent(QKeyEvent* event) override;
     void pointerPressEvent(PointerEvent* event) override;
@@ -134,6 +135,7 @@ private:
     RadialOffsetTool mWidthSizingTool;
     RadialOffsetTool mFeatherSizingTool;
     SAVESTATE_ID mUndoSaveStateId = 0;
+    bool mStrokeInProgress = false;
 };
 
 #endif // STROKETOOL_H

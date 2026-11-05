@@ -16,6 +16,41 @@ PointerEvent::~PointerEvent()
 {
 }
 
+PointerEvent::PointerEvent(const PointerEvent& event, Type type)
+    : mType(type), mCanvasPos(event.mCanvasPos)
+{
+    if (event.mMouseEvent)
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        mOwnedMouseEvent.reset(event.mMouseEvent->clone());
+#else
+        const QMouseEvent* source = event.mMouseEvent;
+        mOwnedMouseEvent.reset(new QMouseEvent(source->type(), source->localPos(),
+            source->windowPos(), source->screenPos(), source->button(),
+            source->buttons(), source->modifiers(), source->source()));
+        mOwnedMouseEvent->setTimestamp(source->timestamp());
+#endif
+        mMouseEvent = mOwnedMouseEvent.get();
+    }
+    else if (event.mTabletEvent)
+    {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+        mOwnedTabletEvent.reset(event.mTabletEvent->clone());
+#else
+        // Qt 5 event copies can share private data deleted by each destructor.
+        // Construct an independent event instead of using the implicit copy.
+        const QTabletEvent* source = event.mTabletEvent;
+        mOwnedTabletEvent.reset(new QTabletEvent(source->type(), source->posF(),
+            source->globalPosF(), source->device(), source->pointerType(),
+            source->pressure(), source->xTilt(), source->yTilt(),
+            source->tangentialPressure(), source->rotation(), source->z(),
+            source->modifiers(), source->uniqueId(), source->button(), source->buttons()));
+        mOwnedTabletEvent->setTimestamp(source->timestamp());
+#endif
+        mTabletEvent = mOwnedTabletEvent.get();
+    }
+}
+
 QPointF PointerEvent::canvasPos() const
 {
     return mCanvasPos;
@@ -37,6 +72,7 @@ QPointF PointerEvent::viewportPos() const
 
 Qt::MouseButton PointerEvent::button() const
 {
+    if (mType == Press || mType == Release) { return Qt::LeftButton; }
     if (mMouseEvent)
     {
         return mMouseEvent->button();
@@ -53,6 +89,8 @@ Qt::MouseButton PointerEvent::button() const
 
 Qt::MouseButtons PointerEvent::buttons() const
 {
+    if (mType == Press) { return Qt::LeftButton; }
+    if (mType == Release) { return Qt::NoButton; }
     if (mMouseEvent)
     {
         return mMouseEvent->buttons();
@@ -204,6 +242,7 @@ bool PointerEvent::isAccepted()
 
 PointerEvent::Type PointerEvent::eventType() const
 {
+    if (mType != Unmapped) { return mType; }
     if (mMouseEvent)
     {
         switch (mMouseEvent->type())
