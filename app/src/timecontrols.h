@@ -25,11 +25,15 @@ GNU General Public License for more details.
 #include <QCheckBox>
 #include <QLabel>
 
+#include "pencildef.h"
+
+#include "timecodecontrolwidget.h"
+
 class Editor;
 class PreferenceManager;
 class TimeLine;
 
-class TimeControls : public QToolBar
+class TimeControls : public QWidget
 {
     Q_OBJECT
 
@@ -60,8 +64,14 @@ public slots:
     void updateTimecodeLabel(int frame);
 
 private:
+    void showTimecodePanel();
+    void updateTimecode();
+
+    void showFramesInTimecode(bool shown);
+    void showTimecode(bool shown);
     void makeConnections();
 
+    void setupTimeCodeMenu();
     void playButtonClicked();
     void jumpToStartButtonClicked();
     void jumpToEndButtonClicked();
@@ -71,29 +81,23 @@ private:
     void loopEndValueChanged(int);
     void updateSoundScrubIcon(bool soundScrubEnabled);
 
-    void noTimecodeText();
-    void onlyFramesText();
-    void sffText();
-    void smpteText();
-
 private:
-    QPushButton* mPlayButton = nullptr;
-    QPushButton* mJumpToEndButton = nullptr;
-    QPushButton* mJumpToStartButton = nullptr;
-    QPushButton* mLoopButton = nullptr;
-    QPushButton* mSoundButton = nullptr;
-    QPushButton* mSoundScrubButton = nullptr;
+    QToolButton* mPlayButton = nullptr;
+    QToolButton* mJumpToEndButton = nullptr;
+    QToolButton* mJumpToStartButton = nullptr;
+    QToolButton* mLoopButton = nullptr;
+    QToolButton* mSoundButton = nullptr;
+    QToolButton* mSoundScrubButton = nullptr;
     QSpinBox*    mFpsBox = nullptr;
     QCheckBox*   mPlaybackRangeCheckBox = nullptr;
     QSpinBox*    mLoopStartSpinBox = nullptr;
     QSpinBox*    mLoopEndSpinBox = nullptr;
-    QToolButton* mTimecodeSelect = nullptr;
+
+    QToolButton* mTimecodeButton = nullptr;
     QLabel*      mTimecodeLabel = nullptr;
-    QAction*     mNoTimecodeAction = nullptr;
-    QAction*     mOnlyFramesAction = nullptr;
-    QAction*     mSmpteAction = nullptr;
-    QAction*     mSffAction = nullptr;
-    QAction*     mTimecodeLabelAction = nullptr;
+
+    TimeCodeControls mTimecodeControls;
+    TimeCodeControlWidget* mTimeCodeWidget = nullptr;
 
     QIcon mStartIcon;
     QIcon mStopIcon;
@@ -106,7 +110,6 @@ private:
     TimeLine* mTimeline = nullptr;
     Editor* mEditor = nullptr;
     int mFps = 12;
-    int mTimecodeLabelEnum;
 };
 
 #endif
