@@ -20,6 +20,7 @@ GNU General Public License for more details.
 #include <ctime>
 #include <QDebug>
 #include <QDir>
+#include <QStandardPaths>
 #include <QVersionNumber>
 #include "qminiz.h"
 #include "fileformat.h"
@@ -862,8 +863,9 @@ Status FileManager::verifyObject(Object* obj)
 
 QStringList FileManager::searchForUnsavedProjects()
 {
-    QDir pencil2DTempDir = QDir::temp();
-    bool folderExists = pencil2DTempDir.cd("Pencil2D");
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    QDir pencil2DTempDir(appDataPath);
+    bool folderExists = pencil2DTempDir.cd("working");
     if (!folderExists)
     {
         return QStringList();
