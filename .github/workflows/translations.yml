@@ -31,15 +31,14 @@ jobs:
             echo "::warning::TRANSIFEX_TOKEN is not set, only updating the source strings"
             exit 0
           fi
-          pip install --quiet requests
           python3 util/transifex_pull.py | tee pull.log
-          
+
           if grep -Eq "ERROR|TIMEOUT" pull.log; then
             echo "::error::Some translations failed to download"
             exit 1
           fi
           rm pull.log
-          
+
           # A language newly added on Transifex also needs registering in
           # app/app.pro, app/app.cmake and generalpage.cpp, so leave that to
           # a human and only mention it in the pull request.
@@ -57,7 +56,7 @@ jobs:
         run: lupdate app core_lib -ts translations/pencil.ts
 
       - name: Create pull request
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@22a9089034f40e5a961c8808d113e2c98fb63676 # v7.0.11
         with:
           # Pull requests opened with the default GITHUB_TOKEN do not trigger
           # the CI workflow. A personal access token in this secret avoids that.
