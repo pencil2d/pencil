@@ -264,13 +264,12 @@ void TimeControls::jumpToStartButtonClicked()
     if (mPlaybackRangeCheckBox->isChecked())
     {
         mEditor->scrubTo(mLoopStartSpinBox->value());
-        mEditor->playback()->setCheckForSoundsHalfway(true);
     }
     else
     {
         mEditor->scrubTo(mEditor->layers()->firstKeyFrameIndex());
     }
-    mEditor->playback()->stopSounds();
+    mEditor->playback()->setCheckForSoundsHalfway(true);
 }
 
 void TimeControls::jumpToEndButtonClicked()
@@ -281,7 +280,7 @@ void TimeControls::jumpToEndButtonClicked()
     }
     else
     {
-        mEditor->scrubTo(mEditor->layers()->lastKeyFrameIndex());
+        mEditor->scrubTo(mEditor->layers()->lastFrameIndex());
     }
 }
 

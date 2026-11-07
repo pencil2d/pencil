@@ -172,3 +172,13 @@ SoundClip* LayerSound::getSoundClipWhichCovers(int frameNumber)
     KeyFrame* key = getKeyFrameWhichCovers(frameNumber);
     return static_cast<SoundClip*>(key);
 }
+
+int LayerSound::getEndPosition() const
+{
+    int pos = Layer::getMaxKeyFramePosition();
+
+    if(pos == 0) return 0;
+
+    auto clip = dynamic_cast<const SoundClip*>(getKeyFrameAt(pos));
+    return pos + clip->length() - 1;
+}

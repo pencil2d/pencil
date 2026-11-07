@@ -69,7 +69,7 @@ public:
     // KeyFrame Management
     int lastFrameAtFrame(int frameIndex);
     int firstKeyFrameIndex();
-    int lastKeyFrameIndex();
+    int lastFrameIndex();
 
     int animationLength(bool includeSounds = true);
 
