@@ -71,7 +71,7 @@ public:
     void loadBaseDomElement(const QDomElement& elem);
 
     // KeyFrame interface
-    virtual int getMaxKeyFramePosition() const;
+    int getMaxKeyFramePosition() const;
     int firstKeyFramePosition() const;
 
     bool keyExists(int position) const;
