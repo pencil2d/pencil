@@ -291,7 +291,7 @@ int LayerManager::firstKeyFrameIndex()
     return minPosition;
 }
 
-int LayerManager::lastKeyFrameIndex()
+int LayerManager::lastFrameIndex()
 {
     int maxPosition = 0;
 
@@ -299,7 +299,18 @@ int LayerManager::lastKeyFrameIndex()
     {
         Layer* pLayer = object()->getLayer(i);
 
-        int position = pLayer->getMaxKeyFramePosition();
+        int position = 0;
+
+        if(pLayer->type() == Layer::SOUND)
+        {
+            auto pSoundLayer = dynamic_cast<const LayerSound*>(pLayer);
+            position = pSoundLayer->getEndPosition();
+        }
+        else
+        {
+            position = pLayer->getMaxKeyFramePosition();
+        }
+
         if (position > maxPosition)
         {
             maxPosition = position;
