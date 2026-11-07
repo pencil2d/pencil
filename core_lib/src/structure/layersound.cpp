@@ -166,7 +166,7 @@ int LayerSound::getMaxKeyFramePosition() const
 
     if(pos == 0) return 0;
 
-    SoundClip* clip = dynamic_cast<SoundClip*>(getKeyFrameAt(pos));
+    auto clip = dynamic_cast<const SoundClip*>(getKeyFrameAt(pos));
     return pos + clip->length() - 1;
 }
 
