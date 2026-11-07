@@ -1,4 +1,5 @@
 name: Set up environment
+description: Configure the platform build environment and application version
 inputs:
   arch:
     description: Architecture

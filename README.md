@@ -18,6 +18,8 @@ _User Showcase Reel 2022_
 
 Download Pencil2D from the [Official Website][p2d-download] or [Github releases][gh-release].
 
+See [download verification](docs/download-verification.md) for checksum and build provenance checks on builds that publish them.
+
 [p2d-download]: https://www.pencil2d.org/download/
 [gh-release]: https://github.com/pencil2d/pencil/releases
 
