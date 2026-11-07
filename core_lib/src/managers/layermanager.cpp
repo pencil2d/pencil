@@ -301,22 +301,14 @@ int LayerManager::lastFrameIndex()
 
         int position = 0;
 
-        switch(pLayer->type()) {
-            case Layer::LAYER_TYPE::SOUND:
-            {
-                auto pSoundLayer = dynamic_cast<const LayerSound*>(pLayer);
-                position = pSoundLayer->getEndPosition();
-            }
-            break;
-
-            //case Layer::LAYER_TYPE::MOVIE:
-            //{
-            //
-            //}
-            //break;
-
-            default:
-                position = pLayer->getMaxKeyFramePosition();
+        if(pLayer->type() == Layer::SOUND)
+        {
+            auto pSoundLayer = dynamic_cast<const LayerSound*>(pLayer);
+            position = pSoundLayer->getEndPosition();
+        }
+        else
+        {
+            position = pLayer->getMaxKeyFramePosition();
         }
 
         if (position > maxPosition)
