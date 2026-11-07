@@ -86,12 +86,43 @@ void StrokeInterpolator::pointerMoveEvent(PointerEvent* event)
     }
 }
 
+void StrokeInterpolator::snappingPointerMoveEvent(PointerEvent* event, QPointF originPoint)
+{
+    QPointF currentPoint = event->viewportPos();
+    
+    mLastPixel = mCurrentPixel;
+    if(abs(currentPoint.x() - originPoint.x()) > abs(currentPoint.y() - originPoint.y()))
+    {
+        mCurrentPixel = QPointF(currentPoint.x(), originPoint.y());
+    }
+    else
+    {
+        mCurrentPixel = QPointF(originPoint.x(), currentPoint.y());
+    }
+    if(event->isTabletEvent())
+    {
+        setPressure(event->pressure());
+    }
+}
+
 void StrokeInterpolator::pointerReleaseEvent(PointerEvent* event)
 {
     // flush out stroke
     if (mStrokeStarted)
     {
         pointerMoveEvent(event);
+    }
+
+    mStrokeStarted = false;
+    mTabletInUse = mTabletInUse && !event->isTabletEvent();
+}
+
+void StrokeInterpolator::snappingPointerReleaseEvent(PointerEvent* event, QPointF originPoint)
+{
+    // flush out stroke
+    if (mStrokeStarted)
+    {
+        snappingPointerMoveEvent(event, originPoint);
     }
 
     mStrokeStarted = false;
