@@ -155,18 +155,27 @@ create_package_windows() {
     local basename="$(basename -s .wxl.xlf "$i")"
     local locale="${basename#*_}"
     local culture="${locale/_/-}"
-    local lcid="$(pwsh -c "(Get-Culture -Name ${culture}).LCID")"
+    local lcid
+    case ${culture} in
+      # Get-Culture doesn't know about zh-CN and zh-TW for some reason???
+      zh-CN) lcid="2052";;
+      zh-TW) lcid="1028";;
+      *) lcid="$(pwsh -c "(Get-Culture -Name ${culture}).LCID")";;
+    esac
     sed "s/Culture=\"en\"/Culture=\"${culture}\"/;s/Language=\"9\"/Language=\"${lcid}\"/" ../util/installer/pencil2d.wxl > "../util/installer/pencil2d_${locale}.wxl"
     tikal.bat -m -fc ../util/installer/okf_xml_wxl -ie utf-8 -oe utf-8 -sd ../util/installer -od ../util/installer "${i}"
   done
   local versiondefines="-d Edition=Nightly -d NightlyBuildNumber=$1 -d NightlyBuildTimestamp=$(date +%F)"
+  # Must match MsiName in pencil2d.bundle.wxs
+  local msiname="pencil2d-${platform}-$3"
   if [ "$IS_RELEASE" = "true" ]; then
     versiondefines="-d Edition=Release -d Version=$2"
+    msiname="pencil2d-${platform}-$2"
   fi
   wix build -pdbtype none -arch "x${wordsize/32/86}" -dcl high -b ../util/installer -b Pencil2D \
     -d "ProductCode=$(python -c "import uuid; print(str(uuid.uuid5(uuid.NAMESPACE_URL, '-Nhttps://github.com/${GITHUB_REPOSITORY}/commit/${GITHUB_SHA}#${platform}')).upper())")" \
     $versiondefines \
-    -out "pencil2d-${platform}-$3.msi" \
+    -out "${msiname}.msi" \
     ../util/installer/pencil2d.wxs windeployqt.wxs resources.wxs
   wix build -pdbtype none -arch "x${wordsize/32/86}" -dcl high -sw1133 -b ../util/installer -b Pencil2D \
     -ext WixToolset.Util.wixext -ext WixToolset.BootstrapperApplications.wixext \
@@ -186,7 +195,10 @@ create_package_windows() {
 echo "Version: ${VERSION_NUMBER}"
 
 filename_suffix="b${GITHUB_RUN_NUMBER}-$(date +%F)"
-if [ "$IS_RELEASE" = "true" ]; then
+if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+  # e.g. pencil2d-win64-v0.7.3.zip, matching earlier releases
+  filename_suffix="v${VERSION_NUMBER}"
+elif [ "$IS_RELEASE" = "true" ]; then
   filename_suffix="${VERSION_NUMBER}"
 fi
 

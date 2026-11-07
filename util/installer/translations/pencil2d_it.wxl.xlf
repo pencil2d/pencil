@@ -121,8 +121,8 @@
 InstallFolder=[directory] | DesktopShortcut=[0|1] – Overwrite installation options.</source>
 <target xml:lang="it">/install | /repair | /uninstall | /layout [directory] –installare, riparare, disinstallare o creare una copia locale completa del pacchetto nella directory.
 
-/passive | /quiet – sopprimere i prompt interattivi o sia l'interfaccia utente che i prompt.
-/norestart – sopprimere qualsiasi tentativo di riavvio. Per impostazione predefinita, l'interfaccia utente richiederà prima il riavvio.
+/passive | /quiet – sopprimere i prompt interattivi o sia l&apos;interfaccia utente che i prompt.
+/norestart – sopprimere qualsiasi tentativo di riavvio. Per impostazione predefinita, l&apos;interfaccia utente richiederà prima il riavvio.
 /log [logfile] – log in un file personalizzato. Per impostazione predefinita viene creato un file di registro in %TEMP%.
 
 InstallFolder=[directory] | DesktopShortcut=[0|1] – Sovrascrivi le opzioni di installazione.</target>
@@ -305,7 +305,7 @@ InstallFolder=[directory] | DesktopShortcut=[0|1] – Sovrascrivi le opzioni di 
 </trans-unit>
 <trans-unit id="59" resname="FailureHyperlinkLogText" restype="x-Value" xml:space="preserve">
 <source xml:lang="en">One or more issues caused the operation to fail. Please fix the issues and then retry. For more information see the &lt;a href=&quot;#&quot;&gt;log file&lt;/a&gt;.</source>
-<target xml:lang="it">Uno o più problemi hanno causato il fallimento dell'operazione. Risolvi i problemi e riprova. Per ulteriori informazioni vedere il &lt;a href=&quot;#&quot;&gt;file log&lt;/a&gt;.</target>
+<target xml:lang="it">Uno o più problemi hanno causato il fallimento dell&apos;operazione. Risolvi i problemi e riprova. Per ulteriori informazioni vedere il &lt;a href=&quot;#&quot;&gt;file log&lt;/a&gt;.</target>
 
 </trans-unit>
 <trans-unit id="60" resname="FailureRestartText" restype="x-Value" xml:space="preserve">

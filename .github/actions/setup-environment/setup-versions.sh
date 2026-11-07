@@ -2,14 +2,13 @@
 
 # Check if this is a tag build
 if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
-  # For tag builds, use the tag name as the version (keep 'v' prefix)
-  VERSION_NUMBER="${GITHUB_REF_NAME}"
+  VERSION_NUMBER="${GITHUB_REF_NAME#v}"
   echo "VERSION_NUMBER=${VERSION_NUMBER}" >> "${GITHUB_ENV}"
   echo "Tag build detected. VERSION_NUMBER is $VERSION_NUMBER"
 elif [[ "${GITHUB_REF_NAME}" == "release/"* ]]; then
   # set env.VERSION_NUMBER from release branch names e.g., release/0.7.0
   branchVerion=$(echo "${GITHUB_REF_NAME}" | sed 's/release\///')
-  VERSION_NUMBER="$branchVerion-b${GITHUB_RUN_NUMBER}"
+  VERSION_NUMBER="$branchVerion.${GITHUB_RUN_NUMBER}"
   echo "VERSION_NUMBER=$VERSION_NUMBER" >> $GITHUB_ENV
   echo "Release branch build detected. VERSION_NUMBER is $VERSION_NUMBER"
 elif [ "${GITHUB_REF_NAME}" = "master" ]; then

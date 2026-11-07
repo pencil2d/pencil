@@ -1,0 +1,32 @@
+# Translators:
+# Yaşar Çiv <yasarciv@protonmail.com>, 2024
+# 3909d6133b383976bde86621da215840_711025d, 2025
+# 
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-09-22 15:26+0200\n"
+"PO-Revision-Date: 2024-05-19 14:29+0000\n"
+"Last-Translator: 3909d6133b383976bde86621da215840_711025d, 2025\n"
+"Language-Team: Turkish (https://app.transifex.com/pencil2d/teams/76612/tr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: tr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Accelerator-Marker: &\n"
+"X-Generator: Translate Toolkit 3.9.0\n"
+"X-Merge-On: location\n"
+
+#: STRINGTABLE.0
+msgid "Pencil2D"
+msgstr "Pencil2D"
+
+#: STRINGTABLE.1
+msgid "Pencil2D Animation"
+msgstr "Pencil2D Animasyon"
+
+#: STRINGTABLE.2
+msgid "Pencil2D Animation (Old Format)"
+msgstr "Pencil2D Animasyon (Eski Format)"

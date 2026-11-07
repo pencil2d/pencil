@@ -1,4 +1,3 @@
-# 
 # Translators:
 # Matt Chang, 2024
 # 

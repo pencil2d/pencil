@@ -1021,6 +1021,15 @@ bool Editor::canSwapLayers(int layerIndexLeft, int layerIndexRight) const
 
 void Editor::prepareSave()
 {
+    // Commit a pending selection transformation (e.g. an unconfirmed Move tool
+    // drag) before the document is serialized, otherwise the transformation
+    // exists only as an overlay and would be lost on reload.
+    // See https://github.com/pencil2d/pencil/issues/2026
+    if (mScribbleArea && select() && select()->somethingSelected())
+    {
+        static_cast<MoveTool*>(tools()->getTool(MOVE))->applyTransformationAndDeselect();
+    }
+
     for (auto mgr : mAllManagers)
     {
         mgr->save(mObject.get());

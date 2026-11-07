@@ -180,7 +180,7 @@ Status MovieImporter::run(const QString &filePath, int fps, FileType type,
         status = Status::FAIL;
         status.setTitle(tr("Error creating folder"));
         status.setDescription(tr("Unable to create a temporary folder, cannot import video."));
-        dd << QString("Path: ").append(mTempDir->path())
+        dd << QString("Parent directory: ").append(QDir::tempPath())
            << QString("Error: ").append(mTempDir->errorString());
         status.setDetails(dd);
         return status;

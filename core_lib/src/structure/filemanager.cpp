@@ -58,13 +58,13 @@ Object* FileManager::load(const QString& sFileName)
     QString fileFormat = "Project format: %1";
     if (!isArchive)
     {
-        dd << fileFormat.arg(".pcl");
+        dd << fileFormat.arg("." PFF_OLD_EXTENSION);
 
         if (!QFile::copy(sFileName, strMainXMLFile))
         {
             dd << "Failed to copy main xml file";
         }
-        Status st = copyDir(sFileName + "." + PFF_OLD_DATA_DIR, strDataFolder);
+        Status st = copyDir(sFileName + "." PFF_OLD_DATA_DIR, strDataFolder);
         if (!st.ok())
         {
             dd.collect(st.details());
@@ -75,7 +75,7 @@ Object* FileManager::load(const QString& sFileName)
         QString workingDirPath = obj->workingDir();
 
         dd << QString("Working dir: %1").arg(workingDirPath);
-        dd << fileFormat.arg(".pclx");
+        dd << fileFormat.arg("." PFF_EXTENSION);
 
         Status sanityCheck = MiniZ::sanityCheck(sFileName);
 
@@ -227,7 +227,7 @@ bool FileManager::loadObjectOldWay(Object* object, const QDomElement& root)
 
 bool FileManager::isArchiveFormat(const QString& fileName) const
 {
-    if (QFileInfo(fileName).suffix().compare(PFF_BIG_LETTER_EXTENSION, Qt::CaseInsensitive) != 0) {
+    if (QFileInfo(fileName).suffix().compare(PFF_EXTENSION, Qt::CaseInsensitive) != 0) {
         return false;
     }
     return true;
@@ -289,17 +289,17 @@ Status FileManager::save(const Object* object, const QString& sFileName)
     bool isArchive = isArchiveFormat(sFileName);
     if (!isArchive)
     {
-        dd << fileFormat.arg(".pcl");
+        dd << fileFormat.arg("." PFF_OLD_EXTENSION);
 
         sMainXMLFile = sFileName;
-        sDataFolder = sMainXMLFile + "." + PFF_OLD_DATA_DIR;
+        sDataFolder = sMainXMLFile + "." PFF_OLD_DATA_DIR;
     }
     else
     {
         sTempWorkingFolder = object->workingDir();
 
         dd << QString("Working dir: %1").arg(sTempWorkingFolder);
-        dd << fileFormat.arg(".pclx");
+        dd << fileFormat.arg("." PFF_EXTENSION);
 
         Q_ASSERT(QDir(sTempWorkingFolder).exists());
 
@@ -615,7 +615,7 @@ QString FileManager::backupPreviousFile(const QString& fileName)
     int backupCount = countExistingBackups(fileName) + 1; // start index 1
     QString countStr = QString::number(backupCount);
 
-    QString sBackupFile = baseName + "." + PFF_BACKUP_IDENTIFIER + countStr + "." + fileInfo.suffix();
+    QString sBackupFile = baseName + "." PFF_BACKUP_IDENTIFIER + countStr + "." + fileInfo.suffix();
     QString sBackupFileFullPath = QDir(fileInfo.absolutePath()).filePath(sBackupFile);
 
     bool ok = QFile::copy(fileInfo.absoluteFilePath(), sBackupFileFullPath);

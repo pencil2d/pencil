@@ -42,6 +42,7 @@ find_package(Qt6 REQUIRED COMPONENTS
 # Global definitions
 add_compile_definitions(
     APP_VERSION="${APP_VERSION}"
+    MINIZ_NO_ZLIB_APIS
     QT_DEPRECATED_WARNINGS
     QT_DISABLE_DEPRECATED_UP_TO=0x050F00
 )

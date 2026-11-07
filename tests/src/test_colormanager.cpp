@@ -15,6 +15,8 @@ GNU General Public License for more details.
 */
 #include "catch.hpp"
 
+#include <memory>
+
 #include "colormanager.h"
 #include "object.h"
 #include "editor.h"
@@ -46,7 +48,7 @@ TEST_CASE("ColorManager set color tests")
     ColorManager* cm = new ColorManager(editor);
     cm->init();
 
-    Object* layerObj = new Object;
+    std::unique_ptr<Object> layerObj(new Object);
     Editor* layerEdit = new Editor;
     editor->setObject(object);
     LayerManager* layerMgr = new LayerManager(layerEdit);

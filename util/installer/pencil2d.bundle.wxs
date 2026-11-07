@@ -42,8 +42,17 @@
         LocalizationFile="pencil2d.wxl" />
       <Payload SourceFile="pencil2d.dll" bal:BAFunctions="yes" />
       <!-- Translations -->
+      <Payload SourceFile="pencil2d_ar.wxl" Name="1\thm.wxl" />
       <Payload SourceFile="pencil2d_de.wxl" Name="7\thm.wxl" />
       <Payload SourceFile="pencil2d_it.wxl" Name="16\thm.wxl" />
+      <Payload SourceFile="pencil2d_pt.wxl" Name="22\thm.wxl" />
+      <Payload SourceFile="pencil2d_pt_BR.wxl" Name="1046\thm.wxl" />
+      <Payload SourceFile="pencil2d_sv.wxl" Name="29\thm.wxl" />
+      <Payload SourceFile="pencil2d_tr.wxl" Name="31\thm.wxl" />
+      <Payload SourceFile="pencil2d_vi.wxl" Name="42\thm.wxl" />
+      <!-- Cantonese (yue) omitted as it has no language ID assigned -->
+      <Payload SourceFile="pencil2d_zh_CN.wxl" Name="2052\thm.wxl" />
+      <Payload SourceFile="pencil2d_zh_TW.wxl" Name="1028\thm.wxl" />
       <!-- Assets -->
       <Payload SourceFile="pencil2d.ico" />
       <Payload SourceFile="pencil2d.png" />

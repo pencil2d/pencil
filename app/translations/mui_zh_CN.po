@@ -1,4 +1,3 @@
-# 
 # Translators:
 # Yu Chen <jcomee@gmail.com>, 2024
 # Matt Chang, 2024

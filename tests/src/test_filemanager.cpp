@@ -25,6 +25,11 @@ GNU General Public License for more details.
 #include "object.h"
 #include "bitmapimage.h"
 #include "layerbitmap.h"
+#include "layermanager.h"
+#include "scribblearea.h"
+#include "selectionmanager.h"
+#include "movemode.h"
+#include "editor.h"
 
 
 TEST_CASE("FileManager Initial Test")
@@ -398,6 +403,81 @@ TEST_CASE("FileManager File-saving")
             }
         }
         delete o3;
+    }
+
+    // https://github.com/pencil2d/pencil/issues/2026
+    // Moving bitmap content with the Move tool stores the transformation only in the
+    // SelectionManager until it is committed. Saving the project must commit the
+    // pending transformation, otherwise the move is lost when reopening the project.
+    SECTION("#2026 Move tool transformation is committed when saving")
+    {
+        FileManager fm;
+
+        // 1. Create an animation with one bitmap frame holding some content
+        Object* o1 = new Object;
+        o1->init();
+        o1->addNewCameraLayer();
+        o1->addNewBitmapLayer();
+
+        LayerBitmap* layer = dynamic_cast<LayerBitmap*>(o1->getLayer(1));
+        // addNewBitmapLayer already creates a keyframe at position 1
+        REQUIRE(layer->getBitmapImageAtFrame(1) != nullptr);
+
+        BitmapImage* b1 = layer->getBitmapImageAtFrame(1);
+        b1->drawRect(QRectF(0, 0, 10, 10), QPen(QColor(255, 0, 0)), QBrush(Qt::red), QPainter::CompositionMode_SourceOver, false);
+
+        // 2. Set up the editor like MainWindow2 does, so the same save code path is used
+        Editor* editor = new Editor;
+        ScribbleArea* scribbleArea = new ScribbleArea(nullptr);
+        editor->setScribbleArea(scribbleArea);
+        editor->init();
+        editor->setObject(o1);
+        scribbleArea->setEditor(editor);
+        scribbleArea->init();
+
+        editor->layers()->setCurrentLayer(1);
+
+        const QPoint originalTopLeft = b1->bounds().topLeft();
+
+        // 3. Select the bitmap content and simulate a Move tool drag towards the
+        //    bottom right. The transformation stays pending in the SelectionManager,
+        //    exactly like MoveTool leaves it after a mouse release.
+        SelectionManager* selectMan = editor->select();
+        selectMan->setSelection(QRectF(b1->bounds()), true);
+        REQUIRE(selectMan->somethingSelected());
+
+        const QPointF dragStart = b1->bounds().center();
+        const QPointF dragDelta(50, 30);
+
+        selectMan->setMoveMode(MoveMode::MIDDLE);
+        selectMan->setTransformAnchor(selectMan->getSelectionAnchorPoint());
+        selectMan->setDragOrigin(dragStart);
+        const QPointF offset = selectMan->myTranslation();
+        selectMan->adjustSelection(dragStart + dragDelta, offset, 0.0);
+
+        REQUIRE(!selectMan->selectionTransform().isIdentity());
+
+        // 4. Save the project through the same steps as MainWindow2::saveObject
+        editor->prepareSave();
+
+        QTemporaryDir testDir("PENCIL_TEST_XXXXXXXX");
+        QString animationPath = testDir.path() + "/issue2026.pclx";
+        REQUIRE(fm.save(editor->object(), animationPath).ok());
+
+        // 5. Load the project again: the bitmap must still be at the moved position
+        Object* o2 = fm.load(animationPath);
+        LayerBitmap* layer2 = dynamic_cast<LayerBitmap*>(o2->getLayer(1));
+        BitmapImage* b2 = layer2->getBitmapImageAtFrame(1);
+
+        const QPoint expectedTopLeft = originalTopLeft + QPoint(static_cast<int>(dragDelta.x()), static_cast<int>(dragDelta.y()));
+        INFO("original topLeft: (" << originalTopLeft.x() << "," << originalTopLeft.y() << ")"
+             << " expected after move: (" << expectedTopLeft.x() << "," << expectedTopLeft.y() << ")"
+             << " reloaded: (" << b2->bounds().topLeft().x() << "," << b2->bounds().topLeft().y() << ")");
+        REQUIRE(b2->bounds().topLeft() == expectedTopLeft);
+
+        delete o2;
+        delete scribbleArea;
+        delete editor; // owns o1
     }
 }
 

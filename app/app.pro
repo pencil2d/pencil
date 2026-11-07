@@ -15,13 +15,32 @@ TARGET = pencil2d
 RESOURCES += data/app.qrc
 
 MUI_TRANSLATIONS += \
+        translations/mui_ar.po \
         translations/mui_cs.po \
         translations/mui_de.po \
-        translations/mui_it.po
+        translations/mui_it.po \
+        translations/mui_pt.po \
+        translations/mui_pt_BR.po \
+        translations/mui_si.po \
+        translations/mui_sv.po \
+        translations/mui_tr.po \
+        translations/mui_vi.po \
+        translations/mui_zh_CN.po \
+        translations/mui_zh_TW.po
 
+RC_LANGS.ar = --lang LANG_ARABIC --sublang SUBLANG_NEUTRAL
 RC_LANGS.cs = --lang LANG_CZECH --sublang SUBLANG_NEUTRAL
 RC_LANGS.de = --lang LANG_GERMAN --sublang SUBLANG_NEUTRAL
 RC_LANGS.it = --lang LANG_ITALIAN --sublang SUBLANG_NEUTRAL
+RC_LANGS.pt = --lang LANG_PORTUGUESE --sublang SUBLANG_NEUTRAL
+RC_LANGS.pt_BR = --lang LANG_PORTUGUESE --sublang SUBLANG_PORTUGUESE_BRAZILIAN
+RC_LANGS.si = --lang LANG_SINHALESE --sublang SUBLANG_NEUTRAL
+RC_LANGS.sv = --lang LANG_SWEDISH --sublang SUBLANG_NEUTRAL
+RC_LANGS.tr = --lang LANG_TURKISH --sublang SUBLANG_NEUTRAL
+RC_LANGS.vi = --lang LANG_VIETNAMESE --sublang SUBLANG_NEUTRAL
+# Cantonese (yue) omitted as it has no language ID assigned
+RC_LANGS.zh_CN = --lang LANG_CHINESE --sublang SUBLANG_CHINESE_SIMPLIFIED
+RC_LANGS.zh_TW = --lang LANG_CHINESE --sublang SUBLANG_CHINESE_TRADITIONAL
 
 EXTRA_TRANSLATIONS += \
 	$$PWD/../translations/pencil_ar.ts \

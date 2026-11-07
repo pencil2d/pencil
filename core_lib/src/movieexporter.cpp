@@ -107,8 +107,14 @@ Status MovieExporter::run(const Object* obj,
     // Setup temporary folder
     if (!mTempDir.isValid())
     {
-        Q_ASSERT(false && "Cannot create temp folder.");
-        return Status::FAIL;
+        Status status = Status::FAIL;
+        status.setTitle(tr("Error creating folder"));
+        status.setDescription(tr("Unable to create a temporary folder, cannot export animation."));
+        DebugDetails dd;
+        dd << QString("Parent directory: ").append(QDir::tempPath())
+           << QString("Error: ").append(mTempDir.errorString());
+        status.setDetails(dd);
+        return status;
     }
 
     mTempWorkDir = mTempDir.path();

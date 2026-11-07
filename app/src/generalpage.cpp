@@ -216,15 +216,19 @@ void GeneralPage::languageChanged(int i)
     std::unique_ptr<QTranslator> newlangTr(new QTranslator(this));
     if (newlangTr->load(locale, "pencil", "_", ":/i18n/"))
     {
-        QMessageBox::warning(this,
-                             newlangTr->translate(staticMetaObject.className(), "Restart Required"),
-                             newlangTr->translate(staticMetaObject.className(), "The language change will take effect after a restart of Pencil2D"));
-    } else {
-        Q_ASSERT(false);
-        QMessageBox::warning(this,
-                             tr("Restart Required"),
-                             tr("The language change will take effect after a restart of Pencil2D"));
+        const QString title = newlangTr->translate(staticMetaObject.className(), "Restart Required");
+        const QString text = newlangTr->translate(staticMetaObject.className(), "The language change will take effect after a restart of Pencil2D");
+        if (!title.isNull() && !text.isNull())
+        {
+            QMessageBox::warning(this, title, text);
+            return;
+        }
     }
+
+    // Failed to retrieve translation in new language, fall back to current language
+    QMessageBox::warning(this,
+                         tr("Restart Required"),
+                         tr("The language change will take effect after a restart of Pencil2D"));
 }
 
 void GeneralPage::backgroundChanged(QAbstractButton* button)
