@@ -160,6 +160,16 @@ Status LayerSound::saveKeyFrameFile(KeyFrame* key, QString path)
     return Status::OK;
 }
 
+int LayerSound::getMaxKeyFramePosition() const
+{
+    int pos = Layer::getMaxKeyFramePosition();
+
+    if(pos == 0) return 0;
+
+    SoundClip* clip = dynamic_cast<SoundClip*>(getKeyFrameAt(pos));
+    return pos + clip->length() - 1;
+}
+
 KeyFrame* LayerSound::createKeyFrame(int position)
 {
     SoundClip* s = new SoundClip;
