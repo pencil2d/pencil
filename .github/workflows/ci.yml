@@ -49,7 +49,7 @@ jobs:
             qt: 6
             bundler: linuxdeploy
           - name: Qt 6 / macOS Universal
-            os: macos-14
+            os: macos-15
             arch: universal
             container:
             qt: 6
