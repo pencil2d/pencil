@@ -291,34 +291,6 @@ int LayerManager::firstKeyFrameIndex()
     return minPosition;
 }
 
-int LayerManager::lastFrameIndex()
-{
-    int maxPosition = 0;
-
-    for (int i = 0; i < object()->getLayerCount(); ++i)
-    {
-        Layer* pLayer = object()->getLayer(i);
-
-        int position = 0;
-
-        if(pLayer->type() == Layer::SOUND)
-        {
-            auto pSoundLayer = dynamic_cast<const LayerSound*>(pLayer);
-            position = pSoundLayer->getEndPosition();
-        }
-        else
-        {
-            position = pLayer->getMaxKeyFramePosition();
-        }
-
-        if (position > maxPosition)
-        {
-            maxPosition = position;
-        }
-    }
-    return maxPosition;
-}
-
 int LayerManager::count()
 {
     return object()->getLayerCount();

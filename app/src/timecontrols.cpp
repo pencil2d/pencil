@@ -280,7 +280,7 @@ void TimeControls::jumpToEndButtonClicked()
     }
     else
     {
-        mEditor->scrubTo(mEditor->layers()->lastFrameIndex());
+        mEditor->scrubTo(mEditor->layers()->animationLength(true));
     }
 }
 
