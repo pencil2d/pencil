@@ -48,6 +48,7 @@ GNU General Public License for more details.
 #include "undoredomanager.h"
 
 #include "scribblearea.h"
+#include "pointerevent.h"
 
 Editor::Editor(QObject* parent) : QObject(parent)
 {
@@ -857,6 +858,12 @@ void Editor::setCurrentLayerIndex(int i)
 
 void Editor::scrubTo(int frame)
 {
+    frame = qMax(1, frame);
+    std::unique_ptr<PointerEvent> stroke;
+    if (frame != mFrame && mScribbleArea)
+    {
+        stroke = mScribbleArea->finishStrokeForFrameChange();
+    }
     if (select() && select()->somethingSelected()) {
         static_cast<MoveTool*>(tools()->getTool(MOVE))->applyTransformationAndDeselect();
     }
@@ -873,6 +880,10 @@ void Editor::scrubTo(int frame)
     }
     mObject->updateActiveFrames(frame);
     emit scrubbed(frame);
+    if (stroke)
+    {
+        mScribbleArea->resumeStrokeAfterFrameChange(stroke.get());
+    }
 }
 
 void Editor::scrubForward()
