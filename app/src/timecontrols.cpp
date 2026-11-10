@@ -323,7 +323,7 @@ void TimeControls::noTimecodeText()
     QSettings settings(PENCIL2D, PENCIL2D);
     settings.setValue(SETTING_TIMECODE_TEXT, NOTEXT);
     mTimecodeLabelEnum = NOTEXT;
-    mTimecodeLabel->setToolTip(tr(""));
+    mTimecodeLabel->setToolTip("");
     updateTimecodeLabel(mEditor->currentFrame());
 }
 
