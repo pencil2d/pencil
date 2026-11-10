@@ -16,6 +16,19 @@ on:
       - '**.ps1'
   workflow_dispatch:
 jobs:
+  verification-tests:
+    name: Download verification / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - run: python -m unittest discover -s util/tests -v
+
   build:
     strategy:
       fail-fast: false
@@ -155,6 +168,23 @@ jobs:
             echo "package3=${files[2]}" >> $GITHUB_OUTPUT
           fi
 
+      # Hash the final bytes, including any signing/notarization above.
+      - name: Set up Python for download verification
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Create package checksums
+        shell: bash
+        env:
+          PACKAGE1: ${{ steps.resolve.outputs.package1 }}
+          PACKAGE2: ${{ steps.resolve.outputs.package2 }}
+          PACKAGE3: ${{ steps.resolve.outputs.package3 }}
+        run: |
+          packages=("$PACKAGE1")
+          if [ -n "$PACKAGE2" ]; then packages+=("$PACKAGE2"); fi
+          if [ -n "$PACKAGE3" ]; then packages+=("$PACKAGE3"); fi
+          python util/download_verification.py create "${packages[@]}"
+
       - name: Upload package one
         uses: actions/upload-artifact@v7
         with:
@@ -172,6 +202,26 @@ jobs:
         with:
           path: ${{steps.resolve.outputs.package3}}
           archive: false
+      - name: Upload checksum one
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{ steps.resolve.outputs.package1 }}.sha256
+          archive: false
+          if-no-files-found: error
+      - name: Upload checksum two
+        if: steps.resolve.outputs.package2
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{ steps.resolve.outputs.package2 }}.sha256
+          archive: false
+          if-no-files-found: error
+      - name: Upload checksum three
+        if: steps.resolve.outputs.package3
+        uses: actions/upload-artifact@v7
+        with:
+          path: ${{ steps.resolve.outputs.package3 }}.sha256
+          archive: false
+          if-no-files-found: error
       - name: Generate summary
         shell: bash
         run: >
@@ -182,3 +232,47 @@ jobs:
       - name: Stop container (Linux)
         if: runner.os == 'Linux'
         run: docker stop "ci_${{github.sha}}"
+
+  provenance:
+    name: Authenticate final downloads
+    needs: [build, verification-tests]
+    # Never grant OIDC credentials to pull-request builds. The build jobs above
+    # stay read-only; this job only downloads and attests completed artifacts.
+    if: >-
+      github.event_name != 'pull_request' &&
+      (github.ref == 'refs/heads/master' ||
+       startsWith(github.ref, 'refs/heads/release/') ||
+       startsWith(github.ref, 'refs/tags/'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+      id-token: write
+      attestations: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+      - name: Download final packages and checksum sidecars
+        uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8
+        with:
+          path: verification
+          merge-multiple: true
+      - name: Check downloaded package integrity
+        run: python util/download_verification.py verify verification/*.sha256
+      - name: Attest final packages and checksum sidecars
+        id: provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: verification/*
+      - name: Name the portable attestation bundle
+        env:
+          BUNDLE: ${{ steps.provenance.outputs.bundle-path }}
+        run: cp "$BUNDLE" pencil2d-provenance.sigstore.json
+      - name: Upload portable attestation bundle
+        uses: actions/upload-artifact@v7
+        with:
+          path: pencil2d-provenance.sigstore.json
+          archive: false
+          if-no-files-found: error
