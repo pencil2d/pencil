@@ -6700,11 +6700,6 @@ or cancel</source>
         <source>Stop</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../app/src/timecontrols.cpp" line="326"/>
-        <source></source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>TimeLine</name>
