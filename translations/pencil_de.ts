@@ -6641,19 +6641,19 @@ oder brechen Sie ab</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="75"/>
-        <location filename="../app/src/timecontrols.cpp" line="336"/>
+        <location filename="../app/src/timecontrols.cpp" line="335"/>
         <source>Actual frame number</source>
         <translation>Tatsächliche Bildnummer</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="78"/>
-        <location filename="../app/src/timecontrols.cpp" line="354"/>
+        <location filename="../app/src/timecontrols.cpp" line="353"/>
         <source>Timecode format MM:SS:FF</source>
         <translation>Zeitcode-Format MM:SS:BB</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="81"/>
-        <location filename="../app/src/timecontrols.cpp" line="345"/>
+        <location filename="../app/src/timecontrols.cpp" line="344"/>
         <source>Timecode format S:FF</source>
         <translation>Zeitcode-Format S:BB</translation>
     </message>
