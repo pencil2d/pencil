@@ -6636,19 +6636,19 @@ or cancel</source>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="75"/>
-        <location filename="../app/src/timecontrols.cpp" line="336"/>
+        <location filename="../app/src/timecontrols.cpp" line="335"/>
         <source>Actual frame number</source>
         <translation>Número de Fotogramas actual</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="78"/>
-        <location filename="../app/src/timecontrols.cpp" line="354"/>
+        <location filename="../app/src/timecontrols.cpp" line="353"/>
         <source>Timecode format MM:SS:FF</source>
         <translation>Codificación formato MM:SS:FF</translation>
     </message>
     <message>
         <location filename="../app/src/timecontrols.cpp" line="81"/>
-        <location filename="../app/src/timecontrols.cpp" line="345"/>
+        <location filename="../app/src/timecontrols.cpp" line="344"/>
         <source>Timecode format S:FF</source>
         <translation>Codificación formato SFF</translation>
     </message>
