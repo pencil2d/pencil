@@ -33,7 +33,9 @@ public:
 
     void pointerPressEvent(PointerEvent* event);
     void pointerMoveEvent(PointerEvent* event);
+    void snappingPointerMoveEvent(PointerEvent* event, QPointF originPoint);
     void pointerReleaseEvent(PointerEvent* event);
+    void snappingPointerReleaseEvent(PointerEvent* event, QPointF originPoint);
     void setPressure(float pressure);
     void setStabilizerLevel(int level);
 

@@ -1,0 +1,30 @@
+<!DOCTYPE RCC><RCC version="1.0">
+<qresource prefix="i18n">
+<file alias="pencil_ar.qm">/Users/milesortolan/pencil/app/.qm/pencil_ar.qm</file>
+<file alias="pencil_ca.qm">/Users/milesortolan/pencil/app/.qm/pencil_ca.qm</file>
+<file alias="pencil_cs.qm">/Users/milesortolan/pencil/app/.qm/pencil_cs.qm</file>
+<file alias="pencil_da.qm">/Users/milesortolan/pencil/app/.qm/pencil_da.qm</file>
+<file alias="pencil_de.qm">/Users/milesortolan/pencil/app/.qm/pencil_de.qm</file>
+<file alias="pencil_el.qm">/Users/milesortolan/pencil/app/.qm/pencil_el.qm</file>
+<file alias="pencil_en.qm">/Users/milesortolan/pencil/app/.qm/pencil_en.qm</file>
+<file alias="pencil_es.qm">/Users/milesortolan/pencil/app/.qm/pencil_es.qm</file>
+<file alias="pencil_et.qm">/Users/milesortolan/pencil/app/.qm/pencil_et.qm</file>
+<file alias="pencil_fr.qm">/Users/milesortolan/pencil/app/.qm/pencil_fr.qm</file>
+<file alias="pencil_he.qm">/Users/milesortolan/pencil/app/.qm/pencil_he.qm</file>
+<file alias="pencil_hu_HU.qm">/Users/milesortolan/pencil/app/.qm/pencil_hu_HU.qm</file>
+<file alias="pencil_id.qm">/Users/milesortolan/pencil/app/.qm/pencil_id.qm</file>
+<file alias="pencil_it.qm">/Users/milesortolan/pencil/app/.qm/pencil_it.qm</file>
+<file alias="pencil_ja.qm">/Users/milesortolan/pencil/app/.qm/pencil_ja.qm</file>
+<file alias="pencil_kab.qm">/Users/milesortolan/pencil/app/.qm/pencil_kab.qm</file>
+<file alias="pencil_pl.qm">/Users/milesortolan/pencil/app/.qm/pencil_pl.qm</file>
+<file alias="pencil_pt.qm">/Users/milesortolan/pencil/app/.qm/pencil_pt.qm</file>
+<file alias="pencil_pt_BR.qm">/Users/milesortolan/pencil/app/.qm/pencil_pt_BR.qm</file>
+<file alias="pencil_ru.qm">/Users/milesortolan/pencil/app/.qm/pencil_ru.qm</file>
+<file alias="pencil_sl.qm">/Users/milesortolan/pencil/app/.qm/pencil_sl.qm</file>
+<file alias="pencil_sv.qm">/Users/milesortolan/pencil/app/.qm/pencil_sv.qm</file>
+<file alias="pencil_tr.qm">/Users/milesortolan/pencil/app/.qm/pencil_tr.qm</file>
+<file alias="pencil_vi.qm">/Users/milesortolan/pencil/app/.qm/pencil_vi.qm</file>
+<file alias="pencil_zh_CN.qm">/Users/milesortolan/pencil/app/.qm/pencil_zh_CN.qm</file>
+<file alias="pencil_zh_TW.qm">/Users/milesortolan/pencil/app/.qm/pencil_zh_TW.qm</file>
+</qresource>
+</RCC>
