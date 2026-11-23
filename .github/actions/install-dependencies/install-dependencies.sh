@@ -4,7 +4,7 @@ set -e
 setup_linux() {
   # Because of how bare-bones our docker image is
   echo "::group::Install prerequisites"
-  
+
   ${BUILD_CMD} dnf -yq check-update || [ $? -eq 100 ]
   ${BUILD_CMD} dnf -yq install epel-release
   if [ "${INPUT_QT}" -eq 5 ]; then
@@ -38,19 +38,7 @@ setup_linux() {
 }
 
 setup_macos() {
-  echo "::group::Update Homebrew"
-  brew update
-  echo "::endgroup::"
-  echo "::group::Install Homebrew packages"
-  brew install libarchive
-  # For Qt 6, we use aqtinstall (jurplel/install-qt-action) instead of Homebrew
-  # because Homebrew's Qt 6 arm64 version is problematic
-  if [ "${INPUT_QT}" -eq 5 ]; then
-    brew install qt@${INPUT_QT}
-    brew link qt@${INPUT_QT} --force
-  fi
-  echo "/usr/local/opt/libarchive/bin" >> "${GITHUB_PATH}"
-  echo "::endgroup::"
+  : # Handled entirely via jurplel/install-qt-action
 }
 
 setup_windows() {
