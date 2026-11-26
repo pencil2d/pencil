@@ -27,6 +27,7 @@ GNU General Public License for more details.
 #include <QDateTime>
 #include <QImageWriter>
 #include <QRegularExpression>
+#include <QStandardPaths>
 
 #include "layer.h"
 #include "layerbitmap.h"
@@ -170,23 +171,36 @@ void Object::createWorkingDir()
         QFileInfo fileInfo(mFilePath);
         projectName = fileInfo.completeBaseName();
     }
-    QDir dir(QDir::tempPath());
-
+    // The app data folder may not exist yet (first run), and QDir::canonicalPath()
+    // returns an empty string for a non-existent path, so create it first.
+    QString appDataPath = QStandardPaths::writableLocation(QStandardPaths::AppLocalDataLocation);
+    if (!QDir().mkpath(appDataPath))
+    {
+        qWarning() << "Cannot create app data directory" << appDataPath;
+    }
+    appDataPath = closestCanonicalPath(appDataPath);
+    QDir dir(appDataPath);
     QString strWorkingDir;
     do
     {
-        strWorkingDir = QString("%1/Pencil2D/%2_%3_%4/").arg(QDir::tempPath(),
-                                                             projectName,
-                                                             PFF_TMP_DECOMPRESS_EXT,
-                                                             uniqueString(8));
+        strWorkingDir = QString("%1/working/%2_%3_%4/").arg(appDataPath,
+                                                            projectName,
+                                                            PFF_TMP_DECOMPRESS_EXT,
+                                                            uniqueString(8));
     }
     while(dir.exists(strWorkingDir));
 
-    dir.mkpath(strWorkingDir);
+    if (!dir.mkpath(strWorkingDir))
+    {
+        qWarning() << "Cannot create working directory" << strWorkingDir;
+    }
     mWorkingDirPath = strWorkingDir;
 
     QDir dataDir(strWorkingDir + PFF_DATA_DIR);
-    dataDir.mkpath(".");
+    if (!dataDir.mkpath("."))
+    {
+        qWarning() << "Cannot create data directory" << dataDir.absolutePath();
+    }
 
     mDataDirPath = dataDir.absolutePath();
 }
