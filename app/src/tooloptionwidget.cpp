@@ -24,7 +24,8 @@ GNU General Public License for more details.
 #include "bucketoptionswidget.h"
 #include "strokeoptionswidget.h"
 #include "transformoptionswidget.h"
-#include "spinslider.h"
+#include "inlineslider.h"
+
 #include "editor.h"
 #include "util.h"
 #include "layer.h"
