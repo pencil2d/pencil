@@ -170,7 +170,9 @@ bool UndoRedoManager::hasUnsavedChanges() const
 
 void UndoRedoManager::pushCommand(QUndoCommand* command)
 {
+    mFirstUndoInProgress = true;
     mUndoStack.push(command);
+    mFirstUndoInProgress = false;
 
     emit didUpdateUndoStack();
 }

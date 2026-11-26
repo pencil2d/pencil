@@ -20,6 +20,7 @@ GNU General Public License for more details.
 
 #include "layermanager.h"
 #include "selectionmanager.h"
+#include "undoredomanager.h"
 
 #include "layersound.h"
 #include "layerbitmap.h"
@@ -33,6 +34,11 @@ UndoRedoCommand::UndoRedoCommand(Editor* editor, QUndoCommand* parent) : QUndoCo
 {
     qDebug() << "backupElement created";
     mEditor = editor;
+}
+
+bool UndoRedoCommand::isFirstRedo() const
+{
+    return mEditor->undoRedo()->isFirstRedoInProgress();
 }
 
 KeyFrameRemoveCommand::KeyFrameRemoveCommand(const KeyFrame* undoKeyFrame,
@@ -84,7 +90,8 @@ void KeyFrameRemoveCommand::redo()
 
     UndoRedoCommand::redo();
 
-    if (isFirstRedo()) { setFirstRedo(false); return; }
+    // Ignore automatic redo when added to undo stack
+    if (isFirstRedo()) { return; }
 
     layer->removeKeyFrame(redoPosition);
 
@@ -136,7 +143,7 @@ void KeyFrameAddCommand::redo()
     UndoRedoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
+    if (isFirstRedo()) { return; }
 
     layer->addNewKeyFrameAt(redoPosition);
 
@@ -192,7 +199,7 @@ void MoveKeyFramesCommand::redo()
     UndoRedoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
+    if (isFirstRedo()) { return; }
 
     QList<int> newPositions = positions;
 
@@ -247,7 +254,7 @@ void BitmapReplaceCommand::redo()
     UndoRedoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
+    if (isFirstRedo()) { return; }
 
     static_cast<LayerBitmap*>(layer)->replaceKeyFrame(&redoBitmap);
 
@@ -295,7 +302,7 @@ void VectorReplaceCommand::redo()
     UndoRedoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
+    if (isFirstRedo()) { return; }
 
     static_cast<LayerVector*>(layer)->replaceKeyFrame(&redoVector);
 
@@ -350,7 +357,7 @@ void TransformCommand::redo()
     UndoRedoCommand::redo();
 
     // Ignore automatic redo when added to undo stack
-    if (isFirstRedo()) { setFirstRedo(false); return; }
+    if (isFirstRedo()) { return; }
 
     apply(redoSelectionRect,
           redoTranslation,

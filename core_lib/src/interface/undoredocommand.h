@@ -45,12 +45,10 @@ public:
 protected:
     Editor* editor() const { return mEditor; }
 
-    bool isFirstRedo() const { return mIsFirstRedo; }
-    void setFirstRedo(const bool state) { mIsFirstRedo = state; }
+    bool isFirstRedo() const;
 
 private:
     Editor* mEditor = nullptr;
-    bool mIsFirstRedo = true;
 };
 
 class KeyFrameRemoveCommand : public UndoRedoCommand
