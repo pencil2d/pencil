@@ -18,6 +18,7 @@ GNU General Public License for more details.
 
 #ifndef SCRIBBLEAREA_H
 #define SCRIBBLEAREA_H
+#include <memory>
 
 #include <cstdint>
 #include <ctime>
@@ -112,6 +113,10 @@ public:
     void onToolChanged(ToolType);
 
     void endStroke();
+
+    /// Commit the current freehand stroke before the editor changes frames.
+    std::unique_ptr<PointerEvent> finishStrokeForFrameChange();
+    void resumeStrokeAfterFrameChange(PointerEvent* event);
 
     void flipSelection(bool flipVertical);
 
@@ -228,6 +233,7 @@ private:
     void tabletReleaseEventFired();
     bool mMouseInUse = false;
     bool mTabletInUse = false;
+    std::unique_ptr<PointerEvent> mLastStrokeEvent;
     qreal mDevicePixelRatio = 1.;
 
     // Double click handling for tablet input
