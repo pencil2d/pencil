@@ -90,3 +90,6 @@ CMakeCache.txt
 compile_commands.json
 cmake-build-*/
 
+
+# Python download verification utilities
+__pycache__/
