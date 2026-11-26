@@ -1,0 +1,50 @@
+/*
+
+Pencil2D - Traditional Animation Software
+Copyright (C) 2005-2007 Patrick Corrieri & Pascal Naidon
+Copyright (C) 2012-2020 Matthew Chiawen Chang
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; version 2 of the License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+*/
+#include "slidergeometry.h"
+
+#include <QtMath>
+
+QRectF SliderGeometry::contentsRect(const QRectF& rect, qreal borderWidth)
+{
+    qreal inset = SliderGeometry::penStrokeInset(borderWidth);
+
+    return QRectF(rect.left()       + inset,
+                      rect.top()    + inset,
+                      rect.width()  - borderWidth,
+                      rect.height() - borderWidth
+                );
+}
+
+qreal SliderGeometry::innerCornerRadius(qreal outerRadius, qreal borderWidth)
+{
+    return outerRadius - borderWidth;
+}
+
+qreal SliderGeometry::penStrokeInset(qreal borderWidth)
+{
+    return borderWidth * 0.5;
+}
+
+/**
+ *  The max travel distance the picker can be moved compared to the slider width
+ *
+ *  @return How far the picker can be moved compared to the slider trailing bound
+ */
+qreal SliderGeometry::pickerUpperBound(qreal sliderWidth, qreal pickerWidth)
+{
+    return qMax(1.0, sliderWidth - pickerWidth);
+}
